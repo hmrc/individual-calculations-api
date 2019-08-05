@@ -1,0 +1,61 @@
+#%RAML 1.0
+---
+title: Hello World
+version: 1.0
+
+protocols: [ HTTPS ]
+baseUri: https://helloworld.service.hmrc.gov.uk/
+
+documentation:
+ - title: Overview
+   content: !include docs/overview.md
+ - title: Versioning
+   content: !include https://developer.service.hmrc.gov.uk/api-documentation/assets/common/docs/versioning.md
+ - title: Errors
+   content: !include https://developer.service.hmrc.gov.uk/api-documentation/assets/common/docs/errors.md
+
+mediaType: application/hal+json
+
+uses:
+  sec: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/securitySchemes.raml
+  headers: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/headers.raml
+  annotations: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/annotations.raml
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+
+/mtd/template:
+  /world:
+    get:
+      displayName: Say hello world
+      description: |
+        A simple example for integrating with an unrestricted service.
+
+        Any request to this endpoint initiates a 'Hello World' response.
+      is: [headers.acceptHeader]
+      (annotations.scope): "read:self-assessment"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "message" : "Hello World"
+                }
+  /user:
+    get:
+      displayName: Say hello user
+      description: |
+        A simple example for integrating with a user-restricted service, using an OAuth 2.0 `access_token`.
+
+        Any authorised request to this endpoint initiates a 'Hello User' response.
+      is: [headers.acceptHeader]
+      (annotations.scope): "write:self-assessment"
+      securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "message": "Hello User"
+                }
