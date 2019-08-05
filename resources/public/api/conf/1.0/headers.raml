@@ -1,0 +1,35 @@
+#%RAML 1.0 Library
+
+uses:
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+
+traits:
+  contentTypeJson:
+    headers:
+      Content-Type:
+        description: Specifies the format of the request body, which must be JSON.
+        type: string
+        required: true
+        example: application/json
+  acceptJson:
+    headers:
+      Accept:
+        description: Specifies the response format and the version of the API to be used.
+        type: string
+        required: true
+        example: 'application/vnd.hmrc.1.0+json'
+  authorization:
+    headers:
+      Authorization:
+        description: |
+          An OAuth 2.0 Bearer Token with the <b>write:self-assessment</b> or <b>read:self-assessment</b> scope.
+        type: string
+        required: true
+        example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+  testScenarioHeader:
+    headers:
+      Gov-Test-Scenario:
+        description: Only in sandbox environment. See Test Data table for all header values.
+        type: string
+        required: false
+        example: '-'
