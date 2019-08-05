@@ -33,18 +33,18 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) {
       scopes = Seq(
         Scope(
           key = readScope,
-          name = "#name#",
-          description = "#desc#"
+          name = "View your Calculations information",
+          description = "Allow read access to calculations data"
         ),
         Scope(
           key = writeScope,
-          name = "#name#",
-          description = "#desc#"
+          name = "Change your Calculations information",
+          description = "Allow write access to calculations data"
         )
       ),
       api = APIDefinition(
-        name = "#mtd-api# (MTD)",
-        description = "#desc#",
+        name = "Individual Calculations (MTD)",
+        description = "An API for providing individual calculations data",
         context = appConfig.apiGatewayContext,
         versions = Seq(
           APIVersion(version = VERSION_1, access = buildWhiteListingAccess(), status = buildAPIStatus(VERSION_1), endpointsEnabled = true)

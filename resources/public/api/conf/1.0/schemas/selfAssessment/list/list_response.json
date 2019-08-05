@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "List of Brought Forward Losses",
+  "description": "List of Brought Forward Losses",
+  "type": "object",
+  "properties": {
+    "xxx": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Array of xxx",
+        "properties": {
+          "id": {
+            "description": "The unique identifier of the xxx",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "000000123456789"
+          }
+        },
+        "required": ["id"]
+      }
+    }
+  },
+  "required": ["xxx"]
+}
