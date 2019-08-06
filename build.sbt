@@ -52,4 +52,5 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     resolvers += Resolver.jcenterRepo
   )
+  .settings(PlayKeys.playDefaultPort := 9676)
 
