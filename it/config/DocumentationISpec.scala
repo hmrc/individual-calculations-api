@@ -28,19 +28,19 @@ class DocumentationISpec extends IntegrationBaseSpec {
       |  "scopes":[
       |    {
       |      "key":"read:self-assessment",
-      |      "name":"#name#",
-      |      "description":"#desc#"
+      |      "name":"View your Calculations information",
+      |      "description":"Allow read access to calculations data"
       |    },
       |    {
       |      "key":"write:self-assessment",
-      |      "name":"#name#",
-      |      "description":"#desc#"
+      |      "name":"Change your Calculations information",
+      |      "description":"Allow write access to calculations data"
       |    }
       |  ],
       |  "api":{
-      |    "name":"#mtd-api# (MTD)",
-      |    "description":"#desc#",
-      |    "context":"mtd/template",
+      |    "name":"Individual Calculations (MTD)",
+      |    "description":"An API for providing individual calculations data",
+      |    "context":"individual/calculations",
       |    "versions":[
       |      {
       |        "version":"1.0",
