@@ -41,6 +41,9 @@ class DocumentationISpec extends IntegrationBaseSpec {
       |    "name":"Individual Calculations (MTD)",
       |    "description":"An API for providing individual calculations data",
       |    "context":"individual/calculations",
+      |    "categories": [
+      |       "INCOME_TAX_MTD"
+      |     ],
       |    "versions":[
       |      {
       |        "version":"1.0",
