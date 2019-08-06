@@ -1,10 +1,30 @@
 {
-  "xxx" : [
+  "calculations": [
     {
-      "id": "000000123456789"
+      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "calculationTimestamp": "2019-03-17T09:22:59Z",
+      "type": "inYear",
+      "requestedBy": "hmrc",
+      "_links": [
+        {
+          "href": "/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          "rel": "sa-tax-calculation",
+          "method": "GET"
+        }
+      ]
     },
     {
-      "id": "000000123456790"
+      "id": "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
+      "calculationTimestamp": "2019-06-17T18:45:59Z",
+      "type": "crystallisation",
+      "requestedBy": "customer",
+      "_links": [
+        {
+          "href": "/individuals/calculations/AA123456A/self-assessment/cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
+          "rel": "sa-tax-calculation",
+          "method": "GET"
+        }
+      ]
     }
   ]
 }
