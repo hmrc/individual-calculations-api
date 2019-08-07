@@ -50,10 +50,11 @@ object APIVersion {
   implicit val formatAPIVersion = Json.format[APIVersion]
 }
 
-case class APIDefinition(name: String, description: String, context: String, versions: Seq[APIVersion], requiresTrust: Option[Boolean]) {
+case class APIDefinition(name: String, description: String, context: String, categories: Seq[String], versions: Seq[APIVersion], requiresTrust: Option[Boolean]) {
 
   require(name.nonEmpty, "name is required")
   require(context.nonEmpty, "context is required")
+  require(categories.nonEmpty, "at least one category is required")
   require(description.nonEmpty, "description is required")
   require(versions.nonEmpty, "at least one version is required")
   require(uniqueVersions, "version numbers must be unique")

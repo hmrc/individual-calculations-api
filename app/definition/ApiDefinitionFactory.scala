@@ -46,6 +46,7 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) {
         name = "Individual Calculations (MTD)",
         description = "An API for providing individual calculations data",
         context = appConfig.apiGatewayContext,
+        categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(version = VERSION_1, access = buildWhiteListingAccess(), status = buildAPIStatus(VERSION_1), endpointsEnabled = true)
           //          ,
