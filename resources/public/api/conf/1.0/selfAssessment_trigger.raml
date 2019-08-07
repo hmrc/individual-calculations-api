@@ -10,7 +10,7 @@ is:
   - errors.incorrectOrEmptyBody
   - errors.ruleNoIncomeSubmissionExists
 displayName: Trigger a Self Assessment Tax Calculation [test only]
-description: This endpoint allows the user to trigger an in-year self assessment tax calculation. The result of the calculation can be explored via the "Retrieve a self assessment tax calculation metadata" endpoint.
+description: This endpoint allows the user to trigger a self assessment tax calculation for a supplied tax year. The result of the calculation can be explored via the "Retrieve a self assessment tax calculation metadata" endpoint.
 (annotations.sandboxData): !include scenarios/selfAssessment/trigger.md
 (annotations.scope): "write:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
