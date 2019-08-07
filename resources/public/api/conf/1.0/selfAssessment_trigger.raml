@@ -1,0 +1,32 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatTaxYear
+  - errors.ruleTaxYearNotSupported
+  - errors.ruleTaxYearRangeExceeded
+  - errors.clientOrAgentNotAuthorised
+  - errors.incorrectOrEmptyBody
+  - errors.ruleNoIncomeSubmissionExists
+displayName: Trigger a Self Assessment Tax Calculation [test only]
+description: This endpoint allows the user to trigger an in-year self assessment tax calculation. The result of the calculation can be explored via the "Retrieve a self assessment tax calculation metadata" endpoint.
+(annotations.sandboxData): !include scenarios/selfAssessment/trigger.md
+(annotations.scope): "write:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+body:
+ application/json:
+   type: !include schemas/selfAssessment/trigger/trigger.json
+   examples:
+     example:
+       value: !include examples/selfAssessment/trigger/trigger.json
+responses:
+ 202:
+   body:
+     application/json:
+       type: !include schemas/selfAssessment/trigger/trigger_response.json
+       example: !include examples/selfAssessment/trigger/trigger_response.json
+   headers:
+     X-CorrelationId:
+       example: a1e8057e-fbbc-47a8-a8b4-78d9f015c253
+       description: Unique identifier of the transaction, String <br> Format∶ ^[A-Za-z0-9\-]{36}$.
