@@ -56,7 +56,7 @@ traits:
             type: types.errorResponse
             examples:
               incorrectOrEmptyBody:
-                description: An empty or non-matching body was submitted
+                description: An empty or non-matching body was submitted, this could be caused by a missing mandatory field
                 value:
                   code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
   ruleTaxYearNotSupported:
@@ -81,3 +81,15 @@ traits:
                 description: Tax year range exceeded. A tax year range of one year is required.
                 value:
                   code: RULE_TAX_YEAR_RANGE_EXCEEDED
+  ruleNoIncomeSubmissionExists:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleNoIncomeSubmissionExists:
+                description: A calculation could not be performed because no income data has been submitted against the tax year
+                value:
+                  code: RULE_NO_INCOME_SUBMISSION_EXISTS
+
