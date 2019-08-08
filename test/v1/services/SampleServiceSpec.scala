@@ -21,11 +21,11 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockSampleConnector
-import v1.models.des.DesSampleResponse
+import v1.models.backend.BackendSampleResponse
 import v1.models.domain.{SampleRequestBody, SampleResponse}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.{DesTaxYear, SampleRequestData}
+import v1.models.requestData.{TaxYear, SampleRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -38,7 +38,7 @@ class SampleServiceSpec extends UnitSpec {
 
   private val requestBody = SampleRequestBody("someData")
 
-  private val requestData = SampleRequestData(Nino(nino), DesTaxYear.fromMtd(taxYear), requestBody)
+  private val requestData = SampleRequestData(Nino(nino), TaxYear.toYearEnding(taxYear), requestBody)
 
   trait Test extends MockSampleConnector {
     implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -53,7 +53,7 @@ class SampleServiceSpec extends UnitSpec {
     "service call successsful" must {
       "return mapped result" in new Test {
         MockSampleConnector.doConnectorThing(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, DesSampleResponse("result")))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, BackendSampleResponse("result")))))
 
         await(service.doServiceThing(requestData)) shouldBe Right(ResponseWrapper(correlationId, SampleResponse("result")))
       }
@@ -66,7 +66,7 @@ class SampleServiceSpec extends UnitSpec {
           s"a $desErrorCode error is returned from the service" in new Test {
 
             MockSampleConnector.doConnectorThing(requestData)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(BackendErrorCode(desErrorCode))))))
 
             await(service.doServiceThing(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
           }

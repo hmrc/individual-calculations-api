@@ -40,8 +40,8 @@ class SampleService @Inject()(sampleConnector: SampleConnector) extends DesRespo
     logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[SampleResponse]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(sampleConnector.doConnectorThing(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper.map(des => SampleResponse(des.responseData)) // *If* need to convert to Mtd
+      backendResponseWrapper <- EitherT(sampleConnector.doConnectorThing(request)).leftMap(mapBackendErrors(desErrorMap))
+    } yield backendResponseWrapper.map(backend => SampleResponse(backend.responseData)) // *If* need to convert to Mtd
 
     result.value
   }

@@ -26,7 +26,7 @@ import v1.models.audit.{AuditError, AuditEvent, SampleAuditDetail, SampleAuditRe
 import v1.models.domain.{SampleRequestBody, SampleResponse}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.{DesTaxYear, SampleRawData, SampleRequestData}
+import v1.models.requestData.{TaxYear, SampleRawData, SampleRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -72,7 +72,7 @@ class SampleControllerSpec
   private val requestBody = SampleRequestBody("someData")
 
   private val rawData     = SampleRawData(nino, taxYear, requestBodyJson)
-  private val requestData = SampleRequestData(Nino(nino), DesTaxYear.fromMtd(taxYear), requestBody)
+  private val requestData = SampleRequestData(Nino(nino), TaxYear.toYearEnding(taxYear), requestBody)
 
   "handleRequest" should {
     "return CREATED" when {

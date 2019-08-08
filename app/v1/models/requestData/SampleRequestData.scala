@@ -19,4 +19,4 @@ package v1.models.requestData
 import uk.gov.hmrc.domain.Nino
 import v1.models.domain.SampleRequestBody
 
-case class SampleRequestData(nino: Nino, desTaxYear: DesTaxYear, body: SampleRequestBody)
+case class SampleRequestData(nino: Nino, taxYear: String, body: SampleRequestBody)

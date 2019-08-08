@@ -22,13 +22,13 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 
 trait AppConfig {
-  def desBaseUrl: String
+  def backendBaseUrl: String
 
   def mtdIdBaseUrl: String
 
-  def desEnv: String
+  def backendEnv: String
 
-  def desToken: String
+  def backendToken: String
 
   def apiGatewayContext: String
 
@@ -42,9 +42,9 @@ trait AppConfig {
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
 
   val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
-  val desBaseUrl: String = config.baseUrl("des")
-  val desEnv: String = config.getString("microservice.services.des.env")
-  val desToken: String = config.getString("microservice.services.des.token")
+  val backendBaseUrl: String = config.baseUrl("individual-calculations")
+  val backendEnv: String = config.getString("microservice.services.individual-calculations.env")
+  val backendToken: String = config.getString("microservice.services.individual-calculations.token")
 
   val apiGatewayContext: String = config.getString("api.gateway.context")
 

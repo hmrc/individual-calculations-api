@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.des
+package v1.models.backend
 
 import play.api.libs.json.Json
 import support.UnitSpec
 
-class DesSampleResponseSpec extends UnitSpec {
+class BackendSampleResponseSpec extends UnitSpec {
   "Json reads" should {
     "use specified format" in {
       val json = Json.parse(
@@ -28,7 +28,7 @@ class DesSampleResponseSpec extends UnitSpec {
           |  "responseData": "someResponse"
           |}""".stripMargin)
 
-      json.as[DesSampleResponse] shouldBe DesSampleResponse("someResponse")
+      json.as[BackendSampleResponse] shouldBe BackendSampleResponse("someResponse")
     }
   }
 }

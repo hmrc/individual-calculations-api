@@ -21,7 +21,7 @@ import play.api.http.Status.{NO_CONTENT, OK}
 import play.api.libs.json.Json
 import support.WireMockMethods
 
-object DesStub extends WireMockMethods {
+object BackendStub extends WireMockMethods {
 
   private val responseBody = Json.parse(
     """
