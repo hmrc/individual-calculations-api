@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.controllers.requestParsers
 
-import v1.models.requestData.RawData
+import uk.gov.hmrc.domain.Nino
+import v1.controllers.requestParsers.validators.{ListCalculationsValidator, Validator}
+import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+class ListCalculationsParser(val validator: ListCalculationsValidator) extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+
+  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
+    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+}

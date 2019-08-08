@@ -16,30 +16,29 @@
 
 package v1.controllers.requestParsers.validators
 
-import v1.controllers.requestParsers.validators.validations._
-import v1.models.domain.SampleRequestBody
-import v1.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError}
-import v1.models.requestData.SampleRawData
+import config.FixedConfig
+import v1.controllers.requestParsers.validators.validations.{MtdTaxYearValidation, NinoValidation, TaxYearValidation}
+import v1.models.errors.MtdError
+import v1.models.requestData.selfAssessment.ListCalculationsRawData
 
-class SampleValidator extends Validator[SampleRawData] {
+class ListCalculationsValidator extends Validator[ListCalculationsRawData] with FixedConfig {
 
   private val validationSet = List(parameterFormatValidation, parameterRuleValidation)
 
-  private def parameterFormatValidation: SampleRawData => List[List[MtdError]] = (data: SampleRawData) => {
+  private def parameterFormatValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
     List(
       NinoValidation.validate(data.nino),
-      TaxYearValidation.validate(data.taxYear),
-      JsonFormatValidation.validate[SampleRequestBody](data.body, RuleIncorrectOrEmptyBodyError)
+      data.taxYear.map(taxYear => TaxYearValidation.validate(taxYear)).getOrElse(Nil)
     )
   }
 
-  private def parameterRuleValidation: SampleRawData => List[List[MtdError]] = { data =>
+  private def parameterRuleValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
     List(
-      MtdTaxYearValidation.validate(data.taxYear, 2018)
+      data.taxYear.map(taxYear => MtdTaxYearValidation.validate(taxYear, minimumTaxYear)).getOrElse(Nil)
     )
   }
 
-  override def validate(data: SampleRawData): List[MtdError] = {
+  override def validate(data: ListCalculationsRawData): List[MtdError] = {
     run(validationSet, data).distinct
   }
 }
