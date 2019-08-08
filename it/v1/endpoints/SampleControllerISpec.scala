@@ -22,8 +22,8 @@ import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
-import v1.models.requestData.DesTaxYear
-import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
+import v1.models.requestData.TaxYear
+import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 import play.api.http.HeaderNames.ACCEPT
 
@@ -57,7 +57,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
       s"""
          |      {
          |        "code": "$code",
-         |        "reason": "des message"
+         |        "reason": "backend message"
          |      }
       """.stripMargin
   }
@@ -76,7 +76,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
         }
 
         val response: WSResponse = await(request().post(requestJson))
@@ -98,7 +98,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
         }
 
         val response: WSResponse = await(request().addHttpHeaders(("Content-Type", "application/json")).post(json))
@@ -137,15 +137,15 @@ class SampleControllerISpec extends IntegrationBaseSpec {
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
-      "des service error" when {
-        def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"des returns an $desCode error and status $desStatus" in new SampleTest {
+      "backend service error" when {
+        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $backendCode error and status $backendStatus" in new SampleTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.serviceError(nino, DesTaxYear.fromMtd(taxYear).toString, desStatus, errorBody(desCode))
+              BackendStub.serviceError(nino, TaxYear.toYearEnding(taxYear).toString, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request().post(requestJson))

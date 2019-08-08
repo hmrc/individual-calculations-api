@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.errors
+package v1.models.backend
 
-import play.api.libs.json.Json
-import support.UnitSpec
+import play.api.libs.json.{Json, Reads}
 
-class DesErrorCodeSpec extends UnitSpec {
+case class BackendSampleResponse(responseData: String)
 
-  "reads" should {
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "CODE",
-        |   "reason": "ignored"
-        |}
-      """.stripMargin
-    )
-
-    "generate the correct error code" in {
-      json.as[DesErrorCode] shouldBe DesErrorCode("CODE")
-    }
-  }
+object BackendSampleResponse {
+  implicit val reads: Reads[BackendSampleResponse] = Json.reads[BackendSampleResponse]
 }

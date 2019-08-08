@@ -19,8 +19,8 @@ package v1.mocks.connectors
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.{DesOutcome, SampleConnector}
-import v1.models.des.DesSampleResponse
+import v1.connectors.{BackendOutcome, SampleConnector}
+import v1.models.backend.BackendSampleResponse
 import v1.models.requestData.SampleRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,7 +31,7 @@ trait MockSampleConnector extends MockFactory {
 
   object MockSampleConnector {
 
-    def doConnectorThing(requestData: SampleRequestData): CallHandler[Future[DesOutcome[DesSampleResponse]]] = {
+    def doConnectorThing(requestData: SampleRequestData): CallHandler[Future[BackendOutcome[BackendSampleResponse]]] = {
       (mockSampleConnector
         .doConnectorThing(_: SampleRequestData)(_: HeaderCarrier, _: ExecutionContext))
         .expects(requestData, *, *)

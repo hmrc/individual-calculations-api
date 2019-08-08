@@ -22,7 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockSampleValidator
 import v1.models.domain.SampleRequestBody
 import v1.models.errors._
-import v1.models.requestData.{DesTaxYear, SampleRawData, SampleRequestData}
+import v1.models.requestData.{TaxYear, SampleRawData, SampleRequestData}
 
 class SampleRequestDataParserSpec extends UnitSpec {
   val nino = "AA123456B"
@@ -49,7 +49,7 @@ class SampleRequestDataParserSpec extends UnitSpec {
         MockSampleValidator.validate(inputData).returns(Nil)
 
         parser.parseRequest(inputData) shouldBe
-          Right(SampleRequestData(Nino(nino), DesTaxYear("2018"), SampleRequestBody("someData")))
+          Right(SampleRequestData(Nino(nino), "2018", SampleRequestBody("someData")))
       }
     }
 

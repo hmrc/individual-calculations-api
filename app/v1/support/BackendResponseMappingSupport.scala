@@ -21,10 +21,10 @@ import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 
-trait DesResponseMappingSupport {
+trait BackendResponseMappingSupport {
   self: Logging =>
 
-  final def mapDesErrors[D](errorCodeMap: PartialFunction[String, MtdError])(desResponseWrapper: ResponseWrapper[DesError])(
+  final def mapBackendErrors[D](errorCodeMap: PartialFunction[String, MtdError])(backendResponseWrapper: ResponseWrapper[BackendError])(
     implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
@@ -32,11 +32,11 @@ trait DesResponseMappingSupport {
       DownstreamError
     }
 
-    desResponseWrapper match {
-      case ResponseWrapper(correlationId, DesErrors(error :: Nil)) =>
+    backendResponseWrapper match {
+      case ResponseWrapper(correlationId, BackendErrors(error :: Nil)) =>
         ErrorWrapper(Some(correlationId), errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None)
 
-      case ResponseWrapper(correlationId, DesErrors(errorCodes)) =>
+      case ResponseWrapper(correlationId, BackendErrors(errorCodes)) =>
         val mtdErrors = errorCodes.map(error => errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping))
 
         if (mtdErrors.contains(DownstreamError)) {

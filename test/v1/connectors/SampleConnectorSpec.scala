@@ -18,36 +18,35 @@ package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.des.DesSampleResponse
+import v1.models.backend.BackendSampleResponse
 import v1.models.domain.{EmptyJsonBody, SampleRequestBody}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.{DesTaxYear, SampleRequestData}
+import v1.models.requestData.{TaxYear, SampleRequestData}
 
 import scala.concurrent.Future
 
 class SampleConnectorSpec extends ConnectorSpec {
 
-  val taxYear = DesTaxYear("2018")
+  val taxYear = "2018"
   val nino = Nino("AA123456A")
   val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector: SampleConnector = new SampleConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
-    val desRequestHeaders = Seq("Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    val desRequestHeaders = Seq("Authorization" -> s"Bearer backend-token")
+    MockedAppConfig.backendBaseUrl returns baseUrl
+    MockedAppConfig.backendToken returns "backend-token"
   }
 
   "doService" must {
     val request = SampleRequestData(nino, taxYear, SampleRequestBody("someData"))
 
     "post an empty body and return the result" in new Test {
-      val outcome = Right(ResponseWrapper(correlationId, DesSampleResponse(calcId)))
+      val outcome = Right(ResponseWrapper(correlationId, BackendSampleResponse(calcId)))
 
       MockedHttpClient
-        .post(s"$baseUrl/income-tax/nino/${nino.nino}/taxYear/${taxYear.value}/someService", EmptyJsonBody, "Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
+        .post(s"$baseUrl/income-tax/nino/${nino.nino}/taxYear/${taxYear}/someService", EmptyJsonBody, "Authorization" -> s"Bearer backend-token")
         .returns(Future.successful(outcome))
 
       await(connector.doConnectorThing(request)) shouldBe outcome

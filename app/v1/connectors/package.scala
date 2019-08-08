@@ -16,12 +16,12 @@
 
 package v1
 
-import v1.models.errors.{DesError, MtdError}
+import v1.models.errors.{BackendError, MtdError}
 import v1.models.outcomes.ResponseWrapper
 
 package object connectors {
 
   type MtdIdLookupOutcome = Either[MtdError, String]
 
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
+  type BackendOutcome[A] = Either[ResponseWrapper[BackendError], ResponseWrapper[A]]
 }

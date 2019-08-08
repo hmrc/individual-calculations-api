@@ -20,30 +20,30 @@ import play.api.Logger
 import play.api.http.Status._
 import play.api.libs.json.Reads
 import uk.gov.hmrc.http.{ HttpReads, HttpResponse }
-import v1.connectors.DesOutcome
+import v1.connectors.BackendOutcome
 import v1.models.errors.{ DownstreamError, OutboundError }
 import v1.models.outcomes.ResponseWrapper
 
-object StandardDesHttpParser extends HttpParser {
+object StandardHttpParser extends HttpParser {
 
   case class SuccessCode(status: Int) extends AnyVal
 
   val logger = Logger(getClass)
 
-  // Return Right[DesResponse[Unit]] as success response has no body - no need to assign it a value
-  implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[DesOutcome[Unit]] =
-    new HttpReads[DesOutcome[Unit]] {
+  // Return Right[BackendOutcome[Unit]] as success response has no body - no need to assign it a value
+  implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[Unit]] =
+    new HttpReads[BackendOutcome[Unit]] {
 
-      override def read(method: String, url: String, response: HttpResponse): DesOutcome[Unit] =
+      override def read(method: String, url: String, response: HttpResponse): BackendOutcome[Unit] =
         doRead(url, response) { correlationId =>
           Right(ResponseWrapper(correlationId, ()))
         }
     }
 
-  implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[DesOutcome[A]] =
-    new HttpReads[DesOutcome[A]] {
+  implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[BackendOutcome[A]] =
+    new HttpReads[BackendOutcome[A]] {
 
-      override def read(method: String, url: String, response: HttpResponse): DesOutcome[A] =
+      override def read(method: String, url: String, response: HttpResponse): BackendOutcome[A] =
         doRead(url, response) { correlationId =>
           response.validateJson[A] match {
             case Some(ref) => Right(ResponseWrapper(correlationId, ref))
@@ -52,23 +52,23 @@ object StandardDesHttpParser extends HttpParser {
         }
     }
 
-  private def doRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => DesOutcome[A])(
-      implicit successCode: SuccessCode): DesOutcome[A] = {
+  private def doRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => BackendOutcome[A])(
+      implicit successCode: SuccessCode): BackendOutcome[A] = {
 
     val correlationId = retrieveCorrelationId(response)
 
     if (response.status != successCode.status) {
       logger.info(
-        "[StandardDesHttpParser][read] - " +
-          s"Error response received from DES with status: ${response.status} and body\n" +
+        "[StandardHttpParser][read] - " +
+          s"Error response received from backend with status: ${response.status} and body\n" +
           s"${response.body} and correlationId: $correlationId when calling $url")
     }
 
     response.status match {
       case successCode.status =>
         logger.info(
-          "[StandardDesHttpParser][read] - " +
-            s"Success response received from DES with correlationId: $correlationId when calling $url")
+          "[StandardHttpParser][read] - " +
+            s"Success response received from backend with correlationId: $correlationId when calling $url")
         successOutcomeFactory(correlationId)
       case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT => Left(ResponseWrapper(correlationId, parseErrors(response)))
       case _                                              => Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))

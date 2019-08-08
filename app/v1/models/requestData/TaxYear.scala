@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.des
+package v1.models.requestData
 
-import play.api.libs.json.{Json, Reads}
+object TaxYear {
 
-case class DesSampleResponse(responseData: String)
-
-object DesSampleResponse {
-  implicit val reads: Reads[DesSampleResponse] = Json.reads[DesSampleResponse]
+  /**
+    * @param taxYear tax year in MTD format (e.g. 2017-18)
+    * @return in the form of the year ending, format used by DES (e.g. 2018)
+    */
+  def toYearEnding(taxYear: String): String =
+    taxYear.take(2) + taxYear.drop(5)
 }

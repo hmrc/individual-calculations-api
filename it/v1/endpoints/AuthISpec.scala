@@ -22,8 +22,8 @@ import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.models.requestData.DesTaxYear
-import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
+import v1.models.requestData.TaxYear
+import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends IntegrationBaseSpec {
 
@@ -73,7 +73,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
         }
 
         val response: WSResponse = await(request().post(Json.parse(requestJson)))

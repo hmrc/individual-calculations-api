@@ -14,6 +14,25 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.models.errors
 
-case class DesUri[Resp](value: String)
+import play.api.libs.json.Json
+import support.UnitSpec
+
+class BackendErrorCodeSpec extends UnitSpec {
+
+  "reads" should {
+    val json = Json.parse(
+      """
+        |{
+        |   "code": "CODE",
+        |   "reason": "ignored"
+        |}
+      """.stripMargin
+    )
+
+    "generate the correct error code" in {
+      json.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
+    }
+  }
+}
