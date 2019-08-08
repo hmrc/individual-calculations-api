@@ -62,11 +62,11 @@ class SampleServiceSpec extends UnitSpec {
     "unsuccessful" must {
       "map errors according to spec" when {
 
-        def serviceError(desErrorCode: String, error: MtdError): Unit =
-          s"a $desErrorCode error is returned from the service" in new Test {
+        def serviceError(errorCode: String, error: MtdError): Unit =
+          s"a $errorCode error is returned from the service" in new Test {
 
             MockSampleConnector.doConnectorThing(requestData)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(BackendErrorCode(desErrorCode))))))
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(BackendErrorCode(errorCode))))))
 
             await(service.doServiceThing(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
           }

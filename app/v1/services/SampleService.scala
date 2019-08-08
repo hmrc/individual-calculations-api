@@ -40,13 +40,13 @@ class SampleService @Inject()(sampleConnector: SampleConnector) extends BackendR
     logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[SampleResponse]]] = {
 
     val result = for {
-      backendResponseWrapper <- EitherT(sampleConnector.doConnectorThing(request)).leftMap(mapBackendErrors(desErrorMap))
+      backendResponseWrapper <- EitherT(sampleConnector.doConnectorThing(request)).leftMap(mapBackendErrors(errorMap))
     } yield backendResponseWrapper.map(backend => SampleResponse(backend.responseData)) // *If* need to convert to Mtd
 
     result.value
   }
 
-  private def desErrorMap =
+  private def errorMap =
     Map(
       "NOT_FOUND" -> NotFoundError,
       "SERVER_ERROR" -> DownstreamError,
