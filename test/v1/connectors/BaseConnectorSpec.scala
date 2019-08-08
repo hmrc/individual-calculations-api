@@ -44,13 +44,12 @@ class BaseConnectorSpec extends ConnectorSpec {
     }
     MockedAppConfig.backendBaseUrl returns baseUrl
     MockedAppConfig.backendToken returns "individual-calculations-token"
-    MockedAppConfig.backendEnvironment returns "individual-calculations-environment"
   }
 
   "post" must {
     "posts with the required backend headers and returns the result" in new Test {
       MockedHttpClient
-        .post(absoluteUrl, body, "Environment" -> "xxxx", "Authorization" -> s"Bearer individual-calculations-token")
+        .post(absoluteUrl, body, "Authorization" -> s"Bearer individual-calculations-token")
         .returns(Future.successful(outcome))
 
       await(connector.post(body, Uri[Result](url))) shouldBe outcome
@@ -58,9 +57,9 @@ class BaseConnectorSpec extends ConnectorSpec {
   }
 
   "get" must {
-    "get with the requred des headers and return the result" in new Test {
+    "get with the requred backend headers and return the result" in new Test {
       MockedHttpClient
-        .get(absoluteUrl, "Environment" -> "xxxx", "Authorization" -> s"Bearer individual-calculations-token")
+        .get(absoluteUrl, "Authorization" -> s"Bearer individual-calculations-token")
         .returns(Future.successful(outcome))
 
       await(connector.get(Uri[Result](url))) shouldBe outcome

@@ -33,7 +33,6 @@ trait BaseConnector {
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier =
     hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.backendToken}")))
-      .withExtraHeaders("Environment" -> appConfig.backendEnv)
 
   def post[Body: Writes, Resp](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
                                                            hc: HeaderCarrier,

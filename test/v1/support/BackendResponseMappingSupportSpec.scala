@@ -22,10 +22,10 @@ import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 
-class DesResponseMappingSupportSpec extends UnitSpec {
+class BackendResponseMappingSupportSpec extends UnitSpec {
 
   implicit val logContext: EndpointLogContext = EndpointLogContext("ctrl", "ep")
-  val mapping = new DesResponseMappingSupport with Logging {}
+  val mapping = new BackendResponseMappingSupport with Logging {}
 
   val correlationId = "someCorrelationId"
 
@@ -43,7 +43,7 @@ class DesResponseMappingSupportSpec extends UnitSpec {
     case "DS" => DownstreamError
   }
 
-  "mapping Des errors" when {
+  "mapping backend errors" when {
     "single error" when {
       "the error code is in the map provided" must {
         "use the mapping and wrap" in {

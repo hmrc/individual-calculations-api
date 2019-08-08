@@ -49,7 +49,7 @@ class SampleRequestDataParserSpec extends UnitSpec {
         MockSampleValidator.validate(inputData).returns(Nil)
 
         parser.parseRequest(inputData) shouldBe
-          Right(SampleRequestData(Nino(nino), TaxYear("2018"), SampleRequestBody("someData")))
+          Right(SampleRequestData(Nino(nino), "2018", SampleRequestBody("someData")))
       }
     }
 

@@ -43,19 +43,19 @@ class StandardHttpParserSpec extends UnitSpec {
   val httpReads: HttpReads[BackendOutcome[Unit]] = implicitly
 
   val data = "someData"
-  val desExpectedJson: JsValue = Json.obj("data" -> data)
+  val backendExpectedJson: JsValue = Json.obj("data" -> data)
 
-  val desModel = SomeModel(data)
-  val desResponse = ResponseWrapper(correlationId, desModel)
+  val backendModel = SomeModel(data)
+  val backendResponse = ResponseWrapper(correlationId, backendModel)
 
   "The generic HTTP parser" when {
     "no status code is specified" must {
       val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
 
-      "return a Right DES response containing the model object if the response json corresponds to a model object" in {
-        val httpResponse = HttpResponse(OK, Some(desExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
+      "return a Right backend response containing the model object if the response json corresponds to a model object" in {
+        val httpResponse = HttpResponse(OK, Some(backendExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
 
-        httpReads.read(method, url, httpResponse) shouldBe Right(desResponse)
+        httpReads.read(method, url, httpResponse) shouldBe Right(backendResponse)
       }
 
       "return an outbound error if a model object cannot be read from the response json" in {
@@ -77,9 +77,9 @@ class StandardHttpParserSpec extends UnitSpec {
         implicit val successCode: SuccessCode = SuccessCode(PARTIAL_CONTENT)
         val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
 
-        val httpResponse = HttpResponse(PARTIAL_CONTENT, Some(desExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(PARTIAL_CONTENT, Some(backendExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
 
-        httpReads.read(method, url, httpResponse) shouldBe Right(desResponse)
+        httpReads.read(method, url, httpResponse) shouldBe Right(backendResponse)
       }
     }
   }
@@ -89,7 +89,7 @@ class StandardHttpParserSpec extends UnitSpec {
       val httpReads: HttpReads[BackendOutcome[Unit]] = implicitly
 
       "receiving a 204 response" should {
-        "return a Right DesResponse with the correct correlationId and no responseData" in {
+        "return a Right backend response with the correct correlationId and no responseData" in {
           val httpResponse = HttpResponse(NO_CONTENT, responseHeaders = Map("CorrelationId" -> Seq(correlationId)))
 
           httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))

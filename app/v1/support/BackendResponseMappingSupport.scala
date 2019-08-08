@@ -21,7 +21,7 @@ import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 
-trait DesResponseMappingSupport {
+trait BackendResponseMappingSupport {
   self: Logging =>
 
   final def mapBackendErrors[D](errorCodeMap: PartialFunction[String, MtdError])(backendResponseWrapper: ResponseWrapper[BackendError])(
