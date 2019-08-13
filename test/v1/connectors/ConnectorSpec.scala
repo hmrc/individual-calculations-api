@@ -18,6 +18,7 @@ package v1.connectors
 
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import support.UnitSpec
+import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
@@ -28,6 +29,7 @@ trait ConnectorSpec extends UnitSpec
   with HeaderNames {
 
   lazy val baseUrl = "test-BaseUrl"
+  val nino = Nino("AA123456A")
   val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   implicit val hc: HeaderCarrier = HeaderCarrier()

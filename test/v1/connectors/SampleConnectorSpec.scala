@@ -28,7 +28,6 @@ import scala.concurrent.Future
 class SampleConnectorSpec extends ConnectorSpec {
 
   val taxYear = "2018"
-  val nino = Nino("AA123456A")
   val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   class Test extends MockHttpClient with MockAppConfig {

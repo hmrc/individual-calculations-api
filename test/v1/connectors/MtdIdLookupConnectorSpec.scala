@@ -31,7 +31,6 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
     MockedAppConfig.mtdIdBaseUrl returns baseUrl
   }
 
-  val nino = "test-nino"
   val mtdId = "test-mtdId"
 
   "getMtdId" should {
@@ -40,7 +39,7 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
         MockedHttpClient.get[MtdIdLookupOutcome](s"$baseUrl/mtd-identifier-lookup/nino/$nino")
           .returns(Future.successful(Right(mtdId)))
 
-        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino))
+        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino.nino))
         result shouldBe Right(mtdId)
       }
     }
@@ -50,7 +49,7 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
         MockedHttpClient.get[MtdIdLookupOutcome](s"$baseUrl/mtd-identifier-lookup/nino/$nino")
           .returns(Future.successful(Left(DownstreamError)))
 
-        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino))
+        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino.nino))
         result shouldBe Left(DownstreamError)
       }
     }

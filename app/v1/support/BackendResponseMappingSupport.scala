@@ -16,10 +16,17 @@
 
 package v1.support
 
+import javax.xml.ws
+import play.api.Logger
 import utils.Logging
+import v1.connectors.BackendOutcome
 import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
+import cats.data.EitherT
+import cats.implicits._
+
+import scala.concurrent.Future
 
 trait BackendResponseMappingSupport {
   self: Logging =>
@@ -51,5 +58,10 @@ trait BackendResponseMappingSupport {
       case ResponseWrapper(correlationId, OutboundError(error, errors)) =>
         ErrorWrapper(Some(correlationId), error, errors)
     }
+  }
+
+  def directMap[D](errorMap: PartialFunction[String, MtdError])(outcome: BackendOutcome[D])(
+    implicit logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
+    outcome.leftMap(mapBackendErrors(errorMap))
   }
 }
