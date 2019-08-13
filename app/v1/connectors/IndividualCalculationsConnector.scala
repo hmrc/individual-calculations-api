@@ -17,27 +17,24 @@
 package v1.connectors
 
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import v1.models.domain.selfAssessment.ListCalculationsResponse
+import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.connectors.httpparsers.StandardHttpParser._
-import v1.models.backend.BackendSampleResponse
-import v1.models.domain.EmptyJsonBody
-import v1.models.requestData.SampleRequestData
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
-@Singleton
-class SampleConnector @Inject()(val http: HttpClient,
-                                val appConfig: AppConfig) extends BaseConnector {
+class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
-  def doConnectorThing(request: SampleRequestData)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[BackendOutcome[BackendSampleResponse]] = {
+  def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier): Future[BackendOutcome[ListCalculationsResponse]] = {
+    val uri = s"individual/calculations/${request.nino.nino}/self-assessment"
 
-    post(
-      body = EmptyJsonBody,
-      s"income-tax/nino/${request.nino}/taxYear/${request.taxYear}/someService"
-    )
+    request.taxYear match {
+      case Some(year) => get(uri, Seq(("taxYear", year)))
+      case _ => get(uri)
+    }
   }
 }

@@ -69,7 +69,6 @@ class StandardHttpParserSpec extends UnitSpec {
       handleErrorsCorrectly(httpReads)
       handleInternalErrorsCorrectly(httpReads)
       handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
     }
 
     "a success code is specified" must {
@@ -99,7 +98,6 @@ class StandardHttpParserSpec extends UnitSpec {
       handleErrorsCorrectly(httpReads)
       handleInternalErrorsCorrectly(httpReads)
       handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
     }
 
     "a success code is specified" must {
@@ -126,7 +124,26 @@ class StandardHttpParserSpec extends UnitSpec {
   val multipleErrorsJson = Json.parse(
     """
       |{
-      |   "failures": [
+      |   "code": "CODE",
+      |   "reason": "MESSAGE",
+      |   "errors": [
+      |       {
+      |           "code": "CODE 1",
+      |           "reason": "MESSAGE 1"
+      |       },
+      |       {
+      |           "code": "CODE 2",
+      |           "reason": "MESSAGE 2"
+      |       }
+      |   ]
+      |}
+    """.stripMargin
+  )
+
+  val missingPrimaryErrorJson = Json.parse(
+    """
+      |{
+      |   "errors": [
       |       {
       |           "code": "CODE 1",
       |           "reason": "MESSAGE 1"
@@ -163,8 +180,14 @@ class StandardHttpParserSpec extends UnitSpec {
             val httpResponse = HttpResponse(responseCode, Some(multipleErrorsJson), Map("CorrelationId" -> Seq(correlationId)))
 
             httpReads.read(method, url, httpResponse) shouldBe {
-              Left(ResponseWrapper(correlationId, BackendErrors(List(BackendErrorCode("CODE 1"), BackendErrorCode("CODE 2")))))
+              Left(ResponseWrapper(correlationId, BackendErrors(List(BackendErrorCode("CODE"), BackendErrorCode("CODE 1"), BackendErrorCode("CODE 2")))))
             }
+          }
+
+          "return an outbound error when errors are returned without a primary error" in {
+            val httpResponse = HttpResponse(responseCode, Some(missingPrimaryErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+
+            httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
           }
 
           "return an outbound error when the error returned doesn't match the Error model" in {
@@ -207,34 +230,4 @@ class StandardHttpParserSpec extends UnitSpec {
       }
     }
 
-
-  private def handleBvrsCorrectly[A](httpReads: HttpReads[BackendOutcome[A]]): Unit = {
-
-
-    val singleBvrJson = Json.parse(
-      """
-        |{
-        |   "bvrfailureResponseElement": {
-        |     "validationRuleFailures": [
-        |       {
-        |         "id": "BVR1"
-        |       },
-        |       {
-        |         "id": "BVR2"
-        |       }
-        |     ]
-        |   }
-        |}
-      """.stripMargin)
-
-    s"receiving a response with a bvr errors" should {
-      "return an outbound BUSINESS_ERROR error containing the BVR ids" in {
-        val httpResponse = HttpResponse(BAD_REQUEST, Some(singleBvrJson), Map("CorrelationId" -> Seq(correlationId)))
-
-        httpReads.read(method, url, httpResponse) shouldBe
-          Left(ResponseWrapper(correlationId,
-            OutboundError(BVRError, Some(Seq(MtdError("BVR1", ""), MtdError("BVR2", ""))))))
-      }
-    }
-  }
 }

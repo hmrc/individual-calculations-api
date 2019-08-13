@@ -47,23 +47,24 @@ trait HttpParser {
 
   def retrieveCorrelationId(response: HttpResponse): String = response.header("CorrelationId").getOrElse("")
 
-  private val multipleErrorReads: Reads[List[BackendErrorCode]] = (__ \ "failures").read[List[BackendErrorCode]]
-
-  private val bvrErrorReads: Reads[Seq[BackendErrorCode]] = {
-    implicit val errorIdReads: Reads[BackendErrorCode] = (__ \ "id").read[String].map(BackendErrorCode(_))
-    (__ \ "bvrfailureResponseElement" \ "validationRuleFailures").read[Seq[BackendErrorCode]]
-  }
+  private val multipleErrorReads: Reads[List[BackendErrorCode]] = (__ \ "errors").read[List[BackendErrorCode]]
 
   def parseErrors(response: HttpResponse): BackendError = {
     val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(List(err)))
     lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(errs))
-    lazy val bvrErrors      = response.validateJson(bvrErrorReads).map(errs => OutboundError(BVRError, Some(errs.map(_.toMtd))))
     lazy val unableToParseJsonError = {
       Logger.warn(s"unable to parse errors from response: ${response.body}")
       OutboundError(DownstreamError)
     }
 
-    singleError orElse multipleErrors orElse bvrErrors getOrElse unableToParseJsonError
+    val combinedErrors = {
+      multipleErrors match {
+        case Some(additionalErrors) => singleError.map(error => BackendErrors(error.errors ++ additionalErrors.errors))
+        case None => singleError
+      }
+    }
+
+    combinedErrors getOrElse unableToParseJsonError
   }
 
 }

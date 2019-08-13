@@ -52,17 +52,25 @@ class BaseConnectorSpec extends ConnectorSpec {
         .post(absoluteUrl, body, "Authorization" -> s"Bearer individual-calculations-token")
         .returns(Future.successful(outcome))
 
-      await(connector.post(body, Uri[Result](url))) shouldBe outcome
+      await(connector.post(body, url)) shouldBe outcome
     }
   }
 
   "get" must {
-    "get with the requred backend headers and return the result" in new Test {
+    "get with the required backend headers and return the result without query parameters" in new Test {
       MockedHttpClient
         .get(absoluteUrl, "Authorization" -> s"Bearer individual-calculations-token")
         .returns(Future.successful(outcome))
 
-      await(connector.get(Uri[Result](url))) shouldBe outcome
+      await(connector.get(url)) shouldBe outcome
+    }
+
+    "get with the required backend headers and return the result with query parameters" in new Test {
+      MockedHttpClient
+        .get(absoluteUrl, Seq(("key", "value")), "Authorization" -> s"Bearer individual-calculations-token")
+        .returns(Future.successful(outcome))
+
+      await(connector.get(url, Seq(("key", "value")))) shouldBe outcome
     }
   }
 }

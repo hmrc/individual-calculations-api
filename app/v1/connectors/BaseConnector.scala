@@ -34,23 +34,33 @@ trait BaseConnector {
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier =
     hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.backendToken}")))
 
-  def post[Body: Writes, Resp](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
+  def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
                                                            hc: HeaderCarrier,
-                                                           httpReads: HttpReads[BackendOutcome[Resp]]): Future[BackendOutcome[Resp]] = {
+                                                           httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
-    def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
-      http.POST(s"${appConfig.backendBaseUrl}/${uri.value}", body)
+    def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
+      http.POST(s"${appConfig.backendBaseUrl}/$uri", body)
     }
 
     doPost(headerCarrier(hc))
   }
 
-  def get[Resp](uri: Uri[Resp])(implicit ec: ExecutionContext,
+  def get[T](uri: String)(implicit ec: ExecutionContext,
                                 hc: HeaderCarrier,
-                                httpReads: HttpReads[BackendOutcome[Resp]]): Future[BackendOutcome[Resp]] = {
+                                httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
-    def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] =
-      http.GET(s"${appConfig.backendBaseUrl}/${uri.value}")
+    def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
+      http.GET(s"${appConfig.backendBaseUrl}/$uri")
+
+    doGet(headerCarrier(hc))
+  }
+
+  def get[T](uri: String, queryParameters: Seq[(String, String)])(implicit ec: ExecutionContext,
+                                hc: HeaderCarrier,
+                                httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+
+    def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
+      http.GET(s"${appConfig.backendBaseUrl}/$uri", queryParameters)
 
     doGet(headerCarrier(hc))
   }
