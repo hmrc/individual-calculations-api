@@ -51,7 +51,7 @@ class ListCalculationsController @Inject()(
       endpointName = "listCalculations"
     )
 
-  def handleRequest(nino: String, taxYear: Option[String]): Action[AnyContent] =
+  def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = ListCalculationsRawData(nino, taxYear)
       val result =
