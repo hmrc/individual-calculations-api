@@ -57,7 +57,14 @@ trait HttpParser {
       OutboundError(DownstreamError)
     }
 
-    multipleErrors orElse singleError getOrElse unableToParseJsonError
+    val combinedErrors = {
+      multipleErrors match {
+        case Some(additionalErrors) => singleError.map(error => BackendErrors(error.errors ++ additionalErrors.errors))
+        case None => singleError
+      }
+    }
+
+    combinedErrors getOrElse unableToParseJsonError
   }
 
 }
