@@ -24,7 +24,7 @@ import v1.models.domain.selfAssessment.ListCalculationsResponse
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
-import v1.services.selfAssessment.ListCalculationsService
+import v1.services.ListCalculationsService
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,7 +36,7 @@ trait MockListCalculationsService extends MockFactory {
 
     def listCalculations(requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]]] = {
       (mockListCalculationsService
-        .listCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
+        .listCalculations(_: ListCalculationsRequest)(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
         .expects(requestData, *, *, *)
     }
   }

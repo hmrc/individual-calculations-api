@@ -24,12 +24,12 @@ import v1.models.domain.selfAssessment.ListCalculationsResponse
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.connectors.httpparsers.StandardHttpParser._
 
-import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
-  def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier): Future[BackendOutcome[ListCalculationsResponse]] = {
+  def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
+                                                            ec: ExecutionContext): Future[BackendOutcome[ListCalculationsResponse]] = {
     val uri = s"individual/calculations/${request.nino.nino}/self-assessment"
 
     request.taxYear match {

@@ -23,14 +23,14 @@ import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ListCalculationsServiceSpec extends ServiceSpec {
 
   class Test(connectorResponse: Future[BackendOutcome[ListCalculationsResponse]], expectedRequest: ListCalculationsRequest) {
     val mockConnector: IndividualCalculationsConnector = mock[IndividualCalculationsConnector]
 
-    (mockConnector.listTaxCalculations(_: ListCalculationsRequest)(_: HeaderCarrier)).expects(where { (request, _) =>
+    (mockConnector.listTaxCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext)).expects(where { (request, _, _) =>
       request == expectedRequest
     }).returns(connectorResponse)
 

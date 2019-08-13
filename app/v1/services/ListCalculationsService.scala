@@ -27,13 +27,13 @@ import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ListCalculationsService @Inject()(connector: IndividualCalculationsConnector) extends BackendResponseMappingSupport with Logging {
 
   def listCalculations(request: ListCalculationsRequest)(
-    implicit logContext: EndpointLogContext, hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
+    implicit logContext: EndpointLogContext,
+    ec: ExecutionContext, hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
     connector.listTaxCalculations(request).map(directMap[ListCalculationsResponse](validErrorMap))
   }
 
