@@ -19,6 +19,7 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
+import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
@@ -33,12 +34,21 @@ class AuthISpec extends IntegrationBaseSpec {
     val data        = "someData"
     val correlationId = "X-123"
 
+    val backendUrl = s"/income-tax/nino/$nino/taxYear/${TaxYear.toYearEnding(taxYear)}/someService"
+
     val requestJson: String =
       s"""
          |{
          |"data": "$data"
          |}
     """.stripMargin
+
+    val responseBody = Json.parse(
+      """
+        | {
+        | "responseData" : "someResponse"
+        | }
+      """.stripMargin)
 
     def setupStubs(): StubMapping
 
@@ -73,7 +83,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().post(Json.parse(requestJson)))

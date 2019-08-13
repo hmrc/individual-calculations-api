@@ -17,13 +17,13 @@
 package v1.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{ Action, AnyContent }
+import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.auth.core.Enrolment
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService }
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v1.models.errors._
-import v1.services.{ EnrolmentsAuthService, MtdIdLookupService }
+import v1.services.{EnrolmentsAuthService, MtdIdLookupService}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -96,6 +96,18 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
       }
     }
 
+    "the nino is valid but invalid bearer token" should {
+      "return a 401" in new Test {
+
+        MockedMtdIdLookupService
+          .lookup(nino)
+          .returns(Future.successful(Left(InvalidBearerTokenError)))
+
+        private val result = target.action(nino)(fakeGetRequest)
+        status(result) shouldBe UNAUTHORIZED
+      }
+    }
+
   }
 
   "authorisation checks fail when retrieving the MDT ID" should {
@@ -153,5 +165,4 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
       status(result) shouldBe FORBIDDEN
     }
   }
-
 }

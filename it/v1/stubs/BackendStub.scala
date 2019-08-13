@@ -17,29 +17,28 @@
 package v1.stubs
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status.{NO_CONTENT, OK}
-import play.api.libs.json.Json
+import play.api.libs.json.JsValue
 import support.WireMockMethods
 
 object BackendStub extends WireMockMethods {
 
-  private val responseBody = Json.parse(
-    """
-      | {
-      | "responseData" : "someResponse"
-      | }
-    """.stripMargin)
-
-  private def url(nino: String, taxYear: String): String =
-    s"/income-tax/nino/$nino/taxYear/$taxYear/someService"
-
-  def serviceSuccess(nino: String, taxYear: String): StubMapping = {
-    when(method = POST, uri = url(nino, taxYear))
-      .thenReturn(status = OK, responseBody)
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = status, body)
   }
 
-  def serviceError(nino: String, taxYear: String, errorStatus: Int, errorBody: String): StubMapping = {
-    when(method = POST, uri = url(nino, taxYear))
+  def onSuccess(method: HTTPMethod, uri: String, queryParams: Map[String, String], status: Int, body: JsValue): StubMapping = {
+    when(method = method, uri = uri, queryParams = queryParams)
+      .thenReturn(status = status, body)
+  }
+
+  def onError(method: HTTPMethod, uri: String, errorStatus: Int, errorBody: String): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = errorStatus, errorBody)
+  }
+
+  def onError(method: HTTPMethod, uri: String, queryParams: Map[String, String], errorStatus: Int, errorBody: String): StubMapping = {
+    when(method = method, uri = uri, queryParams)
       .thenReturn(status = errorStatus, errorBody)
   }
 }

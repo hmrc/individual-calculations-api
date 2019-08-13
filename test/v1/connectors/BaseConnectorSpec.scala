@@ -43,13 +43,13 @@ class BaseConnectorSpec extends ConnectorSpec {
       val appConfig = mockAppConfig
     }
     MockedAppConfig.backendBaseUrl returns baseUrl
-    MockedAppConfig.backendToken returns "individual-calculations-token"
+//    MockedAppConfig.backendToken returns "individual-calculations-token"
   }
 
   "post" must {
     "posts with the required backend headers and returns the result" in new Test {
       MockedHttpClient
-        .post(absoluteUrl, body, "Authorization" -> s"Bearer individual-calculations-token")
+        .post(absoluteUrl, body, "Authorization" -> s"Bearer user-token")
         .returns(Future.successful(outcome))
 
       await(connector.post(body, url)) shouldBe outcome
@@ -59,7 +59,7 @@ class BaseConnectorSpec extends ConnectorSpec {
   "get" must {
     "get with the required backend headers and return the result without query parameters" in new Test {
       MockedHttpClient
-        .get(absoluteUrl, "Authorization" -> s"Bearer individual-calculations-token")
+        .get(absoluteUrl, "Authorization" -> s"Bearer user-token")
         .returns(Future.successful(outcome))
 
       await(connector.get(url)) shouldBe outcome
@@ -67,7 +67,7 @@ class BaseConnectorSpec extends ConnectorSpec {
 
     "get with the required backend headers and return the result with query parameters" in new Test {
       MockedHttpClient
-        .get(absoluteUrl, Seq(("key", "value")), "Authorization" -> s"Bearer individual-calculations-token")
+        .get(absoluteUrl, Seq(("key", "value")), "Authorization" -> s"Bearer user-token")
         .returns(Future.successful(outcome))
 
       await(connector.get(url, Seq(("key", "value")))) shouldBe outcome

@@ -18,12 +18,12 @@ package v1.connectors.httpparsers
 
 import play.api.libs.json.Writes.StringWrites
 import play.api.libs.json.{JsObject, Json}
-import play.api.test.Helpers.{FORBIDDEN, INTERNAL_SERVER_ERROR, OK}
+import play.api.test.Helpers.{FORBIDDEN, INTERNAL_SERVER_ERROR, OK, UNAUTHORIZED}
 import support.UnitSpec
 import uk.gov.hmrc.http.HttpResponse
 import v1.connectors.MtdIdLookupOutcome
 import v1.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
-import v1.models.errors.{DownstreamError, NinoFormatError}
+import v1.models.errors.{DownstreamError, InvalidBearerTokenError, NinoFormatError}
 
 class MtdIdLookupHttpParserSpec extends UnitSpec {
 
@@ -73,6 +73,15 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
         val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
 
         result shouldBe Left(NinoFormatError)
+      }
+    }
+
+    "return an Unauthorised error" when {
+      "the HttpResponse contains a 403 status" in {
+        val response = HttpResponse(UNAUTHORIZED)
+        val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
+
+        result shouldBe Left(InvalidBearerTokenError)
       }
     }
 

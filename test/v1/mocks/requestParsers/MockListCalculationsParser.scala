@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package v1.mocks
+package v1.mocks.requestParsers
 
-import config.AppConfig
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import play.api.Configuration
+import v1.controllers.requestParsers.ListCalculationsParser
+import v1.models.errors.ErrorWrapper
+import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 
-trait MockAppConfig extends MockFactory {
+trait MockListCalculationsParser extends MockFactory {
 
-  val mockAppConfig: AppConfig = mock[AppConfig]
+  val mockListCalculationsParser = mock[ListCalculationsParser]
 
-  object MockedAppConfig {
-    def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
-    def mtdIdBaseUrl: CallHandler[String] = (mockAppConfig.mtdIdBaseUrl _: () => String).expects()
-    def featureSwitch: CallHandler[Option[Configuration]] = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()
+  object MockListCalculationsParser {
+    def parse(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequest]] = {
+      (mockListCalculationsParser.parseRequest(_: ListCalculationsRawData)).expects(data)
+    }
   }
-}
 
+}

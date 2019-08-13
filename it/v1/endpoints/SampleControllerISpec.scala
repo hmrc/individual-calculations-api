@@ -17,15 +17,15 @@
 package v1.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
+import play.api.http.Status.OK
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.models.requestData.TaxYear
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
-
-import play.api.http.HeaderNames.ACCEPT
 
 class SampleControllerISpec extends IntegrationBaseSpec {
 
@@ -43,9 +43,18 @@ class SampleControllerISpec extends IntegrationBaseSpec {
          |}
     """.stripMargin)
 
+    val responseBody = Json.parse(
+      """
+        | {
+        | "responseData" : "someResponse"
+        | }
+      """.stripMargin)
+
     def setupStubs(): StubMapping
 
     def uri: String
+
+    lazy val backendUrl = s"/income-tax/nino/$nino/taxYear/${TaxYear.toYearEnding(taxYear)}/someService"
 
     def request(): WSRequest = {
       setupStubs()
@@ -76,7 +85,8 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
+
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().post(requestJson))
@@ -98,7 +108,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.serviceSuccess(nino, TaxYear.toYearEnding(taxYear).toString)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().addHttpHeaders(("Content-Type", "application/json")).post(json))
@@ -145,7 +155,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.serviceError(nino, TaxYear.toYearEnding(taxYear).toString, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request().post(requestJson))

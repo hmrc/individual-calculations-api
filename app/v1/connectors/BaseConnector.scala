@@ -19,7 +19,6 @@ package v1.connectors
 import config.AppConfig
 import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -31,8 +30,7 @@ trait BaseConnector {
 
   val logger = Logger(this.getClass)
 
-  private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier =
-    hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.backendToken}")))
+  private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier = hc
 
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
                                                            hc: HeaderCarrier,

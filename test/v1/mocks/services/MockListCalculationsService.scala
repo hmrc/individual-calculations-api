@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.mocks.services
 
-import config.AppConfig
-import javax.inject.Inject
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import v1.controllers.EndpointLogContext
 import v1.models.domain.selfAssessment.ListCalculationsResponse
+import v1.models.errors.ErrorWrapper
+import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
-import v1.connectors.httpparsers.StandardHttpParser._
+import v1.services.ListCalculationsService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
+trait MockListCalculationsService extends MockFactory {
 
-  def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
-                                                            ec: ExecutionContext): Future[BackendOutcome[ListCalculationsResponse]] = {
-    val uri = s"${request.nino.nino}/self-assessment"
+  val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
 
-    request.taxYear match {
-      case Some(year) => get(uri, Seq(("taxYear", year)))
-      case _ => get(uri)
+  object MockListCalculationsService {
+
+    def listCalculations(requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]]] = {
+      (mockListCalculationsService
+        .listCalculations(_: ListCalculationsRequest)(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .expects(requestData, *, *, *)
     }
   }
+
 }
