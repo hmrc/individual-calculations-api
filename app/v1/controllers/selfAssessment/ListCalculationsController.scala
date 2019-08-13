@@ -30,7 +30,6 @@ import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRawData
 import v1.services._
-import v1.services.selfAssessment.ListCalculationsService
 
 import scala.concurrent.{ ExecutionContext, Future }
 

@@ -17,22 +17,25 @@
 package v1.services
 
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.{BackendOutcome, IndividualCalculationsConnector}
-import v1.models.domain.selfAssessment.{CalculationListItem, CalculationType, ListCalculationsResponse}
+import v1.connectors.{ BackendOutcome, IndividualCalculationsConnector }
+import v1.models.domain.selfAssessment.{ CalculationListItem, CalculationType, ListCalculationsResponse }
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 class ListCalculationsServiceSpec extends ServiceSpec {
 
   class Test(connectorResponse: Future[BackendOutcome[ListCalculationsResponse]], expectedRequest: ListCalculationsRequest) {
     val mockConnector: IndividualCalculationsConnector = mock[IndividualCalculationsConnector]
 
-    (mockConnector.listTaxCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext)).expects(where { (request, _, _) =>
-      request == expectedRequest
-    }).returns(connectorResponse)
+    (mockConnector
+      .listTaxCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(where { (request, _, _) =>
+        request == expectedRequest
+      })
+      .returns(connectorResponse)
 
     val service = new ListCalculationsService(mockConnector)
   }
@@ -41,8 +44,8 @@ class ListCalculationsServiceSpec extends ServiceSpec {
 
     "return valid data" when {
       val request = ListCalculationsRequest(nino, Some("2019"))
-      val expected = Right(ResponseWrapper("correlationId",
-        ListCalculationsResponse(Seq(CalculationListItem("id", "timestamp", CalculationType.inYear, None)))))
+      val expected =
+        Right(ResponseWrapper("correlationId", ListCalculationsResponse(Seq(CalculationListItem("id", "timestamp", CalculationType.inYear, None)))))
 
       "provided with a successful response from the connector" in new Test(Future.successful(expected), request) {
         await(service.listCalculations(request)) shouldBe expected
@@ -51,14 +54,16 @@ class ListCalculationsServiceSpec extends ServiceSpec {
 
     "return a provided error response" when {
       val errorMap = Map(
-        "MATCHING_RESOURCE_NOT_FOUND" -> NotFoundError,
-        "INTERNAL_SERVER_ERROR" -> DownstreamError,
-        "FORMAT_TAX_YEAR" -> TaxYearFormatError,
-        "FORMAT_NINO" -> NinoFormatError
+        "MATCHING_RESOURCE_NOT_FOUND"  -> NotFoundError,
+        "INTERNAL_SERVER_ERROR"        -> DownstreamError,
+        "FORMAT_TAX_YEAR"              -> TaxYearFormatError,
+        "RULE_TAX_YEAR_NOT_SUPPORTED"  -> RuleTaxYearNotSupportedError,
+        "RULE_TAX_YEAR_RANGE_EXCEEDED" -> RuleTaxYearRangeExceededError,
+        "FORMAT_NINO"                  -> NinoFormatError
       )
 
       errorMap.foreach { error =>
-        val request = ListCalculationsRequest(nino, Some("2019"))
+        val request  = ListCalculationsRequest(nino, Some("2019"))
         val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(BackendErrorCode(error._1))))
 
         s"provided with an expected error with code ${error._1}" in new Test(Future.successful(expected), request) {
@@ -68,7 +73,7 @@ class ListCalculationsServiceSpec extends ServiceSpec {
     }
 
     "return a converted error response" when {
-      val request = ListCalculationsRequest(nino, Some("2019"))
+      val request  = ListCalculationsRequest(nino, Some("2019"))
       val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(BackendErrorCode("NON MATCHING CODE"))))
 
       "provided with an unexpected error from the backend" in new Test(Future.successful(expected), request) {

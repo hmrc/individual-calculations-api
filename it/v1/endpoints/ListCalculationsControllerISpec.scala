@@ -104,7 +104,8 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String = requestNino
+            override val nino: String            = requestNino
+            override val taxYear: Option[String] = Some(requestTaxYear)
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -154,13 +155,13 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
 
         val input = Seq(
           (BAD_REQUEST, "FORMAT_NINO", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "FORMAT_TAX_YAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),
           (BAD_REQUEST, "RULE_TAX_YEAR_RANGE_EXCEEDED", BAD_REQUEST, RuleTaxYearRangeExceededError),
           (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (BAD_REQUEST, "NOT_FOUND", NOT_FOUND, NotFoundError)
+          (BAD_REQUEST, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))
