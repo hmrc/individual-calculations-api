@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
   def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier): Future[BackendOutcome[ListCalculationsResponse]] = {
-    val uri = s"list/calculations/${request.nino.nino}"
+    val uri = s"individual/calculations/${request.nino.nino}/self-assessment"
 
     request.taxYear match {
       case Some(year) => get(uri, Seq(("taxYear", year)))

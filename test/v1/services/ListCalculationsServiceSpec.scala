@@ -52,7 +52,9 @@ class ListCalculationsServiceSpec extends ServiceSpec {
     "return a provided error response" when {
       val errorMap = Map(
         "MATCHING_RESOURCE_NOT_FOUND" -> NotFoundError,
-        "INTERNAL_SERVER_ERROR" -> DownstreamError
+        "INTERNAL_SERVER_ERROR" -> DownstreamError,
+        "FORMAT_TAX_YEAR" -> TaxYearFormatError,
+        "FORMAT_NINO" -> NinoFormatError
       )
 
       errorMap.foreach { error =>

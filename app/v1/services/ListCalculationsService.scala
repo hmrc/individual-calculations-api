@@ -22,7 +22,7 @@ import utils.Logging
 import v1.connectors.IndividualCalculationsConnector
 import v1.controllers.EndpointLogContext
 import v1.models.domain.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DownstreamError, ErrorWrapper, MtdError, NotFoundError}
+import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.support.BackendResponseMappingSupport
@@ -38,6 +38,8 @@ class ListCalculationsService @Inject()(connector: IndividualCalculationsConnect
   }
 
   val validErrorMap: PartialFunction[String, MtdError] = {
+    case "FORMAT_NINO" => NinoFormatError
+    case "FORMAT_TAX_YEAR" => TaxYearFormatError
     case "MATCHING_RESOURCE_NOT_FOUND" => NotFoundError
     case "INTERNAL_SERVER_ERROR" => DownstreamError
   }
