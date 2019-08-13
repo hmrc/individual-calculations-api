@@ -35,7 +35,6 @@ class SampleConnectorSpec extends ConnectorSpec {
 
     val desRequestHeaders = Seq("Authorization" -> s"Bearer backend-token")
     MockedAppConfig.backendBaseUrl returns baseUrl
-    MockedAppConfig.backendToken returns "backend-token"
   }
 
   "doService" must {
@@ -45,7 +44,7 @@ class SampleConnectorSpec extends ConnectorSpec {
       val outcome = Right(ResponseWrapper(correlationId, BackendSampleResponse(calcId)))
 
       MockedHttpClient
-        .post(s"$baseUrl/income-tax/nino/${nino.nino}/taxYear/${taxYear}/someService", EmptyJsonBody, "Authorization" -> s"Bearer backend-token")
+        .post(s"$baseUrl/income-tax/nino/${nino.nino}/taxYear/${taxYear}/someService", EmptyJsonBody, "Authorization" -> s"Bearer user-token")
         .returns(Future.successful(outcome))
 
       await(connector.doConnectorThing(request)) shouldBe outcome

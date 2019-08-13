@@ -30,7 +30,7 @@ class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val ht
 
   def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
                                                             ec: ExecutionContext): Future[BackendOutcome[ListCalculationsResponse]] = {
-    val uri = s"individual/calculations/${request.nino.nino}/self-assessment"
+    val uri = s"${request.nino.nino}/self-assessment"
 
     request.taxYear match {
       case Some(year) => get(uri, Seq(("taxYear", year)))

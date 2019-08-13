@@ -27,7 +27,6 @@ trait MockAppConfig extends MockFactory {
 
   object MockedAppConfig {
     def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
-    def backendToken: CallHandler[String] = (mockAppConfig.backendToken _).expects()
     def mtdIdBaseUrl: CallHandler[String] = (mockAppConfig.mtdIdBaseUrl _: () => String).expects()
     def featureSwitch: CallHandler[Option[Configuration]] = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()
   }

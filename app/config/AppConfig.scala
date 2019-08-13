@@ -26,8 +26,6 @@ trait AppConfig {
 
   def mtdIdBaseUrl: String
 
-  def backendToken: String
-
   def apiGatewayContext: String
 
   def apiStatus(version: String): String
@@ -41,7 +39,6 @@ class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configurati
 
   val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
   val backendBaseUrl: String = config.baseUrl("individual-calculations")
-  val backendToken: String = config.getString("microservice.services.individual-calculations.token")
 
   val apiGatewayContext: String = config.getString("api.gateway.context")
 

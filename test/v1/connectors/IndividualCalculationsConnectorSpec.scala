@@ -28,7 +28,6 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
     MockedAppConfig.backendBaseUrl returns baseUrl
-    MockedAppConfig.backendToken returns "individual-calculations-token"
 
     val connector: IndividualCalculationsConnector = new IndividualCalculationsConnector(mockAppConfig, mockHttpClient)
   }
@@ -43,7 +42,7 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
         val request = ListCalculationsRequest(nino, Some("2019"))
         val expected = Right(ListCalculationsResponse(Seq(CalculationListItem("id", "timestamp", CalculationType.inYear, None))))
 
-        MockedHttpClient.get(s"$baseUrl/individual/calculations/${request.nino.nino}/self-assessment", Seq(("taxYear", "2019")))
+        MockedHttpClient.get(s"$baseUrl/${request.nino.nino}/self-assessment", Seq(("taxYear", "2019")))
           .returns(Future.successful(expected))
 
         await(connector.listTaxCalculations(request)) shouldBe expected
@@ -53,7 +52,7 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
         val request = ListCalculationsRequest(nino, None)
         val expected = Right(ListCalculationsResponse(Seq(CalculationListItem("id", "timestamp", CalculationType.inYear, None))))
 
-        MockedHttpClient.get(s"$baseUrl/individual/calculations/${request.nino.nino}/self-assessment")
+        MockedHttpClient.get(s"$baseUrl/${request.nino.nino}/self-assessment")
           .returns(Future.successful(expected))
 
         await(connector.listTaxCalculations(request)) shouldBe expected
@@ -66,7 +65,7 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
         val request = ListCalculationsRequest(nino, None)
         val expected = Left(BackendErrors.single(BackendErrorCode("BACKEND ERROR CODE")))
 
-        MockedHttpClient.get(s"$baseUrl/individual/calculations/${request.nino.nino}/self-assessment")
+        MockedHttpClient.get(s"$baseUrl/${request.nino.nino}/self-assessment")
           .returns(Future.successful(expected))
 
         await(connector.listTaxCalculations(request)) shouldBe expected
@@ -78,7 +77,7 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
       "when an unexpected error is returned" in new Test {
         val request = ListCalculationsRequest(nino, None)
 
-        MockedHttpClient.get(s"$baseUrl/individual/calculations/${request.nino.nino}/self-assessment")
+        MockedHttpClient.get(s"$baseUrl/${request.nino.nino}/self-assessment")
           .returns(Future.failed(new Exception("unexpected exception")))
 
         the[Exception] thrownBy await(connector.listTaxCalculations(request)) should have message "unexpected exception"

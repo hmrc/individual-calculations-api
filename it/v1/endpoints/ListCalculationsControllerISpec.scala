@@ -33,7 +33,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
     val taxYear: Option[String] = None
     val correlationId           = "X-123"
 
-    def uri: String = s"/individual/calculations/$nino/self-assessment"
+    def uri: String = s"/$nino/self-assessment"
 
     def backendUrl: String = uri
 
