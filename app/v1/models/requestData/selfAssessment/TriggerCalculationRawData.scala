@@ -17,5 +17,6 @@
 package v1.models.requestData.selfAssessment
 
 import play.api.mvc.AnyContentAsJson
+import v1.models.requestData.RawData
 
-case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson)
+case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
