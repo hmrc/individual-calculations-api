@@ -13,7 +13,7 @@ description: This is a draft spec for the Individual Calculations API.
 version: 1.0
 protocols: [ HTTPS ]
 baseUri: https://api.service.hmrc.gov.uk/
-mediaType: application/json
+mediaType: application/jsonfd
 
 documentation:
   - title: Overview
@@ -36,10 +36,16 @@ documentation:
         description: National Insurance number, in the format AA999999A.
         type: string
         example: TC663795B
-    /self-assessment:
+     /self-assessment:
       (annotations.group):
         name: Self Assessment
         description: !include docs/group_selfAssessment.md
       get: !include selfAssessment_list.raml
       post: !include selfAssessment_trigger.raml
-
+      /{calculationId}:
+        uriParameters:
+          calculationId:
+            description: The unique identifier of the calculation. Must conform the regular expression':' ^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$
+            type: string
+            example: f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c
+        get: !include selfAssessment_get.raml
