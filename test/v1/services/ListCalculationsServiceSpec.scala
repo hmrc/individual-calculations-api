@@ -52,12 +52,6 @@ class ListCalculationsServiceSpec extends ServiceSpec {
       }
     }
 
-    // 3#####################
-    val DELETE_ME = 123
-    // 3##################### ^^^^^
-    // 3#####################
-    // 3#####################
-
     "return a provided error response" when {
       val errorMap = Map(
         "MATCHING_RESOURCE_NOT_FOUND"  -> NotFoundError,

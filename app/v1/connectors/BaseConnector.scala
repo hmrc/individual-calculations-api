@@ -32,12 +32,15 @@ trait BaseConnector {
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier = hc
 
+  private def urlFrom(uri: String) : String =
+    if (uri.startsWith("/"))  s"${appConfig.backendBaseUrl}$uri" else s"${appConfig.backendBaseUrl}/$uri"
+
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
                                                            hc: HeaderCarrier,
                                                            httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
-      http.POST(s"${appConfig.backendBaseUrl}/$uri", body)
+      http.POST(urlFrom(uri), body)
     }
 
     doPost(headerCarrier(hc))
@@ -48,7 +51,7 @@ trait BaseConnector {
                                 httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
-      http.GET(s"${appConfig.backendBaseUrl}/$uri")
+      http.GET(urlFrom(uri))
 
     doGet(headerCarrier(hc))
   }
@@ -58,7 +61,7 @@ trait BaseConnector {
                                 httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
-      http.GET(s"${appConfig.backendBaseUrl}/$uri", queryParameters)
+      http.GET(urlFrom(uri), queryParameters)
 
     doGet(headerCarrier(hc))
   }

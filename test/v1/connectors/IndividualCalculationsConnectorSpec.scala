@@ -62,12 +62,6 @@ class IndividualCalculationsConnectorSpec extends ConnectorSpec {
     "return an backend error response" when {
 
 
-      // 3#####################
-      val DELETE_ME = 123
-      // 3##################### ^^^^^
-      // 3#####################
-      // 3#####################
-
       "an error response is returned from the backend" in new Test {
         val request = ListCalculationsRequest(nino, None)
         val expected = Left(BackendErrors.single(DELETE_ME, BackendErrorCode("BACKEND ERROR CODE")))

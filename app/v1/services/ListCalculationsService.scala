@@ -21,32 +21,21 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.IndividualCalculationsConnector
 import v1.controllers.EndpointLogContext
-import v1.models.domain.selfAssessment.ListCalculationsResponse
+import v1.handling.RequestHandling
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ListCalculationsService @Inject()(connector: IndividualCalculationsConnector) extends BackendResponseMappingSupport with Logging {
 
-  def listCalculations(request: ListCalculationsRequest)(
-      implicit logContext: EndpointLogContext,
-      ec: ExecutionContext,
-      hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
-    connector.listTaxCalculations(request).map(directMap[ListCalculationsResponse](passthroughErrors, customErrorMapping))
+  def doService[Req, Resp](requestHandling: RequestHandling[Req, Resp])(implicit logContext: EndpointLogContext,
+                                                                        ec: ExecutionContext,
+                                                                        hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
+
+    import requestHandling._
+
+    connector.doRequest(requestDefn).map(directMap(passThroughErrors, customErrorMapping))
   }
-
-  private def passthroughErrors: List[MtdError] = List(
-    NinoFormatError,
-    TaxYearFormatError,
-    RuleTaxYearNotSupportedError,
-    RuleTaxYearRangeExceededError,
-    NotFoundError,
-    DownstreamError
-  )
-
-  private def customErrorMapping: PartialFunction[String, (Int, MtdError)] = PartialFunction.empty
-
 }

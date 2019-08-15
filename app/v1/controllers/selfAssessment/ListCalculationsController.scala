@@ -18,21 +18,22 @@ package v1.controllers.selfAssessment
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{Inject, Singleton}
 import play.api.http.MimeTypes
-import play.api.libs.json.Json
-import play.api.mvc.{ Action, AnyContent, ControllerComponents }
+import play.api.libs.json.{Json, Reads}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.Logging
 import v1.controllers.requestParsers.ListCalculationsParser
-import v1.controllers.{ AuthorisedController, BaseController, EndpointLogContext }
+import v1.controllers.{AuthorisedController, BaseController, EndpointLogContext}
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.domain.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRawData
+import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListCalculationsController @Inject()(
@@ -53,13 +54,40 @@ class ListCalculationsController @Inject()(
       endpointName = "listCalculations"
     )
 
+  private val requestHandlingFactory: RequestHandling.Factory[ListCalculationsRequest, ListCalculationsResponse] = { (playRequest, req) =>
+    new RequestHandling[ListCalculationsRequest, ListCalculationsResponse] {
+      def requestDefn: RequestDefn = {
+        val params = Seq("taxYear" -> req.taxYear)
+          .collect {
+            case (n, Some(v)) => n -> v
+          }
+
+        RequestDefn.Get(playRequest.path, params)
+      }
+
+      def passThroughErrors: List[MtdError] =
+        List(
+          NinoFormatError,
+          TaxYearFormatError,
+          RuleTaxYearNotSupportedError,
+          RuleTaxYearRangeExceededError,
+          NotFoundError,
+          DownstreamError
+        )
+
+      def customErrorMapping: PartialFunction[String, (Int, MtdError)] = PartialFunction.empty
+
+      val reads: Reads[ListCalculationsResponse] = implicitly
+    }
+  }
+
   def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = ListCalculationsRawData(nino, taxYear)
       val result =
         for {
           parsedRequest   <- EitherT.fromEither[Future](listCalculationsParser.parseRequest(rawData))
-          backendResponse <- EitherT(listCalculationsService.listCalculations(parsedRequest))
+          backendResponse <- EitherT(listCalculationsService.doService(requestHandlingFactory(request, parsedRequest)))
           response        <- EitherT.fromEither[Future](notFoundErrorWhenEmpty(backendResponse))
         } yield {
           logger.info(
