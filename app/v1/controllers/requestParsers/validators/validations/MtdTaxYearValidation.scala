@@ -26,6 +26,6 @@ object MtdTaxYearValidation {
 
     val taxYearEnding = Integer.parseInt(TaxYear.toYearEnding(taxYear))
 
-    if (taxYearEnding >= minTaxYear || TaxYearValidation.validate(taxYear) != Nil) NoValidationErrors else List(RuleTaxYearNotSupportedError)
+    if (taxYearEnding >= minTaxYear && TaxYearValidation.validate(taxYear) == Nil) NoValidationErrors else List(RuleTaxYearNotSupportedError)
   }
 }
