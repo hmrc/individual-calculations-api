@@ -16,23 +16,18 @@
 
 package v1.support
 
-import javax.xml.ws
-import play.api.Logger
+import cats.implicits._
 import utils.Logging
 import v1.connectors.BackendOutcome
 import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import cats.data.EitherT
-import cats.implicits._
-
-import scala.concurrent.Future
 
 trait BackendResponseMappingSupport {
   self: Logging =>
 
-  final def mapBackendErrors[D](errorCodeMap: PartialFunction[String, MtdError])(backendResponseWrapper: ResponseWrapper[BackendError])(
-    implicit logContext: EndpointLogContext): ErrorWrapper = {
+  final def mapBackendErrors[D]( errorCodeMap: PartialFunction[String, MtdError])(backendResponseWrapper: ResponseWrapper[BackendError])(
+      implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
       logger.info(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
@@ -40,10 +35,10 @@ trait BackendResponseMappingSupport {
     }
 
     backendResponseWrapper match {
-      case ResponseWrapper(correlationId, BackendErrors(error :: Nil)) =>
+      case ResponseWrapper(correlationId, BackendErrors(statusCode, error :: Nil)) =>
         ErrorWrapper(Some(correlationId), errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None)
 
-      case ResponseWrapper(correlationId, BackendErrors(errorCodes)) =>
+      case ResponseWrapper(correlationId, BackendErrors(_, errorCodes)) =>
         val mtdErrors = errorCodes.map(error => errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping))
 
         if (mtdErrors.contains(DownstreamError)) {
@@ -55,13 +50,13 @@ trait BackendResponseMappingSupport {
           ErrorWrapper(Some(correlationId), BadRequestError, Some(mtdErrors))
         }
 
-      case ResponseWrapper(correlationId, OutboundError(error, errors)) =>
+      case ResponseWrapper(correlationId, OutboundError(_, error, errors)) =>
         ErrorWrapper(Some(correlationId), error, errors)
     }
   }
 
   def directMap[D](errorMap: PartialFunction[String, MtdError])(outcome: BackendOutcome[D])(
-    implicit logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
+      implicit logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
     outcome.leftMap(mapBackendErrors(errorMap))
   }
 }

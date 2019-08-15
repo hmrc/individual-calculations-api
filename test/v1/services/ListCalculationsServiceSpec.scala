@@ -52,6 +52,12 @@ class ListCalculationsServiceSpec extends ServiceSpec {
       }
     }
 
+    // 3#####################
+    val DELETE_ME = 123
+    // 3##################### ^^^^^
+    // 3#####################
+    // 3#####################
+
     "return a provided error response" when {
       val errorMap = Map(
         "MATCHING_RESOURCE_NOT_FOUND"  -> NotFoundError,
@@ -62,9 +68,10 @@ class ListCalculationsServiceSpec extends ServiceSpec {
         "FORMAT_NINO"                  -> NinoFormatError
       )
 
+
       errorMap.foreach { error =>
         val request  = ListCalculationsRequest(nino, Some("2019"))
-        val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(BackendErrorCode(error._1))))
+   lazy     val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(DELETE_ME, BackendErrorCode(error._1))))
 
         s"provided with an expected error with code ${error._1}" in new Test(Future.successful(expected), request) {
           await(service.listCalculations(request)) shouldBe Left(ErrorWrapper(Some("correlationId"), error._2, None))
@@ -74,7 +81,7 @@ class ListCalculationsServiceSpec extends ServiceSpec {
 
     "return a converted error response" when {
       val request  = ListCalculationsRequest(nino, Some("2019"))
-      val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(BackendErrorCode("NON MATCHING CODE"))))
+   lazy   val expected = Left(ResponseWrapper("correlationId", BackendErrors.single(DELETE_ME, BackendErrorCode("NON MATCHING CODE"))))
 
       "provided with an unexpected error from the backend" in new Test(Future.successful(expected), request) {
         await(service.listCalculations(request)) shouldBe Left(ErrorWrapper(Some("correlationId"), DownstreamError, None))

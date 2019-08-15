@@ -43,18 +43,25 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     case "DS" => DownstreamError
   }
 
+
+  // 3#####################
+  val DELETE_ME = 123
+  // 3##################### ^^^^^
+  // 3#####################
+  // 3#####################
+  
   "mapping backend errors" when {
     "single error" when {
       "the error code is in the map provided" must {
         "use the mapping and wrap" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(BackendErrorCode("ERR1")))) shouldBe
+          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(DELETE_ME,BackendErrorCode("ERR1")))) shouldBe
             ErrorWrapper(Some(correlationId), Error1)
         }
       }
 
       "the error code is not in the map provided" must {
         "default to DownstreamError and wrap" in {
-          mapping.mapBackendErrors (errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(BackendErrorCode("UNKNOWN")))) shouldBe
+          mapping.mapBackendErrors (errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(DELETE_ME,BackendErrorCode("UNKNOWN")))) shouldBe
             ErrorWrapper(Some(correlationId), DownstreamError)
         }
       }
@@ -63,21 +70,21 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     "multiple errors" when {
       "the error codes is in the map provided" must {
         "use the mapping and wrap with main error type of BadRequest" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
+          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
             ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(Error1, Error2)))
         }
       }
 
       "the error code is not in the map provided" must {
         "default main error to DownstreamError ignore other errors" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(List(BackendErrorCode("ERR1"), BackendErrorCode("UNKNOWN"))))) shouldBe
+          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("UNKNOWN"))))) shouldBe
             ErrorWrapper(Some(correlationId), DownstreamError)
         }
       }
 
       "one of the mapped errors is DownstreamError" must {
         "wrap the errors with main error type of DownstreamError" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(List(BackendErrorCode("ERR1"), BackendErrorCode("DS"))))) shouldBe
+          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("DS"))))) shouldBe
             ErrorWrapper(Some(correlationId), DownstreamError)
         }
       }
@@ -85,14 +92,14 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
 
     "the error code is an OutboundError" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(ErrorBvrMain))) shouldBe
+        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(DELETE_ME,ErrorBvrMain))) shouldBe
           ErrorWrapper(Some(correlationId), ErrorBvrMain)
       }
     }
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
+        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(DELETE_ME,ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
           ErrorWrapper(Some(correlationId), ErrorBvrMain, Some(Seq(ErrorBvr)))
       }
     }

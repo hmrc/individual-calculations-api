@@ -23,6 +23,8 @@ import v1.models.errors._
 
 import scala.util.{ Success, Try }
 
+import play.api.http.Status._
+
 trait HttpParser {
 
   implicit class KnownJsonResponse(response: HttpResponse) {
@@ -50,16 +52,16 @@ trait HttpParser {
   private val multipleErrorReads: Reads[List[BackendErrorCode]] = (__ \ "errors").read[List[BackendErrorCode]]
 
   def parseErrors(response: HttpResponse): BackendError = {
-    val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(List(err)))
-    lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(errs))
+    val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(response.status, List(err)))
+    lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(response.status, errs))
     lazy val unableToParseJsonError = {
       Logger.warn(s"unable to parse errors from response: ${response.body}")
-      OutboundError(DownstreamError)
+      OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)
     }
 
     val combinedErrors = {
       multipleErrors match {
-        case Some(additionalErrors) => singleError.map(error => BackendErrors(error.errors ++ additionalErrors.errors))
+        case Some(additionalErrors) => singleError.map(error => BackendErrors(response.status, error.errors ++ additionalErrors.errors))
         case None => singleError
       }
     }

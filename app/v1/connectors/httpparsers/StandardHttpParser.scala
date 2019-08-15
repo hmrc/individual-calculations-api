@@ -47,7 +47,7 @@ object StandardHttpParser extends HttpParser {
         doRead(url, response) { correlationId =>
           response.validateJson[A] match {
             case Some(ref) => Right(ResponseWrapper(correlationId, ref))
-            case None      => Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
+            case None      => Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
           }
         }
     }
@@ -71,7 +71,7 @@ object StandardHttpParser extends HttpParser {
             s"Success response received from backend with correlationId: $correlationId when calling $url")
         successOutcomeFactory(correlationId)
       case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT => Left(ResponseWrapper(correlationId, parseErrors(response)))
-      case _                                              => Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
+      case _                                              => Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
     }
   }
 }
