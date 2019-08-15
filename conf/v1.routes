@@ -1,4 +1,1 @@
-POST       /ni/:nino/:taxYear/sampleEndpoint                  v1.controllers.SampleController.handleRequest(nino: String, taxYear: String)
-
-
 GET       /:nino/self-assessment      v1.controllers.selfAssessment.ListCalculationsController.listCalculations(nino: String, taxYear: Option[String])
