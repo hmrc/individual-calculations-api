@@ -23,7 +23,6 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.models.requestData.TaxYear
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends IntegrationBaseSpec {
@@ -34,27 +33,25 @@ class AuthISpec extends IntegrationBaseSpec {
     val data        = "someData"
     val correlationId = "X-123"
 
-    val backendUrl = s"/income-tax/nino/$nino/taxYear/${TaxYear.toYearEnding(taxYear)}/someService"
+    def uri: String = s"/$nino/self-assessment"
+    def backendUrl: String = uri
 
-    val requestJson: String =
-      s"""
-         |{
-         |"data": "$data"
-         |}
-    """.stripMargin
-
-    val responseBody = Json.parse(
-      """
-        | {
-        | "responseData" : "someResponse"
-        | }
-      """.stripMargin)
+    val responseBody =  Json.parse("""{
+                                   |  "calculations": [
+                                   |    {
+                                   |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                   |      "calculationTimestamp": "2019-03-17T09:22:59Z",
+                                   |      "type": "inYear",
+                                   |      "requestedBy": "hmrc"
+                                   |    }
+                                   |  ]
+                                   |}""".stripMargin)
 
     def setupStubs(): StubMapping
 
     def request(): WSRequest = {
       setupStubs()
-      buildRequest(s"/ni/$nino/$taxYear/sampleEndpoint")
+      buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
   }
@@ -71,23 +68,23 @@ class AuthISpec extends IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request().get)
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 
     "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
 
-      "return 201" in new Test {
+      "return 200" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, responseBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
-        response.status shouldBe Status.CREATED
+        val response: WSResponse = await(request().get)
+        response.status shouldBe Status.OK
       }
     }
 
@@ -102,7 +99,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request().get)
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -118,7 +115,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request().get)
         response.status shouldBe Status.FORBIDDEN
       }
     }
