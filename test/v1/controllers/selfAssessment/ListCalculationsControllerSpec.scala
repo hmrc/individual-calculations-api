@@ -45,7 +45,7 @@ class ListCalculationsControllerSpec
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       listCalculationsParser = mockListCalculationsParser,
-      listCalculationsService = mockStandardService,
+      service = mockStandardService,
       cc = cc
     )
 

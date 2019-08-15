@@ -16,19 +16,17 @@
 
 package v1.connectors.httpparsers
 
-import play.api.Logger
 import play.api.http.Status._
 import play.api.libs.json.Reads
-import uk.gov.hmrc.http.{ HttpReads, HttpResponse }
+import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import utils.Logging
 import v1.connectors.BackendOutcome
-import v1.models.errors.{ DownstreamError, OutboundError }
+import v1.models.errors.{DownstreamError, OutboundError}
 import v1.models.outcomes.ResponseWrapper
 
-object StandardHttpParser extends HttpParser {
+object StandardHttpParser extends HttpParser with Logging {
 
   case class SuccessCode(status: Int) extends AnyVal
-
-  val logger = Logger(getClass)
 
   // Return Right[BackendOutcome[Unit]] as success response has no body - no need to assign it a value
   implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[Unit]] =

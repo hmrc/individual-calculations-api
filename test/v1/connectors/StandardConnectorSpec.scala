@@ -16,7 +16,8 @@
 
 package v1.connectors
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{JsString, Json, Reads}
+import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.handling.RequestDefn
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
@@ -41,6 +42,8 @@ class StandardConnectorSpec extends ConnectorSpec {
   val queryParams = Seq("n" -> "v")
   val requestDefn = RequestDefn.Get("/some/uri", queryParams)
 
+  implicit val successCode: SuccessCode = SuccessCode(200)
+
   val test = Seq("test1", "test2")
 
   "StandardConnector" should {
@@ -55,6 +58,19 @@ class StandardConnectorSpec extends ConnectorSpec {
           .returns(Future.successful(expected))
 
         await(connector.doRequest(requestDefn)) shouldBe expected
+      }
+
+      "request is a post" in new Test {
+        val body = JsString("some value")
+        val postRequestDefn = RequestDefn.Post("/some/uri",body)
+
+        val expected = Right(Response("someData"))
+
+        MockedHttpClient
+          .post(s"$baseUrl/some/uri", body)
+          .returns(Future.successful(expected))
+
+        await(connector.doRequest(postRequestDefn)) shouldBe expected
       }
     }
 

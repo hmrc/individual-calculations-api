@@ -27,7 +27,7 @@ import play.api.http.Status._
 trait BackendResponseMappingSupport {
   self: Logging =>
 
-  final def mapBackendErrors[D](passThroughErrors: List[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(
+  final def mapBackendErrors[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(
       backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     val defaultErrorCodeMapping: String => (Int, MtdError) = { code =>
@@ -65,7 +65,7 @@ trait BackendResponseMappingSupport {
     }
   }
 
-  def directMap[D](passThroughErrors: List[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(outcome: BackendOutcome[D])(
+  def directMap[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(outcome: BackendOutcome[D])(
       implicit logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
     outcome.leftMap(mapBackendErrors(passThroughErrors, errorCodeMap))
   }

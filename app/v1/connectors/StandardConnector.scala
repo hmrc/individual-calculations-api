@@ -23,16 +23,17 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardHttpParser._
 import v1.handling.RequestDefn
-import v1.handling.RequestDefn.{ Get, Post }
+import v1.handling.RequestDefn.{Get, Post}
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 class StandardConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
-  def doRequest[Resp: Reads](request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[BackendOutcome[Resp]] = {
+  def doRequest[Resp: Reads](
+      request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext, successCode: SuccessCode): Future[BackendOutcome[Resp]] = {
     request match {
       case Get(uri, params) => get(uri, params)
-//      case Post(uri, body)  => post(body, uri)
+      case Post(uri, body)  => post(body, uri)
     }
   }
 }

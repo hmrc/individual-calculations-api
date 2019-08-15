@@ -18,6 +18,8 @@ package v1.services
 
 import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.connectors.httpparsers.StandardHttpParser
+import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.connectors.{ BackendOutcome, StandardConnector }
 import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.errors._
@@ -39,8 +41,8 @@ class StandardServiceSpec extends ServiceSpec {
     val mockConnector: StandardConnector = mock[StandardConnector]
 
     (mockConnector
-      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext))
-      .expects(where { (request, _, _, _) =>
+      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode))
+      .expects(where { (request, _, _, _, _) =>
         request == requestDefn
       })
       .returns(response)
@@ -60,7 +62,8 @@ class StandardServiceSpec extends ServiceSpec {
 
       override def customErrorMapping: Map[String, (Int, MtdError)] = Map(("BACKEND_MAPPED", (BAD_REQUEST, MappedError)))
 
-      override implicit val reads: Reads[Response] = implicitly
+      override implicit val reads: Reads[Response]                      = implicitly
+      override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
     }
 
     "use the connector with the RequestDefn" in new Test(Future.successful(expected)) {
