@@ -18,29 +18,29 @@ package v1.controllers.selfAssessment
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.http.MimeTypes
-import play.api.libs.json.{Json, Reads}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.{ Json, Reads }
+import play.api.mvc.{ Action, AnyContent, ControllerComponents }
 import utils.Logging
 import v1.controllers.requestParsers.ListCalculationsParser
-import v1.controllers.{AuthorisedController, BaseController, EndpointLogContext}
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.controllers.{ AuthorisedController, BaseController, EndpointLogContext }
+import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.domain.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.requestData.selfAssessment.{ ListCalculationsRawData, ListCalculationsRequest }
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class ListCalculationsController @Inject()(
     val authService: EnrolmentsAuthService,
     val lookupService: MtdIdLookupService,
     listCalculationsParser: ListCalculationsParser,
-    listCalculationsService: ListCalculationsService,
+    listCalculationsService: StandardService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
@@ -55,7 +55,7 @@ class ListCalculationsController @Inject()(
     )
 
   private val requestHandlingFactory: RequestHandling.Factory[ListCalculationsRequest, ListCalculationsResponse] = { (playRequest, req) =>
-    new RequestHandling[ListCalculationsRequest, ListCalculationsResponse] {
+    new RequestHandling[ListCalculationsResponse] {
       def requestDefn: RequestDefn = {
         val params = Seq("taxYear" -> req.taxYear)
           .collect {

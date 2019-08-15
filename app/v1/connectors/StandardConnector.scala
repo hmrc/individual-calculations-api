@@ -27,12 +27,12 @@ import v1.handling.RequestDefn.{ Get, Post }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
+class StandardConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
   def doRequest[Resp: Reads](request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[BackendOutcome[Resp]] = {
     request match {
       case Get(uri, params) => get(uri, params)
-      case Post(uri, body)  => post(body, uri)
+//      case Post(uri, body)  => post(body, uri)
     }
   }
 }

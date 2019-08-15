@@ -20,10 +20,10 @@ import play.api.mvc.Request
 import v1.models.errors.MtdError
 
 object RequestHandling {
-  type Factory[Req, Resp] = (Request[_], Req) => RequestHandling[Req, Resp]
+  type Factory[Req, Resp] = (Request[_], Req) => RequestHandling[Resp]
 }
 
-trait RequestHandling[Req, Resp] {
+trait RequestHandling[Resp] {
 
   def requestDefn: RequestDefn
 
@@ -37,6 +37,6 @@ trait RequestHandling[Req, Resp] {
 sealed trait RequestDefn
 
 object RequestDefn {
-  case class Get(uri: String, params: Seq[(String, String)]) extends RequestDefn
-  case class Post(uri: String, body: JsValue)                extends RequestDefn
+  case class Get(uri: String, params: Seq[(String, String)] = Nil) extends RequestDefn
+  case class Post(uri: String, body: JsValue)                      extends RequestDefn
 }

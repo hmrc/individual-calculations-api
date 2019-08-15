@@ -20,24 +20,23 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.models.domain.selfAssessment.ListCalculationsResponse
+import v1.handling.RequestHandling
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
-import v1.services.ListCalculationsService
+import v1.services.StandardService
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-trait MockListCalculationsService extends MockFactory {
+trait MockStandardService extends MockFactory {
 
-  val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
+  val mockStandardService: StandardService = mock[StandardService]
 
-  object MockListCalculationsService {
+  object MockStandardService {
 
-    def listCalculations(requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]]] = {
-      (mockListCalculationsService
-        .listCalculations(_: ListCalculationsRequest)(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(requestData, *, *, *)
+    def doService[Resp](requestHandling: RequestHandling[Resp]): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
+      (mockStandardService
+        .doService(_: RequestHandling[Resp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .expects(requestHandling, *, *, *)
     }
   }
 
