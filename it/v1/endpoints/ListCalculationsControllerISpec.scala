@@ -161,7 +161,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (BAD_REQUEST, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError)
+          (NOT_FOUND, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))

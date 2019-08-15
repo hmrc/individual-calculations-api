@@ -16,6 +16,7 @@
 
 package v1.support
 
+import play.api.http.Status._
 import support.UnitSpec
 import utils.Logging
 import v1.controllers.EndpointLogContext
@@ -25,7 +26,7 @@ import v1.models.outcomes.ResponseWrapper
 class BackendResponseMappingSupportSpec extends UnitSpec {
 
   implicit val logContext: EndpointLogContext = EndpointLogContext("ctrl", "ep")
-  val mapping = new BackendResponseMappingSupport with Logging {}
+  val mapping                                 = new BackendResponseMappingSupport with Logging {}
 
   val correlationId = "someCorrelationId"
 
@@ -37,32 +38,43 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
 
   object ErrorBvr extends MtdError("msg", "bvr")
 
-  val errorCodeMap : PartialFunction[String, MtdError] = {
-    case "ERR1" => Error1
-    case "ERR2" => Error2
-    case "DS" => DownstreamError
+  object ErrorPassthrough extends MtdError("PASS_THROUGH", "message")
+
+  // WLOG
+  val backendStatus = 455
+  val mtdStatus     = 466
+
+  val passThroughErrors = List(ErrorPassthrough)
+
+  val errorCodeMap: PartialFunction[String, (Int, MtdError)] = {
+    case "ERR1" => (mtdStatus, Error1)
+    case "ERR2" => (mtdStatus, Error2)
+    case "DS"   => (INTERNAL_SERVER_ERROR, DownstreamError)
   }
 
-
-  // 3#####################
-  val DELETE_ME = 123
-  // 3##################### ^^^^^
-  // 3#####################
-  // 3#####################
-  
   "mapping backend errors" when {
     "single error" when {
       "the error code is in the map provided" must {
         "use the mapping and wrap" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(DELETE_ME,BackendErrorCode("ERR1")))) shouldBe
-            ErrorWrapper(Some(correlationId), Error1)
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("ERR1")))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(mtdStatus, Error1))
         }
       }
 
-      "the error code is not in the map provided" must {
+      "the error code is to be passed through" must {
+        "pass it through" in {
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("PASS_THROUGH")))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorPassthrough))
+        }
+      }
+
+      "the error code is not in the map provided or passed though" must {
         "default to DownstreamError and wrap" in {
-          mapping.mapBackendErrors (errorCodeMap)(ResponseWrapper(correlationId, BackendErrors.single(DELETE_ME,BackendErrorCode("UNKNOWN")))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError)
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("UNKNOWN")))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
         }
       }
     }
@@ -70,37 +82,53 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     "multiple errors" when {
       "the error codes is in the map provided" must {
         "use the mapping and wrap with main error type of BadRequest" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(Error1, Error2)))
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(Error1, Error2))))
         }
       }
 
-      "the error code is not in the map provided" must {
+      "the error code is to be passed through" must {
+        "pass it through (but as bad request)" in {
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("PASS_THROUGH"), BackendErrorCode("ERR2"))))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(ErrorPassthrough, Error2))))
+        }
+      }
+
+      "the error code is not in the map provided or passed through" must {
         "default main error to DownstreamError ignore other errors" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("UNKNOWN"))))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError)
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(correlationId,
+                            BackendErrors(backendStatus,
+                                          List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
         }
       }
 
       "one of the mapped errors is DownstreamError" must {
         "wrap the errors with main error type of DownstreamError" in {
-          mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, BackendErrors(DELETE_ME,List(BackendErrorCode("ERR1"), BackendErrorCode("DS"))))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError)
+          mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+            ResponseWrapper(
+              correlationId,
+              BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("DS"))))) shouldBe
+            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
         }
       }
     }
 
     "the error code is an OutboundError" must {
-      "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(DELETE_ME,ErrorBvrMain))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain)
+      "return the error as is (in an ErrorWrapper) with a 400" in {
+        mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain))) shouldBe
+          ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorBvrMain))
       }
     }
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapBackendErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(DELETE_ME,ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain, Some(Seq(ErrorBvr)))
+        mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
+          ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
+          ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorBvrMain, Some(Seq(ErrorBvr))))
       }
     }
   }

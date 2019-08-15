@@ -30,6 +30,7 @@ import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRawData
 import v1.services._
+import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -43,6 +44,7 @@ class ListCalculationsController @Inject()(
 )(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
+    with BackendResponseMappingSupport
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -58,7 +60,7 @@ class ListCalculationsController @Inject()(
         for {
           parsedRequest   <- EitherT.fromEither[Future](listCalculationsParser.parseRequest(rawData))
           backendResponse <- EitherT(listCalculationsService.listCalculations(parsedRequest))
-          response  <- EitherT.fromEither[Future](notFoundErrorWhenEmpty(backendResponse))
+          response        <- EitherT.fromEither[Future](notFoundErrorWhenEmpty(backendResponse))
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -72,21 +74,14 @@ class ListCalculationsController @Inject()(
 
       result.leftMap { errorWrapper =>
         val correlationId = getCorrelationId(errorWrapper)
-        errorResult(errorWrapper).withApiHeaders(correlationId)
+        val errorBody     = errorWrapper.errors
+
+        Status(errorWrapper.errors.statusCode)(Json.toJson(errorBody)).withApiHeaders(correlationId)
       }.merge
     }
 
   private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse]) =
     responseWrapper.toErrorWhen {
-      case response if response.calculations.isEmpty => NotFoundError
+      case response if response.calculations.isEmpty => MtdErrors(NOT_FOUND, NotFoundError)
     }
-
-  private def errorResult(errorWrapper: ErrorWrapper) = {
-    errorWrapper.error match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearNotSupportedError | RuleTaxYearRangeExceededError =>
-        BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError   => NotFound(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-    }
-  }
 }

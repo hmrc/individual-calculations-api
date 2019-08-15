@@ -27,7 +27,7 @@ import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 class ListCalculationsService @Inject()(connector: IndividualCalculationsConnector) extends BackendResponseMappingSupport with Logging {
 
@@ -35,16 +35,18 @@ class ListCalculationsService @Inject()(connector: IndividualCalculationsConnect
       implicit logContext: EndpointLogContext,
       ec: ExecutionContext,
       hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
-    connector.listTaxCalculations(request).map(directMap[ListCalculationsResponse](validErrorMap))
+    connector.listTaxCalculations(request).map(directMap[ListCalculationsResponse](passthroughErrors, customErrorMapping))
   }
 
-  val validErrorMap: PartialFunction[String, MtdError] = {
-    case "FORMAT_NINO"                  => NinoFormatError
-    case "FORMAT_TAX_YEAR"              => TaxYearFormatError
-    case "RULE_TAX_YEAR_NOT_SUPPORTED"  => RuleTaxYearNotSupportedError
-    case "RULE_TAX_YEAR_RANGE_EXCEEDED" => RuleTaxYearRangeExceededError
-    case "MATCHING_RESOURCE_NOT_FOUND"  => NotFoundError
-    case "INTERNAL_SERVER_ERROR"        => DownstreamError
-  }
+  private def passthroughErrors: List[MtdError] = List(
+    NinoFormatError,
+    TaxYearFormatError,
+    RuleTaxYearNotSupportedError,
+    RuleTaxYearRangeExceededError,
+    NotFoundError,
+    DownstreamError
+  )
+
+  private def customErrorMapping: PartialFunction[String, (Int, MtdError)] = PartialFunction.empty
 
 }

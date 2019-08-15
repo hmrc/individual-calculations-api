@@ -16,7 +16,38 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{ JsValue, Json, Writes }
+import v1.models.audit.AuditError
+
+case class MtdErrors(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None) {
+
+  private def allErrors: Seq[MtdError] = errors match {
+    case Some(seq) => seq
+    case None      => Seq(error)
+  }
+
+  def auditErrors: Seq[AuditError] =
+    allErrors.map(error => AuditError(error.code))
+}
+
+object MtdErrors {
+  implicit val writes: Writes[MtdErrors] = new Writes[MtdErrors] {
+    override def writes(errorResponse: MtdErrors): JsValue = {
+
+      val json = Json.obj(
+        "code"    -> errorResponse.error.code,
+        "message" -> errorResponse.error.message
+      )
+
+      errorResponse.errors match {
+        case Some(errors) if errors.nonEmpty => json + ("errors" -> Json.toJson(errors))
+        case _                               => json
+      }
+
+    }
+  }
+
+}
 
 case class MtdError(code: String, message: String)
 
@@ -24,7 +55,7 @@ object MtdError {
   implicit val writes: Writes[MtdError] = Json.writes[MtdError]
 }
 
-object NinoFormatError extends MtdError("FORMAT_NINO", "The provided NINO is invalid")
+object NinoFormatError    extends MtdError("FORMAT_NINO", "The provided NINO is invalid")
 object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The provided tax year is invalid")
 
 // Rule Errors
@@ -48,10 +79,10 @@ object BVRError extends MtdError("BUSINESS_ERROR", "Business validation error")
 object ServiceUnavailableError extends MtdError("SERVICE_UNAVAILABLE", "Internal server error")
 
 //Authorisation Errors
-object UnauthorisedError extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
+object UnauthorisedError       extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
 object InvalidBearerTokenError extends MtdError("UNAUTHORIZED", "Bearer token is missing or not authorized")
 
 // Accept header Errors
-object  InvalidAcceptHeaderError extends MtdError("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
+object InvalidAcceptHeaderError extends MtdError("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
 
-object  UnsupportedVersionError extends MtdError("NOT_FOUND", "The requested resource could not be found")
+object UnsupportedVersionError extends MtdError("NOT_FOUND", "The requested resource could not be found")

@@ -126,7 +126,7 @@ class ListCalculationsControllerSpec
 
             MockListCalculationsParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
+              .returns(Left(ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, error))))
 
             val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
@@ -158,7 +158,7 @@ class ListCalculationsControllerSpec
 
             MockListCalculationsService
               .listCalculations(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
+              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), MtdErrors(???,  mtdError)))))
 
             val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 

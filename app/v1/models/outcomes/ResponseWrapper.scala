@@ -17,12 +17,12 @@
 package v1.models.outcomes
 
 import cats.implicits._
-import v1.models.errors.{ ErrorWrapper, MtdError }
+import v1.models.errors.{ErrorWrapper, MtdError, MtdErrors}
 
 case class ResponseWrapper[+A](correlationId: String, responseData: A) {
   def map[B](f: A => B): ResponseWrapper[B] = ResponseWrapper(correlationId, f(responseData))
 
-  def toErrorWhen(f: PartialFunction[A, MtdError]): Either[ErrorWrapper, ResponseWrapper[A]] =
+  def toErrorWhen(f: PartialFunction[A, MtdErrors]): Either[ErrorWrapper, ResponseWrapper[A]] =
     f.lift(responseData) match {
       case Some(error) => ErrorWrapper(Some(correlationId), error).asLeft
       case None        => this.asRight
