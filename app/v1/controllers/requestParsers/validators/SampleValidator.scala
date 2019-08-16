@@ -35,7 +35,7 @@ class SampleValidator extends Validator[SampleRawData] {
 
   private def parameterRuleValidation: SampleRawData => List[List[MtdError]] = { data =>
     List(
-      MtdTaxYearValidation.validate(data.taxYear, 2018)
+      MinTaxYearValidation.validate(data.taxYear, 2018)
     )
   }
 
