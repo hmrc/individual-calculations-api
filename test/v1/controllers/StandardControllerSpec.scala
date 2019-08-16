@@ -18,15 +18,15 @@ package v1.controllers
 
 import cats.implicits._
 import org.scalamock.handlers.CallHandler
-import play.api.libs.json.{ Format, Json }
-import play.api.mvc.{ Request, Result }
+import play.api.libs.json.{Format, Json, Reads, Writes}
+import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
 import v1.handling.RequestDefn.Get
 import v1.handling.RequestHandling
-import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.RawData
@@ -38,10 +38,16 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
 
   case class Raw(data: String) extends RawData
   case class RequestData(data: String)
-  case class Resp(data: String)
+  case class BackendResp(data: String)
 
-  object Resp {
-    implicit val formats: Format[Resp] = Json.format[Resp]
+  object BackendResp {
+    implicit val reads: Reads[BackendResp] = Json.reads[BackendResp]
+  }
+
+  case class APIResp(data: String)
+
+  object APIResp {
+    implicit val writes: Writes[APIResp] = Json.writes[APIResp]
   }
 
   val mockParser = mock[RequestParser[Raw, RequestData]]
@@ -59,13 +65,13 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
     val rawData       = Raw("data")
     val requestData   = RequestData("data")
 
-    val response       = Resp("data")
-    val mappedResponse = Resp("dataMapped")
+    val response       = BackendResp("data")
+    val mappedResponse = APIResp("dataMapped")
     val requestDefn    = Get("url")
 
     val hc = HeaderCarrier()
 
-    val controller: StandardController[Raw, RequestData, Resp] = new StandardController[Raw, RequestData, Resp](
+    val controller: StandardController[Raw, RequestData, BackendResp, APIResp] = new StandardController[Raw, RequestData, BackendResp, APIResp](
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockParser,
@@ -75,7 +81,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
       override def requestHandlingFor(playRequest: Request[_], req: RequestData) = {
-        RequestHandling[Resp](requestDefn)
+        RequestHandling[BackendResp](requestDefn)
           .mapSuccess(_.map(_ => mappedResponse).asRight)
       }
 
@@ -91,7 +97,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
           .returns(Right(requestData))
 
         MockStandardService
-          .doService[Resp](requestDefn, OK)
+          .doService(requestDefn, OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.doHandleRequest(rawData)(fakeGetRequest(uri))
@@ -130,7 +136,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
           .returns(Right(requestData))
 
         MockStandardService
-          .doService[Resp](requestDefn, OK)
+          .doService(requestDefn, OK)
           .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), errors))))
 
         val result: Future[Result] = controller.doHandleRequest(rawData)(fakeGetRequest(uri))

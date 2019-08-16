@@ -19,8 +19,8 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.MimeTypes
-import play.api.libs.json.{Format, Json, Reads, Writes}
-import play.api.mvc.{AnyContent, ControllerComponents, Request, Result}
+import play.api.libs.json.{ Format, Json, Reads, Writes }
+import play.api.mvc.{ AnyContent, ControllerComponents, Request, Result }
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
@@ -29,9 +29,9 @@ import v1.models.requestData.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
-abstract class StandardController[Raw <: RawData, Req, Resp: Format](
+abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes](
     val authService: EnrolmentsAuthService,
     val lookupService: MtdIdLookupService,
     parser: RequestParser[Raw, Req],
@@ -45,7 +45,7 @@ abstract class StandardController[Raw <: RawData, Req, Resp: Format](
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[_], req: Req): RequestHandling[Resp]
+  def requestHandlingFor(playRequest: Request[_], req: Req): RequestHandling[BackendResp, APIResp]
 
   val successCode: SuccessCode
 

@@ -33,10 +33,10 @@ trait MockStandardService extends MockFactory {
 
   object MockStandardService {
 
-    def doService[Resp](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
+    def doService[Resp, _](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
       (mockStandardService
-        .doService(_: RequestHandling[Resp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(where { (actualRequestHandling: RequestHandling[Resp], _, _, _) =>
+        .doService(_: RequestHandling[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .expects(where { (actualRequestHandling: RequestHandling[Resp, _], _, _, _) =>
           actualRequestHandling.requestDefn == requestDefn && actualRequestHandling.successCode.status == successStatus
         })
     }

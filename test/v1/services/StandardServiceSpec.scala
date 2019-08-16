@@ -55,7 +55,7 @@ class StandardServiceSpec extends ServiceSpec {
     val expected =
       Right(ResponseWrapper("correlationId", Response("someData")))
 
-    val requestHandling: RequestHandling[Response] = new RequestHandling[Response] {
+    val requestHandling: RequestHandling[Response, Response] = new RequestHandling[Response, Response] {
       override def requestDefn = test.requestDefn
 
       override def passThroughErrors = List(PassedThroughError)
@@ -64,7 +64,7 @@ class StandardServiceSpec extends ServiceSpec {
 
       override implicit val reads: Reads[Response]                      = implicitly
       override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
-      override def successMapping = RequestHandling.noMapping
+      override def successMapping                                       = RequestHandling.noMapping
     }
 
     "use the connector with the RequestDefn" in new Test(Future.successful(expected)) {

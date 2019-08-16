@@ -16,14 +16,14 @@
 
 package v1.handling
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Reads}
+import play.api.libs.json.{ JsValue, Reads }
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestDefn.{Get, Post}
-import v1.handling.RequestHandling.{ErrorMapping, SuccessMapping}
-import v1.models.errors.{ErrorWrapper, MtdError}
+import v1.handling.RequestDefn.{ Get, Post }
+import v1.handling.RequestHandling.{ ErrorMapping, SuccessMapping }
+import v1.models.errors.{ ErrorWrapper, MtdError }
 import v1.models.outcomes.ResponseWrapper
 
-trait RequestHandling[Resp] {
+trait RequestHandling[BackendResp, APIResp] {
 
   def requestDefn: RequestDefn
 
@@ -31,46 +31,47 @@ trait RequestHandling[Resp] {
 
   def customErrorMapping: ErrorMapping
 
-  implicit val reads: Reads[Resp]
+  implicit val reads: Reads[BackendResp]
 
   implicit val successCode: SuccessCode
 
-  def successMapping: SuccessMapping[Resp]
+  def successMapping: SuccessMapping[BackendResp, APIResp]
 }
 
 object RequestHandling {
-  type ErrorMapping = PartialFunction[String, (Int, MtdError)]
-  type SuccessMapping[Resp] = ResponseWrapper[Resp] => Either[ErrorWrapper, ResponseWrapper[Resp]]
+  type ErrorMapping                         = PartialFunction[String, (Int, MtdError)]
+  type SuccessMapping[BackendResp, APIResp] = ResponseWrapper[BackendResp] => Either[ErrorWrapper, ResponseWrapper[APIResp]]
 
-  def noMapping[Resp]: SuccessMapping[Resp] = (r: ResponseWrapper[Resp]) => Right(r)
+  def noMapping[Resp]: SuccessMapping[Resp, Resp] = (r: ResponseWrapper[Resp]) => Right(r)
 
-  case class Impl[Resp] protected[handling] (requestDefn: RequestDefn,
-                                             successCode: SuccessCode,
-                                             passThroughErrors: Seq[MtdError] = Seq.empty,
-                                             customErrorMapping: ErrorMapping = PartialFunction.empty,
-                                             successMapping: SuccessMapping[Resp] = noMapping[Resp])(implicit val reads: Reads[Resp])
-      extends RequestHandling[Resp] {
+  case class Impl[BackendResp, APIResp] protected[handling] (
+      requestDefn: RequestDefn,
+      successCode: SuccessCode,
+      passThroughErrors: Seq[MtdError] = Seq.empty,
+      customErrorMapping: ErrorMapping = PartialFunction.empty,
+      successMapping: SuccessMapping[BackendResp, APIResp])(implicit val reads: Reads[BackendResp])
+      extends RequestHandling[BackendResp, APIResp] {
 
-    def withPassThroughErrors(errors: MtdError*): Impl[Resp] =
+    def withPassThroughErrors(errors: MtdError*): Impl[BackendResp, APIResp] =
       copy(passThroughErrors = errors)
 
-    def withRequestSuccessCode(status: Int): Impl[Resp] =
+    def withRequestSuccessCode(status: Int): Impl[BackendResp, APIResp] =
       copy(successCode = SuccessCode(status))
 
-    def mapErrors(mappings: ErrorMapping): Impl[Resp] =
+    def mapErrors(mappings: ErrorMapping): Impl[BackendResp, APIResp] =
       copy(customErrorMapping = mappings)
 
-    def mapSuccess(mapping: SuccessMapping[Resp]): Impl[Resp] =
+    def mapSuccess[APIResp2](mapping: SuccessMapping[BackendResp, APIResp2]): Impl[BackendResp, APIResp2] =
       copy(successMapping = mapping)
   }
 
-  def apply[Resp: Reads](requestDefn: RequestDefn): Impl[Resp] = {
+  def apply[Resp: Reads](requestDefn: RequestDefn): Impl[Resp, Resp] = {
     val successCode: SuccessCode = requestDefn match {
       case _: Get  => SuccessCode(OK)
       case _: Post => SuccessCode(NO_CONTENT)
     }
 
-    Impl(requestDefn, successCode)
+    Impl(requestDefn, successCode, successMapping = noMapping)
   }
 }
 

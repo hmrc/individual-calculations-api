@@ -25,9 +25,9 @@ import v1.models.outcomes.ResponseWrapper
 class RequestHandlingSpec extends UnitSpec {
 
   // WLOG
-  val passThroughErrors                      = List(MtdError("CODE", "error"))
-  val customErrorMapping: ErrorMapping       = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
-  val successMapping: SuccessMapping[String] = (r: ResponseWrapper[String]) => Right(r)
+  val passThroughErrors                              = List(MtdError("CODE", "error"))
+  val customErrorMapping: ErrorMapping               = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
+  val successMapping: SuccessMapping[String, String] = (r: ResponseWrapper[String]) => Right(r)
 
   "RequestHandling" must {
     "be buildable" in {
@@ -37,7 +37,7 @@ class RequestHandlingSpec extends UnitSpec {
         .mapErrors(customErrorMapping)
         .withPassThroughErrors(passThroughErrors: _*)
         .mapSuccess(successMapping) shouldBe
-        RequestHandling.Impl[String](
+        RequestHandling.Impl[String, String](
           requestDefn = RequestDefn.Get("/some/path"),
           successCode = SuccessCode(ACCEPTED),
           passThroughErrors = passThroughErrors,

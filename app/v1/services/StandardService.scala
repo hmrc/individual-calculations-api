@@ -30,7 +30,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 class StandardService @Inject()(connector: StandardConnector) extends BackendResponseMappingSupport with Logging {
 
-  def doService[Req, Resp](requestHandling: RequestHandling[Resp])(implicit logContext: EndpointLogContext,
+  def doService[Req, Resp](requestHandling: RequestHandling[Resp, _])(implicit logContext: EndpointLogContext,
                                                                    ec: ExecutionContext,
                                                                    hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
 

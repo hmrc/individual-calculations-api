@@ -38,11 +38,12 @@ class ListCalculationsController @Inject()(
     service: StandardService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse](authService,
-                                                                                                           lookupService,
-                                                                                                           listCalculationsParser,
-                                                                                                           service,
-                                                                                                           cc) {
+    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse](
+      authService,
+      lookupService,
+      listCalculationsParser,
+      service,
+      cc) {
   controller =>
 
   val endpointLogContext: EndpointLogContext =
@@ -53,7 +54,8 @@ class ListCalculationsController @Inject()(
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[_], req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse] = {
+  override def requestHandlingFor(playRequest: Request[_],
+                                  req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse, ListCalculationsResponse] = {
     RequestHandling[ListCalculationsResponse](
       RequestDefn
         .Get(playRequest.path)
