@@ -17,7 +17,7 @@
 package v1.controllers.requestParsers.validators
 
 import config.FixedConfig
-import v1.controllers.requestParsers.validators.validations.{MtdTaxYearValidation, NinoValidation, TaxYearValidation}
+import v1.controllers.requestParsers.validators.validations.{MinTaxYearValidation, NinoValidation, TaxYearValidation}
 import v1.models.errors.MtdError
 import v1.models.requestData.selfAssessment.ListCalculationsRawData
 
@@ -34,7 +34,7 @@ class ListCalculationsValidator extends Validator[ListCalculationsRawData] with 
 
   private def parameterRuleValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
     List(
-      data.taxYear.map(taxYear => MtdTaxYearValidation.validate(taxYear, minimumTaxYear)).getOrElse(Nil)
+      data.taxYear.map(taxYear => MinTaxYearValidation.validate(taxYear, minimumTaxYear)).getOrElse(Nil)
     )
   }
 
