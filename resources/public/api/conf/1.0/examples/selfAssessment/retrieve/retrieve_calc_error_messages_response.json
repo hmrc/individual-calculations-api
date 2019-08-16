@@ -1,0 +1,9 @@
+{
+  "id": "17d6876e-620e-4059-96ef-50adf5422d27",
+  "taxYear": "2018-19",
+  "requestedBy": "hmrc",
+  "calculationReason": "newClaimEvent",
+  "calculationTimestamp": "2019-07-04T13:37:35.094Z",
+  "calculationType": "inYear",
+  "calculationErrorCount": 8
+}

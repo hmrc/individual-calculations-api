@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Trigger a Self Assessment Tax Calculation",
+  "description": "Trigger a Self Assessment Tax Calculation",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier of the calculation.",
+      "type": "string",
+      "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    },
+    "taxYear" : {
+      "description" : "The tax year that the calculation was performed in the format YYYY-YY",
+      "type" : "string",
+      "example": "2018-19"
+    },
+    "requestedBy": {
+      "description": "The requestor of the calculation. Currently agent will default to customer until it can be supported.",
+      "type": "string",
+      "enum": ["customer", "hmrc", "agent"]
+    },
+    "calculationReason" : {
+      "description": "The reason why the calculation was triggered",
+      "type": "string",
+      "enum" : ["customerRequest", "class2NICEvent", "newLossEvent", "newClaimEvent", "updatedClaimEvent"]
+    },
+    "calculationTimestamp": {
+      "description": "The timestamp of when the calculation was performed in ISO8601 UTC format: YYYY-MM-DDThh:mm:ssZ.",
+      "type": "string",
+      "example": "2019-06-17T09:22:59Z"
+    },
+    "calculationType": {
+      "description": "The type of calculation performed.",
+      "type": "string",
+      "enum": ["inYear", "crystallisation"]
+    },
+    "intentToCrystallise": {
+      "description": "Boolean value showing whether the calculation is intended to be crystallised against, this field will only be displayed if the value is true"
+    },
+    "crystallised": {
+      "description": "Boolean value showing whether the calculation is intended to be crystallised against, this field will only be displayed if the value is true"
+    },
+    "calculationErrorCount": {
+      "description": "The number of error messages that were generated while attempting to perform the calculation. If this field is present then a calculation has not been performed, details of why the calculation has not been performed can be viewed by looking at the error messages under the \"Retrieve self assessment tax calculation messages\" endpoint"
+    }
+  },
+  "required": ["id"]
+}

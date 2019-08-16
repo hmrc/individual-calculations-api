@@ -33,7 +33,7 @@ traits:
           application/json:
             type: types.errorResponse
             examples:
-              formatNino:
+              formatNino:the
                 description: The format of the supplied NINO field is not valid
                 value:
                   code: FORMAT_NINO
@@ -48,6 +48,17 @@ traits:
                 description: The format of the supplied tax year field is not valid
                 value:
                   code: FORMAT_TAX_YEAR
+      formatCalcId:
+        responses:
+          400:
+            body:
+              application/json:
+                type: types.errorResponse
+                examples:
+                  formatCalcId:
+                    description: The provided Calculation ID is not valid
+                    value:
+                      code: FORMAT_CALC_ID
   incorrectOrEmptyBody:
     responses:
       400:
