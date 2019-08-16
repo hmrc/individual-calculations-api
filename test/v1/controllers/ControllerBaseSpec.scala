@@ -36,5 +36,10 @@ class ControllerBaseSpec extends UnitSpec
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
 
+
+  def fakeGetRequest(url: String): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", url).withHeaders(
+    HeaderNames.AUTHORIZATION -> "Bearer Token"
+  )
+
   def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
 }

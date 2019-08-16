@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.handling.RequestHandling
+import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.services.StandardService
@@ -33,10 +33,12 @@ trait MockStandardService extends MockFactory {
 
   object MockStandardService {
 
-    def doService[Resp](requestHandling: RequestHandling[Resp]): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
+    def doService[Resp](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
       (mockStandardService
         .doService(_: RequestHandling[Resp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(requestHandling, *, *, *)
+        .expects(where { (actualRequestHandling: RequestHandling[Resp], _, _, _) =>
+          actualRequestHandling.requestDefn == requestDefn && actualRequestHandling.successCode.status == successStatus
+        })
     }
   }
 

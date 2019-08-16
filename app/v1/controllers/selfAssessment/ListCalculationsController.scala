@@ -17,7 +17,7 @@
 package v1.controllers.selfAssessment
 
 import javax.inject.{ Inject, Singleton }
-import play.api.mvc.{ Action, AnyContent, ControllerComponents }
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.{ EndpointLogContext, StandardController }
 import v1.controllers.requestParsers.ListCalculationsParser
@@ -53,7 +53,7 @@ class ListCalculationsController @Inject()(
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override val requestHandlingFactory: RequestHandling.Factory[ListCalculationsRequest, ListCalculationsResponse] = { (playRequest, req) =>
+  override def requestHandlingFor(playRequest: Request[_], req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse] = {
     RequestHandling[ListCalculationsResponse](
       RequestDefn
         .Get(playRequest.path)
@@ -66,6 +66,7 @@ class ListCalculationsController @Inject()(
         NotFoundError,
         DownstreamError
       )
+      .mapSuccess(notFoundErrorWhenEmpty)
   }
 
   def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =

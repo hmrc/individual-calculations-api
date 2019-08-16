@@ -21,12 +21,13 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
+import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockListCalculationsParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockStandardService, MockMtdIdLookupService}
-import v1.models.domain.selfAssessment.{CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse}
+import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.models.domain.selfAssessment.{ CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse }
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.requestData.selfAssessment.{ ListCalculationsRawData, ListCalculationsRequest }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -54,11 +55,10 @@ class ListCalculationsControllerSpec
   }
 
   private val nino          = "AA123456A"
-  private val taxYear       =  Some("2017-18")
+  private val taxYear       = Some("2017-18")
   private val correlationId = "X-123"
 
-  val responseBody = Json.parse(
-    """{
+  val responseBody = Json.parse("""{
       |  "calculations": [
       |    {
       |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -82,6 +82,8 @@ class ListCalculationsControllerSpec
   private val rawData     = ListCalculationsRawData(nino, taxYear)
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
 
+  private def uri = "/input/uri"
+
   "handleRequest" should {
     "return OK with list of calculations" when {
       "happy path" in new Test {
@@ -90,10 +92,10 @@ class ListCalculationsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(???)
+          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -102,82 +104,20 @@ class ListCalculationsControllerSpec
     }
 
     "return 404 NotFoundError" when {
-      "an empty is is returned from the back end" in new Test{
+      "an empty is is returned from the back end" in new Test {
         MockListCalculationsParser
           .parse(rawData)
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(???)
+          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
 
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
 
         status(result) shouldBe NOT_FOUND
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
-      }
-    }
-
-    "return the error as per spec" when {
-      "parser errors occur" must {
-        def errorsFromParserTester(error: MtdError, expectedStatus: Int): Unit = {
-          s"a ${error.code} error is returned from the parser" in new Test {
-
-            MockListCalculationsParser
-              .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, error))))
-
-            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
-
-            status(result) shouldBe expectedStatus
-            contentAsJson(result) shouldBe Json.toJson(error)
-            header("X-CorrelationId", result) shouldBe Some(correlationId)
-          }
-        }
-
-        val input = Seq(
-          (BadRequestError, BAD_REQUEST),
-          (NinoFormatError, BAD_REQUEST),
-          (TaxYearFormatError, BAD_REQUEST),
-          (RuleTaxYearNotSupportedError, BAD_REQUEST),
-          (RuleTaxYearRangeExceededError, BAD_REQUEST),
-          (DownstreamError, INTERNAL_SERVER_ERROR)
-        )
-
-        input.foreach(args => (errorsFromParserTester _).tupled(args))
-      }
-
-      "service errors occur" must {
-        def serviceErrors(mtdError: MtdError, expectedStatus: Int): Unit = {
-          s"a $mtdError error is returned from the service" in new Test {
-
-            MockListCalculationsParser
-              .parse(rawData)
-              .returns(Right(requestData))
-
-            MockStandardService
-              .doService(???)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), MtdErrors(???,  mtdError)))))
-
-            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
-
-            status(result) shouldBe expectedStatus
-            contentAsJson(result) shouldBe Json.toJson(mtdError)
-            header("X-CorrelationId", result) shouldBe Some(correlationId)
-          }
-        }
-
-        val input = Seq(
-          (BadRequestError, BAD_REQUEST),
-          (NinoFormatError, BAD_REQUEST),
-          (TaxYearFormatError, BAD_REQUEST),
-          (RuleTaxYearNotSupportedError, BAD_REQUEST),
-          (RuleTaxYearRangeExceededError, BAD_REQUEST),
-          (DownstreamError, INTERNAL_SERVER_ERROR)
-        )
-
-        input.foreach(args => (serviceErrors _).tupled(args))
       }
     }
   }

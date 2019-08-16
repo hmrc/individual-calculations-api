@@ -16,19 +16,9 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{ JsValue, Json, Writes }
-import v1.models.audit.AuditError
+import play.api.libs.json.{JsValue, Json, Writes}
 
-case class MtdErrors(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None) {
-
-  private def allErrors: Seq[MtdError] = errors match {
-    case Some(seq) => seq
-    case None      => Seq(error)
-  }
-
-  def auditErrors: Seq[AuditError] =
-    allErrors.map(error => AuditError(error.code))
-}
+case class MtdErrors(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None)
 
 object MtdErrors {
   implicit val writes: Writes[MtdErrors] = new Writes[MtdErrors] {
