@@ -13,7 +13,7 @@
         </tr>
         <tr>
             <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
-            <td><p>Simulates the scenario where no income submission exists for the tax year</p></td>
+            <td><p>Simulates the scenario where no income submissions exist for the tax year</p></td>
         </tr>                               
     </tbody>
 </table>
