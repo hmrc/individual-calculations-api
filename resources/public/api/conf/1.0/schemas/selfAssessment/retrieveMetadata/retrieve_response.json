@@ -45,5 +45,5 @@
       "description": "The number of error messages that were generated while attempting to perform the calculation. If this field is present then a calculation has not been performed, details of why the calculation has not been performed can be viewed by looking at the error messages under the \"Retrieve self assessment tax calculation messages\" endpoint"
     }
   },
-  "required": ["id"]
+  "required": ["id", "taxYear", "requestBy", "calculationReason", "calculationTimestamp", "calculationType"]
 }
