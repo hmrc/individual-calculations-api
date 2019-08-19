@@ -41,9 +41,9 @@ class RetrieveCalculationMetatdataSpec extends UnitSpec {
     calculationReason = CalculationReason.customerRequest,
     calculationTimestamp = "2019-11-15T09:35:15.094Z",
     calculationType = CalculationType.crystallisation,
-    intentToCrystallise = true,
-    crystallised = true,
-    calculationErrorCount = 123
+    intentToCrystallise = Some(true),
+    crystallised = Some(true),
+    calculationErrorCount = Some(123)
   )
 
   "RetrieveCalculationMetatdata" when {

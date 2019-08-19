@@ -16,7 +16,7 @@
 
 package v1.models.domain.selfAssessment
 
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
 case class RetrieveCalculationMetadata(
     id: String,
@@ -25,9 +25,9 @@ case class RetrieveCalculationMetadata(
     calculationReason: CalculationReason,
     calculationTimestamp: String,
     calculationType: CalculationType,
-    intentToCrystallise: Boolean,
-    crystallised: Boolean,
-    calculationErrorCount: Int
+    intentToCrystallise: Option[Boolean],
+    crystallised: Option[Boolean],
+    calculationErrorCount: Option[Int]
 )
 
 object RetrieveCalculationMetadata {
