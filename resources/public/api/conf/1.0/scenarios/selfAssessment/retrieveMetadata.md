@@ -9,11 +9,15 @@
     <tbody> 
         <tr>
             <td><p>N/A - DEFAULT</p></td>
-            <td><p>Simulates a successful response</p></td>
+            <td><p>Simulates returning a crystallisation tax calculation</p></td>
         </tr>
         <tr>
-            <td><p>NO_SUBMISSION_EXISTS</p></td>
-            <td><p>Simulates the scenario where no income submission exists for the tax year</p></td>
-        </tr>                               
+            <td><p>IN_YEAR_CALCULATION</p></td>
+            <td><p>Simulates returning a in year tax calculation</p></td>
+        </tr>
+        <tr>
+            <td><p>NOT_FOUND</p></td>
+            <td><p>Simulates the scenario where no data can be found</p></td>
+        </tr>                           
     </tbody>
 </table>
