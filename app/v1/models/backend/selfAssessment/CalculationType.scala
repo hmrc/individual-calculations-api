@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.backend.selfAssessment
 
-import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.selfAssessment.CalculationType._
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+sealed trait CalculationType
 
-  testRoundTrip[CalculationType](
-    ("inYear", inYear),
-    ("crystallisation", crystallisation)
-  )
+
+object CalculationType{
+  case object inYear extends CalculationType
+  case object crystallisation extends CalculationType
+
+  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
 }

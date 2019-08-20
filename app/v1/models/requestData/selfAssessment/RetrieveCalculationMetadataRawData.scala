@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package utils
+package v1.models.requestData.selfAssessment
 
-object JsonErrorSanitiser {
+import v1.models.requestData.RawData
 
-  def sanitise(str: String): String = {
-
-    val searchString = "invalid json"
-
-    val index = str.toLowerCase.indexOf(searchString)
-    if (index >= 0) {
-      str.substring(0, index + searchString.length).trim
-    } else {
-      str.trim
-    }
-  }
-
-}
+case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData

@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package utils
+package v1.models.backend.selfAssessment
 
-object JsonErrorSanitiser {
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.backend.selfAssessment.CalculationRequestor._
 
-  def sanitise(str: String): String = {
+class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 
-    val searchString = "invalid json"
-
-    val index = str.toLowerCase.indexOf(searchString)
-    if (index >= 0) {
-      str.substring(0, index + searchString.length).trim
-    } else {
-      str.trim
-    }
-  }
-
+  testRoundTrip[CalculationRequestor](
+    ("customer", customer),
+    ("hmrc", hmrc),
+    ("agent", agent)
+  )
 }

@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-package utils
+package v1.models.backend.selfAssessment
 
-object JsonErrorSanitiser {
+import play.api.libs.json.Json
+import support.UnitSpec
 
-  def sanitise(str: String): String = {
+class TriggerCalculationResponseSpec extends UnitSpec {
 
-    val searchString = "invalid json"
+  val json = Json.parse(
+    """
+      |{
+      | "id": "testId"
+      |}
+    """.stripMargin
+  )
 
-    val index = str.toLowerCase.indexOf(searchString)
-    if (index >= 0) {
-      str.substring(0, index + searchString.length).trim
-    } else {
-      str.trim
+  val response = TriggerCalculationResponse("testId")
+
+  "JSON writes" must {
+    "align with spec" in {
+      Json.toJson(response) shouldBe json
     }
   }
 
+  "JSON reads" must {
+    "align with back-end response" in {
+      json.as[TriggerCalculationResponse] shouldBe response
+    }
+  }
 }

@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package utils
+package v1.models.domain
 
-object JsonErrorSanitiser {
+import play.api.libs.json.{Json, OFormat}
 
-  def sanitise(str: String): String = {
+case class TriggerCalculation(taxYear: String)
 
-    val searchString = "invalid json"
-
-    val index = str.toLowerCase.indexOf(searchString)
-    if (index >= 0) {
-      str.substring(0, index + searchString.length).trim
-    } else {
-      str.trim
-    }
-  }
-
+object TriggerCalculation {
+  implicit val formats: OFormat[TriggerCalculation] = Json.format[TriggerCalculation]
 }

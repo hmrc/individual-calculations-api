@@ -68,6 +68,8 @@ object BVRError extends MtdError("BUSINESS_ERROR", "Business validation error")
 
 object ServiceUnavailableError extends MtdError("SERVICE_UNAVAILABLE", "Internal server error")
 
+object InvalidBodyTypeError extends MtdError("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
+
 //Authorisation Errors
 object UnauthorisedError       extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
 object InvalidBearerTokenError extends MtdError("UNAUTHORIZED", "Bearer token is missing or not authorized")

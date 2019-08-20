@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.domain.selfAssessment
 
-import play.api.libs.json.{Format, Json}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.domain.selfAssessment.CalculationReason._
 
-case class CalculationListItem(
-                                id: String,
-                                calculationTimestamp: String,
-                                `type`: CalculationType,
-                                requestedBy: Option[CalculationRequestor]
-                              )
+class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object CalculationListItem{
-  implicit val format: Format[CalculationListItem] = Json.format
+  testRoundTrip[CalculationReason](
+    ("customerRequest", customerRequest),
+    ("class2NICEvent", class2NICEvent),
+    ("newLossEvent", newLossEvent),
+    ("updatedLossEvent", updatedLossEvent),
+    ("newClaimEvent", newClaimEvent),
+    ("updatedClaimEvent", updatedClaimEvent)
+  )
 }
-
-case class ListCalculationsResponse(calculations: Seq[CalculationListItem])
-
-object ListCalculationsResponse {
-  implicit val format: Format[ListCalculationsResponse] = Json.format
-}
-
-

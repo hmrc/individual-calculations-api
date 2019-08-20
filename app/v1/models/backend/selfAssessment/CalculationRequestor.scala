@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.backend.selfAssessment
 
 import play.api.libs.json.Format
 import utils.enums.Enums
 
-sealed trait CalculationType
+sealed trait CalculationRequestor
 
+object CalculationRequestor{
+  case object customer extends CalculationRequestor
+  case object hmrc extends CalculationRequestor
+  case object agent extends CalculationRequestor
 
-object CalculationType{
-  case object inYear extends CalculationType
-  case object crystallisation extends CalculationType
-
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }

@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.domain
 
 import play.api.libs.json.Json
 import support.UnitSpec
 
-class TriggerCalculationResponseSpec extends UnitSpec {
+class TriggerCalculationSpec extends UnitSpec {
 
   val json = Json.parse(
-    """
-      |{
-      | "id": "testId"
-      |}
-    """.stripMargin
-  )
+    """{
+      |  "taxYear" : "2018-19"
+      |}""".stripMargin)
 
-  val response = TriggerCalculationResponse("testId")
+  val response = TriggerCalculation("2018-19")
 
   "JSON writes" must {
     "align with spec" in {
@@ -39,7 +36,8 @@ class TriggerCalculationResponseSpec extends UnitSpec {
 
   "JSON reads" must {
     "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
+      json.as[TriggerCalculation] shouldBe response
     }
   }
+
 }
