@@ -15,8 +15,9 @@
  */
 package v1.models.domain.selfAssessment
 
-import play.api.libs.json.{ JsObject, Json }
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
+import v1.models.backend.selfAssessment.{CalculationRequestor, CalculationType}
 
 class CalculationMetatdataSpec extends UnitSpec {
 

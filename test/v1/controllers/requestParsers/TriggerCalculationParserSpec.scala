@@ -20,13 +20,14 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
+import play.api.http.Status._
 import v1.mocks.validators.MockTriggerCalculationValidator
-import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
-import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.errors.{ BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError }
+import v1.models.requestData.selfAssessment.{ TriggerCalculationRawData, TriggerCalculationRequest }
 
 class TriggerCalculationParserSpec extends UnitSpec {
 
-  val nino = "AA123456B"
+  val nino    = "AA123456B"
   val taxYear = "2017-18"
 
   trait Test extends MockTriggerCalculationValidator {
@@ -48,7 +49,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
       }
     }
 
@@ -57,7 +58,8 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
+        parser.parseRequest(data) shouldBe Left(
+          ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))))
       }
     }
   }
