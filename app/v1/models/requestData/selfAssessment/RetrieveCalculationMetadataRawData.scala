@@ -16,4 +16,6 @@
 
 package v1.models.requestData.selfAssessment
 
-case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String)
+import v1.models.requestData.RawData
+
+case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData

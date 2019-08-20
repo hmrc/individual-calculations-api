@@ -18,7 +18,7 @@ package v1.models.domain.selfAssessment
 import play.api.libs.json.{ JsObject, Json }
 import support.UnitSpec
 
-class RetrieveCalculationMetatdataSpec extends UnitSpec {
+class CalculationMetatdataSpec extends UnitSpec {
 
   val vendorJson = Json.parse("""{
                                 |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -28,34 +28,34 @@ class RetrieveCalculationMetatdataSpec extends UnitSpec {
                                 |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
                                 |    "calculationType": "crystallisation",
                                 |    "intentToCrystallise": true,
-                                |    "crystallised": true,
+                                |    "crystallised": false,
                                 |    "calculationErrorCount": 123
                                 |}""".stripMargin)
 
   val backendJson = JsObject(Seq("metadata" -> vendorJson))
 
-  val metadata = RetrieveCalculationMetadata(
+  val metadata = CalculationMetadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
     calculationReason = CalculationReason.customerRequest,
     calculationTimestamp = "2019-11-15T09:35:15.094Z",
     calculationType = CalculationType.crystallisation,
-    intentToCrystallise = Some(true),
-    crystallised = Some(true),
+    intentToCrystallise = true,
+    crystallised = false,
     calculationErrorCount = Some(123)
   )
 
   "RetrieveCalculationMetatdata" when {
     "written to JSON" should {
       "take the form specified" in {
-        Json.toJson[RetrieveCalculationMetadata](metadata) shouldBe vendorJson
+        Json.toJson[CalculationMetadata](metadata) shouldBe vendorJson
       }
     }
 
     "read from json" should {
       "read from metadata top level field" in {
-        backendJson.as[RetrieveCalculationMetadata] shouldBe metadata
+        backendJson.as[CalculationMetadata] shouldBe metadata
       }
     }
   }

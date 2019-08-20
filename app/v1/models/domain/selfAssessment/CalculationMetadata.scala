@@ -18,23 +18,23 @@ package v1.models.domain.selfAssessment
 
 import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
-case class RetrieveCalculationMetadata(
+case class CalculationMetadata(
     id: String,
     taxYear: String,
     requestedBy: CalculationRequestor,
     calculationReason: CalculationReason,
     calculationTimestamp: String,
     calculationType: CalculationType,
-    intentToCrystallise: Option[Boolean],
-    crystallised: Option[Boolean],
+    intentToCrystallise: Boolean,
+    crystallised: Boolean,
     calculationErrorCount: Option[Int]
 )
 
-object RetrieveCalculationMetadata {
+object CalculationMetadata {
 
-  implicit val writes: Writes[RetrieveCalculationMetadata] = Json.writes[RetrieveCalculationMetadata]
+  implicit val writes: Writes[CalculationMetadata] = Json.writes[CalculationMetadata]
 
-  implicit def reads: Reads[RetrieveCalculationMetadata] =
-    (JsPath \ "metadata").read[RetrieveCalculationMetadata](Json.reads[RetrieveCalculationMetadata])
+  implicit def reads: Reads[CalculationMetadata] =
+    (JsPath \ "metadata").read[CalculationMetadata](Json.reads[CalculationMetadata])
 
 }
