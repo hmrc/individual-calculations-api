@@ -16,6 +16,17 @@ traits:
                 description: No tax calculations can be found for the supplied NINO and tax year.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveMetadata:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveMetadata:
+                description: Tax calculation metadata could not be found for the supplied NINO and tax year.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
   clientOrAgentNotAuthorised:
     responses:
       403:

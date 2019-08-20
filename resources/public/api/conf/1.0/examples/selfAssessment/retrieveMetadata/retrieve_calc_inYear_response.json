@@ -4,5 +4,7 @@
   "requestedBy": "customer",
   "calculationReason": "customerRequest",
   "calculationTimestamp": "2019-02-15T08:22:15.094Z",
-  "calculationType": "inYear"
+  "calculationType": "inYear",
+  "intentToCrystallise": false,
+  "crystallised": false
 }

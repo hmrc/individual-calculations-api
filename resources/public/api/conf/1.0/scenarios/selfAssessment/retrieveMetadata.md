@@ -12,7 +12,11 @@
             <td><p>Simulates returning a crystallisation tax calculation</p></td>
         </tr>
         <tr>
-            <td><p>IN_YEAR_CALCULATION</p></td>
+            <td><p>CALCULATION_ERRORS_METADATA</p></td>
+            <td><p>Simulates the scenario where there are calculation errors.</p></td>
+        </tr>
+        <tr>
+            <td><p>IN_YEAR_METADATA</p></td>
             <td><p>Simulates returning a in year tax calculation</p></td>
         </tr>
         <tr>

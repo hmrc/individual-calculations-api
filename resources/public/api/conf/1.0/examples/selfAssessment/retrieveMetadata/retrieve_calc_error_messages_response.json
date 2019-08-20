@@ -5,5 +5,7 @@
   "calculationReason": "newClaimEvent",
   "calculationTimestamp": "2019-07-04T13:37:35.094Z",
   "calculationType": "inYear",
+  "intentToCrystallise": false,
+  "crystallised": false,
   "calculationErrorCount": 8
 }
