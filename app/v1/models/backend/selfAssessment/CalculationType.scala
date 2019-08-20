@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.backend.selfAssessment
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class TriggerCalculationResponse(id: String)
+sealed trait CalculationType
 
-object TriggerCalculationResponse {
-  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
+
+object CalculationType{
+  case object inYear extends CalculationType
+  case object crystallisation extends CalculationType
+
+  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
 }

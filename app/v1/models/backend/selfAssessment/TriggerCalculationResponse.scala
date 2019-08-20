@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.backend.selfAssessment
 
-import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.selfAssessment.CalculationType._
+import play.api.libs.json.{Json, OFormat}
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+case class TriggerCalculationResponse(id: String)
 
-  testRoundTrip[CalculationType](
-    ("inYear", inYear),
-    ("crystallisation", crystallisation)
-  )
+object TriggerCalculationResponse {
+  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
 }

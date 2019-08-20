@@ -17,7 +17,7 @@
 package v1.connectors
 
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.domain.selfAssessment.{CalculationListItem, CalculationType, ListCalculationsResponse}
+import v1.models.backend.selfAssessment.{CalculationListItem, CalculationType, ListCalculationsResponse}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 
