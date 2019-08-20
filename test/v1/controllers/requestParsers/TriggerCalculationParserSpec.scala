@@ -24,7 +24,7 @@ import v1.mocks.validators.MockTriggerCalculationValidator
 import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
 
-class TriggerValidationParserSpec extends UnitSpec {
+class TriggerCalculationParserSpec extends UnitSpec {
 
   val nino = "AA123456B"
   val taxYear = "2017-18"
@@ -36,7 +36,7 @@ class TriggerValidationParserSpec extends UnitSpec {
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(taxYear)))
+        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), taxYear))
@@ -45,7 +45,7 @@ class TriggerValidationParserSpec extends UnitSpec {
 
     "single validation error" should {
       "return the error" in new Test {
-        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(taxYear)))
+        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError))
@@ -54,7 +54,7 @@ class TriggerValidationParserSpec extends UnitSpec {
 
     "multiple validation errors" should {
       "return the errors" in new Test {
-        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(taxYear)))
+        val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))

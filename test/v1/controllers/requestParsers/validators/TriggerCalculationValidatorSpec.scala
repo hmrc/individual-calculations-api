@@ -32,20 +32,20 @@ class TriggerCalculationValidatorSpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.toJson(validTaxYear)))) shouldBe empty
+        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> validTaxYear)))) shouldBe empty
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(TriggerCalculationRawData("A12344A", AnyContentAsJson(Json.toJson(validTaxYear)))) shouldBe
+        validator.validate(TriggerCalculationRawData("A12344A", AnyContentAsJson(Json.obj("taxYear" -> validTaxYear)))) shouldBe
           List(NinoFormatError)
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.toJson("20178")))) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "20178")))) shouldBe
           List(TaxYearFormatError)
       }
     }
@@ -53,7 +53,7 @@ class TriggerCalculationValidatorSpec extends UnitSpec {
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
         validator.validate(
-          TriggerCalculationRawData(validNino, AnyContentAsJson(Json.toJson("2016-17")))) shouldBe
+          TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "2016-17")))) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }

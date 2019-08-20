@@ -18,7 +18,7 @@ package v1.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.{ BackendOutcome, IndividualCalculationsConnector }
-import v1.models.domain.selfAssessment.{ CalculationListItem, CalculationType, ListCalculationsResponse }
+import v1.models.backend.selfAssessment.{ CalculationListItem, CalculationType, ListCalculationsResponse }
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.ListCalculationsRequest

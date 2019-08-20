@@ -19,12 +19,13 @@ package v1.controllers.requestParsers
 import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.TriggerCalculationValidator
+import v1.models.domain.TriggerCalculation
 import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 class TriggerCalculationParser @Inject()(val validator: TriggerCalculationValidator)
   extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
 
   override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
-    TriggerCalculationRequest(Nino(data.nino), data.body.json.as[String])
+    TriggerCalculationRequest(Nino(data.nino), data.body.json.as[TriggerCalculation].taxYear)
   }
 }

@@ -20,7 +20,7 @@ import config.AppConfig
 import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import v1.models.domain.selfAssessment.ListCalculationsResponse
+import v1.models.backend.selfAssessment.ListCalculationsResponse
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.connectors.httpparsers.StandardHttpParser._
 

@@ -14,17 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.domain
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import play.api.libs.json.Json
+import support.UnitSpec
 
-sealed trait CalculationRequestor
+class TriggerCalculationSpec extends UnitSpec {
 
-object CalculationRequestor{
-  case object customer extends CalculationRequestor
-  case object hmrc extends CalculationRequestor
-  case object agent extends CalculationRequestor
+  val json = Json.parse(
+    """{
+      |  "taxYear" : "2018-19"
+      |}""".stripMargin)
 
-  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
+  val response = TriggerCalculation("2018-19")
+
+  "JSON writes" must {
+    "align with spec" in {
+      Json.toJson(response) shouldBe json
+    }
+  }
+
+  "JSON reads" must {
+    "align with back-end response" in {
+      json.as[TriggerCalculation] shouldBe response
+    }
+  }
+
 }
