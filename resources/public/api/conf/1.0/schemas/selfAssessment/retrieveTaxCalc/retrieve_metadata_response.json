@@ -23,7 +23,7 @@
     "calculationReason" : {
       "description": "The reason why the calculation was triggered",
       "type": "string",
-      "enum" : ["customerRequest", "class2NICEvent", "newLossEvent", "newClaimEvent", "updatedClaimEvent","updatedLossEvent." ]
+      "enum" : ["customerRequest", "class2NICEvent", "newLossEvent", "newClaimEvent", "updatedClaimEvent","updatedLossEvent" ]
     },
     "calculationTimestamp": {
       "description": "The timestamp of when the calculation was performed in ISO8601 UTC format: YYYY-MM-DDThh:mm:ssZ.",
@@ -36,10 +36,10 @@
       "enum": ["inYear", "crystallisation"]
     },
     "intentToCrystallise": {
-      "description": "Boolean value showing whether the calculation is intended to be crystallised against, this field will only be displayed if the value is true"
+      "description": "Boolean value showing whether the calculation is intended to be crystallised against. Valid values are true or false"
     },
     "crystallised": {
-      "description": "Boolean value showing whether the calculation is intended to be crystallised against, this field will only be displayed if the value is true"
+      "description": "Boolean value showing whether the calculation is intended to be crystallised against. Valid values are true or false"
     },
     "calculationErrorCount": {
       "description": "The number of error messages that were generated while attempting to perform the calculation. If this field is present then a calculation has not been performed, details of why the calculation has not been performed can be viewed by looking at the error messages under the \"Retrieve self assessment tax calculation messages\" endpoint"

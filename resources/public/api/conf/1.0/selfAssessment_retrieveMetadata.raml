@@ -16,18 +16,19 @@ responses:
  202:
    body:
      application/json:
-       type: !include schemas/selfAssessment/retrieveMetadata/retrieve_response.json
+       type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_metadata_response.json
        examples:
          example-1:
             description: Retrieve Calculation Metadata for Crystallisation Calculation
             value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_crystallisation_response.json
          example-2:
-            description: Retrieve Calculation Metadata with Error Messages
-            value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_error_messages_response.json
-         example-3:
            description: Retrieve Calculation Metadata for In Year Calculation
            value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_inYear_response.json
+         example-3:
+            description: Retrieve Calculation Metadata with Error Messages
+            value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_error_messages_response.json
+
    headers:
-     X-CorrelationId:
-       example: a1e8057e-fbbc-47a8-a8b4-78d9f015c253
-       description: Unique identifier of the transaction, String <br> Format∶ ^[A-Za-z0-9\-]{36}$.
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.

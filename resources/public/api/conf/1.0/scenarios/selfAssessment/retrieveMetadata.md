@@ -17,7 +17,7 @@
         </tr>
         <tr>
             <td><p>IN_YEAR_METADATA</p></td>
-            <td><p>Simulates returning a in year tax calculation</p></td>
+            <td><p>Simulates returning an in-year tax calculation</p></td>
         </tr>
         <tr>
             <td><p>NOT_FOUND</p></td>
