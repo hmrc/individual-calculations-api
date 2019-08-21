@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.domain.selfAssessment
 
-import play.api.libs.json.{ JsObject, Json }
+package v1.models.backend.selfAssessment
+
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
 
-class CalculationMetatdataSpec extends UnitSpec {
+class CalculationMetadataSpec extends UnitSpec {
 
   val vendorJson = Json.parse("""{
                                 |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
