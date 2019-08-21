@@ -11,10 +11,22 @@ traits:
         body:
           application/json:
             type: types.errorResponse
-            example:
-              description: No tax calculations can be found for the supplied NINO and tax year.
-              value:
-                code: MATCHING_RESOURCE_NOT_FOUND
+            examples:
+              notFoundListCalculations:
+                description: No tax calculations can be found for the supplied NINO and tax year.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveMetadata:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveMetadata:
+                description: Tax calculation metadata could not be found for the supplied NINO and tax year.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
   clientOrAgentNotAuthorised:
     responses:
       403:
@@ -48,6 +60,17 @@ traits:
                 description: The format of the supplied tax year field is not valid
                 value:
                   code: FORMAT_TAX_YEAR
+  formatCalcId:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              formatCalcId:
+                description: The provided Calculation ID is not valid
+                value:
+                  code: FORMAT_CALC_ID
   incorrectOrEmptyBody:
     responses:
       400:

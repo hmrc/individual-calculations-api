@@ -1,0 +1,10 @@
+{
+  "id": "b03921dc-8e23-5e8a-bf0e-55a8e3904673",
+  "taxYear": "2018-19",
+  "requestedBy": "customer",
+  "calculationReason": "customerRequest",
+  "calculationTimestamp": "2019-02-15T08:22:15.094Z",
+  "calculationType": "inYear",
+  "intentToCrystallise": false,
+  "crystallised": false
+}

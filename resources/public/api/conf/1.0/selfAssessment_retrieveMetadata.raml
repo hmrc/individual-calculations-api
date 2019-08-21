@@ -1,0 +1,34 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatCalcId
+  - errors.notFoundRetrieveMetadata
+  - errors.clientOrAgentNotAuthorised
+  - errors.incorrectOrEmptyBody
+displayName: Retrieve a Self Assessment Tax Calculation Metadata [test only]
+description: The "Retrieve a Self Assessment Tax Calculation Metadata" endpoint allows users to retrieve high level calculation metadata for a given calculation ID. There will always be calculation metadata associated to a calculation ID that exists within HMRC.
+(annotations.sandboxData): !include scenarios/selfAssessment/retrieveMetadata.md
+(annotations.scope): "read:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
+responses:
+ 202:
+   body:
+     application/json:
+       type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_metadata_response.json
+       examples:
+         example-1:
+            description: Retrieve Calculation Metadata for Crystallisation Calculation
+            value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_crystallisation_response.json
+         example-2:
+           description: Retrieve Calculation Metadata for In Year Calculation
+           value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_inYear_response.json
+         example-3:
+            description: Retrieve Calculation Metadata with Error Messages
+            value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_error_messages_response.json
+
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.
