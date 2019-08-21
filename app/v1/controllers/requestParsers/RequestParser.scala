@@ -16,8 +16,9 @@
 
 package v1.controllers.requestParsers
 
+import play.api.http.Status._
 import v1.controllers.requestParsers.validators.Validator
-import v1.models.errors.{BadRequestError, ErrorWrapper}
+import v1.models.errors.{ BadRequestError, ErrorWrapper, MtdErrors }
 import v1.models.requestData.RawData
 
 trait RequestParser[Raw <: RawData, Request] {
@@ -28,9 +29,9 @@ trait RequestParser[Raw <: RawData, Request] {
 
   def parseRequest(data: Raw): Either[ErrorWrapper, Request] = {
     validator.validate(data) match {
-      case Nil => Right(requestFor(data))
-      case err :: Nil => Left(ErrorWrapper(None, err, None))
-      case errs => Left(ErrorWrapper(None, BadRequestError, Some(errs)))
+      case Nil        => Right(requestFor(data))
+      case err :: Nil => Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, err, None)))
+      case errs       => Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(errs))))
     }
   }
 }

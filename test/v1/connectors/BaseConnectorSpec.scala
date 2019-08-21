@@ -43,7 +43,6 @@ class BaseConnectorSpec extends ConnectorSpec {
       val appConfig = mockAppConfig
     }
     MockedAppConfig.backendBaseUrl returns baseUrl
-//    MockedAppConfig.backendToken returns "individual-calculations-token"
   }
 
   "post" must {
@@ -57,14 +56,6 @@ class BaseConnectorSpec extends ConnectorSpec {
   }
 
   "get" must {
-    "get with the required backend headers and return the result without query parameters" in new Test {
-      MockedHttpClient
-        .get(absoluteUrl, "Authorization" -> s"Bearer user-token")
-        .returns(Future.successful(outcome))
-
-      await(connector.get(url)) shouldBe outcome
-    }
-
     "get with the required backend headers and return the result with query parameters" in new Test {
       MockedHttpClient
         .get(absoluteUrl, Seq(("key", "value")), "Authorization" -> s"Bearer user-token")

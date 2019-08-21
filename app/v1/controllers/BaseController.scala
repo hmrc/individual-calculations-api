@@ -45,13 +45,13 @@ trait BaseController {
       case Some(correlationId) =>
         logger.info(
           s"[${endpointLogContext.controllerName}][getCorrelationId] - " +
-            s"Error received from backend ${Json.toJson(errorWrapper)} with CorrelationId: $correlationId")
+            s"Error received from backend ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
         correlationId
       case None =>
         val correlationId = UUID.randomUUID().toString
         logger.info(
           s"[${endpointLogContext.controllerName}][getCorrelationId] - " +
-            s"Validation error: ${Json.toJson(errorWrapper)} with CorrelationId: $correlationId")
+            s"Validation error: ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
         correlationId
     }
   }

@@ -19,10 +19,10 @@ package v1.connectors
 import config.AppConfig
 import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpReads }
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 trait BaseConnector {
   val http: HttpClient
@@ -32,33 +32,26 @@ trait BaseConnector {
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier = hc
 
+  private def urlFrom(uri: String): String =
+    if (uri.startsWith("/")) s"${appConfig.backendBaseUrl}$uri" else s"${appConfig.backendBaseUrl}/$uri"
+
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
-                                                           hc: HeaderCarrier,
-                                                           httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+                                                     hc: HeaderCarrier,
+                                                     httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
-      http.POST(s"${appConfig.backendBaseUrl}/$uri", body)
+      http.POST(urlFrom(uri), body)
     }
 
     doPost(headerCarrier(hc))
   }
 
-  def get[T](uri: String)(implicit ec: ExecutionContext,
-                                hc: HeaderCarrier,
-                                httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+  def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,
+                                                                        hc: HeaderCarrier,
+                                                                        httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
-      http.GET(s"${appConfig.backendBaseUrl}/$uri")
-
-    doGet(headerCarrier(hc))
-  }
-
-  def get[T](uri: String, queryParameters: Seq[(String, String)])(implicit ec: ExecutionContext,
-                                hc: HeaderCarrier,
-                                httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
-
-    def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
-      http.GET(s"${appConfig.backendBaseUrl}/$uri", queryParameters)
+      http.GET(urlFrom(uri), queryParameters)
 
     doGet(headerCarrier(hc))
   }

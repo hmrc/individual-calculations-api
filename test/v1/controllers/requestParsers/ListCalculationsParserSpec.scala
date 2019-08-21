@@ -19,8 +19,9 @@ package v1.controllers.requestParsers
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockListCalculationsValidator
-import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
+import v1.models.errors.{BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError}
 import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import play.api.http.Status._
 
 class ListCalculationsParserSpec extends UnitSpec {
   val nino = "AA123456B"
@@ -45,7 +46,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
       }
     }
 
@@ -54,7 +55,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))))
       }
     }
   }

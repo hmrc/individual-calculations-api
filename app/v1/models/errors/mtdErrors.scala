@@ -16,7 +16,28 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{JsValue, Json, Writes}
+
+case class MtdErrors(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None)
+
+object MtdErrors {
+  implicit val writes: Writes[MtdErrors] = new Writes[MtdErrors] {
+    override def writes(errorResponse: MtdErrors): JsValue = {
+
+      val json = Json.obj(
+        "code"    -> errorResponse.error.code,
+        "message" -> errorResponse.error.message
+      )
+
+      errorResponse.errors match {
+        case Some(errors) if errors.nonEmpty => json + ("errors" -> Json.toJson(errors))
+        case _                               => json
+      }
+
+    }
+  }
+
+}
 
 case class MtdError(code: String, message: String)
 
@@ -24,7 +45,7 @@ object MtdError {
   implicit val writes: Writes[MtdError] = Json.writes[MtdError]
 }
 
-object NinoFormatError extends MtdError("FORMAT_NINO", "The provided NINO is invalid")
+object NinoFormatError    extends MtdError("FORMAT_NINO", "The provided NINO is invalid")
 object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The provided tax year is invalid")
 
 // Rule Errors
@@ -50,10 +71,10 @@ object ServiceUnavailableError extends MtdError("SERVICE_UNAVAILABLE", "Internal
 object InvalidBodyTypeError extends MtdError("INVALID_BODY_TYPE", "Expecting text/json or application/json body")
 
 //Authorisation Errors
-object UnauthorisedError extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
+object UnauthorisedError       extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client and/or agent is not authorised")
 object InvalidBearerTokenError extends MtdError("UNAUTHORIZED", "Bearer token is missing or not authorized")
 
 // Accept header Errors
-object  InvalidAcceptHeaderError extends MtdError("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
+object InvalidAcceptHeaderError extends MtdError("ACCEPT_HEADER_INVALID", "The accept header is missing or invalid")
 
-object  UnsupportedVersionError extends MtdError("NOT_FOUND", "The requested resource could not be found")
+object UnsupportedVersionError extends MtdError("NOT_FOUND", "The requested resource could not be found")

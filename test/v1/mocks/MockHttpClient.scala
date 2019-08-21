@@ -30,14 +30,6 @@ trait MockHttpClient extends MockFactory {
 
   object MockedHttpClient {
 
-    def get[T](url: String, requiredHeaders: (String, String)*): CallHandler[Future[T]] = {
-      (mockHttpClient
-        .GET(_: String)(_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
-        .expects(where { (actualUrl, _, hc, _) =>
-          url == actualUrl && requiredHeaders.forall(h => hc.headers.contains(h))
-        })
-    }
-
     def get[T](url: String, queryParameters: Seq[(String, String)], requiredHeaders: (String, String)*): CallHandler[Future[T]] = {
       (mockHttpClient
         .GET(_: String, _: Seq[(String, String)])(_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))

@@ -16,77 +16,70 @@
 
 package v1.controllers.selfAssessment
 
-import cats.data.EitherT
-import cats.implicits._
-import javax.inject.{ Inject, Singleton }
-import play.api.http.MimeTypes
-import play.api.libs.json.Json
-import play.api.mvc.{ Action, AnyContent, ControllerComponents }
-import utils.Logging
+import javax.inject.{Inject, Singleton}
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
+import v1.controllers.{EndpointLogContext, StandardController}
 import v1.controllers.requestParsers.ListCalculationsParser
-import v1.controllers.{ AuthorisedController, BaseController, EndpointLogContext }
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.backend.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRawData
+import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 import v1.services._
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class ListCalculationsController @Inject()(
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
     listCalculationsParser: ListCalculationsParser,
-    listCalculationsService: ListCalculationsService,
+    service: StandardService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc)
-    with BaseController
-    with Logging {
+    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse](
+      authService,
+      lookupService,
+      listCalculationsParser,
+      service,
+      cc) {
+  controller =>
 
-  implicit val endpointLogContext: EndpointLogContext =
+  val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "ListCalculationsController",
       endpointName = "listCalculations"
     )
 
+  override val successCode: SuccessCode = SuccessCode(OK)
+
+  override def requestHandlingFor(playRequest: Request[_],
+                                  req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse, ListCalculationsResponse] = {
+    RequestHandling[ListCalculationsResponse](
+      RequestDefn
+        .Get(playRequest.path)
+        .withOptionalParams("taxYear" -> req.taxYear))
+      .withPassThroughErrors(
+        NinoFormatError,
+        TaxYearFormatError,
+        RuleTaxYearNotSupportedError,
+        RuleTaxYearRangeExceededError,
+        NotFoundError,
+        DownstreamError
+      )
+      .mapSuccess(notFoundErrorWhenEmpty)
+  }
+
   def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = ListCalculationsRawData(nino, taxYear)
-      val result =
-        for {
-          parsedRequest   <- EitherT.fromEither[Future](listCalculationsParser.parseRequest(rawData))
-          backendResponse <- EitherT(listCalculationsService.listCalculations(parsedRequest))
-          response  <- EitherT.fromEither[Future](notFoundErrorWhenEmpty(backendResponse))
-        } yield {
-          logger.info(
-            s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-              s"Success response received with CorrelationId: ${response.correlationId}"
-          )
 
-          Ok(Json.toJson(response.responseData))
-            .withApiHeaders(response.correlationId)
-            .as(MimeTypes.JSON)
-        }
-
-      result.leftMap { errorWrapper =>
-        val correlationId = getCorrelationId(errorWrapper)
-        errorResult(errorWrapper).withApiHeaders(correlationId)
-      }.merge
+      doHandleRequest(rawData)
     }
 
   private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse]) =
     responseWrapper.toErrorWhen {
-      case response if response.calculations.isEmpty => NotFoundError
+      case response if response.calculations.isEmpty => MtdErrors(NOT_FOUND, NotFoundError)
     }
-
-  private def errorResult(errorWrapper: ErrorWrapper) = {
-    errorWrapper.error match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearNotSupportedError | RuleTaxYearRangeExceededError =>
-        BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError   => NotFound(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-    }
-  }
 }

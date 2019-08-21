@@ -18,20 +18,20 @@ package v1.models.errors
 
 import play.api.libs.json.{ Json, Reads }
 
-case class BackendErrorCode(code: String) {
-  def toMtd: MtdError = MtdError(code = code, message = "")
-}
+case class BackendErrorCode(code: String)
 
 object BackendErrorCode {
   implicit val reads: Reads[BackendErrorCode] = Json.reads[BackendErrorCode]
 }
 
-sealed trait BackendError
-
-case class BackendErrors(errors: List[BackendErrorCode]) extends BackendError
-
-object BackendErrors {
-  def single(error: BackendErrorCode): BackendErrors = BackendErrors(List(error))
+sealed trait BackendError {
+  def statusCode: Int
 }
 
-case class OutboundError(error: MtdError, errors: Option[Seq[MtdError]] = None) extends BackendError
+case class BackendErrors(statusCode: Int, errors: List[BackendErrorCode]) extends BackendError
+
+object BackendErrors {
+  def single(statusCode: Int, error: BackendErrorCode): BackendErrors = BackendErrors(statusCode, List(error))
+}
+
+case class OutboundError(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None) extends BackendError

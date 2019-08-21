@@ -18,23 +18,22 @@ package v1.connectors
 
 import config.AppConfig
 import javax.inject.Inject
+import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import v1.models.backend.selfAssessment.ListCalculationsResponse
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
 import v1.connectors.httpparsers.StandardHttpParser._
+import v1.handling.RequestDefn
+import v1.handling.RequestDefn.{Get, Post}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndividualCalculationsConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
+class StandardConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
-  def listTaxCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
-                                                            ec: ExecutionContext): Future[BackendOutcome[ListCalculationsResponse]] = {
-    val uri = s"${request.nino.nino}/self-assessment"
-
-    request.taxYear match {
-      case Some(year) => get(uri, Seq(("taxYear", year)))
-      case _ => get(uri)
+  def doRequest[Resp: Reads](
+      request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext, successCode: SuccessCode): Future[BackendOutcome[Resp]] = {
+    request match {
+      case Get(uri, params) => get(uri, params)
+      case Post(uri, body)  => post(body, uri)
     }
   }
 }

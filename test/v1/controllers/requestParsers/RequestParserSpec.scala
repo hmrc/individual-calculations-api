@@ -16,10 +16,11 @@
 
 package v1.controllers.requestParsers
 
+import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.Validator
-import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
+import v1.models.errors.{BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, RuleIncorrectOrEmptyBodyError}
 import v1.models.requestData.RawData
 
 class RequestParserSpec extends UnitSpec {
@@ -57,7 +58,7 @@ class RequestParserSpec extends UnitSpec {
           def validate(data: Raw) = List(NinoFormatError)
         }
 
-        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, NinoFormatError, None))
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
       }
     }
 
@@ -67,7 +68,8 @@ class RequestParserSpec extends UnitSpec {
           def validate(data: Raw) = List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
         }
 
-        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError))))
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None,
+          MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError)))))
       }
     }
   }
