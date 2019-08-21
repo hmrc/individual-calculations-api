@@ -110,6 +110,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
 
     "return the error as per spec" when {
       "parser errors occurs" in new Test {
+        // WLOG
         val statusCode = BAD_REQUEST
         val error      = NinoFormatError
 
