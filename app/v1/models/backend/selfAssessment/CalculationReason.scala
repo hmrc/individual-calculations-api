@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.backend.selfAssessment
 
 import play.api.libs.json.Format
 import utils.enums.Enums

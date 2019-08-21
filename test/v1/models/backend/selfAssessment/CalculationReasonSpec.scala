@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.domain.selfAssessment
+
+package v1.models.backend.selfAssessment
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.selfAssessment.CalculationReason._
+import v1.models.backend.selfAssessment.CalculationReason._
 
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
