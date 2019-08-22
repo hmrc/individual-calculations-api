@@ -73,7 +73,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
   private def uri = "/"
 
   "handleRequest" should {
-    "return OK with list of calculations" when {
+    "return ACCEPTED with list of calculations" when {
       "happy path" in new Test {
         MockTriggerCalculationParser
           .parse(rawData)

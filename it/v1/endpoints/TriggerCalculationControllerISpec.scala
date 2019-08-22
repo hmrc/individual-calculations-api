@@ -50,7 +50,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
   "Calling the triggerCalculation endpoint" should {
 
-    "return a 200 status code" when {
+    "return a 202 status code" when {
 
       val successBody = Json.parse(
         """
