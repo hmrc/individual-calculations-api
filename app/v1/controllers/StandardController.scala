@@ -31,7 +31,7 @@ import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes](
+abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes, A](
     val authService: EnrolmentsAuthService,
     val lookupService: MtdIdLookupService,
     parser: RequestParser[Raw, Req],
@@ -45,11 +45,11 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[_], req: Req): RequestHandling[BackendResp, APIResp]
+  def requestHandlingFor(playRequest: Request[A], req: Req): RequestHandling[BackendResp, APIResp]
 
   val successCode: SuccessCode
 
-  def doHandleRequest(rawData: Raw)(implicit request: Request[AnyContent]): Future[Result] = {
+  def doHandleRequest(rawData: Raw)(implicit request: Request[A]): Future[Result] = {
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))

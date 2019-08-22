@@ -19,7 +19,7 @@ package v1.controllers
 import cats.implicits._
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json.{Format, Json, Reads, Writes}
-import play.api.mvc.{Request, Result}
+import play.api.mvc.{AnyContent, Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -71,7 +71,8 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
 
     val hc = HeaderCarrier()
 
-    val controller: StandardController[Raw, RequestData, BackendResp, APIResp] = new StandardController[Raw, RequestData, BackendResp, APIResp](
+    val controller: StandardController[Raw, RequestData, BackendResp, APIResp, AnyContent] =
+      new StandardController[Raw, RequestData, BackendResp, APIResp, AnyContent](
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockParser,
@@ -80,7 +81,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
     ) {
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
-      override def requestHandlingFor(playRequest: Request[_], req: RequestData) = {
+      override def requestHandlingFor(playRequest: Request[AnyContent], req: RequestData) = {
         RequestHandling[BackendResp](requestDefn)
           .mapSuccess(_.map(_ => mappedResponse).asRight)
       }
