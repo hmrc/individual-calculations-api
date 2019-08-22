@@ -17,6 +17,7 @@
 package v1.controllers.selfAssessment
 
 import javax.inject.{Inject, Singleton}
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.{EndpointLogContext, StandardController}
@@ -38,7 +39,7 @@ class ListCalculationsController @Inject()(
     service: StandardService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse](
+    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse, AnyContent](
       authService,
       lookupService,
       listCalculationsParser,
@@ -54,7 +55,7 @@ implicit  val endpointLogContext: EndpointLogContext =
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[_],
+  override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse, ListCalculationsResponse] = {
     RequestHandling[ListCalculationsResponse](
       RequestDefn

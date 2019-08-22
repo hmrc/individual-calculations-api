@@ -1,14 +1,12 @@
 is:
   - headers.acceptJson
-  - headers.contentTypeJson
   - headers.testScenarioHeader
   - errors.formatNino
   - errors.formatCalcId
   - errors.notFoundRetrieveMetadata
   - errors.clientOrAgentNotAuthorised
-  - errors.incorrectOrEmptyBody
-displayName: Retrieve a Self Assessment Tax Calculation Metadata [test only]
-description: The "Retrieve a Self Assessment Tax Calculation Metadata" endpoint allows users to retrieve high level calculation metadata for a given calculation ID. There will always be calculation metadata associated to a calculation ID that exists within HMRC.
+displayName: Retrieve Self Assessment Tax Calculation Metadata [test only]
+description: The "Retrieve Self Assessment Tax Calculation Metadata" endpoint allows users to retrieve high level calculation metadata for a given calculation ID. There will always be calculation metadata associated to a calculation ID that exists within HMRC.
 (annotations.sandboxData): !include scenarios/selfAssessment/retrieveMetadata.md
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]

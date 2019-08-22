@@ -1,3 +1,3 @@
 GET       /:nino/self-assessment              v1.controllers.selfAssessment.ListCalculationsController.listCalculations(nino: String, taxYear: Option[String])
-
 GET       /:nino/self-assessment/:calcId      v1.controllers.selfAssessment.RetrieveCalculationMetadataController.retrieveMetadata(nino: String, calcId: String)
+POST      /:nino/self-assessment              v1.controllers.selfAssessment.TriggerCalculationController.triggerCalculation(nino: String)
