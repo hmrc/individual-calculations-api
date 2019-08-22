@@ -46,7 +46,7 @@ class ListCalculationsController @Inject()(
       cc) {
   controller =>
 
-  val endpointLogContext: EndpointLogContext =
+implicit  val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "ListCalculationsController",
       endpointName = "listCalculations"

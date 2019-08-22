@@ -18,6 +18,7 @@ package v1.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.Matchers
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.handling.{ RequestDefn, RequestHandling }
@@ -28,18 +29,29 @@ import v1.services.StandardService
 import scala.concurrent.{ ExecutionContext, Future }
 
 trait MockStandardService extends MockFactory {
+  self: Matchers =>
 
   val mockStandardService: StandardService = mock[StandardService]
 
   object MockStandardService {
 
     def doService[Resp, _](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
+
+      val correctRequestHandling = argAssert { (actualRequestHandling: RequestHandling[Resp, _]) =>
+        actualRequestHandling.requestDefn shouldBe requestDefn
+        actualRequestHandling.successCode.status shouldBe successStatus
+      }
+
       (mockStandardService
         .doService(_: RequestHandling[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(where { (actualRequestHandling: RequestHandling[Resp, _], _, _, _) =>
-          actualRequestHandling.requestDefn == requestDefn && actualRequestHandling.successCode.status == successStatus
-        })
+        .expects(correctRequestHandling, *, *, *)
+    }
+
+    def doServiceWithMappings[BackendResp, APIResp](
+        mappingAssertion: RequestHandling[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
+      (mockStandardService
+        .doService(_: RequestHandling[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .expects(argAssert(mappingAssertion), *, *, *)
     }
   }
-
 }

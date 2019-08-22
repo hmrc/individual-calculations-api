@@ -20,14 +20,16 @@ import play.api.libs.json.Json
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.Logging
 import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockListCalculationsParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.backend.selfAssessment.{CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse}
+import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.models.backend.selfAssessment.{ CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse }
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.requestData.selfAssessment.{ ListCalculationsRawData, ListCalculationsRequest }
+import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -119,6 +121,31 @@ class ListCalculationsControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
+    }
+
+    "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
+      MockListCalculationsParser
+        .parse(rawData)
+        .returns(Right(requestData))
+
+      import controller.endpointLogContext
+
+      val mappingChecks = allChecks[ListCalculationsResponse, ListCalculationsResponse](
+        ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
+        ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
+        ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
+        ("RULE_TAX_YEAR_RANGE_EXCEEDED", BAD_REQUEST, RuleTaxYearRangeExceededError, BAD_REQUEST),
+        ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
+        ("SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
+      )
+
+      MockStandardService
+        .doServiceWithMappings(mappingChecks)
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
+
+      val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
+
+      header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
 }

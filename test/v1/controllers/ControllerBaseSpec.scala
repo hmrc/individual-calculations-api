@@ -16,17 +16,25 @@
 
 package v1.controllers
 
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
-import play.api.test.{FakeRequest, ResultExtractors}
-import support.UnitSpec
+import play.api.http.{ HeaderNames, MimeTypes, Status }
+import play.api.mvc.{ AnyContentAsEmpty, ControllerComponents }
 import play.api.test.Helpers.stubControllerComponents
+import play.api.test.{ FakeRequest, ResultExtractors }
+import support.UnitSpec
+import utils.Logging
+import v1.handling.RequestHandling
+import v1.models.errors._
+import v1.models.outcomes.ResponseWrapper
+import v1.support.BackendResponseMappingSupport
 
-class ControllerBaseSpec extends UnitSpec
-  with Status
-  with MimeTypes
-  with HeaderNames
-  with ResultExtractors {
+class ControllerBaseSpec
+    extends UnitSpec
+    with Status
+    with MimeTypes
+    with HeaderNames
+    with ResultExtractors
+    with BackendResponseMappingSupport
+    with Logging {
 
   implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
@@ -36,10 +44,29 @@ class ControllerBaseSpec extends UnitSpec
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
 
-
   def fakeGetRequest(url: String): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", url).withHeaders(
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
 
   def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
+
+  def errorMappingCheck[BackendResp, APIResp](backendCode: String, backendStatus: Int, mtdError: MtdError, status: Int)(
+      implicit endpointLogContext: EndpointLogContext): RequestHandling[BackendResp, APIResp] => Unit =
+    (requestHandling: RequestHandling[BackendResp, APIResp]) => {
+
+      val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
+      val requiredError = ErrorWrapper(Some("ignoredCorrelationId"), MtdErrors(status, mtdError))
+
+      mapBackendErrors(requestHandling.passThroughErrors, requestHandling.customErrorMapping)(inputResponse) shouldBe
+        requiredError
+    }
+
+  def allChecks[BackendResp, APIResp](params: (String, Int, MtdError, Int)*)(
+      implicit endpointLogContext: EndpointLogContext): RequestHandling[BackendResp, APIResp] => Unit = { requestHandling =>
+    params
+      .map {
+        case (backendCode, backendStatus, mtdError, status) => errorMappingCheck[BackendResp, APIResp](backendCode, backendStatus, mtdError, status)
+      }
+      .foreach(check => check(requestHandling))
+  }
 }

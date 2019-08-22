@@ -20,12 +20,12 @@ import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.connectors.{ BackendOutcome, StandardConnector }
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.connectors.{BackendOutcome, StandardConnector}
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 class StandardServiceSpec extends ServiceSpec {
   test =>
@@ -42,9 +42,7 @@ class StandardServiceSpec extends ServiceSpec {
 
     (mockConnector
       .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode))
-      .expects(where { (request, _, _, _, _) =>
-        request == requestDefn
-      })
+      .expects(requestDefn, *, *, *, *)
       .returns(response)
 
     val service = new StandardService(mockConnector)
