@@ -21,12 +21,12 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.Matchers
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.services.StandardService
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 trait MockStandardService extends MockFactory {
   self: Matchers =>
