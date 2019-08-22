@@ -135,7 +135,6 @@ class RetrieveCalculationMetadataControllerISpec extends IntegrationBaseSpec {
         val input = Seq(
           (BAD_REQUEST, "FORMAT_NINO", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError),
-          (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError),
           (NOT_FOUND, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError),
           (INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError)
         )
