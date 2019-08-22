@@ -80,12 +80,12 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), OK)
+          .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
 
-        status(result) shouldBe OK
+        status(result) shouldBe ACCEPTED
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }

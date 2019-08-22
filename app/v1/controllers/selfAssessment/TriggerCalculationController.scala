@@ -49,7 +49,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
       endpointName = "triggerCalculation"
     )
 
-  override val successCode: SuccessCode = SuccessCode(OK)
+  override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlingFor(playRequest: Request[JsValue],
                                   req: TriggerCalculationRequest): RequestHandling[TriggerCalculationResponse, TriggerCalculationResponse] = {
@@ -64,7 +64,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
         RuleNoIncomeSubmissionsExistError,
         RuleIncorrectOrEmptyBodyError
       )
-      .withRequestSuccessCode(OK)
+      .withRequestSuccessCode(ACCEPTED)
 
   }
 

@@ -64,12 +64,12 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, successBody)
         }
 
         val response: WSResponse = await(request.post(Json.parse("""{"taxYear" : "2018-19"}""")))
 
-        response.status shouldBe OK
+        response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successBody
       }
