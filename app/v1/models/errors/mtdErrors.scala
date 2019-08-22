@@ -47,6 +47,7 @@ object MtdError {
 
 object NinoFormatError    extends MtdError("FORMAT_NINO", "The provided NINO is invalid")
 object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The provided tax year is invalid")
+object CalculationIdFormatError extends MtdError("FORMAT_CALC_ID", "The provided Calculation ID is invalid")
 
 // Rule Errors
 object RuleTaxYearNotSupportedError
