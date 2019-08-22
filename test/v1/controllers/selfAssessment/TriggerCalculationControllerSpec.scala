@@ -21,20 +21,22 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsJson, ControllerComponents, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.Logging
 import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.backend.selfAssessment.{ListCalculationsResponse, TriggerCalculationResponse}
 import v1.models.domain.TriggerCalculation
-import v1.models.errors.NotFoundError
+import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class TriggerCalculationControllerSpec extends ControllerBaseSpec with GuiceOneAppPerSuite
+class TriggerCalculationControllerSpec extends ControllerBaseSpec
   with MockEnrolmentsAuthService
   with MockMtdIdLookupService
   with MockTriggerCalculationParser
@@ -87,6 +89,32 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec with GuiceOneA
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
+    }
+
+    "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
+      MockTriggerCalculationParser
+        .parse(rawData)
+        .returns(Right(requestData))
+
+      import controller.endpointLogContext
+
+      val mappingChecks = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
+        ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
+        ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
+        ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
+        ("RULE_TAX_YEAR_RANGE_EXCEEDED", BAD_REQUEST, RuleTaxYearRangeExceededError, BAD_REQUEST),
+        ("RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", BAD_REQUEST, RuleIncorrectOrEmptyBodyError, BAD_REQUEST),
+        ("RULE_NO_INCOME_SUBMISSIONS_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError, FORBIDDEN),
+        ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
+      )
+
+      MockStandardService
+        .doServiceWithMappings(mappingChecks)
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse("fakeId")))))
+
+      val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
+
+      header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
 }
