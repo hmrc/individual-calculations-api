@@ -37,7 +37,7 @@ class RetrieveCalculationMetadataController @Inject()(
                                                        service: StandardService,
                                                        cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends StandardController[RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest, CalculationMetadata, CalculationMetadata](
+    extends StandardController[RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest, CalculationMetadata, CalculationMetadata, AnyContent](
       authService,
       lookupService,
       parser,
@@ -48,7 +48,7 @@ class RetrieveCalculationMetadataController @Inject()(
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "RetrieveCalculationMetadataController", endpointName = "retrieveMetadata")
 
-  override def requestHandlingFor(playRequest: Request[_],
+  override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: RetrieveCalculationMetadataRequest): RequestHandling[CalculationMetadata,CalculationMetadata] =
     RequestHandling[CalculationMetadata](
       RequestDefn.Get(playRequest.path))
