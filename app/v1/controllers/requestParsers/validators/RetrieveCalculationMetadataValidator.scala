@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.controllers.requestParsers.validators
-import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer.Vanilla
+
 import v1.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation}
 import v1.models.errors.{CalculationIdFormatError, MtdError}
 import v1.models.requestData.selfAssessment.RetrieveCalculationMetadataRawData
