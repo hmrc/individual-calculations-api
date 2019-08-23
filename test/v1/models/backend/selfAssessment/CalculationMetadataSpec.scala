@@ -16,24 +16,25 @@
 
 package v1.models.backend.selfAssessment
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
 
 class CalculationMetadataSpec extends UnitSpec {
 
-  val vendorJson = Json.parse("""{
-                                |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                |    "taxYear": "2018-19",
-                                |    "requestedBy": "customer",
-                                |    "calculationReason": "customerRequest",
-                                |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                |    "calculationType": "crystallisation",
-                                |    "intentToCrystallise": true,
-                                |    "crystallised": false,
-                                |    "calculationErrorCount": 123
-                                |}""".stripMargin)
-
-  val backendJson = JsObject(Seq("metadata" -> vendorJson))
+  val json = Json.parse("""{
+                          |  "metadata": {
+                          |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                          |    "taxYear": "2018-19",
+                          |    "requestedBy": "customer",
+                          |    "calculationReason": "customerRequest",
+                          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                          |    "calculationType": "crystallisation",
+                          |    "intentToCrystallise": true,
+                          |    "crystallised": false,
+                          |    "calculationErrorCount": 123
+                          |  }
+                          |}
+                          |""".stripMargin)
 
   val metadata = CalculationMetadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -50,13 +51,13 @@ class CalculationMetadataSpec extends UnitSpec {
   "RetrieveCalculationMetatdata" when {
     "written to JSON" should {
       "take the form specified" in {
-        Json.toJson[CalculationMetadata](metadata) shouldBe vendorJson
+        Json.toJson[CalculationMetadata](metadata) shouldBe json
       }
     }
 
     "read from json" should {
       "read from metadata top level field" in {
-        backendJson.as[CalculationMetadata] shouldBe metadata
+        json.as[CalculationMetadata] shouldBe metadata
       }
     }
   }

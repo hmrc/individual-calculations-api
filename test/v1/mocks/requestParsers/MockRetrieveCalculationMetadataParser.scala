@@ -24,7 +24,7 @@ import v1.models.requestData.selfAssessment.{RetrieveCalculationMetadataRawData,
 
 trait MockRetrieveCalculationMetadataParser extends MockFactory {
 
-  private val mockRetrieveCalculationMetadataParser = mock[RetrieveCalculationMetadataParser]
+  val mockRetrieveCalculationMetadataParser = mock[RetrieveCalculationMetadataParser]
 
   object MockRetrieveCalculationMetadataParser {
     def parse(data: RetrieveCalculationMetadataRawData): CallHandler[Either[ErrorWrapper, RetrieveCalculationMetadataRequest]] = {
