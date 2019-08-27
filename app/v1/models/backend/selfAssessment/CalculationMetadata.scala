@@ -33,7 +33,7 @@ case class CalculationMetadata(
 object CalculationMetadata {
 
   implicit val writes: Writes[CalculationMetadata] =
-    Json.writes[CalculationMetadata].transform((js: JsObject) => JsObject(Seq("metadata" -> js)))
+    Json.writes[CalculationMetadata]
 
   implicit def reads: Reads[CalculationMetadata] =
     (JsPath \ "metadata").read[CalculationMetadata](Json.reads[CalculationMetadata])
