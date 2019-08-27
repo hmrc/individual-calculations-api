@@ -11,7 +11,7 @@ description: The "Retrieve Self Assessment Tax Calculation Metadata" endpoint al
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
 responses:
- 202:
+ 200:
    body:
      application/json:
        type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_metadata_response.json
