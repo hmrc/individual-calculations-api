@@ -62,7 +62,6 @@ class RetrieveCalculationMetadataControllerSpec
 
   val responseBody = Json.parse("""
       |{
-      |  "metadata": {
       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |    "taxYear": "2018-19",
       |    "requestedBy": "customer",
@@ -72,7 +71,6 @@ class RetrieveCalculationMetadataControllerSpec
       |    "intentToCrystallise": true,
       |    "crystallised": false,
       |    "calculationErrorCount": 123
-      |  }
       |}""".stripMargin)
 
   val response = CalculationMetadata(

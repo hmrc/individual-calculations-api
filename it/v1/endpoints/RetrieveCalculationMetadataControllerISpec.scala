@@ -64,6 +64,19 @@ class RetrieveCalculationMetadataControllerISpec extends IntegrationBaseSpec {
                                      |  }
                                      |}""".stripMargin)
 
+      val successOutput = Json.parse("""
+                                     |{
+                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                     |    "taxYear": "2018-19",
+                                     |    "requestedBy": "customer",
+                                     |    "calculationReason": "customerRequest",
+                                     |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                     |    "calculationType": "crystallisation",
+                                     |    "intentToCrystallise": true,
+                                     |    "crystallised": false,
+                                     |    "calculationErrorCount": 123
+                                     |}""".stripMargin)
+
       "valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -76,7 +89,7 @@ class RetrieveCalculationMetadataControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
+        response.json shouldBe successOutput
       }
     }
 

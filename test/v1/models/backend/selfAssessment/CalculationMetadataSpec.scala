@@ -21,7 +21,7 @@ import support.UnitSpec
 
 class CalculationMetadataSpec extends UnitSpec {
 
-  val json = Json.parse("""{
+  val jsonInput = Json.parse("""{
                           |  "metadata": {
                           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
                           |    "taxYear": "2018-19",
@@ -35,6 +35,19 @@ class CalculationMetadataSpec extends UnitSpec {
                           |  }
                           |}
                           |""".stripMargin)
+
+  val jsonOutput = Json.parse("""{
+                           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                           |    "taxYear": "2018-19",
+                           |    "requestedBy": "customer",
+                           |    "calculationReason": "customerRequest",
+                           |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                           |    "calculationType": "crystallisation",
+                           |    "intentToCrystallise": true,
+                           |    "crystallised": false,
+                           |    "calculationErrorCount": 123
+                           |  }
+                           |""".stripMargin)
 
   val metadata = CalculationMetadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -51,13 +64,13 @@ class CalculationMetadataSpec extends UnitSpec {
   "RetrieveCalculationMetatdata" when {
     "written to JSON" should {
       "take the form specified" in {
-        Json.toJson[CalculationMetadata](metadata) shouldBe json
+        Json.toJson[CalculationMetadata](metadata) shouldBe jsonOutput
       }
     }
 
     "read from json" should {
       "read from metadata top level field" in {
-        json.as[CalculationMetadata] shouldBe metadata
+        jsonInput.as[CalculationMetadata] shouldBe metadata
       }
     }
   }
