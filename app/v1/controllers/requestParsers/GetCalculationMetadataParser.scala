@@ -26,5 +26,4 @@ class GetCalculationMetadataParser @Inject()(val validator: GetCalculationMetada
 
   override def requestFor(data: GetCalculationMetadataRawData): GetCalculationMetadataRequest =
     GetCalculationMetadataRequest(Nino(data.nino), data.calculationId)
-
 }

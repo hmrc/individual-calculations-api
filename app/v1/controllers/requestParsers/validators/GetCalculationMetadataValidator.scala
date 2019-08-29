@@ -27,6 +27,7 @@ class GetCalculationMetadataValidator extends Validator[GetCalculationMetadataRa
     data => List(NinoValidation.validate(data.nino),
       CalculationIdValidation.validate(data.calculationId))
   }
+
   override def validate(data: GetCalculationMetadataRawData): List[MtdError] = {
     run(validationSet,data).distinct
   }

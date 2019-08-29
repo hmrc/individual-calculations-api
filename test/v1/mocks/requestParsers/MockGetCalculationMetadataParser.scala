@@ -31,5 +31,4 @@ trait MockGetCalculationMetadataParser extends MockFactory {
       (mockGetCalculationMetadataParser.parseRequest(_: GetCalculationMetadataRawData)).expects(data)
     }
   }
-
 }
