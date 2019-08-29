@@ -14,30 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
-import support.UnitSpec
+import play.api.libs.json.{Json, OFormat}
 
-class CalculationDetailSpec extends UnitSpec {
+case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "incomeTax" : ""
-      |}
-    """.stripMargin)
-
-  val model = CalculationDetail("")
-
-  "CalculationDetail" should {
-
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
-    }
-
-    "read from json correctly" in {
-      json.validate[CalculationDetail] shouldBe JsSuccess(model)
-    }
-  }
+object GetIncomeTaxCalcResponse {
+  implicit val format: OFormat[GetIncomeTaxCalcResponse] = Json.format[GetIncomeTaxCalcResponse]
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.response.getIncomeTaxCalc
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class CalculationSummarySpec extends UnitSpec {
+class CalculationDetailSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
     """
@@ -28,7 +28,7 @@ class CalculationSummarySpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val model = CalculationSummary("")
+  val model = CalculationDetail("")
 
   "CalculationDetail" should {
 
@@ -37,7 +37,7 @@ class CalculationSummarySpec extends UnitSpec {
     }
 
     "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
+      json.validate[CalculationDetail] shouldBe JsSuccess(model)
     }
   }
 }
