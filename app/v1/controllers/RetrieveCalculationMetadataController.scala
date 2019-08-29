@@ -24,7 +24,7 @@ import v1.controllers.requestParsers.RetrieveCalculationMetadataParser
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.request.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
-import v1.models.response.CalculationMetadata
+import v1.models.response.retrieveCalculationMetadata.CalculationMetadata
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.listCalculationsResponse
 
 import play.api.libs.json.{Format, Json}
+import v1.models.response.{CalculationRequestor, CalculationType}
 
 case class CalculationListItem(
                                 id: String,
