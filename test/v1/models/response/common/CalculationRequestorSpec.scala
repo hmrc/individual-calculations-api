@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.common
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.common.CalculationRequestor._
 
-sealed trait CalculationType
+class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 
-
-object CalculationType{
-  case object inYear extends CalculationType
-  case object crystallisation extends CalculationType
-
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+  testRoundTrip[CalculationRequestor](
+    ("customer", customer),
+    ("hmrc", hmrc),
+    ("agent", agent)
+  )
 }

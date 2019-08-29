@@ -27,8 +27,8 @@ import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, Moc
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
-import v1.models.response.listCalculationsResponse.{CalculationListItem, ListCalculationsResponse}
-import v1.models.response.{CalculationListItem, CalculationRequestor, CalculationType}
+import v1.models.response.common.{CalculationRequestor, CalculationType}
+import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global

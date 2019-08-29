@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.triggerCalculationResponse
+package v1.models.response.triggerCalculation
 
 import play.api.libs.json.{Json, OFormat}
 

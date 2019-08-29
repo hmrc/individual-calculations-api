@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.common
 
-import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v1.models.response.CalculationRequestor.{agent, customer, hmrc}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
+sealed trait CalculationRequestor
 
-  testRoundTrip[CalculationRequestor](
-    ("customer", customer),
-    ("hmrc", hmrc),
-    ("agent", agent)
-  )
+object CalculationRequestor{
+  case object customer extends CalculationRequestor
+  case object hmrc extends CalculationRequestor
+  case object agent extends CalculationRequestor
+
+  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }

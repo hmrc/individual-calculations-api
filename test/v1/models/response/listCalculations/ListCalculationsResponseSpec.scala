@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.listCalculationsResponse
+package v1.models.response.listCalculations
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.models.response.{CalculationRequestor, CalculationType}
+import v1.models.response.common.{CalculationRequestor, CalculationType}
 
 class ListCalculationsResponseSpec extends UnitSpec {
 

@@ -24,7 +24,7 @@ import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
-import v1.models.response.listCalculationsResponse.ListCalculationsResponse
+import v1.models.response.listCalculations.ListCalculationsResponse
 import v1.services._
 
 import scala.concurrent.ExecutionContext

@@ -28,7 +28,7 @@ import v1.models.domain.TriggerCalculation
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculationResponse.TriggerCalculationResponse
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global

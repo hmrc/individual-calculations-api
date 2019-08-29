@@ -17,7 +17,7 @@
 package v1.models.response.retrieveCalculationMetadata
 
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.response.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 
 case class CalculationMetadata(
     id: String,

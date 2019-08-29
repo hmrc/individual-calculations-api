@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.common
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.response.CalculationReason.{class2NICEvent, customerRequest, newClaimEvent, newLossEvent, updatedClaimEvent, updatedLossEvent}
+import v1.models.response.common.CalculationReason._
 
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 

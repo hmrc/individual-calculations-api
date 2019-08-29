@@ -14,32 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.triggerCalculationResponse
+package v1.models.response.common
 
-import play.api.libs.json.Json
-import support.UnitSpec
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class TriggerCalculationResponseSpec extends UnitSpec {
+sealed trait CalculationReason
 
-  val json = Json.parse(
-    """
-      |{
-      | "id": "testId"
-      |}
-    """.stripMargin
-  )
+object CalculationReason {
+  case object customerRequest   extends CalculationReason
+  case object class2NICEvent    extends CalculationReason
+  case object newLossEvent      extends CalculationReason
+  case object updatedLossEvent  extends CalculationReason
+  case object newClaimEvent     extends CalculationReason
+  case object updatedClaimEvent extends CalculationReason
 
-  val response = TriggerCalculationResponse("testId")
-
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
-    }
-  }
-
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
-    }
-  }
+  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
 }

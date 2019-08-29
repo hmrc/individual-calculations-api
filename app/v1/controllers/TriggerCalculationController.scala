@@ -24,7 +24,7 @@ import v1.controllers.requestParsers.TriggerCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors._
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculationResponse.TriggerCalculationResponse
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
