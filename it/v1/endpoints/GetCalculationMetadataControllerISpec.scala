@@ -25,7 +25,7 @@ import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
 
-class RetrieveCalculationMetadataControllerISpec extends IntegrationBaseSpec {
+class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -46,7 +46,7 @@ class RetrieveCalculationMetadataControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-  "Calling the retrieve calculation metadata endpoint" should {
+  "Calling the get calculation metadata endpoint" should {
     "return a 200 status code" when {
 
       val successBody = Json.parse("""

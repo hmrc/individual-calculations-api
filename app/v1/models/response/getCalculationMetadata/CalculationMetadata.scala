@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveCalculationMetadata
+package v1.models.response.getCalculationMetadata
 
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}

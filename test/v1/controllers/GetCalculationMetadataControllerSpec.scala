@@ -22,32 +22,32 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handling.RequestDefn
-import v1.mocks.requestParsers.MockRetrieveCalculationMetadataParser
+import v1.mocks.requestParsers.MockGetCalculationMetadataParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
+import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.retrieveCalculationMetadata.CalculationMetadata
+import v1.models.response.getCalculationMetadata.CalculationMetadata
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RetrieveCalculationMetadataControllerSpec
+class GetCalculationMetadataControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockRetrieveCalculationMetadataParser
+    with MockGetCalculationMetadataParser
     with MockStandardService {
 
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new RetrieveCalculationMetadataController(
+    val controller = new GetCalculationMetadataController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveCalculationMetadataParser,
+      parser = mockGetCalculationMetadataParser,
       service = mockStandardService,
       cc = cc
     )
@@ -85,15 +85,15 @@ class RetrieveCalculationMetadataControllerSpec
     calculationErrorCount = Some(123)
   )
 
-  private val rawData     = RetrieveCalculationMetadataRawData(nino, calcId)
-  private val requestData = RetrieveCalculationMetadataRequest(Nino(nino), calcId)
+  private val rawData     = GetCalculationMetadataRawData(nino, calcId)
+  private val requestData = GetCalculationMetadataRequest(Nino(nino), calcId)
 
   private def uri = "/input/uri"
 
   "handleRequest" should {
     "return OK the calculation metadata" when {
       "happy path" in new Test {
-        MockRetrieveCalculationMetadataParser
+        MockGetCalculationMetadataParser
           .parse(rawData)
           .returns(Right(requestData))
 
@@ -101,7 +101,7 @@ class RetrieveCalculationMetadataControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.retrieveMetadata(nino, calcId)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -110,7 +110,7 @@ class RetrieveCalculationMetadataControllerSpec
     }
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
-      MockRetrieveCalculationMetadataParser
+      MockGetCalculationMetadataParser
         .parse(rawData)
         .returns(Right(requestData))
 
@@ -127,7 +127,7 @@ class RetrieveCalculationMetadataControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      val result: Future[Result] = controller.retrieveMetadata(nino, calcId)(fakeGetRequest(uri))
+      val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

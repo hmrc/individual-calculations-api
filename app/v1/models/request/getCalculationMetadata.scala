@@ -18,6 +18,6 @@ package v1.models.request
 
 import uk.gov.hmrc.domain.Nino
 
-case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData
+case class GetCalculationMetadataRawData(nino: String, calculationId: String) extends RawData
 
-case class RetrieveCalculationMetadataRequest(nino: Nino, calculationId: String)
+case class GetCalculationMetadataRequest(nino: Nino, calculationId: String)

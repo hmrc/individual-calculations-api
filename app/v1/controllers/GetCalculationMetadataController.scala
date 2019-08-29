@@ -20,23 +20,23 @@ import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.controllers.requestParsers.RetrieveCalculationMetadataParser
+import v1.controllers.requestParsers.GetCalculationMetadataParser
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
-import v1.models.request.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
-import v1.models.response.retrieveCalculationMetadata.CalculationMetadata
+import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
+import v1.models.response.getCalculationMetadata.CalculationMetadata
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationMetadataController @Inject()(
-                                                       authService: EnrolmentsAuthService,
-                                                       lookupService: MtdIdLookupService,
-                                                       parser: RetrieveCalculationMetadataParser,
-                                                       service: StandardService,
-                                                       cc: ControllerComponents
+class GetCalculationMetadataController @Inject()(
+                                                  authService: EnrolmentsAuthService,
+                                                  lookupService: MtdIdLookupService,
+                                                  parser: GetCalculationMetadataParser,
+                                                  service: StandardService,
+                                                  cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends StandardController[RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest, CalculationMetadata, CalculationMetadata, AnyContent](
+    extends StandardController[GetCalculationMetadataRawData, GetCalculationMetadataRequest, CalculationMetadata, CalculationMetadata, AnyContent](
       authService,
       lookupService,
       parser,
@@ -45,10 +45,10 @@ class RetrieveCalculationMetadataController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "RetrieveCalculationMetadataController", endpointName = "retrieveMetadata")
+    EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: RetrieveCalculationMetadataRequest): RequestHandling[CalculationMetadata,CalculationMetadata] =
+                                  req: GetCalculationMetadataRequest): RequestHandling[CalculationMetadata,CalculationMetadata] =
     RequestHandling[CalculationMetadata](
       RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
@@ -59,9 +59,9 @@ class RetrieveCalculationMetadataController @Inject()(
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  def retrieveMetadata(nino: String, calculationId: String): Action[AnyContent] =
+  def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      val rawData = RetrieveCalculationMetadataRawData(nino, calculationId)
+      val rawData = GetCalculationMetadataRawData(nino, calculationId)
 
       doHandleRequest(rawData)
     }

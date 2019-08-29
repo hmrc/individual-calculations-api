@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.retrieveCalculationMetadata
+package v1.models.response.getCalculationMetadata
 
 import play.api.libs.json.Json
 import support.UnitSpec
@@ -62,7 +62,7 @@ class CalculationMetadataSpec extends UnitSpec {
     calculationErrorCount = Some(123)
   )
 
-  "RetrieveCalculationMetatdata" when {
+  "GetCalculationMetatdata" when {
     "written to JSON" should {
       "take the form specified" in {
         Json.toJson[CalculationMetadata](metadata) shouldBe jsonOutput
