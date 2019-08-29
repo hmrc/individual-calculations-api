@@ -34,5 +34,4 @@ class MockTriggerCalculationValidator extends MockFactory {
         .expects(data)
     }
   }
-
 }

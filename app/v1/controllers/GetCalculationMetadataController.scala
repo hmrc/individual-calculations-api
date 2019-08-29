@@ -35,20 +35,20 @@ class GetCalculationMetadataController @Inject()(
                                                   parser: GetCalculationMetadataParser,
                                                   service: StandardService,
                                                   cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationMetadataRawData, GetCalculationMetadataRequest, CalculationMetadata, CalculationMetadata, AnyContent](
-      authService,
-      lookupService,
-      parser,
-      service,
-      cc) {
+                                                )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationMetadataRawData, GetCalculationMetadataRequest, CalculationMetadata, CalculationMetadata, AnyContent](
+    authService,
+    lookupService,
+    parser,
+    service,
+    cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationMetadataRequest): RequestHandling[CalculationMetadata,CalculationMetadata] =
+                                  req: GetCalculationMetadataRequest): RequestHandling[CalculationMetadata, CalculationMetadata] =
     RequestHandling[CalculationMetadata](
       RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
@@ -62,7 +62,6 @@ class GetCalculationMetadataController @Inject()(
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationMetadataRawData(nino, calculationId)
-
       doHandleRequest(rawData)
     }
 }
