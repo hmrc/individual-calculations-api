@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
-import v1.controllers.{EndpointLogContext, StandardController}
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.response.selfAssessment.TriggerCalculationResponse
 import v1.models.errors._
-import v1.models.request.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.response.TriggerCalculationResponse
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext

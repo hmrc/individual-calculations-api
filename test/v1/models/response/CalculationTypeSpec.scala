@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.request.selfAssessment
+package v1.models.response
 
-import play.api.mvc.AnyContentAsJson
-import uk.gov.hmrc.domain.Nino
-import v1.models.request.RawData
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import CalculationType._
 
-case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-case class TriggerCalculationRequest(nino: Nino, taxYear: String)
+  testRoundTrip[CalculationType](
+    ("inYear", inYear),
+    ("crystallisation", crystallisation)
+  )
+}

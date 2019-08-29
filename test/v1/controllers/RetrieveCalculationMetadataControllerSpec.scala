@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockRetrieveCalculationMetadataParser
-import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
-import v1.models.response.selfAssessment.{ CalculationMetadata, CalculationReason, CalculationRequestor, CalculationType }
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.selfAssessment.{ RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest }
+import v1.models.request.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
+import v1.models.response.{CalculationMetadata, CalculationReason, CalculationRequestor, CalculationType}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global

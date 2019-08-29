@@ -14,17 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.request
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import uk.gov.hmrc.domain.Nino
 
-sealed trait CalculationRequestor
+case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData
 
-object CalculationRequestor{
-  case object customer extends CalculationRequestor
-  case object hmrc extends CalculationRequestor
-  case object agent extends CalculationRequestor
-
-  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
-}
+case class RetrieveCalculationMetadataRequest(nino: Nino, calculationId: String)

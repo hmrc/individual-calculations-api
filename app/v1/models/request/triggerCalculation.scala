@@ -14,32 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.request
 
-import play.api.libs.json.Json
-import support.UnitSpec
+import play.api.mvc.AnyContentAsJson
+import uk.gov.hmrc.domain.Nino
 
-class TriggerCalculationResponseSpec extends UnitSpec {
+case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
 
-  val json = Json.parse(
-    """
-      |{
-      | "id": "testId"
-      |}
-    """.stripMargin
-  )
-
-  val response = TriggerCalculationResponse("testId")
-
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
-    }
-  }
-
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
-    }
-  }
-}
+case class TriggerCalculationRequest(nino: Nino, taxYear: String)

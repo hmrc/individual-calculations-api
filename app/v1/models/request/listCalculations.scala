@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.request
 
-import play.api.libs.json.{Json, OFormat}
+import uk.gov.hmrc.domain.Nino
 
-case class TriggerCalculationResponse(id: String)
+case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 
-object TriggerCalculationResponse {
-  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
-}
+case class ListCalculationsRequest(nino: Nino, taxYear: Option[String])

@@ -16,12 +16,12 @@
 
 package v1.controllers.requestParsers
 
+import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockListCalculationsValidator
-import v1.models.errors.{BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError}
-import v1.models.request.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
-import play.api.http.Status._
+import v1.models.errors._
+import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
   val nino = "AA123456B"

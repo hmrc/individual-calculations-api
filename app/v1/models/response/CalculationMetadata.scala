@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
-import play.api.libs.json.{ JsObject, JsPath, Json, Reads, Writes }
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class CalculationMetadata(
     id: String,

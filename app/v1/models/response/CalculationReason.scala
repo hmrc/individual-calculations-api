@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.request.selfAssessment
+package v1.models.response
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.request.RawData
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+sealed trait CalculationReason
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[String])
+object CalculationReason {
+  case object customerRequest   extends CalculationReason
+  case object class2NICEvent    extends CalculationReason
+  case object newLossEvent      extends CalculationReason
+  case object updatedLossEvent  extends CalculationReason
+  case object newClaimEvent     extends CalculationReason
+  case object updatedClaimEvent extends CalculationReason
+
+  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
+}

@@ -14,27 +14,25 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsJson, ControllerComponents, Result}
+import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.response.selfAssessment.{ListCalculationsResponse, TriggerCalculationResponse}
 import v1.models.domain.TriggerCalculation
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.response.TriggerCalculationResponse
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class TriggerCalculationControllerSpec extends ControllerBaseSpec
   with MockEnrolmentsAuthService

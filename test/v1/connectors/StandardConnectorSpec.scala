@@ -21,7 +21,7 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.handling.RequestDefn
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
-import v1.models.request.selfAssessment.ListCalculationsRequest
+import v1.models.request.ListCalculationsRequest
 
 import scala.concurrent.Future
 

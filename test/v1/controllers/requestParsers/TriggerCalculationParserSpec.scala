@@ -16,14 +16,14 @@
 
 package v1.controllers.requestParsers
 
+import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
-import play.api.http.Status._
 import v1.mocks.validators.MockTriggerCalculationValidator
-import v1.models.errors.{ BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError }
-import v1.models.request.selfAssessment.{ TriggerCalculationRawData, TriggerCalculationRequest }
+import v1.models.errors._
+import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 class TriggerCalculationParserSpec extends UnitSpec {
 

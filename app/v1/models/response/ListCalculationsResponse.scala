@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
 import play.api.libs.json.{Format, Json}
 

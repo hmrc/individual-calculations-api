@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.response.selfAssessment.CalculationRequestor._
+import v1.models.response.CalculationRequestor.{agent, customer, hmrc}
 
 class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 

@@ -20,8 +20,8 @@ import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockRetrieveCalculationMetadataValidator
-import v1.models.errors.{BadRequestError, CalculationIdFormatError, ErrorWrapper, MtdErrors, NinoFormatError}
-import v1.models.request.selfAssessment.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
+import v1.models.errors._
+import v1.models.request.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
 
 class RetrieveCalculationMetadataParserSpec extends UnitSpec {
   val nino = "AA111111A"

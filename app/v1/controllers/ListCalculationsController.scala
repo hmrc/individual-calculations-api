@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.controllers.{EndpointLogContext, StandardController}
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.response.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.response.ListCalculationsResponse
 import v1.services._
 
 import scala.concurrent.ExecutionContext

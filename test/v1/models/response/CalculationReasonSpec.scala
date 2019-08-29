@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.CalculationReason.{class2NICEvent, customerRequest, newClaimEvent, newLossEvent, updatedClaimEvent, updatedLossEvent}
 
-sealed trait CalculationReason
+class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object CalculationReason {
-  case object customerRequest   extends CalculationReason
-  case object class2NICEvent    extends CalculationReason
-  case object newLossEvent      extends CalculationReason
-  case object updatedLossEvent  extends CalculationReason
-  case object newClaimEvent     extends CalculationReason
-  case object updatedClaimEvent extends CalculationReason
-
-  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
+  testRoundTrip[CalculationReason](
+    ("customerRequest", customerRequest),
+    ("class2NICEvent", class2NICEvent),
+    ("newLossEvent", newLossEvent),
+    ("updatedLossEvent", updatedLossEvent),
+    ("newClaimEvent", newClaimEvent),
+    ("updatedClaimEvent", updatedClaimEvent)
+  )
 }

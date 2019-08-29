@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
-import v1.models.request.selfAssessment.RetrieveCalculationMetadataRawData
+import v1.models.request.RetrieveCalculationMetadataRawData
 
 class RetrieveCalculationMetadataValidatorSpec extends UnitSpec {
   private val validNino = "AA112233A"
