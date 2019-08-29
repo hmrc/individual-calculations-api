@@ -19,7 +19,7 @@ package v1.controllers.requestParsers.validators
 import config.FixedConfig
 import v1.controllers.requestParsers.validators.validations.{MinTaxYearValidation, NinoValidation, TaxYearValidation}
 import v1.models.errors.MtdError
-import v1.models.requestData.selfAssessment.ListCalculationsRawData
+import v1.models.request.ListCalculationsRawData
 
 class ListCalculationsValidator extends Validator[ListCalculationsRawData] with FixedConfig {
 

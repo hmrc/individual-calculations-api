@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.models.request
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+object TaxYear {
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
-
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+  /**
+    * @param taxYear tax year in MTD format (e.g. 2017-18)
+    * @return in the form of the year ending, format used by DES (e.g. 2018)
+    */
+  def toYearEnding(taxYear: String): String =
+    taxYear.take(2) + taxYear.drop(5)
 }

@@ -25,7 +25,7 @@ import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
 import v1.handling.RequestHandling
-import v1.models.requestData.RawData
+import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 

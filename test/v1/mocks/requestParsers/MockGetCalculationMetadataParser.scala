@@ -18,17 +18,18 @@ package v1.mocks.requestParsers
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.TriggerCalculationParser
+import v1.controllers.requestParsers.GetCalculationMetadataParser
 import v1.models.errors.ErrorWrapper
-import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
 
-trait MockTriggerCalculationParser extends MockFactory {
+trait MockGetCalculationMetadataParser extends MockFactory {
 
-  val mockTriggerCalculationParser: TriggerCalculationParser = mock[TriggerCalculationParser]
+  val mockGetCalculationMetadataParser = mock[GetCalculationMetadataParser]
 
-  object MockTriggerCalculationParser {
-    def parse(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequest]] = {
-      (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)).expects(data)
+  object MockGetCalculationMetadataParser {
+    def parse(data: GetCalculationMetadataRawData): CallHandler[Either[ErrorWrapper, GetCalculationMetadataRequest]] = {
+      (mockGetCalculationMetadataParser.parseRequest(_: GetCalculationMetadataRawData)).expects(data)
     }
   }
+
 }

@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.models.response.common
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.common.CalculationReason._
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+  testRoundTrip[CalculationReason](
+    ("customerRequest", customerRequest),
+    ("class2NICEvent", class2NICEvent),
+    ("newLossEvent", newLossEvent),
+    ("updatedLossEvent", updatedLossEvent),
+    ("newClaimEvent", newClaimEvent),
+    ("updatedClaimEvent", updatedClaimEvent)
+  )
 }

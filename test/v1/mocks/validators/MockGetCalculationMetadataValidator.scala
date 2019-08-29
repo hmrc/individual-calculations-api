@@ -18,19 +18,19 @@ package v1.mocks.validators
 
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
+import v1.controllers.requestParsers.validators.GetCalculationMetadataValidator
 import v1.models.errors.MtdError
-import v1.models.request.ListCalculationsRawData
+import v1.models.request.GetCalculationMetadataRawData
 
-class MockListCalculationsValidator extends MockFactory {
+class MockGetCalculationMetadataValidator extends MockFactory {
 
-  val mockValidator: ListCalculationsValidator = mock[ListCalculationsValidator]
+  val mockValidator: GetCalculationMetadataValidator = mock[GetCalculationMetadataValidator]
 
   object MockValidator {
 
-    def validate(data: ListCalculationsRawData): CallHandler1[ListCalculationsRawData, List[MtdError]] = {
+    def validate(data: GetCalculationMetadataRawData): CallHandler1[GetCalculationMetadataRawData, List[MtdError]] = {
       (mockValidator
-        .validate(_: ListCalculationsRawData))
+        .validate(_: GetCalculationMetadataRawData))
         .expects(data)
     }
   }

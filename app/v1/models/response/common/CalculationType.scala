@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.models.response.common
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+sealed trait CalculationType
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+
+object CalculationType{
+  case object inYear extends CalculationType
+  case object crystallisation extends CalculationType
+
+  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
 }

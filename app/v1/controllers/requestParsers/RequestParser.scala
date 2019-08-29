@@ -19,7 +19,7 @@ package v1.controllers.requestParsers
 import play.api.http.Status._
 import v1.controllers.requestParsers.validators.Validator
 import v1.models.errors.{ BadRequestError, ErrorWrapper, MtdErrors }
-import v1.models.requestData.RawData
+import v1.models.request.RawData
 
 trait RequestParser[Raw <: RawData, Request] {
 

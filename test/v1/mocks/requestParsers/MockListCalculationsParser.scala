@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.models.errors.ErrorWrapper
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 trait MockListCalculationsParser extends MockFactory {
 

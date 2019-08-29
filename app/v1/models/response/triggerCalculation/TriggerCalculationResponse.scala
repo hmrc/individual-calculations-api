@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.models.response.triggerCalculation
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import play.api.libs.json.{Json, OFormat}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+case class TriggerCalculationResponse(id: String)
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+object TriggerCalculationResponse {
+  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
 }
