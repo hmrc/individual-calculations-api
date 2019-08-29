@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
 import v1.models.errors.{NinoFormatError, RuleTaxYearNotSupportedError, TaxYearFormatError}
-import v1.models.requestData.selfAssessment.ListCalculationsRawData
+import v1.models.request.selfAssessment.ListCalculationsRawData
 
 class ListCalculationsValidatorSpec extends UnitSpec {
   private val validNino = "AA123456A"

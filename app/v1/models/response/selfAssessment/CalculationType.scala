@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.response.selfAssessment
 
-import uk.gov.hmrc.domain.Nino
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class RetrieveCalculationMetadataRequest(nino: Nino, calculationId: String)
+sealed trait CalculationType
+
+
+object CalculationType{
+  case object inYear extends CalculationType
+  case object crystallisation extends CalculationType
+
+  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+}

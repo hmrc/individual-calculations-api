@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import v1.models.errors.{NinoFormatError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError, TaxYearFormatError}
-import v1.models.requestData.selfAssessment.TriggerCalculationRawData
+import v1.models.request.selfAssessment.TriggerCalculationRawData
 
 class TriggerCalculationValidatorSpec extends UnitSpec {
 

@@ -23,7 +23,7 @@ import uk.gov.hmrc.domain.Nino
 import play.api.http.Status._
 import v1.mocks.validators.MockTriggerCalculationValidator
 import v1.models.errors.{ BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError }
-import v1.models.requestData.selfAssessment.{ TriggerCalculationRawData, TriggerCalculationRequest }
+import v1.models.request.selfAssessment.{ TriggerCalculationRawData, TriggerCalculationRequest }
 
 class TriggerCalculationParserSpec extends UnitSpec {
 

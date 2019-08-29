@@ -14,32 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.response.selfAssessment
 
-import play.api.libs.json.Json
-import support.UnitSpec
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class TriggerCalculationResponseSpec extends UnitSpec {
+sealed trait CalculationRequestor
 
-  val json = Json.parse(
-    """
-      |{
-      | "id": "testId"
-      |}
-    """.stripMargin
-  )
+object CalculationRequestor{
+  case object customer extends CalculationRequestor
+  case object hmrc extends CalculationRequestor
+  case object agent extends CalculationRequestor
 
-  val response = TriggerCalculationResponse("testId")
-
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
-    }
-  }
-
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
-    }
-  }
+  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.response.selfAssessment
 
 import play.api.libs.json.{ JsObject, JsPath, Json, Reads, Writes }
 

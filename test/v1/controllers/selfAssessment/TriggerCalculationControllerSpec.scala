@@ -26,11 +26,11 @@ import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.backend.selfAssessment.{ListCalculationsResponse, TriggerCalculationResponse}
+import v1.models.response.selfAssessment.{ListCalculationsResponse, TriggerCalculationResponse}
 import v1.models.domain.TriggerCalculation
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.request.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.Future

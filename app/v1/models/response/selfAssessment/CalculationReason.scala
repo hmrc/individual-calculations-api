@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.response.selfAssessment
 
 import play.api.libs.json.Format
 import utils.enums.Enums
 
-sealed trait CalculationType
+sealed trait CalculationReason
 
+object CalculationReason {
+  case object customerRequest   extends CalculationReason
+  case object class2NICEvent    extends CalculationReason
+  case object newLossEvent      extends CalculationReason
+  case object updatedLossEvent  extends CalculationReason
+  case object newClaimEvent     extends CalculationReason
+  case object updatedClaimEvent extends CalculationReason
 
-object CalculationType{
-  case object inYear extends CalculationType
-  case object crystallisation extends CalculationType
-
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
 }

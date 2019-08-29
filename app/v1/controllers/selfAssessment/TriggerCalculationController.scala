@@ -23,9 +23,9 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
 import v1.controllers.{EndpointLogContext, StandardController}
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.backend.selfAssessment.TriggerCalculationResponse
+import v1.models.response.selfAssessment.TriggerCalculationResponse
 import v1.models.errors._
-import v1.models.requestData.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v1.models.request.selfAssessment.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext

@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.response.selfAssessment
 
-import v1.models.requestData.RawData
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.selfAssessment.CalculationType._
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+
+  testRoundTrip[CalculationType](
+    ("inYear", inYear),
+    ("crystallisation", crystallisation)
+  )
+}

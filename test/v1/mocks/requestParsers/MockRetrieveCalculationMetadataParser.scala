@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.RetrieveCalculationMetadataParser
 import v1.models.errors.ErrorWrapper
-import v1.models.requestData.selfAssessment.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
+import v1.models.request.selfAssessment.{RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest}
 
 trait MockRetrieveCalculationMetadataParser extends MockFactory {
 

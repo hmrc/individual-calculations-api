@@ -23,10 +23,10 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.{EndpointLogContext, StandardController}
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.backend.selfAssessment.ListCalculationsResponse
+import v1.models.response.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 import v1.services._
 
 import scala.concurrent.ExecutionContext

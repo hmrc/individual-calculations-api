@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.backend.selfAssessment
+package v1.models.request.selfAssessment
 
-import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v1.models.backend.selfAssessment.CalculationRequestor._
+import uk.gov.hmrc.domain.Nino
+import v1.models.request.RawData
 
-class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
+case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData
 
-  testRoundTrip[CalculationRequestor](
-    ("customer", customer),
-    ("hmrc", hmrc),
-    ("agent", agent)
-  )
-}
+case class RetrieveCalculationMetadataRequest(nino: Nino, calculationId: String)

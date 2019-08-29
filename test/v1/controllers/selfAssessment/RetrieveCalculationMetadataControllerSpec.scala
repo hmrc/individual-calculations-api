@@ -25,10 +25,10 @@ import v1.controllers.ControllerBaseSpec
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockRetrieveCalculationMetadataParser
 import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
-import v1.models.backend.selfAssessment.{ CalculationMetadata, CalculationReason, CalculationRequestor, CalculationType }
+import v1.models.response.selfAssessment.{ CalculationMetadata, CalculationReason, CalculationRequestor, CalculationType }
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{ RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest }
+import v1.models.request.selfAssessment.{ RetrieveCalculationMetadataRawData, RetrieveCalculationMetadataRequest }
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global

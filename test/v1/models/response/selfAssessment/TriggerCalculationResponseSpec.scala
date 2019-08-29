@@ -14,8 +14,32 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.response.selfAssessment
 
-import v1.models.requestData.RawData
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class RetrieveCalculationMetadataRawData (nino: String, calculationId: String) extends RawData
+class TriggerCalculationResponseSpec extends UnitSpec {
+
+  val json = Json.parse(
+    """
+      |{
+      | "id": "testId"
+      |}
+    """.stripMargin
+  )
+
+  val response = TriggerCalculationResponse("testId")
+
+  "JSON writes" must {
+    "align with spec" in {
+      Json.toJson(response) shouldBe json
+    }
+  }
+
+  "JSON reads" must {
+    "align with back-end response" in {
+      json.as[TriggerCalculationResponse] shouldBe response
+    }
+  }
+}

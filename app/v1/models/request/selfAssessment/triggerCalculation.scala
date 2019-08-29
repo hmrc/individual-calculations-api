@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.request.selfAssessment
 
+import play.api.mvc.AnyContentAsJson
 import uk.gov.hmrc.domain.Nino
+import v1.models.request.RawData
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[String])
+case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+
+case class TriggerCalculationRequest(nino: Nino, taxYear: String)

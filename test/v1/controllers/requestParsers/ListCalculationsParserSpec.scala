@@ -20,7 +20,7 @@ import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockListCalculationsValidator
 import v1.models.errors.{BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, TaxYearFormatError}
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 import play.api.http.Status._
 
 class ListCalculationsParserSpec extends UnitSpec {

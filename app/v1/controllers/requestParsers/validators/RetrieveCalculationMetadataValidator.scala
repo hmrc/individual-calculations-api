@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation}
 import v1.models.errors.{CalculationIdFormatError, MtdError}
-import v1.models.requestData.selfAssessment.RetrieveCalculationMetadataRawData
+import v1.models.request.selfAssessment.RetrieveCalculationMetadataRawData
 
 class RetrieveCalculationMetadataValidator extends Validator[RetrieveCalculationMetadataRawData]{
   private val validationSet = List(parameterFormatValidation)

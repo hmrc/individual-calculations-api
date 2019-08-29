@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.response.selfAssessment
 
-import play.api.mvc.AnyContentAsJson
-import v1.models.requestData.RawData
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.selfAssessment.CalculationRequestor._
 
-case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
+
+  testRoundTrip[CalculationRequestor](
+    ("customer", customer),
+    ("hmrc", hmrc),
+    ("agent", agent)
+  )
+}
