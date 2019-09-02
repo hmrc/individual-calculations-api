@@ -4,9 +4,10 @@ is:
   - errors.formatNino
   - errors.formatCalcId
   - errors.clientOrAgentNotAuthorised
+  - errors.ruleCalculationErrorMessagesExist
   - errors.notFoundRetrieveIncomeTaxAndNics
 displayName: Retrieve Self Assessment Tax Calculation Income Tax and NICs Calculated [test only]
-description: This endpoint allows you to retrieve the calculated Income Tax and National Insurance Contributions for a given NINO and Calculation ID.  If the Calculation ID exists and there are no error messages (see calculationErrorCount)  associated with it, data will be returned for this endpoint.  A calculationErrorCount greater than zero will result in a 403 - RULE_CALCULATION_ERROR_MESSAGES_EXIST because a calculation result has not been generated.
+description: This endpoint allows you to retrieve the calculated Income Tax and National Insurance Contributions for a given NINO and Calculation ID. An error will occur if your calculation has one or more error messages. You can use the Retrieve Self Assessment Tax Calculation Messages endpoint to retrieve these messages.
 (annotations.sandboxData): !include scenarios/selfAssessment/retrieveIncomeTaxAndNics.md
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
@@ -17,7 +18,7 @@ responses:
        type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_incomeTaxAndNics_response.json
        examples:
          example-1:
-            description: Example calculation response. Figures do not represent realistic values.
+            description: Example calculation response.
             value: !include examples/selfAssessment/retrieveIncomeTaxAndNics/retrieve_response.json
    headers:
       X-CorrelationId:
