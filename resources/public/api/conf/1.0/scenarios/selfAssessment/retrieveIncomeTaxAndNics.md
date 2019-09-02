@@ -12,7 +12,7 @@
             <td><p>Simulates returning a tax calculation</p></td>
         </tr>
         <tr>
-            <td><p>RULE_CALCULATION_ERROR_MESSAGES_EXIST</p></td>
+            <td><p>ERROR_MESSAGES_EXIST</p></td>
             <td><p>Simulates the scenario where errors exist and no calculation has been generated</p></td>
         </tr>
         <tr>
