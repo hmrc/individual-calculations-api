@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "incomeTax": {
+      "incomeTaxCharged": 1000.12,
+      "incomeTaxDueAfterReliefs": 1000.12,
+      "incomeTaxDueAfterGiftAid": 1000.12
+    },
+    "nics": {
+      "class2NicsAmount": 1000.12,
+      "class4NicsAmount": 1000.12,
+      "totalNic": 1000.12
+    },
+    "totalIncomeTaxNicsCharged": 1000.12,
+    "totalTaxDeducted": 1000,
+    "totalIncomeTaxAndNicsDue": 1000.12,
+    "taxRegime": "UK"
+  },
+  "detail": {
+    "incomeTax": {
+      "payPensionsProfit": {
+        "allowancesAllocated": 1000,
+        "incomeTaxAmount": 1000,
+        "taxBands": [
+          {
+            "name": "SRT",
+            "rate": 10.12,
+            "bandLimit": 1000,
+            "apportionedBandLimit": 1000,
+            "income": 1000,
+            "taxAmount": 1000.12
+          }
+        ]
+      },
+      "savingsAndGains": {
+        "allowancesAllocated": 1000,
+        "incomeTaxAmount": 1000,
+        "taxBands": [
+          {
+            "name": "SSR",
+            "rate": 10.12,
+            "bandLimit": 1000,
+            "apportionedBandLimit": 1000,
+            "income": 1000,
+            "taxAmount": 1000.12
+          }
+        ]
+      },
+      "dividends": {
+        "allowancesAllocated": 1000,
+        "incomeTaxAmount": 1000,
+        "taxBands": [
+          {
+            "name": "BRT",
+            "rate": 10.12,
+            "bandLimit": 1000,
+            "apportionedBandLimit": 1000,
+            "income": 1000,
+            "taxAmount": 1000.12
+          }
+        ]
+      },
+      "giftAid": {
+        "grossGiftAidPayments": 1000,
+        "rate": 10.12,
+        "giftAidTax": 1000.12
+      }
+    },
+    "nics": {
+      "class2Nics": {
+        "weeklyRate": 1000.12,
+        "weeks": 10,
+        "limit": 1000,
+        "apportionedLimit": 1000,
+        "underSmallProfitsThreshold": true,
+        "actualClass2Nic": true
+      },
+      "class4NicBands": [
+        {
+          "name": "ZRT",
+          "rate": 10.12,
+          "threshold": 1000,
+          "apportionedThreshold": 1000,
+          "income": 1000,
+          "amount": 1000.12
+        }
+      ]
+    },
+    "taxDeductedAtSource": {
+      "savings": 1000,
+      "ukLandAndProperty": 1000
+    }
+  }
+}

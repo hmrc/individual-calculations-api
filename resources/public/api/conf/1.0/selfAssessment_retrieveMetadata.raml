@@ -3,8 +3,8 @@ is:
   - headers.testScenarioHeader
   - errors.formatNino
   - errors.formatCalcId
-  - errors.notFoundRetrieveMetadata
   - errors.clientOrAgentNotAuthorised
+  - errors.notFoundRetrieveMetadata
 displayName: Retrieve Self Assessment Tax Calculation Metadata [test only]
 description: The "Retrieve Self Assessment Tax Calculation Metadata" endpoint allows users to retrieve high level calculation metadata for a given calculation ID. There will always be calculation metadata associated to a calculation ID that exists within HMRC.
 (annotations.sandboxData): !include scenarios/selfAssessment/retrieveMetadata.md
@@ -25,7 +25,6 @@ responses:
          example-3:
             description: Retrieve Calculation Metadata with Error Messages
             value: !include examples/selfAssessment/retrieveMetadata/retrieve_calc_error_messages_response.json
-
    headers:
       X-CorrelationId:
         example: c75f40a6-a3df-4429-a697-471eeec46435

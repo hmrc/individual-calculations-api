@@ -3,7 +3,6 @@
 uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
-
 traits:
   notFoundListCalculations:
     responses:
@@ -24,7 +23,18 @@ traits:
             type: types.errorResponse
             examples:
               notFoundRetrieveMetadata:
-                description: Tax calculation metadata could not be found for the supplied NINO and tax year.
+                description: The calculation ID does not exist for the supplied NINO.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveIncomeTaxAndNics:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveIncomeTaxAndNics:
+                description: No tax calculation data exists for the supplied NINO and calculation ID.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   clientOrAgentNotAuthorised:
