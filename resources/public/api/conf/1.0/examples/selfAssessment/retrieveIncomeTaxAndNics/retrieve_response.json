@@ -71,7 +71,7 @@
         "weeks": 10,
         "limit": 1000,
         "apportionedLimit": 1000,
-        "underSmallProfitsThreshold": true,
+        "underSmallProfitThreshold": true,
         "actualClass2Nic": true
       },
       "class4NicBands": [
