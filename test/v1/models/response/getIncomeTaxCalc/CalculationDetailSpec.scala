@@ -34,7 +34,7 @@ class CalculationDetailSpec extends UnitSpec {
        |}
     """.stripMargin)
 
-  val model = CalculationDetail(Some(incomeTaxDetail), Some(nicDetail), Some(taxDeductedAtSource))
+  val model = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
 
   "CalculationDetail" should {
 
