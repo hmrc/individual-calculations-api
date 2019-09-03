@@ -40,7 +40,7 @@
         "required": ["id", "text"]
       }
     },
-    "error": {
+    "errors": {
       "type": "array",
       "items": {
         "type": "object",
