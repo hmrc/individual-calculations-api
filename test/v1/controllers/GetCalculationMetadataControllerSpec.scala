@@ -26,7 +26,7 @@ import v1.mocks.requestParsers.MockGetCalculationMetadataParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.getCalculationMetadata.CalculationMetadata
 
@@ -86,8 +86,8 @@ class GetCalculationMetadataControllerSpec
     calculationErrorCount = Some(123)
   )
 
-  private val rawData     = GetCalculationMetadataRawData(nino, calcId)
-  private val requestData = GetCalculationMetadataRequest(Nino(nino), calcId)
+  private val rawData     = GetCalculationRawData(nino, calcId)
+  private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
   private def uri = "/input/uri"
 
