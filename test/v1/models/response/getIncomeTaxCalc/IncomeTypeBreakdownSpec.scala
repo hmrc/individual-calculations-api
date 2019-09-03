@@ -29,19 +29,17 @@ class IncomeTypeBreakdownSpec extends UnitSpec {
       |   {
       |     "name" : "name",
       |     "rate" : 300.25,
-      |     "threshold" : 400.25,
-      |     "apportionedThreshold" : 500.25,
       |     "bandLimit" : 600.25,
       |     "apportionedBandLimit" : 700.25,
       |     "income" : 800.25,
-      |     "amount" : 900.25
+      |     "taxAmount" : 900.25
       |   }
       | ]
       |}
     """.stripMargin)
 
   val model = IncomeTypeBreakdown(100.25, 200.25,
-    Seq(TaxBand("name", 300.25, Some(400.25), Some(500.25), Some(600.25), Some(700.25), 800.25, 900.25)))
+    Some(Seq(TaxBand("name", 300.25, 600.25, 700.25, 800.25, 900.25))))
 
   "IncomeTaxSummary" should {
 

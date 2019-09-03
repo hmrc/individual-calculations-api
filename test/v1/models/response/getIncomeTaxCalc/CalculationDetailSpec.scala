@@ -21,7 +21,7 @@ import support.UnitSpec
 
 class CalculationDetailSpec extends UnitSpec {
 
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, Seq())), None, None, None)
+  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
   val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, true, Some(false))), None)
   val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
 

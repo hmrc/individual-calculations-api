@@ -26,18 +26,15 @@ class IncomeTaxDetailSpec extends UnitSpec {
       |{
       | "payPensionsProfit" : {
       |   "allowancesAllocated": 100.25,
-      |   "incomeTaxAmount" :100.50,
-      |   "taxBands" : []
+      |   "incomeTaxAmount" :100.50
       | },
       |   "savingsAndGains" : {
       |   "allowancesAllocated": 200.25,
-      |   "incomeTaxAmount" :200.50,
-      |   "taxBands" : []
+      |   "incomeTaxAmount" :200.50
       | },
       | "dividends" : {
       |   "allowancesAllocated": 300.25,
-      |   "incomeTaxAmount" :300.50,
-      |   "taxBands" : []
+      |   "incomeTaxAmount" :300.50
       | },
       | "giftAid" : {
       |   "grossGiftAidPayments" : 400.25,
@@ -47,7 +44,7 @@ class IncomeTaxDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, Seq())
+  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
 
   val model = IncomeTaxDetail(
     Some(incomeTypeBreakdown(100)),

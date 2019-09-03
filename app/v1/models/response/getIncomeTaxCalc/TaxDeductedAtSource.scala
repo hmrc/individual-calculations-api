@@ -16,17 +16,11 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
 case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
                                savings: Option[BigDecimal])
 
 object TaxDeductedAtSource {
-  implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
-
-  implicit val reads: Reads[TaxDeductedAtSource] = (
-    (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
-      (JsPath \ "bbsi").readNullable[BigDecimal]
-  )(TaxDeductedAtSource.apply _)
+  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
 }

@@ -26,12 +26,10 @@ class TaxBandSpec extends UnitSpec {
       |{
       | "name": "name",
       | "rate": 100.25,
-      | "threshold" : 200.25,
-      | "apportionedThreshold" : 300.25,
       | "bandLimit" : 400.25,
       | "apportionedBandLimit" : 500.25,
       | "income" : 600.25,
-      | "amount" : 700.25
+      | "taxAmount" : 700.25
       |}
     """.stripMargin)
 
@@ -39,12 +37,10 @@ class TaxBandSpec extends UnitSpec {
     TaxBand(
       name = "name",
       rate = 100.25,
-      threshold = Some(200.25),
-      apportionedThreshold = Some(300.25),
-      bandLimit = Some(400.25),
-      apportionedBandLimit = Some(500.25),
+      bandLimit = 400.25,
+      apportionedBandLimit = 500.25,
       income = 600.25,
-      amount = 700.25
+      taxAmount = 700.25
     )
 
   "TaxBand" should {

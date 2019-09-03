@@ -22,8 +22,8 @@ import support.UnitSpec
 class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
 
   val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 300.25, Seq())), None, None, None)
-  val summaryModel = CalculationSummary(incomeTaxSummary, None, None, None, 400.25, None)
+  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 300.25, None)), None, None, None)
+  val summaryModel = CalculationSummary(incomeTaxSummary, None, None, None, 400.25, "UK")
   val detailModel = CalculationDetail(incomeTaxDetail, None, None)
   val model = GetIncomeTaxCalcResponse(summaryModel, detailModel)
 

@@ -36,7 +36,7 @@ class CalculationSummarySpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, Some("UK"))
+  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
 
   "CalculationDetail" should {
 
