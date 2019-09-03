@@ -29,6 +29,14 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
       |}
     """.stripMargin)
 
+  val outputJson: JsValue = Json.parse(
+    """
+      |{
+      | "ukLandAndProperty" : 100.25,
+      | "savings" : 200.25
+      |}
+    """.stripMargin)
+
   val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
 
   "TaxDeductedAtSource" should {
@@ -38,7 +46,7 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
     }
 
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(model) shouldBe outputJson
     }
   }
 }
