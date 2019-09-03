@@ -19,11 +19,11 @@ package v1.models.response.getIncomeTaxCalc
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
+class CalculationSpec extends  UnitSpec {
 
   val summaryModel = CalculationSummary("")
   val detailModel = CalculationDetail("")
-  val model = GetIncomeTaxCalcResponse(summaryModel, detailModel)
+  val model = Calculation(summaryModel, detailModel)
 
   val json: JsValue = Json.parse(
     s"""
@@ -40,7 +40,7 @@ class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
     }
 
     "read from json correctly" in {
-      json.validate[GetIncomeTaxCalcResponse] shouldBe JsSuccess(model)
+      json.validate[Calculation] shouldBe JsSuccess(model)
     }
   }
 

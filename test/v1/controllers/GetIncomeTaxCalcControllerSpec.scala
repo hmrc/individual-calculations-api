@@ -16,26 +16,23 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getCalculationMetadata.CalculationMetadata
-
-import v1.support.BackendResponseMappingSupport
+import v1.models.response.CalculationWrapperOrError
+import v1.models.response.getIncomeTaxCalc.{Calculation, CalculationDetail, CalculationSummary}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetCalculationMetadataControllerSpec
+class GetIncomeTaxCalcControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -45,7 +42,7 @@ class GetCalculationMetadataControllerSpec
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetCalculationMetadataController(
+    val controller = new GetIncomeTaxCalcController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
@@ -61,30 +58,19 @@ class GetCalculationMetadataControllerSpec
   private val calcId        = "someCalcId"
   private val correlationId = "X-123"
 
-  val responseBody = Json.parse("""
-      |{
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 123
-      |}""".stripMargin)
+  val responseBody: JsValue = Json.parse("""{
+                 |  "summary": {
+                 |    "incomeTax": "summaryValue"
+                 |  },
+                 |  "detail": {
+                 |    "incomeTax": "detailValue"
+                 |  }
+                 |}
+                 |""".stripMargin)
 
-  val response = CalculationMetadata(
-    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    taxYear = "2018-19",
-    requestedBy = CalculationRequestor.customer,
-    calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = "2019-11-15T09:35:15.094Z",
-    calculationType = CalculationType.crystallisation,
-    intentToCrystallise = true,
-    crystallised = false,
-    calculationErrorCount = Some(123)
-  )
+  val response = CalculationWrapperOrError.CalculationWrapper(Calculation(summary =
+    CalculationSummary(incomeTax = "summaryValue"),
+      detail = CalculationDetail(incomeTax = "detailValue")))
 
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
@@ -92,7 +78,7 @@ class GetCalculationMetadataControllerSpec
   private def uri = "/input/uri"
 
   "handleRequest" should {
-    "return OK the calculation metadata" when {
+    "return OK with the calculation" when {
       "happy path" in new Test {
         MockGetCalculationParser
           .parse(rawData)
@@ -102,7 +88,7 @@ class GetCalculationMetadataControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getIncomeTaxCalc(nino, calcId)(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -110,27 +96,22 @@ class GetCalculationMetadataControllerSpec
       }
     }
 
-    "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
-      MockGetCalculationParser
-        .parse(rawData)
-        .returns(Right(requestData))
+    "return FORBIDDEN with the error message" when {
+      "error count is greater than zero" in new Test {
+        MockGetCalculationParser
+          .parse(rawData)
+          .returns(Right(requestData))
 
-      import controller.endpointLogContext
+        MockStandardService
+          .doService(RequestDefn.Get(uri), OK)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
-      val mappingChecks = allChecks[CalculationMetadata, CalculationMetadata](
-        ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
-        ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
-        ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
-        ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
-      )
+        val result: Future[Result] = controller.getIncomeTaxCalc(nino, calcId)(fakeGetRequest(uri))
 
-      MockStandardService
-        .doServiceWithMappings(mappingChecks)
-        .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
-
-      val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
-
-      header("X-CorrelationId", result) shouldBe Some(correlationId)
+        status(result) shouldBe FORBIDDEN
+        contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+      }
     }
   }
 }

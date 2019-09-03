@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.response
 
 import play.api.libs.json.{JsPath, Json, Reads}
