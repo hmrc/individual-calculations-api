@@ -3,7 +3,6 @@
 uses:
   types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
 
-
 traits:
   notFoundListCalculations:
     responses:
@@ -13,7 +12,7 @@ traits:
             type: types.errorResponse
             examples:
               notFoundListCalculations:
-                description: No tax calculations can be found for the supplied NINO and tax year
+                description: No tax calculations can be found for the supplied NINO and tax year.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   notFoundRetrieveMetadata:
@@ -24,7 +23,18 @@ traits:
             type: types.errorResponse
             examples:
               notFoundRetrieveMetadata:
-                description: Tax calculation metadata could not be found for the supplied NINO and Calculation ID
+                description: The calculation ID does not exist for the supplied NINO.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveIncomeTaxAndNics:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveIncomeTaxAndNics:
+                description: No tax calculation data exists for the supplied NINO and calculation ID.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   notFoundRetrieveMessages:
@@ -123,7 +133,7 @@ traits:
             type: types.errorResponse
             examples:
               rule_TaxYearNotSupported:
-                description: The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value
+                description: The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value.
                 value:
                   code: RULE_TAX_YEAR_NOT_SUPPORTED
   ruleTaxYearRangeExceeded:
@@ -148,4 +158,14 @@ traits:
                 description: A calculation could not be performed because no income data has been submitted against the tax year
                 value:
                   code: RULE_NO_INCOME_SUBMISSIONS_EXIST
-
+  ruleCalculationErrorMessagesExist:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleCalculationErrorMessagesExist:
+                description: No Income Tax and National Insurance Contributions data exists for the supplied calculation ID and NINO because error messages were generated while performing the calculation. These error messages can be viewed using the "Retrieve self assessment tax calculation messages endpoint".
+                value:
+                  code: RULE_CALCULATION_ERROR_MESSAGES_EXIST
