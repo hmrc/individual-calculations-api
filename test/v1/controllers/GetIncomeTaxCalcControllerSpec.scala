@@ -27,7 +27,7 @@ import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getIncomeTaxCalc.{Calculation, CalculationDetail, CalculationSummary}
+import v1.models.response.getIncomeTaxCalc.{CalculationDetail, CalculationSummary, GetIncomeTaxCalcResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -68,7 +68,7 @@ class GetIncomeTaxCalcControllerSpec
                  |}
                  |""".stripMargin)
 
-  val response = CalculationWrapperOrError.CalculationWrapper(Calculation(summary =
+  val response = CalculationWrapperOrError.CalculationWrapper(GetIncomeTaxCalcResponse(summary =
     CalculationSummary(incomeTax = "summaryValue"),
       detail = CalculationDetail(incomeTax = "detailValue")))
 

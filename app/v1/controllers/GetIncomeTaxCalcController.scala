@@ -25,7 +25,7 @@ import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.errors._
 import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getIncomeTaxCalc.Calculation
+import v1.models.response.getIncomeTaxCalc.GetIncomeTaxCalcResponse
 import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
@@ -39,8 +39,8 @@ class GetIncomeTaxCalcController @Inject()(
 )(implicit ec: ExecutionContext)
     extends StandardController[GetCalculationRawData,
                                GetCalculationRequest,
-                               CalculationWrapperOrError[Calculation],
-                               Calculation,
+                               CalculationWrapperOrError[GetIncomeTaxCalcResponse],
+                               GetIncomeTaxCalcResponse,
                                AnyContent](authService, lookupService, parser, service, cc) { controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -48,8 +48,8 @@ class GetIncomeTaxCalcController @Inject()(
 
   override def requestHandlingFor(
       playRequest: Request[AnyContent],
-      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[Calculation], Calculation] =
-    RequestHandling[CalculationWrapperOrError[Calculation]](RequestDefn.Get(playRequest.path))
+      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse], GetIncomeTaxCalcResponse] =
+    RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse]](RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
