@@ -19,16 +19,16 @@ package v1.controllers.requestParsers
 import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
-import v1.mocks.validators.MockGetCalculationMetadataValidator
+import v1.mocks.validators.MockGetCalculationValidator
 import v1.models.errors._
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
-class GetCalculationMetadataParserSpec extends UnitSpec {
+class GetCalculationParserSpec extends UnitSpec {
   val nino = "AA111111A"
   val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  trait Test extends MockGetCalculationMetadataValidator {
-    lazy val parser = new GetCalculationMetadataParser(mockValidator)
+  trait Test extends MockGetCalculationValidator {
+    lazy val parser = new GetCalculationParser(mockValidator)
   }
 
   "parse" when {
