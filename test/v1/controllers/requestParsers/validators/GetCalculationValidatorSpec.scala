@@ -20,11 +20,11 @@ import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
 import v1.models.request.GetCalculationRawData
 
-class GetCalculationMetadataValidatorSpec extends UnitSpec {
+class GetCalculationValidatorSpec extends UnitSpec {
   private val validNino = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  val validator = new GetCalculationMetadataValidator()
+  val validator = new GetCalculationValidator()
 
   "running a validation" should {
     "return no errors" when {

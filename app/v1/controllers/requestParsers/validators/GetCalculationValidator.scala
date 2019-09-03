@@ -20,7 +20,7 @@ import v1.controllers.requestParsers.validators.validations.{CalculationIdValida
 import v1.models.errors.{CalculationIdFormatError, MtdError}
 import v1.models.request.GetCalculationRawData
 
-class GetCalculationMetadataValidator extends Validator[GetCalculationRawData]{
+class GetCalculationValidator extends Validator[GetCalculationRawData]{
   private val validationSet = List(parameterFormatValidation)
 
   private def parameterFormatValidation: GetCalculationRawData => List[List[MtdError]] = {
