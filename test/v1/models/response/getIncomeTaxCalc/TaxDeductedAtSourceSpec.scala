@@ -16,15 +16,29 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class CalculationSummary(incomeTax: IncomeTaxSummary,
-                              nics: Option[NicSummary],
-                              totalIncomeTaxNicsCharged: Option[BigDecimal],
-                              totalTaxDeducted: Option[BigDecimal],
-                              totalIncomeTaxAndNicsDue: BigDecimal,
-                              taxRegime: Option[String])
+class TaxDeductedAtSourceSpec extends UnitSpec {
 
-object CalculationSummary {
-  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "ukLandAndProperty" : 100.25,
+      | "bbsi" : 200.25
+      |}
+    """.stripMargin)
+
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
+
+  "TaxDeductedAtSource" should {
+
+    "read correctly from json" in {
+      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
+    }
+
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
+    }
+  }
 }

@@ -18,13 +18,9 @@ package v1.models.response.getIncomeTaxCalc
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CalculationSummary(incomeTax: IncomeTaxSummary,
-                              nics: Option[NicSummary],
-                              totalIncomeTaxNicsCharged: Option[BigDecimal],
-                              totalTaxDeducted: Option[BigDecimal],
-                              totalIncomeTaxAndNicsDue: BigDecimal,
-                              taxRegime: Option[String])
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
+                               bbsi: Option[BigDecimal])
 
-object CalculationSummary {
-  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
+object TaxDeductedAtSource {
+  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
 }

@@ -19,31 +19,42 @@ package v1.models.response.getIncomeTaxCalc
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
-
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 300.25, Seq())), None, None, None)
-  val summaryModel = CalculationSummary(incomeTaxSummary, None, None, None, 400.25, None)
-  val detailModel = CalculationDetail(Some(incomeTaxDetail), None, None)
-  val model = GetIncomeTaxCalcResponse(summaryModel, detailModel)
+class TaxBandSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
-    s"""
+    """
       |{
-      | "summary" : ${Json.toJson(summaryModel).toString()},
-      | "detail" : ${Json.toJson(detailModel).toString()}
+      | "name": "name",
+      | "rate": 100.25,
+      | "threshold" : 200.25,
+      | "apportionedThreshold" : 300.25,
+      | "bandLimit" : 400.25,
+      | "apportionedBandLimit" : 500.25,
+      | "income" : 600.25,
+      | "amount" : 700.25
       |}
     """.stripMargin)
 
-  "CalculationDetail" should {
+  val model =
+    TaxBand(
+      name = "name",
+      rate = 100.25,
+      threshold = Some(200.25),
+      apportionedThreshold = Some(300.25),
+      bandLimit = Some(400.25),
+      apportionedBandLimit = Some(500.25),
+      income = 600.25,
+      amount = 700.25
+    )
 
-    "write to json correctly" in {
+  "TaxBand" should {
+
+    "write correctly to json" in {
       Json.toJson(model) shouldBe json
     }
 
-    "read from json correctly" in {
-      json.validate[GetIncomeTaxCalcResponse] shouldBe JsSuccess(model)
+    "read correctly from json" in {
+      json.validate[TaxBand] shouldBe JsSuccess(model)
     }
   }
-
 }

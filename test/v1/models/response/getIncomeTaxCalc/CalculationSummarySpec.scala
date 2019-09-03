@@ -21,14 +21,22 @@ import support.UnitSpec
 
 class CalculationSummarySpec extends UnitSpec {
 
+  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
+  val nicSummary = NicSummary(Some(200.25), None, None)
+
   val json: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "incomeTax" : ""
+      | "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
+      | "nics" : ${Json.toJson(nicSummary).toString()},
+      | "totalIncomeTaxNicsCharged" : 300.25,
+      | "totalTaxDeducted" : 400.25,
+      | "totalIncomeTaxAndNicsDue" : 500.25,
+      | "taxRegime" : "UK"
       |}
     """.stripMargin)
 
-  val model = CalculationSummary("")
+  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, Some("UK"))
 
   "CalculationDetail" should {
 
