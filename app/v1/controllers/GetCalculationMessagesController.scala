@@ -29,7 +29,7 @@ import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
-class GetCalculationMetadataController @Inject()(
+class GetCalculationMessagesController @Inject()(
                                                   authService: EnrolmentsAuthService,
                                                   lookupService: MtdIdLookupService,
                                                   parser: GetCalculationParser,

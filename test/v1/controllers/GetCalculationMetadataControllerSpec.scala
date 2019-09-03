@@ -16,20 +16,19 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.RequestDefn
-import v1.mocks.requestParsers.MockGetCalculationMetadataParser
+import v1.handling.{RequestDefn, RequestHandling}
+import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.getCalculationMetadata.CalculationMetadata
-
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,7 +38,7 @@ class GetCalculationMetadataControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockGetCalculationMetadataParser
+    with MockGetCalculationParser
     with MockStandardService {
 
   trait Test {
@@ -61,7 +60,7 @@ class GetCalculationMetadataControllerSpec
   private val calcId        = "someCalcId"
   private val correlationId = "X-123"
 
-  val responseBody = Json.parse("""
+  val responseBody: JsValue = Json.parse("""
       |{
       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |    "taxYear": "2018-19",
@@ -86,8 +85,8 @@ class GetCalculationMetadataControllerSpec
     calculationErrorCount = Some(123)
   )
 
-  private val rawData     = GetCalculationMetadataRawData(nino, calcId)
-  private val requestData = GetCalculationMetadataRequest(Nino(nino), calcId)
+  private val rawData     = GetCalculationRawData(nino, calcId)
+  private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
   private def uri = "/input/uri"
 
@@ -117,7 +116,7 @@ class GetCalculationMetadataControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks = allChecks[CalculationMetadata, CalculationMetadata](
+      val mappingChecks: RequestHandling[CalculationMetadata, CalculationMetadata] => Unit = allChecks[CalculationMetadata, CalculationMetadata](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
