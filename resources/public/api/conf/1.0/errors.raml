@@ -37,6 +37,28 @@ traits:
                 description: No tax calculation data exists for the supplied NINO and calculation ID.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveMessages:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveMessages:
+                description: No tax calculation data exists for the supplied NINO and calculation ID.
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  noMessagesPresent:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              noMessagesPresent:
+                description: No messages are present for the supplied types or no messages exist for that calculation ID.
+                value:
+                  code: NO_MESSAGES_PRESENT
   clientOrAgentNotAuthorised:
     responses:
       403:
@@ -81,6 +103,17 @@ traits:
                 description: The provided Calculation ID is not valid
                 value:
                   code: FORMAT_CALC_ID
+  formatType:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              formatType:
+                description: The provided type value is invalid
+                value:
+                  code: FORMAT_TYPE
   incorrectOrEmptyBody:
     responses:
       400:
