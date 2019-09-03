@@ -21,7 +21,7 @@ import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockGetCalculationMetadataValidator
 import v1.models.errors._
-import v1.models.request.{GetCalculationMetadataRawData, GetCalculationMetadataRequest}
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationMetadataParserSpec extends UnitSpec {
   val nino = "AA111111A"
@@ -34,17 +34,17 @@ class GetCalculationMetadataParserSpec extends UnitSpec {
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data = GetCalculationMetadataRawData(nino, calculationId)
+        val data = GetCalculationRawData(nino, calculationId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(GetCalculationMetadataRequest(Nino(nino), calculationId))
+        parser.parseRequest(data) shouldBe Right(GetCalculationRequest(Nino(nino), calculationId))
       }
     }
   }
 
   "single validation error" should {
     "return the error" in new Test {
-      val data = GetCalculationMetadataRawData(nino, calculationId)
+      val data = GetCalculationRawData(nino, calculationId)
       MockValidator.validate(data).returns(List(NinoFormatError))
 
       parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
@@ -53,7 +53,7 @@ class GetCalculationMetadataParserSpec extends UnitSpec {
 
   "multiple validation errors" should{
     "return the errors" in new Test{
-      val data = GetCalculationMetadataRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
+      val data = GetCalculationRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError))
 
       parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError,CalculationIdFormatError)))))

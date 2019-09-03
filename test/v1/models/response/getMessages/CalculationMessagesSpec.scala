@@ -27,7 +27,6 @@ class CalculationMessagesSpec extends UnitSpec {
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
     CalculationMessages(if (info) Some(Seq(info1,info2)) else None, if (warn) Some(Seq(warn1,warn2)) else None, if (error) Some(Seq(err1,err2)) else None)
 
-CalculationMessages(None, None, None)
   "GetCalculationMessages" when {
 
     "read from json" should {

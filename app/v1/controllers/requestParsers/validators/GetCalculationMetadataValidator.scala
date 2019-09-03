@@ -18,17 +18,17 @@ package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation}
 import v1.models.errors.{CalculationIdFormatError, MtdError}
-import v1.models.request.GetCalculationMetadataRawData
+import v1.models.request.GetCalculationRawData
 
-class GetCalculationMetadataValidator extends Validator[GetCalculationMetadataRawData]{
+class GetCalculationMetadataValidator extends Validator[GetCalculationRawData]{
   private val validationSet = List(parameterFormatValidation)
 
-  private def parameterFormatValidation: GetCalculationMetadataRawData => List[List[MtdError]] = {
+  private def parameterFormatValidation: GetCalculationRawData => List[List[MtdError]] = {
     data => List(NinoValidation.validate(data.nino),
       CalculationIdValidation.validate(data.calculationId))
   }
 
-  override def validate(data: GetCalculationMetadataRawData): List[MtdError] = {
+  override def validate(data: GetCalculationRawData): List[MtdError] = {
     run(validationSet,data).distinct
   }
 }

@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
-import v1.models.request.GetCalculationMetadataRawData
+import v1.models.request.GetCalculationRawData
 
 class GetCalculationMetadataValidatorSpec extends UnitSpec {
   private val validNino = "AA112233A"
@@ -29,24 +29,24 @@ class GetCalculationMetadataValidatorSpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(GetCalculationMetadataRawData(validNino, validCalculationId)) shouldBe empty
+        validator.validate(GetCalculationRawData(validNino, validCalculationId)) shouldBe empty
       }
     }
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(GetCalculationMetadataRawData("AA111111E", validCalculationId)) shouldBe
+        validator.validate(GetCalculationRawData("AA111111E", validCalculationId)) shouldBe
           List(NinoFormatError)
       }
     }
     "return CalculationIdFormatError error" when {
       "an invalid calculationId is supplied" in {
-        validator.validate(GetCalculationMetadataRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
+        validator.validate(GetCalculationRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
           List(CalculationIdFormatError)
       }
     }
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        validator.validate(GetCalculationMetadataRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
+        validator.validate(GetCalculationRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
           List(NinoFormatError, CalculationIdFormatError)
       }
     }
