@@ -621,8 +621,8 @@
                   "maximum":99999999999,
                   "example":"1000"
                 },
-                "underSmallProfitsThreshold":{
-                  "title":"underSmallProfitsThreshold",
+                "underSmallProfitThreshold":{
+                  "title":"underSmallProfitThreshold",
                   "description":"Boolean showing whether the self employment profits are under the Class 2 NIC small profits threshold.",
                   "type":"boolean",
                   "example":"true"
@@ -635,7 +635,7 @@
                 }
               },
               "required":[
-                "underSmallProfitsThreshold"
+                "underSmallProfitThreshold"
               ]
             },
             "class4NicBands":{
@@ -724,10 +724,7 @@
                 ]
               }
             }
-          },
-          "required":[
-            "class4NicBands"
-          ]
+          }
         },
         "taxDeductedAtSource":{
           "title":"taxDeductedAtSource",
