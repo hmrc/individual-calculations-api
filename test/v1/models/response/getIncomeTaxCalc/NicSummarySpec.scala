@@ -16,11 +16,36 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
 
-case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
+class NicSummarySpec extends UnitSpec {
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "class2NicsAmount" : 100.25,
+      | "class4NicsAmount" : 200.25,
+      | "totalNic" : 300.25
+      |}
+    """.stripMargin)
+
+  val model = NicSummary(Some(100.25), Some(200.25), Some(300.25))
+
+  "NicSummary" should {
+
+    "read from json correctly" when {
+
+      "provided with valid json" in {
+        json.as[NicSummary] shouldBe model
+      }
+    }
+
+    "write to json correctly" when {
+
+      "a valid model is provided" in {
+        Json.toJson(model) shouldBe json
+      }
+    }
+  }
 }

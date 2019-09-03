@@ -16,11 +16,36 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
 
-case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
+class GiftAidSpec extends UnitSpec {
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  val json: JsValue = Json.parse(
+    s"""
+       |{
+       | "grossGiftAidPayments": 100.25,
+       | "rate": 200.25,
+       | "giftAidTax": 300.25
+       |}
+           """.stripMargin)
+
+  val model = GiftAid(100.25, 200.25, 300.25)
+
+  "GiftAid" should {
+
+    "read from json correctly" when {
+
+      "provided with valid json" in {
+        json.as[GiftAid] shouldBe model
+      }
+    }
+
+    "write to json correctly" when {
+
+      "a valid model is provided" in {
+        Json.toJson(model) shouldBe json
+      }
+    }
+  }
 }
