@@ -24,7 +24,7 @@ import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getCalculationMetadata.CalculationMetadata
+import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -36,7 +36,7 @@ class GetCalculationMessagesController @Inject()(
                                                   service: StandardService,
                                                   cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, CalculationMetadata, AnyContent](
+  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMessages, CalculationMessages, AnyContent](
     authService,
     lookupService,
     parser,
@@ -45,11 +45,11 @@ class GetCalculationMessagesController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
+    EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationMetadata, CalculationMetadata] =
-    RequestHandling[CalculationMetadata](
+                                  req: GetCalculationRequest): RequestHandling[CalculationMessages, CalculationMessages] =
+    RequestHandling[CalculationMessages](
       RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
         NinoFormatError,
@@ -59,7 +59,7 @@ class GetCalculationMessagesController @Inject()(
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
+  def getMessages(nino: String, calculationId: String, typeQuery: String*): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
       doHandleRequest(rawData)

@@ -24,11 +24,11 @@ import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 trait MockGetCalculationParser extends MockFactory {
 
-  val mockGetCalculationMetadataParser: GetCalculationParser = mock[GetCalculationParser]
+  val mockGetCalculationParser: GetCalculationParser = mock[GetCalculationParser]
 
-  object MockGetCalculationMetadataParser {
+  object MockGetCalculationParser {
     def parse(data: GetCalculationRawData): CallHandler[Either[ErrorWrapper, GetCalculationRequest]] = {
-      (mockGetCalculationMetadataParser.parseRequest(_: GetCalculationRawData)).expects(data)
+      (mockGetCalculationParser.parseRequest(_: GetCalculationRawData)).expects(data)
     }
   }
 }
