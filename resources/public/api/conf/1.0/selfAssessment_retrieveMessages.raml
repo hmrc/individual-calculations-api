@@ -1,0 +1,31 @@
+is:
+  - headers.acceptJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatCalcId
+  - errors.formatType
+  - errors.clientOrAgentNotAuthorised
+  - errors.notFoundRetrieveMessages
+  - errors.noMessagesPresent
+  - queryParameters.type
+displayName: Retrieve Self Assessment Tax Calculation Messages [test only]
+description: This endpoint allows you to retrieve info, warning and error level messages linked to the calculation ID. If there are any error messages for a calculation ID then a calculation could not be performed. The expectation for third party software is that the messages should be surfaced to end users to see. Third party software is not expected to code around these errors as they would a HTTP error.
+(annotations.sandboxData): !include scenarios/selfAssessment/retrieveMessages.md
+(annotations.scope): "read:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
+responses:
+ 200:
+   body:
+     application/json:
+       type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_messages_response.json
+       examples:
+         example-1:
+            description: Retrieve Calculation Messages
+            value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_info_and_warnings.json
+         example-2:
+           description: Retrieve Calculation Metadata for In Year Calculation
+           value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_info_and_error.json
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.

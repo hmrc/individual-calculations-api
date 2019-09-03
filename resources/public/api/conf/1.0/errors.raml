@@ -13,7 +13,7 @@ traits:
             type: types.errorResponse
             examples:
               notFoundListCalculations:
-                description: No tax calculations can be found for the supplied NINO and tax year.
+                description: No tax calculations can be found for the supplied NINO and tax year
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   notFoundRetrieveMetadata:
@@ -24,9 +24,31 @@ traits:
             type: types.errorResponse
             examples:
               notFoundRetrieveMetadata:
-                description: Tax calculation metadata could not be found for the supplied NINO and tax year.
+                description: Tax calculation metadata could not be found for the supplied NINO and Calculation ID
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundRetrieveMessages:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundRetrieveMessages:
+                description: A Tax Calculation could not be found for the supplied NINO and Calculation ID
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  noMessagesPresent:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              noMessagesPresent:
+                description: A Tax Calculation was present, but messages were not found for the supplied NINO and Calculation ID
+                value:
+                  code: NO_MESSAGES_PRESENT
   clientOrAgentNotAuthorised:
     responses:
       403:
@@ -71,6 +93,17 @@ traits:
                 description: The provided Calculation ID is not valid
                 value:
                   code: FORMAT_CALC_ID
+  formatType:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              formatType:
+                description: The provided type value is invalid
+                value:
+                  code: FORMAT_TYPE
   incorrectOrEmptyBody:
     responses:
       400:
@@ -90,7 +123,7 @@ traits:
             type: types.errorResponse
             examples:
               rule_TaxYearNotSupported:
-                description: The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value.
+                description: The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value
                 value:
                   code: RULE_TAX_YEAR_NOT_SUPPORTED
   ruleTaxYearRangeExceeded:
