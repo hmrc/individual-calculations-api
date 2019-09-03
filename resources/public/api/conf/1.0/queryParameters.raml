@@ -5,8 +5,7 @@ uses:
 
 types:
   Type:
-    enum: [info,warning,error]
-
+    enum: [info,warning,errors]
 
 traits:
   taxYear:
@@ -19,7 +18,7 @@ traits:
     queryParameters:
       'type':
         type: Type
-        description: "The 'type' query parameter allows the messages output to be filtered by type. The type parameter can be supplied more than once; e.g. ?type=info&type=warning."
+        description: "The 'type' query parameter allows the messages output to be filtered by type. The type parameter can be supplied more than once; e.g. `?type=info&type=warning`."
         required: false
 
 
