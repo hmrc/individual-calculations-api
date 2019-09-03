@@ -1,0 +1,28 @@
+{
+  "info": [
+    {
+      "id": "C22203",
+      "text": "Class 2 National Insurance has not been charged as your self-employed profits are under the small profit threshold."
+    }
+  ],
+  "warnings": [
+    {
+      "id": "C11009",
+      "text": "Period submissions include gaps"
+    },
+    {
+      "id": "C11010",
+      "text": "Period submissions include overlaps"
+    },
+    {
+      "id": "C11101",
+      "text": "Please check you have entered the correct amount of total gift aid payments"
+    }
+  ],
+  "errors": [
+    {
+      "id": "C95005",
+      "text": "Final confirmation of income and expenses for all business sources has not been provided"
+    }
+  ]
+}

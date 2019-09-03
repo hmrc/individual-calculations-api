@@ -20,11 +20,14 @@ responses:
        type: !include schemas/selfAssessment/retrieveTaxCalc/retrieve_messages_response.json
        examples:
          example-1:
-            description: Retrieve Calculation Messages
+            description: Retrieve Calculation Messages with info and warning messages
             value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_info_and_warnings.json
          example-2:
-           description: Retrieve Calculation Metadata for In Year Calculation
-           value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_info_and_error.json
+           description: Retrieve Calculation Metadata with info and error messages
+           value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_info_and_errors.json
+         example-3:
+           description: Retrieve Calculation Metadata with info, warning and error messages
+           value: !include examples/selfAssessment/retrieveMessages/retrieve_calc_messages_all_returned.json
    headers:
       X-CorrelationId:
         example: c75f40a6-a3df-4429-a697-471eeec46435

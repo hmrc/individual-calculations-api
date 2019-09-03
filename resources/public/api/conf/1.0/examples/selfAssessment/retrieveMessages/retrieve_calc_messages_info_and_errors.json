@@ -5,7 +5,7 @@
       "text": "You have entered a large amount in total Gift Aid payments. Please check"
     }
   ],
-  "error": [
+  "errors": [
     {
       "id": "C11103",
       "text": "Gift aid payments made this year treated as paid in the previous year cannot exceed the total gift aid payments. Please check."
