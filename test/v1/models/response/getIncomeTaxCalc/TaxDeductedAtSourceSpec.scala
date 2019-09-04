@@ -19,33 +19,26 @@ package v1.models.response.getIncomeTaxCalc
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class CalculationSummarySpec extends UnitSpec {
-
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val nicSummary = NicSummary(Some(200.25), None, None)
+class TaxDeductedAtSourceSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
-    s"""
+    """
       |{
-      | "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-      | "nics" : ${Json.toJson(nicSummary).toString()},
-      | "totalIncomeTaxNicsCharged" : 300.25,
-      | "totalTaxDeducted" : 400.25,
-      | "totalIncomeTaxAndNicsDue" : 500.25,
-      | "taxRegime" : "UK"
+      | "ukLandAndProperty" : 100.25,
+      | "savings" : 200.25
       |}
     """.stripMargin)
 
-  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
 
-  "CalculationSummary" should {
+  "TaxDeductedAtSource" should {
 
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
+    "read correctly from json" in {
+      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
     }
 
-    "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
     }
   }
 }

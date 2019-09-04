@@ -19,33 +19,38 @@ package v1.models.response.getIncomeTaxCalc
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class CalculationSummarySpec extends UnitSpec {
-
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val nicSummary = NicSummary(Some(200.25), None, None)
+class TaxBandSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
-    s"""
+    """
       |{
-      | "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-      | "nics" : ${Json.toJson(nicSummary).toString()},
-      | "totalIncomeTaxNicsCharged" : 300.25,
-      | "totalTaxDeducted" : 400.25,
-      | "totalIncomeTaxAndNicsDue" : 500.25,
-      | "taxRegime" : "UK"
+      | "name": "name",
+      | "rate": 100.25,
+      | "bandLimit" : 400.25,
+      | "apportionedBandLimit" : 500.25,
+      | "income" : 600.25,
+      | "taxAmount" : 700.25
       |}
     """.stripMargin)
 
-  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
+  val model =
+    TaxBand(
+      name = "name",
+      rate = 100.25,
+      bandLimit = 400.25,
+      apportionedBandLimit = 500.25,
+      income = 600.25,
+      taxAmount = 700.25
+    )
 
-  "CalculationSummary" should {
+  "TaxBand" should {
 
-    "write to json correctly" in {
+    "write correctly to json" in {
       Json.toJson(model) shouldBe json
     }
 
-    "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
+    "read correctly from json" in {
+      json.validate[TaxBand] shouldBe JsSuccess(model)
     }
   }
 }

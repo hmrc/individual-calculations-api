@@ -16,13 +16,10 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json._
+import play.api.libs.json.{Json, OFormat}
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
+case class IncomeTypeBreakdown(allowancesAllocated: BigDecimal, incomeTaxAmount: BigDecimal, taxBands: Option[Seq[TaxBand]])
 
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
-
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
+object IncomeTypeBreakdown {
+  implicit val format: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
 }

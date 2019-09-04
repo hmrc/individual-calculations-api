@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxCalc
+package v1.fixtures
 
-import play.api.libs.json._
+object GetIncomeTaxCalcFixture {
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
-
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
-
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
 }

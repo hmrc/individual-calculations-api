@@ -16,13 +16,36 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
+class NicSummarySpec extends UnitSpec {
 
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "class2NicsAmount" : 100.25,
+      | "class4NicsAmount" : 200.25,
+      | "totalNic" : 300.25
+      |}
+    """.stripMargin)
 
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
+  val model = NicSummary(Some(100.25), Some(200.25), Some(300.25))
+
+  "NicSummary" should {
+
+    "read from json correctly" when {
+
+      "provided with valid json" in {
+        json.as[NicSummary] shouldBe model
+      }
+    }
+
+    "write to json correctly" when {
+
+      "a valid model is provided" in {
+        Json.toJson(model) shouldBe json
+      }
+    }
+  }
 }

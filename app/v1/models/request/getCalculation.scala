@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxCalc
+package v1.models.request
 
-import play.api.libs.json._
+import uk.gov.hmrc.domain.Nino
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
+case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
 
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
+case class GetCalculationRequest(nino: Nino, calculationId: String)
 
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
-}

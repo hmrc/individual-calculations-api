@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.response.getIncomeTaxCalc
 
-import uk.gov.hmrc.domain.Nino
+import play.api.libs.json._
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+object NicSummary {
+  implicit val format: OFormat[NicSummary] = Json.format[NicSummary]
+}

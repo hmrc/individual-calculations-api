@@ -16,13 +16,15 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json._
+import play.api.libs.json.{Json, OFormat}
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
+case class TaxBand(name: String,
+                   rate: BigDecimal,
+                   bandLimit: BigDecimal,
+                   apportionedBandLimit: BigDecimal,
+                   income: BigDecimal,
+                   taxAmount: BigDecimal)
 
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
-
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
+object TaxBand {
+  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
 }
