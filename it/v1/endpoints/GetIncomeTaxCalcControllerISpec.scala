@@ -22,8 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
+import v1.fixtures.GetIncomeTaxCalcFixture
 import v1.models.errors._
-import v1.models.response.getIncomeTaxCalc._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetIncomeTaxCalcControllerISpec extends IntegrationBaseSpec {
@@ -47,81 +47,21 @@ class GetIncomeTaxCalcControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val nicSummary = NicSummary(Some(200.25), None, None)
-  val calculationSummary = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
-
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
-  val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, underSmallProfitThreshold = true,
-    actualClass2Nic = Some(false))), None)
-  val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
-  val calculationDetail: CalculationDetail = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
-
-  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
-
   "Calling the get income tax calculation endpoint" should {
     "return a 200 status code" when {
-
-      val successBody = Json.parse(s"""
-                                     |{
-                                     |  "metadata": {
-                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                     |    "taxYear": "2018-19",
-                                     |    "requestedBy": "customer",
-                                     |    "calculationReason": "customerRequest",
-                                     |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                     |    "calculationType": "crystallisation",
-                                     |    "intentToCrystallise": true,
-                                     |    "crystallised": false,
-                                     |    "calculationErrorCount": 0
-                                     |  },
-                                     |  "incomeTax": {
-                                     |   "summary": {
-                                     |     "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-                                     |     "nics" : ${Json.toJson(nicSummary).toString()},
-                                     |     "totalIncomeTaxNicsCharged" : 300.25,
-                                     |     "totalTaxDeducted" : 400.25,
-                                     |     "totalIncomeTaxAndNicsDue" : 500.25,
-                                     |     "taxRegime" : "UK"
-                                     |  },
-                                     |  "detail": {
-                                     |     "incomeTax" : ${Json.toJson(incomeTaxDetail).toString()},
-                                     |     "nics" : ${Json.toJson(nicDetail).toString()},
-                                     |     "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
-                                     |  }
-                                     |  }
-                                     |}""".stripMargin)
-
-      val successOutput = Json.parse(s"""{
-                                        |  "summary": {
-                                        |     "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-                                        |     "nics" : ${Json.toJson(nicSummary).toString()},
-                                        |     "totalIncomeTaxNicsCharged" : 300.25,
-                                        |     "totalTaxDeducted" : 400.25,
-                                        |     "totalIncomeTaxAndNicsDue" : 500.25,
-                                        |     "taxRegime" : "UK"
-                                        |  },
-                                        |  "detail": {
-                                        |     "incomeTax" : ${Json.toJson(incomeTaxDetail).toString()},
-                                        |     "nics" : ${Json.toJson(nicDetail).toString()},
-                                        |     "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
-                                        |  }
-                                        |}
-                                        |""".stripMargin)
-
       "valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxCalcFixture.successBodyFromBackEnd)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successOutput
+        response.json shouldBe GetIncomeTaxCalcFixture.successOutputToVendor
       }
     }
 
