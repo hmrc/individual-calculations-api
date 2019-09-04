@@ -27,7 +27,7 @@ class CalculationMessagesSpec extends UnitSpec {
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
     CalculationMessages(if (info) Some(Seq(info1,info2)) else None, if (warn) Some(Seq(warn1,warn2)) else None, if (error) Some(Seq(err1,err2)) else None)
 
-  "GetCalculationMessages" when {
+  "CalculationMessages" when {
 
     "read from json" should {
       "read from the json as a  whole CalculationMessage" in {
@@ -61,6 +61,16 @@ class CalculationMessagesSpec extends UnitSpec {
 
       "display errors only" in {
         Json.toJson[CalculationMessages](messagesResponse(false, false, true)) shouldBe outputMessagesErrorsJson
+      }
+    }
+
+    "called hasMessages" should {
+      "return false when no info, warn and error messages exist" in {
+        messagesResponse(false, false, false).hasMessages shouldBe false
+      }
+
+      "return true when any of info, warn and error messages exist" in {
+        messagesResponse(true, false, false).hasMessages shouldBe true
       }
     }
   }

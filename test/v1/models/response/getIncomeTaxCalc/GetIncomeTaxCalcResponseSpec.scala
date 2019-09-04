@@ -27,7 +27,7 @@ class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
   val detailModel = CalculationDetail(incomeTaxDetail, None, None)
   val model = GetIncomeTaxCalcResponse(summaryModel, detailModel)
 
-  val json: JsValue = Json.parse(
+  val outputJson: JsValue = Json.parse(
     s"""
       |{
       | "summary" : ${Json.toJson(summaryModel).toString()},
@@ -35,14 +35,24 @@ class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
       |}
     """.stripMargin)
 
+  val inputJson: JsValue = Json.parse(
+    s"""
+       |{
+       | "incomeTax": {
+       |   "summary" : ${Json.toJson(summaryModel).toString()},
+       |   "detail" : ${Json.toJson(detailModel).toString()}
+       | }
+       |}
+    """.stripMargin)
+
   "CalculationDetail" should {
 
     "write to json correctly" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(model) shouldBe outputJson
     }
 
     "read from json correctly" in {
-      json.validate[GetIncomeTaxCalcResponse] shouldBe JsSuccess(model)
+      inputJson.as[GetIncomeTaxCalcResponse] shouldBe model
     }
   }
 

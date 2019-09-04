@@ -21,3 +21,4 @@ import uk.gov.hmrc.domain.Nino
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
 
 case class GetCalculationRequest(nino: Nino, calculationId: String)
+

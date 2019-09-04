@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxCalc
+package v1.models.domain
 
-import play.api.libs.json._
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
+class EmptyJsonBodySpec extends UnitSpec {
 
-object GetIncomeTaxCalcResponse {
-  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
+  val json = Json.parse(
+    """{
+      |
+      |}""".stripMargin)
 
-  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
-    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
+  "JSON writes" must {
+    "align with spec" in {
+      Json.toJson(EmptyJsonBody) shouldBe json
+    }
+  }
+
 }
