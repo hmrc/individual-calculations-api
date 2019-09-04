@@ -21,8 +21,10 @@ import support.UnitSpec
 
 class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
 
-  val summaryModel = CalculationSummary("")
-  val detailModel = CalculationDetail("")
+  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
+  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 300.25, None)), None, None, None)
+  val summaryModel = CalculationSummary(incomeTaxSummary, None, None, None, 400.25, "UK")
+  val detailModel = CalculationDetail(incomeTaxDetail, None, None)
   val model = GetIncomeTaxCalcResponse(summaryModel, detailModel)
 
   val json: JsValue = Json.parse(
