@@ -33,6 +33,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
     val nino          = "AA123456A"
     val correlationId = "X-123"
     val calcId        = "12345678"
+    val typeParam: Option[String] = Some("error")
 
     def uri: String = s"/$nino/self-assessment/$calcId/messages"
 
@@ -43,6 +44,16 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
     def request: WSRequest = {
       setupStubs()
       buildRequest(uri)
+        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
+    }
+
+    def filterRequest: WSRequest = {
+      val queryParams: Seq[(String, String)] =
+        Seq("p1" -> typeParam )
+          .collect { case (k, Some(v)) => (k,v)}
+      setupStubs()
+      buildRequest(uri)
+        .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
   }
@@ -67,6 +78,26 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successOutput
+      }
+    }
+
+    "return a 500 status code" when {
+
+      val successBody = backendMessagesJson
+
+      "there is a type format error" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val response: WSResponse = await(filterRequest.get)
+
+        response.status shouldBe BAD_REQUEST
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe Json.toJson(TypeFormatError)
       }
     }
 

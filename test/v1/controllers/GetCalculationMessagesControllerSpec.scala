@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
@@ -88,6 +88,16 @@ class GetCalculationMessagesControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
+    }
+    "return a typeFormatError" when {
+      "type parameters are supplied with the incorrect format" in new Test {
+
+        val result: Future[Result] = controller.getMessages(nino, calcId, "non-valid type")(fakeGetRequest(uri))
+
+        status(result) shouldBe BAD_REQUEST
+        contentAsJson(result) shouldBe Json.toJson(TypeFormatError)
+      }
+
     }
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
