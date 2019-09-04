@@ -21,26 +21,26 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.controllers.requestParsers.GetCalculationParser
+import v1.controllers.requestParsers.{GetCalculationParser, GetCalculationQueryParser}
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.errors.{CalculationIdFormatError, ErrorWrapper, MtdError, MtdErrors, NinoFormatError, NotFoundError, TypeFormatError}
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.errors.{CalculationIdFormatError, MtdError, NinoFormatError, NotFoundError, TypeFormatError}
+import v1.models.request.{GetCalculationQueryRawData, GetCalculationQueryRequest, GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.controllers.requestParsers.validators.validations.TypeValidation._
 
 import scala.collection.immutable.Nil
 import scala.concurrent.{ExecutionContext, Future}
-import v1.models.request.asd._
+import v1.models.request.`Type`._
 
 class GetCalculationMessagesController @Inject()(
                                                   authService: EnrolmentsAuthService,
                                                   lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationParser,
+                                                  parser: GetCalculationQueryParser,
                                                   service: StandardService,
                                                   cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMessages, CalculationMessages, AnyContent](
+  extends StandardController[GetCalculationQueryRawData, GetCalculationQueryRequest, CalculationMessages, CalculationMessages, AnyContent](
     authService,
     lookupService,
     parser,
@@ -52,12 +52,13 @@ class GetCalculationMessagesController @Inject()(
     EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationMessages, CalculationMessages] =
+                                  req: GetCalculationQueryRequest): RequestHandling[CalculationMessages, CalculationMessages] =
     RequestHandling[CalculationMessages](
       RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
+        TypeFormatError,
         NotFoundError
       )
 
@@ -65,9 +66,8 @@ class GetCalculationMessagesController @Inject()(
 
   def getMessages(nino: String, calculationId: String, typeQuery: String*): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      val rawData = GetCalculationRawData(nino, calculationId)
       if (validateQuery(typeQuery.distinct).isEmpty) {
-        val queries = typeQuery.distinct.map(query => toTypeClass(query))
+        val rawData = GetCalculationQueryRawData(nino, calculationId, typeQuery)
         doHandleRequest(rawData)
       } else {
         Future(Status(BAD_REQUEST)(Json.toJson(TypeFormatError)))

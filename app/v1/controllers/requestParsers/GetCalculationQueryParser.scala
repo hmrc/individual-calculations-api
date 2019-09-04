@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.controllers.requestParsers
 
+import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
+import v1.controllers.requestParsers.validators.GetCalculationQueryValidator
+import v1.models.request.{GetCalculationQueryRawData, GetCalculationQueryRequest, `Type`}
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+class GetCalculationQueryParser @Inject()(val validator: GetCalculationQueryValidator)
+  extends RequestParser[GetCalculationQueryRawData, GetCalculationQueryRequest] {
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
-
-case class GetCalculationQueryRawData(nino: String, calculationId: String, queryData: String*) extends RawData
-
-case class GetCalculationQueryRequest(nino: Nino, calculationId: String, queryData: Seq[`Type`])
+  override def requestFor(data: GetCalculationQueryRawData): GetCalculationQueryRequest =
+    GetCalculationQueryRequest(Nino(data.nino), data.calculationId, data.queryData.map(param => Type.toTypeClass(param)))
+}

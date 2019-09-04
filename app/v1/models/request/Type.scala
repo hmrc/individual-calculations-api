@@ -16,11 +16,11 @@
 
 package v1.models.request
 
-sealed trait asd
+sealed trait `Type`
 
-object asd {
+object `Type` {
 
-  def toTypeClass(`type`: String): asd = `type`.toLowerCase() match {
+  def toTypeClass(`type`: String): `Type` = `type`.toLowerCase() match {
     case "info"     => info
     case "warnings" => warnings
     case "errors"   => errors
@@ -28,7 +28,7 @@ object asd {
   }
 }
 
-case object info     extends asd
-case object warnings extends asd
-case object errors   extends asd
-case object none     extends asd
+case object info     extends `Type`
+case object warnings extends `Type`
+case object errors   extends `Type`
+case object none     extends `Type`

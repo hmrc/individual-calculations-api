@@ -22,6 +22,10 @@ object TypeValidation {
 
   val typeOptions: Seq[String] = Seq("info", "warnings", "errors")
 
+  def validateList(queryParams :Seq[String]): List[MtdError] ={
+    queryParams.flatMap(param => validate(param)).toList
+  }
+
   def validate(`type`: String): List[MtdError] = if (typeOptions.contains(`type`)) {
     Nil
   } else {
