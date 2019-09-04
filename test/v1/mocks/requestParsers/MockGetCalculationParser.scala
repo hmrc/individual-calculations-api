@@ -24,7 +24,7 @@ import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 trait MockGetCalculationParser extends MockFactory {
 
-  val mockGetCalculationParser = mock[GetCalculationParser]
+  val mockGetCalculationParser: GetCalculationParser = mock[GetCalculationParser]
 
   object MockGetCalculationParser {
     def parse(data: GetCalculationRawData): CallHandler[Either[ErrorWrapper, GetCalculationRequest]] = {

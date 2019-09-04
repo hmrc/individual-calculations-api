@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve self assessment tax calculation messages",
+  "description": "Retrieve self assessment tax calculation messages",
+  "type": "object",
+  "properties": {
+    "info": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of info messages relating to the calculation ID.",
+        "properties":{
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": ["id", "text"]
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of warning messages relating to the calculation ID.",
+        "properties":{
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": ["id", "text"]
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of error messages relating to the calculation ID.",
+        "properties":{
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": ["id", "text"]
+      }
+    }
+  }
+}
