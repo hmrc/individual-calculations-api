@@ -171,7 +171,7 @@
                     "properties":{
                       "name":{
                         "title":"name",
-                        "description":"The name of the tax band threshold. Must be one of: SRT, BRT, IRT, HRT, ART",
+                        "description":"The name of the tax band threshold.",
                         "type":"string",
                         "oneOf":[
                           {
@@ -298,7 +298,7 @@
                     "properties":{
                       "name":{
                         "title":"name",
-                        "description":"The name of the tax band. Must be one of the following: SSR,BRT,HRT,ART, ZRTBR, ZRTHR",
+                        "description":"The name of the tax band.",
                         "type":"string",
                         "oneOf":[
                           {
@@ -431,7 +431,7 @@
                     "properties":{
                       "name":{
                         "title":"name",
-                        "description":"The name of the tax band. Must be one of the following: BRT, HRT, ART, ZRTBR, ZRTHR, ZRTAR",
+                        "description":"The name of the tax band.",
                         "type":"string",
                         "oneOf":[
                           {
@@ -647,7 +647,7 @@
                 "properties":{
                   "name":{
                     "title":"name",
-                    "description":"The name of the tax band threshold. Must be one of: BRT, HRT, ZRT",
+                    "description":"The name of the tax band threshold.",
                     "type":"string",
                     "oneOf":[
                       {
