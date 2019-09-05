@@ -20,7 +20,7 @@ import v1.models.errors.{MtdError, TypeFormatError}
 
 object TypeValidation {
 
-  val typeOptions: Seq[String] = Seq("info", "warnings", "errors", "")
+  val typeOptions: Seq[String] = Seq("info", "warning", "error", "")
 
   def validateList(queryParams :Seq[String]): List[MtdError] ={
     queryParams.flatMap(param => validate(param)).toList

@@ -66,8 +66,8 @@ class GetCalculationMessagesControllerSpec
   val responseBody: JsValue = outputMessagesJson
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
-  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","errors"))
-  private val typeQueries = Seq(Type.toTypeClass("info"), Type.toTypeClass("errors"))
+  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","error","warning"))
+  private val typeQueries = Seq(Type.toTypeClass("info"), Type.toTypeClass("error"), Type.toTypeClass("warning"))
   private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
 
   private def uri = "/input/uri"
@@ -83,7 +83,7 @@ class GetCalculationMessagesControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMessages(nino, calcId, "info","errors")(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getMessages(nino, calcId, "info","error","warning")(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -109,7 +109,7 @@ class GetCalculationMessagesControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      val result: Future[Result] = controller.getMessages(nino, calcId, "info","errors")(fakeGetRequest(uri))
+      val result: Future[Result] = controller.getMessages(nino, calcId, "info","error", "warning")(fakeGetRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

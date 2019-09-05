@@ -41,11 +41,11 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
     def request: WSRequest = {
       val queryParams: Seq[(String, String)] =
-        Seq("p1" -> "errors", "p2" -> "info", "p3" -> "warnings")
+        Seq("p1" -> "error", "p2" -> "info", "p3" -> "warning")
           .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters()
+        .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -79,7 +79,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
       "validation error" when {
         def validationErrorTest(requestNino: String,
                                 requestCalcId: String,
-                                typeQueries: Option[Seq[String]],
+                                typeQuery: Option[String],
                                 expectedStatus: Int,
                                 expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
@@ -94,10 +94,10 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
             }
 
             val queryParams: Seq[(String, String)] =
-              Seq("p1" -> typeQueries.getOrElse(Seq("errors")).head)
+              Seq("p1" -> typeQuery.getOrElse(""), "p2" -> "info", "p3" -> "warning")
                 .collect { case (k, v) => (k, v) }
 
-            val response: WSResponse = await(request.addQueryStringParameters(queryParams: _*).get)
+            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
           }
@@ -106,7 +106,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
         val input = Seq(
           ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
           ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
-          ("AA123456A", "12345678", Some(Seq("shmerrors")), BAD_REQUEST, TypeFormatError)
+          ("AA123456A", "12345678", Some("shmerrors"), BAD_REQUEST, TypeFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
