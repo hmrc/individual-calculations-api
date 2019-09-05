@@ -19,32 +19,32 @@ package v1.controllers.requestParsers
 import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
-import v1.mocks.validators.MockGetCalculationQueryValidator
+import v1.mocks.validators.MockGetCalculationMessagesValidator
 import v1.models.errors._
-import v1.models.request.{ GetCalculationQueryRawData, GetCalculationQueryRequest, `Type` }
+import v1.models.request.{ GetCalculationMessagesRawData, GetCalculationMessagesRequest, `Type` }
 
 class GetCalculationQueryParserSpec extends UnitSpec {
   val nino          = "AA111111A"
   val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  trait Test extends MockGetCalculationQueryValidator {
-    lazy val parser = new GetCalculationQueryParser(mockValidator)
+  trait Test extends MockGetCalculationMessagesValidator {
+    lazy val parser = new GetCalculationMessagesParser(mockValidator)
   }
 
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data = GetCalculationQueryRawData(nino, calculationId, Seq("errors"))
+        val data = GetCalculationMessagesRawData(nino, calculationId, Seq("errors"))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(GetCalculationQueryRequest(Nino(nino), calculationId, Seq(Type.toTypeClass("errors"))))
+        parser.parseRequest(data) shouldBe Right(GetCalculationMessagesRequest(Nino(nino), calculationId, Seq(Type.toTypeClass("errors"))))
       }
     }
   }
 
   "single validation error" should {
     "return the error" in new Test {
-      val data = GetCalculationQueryRawData(nino, calculationId, Seq("errors"))
+      val data = GetCalculationMessagesRawData(nino, calculationId, Seq("errors"))
       MockValidator.validate(data).returns(List(NinoFormatError))
 
       parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
@@ -53,7 +53,7 @@ class GetCalculationQueryParserSpec extends UnitSpec {
 
   "multiple validation errors" should {
     "return the errors" in new Test {
-      val data = GetCalculationQueryRawData("AA111111F", "f2fb30e5-4ab6-4a29-b3c1-c7264", Seq("shmerrors", "shmimfo"))
+      val data = GetCalculationMessagesRawData("AA111111F", "f2fb30e5-4ab6-4a29-b3c1-c7264", Seq("shmerrors", "shmimfo"))
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError, TypeFormatError))
 
       parser.parseRequest(data) shouldBe Left(

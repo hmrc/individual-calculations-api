@@ -18,40 +18,40 @@ package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
 import v1.models.errors.{ CalculationIdFormatError, NinoFormatError, TypeFormatError }
-import v1.models.request.GetCalculationQueryRawData
+import v1.models.request.GetCalculationMessagesRawData
 
-class GetCalculationQueryValidatorSpec extends UnitSpec {
-  val validator                  = new GetCalculationQueryValidator()
+class GetCalculationMessagesValidatorSpec extends UnitSpec {
+  val validator                  = new GetCalculationMessagesValidator()
   private val validNino          = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(GetCalculationQueryRawData(validNino, validCalculationId, Seq("info"))) shouldBe empty
+        validator.validate(GetCalculationMessagesRawData(validNino, validCalculationId, Seq("info"))) shouldBe empty
       }
     }
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(GetCalculationQueryRawData("AA111111E", validCalculationId, Seq("info"))) shouldBe
+        validator.validate(GetCalculationMessagesRawData("AA111111E", validCalculationId, Seq("info"))) shouldBe
           List(NinoFormatError)
       }
     }
     "return CalculationIdFormatError error" when {
       "an invalid calculationId is supplied" in {
-        validator.validate(GetCalculationQueryRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("info"))) shouldBe
+        validator.validate(GetCalculationMessagesRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("info"))) shouldBe
           List(CalculationIdFormatError)
       }
     }
     "return TypeFormatError error" when {
       "an invalid type or set of types is supplied" in {
-        validator.validate(GetCalculationQueryRawData(validNino, validCalculationId, Seq("shmerror", "shminfo"))) shouldBe
+        validator.validate(GetCalculationMessagesRawData(validNino, validCalculationId, Seq("shmerror", "shminfo"))) shouldBe
           List(TypeFormatError)
       }
     }
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        validator.validate(GetCalculationQueryRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("shmerror"))) shouldBe
+        validator.validate(GetCalculationMessagesRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("shmerror"))) shouldBe
           List(NinoFormatError, CalculationIdFormatError, TypeFormatError)
       }
     }
