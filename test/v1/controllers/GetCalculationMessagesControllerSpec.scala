@@ -16,18 +16,18 @@
 
 package v1.controllers
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.mocks.requestParsers.{MockGetCalculationParser, MockGetCalculationQueryParser}
+import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationQueryRawData, GetCalculationQueryRequest, GetCalculationRawData, GetCalculationRequest}
+import v1.models.request.{GetCalculationQueryRawData, GetCalculationQueryRequest, `Type`}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.support.BackendResponseMappingSupport
 
@@ -66,8 +66,9 @@ class GetCalculationMessagesControllerSpec
   val responseBody: JsValue = outputMessagesJson
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
-  private val rawData     = GetCalculationQueryRawData(nino, calcId, Seq())
-  private val requestData = GetCalculationQueryRequest(Nino(nino), calcId, Seq())
+  private val rawData     = GetCalculationQueryRawData(nino, calcId, Seq("info","errors"))
+  private val typeQueries = Seq(Type.toTypeClass("info"), Type.toTypeClass("errors"))
+  private val requestData = GetCalculationQueryRequest(Nino(nino), calcId, typeQueries)
 
   private def uri = "/input/uri"
 
@@ -82,22 +83,12 @@ class GetCalculationMessagesControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getMessages(nino, calcId, "info","errors")(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
-    }
-    "return a typeFormatError" when {
-      "type parameters are supplied with the incorrect format" in new Test {
-
-        val result: Future[Result] = controller.getMessages(nino, calcId, "non-valid type")(fakeGetRequest(uri))
-
-        status(result) shouldBe BAD_REQUEST
-        contentAsJson(result) shouldBe Json.toJson(TypeFormatError)
-      }
-
     }
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
@@ -118,7 +109,7 @@ class GetCalculationMessagesControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(uri))
+      val result: Future[Result] = controller.getMessages(nino, calcId, "info","errors")(fakeGetRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

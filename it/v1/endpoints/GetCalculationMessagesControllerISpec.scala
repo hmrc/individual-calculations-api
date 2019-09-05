@@ -20,42 +20,36 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.libs.ws.{ WSRequest, WSResponse }
 import support.IntegrationBaseSpec
-import v1.models.errors._
-import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 import v1.fixtures.Fixtures._
+import v1.models.errors._
+import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
 
 class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino          = "AA123456A"
-    val correlationId = "X-123"
-    val calcId        = "12345678"
+    val nino                      = "AA123456A"
+    val correlationId             = "X-123"
+    val calcId                    = "12345678"
     val typeParam: Option[String] = Some("error")
-
-    def uri: String = s"/$nino/self-assessment/$calcId/messages"
 
     def backendUrl: String = uri
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
+      val queryParams: Seq[(String, String)] =
+        Seq("p1" -> "errors", "p2" -> "info", "p3" -> "warnings")
+          .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
+        .addQueryStringParameters()
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
-    def filterRequest: WSRequest = {
-      val queryParams: Seq[(String, String)] =
-        Seq("p1" -> typeParam )
-          .collect { case (k, Some(v)) => (k,v)}
-      setupStubs()
-      buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
-        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
-    }
+    def uri: String = s"/$nino/self-assessment/$calcId/messages"
   }
 
   "Calling the get calculation messages endpoint" should {
@@ -81,29 +75,13 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
       }
     }
 
-    "return a 500 status code" when {
-
-      val successBody = backendMessagesJson
-
-      "there is a type format error" in new Test {
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
-        }
-
-        val response: WSResponse = await(filterRequest.get)
-
-        response.status shouldBe BAD_REQUEST
-        response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe Json.toJson(TypeFormatError)
-      }
-    }
-
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestCalcId: String,
+                                typeQueries: Option[Seq[String]],
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
             override val nino: String   = requestNino
@@ -115,15 +93,20 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val queryParams: Seq[(String, String)] =
+              Seq("p1" -> typeQueries.getOrElse(Seq("errors")).head)
+                .collect { case (k, v) => (k, v) }
+
+            val response: WSResponse = await(request.addQueryStringParameters(queryParams: _*).get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
           }
         }
 
         val input = Seq(
-          ("AA1123A", "12345678", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "AAAAAAA", BAD_REQUEST, CalculationIdFormatError)
+          ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
+          ("AA123456A", "12345678", Some(Seq("shmerrors")), BAD_REQUEST, TypeFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
