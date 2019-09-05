@@ -22,13 +22,13 @@ object `Type` {
 
   def toTypeClass(`type`: String): `Type` = `type`.toLowerCase() match {
     case "info"     => info
-    case "warnings" => warnings
-    case "errors"   => errors
+    case "warning"  => warning
+    case "error"    => error
     case _          => none
   }
 }
 
 case object info     extends `Type`
-case object warnings extends `Type`
-case object errors   extends `Type`
+case object warning extends `Type`
+case object error   extends `Type`
 case object none     extends `Type`
