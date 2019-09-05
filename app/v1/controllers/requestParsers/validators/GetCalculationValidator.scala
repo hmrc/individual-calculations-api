@@ -17,10 +17,11 @@
 package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation}
-import v1.models.errors.{CalculationIdFormatError, MtdError}
+import v1.models.errors.MtdError
 import v1.models.request.GetCalculationRawData
 
 class GetCalculationValidator extends Validator[GetCalculationRawData]{
+
   private val validationSet = List(parameterFormatValidation)
 
   private def parameterFormatValidation: GetCalculationRawData => List[List[MtdError]] = {

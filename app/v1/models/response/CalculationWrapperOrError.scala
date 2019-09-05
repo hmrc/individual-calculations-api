@@ -35,10 +35,11 @@ object CalculationWrapperOrError {
   implicit def reads[A: Reads]: Reads[CalculationWrapperOrError[A]] = {
 
      ((JsPath \ "metadata" \ "calculationErrorCount").read[Int] orElse Reads.pure(0)).flatMap { errCount =>
-      if (errCount > 0)
+      if (errCount > 0) {
         Reads.pure[CalculationWrapperOrError[A]](ErrorsInCalculation)
-      else
+      } else {
         implicitly[Reads[A]].map(CalculationWrapper(_))
+      }
     }
   }
 }

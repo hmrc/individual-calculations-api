@@ -61,6 +61,8 @@ object RuleTaxYearRangeExceededError
 
 object RuleNoIncomeSubmissionsExistError extends MtdError("RULE_NO_INCOME_SUBMISSIONS_EXIST", "No income submissions exist for the tax year")
 
+object RuleCalculationErrorMessagesExist extends MtdError("RULE_CALCULATION_ERROR_MESSAGES_EXIST", "Calculation error messages exist for the supplied calculation ID")
+
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
 

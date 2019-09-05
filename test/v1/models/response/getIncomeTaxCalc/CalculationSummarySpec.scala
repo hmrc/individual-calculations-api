@@ -38,7 +38,7 @@ class CalculationSummarySpec extends UnitSpec {
 
   val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
 
-  "CalculationDetail" should {
+  "CalculationSummary" should {
 
     "write to json correctly" in {
       Json.toJson(model) shouldBe json

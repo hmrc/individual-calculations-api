@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.domain
 
-import uk.gov.hmrc.domain.Nino
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+class EmptyJsonBodySpec extends UnitSpec {
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+  val json = Json.parse(
+    """{
+      |
+      |}""".stripMargin)
 
-case class GetCalculationMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
+  "JSON writes" must {
+    "align with spec" in {
+      Json.toJson(EmptyJsonBody) shouldBe json
+    }
+  }
 
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[`Type`])
+}

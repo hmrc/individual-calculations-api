@@ -16,10 +16,13 @@
 
 package v1.models.response.getIncomeTaxCalc
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 
 case class GetIncomeTaxCalcResponse(summary: CalculationSummary, detail: CalculationDetail)
 
 object GetIncomeTaxCalcResponse {
-  implicit val format: OFormat[GetIncomeTaxCalcResponse] = Json.format[GetIncomeTaxCalcResponse]
+  implicit val writes: OWrites[GetIncomeTaxCalcResponse] = Json.writes[GetIncomeTaxCalcResponse]
+
+  implicit def reads: Reads[GetIncomeTaxCalcResponse] =
+    ( JsPath \ "incomeTax").read[GetIncomeTaxCalcResponse](Json.reads[GetIncomeTaxCalcResponse])
 }
