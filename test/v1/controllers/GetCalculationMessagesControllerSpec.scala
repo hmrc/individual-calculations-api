@@ -23,11 +23,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.mocks.requestParsers.MockGetCalculationParser
+import v1.mocks.requestParsers.{MockGetCalculationParser, MockGetCalculationQueryParser}
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.request.{GetCalculationQueryRawData, GetCalculationQueryRequest, GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.support.BackendResponseMappingSupport
 
@@ -38,7 +38,7 @@ class GetCalculationMessagesControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockGetCalculationParser
+    with MockGetCalculationQueryParser
     with MockStandardService {
 
   trait Test {
@@ -47,7 +47,7 @@ class GetCalculationMessagesControllerSpec
     val controller = new GetCalculationMessagesController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockGetCalculationParser,
+      parser = mockGetCalculationQueryParser,
       service = mockStandardService,
       cc = cc
     )
@@ -66,15 +66,15 @@ class GetCalculationMessagesControllerSpec
   val responseBody: JsValue = outputMessagesJson
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
-  private val rawData     = GetCalculationRawData(nino, calcId)
-  private val requestData = GetCalculationRequest(Nino(nino), calcId)
+  private val rawData     = GetCalculationQueryRawData(nino, calcId, Seq())
+  private val requestData = GetCalculationQueryRequest(Nino(nino), calcId, Seq())
 
   private def uri = "/input/uri"
 
   "handleRequest" should {
     "return OK the calculation messages" when {
       "happy path" in new Test {
-        MockGetCalculationParser
+        MockGetCalculationQueryParser
           .parse(rawData)
           .returns(Right(requestData))
 
@@ -101,7 +101,7 @@ class GetCalculationMessagesControllerSpec
     }
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
-      MockGetCalculationParser
+      MockGetCalculationQueryParser
         .parse(rawData)
         .returns(Right(requestData))
 
