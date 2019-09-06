@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.controllers.requestParsers.validators.validations
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.errors.{MtdError, TypeFormatError}
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+object TypeValidation {
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+  val typeOptions: Seq[String] = Seq("info", "warning", "error")
 
-case class GetCalculationMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
+  def validateList(queryParams :Seq[String]): List[MtdError] ={
+    queryParams.flatMap(param => validate(param)).toList
+  }
 
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[`Type`])
+  def validate(`type`: String): List[MtdError] = if (typeOptions.contains(`type`)) {
+    Nil
+  } else {
+    List(TypeFormatError)
+  }
+
+}

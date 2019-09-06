@@ -16,12 +16,19 @@
 
 package v1.models.request
 
-import uk.gov.hmrc.domain.Nino
+sealed trait `Type`
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+object `Type` {
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+  def toTypeClass(`type`: String): `Type` = `type`.toLowerCase() match {
+    case "info"     => info
+    case "warning"  => warning
+    case "error"    => error
+    case _          => none
+  }
+}
 
-case class GetCalculationMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
-
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[`Type`])
+case object info     extends `Type`
+case object warning extends `Type`
+case object error   extends `Type`
+case object none     extends `Type`

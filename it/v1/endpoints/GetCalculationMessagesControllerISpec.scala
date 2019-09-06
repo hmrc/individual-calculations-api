@@ -20,31 +20,36 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.libs.ws.{ WSRequest, WSResponse }
 import support.IntegrationBaseSpec
-import v1.models.errors._
-import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 import v1.fixtures.Fixtures._
+import v1.models.errors._
+import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
 
 class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino          = "AA123456A"
-    val correlationId = "X-123"
-    val calcId        = "12345678"
-
-    def uri: String = s"/$nino/self-assessment/$calcId/messages"
+    val nino                      = "AA123456A"
+    val correlationId             = "X-123"
+    val calcId                    = "12345678"
+    val typeParam: Option[String] = Some("error")
 
     def backendUrl: String = uri
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
+      val queryParams: Seq[(String, String)] =
+        Seq("type" -> "error", "type" -> "info", "type" -> "warning")
+          .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
+        .addQueryStringParameters()
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
+
+    def uri: String = s"/$nino/self-assessment/$calcId/messages"
   }
 
   "Calling the get calculation messages endpoint" should {
@@ -72,7 +77,11 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestCalcId: String,
+                                typeQuery: Option[String],
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
             override val nino: String   = requestNino
@@ -84,15 +93,20 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val queryParams: Seq[(String, String)] =
+              Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
+                .collect { case (k, v) => (k, v) }
+
+            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
           }
         }
 
         val input = Seq(
-          ("AA1123A", "12345678", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "AAAAAAA", BAD_REQUEST, CalculationIdFormatError)
+          ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
+          ("AA123456A", "12345678", Some("shmerrors"), BAD_REQUEST, TypeFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

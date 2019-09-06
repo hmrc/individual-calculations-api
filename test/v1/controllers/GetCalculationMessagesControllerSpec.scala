@@ -23,11 +23,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.mocks.requestParsers.MockGetCalculationParser
+import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, `Type`}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.support.BackendResponseMappingSupport
 
@@ -38,7 +38,7 @@ class GetCalculationMessagesControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockGetCalculationParser
+    with MockGetCalculationQueryParser
     with MockStandardService {
 
   trait Test {
@@ -47,7 +47,7 @@ class GetCalculationMessagesControllerSpec
     val controller = new GetCalculationMessagesController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockGetCalculationParser,
+      parser = mockGetCalculationQueryParser,
       service = mockStandardService,
       cc = cc
     )
@@ -66,15 +66,17 @@ class GetCalculationMessagesControllerSpec
   val responseBody: JsValue = outputMessagesJson
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
-  private val rawData     = GetCalculationRawData(nino, calcId)
-  private val requestData = GetCalculationRequest(Nino(nino), calcId)
+  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","warning","error"))
+  private val typeQueries = Seq(Type.toTypeClass("info"), Type.toTypeClass("error"), Type.toTypeClass("warning"))
+  private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
 
   private def uri = "/input/uri"
+  private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {
     "return OK the calculation messages" when {
       "happy path" in new Test {
-        MockGetCalculationParser
+        MockGetCalculationQueryParser
           .parse(rawData)
           .returns(Right(requestData))
 
@@ -82,7 +84,7 @@ class GetCalculationMessagesControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -91,7 +93,7 @@ class GetCalculationMessagesControllerSpec
     }
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
-      MockGetCalculationParser
+      MockGetCalculationQueryParser
         .parse(rawData)
         .returns(Right(requestData))
 
@@ -108,7 +110,7 @@ class GetCalculationMessagesControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(uri))
+      val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

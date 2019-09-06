@@ -20,10 +20,10 @@ import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.controllers.requestParsers.GetCalculationParser
+import v1.controllers.requestParsers.GetCalculationMessagesParser
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError, TypeFormatError}
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -32,11 +32,11 @@ import scala.concurrent.ExecutionContext
 class GetCalculationMessagesController @Inject()(
                                                   authService: EnrolmentsAuthService,
                                                   lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationParser,
+                                                  parser: GetCalculationMessagesParser,
                                                   service: StandardService,
                                                   cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMessages, CalculationMessages, AnyContent](
+  extends StandardController[GetCalculationMessagesRawData, GetCalculationMessagesRequest, CalculationMessages, CalculationMessages, AnyContent](
     authService,
     lookupService,
     parser,
@@ -46,22 +46,22 @@ class GetCalculationMessagesController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationMessages, CalculationMessages] =
+                                  req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, CalculationMessages] =
     RequestHandling[CalculationMessages](
       RequestDefn.Get(playRequest.path))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
+        TypeFormatError,
         NotFoundError
       )
 
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
-
-  def getMessages(nino: String, calculationId: String, typeQuery: String*): Action[AnyContent] =
+  def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      val rawData = GetCalculationRawData(nino, calculationId)
+      val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
       doHandleRequest(rawData)
     }
 }
