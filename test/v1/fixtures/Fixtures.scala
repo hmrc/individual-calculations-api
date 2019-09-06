@@ -45,6 +45,11 @@ object Fixtures {
       |     }
       |}""".stripMargin)
 
+  val backendNoMessagesJson: JsValue = Json.parse(    """{
+      |     "messages" :{
+      |     }
+      |}""".stripMargin)
+
   val backendMessagesInfoJson: JsValue = Json.parse(
     """{
       |     "messages" :{
