@@ -46,7 +46,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
           .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters()
+        .addQueryStringParameters(queryParams:_*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
