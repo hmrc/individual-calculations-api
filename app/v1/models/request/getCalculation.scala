@@ -24,4 +24,4 @@ case class GetCalculationRequest(nino: Nino, calculationId: String)
 
 case class GetCalculationMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
 
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[`Type`])
+case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[MessageType])

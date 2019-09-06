@@ -27,7 +27,7 @@ import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, `Type`}
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.support.BackendResponseMappingSupport
 
@@ -67,7 +67,7 @@ class GetCalculationMessagesControllerSpec
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
   private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","warning","error"))
-  private val typeQueries = Seq(Type.toTypeClass("info"), Type.toTypeClass("error"), Type.toTypeClass("warning"))
+  private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
   private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
 
   private def uri = "/input/uri"

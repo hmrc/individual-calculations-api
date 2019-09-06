@@ -20,11 +20,12 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{ WSRequest, WSResponse }
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
+import v1.fixtures.Fixtures
 import v1.fixtures.Fixtures._
 import v1.models.errors._
-import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
+import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
@@ -45,7 +46,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
           .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters()
+        .addQueryStringParameters(queryParams:_*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -72,6 +73,21 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successOutput
+      }
+
+      "a valid request is made with a filter" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe Fixtures.outputMessagesErrorsJson
       }
     }
 

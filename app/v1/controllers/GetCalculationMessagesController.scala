@@ -22,10 +22,12 @@ import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationMessagesParser
 import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError, TypeFormatError}
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
+import v1.models.errors._
+import v1.models.outcomes.ResponseWrapper
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
 import v1.models.response.getCalculationMessages.CalculationMessages
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.support.MessagesFilter
 
 import scala.concurrent.ExecutionContext
 
@@ -41,7 +43,7 @@ class GetCalculationMessagesController @Inject()(
     lookupService,
     parser,
     service,
-    cc) {
+    cc) with MessagesFilter {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -57,11 +59,16 @@ class GetCalculationMessagesController @Inject()(
         CalculationIdFormatError,
         TypeFormatError,
         NotFoundError
-      )
+      ).mapSuccess(filterMessages(req.queryData))
 
   def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
       doHandleRequest(rawData)
     }
+
+  def filterMessages(queries: Seq[MessageType])(messagesResponse: ResponseWrapper[CalculationMessages]):
+  Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
+    Right(messagesResponse.map(messages => filter(messages, queries)))
+  }
 }
