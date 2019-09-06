@@ -41,11 +41,11 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
     def request: WSRequest = {
       val queryParams: Seq[(String, String)] =
-        Seq("p1" -> "error", "p2" -> "info", "p3" -> "warning")
+        Seq("type" -> "error", "type" -> "info", "type" -> "warning")
           .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
+        .addQueryStringParameters()
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -94,7 +94,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
             }
 
             val queryParams: Seq[(String, String)] =
-              Seq("p1" -> typeQuery.getOrElse(""), "p2" -> "info", "p3" -> "warning")
+              Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
                 .collect { case (k, v) => (k, v) }
 
             val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)

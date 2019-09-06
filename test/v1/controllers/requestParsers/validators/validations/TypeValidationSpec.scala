@@ -26,14 +26,14 @@ class TypeValidationSpec extends UnitSpec with JsonErrorValidators {
     "return no errors" when {
       "when a valid type is supplied" in {
 
-        val validType        = "errors"
+        val validType        = "error"
         val validationResult = TypeValidation.validate(validType)
         validationResult.isEmpty shouldBe true
       }
 
       "when a list of valid types is supplied" in {
 
-        val validTypes       = Seq("info", "warnings", "errors")
+        val validTypes       = Seq("info", "warning", "error")
         val validationResult = TypeValidation.validateList(validTypes)
         validationResult.isEmpty shouldBe true
       }
@@ -42,7 +42,7 @@ class TypeValidationSpec extends UnitSpec with JsonErrorValidators {
     "return an error" when {
       "when an invalid type is supplied" in {
 
-        val invalidType      = "error"
+        val invalidType      = "errors"
         val validationResult = TypeValidation.validate(invalidType)
         validationResult.isEmpty shouldBe false
         validationResult.length shouldBe 1

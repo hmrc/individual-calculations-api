@@ -59,9 +59,9 @@ class GetCalculationMessagesController @Inject()(
         NotFoundError
       )
 
-  def getMessages(nino: String, calculationId: String, typeQueries: String*): Action[AnyContent] =
+  def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      val rawData = GetCalculationMessagesRawData(nino, calculationId, typeQueries)
+      val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
       doHandleRequest(rawData)
     }
 }
