@@ -60,20 +60,20 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
       val successOutput = outputMessagesJson
 
-//      "valid request is made" in new Test {
-//        override def setupStubs(): StubMapping = {
-//          AuditStub.audit()
-//          AuthStub.authorised()
-//          MtdIdLookupStub.ninoFound(nino)
-//          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
-//        }
-//
-//        val response: WSResponse = await(request.get)
-//
-//        response.status shouldBe OK
-//        response.header("Content-Type") shouldBe Some("application/json")
-//        response.json shouldBe successOutput
-//      }
+      "valid request is made" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successOutput
+      }
 
       "a valid request is made with a filter" in new Test {
         override def setupStubs(): StubMapping = {
@@ -91,76 +91,76 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
       }
     }
 
-//    "return error according to spec" when {
-//      "validation error" when {
-//        def validationErrorTest(requestNino: String,
-//                                requestCalcId: String,
-//                                typeQuery: Option[String],
-//                                expectedStatus: Int,
-//                                expectedBody: MtdError): Unit = {
-//          s"validation fails with ${expectedBody.code} error" in new Test {
-//
-//            override val nino: String   = requestNino
-//            override val calcId: String = requestCalcId
-//
-//            override def setupStubs(): StubMapping = {
-//              AuditStub.audit()
-//              AuthStub.authorised()
-//              MtdIdLookupStub.ninoFound(nino)
-//            }
-//
-//            val queryParams: Seq[(String, String)] =
-//              Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
-//                .collect { case (k, v) => (k, v) }
-//
-//            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
-//            response.status shouldBe expectedStatus
-//            response.json shouldBe Json.toJson(expectedBody)
-//          }
-//        }
-//
-//        val input = Seq(
-//          ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
-//          ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
-//          ("AA123456A", "12345678", Some("shmerrors"), BAD_REQUEST, TypeFormatError)
-//        )
-//
-//        input.foreach(args => (validationErrorTest _).tupled(args))
-//      }
-//
-//      "backend service error" when {
-//
-//        def errorBody(code: String): String =
-//          s"""{
-//             |  "code": "$code",
-//             |  "message": "backend message"
-//             |}""".stripMargin
-//
-//        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-//          s"backend returns an $backendCode error and status $backendStatus" in new Test {
-//
-//            override def setupStubs(): StubMapping = {
-//              AuditStub.audit()
-//              AuthStub.authorised()
-//              MtdIdLookupStub.ninoFound(nino)
-//              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
-//            }
-//
-//            val response: WSResponse = await(request.get)
-//            response.status shouldBe expectedStatus
-//            response.json shouldBe Json.toJson(expectedBody)
-//          }
-//        }
-//
-//        val input = Seq(
-//          (BAD_REQUEST, "FORMAT_NINO", BAD_REQUEST, NinoFormatError),
-//          (BAD_REQUEST, "FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError),
-//          (NOT_FOUND, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError),
-//          (INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError)
-//        )
-//
-//        input.foreach(args => (serviceErrorTest _).tupled(args))
-//      }
-//    }
+    "return error according to spec" when {
+      "validation error" when {
+        def validationErrorTest(requestNino: String,
+                                requestCalcId: String,
+                                typeQuery: Option[String],
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
+          s"validation fails with ${expectedBody.code} error" in new Test {
+
+            override val nino: String   = requestNino
+            override val calcId: String = requestCalcId
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+            }
+
+            val queryParams: Seq[(String, String)] =
+              Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
+                .collect { case (k, v) => (k, v) }
+
+            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+          }
+        }
+
+        val input = Seq(
+          ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
+          ("AA123456A", "12345678", Some("shmerrors"), BAD_REQUEST, TypeFormatError)
+        )
+
+        input.foreach(args => (validationErrorTest _).tupled(args))
+      }
+
+      "backend service error" when {
+
+        def errorBody(code: String): String =
+          s"""{
+             |  "code": "$code",
+             |  "message": "backend message"
+             |}""".stripMargin
+
+        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $backendCode error and status $backendStatus" in new Test {
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+            }
+
+            val response: WSResponse = await(request.get)
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+          }
+        }
+
+        val input = Seq(
+          (BAD_REQUEST, "FORMAT_NINO", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError),
+          (NOT_FOUND, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError),
+          (INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError)
+        )
+
+        input.foreach(args => (serviceErrorTest _).tupled(args))
+      }
+    }
   }
 }
