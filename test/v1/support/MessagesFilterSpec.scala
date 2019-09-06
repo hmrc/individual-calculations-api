@@ -17,6 +17,7 @@
 package v1.support
 
 import support.UnitSpec
+import v1.models.request.MessageType
 import v1.models.response.getCalculationMessages.{CalculationMessages, Message}
 
 class MessagesFilterSpec extends UnitSpec {
@@ -32,36 +33,36 @@ class MessagesFilterSpec extends UnitSpec {
     "return only error messages" when {
 
       "provided with an error filter" in {
-        filter.filter(messages, Seq("error")) shouldBe CalculationMessages(None, None, Some(Seq(Message("errorId", "errorMessage"))))
+        filter.filter(messages, Seq(MessageType.error)) shouldBe CalculationMessages(None, None, Some(Seq(Message("errorId", "errorMessage"))))
       }
     }
 
     "return only warning messages" when {
 
       "provided with a warning filter" in {
-        filter.filter(messages, Seq("warning")) shouldBe CalculationMessages(None, Some(Seq(Message("warningId", "warningMessage"))), None)
+        filter.filter(messages, Seq(MessageType.warning)) shouldBe CalculationMessages(None, Some(Seq(Message("warningId", "warningMessage"))), None)
       }
     }
 
     "return only info messages" when {
 
       "provided with an info filter" in {
-        filter.filter(messages, Seq("info")) shouldBe CalculationMessages(Some(Seq(Message("infoId", "infoMessage"))), None, None)
+        filter.filter(messages, Seq(MessageType.info)) shouldBe CalculationMessages(Some(Seq(Message("infoId", "infoMessage"))), None, None)
       }
     }
 
     "return multiple message types" when {
 
       "provided with info and warning filters" in {
-        filter.filter(messages, Seq("info", "warning")) shouldBe messages.copy(errors = None)
+        filter.filter(messages, Seq(MessageType.info, MessageType.warning)) shouldBe messages.copy(errors = None)
       }
 
       "provided with info and error filters" in {
-        filter.filter(messages, Seq("info", "error")) shouldBe messages.copy(warnings = None)
+        filter.filter(messages, Seq(MessageType.info, MessageType.error)) shouldBe messages.copy(warnings = None)
       }
 
       "provided with error and warning filters" in {
-        filter.filter(messages, Seq("error", "warning")) shouldBe messages.copy(info = None)
+        filter.filter(messages, Seq(MessageType.error, MessageType.warning)) shouldBe messages.copy(info = None)
       }
     }
 
@@ -72,26 +73,26 @@ class MessagesFilterSpec extends UnitSpec {
       }
 
       "provided with filters for every type" in {
-        filter.filter(messages, Seq("info", "warning", "error")) shouldBe messages
+        filter.filter(messages, Seq(MessageType.info, MessageType.warning, MessageType.error)) shouldBe messages
       }
     }
 
     "return an empty message set" when {
 
       "provided with an error filter and no error messages" in {
-        filter.filter(messages.copy(errors = None), Seq("error")) shouldBe CalculationMessages(None, None, None)
+        filter.filter(messages.copy(errors = None), Seq(MessageType.error)) shouldBe CalculationMessages(None, None, None)
       }
 
       "provided with a warning filter and no warning messages" in {
-        filter.filter(messages.copy(warnings = None), Seq("warning")) shouldBe CalculationMessages(None, None, None)
+        filter.filter(messages.copy(warnings = None), Seq(MessageType.warning)) shouldBe CalculationMessages(None, None, None)
       }
 
       "provided with an info filter and no info messages" in {
-        filter.filter(messages.copy(info = None), Seq("info")) shouldBe CalculationMessages(None, None, None)
+        filter.filter(messages.copy(info = None), Seq(MessageType.info)) shouldBe CalculationMessages(None, None, None)
       }
 
       "provided with only an invalid filter" in {
-        filter.filter(messages, Seq("invalid")) shouldBe CalculationMessages(None, None, None)
+        filter.filter(messages, Seq(MessageType.none)) shouldBe CalculationMessages(None, None, None)
       }
     }
   }

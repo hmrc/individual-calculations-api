@@ -16,22 +16,23 @@
 
 package v1.support
 
+import v1.models.request._
 import v1.models.response.getCalculationMessages.CalculationMessages
 
 trait MessagesFilter {
-  def filter(calculationMessages: CalculationMessages, typeQueries: Seq[String]): CalculationMessages = {
+  def filter(calculationMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
 
-    def filterMessages(filteredMessages: CalculationMessages, typeQuery: String) : CalculationMessages = {
+    def filterMessages(filteredMessages: CalculationMessages, typeQuery: MessageType): CalculationMessages = {
       typeQuery match {
-        case "error" => filteredMessages.copy(errors = calculationMessages.errors)
-        case "warning" => filteredMessages.copy(warnings = calculationMessages.warnings)
-        case "info" => filteredMessages.copy(info = calculationMessages.info)
+        case MessageType.error => filteredMessages.copy(errors = calculationMessages.errors)
+        case MessageType.warning => filteredMessages.copy(warnings = calculationMessages.warnings)
+        case MessageType.info => filteredMessages.copy(info = calculationMessages.info)
         case _ => filteredMessages
       }
     }
 
-    def filterLoop(filteredMessages: CalculationMessages, typeQueries: Seq[String]): CalculationMessages = {
-      typeQueries match {
+    def filterLoop(filteredMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
+      typeQueries.toList match {
         case Nil => calculationMessages
         case query :: Nil => filterMessages(filteredMessages, query)
         case query :: tail => filterLoop(filterMessages(filteredMessages, query), tail)
