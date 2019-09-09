@@ -18,7 +18,7 @@ package v1.models.request
 
 import uk.gov.hmrc.domain.Nino
 
-trait BaseCalculationRequest {
+trait CommonCalculationRequest {
   def nino: Nino
   def calculationId: String
 
@@ -27,8 +27,8 @@ trait BaseCalculationRequest {
 
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
 
-case class GetCalculationRequest(nino: Nino, calculationId: String) extends BaseCalculationRequest
+case class GetCalculationRequest(nino: Nino, calculationId: String) extends CommonCalculationRequest
 
 case class GetCalculationMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
 
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[MessageType]) extends BaseCalculationRequest
+case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[MessageType]) extends CommonCalculationRequest
