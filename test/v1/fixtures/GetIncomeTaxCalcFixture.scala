@@ -67,6 +67,27 @@ object GetIncomeTaxCalcFixture {
                                   |  }
                                   |}""".stripMargin)
 
+  val errorBodyFromBackEnd = Json.parse(s"""
+                                 |{
+                                 |  "metadata": {
+                                 |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                 |    "taxYear": "2018-19",
+                                 |    "requestedBy": "customer",
+                                 |    "calculationReason": "customerRequest",
+                                 |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                 |    "calculationType": "crystallisation",
+                                 |    "intentToCrystallise": true,
+                                 |    "crystallised": false,
+                                 |    "calculationErrorCount": 2
+                                 |  },
+                                 |  "messages" :{
+                                 |     "errors":[
+                                 |        {"id":"err1", "text":"text1"},
+                                 |        {"id":"err2", "text":"text2"}
+                                 |     ]
+                                 |  }
+                                 |}""".stripMargin)
+
   val successOutputToVendor = Json.parse(s"""{
                                     |  "summary": {
                                     |     "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
