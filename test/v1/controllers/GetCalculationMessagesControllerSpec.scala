@@ -70,7 +70,7 @@ class GetCalculationMessagesControllerSpec
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
   private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
 
-  private def uri = "/input/uri"
+  private def uri = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {

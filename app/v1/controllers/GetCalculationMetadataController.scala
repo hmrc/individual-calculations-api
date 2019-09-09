@@ -50,7 +50,7 @@ class GetCalculationMetadataController @Inject()(
   override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: GetCalculationRequest): RequestHandling[CalculationMetadata, CalculationMetadata] =
     RequestHandling[CalculationMetadata](
-      RequestDefn.Get(playRequest.path))
+      RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,

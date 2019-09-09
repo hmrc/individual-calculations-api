@@ -89,7 +89,8 @@ class GetCalculationMetadataControllerSpec
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
-  private def uri = "/input/uri"
+  private def uri = s"/$nino/self-assessment/$calcId"
+  private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {
     "return OK the calculation metadata" when {
@@ -102,7 +103,7 @@ class GetCalculationMetadataControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -128,7 +129,7 @@ class GetCalculationMetadataControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(uri))
+      val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

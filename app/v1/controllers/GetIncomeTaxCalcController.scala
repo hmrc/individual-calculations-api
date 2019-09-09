@@ -49,7 +49,8 @@ class GetIncomeTaxCalcController @Inject()(
   override def requestHandlingFor(
       playRequest: Request[AnyContent],
       req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse], GetIncomeTaxCalcResponse] =
-    RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse]](RequestDefn.Get(playRequest.path))
+    RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse]](
+      RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
