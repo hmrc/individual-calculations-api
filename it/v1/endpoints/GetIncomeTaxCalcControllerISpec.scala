@@ -36,7 +36,7 @@ class GetIncomeTaxCalcControllerISpec extends IntegrationBaseSpec {
 
     def uri: String = s"/$nino/self-assessment/$calcId/income-tax-nics-calculated"
 
-    def backendUrl: String = uri
+    def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
     def setupStubs(): StubMapping
 

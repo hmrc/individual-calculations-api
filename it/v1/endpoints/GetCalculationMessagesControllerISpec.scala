@@ -35,7 +35,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
     val correlationId             = "X-123"
     val calcId                    = "12345678"
 
-    def backendUrl: String = uri
+    def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
     def setupStubs(): StubMapping
 

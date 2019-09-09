@@ -53,7 +53,7 @@ class GetCalculationMessagesController @Inject()(
   override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, CalculationMessages] =
     RequestHandling[CalculationMessages](
-      RequestDefn.Get(playRequest.path))
+      RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
