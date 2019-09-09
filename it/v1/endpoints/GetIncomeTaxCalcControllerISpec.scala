@@ -65,6 +65,22 @@ class GetIncomeTaxCalcControllerISpec extends IntegrationBaseSpec {
       }
     }
 
+    "return 403" when {
+      "errors exist" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxCalcFixture.errorBodyFromBackEnd)
+        }
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe FORBIDDEN
+        response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
+      }
+    }
+
     "return error according to spec" when {
       "validation error" when {
         def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
