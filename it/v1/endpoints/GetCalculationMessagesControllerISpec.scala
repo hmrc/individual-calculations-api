@@ -34,19 +34,14 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
     val nino                      = "AA123456A"
     val correlationId             = "X-123"
     val calcId                    = "12345678"
-    val typeParam: Option[String] = Some("error")
 
     def backendUrl: String = uri
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-      val queryParams: Seq[(String, String)] =
-        Seq("type" -> "error", "type" -> "info", "type" -> "warning")
-          .collect { case (k, v) => (k, v) }
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams:_*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -60,7 +55,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
       val successOutput = outputMessagesJson
 
-      "valid request is made" in new Test {
+      "valid request is made with no filter" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -88,6 +83,22 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe Fixtures.outputMessagesErrorsJson
+      }
+
+      "valid request is made with multiple filters" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val response: WSResponse = await(request
+          .withQueryStringParameters("type" -> "error", "type" -> "warning", "type" -> "info").get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successOutput
       }
     }
 
@@ -143,7 +154,6 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
             val queryParams: Seq[(String, String)] =
               Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
-                .collect { case (k, v) => (k, v) }
 
             val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
             response.status shouldBe expectedStatus
