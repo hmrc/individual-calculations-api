@@ -50,6 +50,8 @@ object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The provided tax 
 object CalculationIdFormatError extends MtdError("FORMAT_CALC_ID", "The provided Calculation ID is invalid")
 object TypeFormatError extends MtdError("FORMAT_TYPE", "The provided type value is invalid")
 
+object NoMessagesExistError extends MtdError("NO_MESSAGES_PRESENT", "No messages present")
+
 // Rule Errors
 object RuleTaxYearNotSupportedError
     extends MtdError("RULE_TAX_YEAR_NOT_SUPPORTED", "Tax year not supported, because it precedes the earliest allowable tax year")

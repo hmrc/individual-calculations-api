@@ -69,6 +69,12 @@ class GetCalculationMessagesController @Inject()(
 
   def filterMessages(queries: Seq[MessageType])(messagesResponse: ResponseWrapper[CalculationMessages]):
   Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
-    Right(messagesResponse.map(messages => filter(messages, queries)))
+    val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
+    if (filteredResponse.responseData.hasMessages) {
+      Right(filteredResponse)
+    }
+    else {
+      Left(ErrorWrapper(Some(filteredResponse.correlationId),MtdErrors(NOT_FOUND, NoMessagesExistError) ))
+    }
   }
 }

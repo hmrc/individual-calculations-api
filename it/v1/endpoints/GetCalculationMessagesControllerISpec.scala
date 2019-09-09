@@ -91,6 +91,38 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
       }
     }
 
+    "return a noMessagesExist error" when{
+      "a calculation is returned without messages" in new Test{
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, backendNoMessagesJson)
+        }
+
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+
+        response.status shouldBe NOT_FOUND
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe Json.toJson(NoMessagesExistError)
+      }
+
+      "all returned messages are filtered out" in new Test{
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, backendMessagesInfoJson)
+        }
+
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+
+        response.status shouldBe NOT_FOUND
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe Json.toJson(NoMessagesExistError)
+      }
+    }
+
     "return error according to spec" when {
       "validation error" when {
         def validationErrorTest(requestNino: String,
