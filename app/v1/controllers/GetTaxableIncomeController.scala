@@ -21,7 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
@@ -48,20 +48,19 @@ class GetTaxableIncomeController @Inject()(
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[TaxableIncome], TaxableIncome] =
-    RequestHandling[CalculationWrapperOrError[TaxableIncome]](
-      RequestDefn.Get(req.backendCalculationUri))
-      .withPassThroughErrors(
+                                  req: GetCalculationRequest): RequestDefinition[CalculationWrapperOrError[TaxableIncome], TaxableIncome] =
+    RequestDefinition.Get[CalculationWrapperOrError[TaxableIncome], TaxableIncome](
+      uri = req.backendCalculationUri,
+      passThroughErrors = Seq(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
-      )
-      .mapSuccess { responseWrapper =>
+        NotFoundError),
+      successHandler = responseWrapper =>
         responseWrapper.mapToEither[TaxableIncome] {
           case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
-      }
+    )
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 

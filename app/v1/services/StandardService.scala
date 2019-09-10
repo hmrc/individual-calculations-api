@@ -17,25 +17,26 @@
 package v1.services
 
 import javax.inject.Inject
+import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.StandardConnector
+import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.EndpointLogContext
-import v1.handling.RequestHandling
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 class StandardService @Inject()(connector: StandardConnector) extends BackendResponseMappingSupport with Logging {
 
-  def doService[Req, Resp](requestHandling: RequestHandling[Resp, _])(implicit logContext: EndpointLogContext,
-                                                                   ec: ExecutionContext,
-                                                                   hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
-
-    import requestHandling._
-
-    connector.doRequest(requestDefn).map(directMap(passThroughErrors, customErrorMapping))
+  def doService[Req, Resp](requestDefinition: RequestDefinition[Resp, _])(implicit logContext: EndpointLogContext,
+                                                                          reads: Reads[Resp],
+                                                                          ec: ExecutionContext,
+                                                                          hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
+    implicit val successCode: SuccessCode = SuccessCode(requestDefinition.expectedSuccessCode)
+    connector.doRequest(requestDefinition).map(directMap(requestDefinition.passThroughErrors, requestDefinition.customErrorHandler))
   }
 }

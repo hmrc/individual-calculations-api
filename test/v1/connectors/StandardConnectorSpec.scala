@@ -18,7 +18,7 @@ package v1.connectors
 
 import play.api.libs.json.{JsString, Json, Reads}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestDefn
+import v1.handling.RequestDefinition
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
 import v1.models.request.ListCalculationsRequest
@@ -40,7 +40,7 @@ class StandardConnectorSpec extends ConnectorSpec {
   }
 
   val queryParams = Seq("n" -> "v")
-  val requestDefn = RequestDefn.Get("/some/uri", queryParams)
+  val requestDefn: RequestDefinition.Get[Response, Response] = RequestDefinition.Get[Response, Response]("/some/uri", queryParams)
 
   implicit val successCode: SuccessCode = SuccessCode(200)
 
@@ -54,7 +54,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         val expected = Right(Response("someData"))
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(s"$baseUrl/some/uri", queryParams)
           .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
@@ -62,7 +62,7 @@ class StandardConnectorSpec extends ConnectorSpec {
 
       "request is a post" in new Test {
         val body = JsString("some value")
-        val postRequestDefn = RequestDefn.Post("/some/uri",body)
+        val postRequestDefn = RequestDefinition.Post[Response, Response]("/some/uri", body)
 
         val expected = Right(Response("someData"))
 
@@ -77,11 +77,11 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an backend error response" when {
 
       "an error response is returned from the backend" in new Test {
-        val request  = ListCalculationsRequest(nino, None)
+        val request = ListCalculationsRequest(nino, None)
         val expected = Left(BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND ERROR CODE")))
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(s"$baseUrl/some/uri", queryParams)
           .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
@@ -94,7 +94,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         val request = ListCalculationsRequest(nino, None)
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(s"$baseUrl/some/uri", queryParams)
           .returns(Future.failed(new Exception("unexpected exception")))
 
         the[Exception] thrownBy await(connector.doRequest[Response](requestDefn)) should have message "unexpected exception"

@@ -19,9 +19,10 @@ package v1.mocks.services
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.Matchers
+import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.services.StandardService
@@ -35,23 +36,23 @@ trait MockStandardService extends MockFactory {
 
   object MockStandardService {
 
-    def doService[Resp, _](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
+    def doService[Resp, _](requestDefn: RequestDefinition[Resp, _], successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
 
-      val correctRequestHandling = argAssert { actualRequestHandling: RequestHandling[Resp, _] =>
-        actualRequestHandling.requestDefn shouldBe requestDefn
-        actualRequestHandling.successCode.status shouldBe successStatus
+      val correctRequestHandling = argAssert { actualRequestHandling: RequestDefinition[Resp, _] =>
+        actualRequestHandling.expectedSuccessCode shouldBe successStatus
       }
 
       (mockStandardService
-        .doService(_: RequestHandling[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(correctRequestHandling, *, *, *)
+        .doService(_: RequestDefinition[Resp, _])(_: EndpointLogContext, _: Reads[Resp], _: ExecutionContext, _: HeaderCarrier))
+        .expects(correctRequestHandling, *, *, *, *)
     }
 
     def doServiceWithMappings[BackendResp, APIResp](
-        mappingAssertion: RequestHandling[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
+                                                     mappingAssertion: RequestDefinition[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
       (mockStandardService
-        .doService(_: RequestHandling[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(argAssert(mappingAssertion), *, *, *)
+        .doService(_: RequestDefinition[BackendResp, APIResp])(_: EndpointLogContext, _: Reads[BackendResp], _: ExecutionContext, _: HeaderCarrier))
+        .expects(argAssert(mappingAssertion), *, *, *, *)
     }
   }
+
 }

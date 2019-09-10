@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.RequestDefn
+import v1.handling.RequestDefinition
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ListCalculationsControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockListCalculationsParser
@@ -56,11 +56,12 @@ class ListCalculationsControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino          = "AA123456A"
-  private val taxYear       = Some("2017-18")
+  private val nino = "AA123456A"
+  private val taxYear = Some("2017-18")
   private val correlationId = "X-123"
 
-  val responseBody = Json.parse("""{
+  val responseBody = Json.parse(
+    """{
       |  "calculations": [
       |    {
       |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -81,7 +82,7 @@ class ListCalculationsControllerSpec
       )
     ))
 
-  private val rawData     = ListCalculationsRawData(nino, taxYear)
+  private val rawData = ListCalculationsRawData(nino, taxYear)
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
 
   private def uri = "/input/uri"
@@ -94,7 +95,7 @@ class ListCalculationsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
+          .doService(RequestDefinition.Get[ListCalculationsResponse, ListCalculationsResponse](uri).withOptionalParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
@@ -112,7 +113,7 @@ class ListCalculationsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
+          .doService(RequestDefinition.Get[ListCalculationsResponse, ListCalculationsResponse](uri).withOptionalParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
 
         val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))

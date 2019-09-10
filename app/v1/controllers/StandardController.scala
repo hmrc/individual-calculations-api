@@ -19,33 +19,36 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.MimeTypes
-import play.api.libs.json.{ Format, Json, Reads, Writes }
-import play.api.mvc.{ AnyContent, ControllerComponents, Request, Result }
+import play.api.libs.json.{Json, Reads, Writes}
+import play.api.mvc.{ControllerComponents, Request, Result}
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.RequestHandling
+import v1.handling.RequestDefinition
+import v1.handling.RequestDefinition.SuccessHandler
+import v1.models.errors.ErrorWrapper
+import v1.models.outcomes.ResponseWrapper
 import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes, A](
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    parser: RequestParser[Raw, Req],
-    service: StandardService,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc)
+                                                                                                val authService: EnrolmentsAuthService,
+                                                                                                val lookupService: MtdIdLookupService,
+                                                                                                parser: RequestParser[Raw, Req],
+                                                                                                service: StandardService,
+                                                                                                cc: ControllerComponents
+                                                                                              )(implicit ec: ExecutionContext)
+  extends AuthorisedController(cc)
     with BaseController
     with BackendResponseMappingSupport
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[A], req: Req): RequestHandling[BackendResp, APIResp]
+  def requestHandlingFor(playRequest: Request[A], req: Req): RequestDefinition[BackendResp, APIResp]
 
   val successCode: SuccessCode
 
@@ -55,7 +58,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
         requestHandling = requestHandlingFor(request, parsedRequest)
         backendResponse <- EitherT(service.doService(requestHandling))
-        response        <- EitherT.fromEither[Future](requestHandling.successMapping(backendResponse))
+        response <- EitherT.fromEither[Future](requestHandling.successHandler(backendResponse))
       } yield {
         logger.info(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -69,7 +72,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
     result.leftMap { errorWrapper =>
       val correlationId = getCorrelationId(errorWrapper)
-      val errorBody     = errorWrapper.errors
+      val errorBody = errorWrapper.errors
 
       Status(errorWrapper.errors.statusCode)(Json.toJson(errorBody)).withApiHeaders(correlationId)
     }.merge

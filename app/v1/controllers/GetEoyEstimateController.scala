@@ -21,7 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.EoyEstimateWrapperOrError
@@ -50,28 +50,27 @@ class GetEoyEstimateController @Inject()(
     EndpointLogContext(controllerName = "GetEoyEstimateController", endpointName = "getEoyEstimate")
 
   override def requestHandlingFor(playRequest: Request[AnyContent], req: GetCalculationRequest):
-  RequestHandling[EoyEstimateWrapperOrError, EoyEstimateResponse] = {
-    RequestHandling[EoyEstimateWrapperOrError](
-      RequestDefn.Get(req.backendCalculationUri))
-      .withPassThroughErrors(
+  RequestDefinition[EoyEstimateWrapperOrError, EoyEstimateResponse] = {
+    RequestDefinition.Get[EoyEstimateWrapperOrError, EoyEstimateResponse](
+      uri = req.backendCalculationUri,
+      passThroughErrors = Seq(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
-      )
-      .mapSuccess { responseWrapper =>
+        NotFoundError),
+      successHandler = responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(MtdErrors(NOT_FOUND, EndOfYearEstimateNotPresentError))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
-      }
+    )
   }
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   def getEoyEstimate(nino: String, calculationId: String): Action[AnyContent] =
-  authorisedAction(nino).async { implicit request =>
-    val rawData = GetCalculationRawData(nino, calculationId)
-    doHandleRequest(rawData)
-  }
+    authorisedAction(nino).async { implicit request =>
+      val rawData = GetCalculationRawData(nino, calculationId)
+      doHandleRequest(rawData)
+    }
 }

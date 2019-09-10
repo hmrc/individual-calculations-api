@@ -21,7 +21,7 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.RequestDefn
+import v1.handling.RequestDefinition
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.domain.TriggerCalculation
@@ -55,8 +55,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino          = "AA123456A"
-  private val taxYear       = "2017-18"
+  private val nino = "AA123456A"
+  private val taxYear = "2017-18"
   private val correlationId = "X-123"
 
   val response = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
@@ -78,7 +78,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
+          .doService(RequestDefinition.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))

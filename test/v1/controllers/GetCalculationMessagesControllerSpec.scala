@@ -22,7 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
@@ -35,7 +35,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetCalculationMessagesControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationQueryParser
@@ -56,21 +56,22 @@ class GetCalculationMessagesControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino          = "AA123456A"
-  private val calcId        = "someCalcId"
+  private val nino = "AA123456A"
+  private val calcId = "someCalcId"
   private val correlationId = "X-123"
 
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
-    CalculationMessages(if (info) Some(Seq(info1,info2)) else None, if (warn) Some(Seq(warn1,warn2)) else None, if (error) Some(Seq(err1,err2)) else None)
+    CalculationMessages(if (info) Some(Seq(info1, info2)) else None, if (warn) Some(Seq(warn1, warn2)) else None, if (error) Some(Seq(err1, err2)) else None)
 
   val responseBody: JsValue = outputMessagesJson
-  val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
+  val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
 
-  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","warning","error"))
+  private val rawData = GetCalculationMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
   private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
 
   private def uri = s"/$nino/self-assessment/$calcId"
+
   private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {
@@ -81,7 +82,7 @@ class GetCalculationMessagesControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefinition.Get[CalculationMessages, CalculationMessages](uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
@@ -99,7 +100,7 @@ class GetCalculationMessagesControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandling[CalculationMessages, CalculationMessages] => Unit = allChecks[CalculationMessages, CalculationMessages](
+      val mappingChecks: RequestDefinition[CalculationMessages, CalculationMessages] => Unit = allChecks[CalculationMessages, CalculationMessages](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),

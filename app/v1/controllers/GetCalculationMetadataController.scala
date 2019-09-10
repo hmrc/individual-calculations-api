@@ -21,7 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.getCalculationMetadata.CalculationMetadata
@@ -48,14 +48,14 @@ class GetCalculationMetadataController @Inject()(
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationMetadata, CalculationMetadata] =
-    RequestHandling[CalculationMetadata](
-      RequestDefn.Get(req.backendCalculationUri))
-      .withPassThroughErrors(
+                                  req: GetCalculationRequest): RequestDefinition[CalculationMetadata, CalculationMetadata] =
+    RequestDefinition.Get[CalculationMetadata, CalculationMetadata](
+      uri = req.backendCalculationUri,
+      passThroughErrors = Seq(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
-      )
+        NotFoundError)
+    )
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 

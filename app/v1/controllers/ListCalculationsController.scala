@@ -20,7 +20,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.ListCalculationsParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
@@ -31,21 +31,21 @@ import scala.concurrent.ExecutionContext
 
 @Singleton
 class ListCalculationsController @Inject()(
-    authService: EnrolmentsAuthService,
-    lookupService: MtdIdLookupService,
-    listCalculationsParser: ListCalculationsParser,
-    service: StandardService,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse, AnyContent](
-      authService,
-      lookupService,
-      listCalculationsParser,
-      service,
-      cc) {
+                                            authService: EnrolmentsAuthService,
+                                            lookupService: MtdIdLookupService,
+                                            listCalculationsParser: ListCalculationsParser,
+                                            service: StandardService,
+                                            cc: ControllerComponents
+                                          )(implicit ec: ExecutionContext)
+  extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse, AnyContent](
+    authService,
+    lookupService,
+    listCalculationsParser,
+    service,
+    cc) {
   controller =>
 
-implicit  val endpointLogContext: EndpointLogContext =
+  implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "ListCalculationsController",
       endpointName = "listCalculations"
@@ -54,21 +54,19 @@ implicit  val endpointLogContext: EndpointLogContext =
   override val successCode: SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse, ListCalculationsResponse] = {
-    RequestHandling[ListCalculationsResponse](
-      RequestDefn
-        .Get(playRequest.path)
-        .withOptionalParams("taxYear" -> req.taxYear))
-      .withPassThroughErrors(
+                                  req: ListCalculationsRequest): RequestDefinition[ListCalculationsResponse, ListCalculationsResponse] =
+    RequestDefinition.Get[ListCalculationsResponse, ListCalculationsResponse](
+      uri = playRequest.path,
+      passThroughErrors = Seq(
         NinoFormatError,
         TaxYearFormatError,
         RuleTaxYearNotSupportedError,
         RuleTaxYearRangeExceededError,
         NotFoundError,
         DownstreamError
-      )
-      .mapSuccess(notFoundErrorWhenEmpty)
-  }
+      ),
+      successHandler = notFoundErrorWhenEmpty
+    ).withOptionalParams("taxYear" -> req.taxYear)
 
   def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -77,7 +75,7 @@ implicit  val endpointLogContext: EndpointLogContext =
       doHandleRequest(rawData)
     }
 
-  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse]) =
+  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse]): Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]] =
     responseWrapper.toErrorWhen {
       case response if response.calculations.isEmpty => MtdErrors(NOT_FOUND, NotFoundError)
     }

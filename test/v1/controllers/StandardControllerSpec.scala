@@ -24,8 +24,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.RequestDefn.Get
-import v1.handling.RequestHandling
+import v1.handling.RequestDefinition
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
@@ -67,7 +66,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
 
     val response       = BackendResp("data")
     val mappedResponse = APIResp("dataMapped")
-    val requestDefn    = Get("url")
+    val requestDefn    = RequestDefinition.Get[BackendResp, BackendResp]("url")
 
     val hc = HeaderCarrier()
 
@@ -82,8 +81,10 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
       override def requestHandlingFor(playRequest: Request[AnyContent], req: RequestData) = {
-        RequestHandling[BackendResp](requestDefn)
-          .mapSuccess(_.map(_ => mappedResponse).asRight)
+        RequestDefinition.Get[BackendResp, APIResp](
+          uri = "url",
+          successHandler = x=> Right(x.map(_ => mappedResponse))
+        )
       }
 
       override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)

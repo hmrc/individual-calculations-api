@@ -21,7 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationMessagesParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
@@ -51,15 +51,16 @@ class GetCalculationMessagesController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, CalculationMessages] =
-    RequestHandling[CalculationMessages](
-      RequestDefn.Get(req.backendCalculationUri))
-      .withPassThroughErrors(
+                                  req: GetCalculationMessagesRequest): RequestDefinition[CalculationMessages, CalculationMessages] =
+    RequestDefinition.Get[CalculationMessages, CalculationMessages](
+      uri = req.backendCalculationUri,
+      passThroughErrors = Seq(
         NinoFormatError,
         CalculationIdFormatError,
         TypeFormatError,
-        NotFoundError
-      ).mapSuccess(filterMessages(req.queryData))
+        NotFoundError),
+      successHandler = filterMessages(req.queryData)
+    )
 
   def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

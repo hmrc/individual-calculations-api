@@ -17,51 +17,51 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.handling.RequestDefinition
 import v1.models.errors._
-import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getIncomeTaxAndNics.GetIncomeTaxAndNicsResponse
-import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
+import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
 class GetIncomeTaxAndNicsController @Inject()(
-                                            authService: EnrolmentsAuthService,
-                                            lookupService: MtdIdLookupService,
-                                            parser: GetCalculationParser,
-                                            service: StandardService,
-                                            cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationRawData,
-                               GetCalculationRequest,
-                               CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
-                               GetIncomeTaxAndNicsResponse,
-                               AnyContent](authService, lookupService, parser, service, cc) { controller =>
+                                               authService: EnrolmentsAuthService,
+                                               lookupService: MtdIdLookupService,
+                                               parser: GetCalculationParser,
+                                               service: StandardService,
+                                               cc: ControllerComponents
+                                             )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationRawData,
+    GetCalculationRequest,
+    CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
+    GetIncomeTaxAndNicsResponse,
+    AnyContent](authService, lookupService, parser, service, cc) {
+  controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxAndNicsController", endpointName = "getIncomeTaxAndNics")
 
   override def requestHandlingFor(
-      playRequest: Request[AnyContent],
-      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], GetIncomeTaxAndNicsResponse] =
-    RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
-      RequestDefn.Get(req.backendCalculationUri))
-      .withPassThroughErrors(
+                                   playRequest: Request[AnyContent],
+                                   req: GetCalculationRequest): RequestDefinition[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], GetIncomeTaxAndNicsResponse] =
+    RequestDefinition.Get[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], GetIncomeTaxAndNicsResponse](
+      uri = req.backendCalculationUri,
+      passThroughErrors = Seq(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
-      )
-      .mapSuccess { responseWrapper =>
+        NotFoundError),
+      successHandler = responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
-      }
+    )
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 

@@ -21,19 +21,20 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.AllowancesDeductionsAndReliefsFixture
-import v1.handling.RequestDefn
+import v1.handling.RequestDefinition
 import v1.mocks.requestParsers.MockGetCalculationParser
-import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
+import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefs
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetAllowancesDeductionsAndReliefsControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
@@ -54,14 +55,15 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino          = "AA123456A"
-  private val calcId        = "someCalcId"
+  private val nino = "AA123456A"
+  private val calcId = "someCalcId"
   private val correlationId = "X-123"
 
-  private val rawData     = GetCalculationRawData(nino, calcId)
+  private val rawData = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
-  private def uri      = s"/$nino/self-assessment/$calcId"
+  private def uri = s"/$nino/self-assessment/$calcId"
+
   private def queryUri = "/input/uri"
 
   "handleRequest" should {
@@ -72,7 +74,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefinition.Get[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs](uri), OK)
           .returns(
             Future.successful(
               Right(ResponseWrapper(
@@ -94,7 +96,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefinition.Get[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs](uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
@@ -112,7 +114,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefinition.Get[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs](uri), OK)
           .returns(
             Future.successful(
               Right(ResponseWrapper(

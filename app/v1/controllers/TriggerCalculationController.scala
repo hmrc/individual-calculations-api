@@ -21,7 +21,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.RequestDefinition
 import v1.models.errors._
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v1.models.response.triggerCalculation.TriggerCalculationResponse
@@ -34,7 +34,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
                                              triggerCalculationParser: TriggerCalculationParser,
                                              service: StandardService,
                                              cc: ControllerComponents)(
-                                             implicit val ec: ExecutionContext) extends StandardController[TriggerCalculationRawData, TriggerCalculationRequest, TriggerCalculationResponse, TriggerCalculationResponse, JsValue](
+                                              implicit val ec: ExecutionContext) extends StandardController[TriggerCalculationRawData, TriggerCalculationRequest, TriggerCalculationResponse, TriggerCalculationResponse, JsValue](
   authService,
   lookupService,
   triggerCalculationParser,
@@ -51,10 +51,11 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlingFor(playRequest: Request[JsValue],
-                                  req: TriggerCalculationRequest): RequestHandling[TriggerCalculationResponse, TriggerCalculationResponse] = {
-    RequestHandling[TriggerCalculationResponse](
-      RequestDefn.Post(playRequest.path, playRequest.body))
-      .withPassThroughErrors(
+                                  req: TriggerCalculationRequest): RequestDefinition[TriggerCalculationResponse, TriggerCalculationResponse] =
+    RequestDefinition.Post[TriggerCalculationResponse, TriggerCalculationResponse](
+      uri = playRequest.path,
+      body = playRequest.body,
+      passThroughErrors = Seq(
         NinoFormatError,
         TaxYearFormatError,
         RuleTaxYearNotSupportedError,
@@ -62,10 +63,9 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
         DownstreamError,
         RuleNoIncomeSubmissionsExistError,
         RuleIncorrectOrEmptyBodyError
-      )
-      .withRequestSuccessCode(ACCEPTED)
-
-  }
+      ),
+      expectedSuccessCode = ACCEPTED
+    )
 
   def triggerCalculation(nino: String): Action[JsValue] = authorisedAction(nino).async(parse.json) { implicit request =>
     val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(request.body))
