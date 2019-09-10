@@ -50,7 +50,7 @@ object GetIncomeTaxCalcFixture {
                                   |    "crystallised": false,
                                   |    "calculationErrorCount": 0
                                   |  },
-                                  |  "incomeTax": {
+                                  |  "incomeTaxAndNicsCalculated": {
                                   |   "summary": {
                                   |     "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
                                   |     "nics" : ${Json.toJson(nicSummary).toString()},
