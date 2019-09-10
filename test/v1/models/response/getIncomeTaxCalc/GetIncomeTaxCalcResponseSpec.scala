@@ -38,14 +38,14 @@ class GetIncomeTaxCalcResponseSpec extends  UnitSpec {
   val inputJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax": {
+       | "incomeTaxAndNicsCalculated": {
        |   "summary" : ${Json.toJson(summaryModel).toString()},
        |   "detail" : ${Json.toJson(detailModel).toString()}
        | }
        |}
     """.stripMargin)
 
-  "CalculationDetail" should {
+  "GetIncomeTaxCalcResponse" should {
 
     "write to json correctly" in {
       Json.toJson(model) shouldBe outputJson
