@@ -20,7 +20,7 @@
             <td><p>Simulates the scenario where no data can be found.</p></td>
         </tr>
          <tr>
-            <td><p>EOY_NOT_PRESENT</p></td>
+            <td><p>EOY_ESTIMATE_NOT_PRESENT</p></td>
             <td><p>Simulates the error returned when a tax calculation is not in year.</p></td>
         </tr>
         <tr>
