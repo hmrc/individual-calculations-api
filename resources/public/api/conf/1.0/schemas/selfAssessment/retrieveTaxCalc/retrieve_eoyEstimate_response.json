@@ -186,7 +186,7 @@
             "properties":{
               "savingsAccountId": {
                 "title": "savingsAccountId",
-                "description": "The unique identifier of the savings account. Format:  ^[A-Za-z0-9]{15}$.",
+                "description": "The unique identifier of the savings account.",
                 "type": "string",
                 "example": "SAVKB2UVwUTBQGJ",
                 "pattern": "^[A-Za-z0-9]{15}$"
