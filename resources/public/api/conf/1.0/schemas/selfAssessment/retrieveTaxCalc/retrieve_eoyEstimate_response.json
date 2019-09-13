@@ -85,9 +85,10 @@
             "properties":{
               "selfEmploymentId": {
                 "title": "selfEmploymentId",
-                "description": "An identifier for the self-employment business, unique to the customer. Must conform to the regular expression ^X[A-Z0-9]{1}IS[0-9]{11}$.",
+                "description": "An identifier for the self-employment business, unique to the customer.",
                 "type": "string",
-                "example": "XGIS00000001319"
+                "example": "XGIS00000001319",
+                "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
               },
               "taxableIncome": {
                 "title": "taxableIncome",
@@ -126,7 +127,7 @@
             },
             "finalised":{
               "title": "finalised",
-              "desciption": "Shows whether the UK Property FHL income has been finalised.",
+              "description": "Shows whether the UK Property FHL income has been finalised.",
               "type": "boolean",
               "example": "true"
             }
@@ -187,13 +188,15 @@
                 "title": "savingsAccountId",
                 "description": "The unique identifier of the savings account. Format:  ^[A-Za-z0-9]{15}$.",
                 "type": "string",
-                "example": "SAVKB2UVwUTBQGJ"
+                "example": "SAVKB2UVwUTBQGJ",
+                "pattern": "^[A-Za-z0-9]{15}$"
               },
               "savingsAccountName": {
                 "title": "savingsAccountName",
-                "description": "Friendly account name. Each account name added must be unique for that National Insurance number. The account name must be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£. Must conform to the regular expression ^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$",
+                "description": "Friendly account name. Each account name will be unique for that National Insurance number. The account name will be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£.",
                 "type": "string",
-                "example": "UK Prime Bank Account 1"
+                "example": "UK Prime Bank Account 1",
+                "pattern": "^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$"
               },
               "taxableIncome": {
                 "title": "taxableIncome",
