@@ -15,29 +15,7 @@ traits:
                 description: No tax calculations can be found for the supplied NINO and tax year.
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
-  notFoundRetrieveMetadata:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundRetrieveMetadata:
-                description: The calculation ID does not exist for the supplied NINO.
-                value:
-                  code: MATCHING_RESOURCE_NOT_FOUND
-  notFoundRetrieveIncomeTaxAndNics:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundRetrieveIncomeTaxAndNics:
-                description: No tax calculation data exists for the supplied NINO and calculation ID.
-                value:
-                  code: MATCHING_RESOURCE_NOT_FOUND
-  notFoundRetrieveMessages:
+  notFoundRetrieveTaxCalc:
     responses:
       404:
         body:
@@ -169,3 +147,14 @@ traits:
                 description: No Income Tax and National Insurance Contributions data exists for the supplied calculation ID and NINO because error messages were generated while performing the calculation. These error messages can be viewed using the "Retrieve self assessment tax calculation messages endpoint".
                 value:
                   code: RULE_CALCULATION_ERROR_MESSAGES_EXIST
+  notFoundEoyEstimate:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundEoyEstimate:
+                description: End of year estimate data will only be returned for an in-year calculation
+                value:
+                  code: END_OF_YEAR_ESTIMATE_NOT_PRESENT

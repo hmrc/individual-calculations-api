@@ -1,0 +1,221 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve Self Assessment Tax Calculation End of Year Estimate",
+  "description": "Retrieve Self Assessment Tax Calculation End of Year Estimate",
+  "type": "object",
+  "properties":{
+    "summary":{
+      "type": "object",
+      "description": "Details the high-level Income Tax and National Insurance Contributions due",
+      "properties":{
+        "totalEstimatedIncome":{
+          "title": "totalEstimatedIncome",
+          "description": "The total estimated end of year income. This value must be between 0 and 99999999999.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "2000"
+        },
+        "totalTaxableIncome":{
+          "title": "totalTaxableIncome",
+          "description": "The total taxable end of year income. This value must be between 0 and 99999999999. No Decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "2000"
+        },
+        "incomeTaxAmount":{
+          "title": "incomeTaxAmount",
+          "description": "The estimated end of year Income Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "nic2":{
+          "title": "nic2",
+          "description": "The estimated end of year Class 2 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "nic4":{
+          "title": "nic4",
+          "description": "The estimated end of year Class 4 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "totalNicAmount":{
+          "title": "totalNicAmount",
+          "description": "The estimated end of year combined Class 2 and Class 4 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "incomeTaxNicAmount":{
+          "title": "incomeTaxNicAmount",
+          "description": "The estimated end of year combined Class 2 and Class 4 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        }
+      }
+    },
+    "detail":{
+      "type": "object",
+      "description": "Details the low-level taxable income amounts of each income source",
+      "properties":{
+        "selfEmployments":{
+          "type": "array",
+          "description": "A list of self-employment business detailing the taxable income estimate for each business",
+          "items":{
+            "type": "object",
+            "properties":{
+              "selfEmploymentId": {
+                "title": "selfEmploymentId",
+                "description": "An identifier for the self-employment business, unique to the customer.",
+                "type": "string",
+                "example": "XGIS00000001319",
+                "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
+              },
+              "taxableIncome": {
+                "title": "taxableIncome",
+                "description": "The estimated end of year income. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "2000"
+              },
+              "finalised": {
+                "title": "finalised",
+                "description": "Shows whether the self-employment income has been finalised.",
+                "type": "boolean",
+                "example": "true"
+              }
+            },
+            "required":[
+              "selfEmploymentId",
+              "taxableIncome"
+            ]
+          }
+        },
+        "ukPropertyFhl":{
+          "type": "object",
+          "description": "Details the taxable income estimate for UK Property FHL",
+          "properties":{
+            "taxableIncome":{
+              "title": "taxableIncome",
+              "description": "The estimated end of year income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "finalised":{
+              "title": "finalised",
+              "description": "Shows whether the UK Property FHL income has been finalised.",
+              "type": "boolean",
+              "example": "true"
+            }
+          },
+          "required":[
+            "taxableIncome"
+          ]
+        },
+        "ukPropertyNonFhl":{
+          "type": "object",
+          "description": "Details the taxable income estimate for UK Property Non-FHL",
+          "properties":{
+            "taxableIncome":{
+              "title": "taxableIncome",
+              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "finalised":{
+              "title": "finalised",
+              "description": "Shows whether the UK Property Non-FHL income has been finalised.",
+              "type": "boolean",
+              "example": "true"
+            }
+          },
+          "required":[
+            "taxableIncome"
+          ]
+        },
+        "dividends":{
+          "type": "object",
+          "description": "Details the taxable income estimate for dividends",
+          "properties":{
+            "taxableIncome":{
+              "title": "taxableIncome",
+              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required":[
+            "taxableIncome"
+          ]
+        },
+        "savings":{
+          "type": "array",
+          "description": "Details the taxable income estimate for savings",
+          "items":{
+            "type": "object",
+            "properties":{
+              "savingsAccountId": {
+                "title": "savingsAccountId",
+                "description": "The unique identifier of the savings account.",
+                "type": "string",
+                "example": "SAVKB2UVwUTBQGJ",
+                "pattern": "^[A-Za-z0-9]{15}$"
+              },
+              "savingsAccountName": {
+                "title": "savingsAccountName",
+                "description": "Friendly account name. Each account name will be unique for that National Insurance number. The account name will be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£.",
+                "type": "string",
+                "example": "UK Prime Bank Account 1",
+                "pattern": "^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$"
+              },
+              "taxableIncome": {
+                "title": "taxableIncome",
+                "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "2000"
+              }
+            },
+            "required":[
+              "savingsAccountId",
+              "savingsAccountName",
+              "taxableIncome"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
