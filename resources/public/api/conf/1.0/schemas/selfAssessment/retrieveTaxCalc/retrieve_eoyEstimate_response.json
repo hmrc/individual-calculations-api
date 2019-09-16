@@ -160,27 +160,9 @@
             "taxableIncome"
           ]
         },
-        "dividends":{
-          "type": "object",
-          "description": "Details the taxable income estimate for dividends",
-          "properties":{
-            "taxableIncome":{
-              "title": "taxableIncome",
-              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 1,
-              "minimum": 0,
-              "maximum": 99999999999,
-              "example": "2000"
-            }
-          },
-          "required":[
-            "taxableIncome"
-          ]
-        },
-        "savings":{
+        "ukSavings":{
           "type": "array",
-          "description": "Details the taxable income estimate for savings",
+          "description": "Details the taxable income estimate for UK savings",
           "items":{
             "type": "object",
             "properties":{
@@ -214,6 +196,24 @@
               "taxableIncome"
             ]
           }
+        },
+        "ukDividends":{
+          "type": "object",
+          "description": "Details the taxable income estimate for UK dividends",
+          "properties":{
+            "taxableIncome":{
+              "title": "taxableIncome",
+              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required":[
+            "taxableIncome"
+          ]
         }
       }
     }

@@ -24,15 +24,15 @@
         "taxableIncome": 99999999,
         "finalised": true
       },
-      "ukDividends": {
-        "taxableIncome": 99999999
-      },
-      "savings": [
+      "ukSavings": [
         {
           "savingsAccountId": "SAVKB2UVwUTBQGJ",
           "savingsAccountName": "UK Prime Bank Account 1",
           "taxableIncome": 1000
         }
-      ]
+      ],
+      "ukDividends": {
+        "taxableIncome": 99999999
+      }
     }
   }
