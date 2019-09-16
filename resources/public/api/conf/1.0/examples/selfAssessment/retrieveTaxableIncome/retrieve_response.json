@@ -5,12 +5,12 @@
   },
   "detail" : {
     "payPensionsProfit" : {
-      "incomeReceived" : 1000.12,
-      "taxableIncome" : 1000.12,
-      "totalSelfEmploymentProfit" : 1000.12,
-      "totalPropertyProfit" : 1000.12,
-      "totalFHLPropertyProfit" : 1000.12,
-      "totalUKOtherPropertyProfit" : 1000.12,
+      "incomeReceived" : 1000,
+      "taxableIncome" : 1000,
+      "totalSelfEmploymentProfit" : 1000,
+      "totalPropertyProfit" : 1000,
+      "totalFHLPropertyProfit" : 1000,
+      "totalUKOtherPropertyProfit" : 1000,
       "businessProfitAndLoss" : {
         "selfEmployments" : [
           {
@@ -92,38 +92,38 @@
           "totalAdditions" : 1000.12,
           "totalDeductions" : 1000.12,
           "accountingAdjustments" : 1000.12,
-          "adjustedIncomeTaxLoss" : 1000.12,
-          "taxableProfit" : 1000.12,
-          "taxableProfitAfterIncomeTaxLossesDeduction" : 1000.12,
+          "adjustedIncomeTaxLoss" : 1000,
+          "taxableProfit" : 1000,
+          "taxableProfitAfterIncomeTaxLossesDeduction" : 1000,
           "lossClaimsSummary" : {
-            "lossForCSFHL" : 1000.12,
-            "totalBroughtForwardIncomeTaxLosses" : 1000.12,
-            "broughtForwardIncomeTaxLossesUsed" : 1000.12,
-            "totalIncomeTaxLossesCarriedForward" : 1000.12
+            "lossForCSFHL" : 1000,
+            "totalBroughtForwardIncomeTaxLosses" : 1000,
+            "broughtForwardIncomeTaxLossesUsed" : 1000,
+            "totalIncomeTaxLossesCarriedForward" : 1000
           },
           "lossClaimsDetail" : {
             "lossesBroughtForward" : [
               {
                 "taxYearLossIncurred" : "2018-19",
-                "currentLossValue" : 1000.12,
-                "mtdLoss" : 1000.12
+                "currentLossValue" : 1000,
+                "mtdLoss" : false
               }
             ],
             "resultOfClaimsApplied" : [
               {
-                "claimId" : "XGIS00000001319",
+                "claimId" : "EzluDU2ObK02SdA",
                 "taxYearClaimMade" : "2018-19",
                 "claimType" : "carry-forward",
                 "mtdLoss" : false,
                 "taxYearLossIncurred" : "2018-19",
-                "lossAmountUsed" : 1000.12,
-                "remainingLossValue" : 1000.12
+                "lossAmountUsed" : 1000,
+                "remainingLossValue" : 1000
               }
             ],
             "defaultCarriedForwardLosses" : [
               {
                 "taxYearLossIncurred" : "2018-19",
-                "currentLossValue" : 1000.12
+                "currentLossValue" : 1000
               }
             ]
           }
@@ -138,7 +138,7 @@
           "accountingAdjustments" : -1000.12,
           "adjustedIncomeTaxLoss" : 1000,
           "taxableProfit" : 1000,
-          "taxableProfitAfterIncomeTaxLossesDeduction" : 1000.12,
+          "taxableProfitAfterIncomeTaxLossesDeduction" : 1000,
           "lossClaimsSummary" : {
             "totalBroughtForwardIncomeTaxLosses" : 1000,
             "broughtForwardIncomeTaxLossesUsed" : 1000,

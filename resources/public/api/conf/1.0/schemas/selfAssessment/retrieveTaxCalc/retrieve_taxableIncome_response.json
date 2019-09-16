@@ -102,8 +102,273 @@
 
                 },
                 "ukPropertyFhl" : {
-
-                },
+                  "type" : "object",
+                  "description" : "Details the low-level profit and loss position for UK Property FHL.",
+                  "properties" : {
+                    "totalIncome" : {
+                      "title" : "totalIncome",
+                      "description" : "The total income for UK Property FHL. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "totalExpenses" : {
+                      "title" : "totalExpenses",
+                      "description" : "The total expenses for UK Property FHL. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "netProfit" : {
+                      "title" : "netProfit",
+                      "description" : "If the total income is greater than the total expenses then the result will be displayed in this field. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "netLoss" : {
+                      "title" : "netLoss",
+                      "description" : "If the total income is less than the total expenses than the result will be displayed in this field. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "totalAdditions" : {
+                      "title" : "totalAdditions",
+                      "description" : "The total additions for UK Property FHL. The additions relate to the additions mentioned in the Business Income Source Summary. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "totalDeductions" : {
+                      "title" : "totalDeductions",
+                      "description" : "The total deductions for UK Property FHL. The deductions relate to the deductions mentioned in the Business Income Source Summary. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":0,
+                      "maximum":999999999999.99,
+                      "example":"2000.98"
+                    },
+                    "accountingAdjustments" : {
+                      "title" : "accountingAdjustments",
+                      "description" : "The accounting adjustments for UK Property FHL. The accounting adjustments relate to the accounting adjustments mentioned in the Business Income Source Summary. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                      "type" : "number",
+                      "multipleOf":0.01,
+                      "minimum":-999999999999.99,
+                      "maximum":999999999999.99,
+                      "example":"-2000.98"
+                    },
+                    "adjustedIncomeTaxLoss" : {
+                      "title" : "adjustedIncomeTaxLoss",
+                      "description" : "The adjusted Income Tax loss for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                      "type" : "number",
+                      "multipleOf":1,
+                      "minimum":0,
+                      "maximum":99999999999,
+                      "example":"2000"
+                    },
+                    "taxableProfit" : {
+                      "title" : "taxableProfit",
+                      "description" : "The taxable profit for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                      "type" : "number",
+                      "multipleOf":1,
+                      "minimum":0,
+                      "maximum":99999999999,
+                      "example":"2000"
+                    },
+                    "taxableProfitAfterIncomeTaxLossesDeduction" : {
+                      "title" : "taxableProfitAfterIncomeTaxLossesDeduction",
+                      "description" : "The taxable profit after income tax losses have been deducted. This value must be between 0 and 99999999999. No decimals.",
+                      "type" : "number",
+                      "multipleOf":1,
+                      "minimum":0,
+                      "maximum":99999999999,
+                      "example":"2000"
+                    },
+                    "lossClaimsSummary" : {
+                      "type" : "object",
+                      "description" : "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for UK Property FHL. This will only be present for a crystallisation calculation",
+                      "lossForCSFHL" : {
+                        "title" : "lossForCSFHL",
+                        "description" : "The losses from UK Property Non-FHL that have been carried sideways to UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                        "type" : "number",
+                        "multipleOf":1,
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "example":"2000"
+                      },
+                      "totalBroughtForwardIncomeTaxLosses" : {
+                        "title" : "totalBroughtForwardIncomeTaxLosses",
+                        "description" : "The total brought forward Income Tax losses for UK Property FHL. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                        "type" : "number",
+                        "multipleOf":1,
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "example":"2000"
+                      },
+                      "broughtForwardIncomeTaxLossesUsed" : {
+                        "title" : "broughtForwardIncomeTaxLossesUsed",
+                        "description" : "The brought forward Income Tax losses from previous tax years that have been used against the UK Property FHL profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                        "type" : "number",
+                        "multipleOf":1,
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "example":"2000"
+                      },
+                      "totalIncomeTaxLossesCarriedForward" : {
+                        "title" : "totalIncomeTaxLossesCarriedForward",
+                        "description" : "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                        "type" : "number",
+                        "multipleOf":1,
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "example":"2000"
+                      }
+                    },
+                    "lossClaimsDetail" : {
+                      "type" : "object",
+                      "description" : "Details low-level loss brought forward amounts and claims that were or were not applied in the calculation for UK Property FHL. This section will only be present for a crystallisation calculation.",
+                      "properties" : {
+                        "lossesBroughtForward": {
+                          "type": "array",
+                          "description": "A list of losses brought forward into this calculation for UK Property FHL.",
+                          "items": {
+                            "type" : "object",
+                            "properties" : {
+                              "taxYearLossIncurred" : {
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "currentLossValue" : {
+                                "title" : "currentLossValue",
+                                "description" : "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              },
+                              "mtdLoss" : {
+                                "title" : "mtdLoss",
+                                "description" : "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "type" : "boolean",
+                                "example":"false"
+                              }
+                            },
+                            "required" : [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
+                        },
+                        "resultOfClaimsApplied": {
+                          "type": "array",
+                          "description": "A list of loss claims factored into this calculation for UK Property FHL.",
+                          "items" : {
+                            "type" : "object",
+                            "properties" : {
+                              "claimId" : {
+                                "title" : "claimId",
+                                "description" : "The ID of the loss claim. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "type" : "string",
+                                "example":"EzluDU2ObK02SdA"
+                              },
+                              "taxYearClaimMade" : {
+                                "title" : "taxYearClaimMade",
+                                "description" : "The tax year in which the loss claim was first made. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "claimType" : {
+                                "title":"claimType",
+                                "description": "The type of claim that was made.",
+                                "type":"string",
+                                "enum" : ["carry-forward", "carry-sideways", "carry-forward-to-carry-sideways", "carry-sideways-fhl"]
+                              },
+                              "mtdLoss" : {
+                                "title" : "mtdLoss",
+                                "description" : "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "type" : "boolean",
+                                "example":"false"
+                              },
+                              "taxYearLossIncurred" : {
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "lossAmountUsed" : {
+                                "title" : "lossAmountUsed",
+                                "description" : "The amount of the loss that could be used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              },
+                              "remainingLossValue" : {
+                                "title" : "remainingLossValue",
+                                "description" : "The amount of loss remaining that could be not be used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              }
+                            },
+                            "required" : [
+                              "taxYearClaimMade",
+                              "claimType",
+                              "taxYearLossIncurred",
+                              "lossAmountUsed",
+                              "remainingLossValue"
+                            ]
+                          }
+                        },
+                        "defaultCarriedForwardLosses": {
+                          "type": "array",
+                          "description": "A list of losses arising in this calculation that have been carried forward to the next calculation by default for UK Property FHL.",
+                          "items" : {
+                            "type" : "object",
+                            "properties" : {
+                              "taxYearLossIncurred" : {
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "currentLossValue" : {
+                                "title" : "currentLossValue",
+                                "description" : "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              }
+                            },
+                            "required" : [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                 },
                 "ukPropertyNonFhl" : {
                   "type" : "object",
                   "description" : "Details the low-level profit and loss position for UK Property Non-FHL",
@@ -242,7 +507,25 @@
                             "type" : "object",
                             "properties" : {
                               "taxYearLossIncurred" : {
-
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "currentLossValue" : {
+                                "title" : "currentLossValue",
+                                "description" : "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              },
+                              "mtdLoss" : {
+                                "title" : "mtdLoss",
+                                "description" : "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "type" : "boolean",
+                                "example":"false"
                               }
                             },
                             "required" : [
@@ -257,7 +540,60 @@
                           "items" : {
                             "type" : "object",
                             "properties" : {
-
+                              "claimId" : {
+                                "title" : "claimId",
+                                "description" : "The ID of the loss claim. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "type" : "string",
+                                "example":"EzluDU2ObK02SdA"
+                              },
+                              "originatingClaimId" : {
+                                "title" : "originatingClaimId",
+                                "description" : "The ID of an original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "type" : "string",
+                                "example":"EzluDU2ObK02SdA"
+                              },
+                              "taxYearClaimMade" : {
+                                "title" : "taxYearClaimMade",
+                                "description" : "The tax year in which the loss claim was first made. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "claimType" : {
+                                "title":"claimType",
+                                "description": "The type of claim that was made.",
+                                "type":"string",
+                                "enum" : ["carry-forward", "carry-sideways", "carry-forward-to-carry-sideways", "carry-sideways-fhl"]
+                              },
+                              "mtdLoss" : {
+                                "title" : "mtdLoss",
+                                "description" : "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "type" : "boolean",
+                                "example":"false"
+                              },
+                              "taxYearLossIncurred" : {
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "lossAmountUsed" : {
+                                "title" : "lossAmountUsed",
+                                "description" : "The amount of the loss that could be used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              },
+                              "remainingLossValue" : {
+                                "title" : "remainingLossValue",
+                                "description" : "The amount of loss remaining that could be not be used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              }
                             },
                             "required" : [
                               "taxYearClaimMade",
@@ -268,10 +604,64 @@
                           }
                         },
                         "defaultCarriedForwardLosses" : {
-
+                          "type" : "array",
+                          "description" : "A list of losses arising in this calculation that have been carried forward to the next calculation by default for UK Property Non-FHL.",
+                          "items" : {
+                            "type" : "object",
+                            "properties" : {
+                              "taxYearLossIncurred" : {
+                                "title" : "taxYearLossIncurred",
+                                "description" : "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "currentLossValue" : {
+                                "title" : "currentLossValue",
+                                "description" : "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type" : "number",
+                                "multipleOf":1,
+                                "minimum":0,
+                                "maximum":99999999999,
+                                "example":"2000"
+                              }
+                            },
+                            "required" : [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
                         },
                         "claimsNotApplied" : {
-
+                          "type" : "array",
+                          "description" : "A list of loss claims that could not be applied in this calculation for UK Property Non-FHL.",
+                          "items" : {
+                            "type" : "object",
+                            "properties" : {
+                              "claimId" : {
+                                "title" : "claimId",
+                                "description" : "The ID of the claim made by the taxpayer. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "type" : "string",
+                                "example":"EzluDU2ObK02SdA"
+                              },
+                              "taxYearClaimMade" : {
+                                "title" : "taxYearClaimMade",
+                                "description" : "The tax year in which the claim was initially made. Format: YYYY-YY",
+                                "type" : "string",
+                                "example":"2018-19"
+                              },
+                              "claimType" : {
+                                "title":"claimType",
+                                "description": "The type of claim that was made.",
+                                "type":"string",
+                                "enum" : ["carry-sideways", "carry-forward-to-carry-sideways"]
+                              }
+                            },
+                            "required" : [
+                              "claimId",
+                              "taxYearClaimMade",
+                              "claimType"
+                            ]
+                          }
                         }
                       }
                     }
