@@ -61,7 +61,7 @@
                   "taxYearLossIncurred": "2018-19",
                   "currentLossValue": 1000,
                   "expires": "2018-19",
-                  "lossType": "income"
+                  "lossType": "class4-nics"
                 }
               ],
               "carriedForwardLosses": [
@@ -71,7 +71,7 @@
                   "taxYearClaimMade": "2018-19",
                   "taxYearLossIncurred": "2018-19",
                   "currentLossValue": 1000,
-                  "lossType": "income"
+                  "lossType": "class4-nics"
                 }
               ],
               "claimsNotApplied": [
@@ -144,7 +144,7 @@
             "broughtForwardIncomeTaxLossesUsed": 1000,
             "totalIncomeTaxLossesCarriedForward": 1000
           },
-          "LossClaimsDetail": {
+          "lossClaimsDetail": {
             "lossesBroughtForward": [
               {
                 "taxYearLossIncurred": "2018-19",

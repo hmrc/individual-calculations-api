@@ -279,7 +279,7 @@
                           }
                         }
                       },
-                      "LossClaimsDetail": {
+                      "lossClaimsDetail": {
                         "type": "object",
                         "description": "Details low-level loss brought forward amounts and claims that were or were not applied in the calculation for the self-employment business. This section will only be present for a crystallisation calculation",
                         "properties": {
