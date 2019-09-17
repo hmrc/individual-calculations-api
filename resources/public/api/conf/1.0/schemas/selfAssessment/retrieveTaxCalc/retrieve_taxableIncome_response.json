@@ -60,7 +60,7 @@
             },
             "totalSelfEmploymentProfit": {
               "title": "totalSelfEmploymentProfit",
-              "description": "The total self employment profit for all self employment businesses. This value must be between 0 and 99999999999. No decimals.",
+              "description": "The total self-employment profit for all self-employment businesses. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -473,7 +473,7 @@
                                 },
                                 "taxYearClaimMade": {
                                   "title": "taxYearClaimMade",
-                                  "description": "The tax year in which the claim was made",
+                                  "description": "The tax year in which the claim was made. Format: YYYY-YY",
                                   "type": "string",
                                   "example": "2018-19"
                                 },
@@ -1171,6 +1171,7 @@
             },
             "savings": {
               "type": "array",
+              "description": "A list of the savings income for each savings account.",
               "items": {
                 "type": "object",
                 "properties": {
