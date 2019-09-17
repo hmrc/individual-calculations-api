@@ -9,11 +9,7 @@
     <tbody> 
         <tr>
             <td><p>N/A - DEFAULT</p></td>
-            <td><p>Simulates returning an in year tax calculation with all fields.<br><br>Please note the values do not represent a realistic tax calculation and is intended to show all fields being populated.</p></td>
-        </tr>
-        <tr>
-            <td><p>CRYSTALLISATION_METADATA</p></td>
-            <td><p>Simulates returning a crystallisation tax calculation with all fields.<br><br>Please note the values do not represent a realistic tax calculation and is intended to show all fields being populated.</p></td>
+            <td><p>Simulates returning a tax calculation with all fields.<br><br>Please note the values do not represent a realistic tax calculation and is intended to show all fields being populated.</p></td>
         </tr>
         <tr>
             <td><p>ERROR_MESSAGES_EXIST</p></td>
@@ -22,6 +18,10 @@
         <tr>
             <td><p>NOT_FOUND</p></td>
             <td><p>Simulates the scenario where no data can be found.</p></td>
+        </tr>
+         <tr>
+            <td><p>EOY_ESTIMATE_NOT_PRESENT</p></td>
+            <td><p>Simulates the error returned when a tax calculation is not in year.</p></td>
         </tr>
         <tr>
             <td><p>UK_MULTIPLE_INCOMES_EXAMPLE</p></td>
@@ -50,6 +50,6 @@
         <tr>
             <td><p>SCOT_SE_DIVIDENDS_EXAMPLE</p></td>
             <td><p>Simulates an example tax calculation with realistic data values, for a Scottish Self-Employment business with Dividends.</p></td>
-        </tr> 
+        </tr>                    
     </tbody>
 </table>
