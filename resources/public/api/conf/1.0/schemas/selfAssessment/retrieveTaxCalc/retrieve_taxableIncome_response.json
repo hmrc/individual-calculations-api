@@ -213,68 +213,70 @@
                       "lossClaimsSummary": {
                         "type": "object",
                         "description": "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for the self-employment business. This section will only be present for a crystallisation calculation",
-                        "totalBroughtForwardIncomeTaxLosses": {
-                          "title": "totalBroughtForwardIncomeTaxLosses",
-                          "description": "The total brought forward Income Tax losses for the self-employment business. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "broughtForwardIncomeTaxLossesUsed": {
-                          "title": "broughtForwardIncomeTaxLossesUsed",
-                          "description": "The brought forward Income Tax losses from previous tax years that have been used against the self-employment business profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "totalIncomeTaxLossesCarriedForward": {
-                          "title": "totalIncomeTaxLossesCarriedForward",
-                          "description": "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "totalBroughtForwardClass4Losses": {
-                          "title": "totalBroughtForwardClass4Losses",
-                          "description": "The total brought forward Class 4 National Insurance contribution losses for the self-employment business. It is the sum of the current loss value for each Class 4 loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "broughtForwardClass4LossesUsed": {
-                          "title": "broughtForwardClass4LossesUsed",
-                          "description": "The brought forward Class 4 National Insurance contribution losses from previous tax years that have been used against the Class 4 National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "carrySidewaysClass4LossesUsed": {
-                          "title": "carrySidewaysClass4LossesUsed",
-                          "description": "The Class 4 National Insurance losses carried sideways that have been used in this calculation. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
-                        },
-                        "totalClass4LossesCarriedForward": {
-                          "title": "totalClass4LossesCarriedForward",
-                          "description": "The total Class 4 losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total Class 4 losses brought forward from previous years that cannot be fully used against the National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                          "type": "number",
-                          "multipleOf": 1,
-                          "minimum": 0,
-                          "maximum": 99999999999,
-                          "example": "2000"
+                        "properties": {
+                          "totalBroughtForwardIncomeTaxLosses": {
+                            "title": "totalBroughtForwardIncomeTaxLosses",
+                            "description": "The total brought forward Income Tax losses for the self-employment business. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "broughtForwardIncomeTaxLossesUsed": {
+                            "title": "broughtForwardIncomeTaxLossesUsed",
+                            "description": "The brought forward Income Tax losses from previous tax years that have been used against the self-employment business profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "totalIncomeTaxLossesCarriedForward": {
+                            "title": "totalIncomeTaxLossesCarriedForward",
+                            "description": "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "totalBroughtForwardClass4Losses": {
+                            "title": "totalBroughtForwardClass4Losses",
+                            "description": "The total brought forward Class 4 National Insurance contribution losses for the self-employment business. It is the sum of the current loss value for each Class 4 loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "broughtForwardClass4LossesUsed": {
+                            "title": "broughtForwardClass4LossesUsed",
+                            "description": "The brought forward Class 4 National Insurance contribution losses from previous tax years that have been used against the Class 4 National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "carrySidewaysClass4LossesUsed": {
+                            "title": "carrySidewaysClass4LossesUsed",
+                            "description": "The Class 4 National Insurance losses carried sideways that have been used in this calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          },
+                          "totalClass4LossesCarriedForward": {
+                            "title": "totalClass4LossesCarriedForward",
+                            "description": "The total Class 4 losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total Class 4 losses brought forward from previous years that cannot be fully used against the National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          }
                         }
                       },
                       "LossClaimsDetail": {
@@ -313,7 +315,7 @@
                                 },
                                 "mtdLoss": {
                                   "title": "mtdLoss",
-                                  "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                  "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
                                   "type": "boolean",
                                   "example": "false"
                                 }
@@ -321,7 +323,8 @@
                               "required": [
                                 "lossType",
                                 "taxYearLossIncurred",
-                                "currentLossValue"
+                                "currentLossValue",
+                                "mtdLoss"
                               ]
                             }
                           },
@@ -355,7 +358,7 @@
                                 },
                                 "mtdLoss": {
                                   "title": "mtdLoss",
-                                  "description": "Indicates whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                  "description": "Indicates whether the loss was registered by the taxpayer on joining MTD.",
                                   "type": "boolean",
                                   "example": "false"
                                 },
@@ -395,6 +398,7 @@
                               "required": [
                                 "taxYearClaimMade",
                                 "claimType",
+                                "mtdLoss",
                                 "taxYearLossIncurred",
                                 "lossAmountUsed",
                                 "remainingLossValue",
@@ -646,41 +650,43 @@
                     "lossClaimsSummary": {
                       "type": "object",
                       "description": "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for UK Property FHL. This will only be present for a crystallisation calculation",
-                      "lossForCSFHL": {
-                        "title": "lossForCSFHL",
-                        "description": "The losses from UK Property Non-FHL that have been carried sideways to UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "multipleOf": 1,
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "example": "2000"
-                      },
-                      "totalBroughtForwardIncomeTaxLosses": {
-                        "title": "totalBroughtForwardIncomeTaxLosses",
-                        "description": "The total brought forward Income Tax losses for UK Property FHL. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "multipleOf": 1,
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "example": "2000"
-                      },
-                      "broughtForwardIncomeTaxLossesUsed": {
-                        "title": "broughtForwardIncomeTaxLossesUsed",
-                        "description": "The brought forward Income Tax losses from previous tax years that have been used against the UK Property FHL profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "multipleOf": 1,
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "example": "2000"
-                      },
-                      "totalIncomeTaxLossesCarriedForward": {
-                        "title": "totalIncomeTaxLossesCarriedForward",
-                        "description": "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "multipleOf": 1,
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "example": "2000"
+                      "properties": {
+                        "lossForCSFHL": {
+                          "title": "lossForCSFHL",
+                          "description": "The losses from UK Property Non-FHL that have been carried sideways to UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total brought forward Income Tax losses for UK Property FHL. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "The brought forward Income Tax losses from previous tax years that have been used against the UK Property FHL profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        }
                       }
                     },
                     "lossClaimsDetail": {
@@ -710,14 +716,15 @@
                               },
                               "mtdLoss": {
                                 "title": "mtdLoss",
-                                "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
                                 "type": "boolean",
                                 "example": "false"
                               }
                             },
                             "required": [
                               "taxYearLossIncurred",
-                              "currentLossValue"
+                              "currentLossValue",
+                              "mtdLoss"
                             ]
                           }
                         },
@@ -729,9 +736,10 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The ID of the loss claim. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The ID of the loss claim.",
                                 "type": "string",
-                                "example": "EzluDU2ObK02SdA"
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
                               },
                               "taxYearClaimMade": {
                                 "title": "taxYearClaimMade",
@@ -749,7 +757,7 @@
                               },
                               "mtdLoss": {
                                 "title": "mtdLoss",
-                                "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
                                 "type": "boolean",
                                 "example": "false"
                               },
@@ -781,6 +789,7 @@
                             "required": [
                               "taxYearClaimMade",
                               "claimType",
+                              "mtdLoss",
                               "taxYearLossIncurred",
                               "lossAmountUsed",
                               "remainingLossValue"
@@ -973,14 +982,15 @@
                               },
                               "mtdLoss": {
                                 "title": "mtdLoss",
-                                "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
                                 "type": "boolean",
                                 "example": "false"
                               }
                             },
                             "required": [
                               "taxYearLossIncurred",
-                              "currentLossValue"
+                              "currentLossValue",
+                              "mtdLoss"
                             ]
                           }
                         },
@@ -992,15 +1002,17 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The ID of the loss claim. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The ID of the loss claim.",
                                 "type": "string",
-                                "example": "EzluDU2ObK02SdA"
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
                               },
                               "originatingClaimId": {
                                 "title": "originatingClaimId",
-                                "description": "The ID of an original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The ID of an original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
                                 "type": "string",
-                                "example": "EzluDU2ObK02SdA"
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
                               },
                               "taxYearClaimMade": {
                                 "title": "taxYearClaimMade",
@@ -1021,7 +1033,7 @@
                               },
                               "mtdLoss": {
                                 "title": "mtdLoss",
-                                "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
                                 "type": "boolean",
                                 "example": "false"
                               },
@@ -1053,6 +1065,7 @@
                             "required": [
                               "taxYearClaimMade",
                               "claimType",
+                              "mtdLoss",
                               "lossAmountUsed",
                               "remainingLossValue"
                             ]
@@ -1094,9 +1107,10 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The ID of the claim made by the taxpayer. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The ID of the claim made by the taxpayer.",
                                 "type": "string",
-                                "example": "EzluDU2ObK02SdA"
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
                               },
                               "taxYearClaimMade": {
                                 "title": "taxYearClaimMade",
@@ -1162,16 +1176,17 @@
                 "properties": {
                   "savingsAccountId": {
                     "title": "savingsAccountId",
-                    "description": "The unique identifier of the savings account. Format: ^[A-Za-z0-9]{15}$",
+                    "description": "The unique identifier of the savings account.",
                     "type": "string",
-                    "example": "SAVKB2UVwUTBQGJ"
+                    "example": "SAVKB2UVwUTBQGJ",
+                    "pattern": "^[A-Za-z0-9]{15}$"
                   },
                   "savingsAccountName": {
                     "title": "savingsAccountName",
                     "description": "Friendly account name. Each account name added must be unique for that National Insurance number. The account name must be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£",
                     "type": "string",
-                    "example": "UK Prime Bank Account 1",
-                    "pattern": "^[A-Za-z0-9 &'()*,\\-./@£]{1,32}$"
+                    "example": "UK savings account",
+                    "pattern": "^[A-Za-z0-9 &'()*,-./@£]{1,32}$"
                   },
                   "grossIncome": {
                     "title": "grossIncome",
