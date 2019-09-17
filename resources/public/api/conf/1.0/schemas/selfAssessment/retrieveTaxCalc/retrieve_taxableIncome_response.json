@@ -34,7 +34,7 @@
     },
     "detail": {
       "type": "object",
-      "description": "Details the high-level taxable income for the calculation.",
+      "description": "Details the low-level taxable income for the calculation.",
       "properties": {
         "payPensionsProfit": {
           "type": "object",
@@ -100,7 +100,7 @@
               "properties": {
                 "selfEmployments": {
                   "type": "array",
-                  "description": "A list that shows the low-level profit and loss position for each self employment business",
+                  "description": "A list that shows the low-level profit and loss position for each self-employment business",
                   "items": {
                     "type": "object",
                     "properties": {
@@ -113,7 +113,7 @@
                       },
                       "totalIncome": {
                         "title": "totalIncome",
-                        "description": "The total income for the self employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The total income for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
                         "minimum": 0,
@@ -122,7 +122,7 @@
                       },
                       "totalExpenses": {
                         "title": "totalExpenses",
-                        "description": "The total expenses for the self employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The total expenses for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
                         "minimum": 0,
@@ -158,7 +158,7 @@
                       },
                       "totalAdditions": {
                         "title": "totalAdditions",
-                        "description": "The total additions for the self employment business. The additions relate to the additions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The total additions for the self-employment business. The additions relate to the additions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
                         "minimum": 0,
@@ -167,7 +167,7 @@
                       },
                       "totalDeductions": {
                         "title": "totalDeductions",
-                        "description": "The total deductions for the self employment business. The deductions relate to the deductions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The total deductions for the self-employment business. The deductions relate to the deductions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
                         "minimum": 0,
@@ -176,7 +176,7 @@
                       },
                       "accountingAdjustments": {
                         "title": "accountingAdjustments",
-                        "description": "The accounting adjustments for the self employment business. The accounting adjustments relate to the accounting adjustments mentioned in the Business Income Source Summary. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                        "description": "The accounting adjustments for the self-employment business. The accounting adjustments relate to the accounting adjustments mentioned in the Business Income Source Summary. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
                         "minimum": 0,
@@ -185,7 +185,7 @@
                       },
                       "adjustedIncomeTaxLoss": {
                         "title": "adjustedIncomeTaxLoss",
-                        "description": "The adjusted Income Tax loss for the self employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                        "description": "The adjusted Income Tax loss for the self-employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
                         "multipleOf": 1,
                         "minimum": 0,
@@ -194,7 +194,7 @@
                       },
                       "taxableProfit": {
                         "title": "taxableProfit",
-                        "description": "The taxable profit for the self employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                        "description": "The taxable profit for the self-employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
                         "multipleOf": 1,
                         "minimum": 0,
@@ -212,10 +212,10 @@
                       },
                       "lossClaimsSummary": {
                         "type": "object",
-                        "description": "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for the self employment business. This section will only be present for a crystallisation calculation",
+                        "description": "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for the self-employment business. This section will only be present for a crystallisation calculation",
                         "totalBroughtForwardIncomeTaxLosses": {
                           "title": "totalBroughtForwardIncomeTaxLosses",
-                          "description": "The total brought forward Income Tax losses for the self employment business. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The total brought forward Income Tax losses for the self-employment business. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -224,7 +224,7 @@
                         },
                         "broughtForwardIncomeTaxLossesUsed": {
                           "title": "broughtForwardIncomeTaxLossesUsed",
-                          "description": "The brought forward Income Tax losses from previous tax years that have been used against the self employment business profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The brought forward Income Tax losses from previous tax years that have been used against the self-employment business profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -242,7 +242,7 @@
                         },
                         "totalBroughtForwardClass4Losses": {
                           "title": "totalBroughtForwardClass4Losses",
-                          "description": "The total brought forward Class 4 National Insurance contribution losses for the self employment business. It is the sum of the current loss value for each Class 4 loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The total brought forward Class 4 National Insurance contribution losses for the self-employment business. It is the sum of the current loss value for each Class 4 loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -279,11 +279,11 @@
                       },
                       "LossClaimsDetail": {
                         "type": "object",
-                        "description": "Details low-level loss brought forward amounts and claims that were or were not applied in the calculation for the self employment business. This section will only be present for a crystallisation calculation",
+                        "description": "Details low-level loss brought forward amounts and claims that were or were not applied in the calculation for the self-employment business. This section will only be present for a crystallisation calculation",
                         "properties": {
                           "lossesBroughtForward": {
                             "type": "array",
-                            "description": "A list of losses brought forward into this calculation for the self employment business.",
+                            "description": "A list of losses brought forward into this calculation for the self-employment business.",
                             "items": {
                               "type": "object",
                               "properties": {
@@ -327,7 +327,7 @@
                           },
                           "resultOfClaimsApplied": {
                             "type": "array",
-                            "description": "A list of loss claims factored into this calculation for the self employment business.",
+                            "description": "A list of loss claims factored into this calculation for the self-employment business.",
                             "items": {
                               "type": "object",
                               "properties": {
@@ -404,7 +404,7 @@
                           },
                           "unclaimedLosses": {
                             "type": "array",
-                            "description": "An array of losses that have arisen out of this calculation for the self employment business and available to claim in the next calculation where a 'default' carry forward claim could not be applied.",
+                            "description": "An array of losses that have arisen out of this calculation for the self-employment business and available to claim in the next calculation where a 'default' carry forward claim could not be applied.",
                             "items": {
                               "type": "object",
                               "properties": {
@@ -448,7 +448,7 @@
                           },
                           "carriedForwardLosses": {
                             "type": "array",
-                            "description": "Losses arising in this calculation for the self employment business carried forward to the next calculation where a claim has been made.",
+                            "description": "Losses arising in this calculation for the self-employment business carried forward to the next calculation where a claim has been made.",
                             "items": {
                               "type": "object",
                               "properties": {
@@ -507,7 +507,7 @@
                           },
                           "claimsNotApplied": {
                             "type": "array",
-                            "description": "A list of loss claims that could not be applied in this calculation for the self employment business",
+                            "description": "A list of loss claims that could not be applied in this calculation for the self-employment business",
                             "items": {
                               "type": "object",
                               "properties": {
