@@ -99,7 +99,441 @@
               "description" : "Details the low-level profit and loss position for business income sources.",
               "properties" : {
                 "selfEmployments" : {
-
+                  "type" : "array",
+                  "description": "A list that shows the low-level profit and loss position for each self employment business",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "selfEmploymentId": {
+                        "title": "selfEmploymentId",
+                        "description": "An identifier for the self-employment business, unique to the customer.",
+                        "type": "string",
+                        "example": "XGIS00000001319",
+                        "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
+                      },
+                      "totalIncome": {
+                        "title": "totalIncome",
+                        "description": "The total income for the self employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "totalExpenses": {
+                        "title": "totalExpenses",
+                        "description": "The total expenses for the self employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "netProfit": {
+                        "title": "netProfit",
+                        "description": "If the total income is greater than the total expenses the result will be displayed in this field. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "netLoss": {
+                        "title": "netLoss",
+                        "description": "If the total income is less than the total expenses the result will be displayed in this field. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": 2000.98
+                      },
+                      "class4loss": {
+                        "title": "class4loss",
+                        "description": "The class 4 loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 999999999999,
+                        "example": "2000"
+                      },
+                      "totalAdditions": {
+                        "title": "totalAdditions",
+                        "description": "The total additions for the self employment business. The additions relate to the additions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": 2000.98
+                      },
+                      "totalDeductions": {
+                        "title": "totalDeductions",
+                        "description": "The total deductions for the self employment business. The deductions relate to the deductions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": 2000.98
+                      },
+                      "accountingAdjustments": {
+                        "title": "accountingAdjustments",
+                        "description": "The accounting adjustments for the self employment business. The accounting adjustments relate to the accounting adjustments mentioned in the Business Income Source Summary. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": 2000.98
+                      },
+                      "adjustedIncomeTaxLoss": {
+                        "title": "adjustedIncomeTaxLoss",
+                        "description": "The adjusted Income Tax loss for the self employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": 2000
+                      },
+                      "taxableProfit": {
+                        "title": "taxableProfit",
+                        "description": "The taxable profit for the self employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": 2000
+                      },
+                      "taxableProfitAfterIncomeTaxLossesDeduction": {
+                        "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                        "description": "The taxable profit after income tax losses have been deducted. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": 2000
+                      },
+                      "lossClaimsSummary": {
+                        "type": "object",
+                        "description": "Details high-level loss brought forward amounts and claims that were or were not applied in the calculation for the self employment business. This section will only be present for a crystallisation calculation",
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total brought forward Income Tax losses for the self employment business. It is the sum of the current loss value for each Income Tax loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "The brought forward Income Tax losses from previous tax years that have been used against the self employment business profit for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total Income Tax losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total losses brought forward from previous years that cannot be fully used against profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "totalBroughtForwardClass4Losses": {
+                          "title": "totalBroughtForwardClass4Losses",
+                          "description": "The total brought forward Class 4 National Insurance contribution losses for the self employment business. It is the sum of the current loss value for each Class 4 loss in the losses brought forward array. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "broughtForwardClass4LossesUsed": {
+                          "title": "broughtForwardClass4LossesUsed",
+                          "description": "The brought forward Class 4 National Insurance contribution losses from previous tax years that have been used against the Class 4 National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "carrySidewaysClass4LossesUsed": {
+                          "title": "carrySidewaysClass4LossesUsed",
+                          "description": "The Class 4 National Insurance losses carried sideways that have been used in this calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        },
+                        "totalClass4LossesCarriedForward": {
+                          "title": "totalClass4LossesCarriedForward",
+                          "description": "The total Class 4 losses carried forward where a carry-forward claim has been made for the tax year of the calculation and/or the total Class 4 losses brought forward from previous years that cannot be fully used against the National Insurance contributions for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": 2000
+                        }
+                      },
+                      "LossClaimsDetail": {
+                        "type": "object",
+                        "description": "Details low-level loss brought forward amounts and claims that were or were not applied in the calculation for the self employment business. This section will only be present for a crystallisation calculation",
+                        "properties": {
+                          "lossesBroughtForward": {
+                            "type": "array",
+                            "description": "A list of losses brought forward into this calculation for the self employment business.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss brought forward.",
+                                  "type": "string",
+                                  "example": ["income", "class4-nics"]
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 99999999999,
+                                  "example": 2000
+                                },
+                                "mtdLoss": {
+                                  "title": "mtdLoss",
+                                  "description": "Indicates the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                  "type": "boolean",
+                                  "example": "false"
+                                }
+                              },
+                              "required": [
+                                "lossType",
+                                "taxYearLossIncurred",
+                                "currentLossValue"
+                              ]
+                            }
+                          },
+                          "resultOfClaimsApplied": {
+                            "type": "array",
+                            "description": "A list of loss claims factored into this calculation for the self employment business.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The ID of the loss claim.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the loss claim was first made. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of loss claim that was made.",
+                                  "type": "string",
+                                  "enum": ["carry-forward", "carry-sideways"]
+                                },
+                                "mtdLoss": {
+                                  "title": "mtdLoss",
+                                  "description": "Indicates whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+                                  "type": "boolean",
+                                  "example": "false"
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year in which the loss was first incurred. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "lossAmountUsed": {
+                                  "title": "lossAmountUsed",
+                                  "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "remainingLossValue": {
+                                  "title": "remainingLossValue",
+                                  "description": "The amount of loss remaining that could be not be used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": ["class4-nics"]
+                                }
+                              },
+                              "required": [
+                                "taxYearClaimMade",
+                                "claimType",
+                                "taxYearLossIncurred",
+                                "lossAmountUsed",
+                                "remainingLossValue",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "unclaimedLosses": {
+                            "type": "array",
+                            "description": "An array of losses that have arisen out of this calculation for the self employment business and available to claim in the next calculation where a 'default' carry forward claim could not be applied.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year in which the loss was initially incurred. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "expires": {
+                                  "title": "expires",
+                                  "description": "The tax year in which the loss expires. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": ["class4-nics"]
+                                }
+                              },
+                              "required": [
+                                "taxYearLossIncurred",
+                                "currentLossValue",
+                                "expires",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "carriedForwardLosses": {
+                            "type": "array",
+                            "description": "Losses arising in this calculation for the self employment business carried forward to the next calculation where a claim has been made.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The unique ID of the claim made by the taxpayer.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of claim that was made.",
+                                  "type": "string",
+                                  "enum": ["carry-forward"]
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the claim was made",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year in which the loss was initially incurred Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss brought forward.",
+                                  "type": "string",
+                                  "enum": ["class4-nics"]
+                                }
+                              },
+                              "required": [
+                                "claimType",
+                                "taxYearLossIncurred",
+                                "currentLossValue",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "claimsNotApplied": {
+                            "type": "array",
+                            "description": "A list of loss claims that could not be applied in this calculation for the self employment business",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The ID of the claim made by the taxpayer.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the claim was initially made. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2018-19"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of claim that was made.",
+                                  "type": "string",
+                                  "enum": [
+                                    "carry-sideways",
+                                    "carry-forward"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "claimId",
+                                "taxYearClaimMade",
+                                "claimType"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required" : [
+                      "selfEmploymentId"
+                    ]
+                  }
                 },
                 "ukPropertyFhl" : {
                   "type" : "object",
@@ -295,7 +729,7 @@
                                 "title":"claimType",
                                 "description": "The type of claim that was made.",
                                 "type":"string",
-                                "enum" : ["carry-forward", "carry-sideways", "carry-forward-to-carry-sideways", "carry-sideways-fhl"]
+                                "enum" : ["carry-forward"]
                               },
                               "mtdLoss" : {
                                 "title" : "mtdLoss",
@@ -711,7 +1145,9 @@
                   "savingsAccountName" : {
                     "title" : "savingsAccountName",
                     "description" : "Friendly account name. Each account name added must be unique for that National Insurance number. The account name must be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£",
-                    "type" : "string"
+                    "type" : "string",
+                    "example" : "UK Prime Bank Account 1",
+                    "pattern" : "^[A-Za-z0-9 &'()*,\\-./@£]{1,32}$"
                   },
                   "grossIncome" : {
                     "title" : "grossIncome",
