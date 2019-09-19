@@ -1,0 +1,202 @@
+{
+  "summary": {
+    "totalIncomeReceivedFromAllSources": 1000,
+    "totalTaxableIncome": 1000
+  },
+  "detail": {
+    "payPensionsProfit": {
+      "incomeReceived": 1000,
+      "taxableIncome": 1000,
+      "totalSelfEmploymentProfit": 1000,
+      "totalPropertyProfit": 1000,
+      "totalFHLPropertyProfit": 1000,
+      "totalUKOtherPropertyProfit": 1000,
+      "businessProfitAndLoss": {
+        "selfEmployments": [
+          {
+            "selfEmploymentId": "XGIS00000001319",
+            "totalIncome": 1000.12,
+            "totalExpenses": 1000.12,
+            "netProfit": 1000.12,
+            "netLoss": 1000.12,
+            "class4loss": 1000,
+            "totalAdditions": 1000.12,
+            "totalDeductions": 1000.12,
+            "accountingAdjustments": 1000.12,
+            "adjustedIncomeTaxLoss": 1000,
+            "taxableProfit": 1000,
+            "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+            "lossClaimsSummary": {
+              "totalBroughtForwardIncomeTaxLosses": 1000,
+              "broughtForwardIncomeTaxLossesUsed": 1000,
+              "totalIncomeTaxLossesCarriedForward": 1000,
+              "totalBroughtForwardClass4Losses": 1000,
+              "broughtForwardClass4LossesUsed": 1000,
+              "carrySidewaysClass4LossesUsed": 1000,
+              "totalClass4LossesCarriedForward": 1000
+            },
+            "lossClaimsDetail": {
+              "lossesBroughtForward": [
+                {
+                  "lossType": "income",
+                  "taxYearLossIncurred": "2018-19",
+                  "currentLossValue": 1000,
+                  "mtdLoss": false
+                }
+              ],
+              "resultOfClaimsApplied": [
+                {
+                  "claimId": "XGIS00000001319",
+                  "taxYearClaimMade": "2018-19",
+                  "claimType": "carry-forward",
+                  "mtdLoss": false,
+                  "taxYearLossIncurred": "2018-19",
+                  "lossAmountUsed": 1000,
+                  "remainingLossValue": 1000,
+                  "lossType": "class4-nics"
+                }
+              ],
+              "unclaimedLosses": [
+                {
+                  "taxYearLossIncurred": "2018-19",
+                  "currentLossValue": 1000,
+                  "expires": "2018-19",
+                  "lossType": "class4-nics"
+                }
+              ],
+              "carriedForwardLosses": [
+                {
+                  "claimId": "XGIS00000001319",
+                  "claimType": "carry-forward",
+                  "taxYearClaimMade": "2018-19",
+                  "taxYearLossIncurred": "2018-19",
+                  "currentLossValue": 1000,
+                  "lossType": "class4-nics"
+                }
+              ],
+              "claimsNotApplied": [
+                {
+                  "claimId": "XGIS00000001319",
+                  "taxYearClaimMade": "2018-19",
+                  "claimType": "carry-forward"
+                }
+              ]
+            }
+          }
+        ],
+        "ukPropertyFhl": {
+          "totalIncome": 1000.12,
+          "totalExpenses": 1000.12,
+          "netProfit": 1000.12,
+          "netLoss": 1000.12,
+          "totalAdditions": 1000.12,
+          "totalDeductions": 1000.12,
+          "accountingAdjustments": 1000.12,
+          "adjustedIncomeTaxLoss": 1000,
+          "taxableProfit": 1000,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+          "lossClaimsSummary": {
+            "lossForCSFHL": 1000,
+            "totalBroughtForwardIncomeTaxLosses": 1000,
+            "broughtForwardIncomeTaxLossesUsed": 1000,
+            "totalIncomeTaxLossesCarriedForward": 1000
+          },
+          "lossClaimsDetail": {
+            "lossesBroughtForward": [
+              {
+                "taxYearLossIncurred": "2018-19",
+                "currentLossValue": 1000,
+                "mtdLoss": false
+              }
+            ],
+            "resultOfClaimsApplied": [
+              {
+                "claimId": "EzluDU2ObK02SdA",
+                "taxYearClaimMade": "2018-19",
+                "claimType": "carry-forward",
+                "mtdLoss": false,
+                "taxYearLossIncurred": "2018-19",
+                "lossAmountUsed": 1000,
+                "remainingLossValue": 1000
+              }
+            ],
+            "defaultCarriedForwardLosses": [
+              {
+                "taxYearLossIncurred": "2018-19",
+                "currentLossValue": 1000
+              }
+            ]
+          }
+        },
+        "ukPropertyNonFhl": {
+          "totalIncome": 1000.12,
+          "totalExpenses": 1000.12,
+          "netProfit": 1000.12,
+          "netLoss": 1000.12,
+          "totalAdditions": 1000.12,
+          "totalDeductions": 1000.12,
+          "accountingAdjustments": -1000.12,
+          "adjustedIncomeTaxLoss": 1000,
+          "taxableProfit": 1000,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+          "lossClaimsSummary": {
+            "totalBroughtForwardIncomeTaxLosses": 1000,
+            "broughtForwardIncomeTaxLossesUsed": 1000,
+            "totalIncomeTaxLossesCarriedForward": 1000
+          },
+          "lossClaimsDetail": {
+            "lossesBroughtForward": [
+              {
+                "taxYearLossIncurred": "2018-19",
+                "currentLossValue": 1000,
+                "mtdLoss": false
+              }
+            ],
+            "resultOfClaimsApplied": [
+              {
+                "claimId": "XGIS00000001319",
+                "originatingClaimId": "XGIS00000001319",
+                "taxYearClaimMade": "2018-19",
+                "claimType": "carry-forward",
+                "mtdLoss": false,
+                "taxYearLossIncurred": "2018-19",
+                "lossAmountUsed": 1000,
+                "remainingLossValue": 1000
+              }
+            ],
+            "defaultCarriedForwardLosses": [
+              {
+                "taxYearLossIncurred": "2018-19",
+                "currentLossValue": 1000
+              }
+            ],
+            "claimsNotApplied": [
+              {
+                "claimId": "XGIS00000001319",
+                "taxYearClaimMade": "2018-19",
+                "claimType": "carry-sideways"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "savingsAndGains": {
+      "incomeReceived": 1000,
+      "taxableIncome": 1000,
+      "savings": [
+        {
+          "savingsAccountId": "SAVKB2UVwUTBQGJ",
+          "savingsAccountName": "friendly name",
+          "grossIncome": 1000.12,
+          "netIncome": 1000.12,
+          "taxDeducted": 1000.12
+        }
+      ]
+    },
+    "dividends": {
+      "incomeReceived": 1000,
+      "taxableIncome": 1000
+    }
+  }
+}

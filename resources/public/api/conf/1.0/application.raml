@@ -51,8 +51,9 @@ documentation:
         get: !include selfAssessment_retrieveMetadata.raml
         /income-tax-nics-calculated:
           get: !include selfAssessment_retrieveIncomeTaxAndNics.raml
+        /taxable-income:
+          get: !include selfAssessment_retrieveTaxableIncome.raml
         /end-of-year-estimate:
           get: !include selfAssessment_retrieveEndOfYearEstimate.raml
         /messages:
           get: !include selfAssessment_retrieveMessages.raml
-
