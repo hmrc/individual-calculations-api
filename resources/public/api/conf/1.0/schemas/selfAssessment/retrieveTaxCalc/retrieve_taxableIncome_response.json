@@ -1184,7 +1184,7 @@
                   },
                   "savingsAccountName": {
                     "title": "savingsAccountName",
-                    "description": "Friendly account name. Each account name added must be unique for that National Insurance number. The account name must be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£",
+                    "description": "Friendly account name. Each account name will be unique for that National Insurance number. The account name will be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£.",
                     "type": "string",
                     "example": "UK savings account",
                     "pattern": "^[A-Za-z0-9 &'()*,-./@£]{1,32}$"
