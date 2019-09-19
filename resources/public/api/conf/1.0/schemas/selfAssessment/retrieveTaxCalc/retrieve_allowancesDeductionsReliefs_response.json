@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve self assessment tax calculation messages",
+  "description": "Retrieve self assessment tax calculation messages",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "title": "summary",
+      "type": "object",
+      "description": "Details the high-level allowances, deductions and reliefs for the calculation.",
+      "properties": {
+        "totalAllowancesAndDeductions": {
+          "title": "totalAllowancesAndDeductions",
+          "description": "... This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "1000"
+        },
+        "totalReliefs": {
+          "title": "totalReliefs",
+          "description": "... This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "1000"
+        }
+      },
+      "required": ["totalAllowancesAndDeductions", "totalReliefs"]
+    },
+    "detail": {
+      "title": "details",
+      "type": "object",
+      "description": "Details the low-level allowances, deductions and reliefs for the calculation.",
+      "properties": {
+        "allowancesAndDeductions": {
+          "title": "allowancesAndDeductions",
+          "type": "object",
+          "description": "...",
+          "properties": {
+            "personalAllowance": {
+              "title": "personalAllowance",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
+            },
+            "reducedPersonalAllowance": {
+              "title": "reducedPersonalAllowance",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
+            },
+            "giftOfInvestmentsAndPropertyToCharity": {
+              "title": "giftOfInvestmentsAndPropertyToCharity",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
+            }
+          }
+        },
+        "reliefs": {
+          "title": "reliefs",
+          "type": "object",
+          "description": "...",
+          "properties": {
+            "...": {
+              "title": "...",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["summary", "detail"]
+}
