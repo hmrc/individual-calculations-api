@@ -66,6 +66,24 @@
               "minimum": 0,
               "maximum": 99999999999,
               "example": "1000"
+            },
+            "blindPersonsAllowance": {
+              "title": "blindPersonsAllowance",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
+            },
+            "lossesAppliedToGeneralIncome": {
+              "title": "lossesAppliedToGeneralIncome",
+              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "1000"
             }
           }
         },
@@ -74,14 +92,48 @@
           "type": "object",
           "description": "...",
           "properties": {
-            "...": {
-              "title": "...",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 1,
-              "minimum": 0,
-              "maximum": 99999999999,
-              "example": "1000"
+            "residentialFinanceCosts": {
+              "title": "residentialFinanceCosts",
+              "type": "object",
+              "description": "...",
+              "properties": {
+                "amountClaimed": {
+                  "title": "amountClaimed",
+                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                },
+                "allowableAmount": {
+                  "title": "allowableAmount",
+                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                },
+                "rate": {
+                  "title": "rate",
+                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                },
+                "propertyFinanceRelief": {
+                  "title": "propertyFinanceRelief",
+                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                }
+              }
             }
           }
         }

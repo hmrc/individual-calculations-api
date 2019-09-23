@@ -7,10 +7,17 @@
     "allowancesAndDeductions": {
       "personalAllowance": 1000,
       "reducedPersonalAllowance": 1000,
-      "giftOfInvestmentsAndPropertyToCharity": 1000
+      "giftOfInvestmentsAndPropertyToCharity": 1000,
+      "blindPersonsAllowance": 1000,
+      "lossesAppliedToGeneralIncome": 1000
     },
     "reliefs": {
-      "...": 1000
+      "residentialFinanceCosts": {
+        "amountClaimed": 1000,
+        "allowableAmount": 1000,
+        "rate": 10,
+        "propertyFinanceRelief": 1000
+      }
     }
   }
 }
