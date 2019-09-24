@@ -14,38 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.taxableIncome.detail.selfEmployment
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.des.{LossType, ReliefClaimed}
-import v1.models.domain.{TypeOfClaim, TypeOfLoss}
-import v1.models.request.DesTaxYear
+import play.api.libs.json._
 
 case class ResultOfClaimApplied(
-    claimId: Option[String],
-    taxYearClaimMade: String,
-    claimType: TypeOfClaim,
-    mtdLoss: Boolean,
-    taxYearLossIncurred: String,
-    lossAmountUsed: BigDecimal,
-    remainingLossValue: BigDecimal,
-    lossType: TypeOfLoss
-)
+                                 claimId: Option[String],
+                                 taxYearClaimMade: String,
+                                 claimType: String,
+                                 mtdLoss: Boolean,
+                                 taxYearLossIncurred: String,
+                                 lossAmountUsed: BigDecimal,
+                                 remainingLossValue: BigDecimal,
+                                 lossType: String
+                               )
 
 object ResultOfClaimApplied {
-
-  implicit val writes: Writes[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
-
-  implicit val reads: Reads[ResultOfClaimApplied] = (
-    (JsPath \ "claimId").readNullable[String] and
-      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
-      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "lossAmountUsed").read[BigDecimal] and
-      (JsPath \ "remainingLossValue").read[BigDecimal] and
-      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss)
-    )(ResultOfClaimApplied.apply _)
-
+  implicit val format: OFormat[ResultOfClaimApplied] = Json.format[ResultOfClaimApplied]
 }

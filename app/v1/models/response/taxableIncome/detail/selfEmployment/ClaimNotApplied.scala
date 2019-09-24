@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.taxableIncome.detail.selfEmployment
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v1.models.des.ReliefClaimed
-import v1.models.domain.TypeOfClaim
-import v1.models.request.DesTaxYear
+import play.api.libs.json._
 
 case class ClaimNotApplied(
-    claimId: String,
-    taxYearClaimMade: String,
-    claimType: TypeOfClaim
-)
+                            claimId: String,
+                            taxYearClaimMade: String,
+                            claimType: String
+                          )
 
 object ClaimNotApplied {
-
-  implicit val writes: OWrites[ClaimNotApplied] = Json.writes[ClaimNotApplied]
-  implicit val reads: Reads[ClaimNotApplied] = (
-    (JsPath \ "claimId").read[String] and
-      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim)
-  )(ClaimNotApplied.apply _)
-
+  implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
 }

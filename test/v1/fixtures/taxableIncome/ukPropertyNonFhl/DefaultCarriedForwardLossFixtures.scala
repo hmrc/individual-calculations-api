@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.fixtures.taxableIncome.ukPropertyNonFhl
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.taxableIncome.detail.ukPropertyNonFhl.detail.DefaultCarriedForwardLoss
 
-case class SelfEmployment(test: Option[String])
+object DefaultCarriedForwardLossFixtures {
 
-object SelfEmployment {
-  implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
+  val defaultCarriedForwardLossMtdJson: JsValue = Json.parse(
+    """
+      |{
+      | "taxYearLossIncurred" : "2018-19",
+      | "currentLossValue" : 2000
+      |}
+    """.stripMargin)
 
-  implicit val reads: Reads[SelfEmployment] = Json.reads[SelfEmployment]
-
+  val defaultCarriedForwardLossModel = DefaultCarriedForwardLoss("2018-19", 2000)
 }

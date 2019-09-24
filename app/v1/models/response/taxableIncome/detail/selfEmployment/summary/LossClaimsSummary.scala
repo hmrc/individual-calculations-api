@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
+package v1.models.response.taxableIncome.detail.selfEmployment.summary
+
+import play.api.libs.json.{Json, OFormat}
 
 case class LossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
@@ -25,3 +27,8 @@ case class LossClaimsSummary(
     carrySidewaysClass4LossesUsed: Option[BigDecimal],
     totalClass4LossesCarriedForward: Option[BigDecimal]
 )
+
+object LossClaimsSummary {
+  implicit val format: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
+}
+

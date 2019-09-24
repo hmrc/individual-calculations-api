@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome
+package v1.fixtures.taxableIncome.summary
 
-import play.api.libs.json._
-import v1.models.response.taxableIncome.detail.CalculationDetail
+import play.api.libs.json.{JsValue, Json}
 import v1.models.response.taxableIncome.summary.CalculationSummary
 
-case class TaxableIncome(summary: CalculationSummary, detail: CalculationDetail)
+object CalculationSummaryFixtures {
+  val totalIncomeReceivedFromAllSources: BigInt = 100
+  val totalTaxableIncome: BigInt                = 200
+  val summaryResponse: CalculationSummary       = CalculationSummary(totalIncomeReceivedFromAllSources, totalTaxableIncome)
 
-object TaxableIncome {
-  implicit val formats: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
-  implicit val reads: Reads[TaxableIncome] = (JsPath \ "taxableIncome").read[TaxableIncome](Json.reads[TaxableIncome])
+  val summaryJson: JsValue = Json.parse(s"""{
+      |    "totalIncomeReceivedFromAllSources":$totalIncomeReceivedFromAllSources ,
+      |    "totalTaxableIncome":$totalTaxableIncome
+      |}""".stripMargin)
 }

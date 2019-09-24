@@ -14,29 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.taxableIncome.detail.selfEmployment
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v1.models.des.LossType
-import v1.models.domain.TypeOfLoss
-import v1.models.request.DesTaxYear
 
 case class LossBroughtForward(
-                               lossType: TypeOfLoss,
+                               lossType: String,
                                taxYearLossIncurred: String,
                                currentLossValue: BigDecimal,
                                mtdLoss: Boolean
-)
+                             )
 
 object LossBroughtForward {
-
-  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
-  implicit val reads: Reads[LossBroughtForward] = (
-    (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
-      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "currentLossValue").read[BigDecimal] and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
-  )(LossBroughtForward.apply _)
-
+  implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.detail.selfEmployment
+package v1.fixtures.taxableIncome.ukPropertyNonFhl
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.taxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForward
 
-case class UnclaimedLoss(
-                          taxYearLossIncurred: String,
-                          currentLossValue: BigInt,
-                          expires: String,
-                          lossType: String
-                        )
+object LossBroughtForwardFixtures {
 
-object UnclaimedLoss {
-  implicit val format: OFormat[UnclaimedLoss] = Json.format[UnclaimedLoss]
+  val lossBroughtForwardMtdJson: JsValue = Json.parse(
+    """
+      |{
+      | "taxYearLossIncurred" : "2018-19",
+      | "currentLossValue" : 2000,
+      | "mtdLoss" : false
+      |}
+    """.stripMargin)
+
+  val lossBroughtForwardModel = LossBroughtForward("2018-19", 2000, false)
 }

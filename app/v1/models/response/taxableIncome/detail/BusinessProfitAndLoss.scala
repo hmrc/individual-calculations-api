@@ -18,8 +18,8 @@ package v1.models.response.taxableIncome.detail
 
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmploymentBusiness
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
+import v1.models.response.taxableIncome.detail.selfEmployment.SelfEmploymentBusiness
+import v1.models.response.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 
 case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmploymentBusiness]],

@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.detail.selfEmployment
+package v1.fixtures.taxableIncome.ukPropertyNonFhl
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.taxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotApplied
 
-case class UnclaimedLoss(
-                          taxYearLossIncurred: String,
-                          currentLossValue: BigInt,
-                          expires: String,
-                          lossType: String
-                        )
+object ClaimNotAppliedFixtures {
 
-object UnclaimedLoss {
-  implicit val format: OFormat[UnclaimedLoss] = Json.format[UnclaimedLoss]
+  val claimNotAppliedMtdJson: JsValue = Json.parse(
+    """
+      |{
+      | "claimId" : "EzluDU2ObK02SdA",
+      | "taxYearClaimMade" : "2018-19",
+      | "claimType" : "carry-sideways"
+      |}
+    """.stripMargin)
+
+  val claimNotAppliedModel = ClaimNotApplied("EzluDU2ObK02SdA", "2018-19", "carry-sideways")
 }
