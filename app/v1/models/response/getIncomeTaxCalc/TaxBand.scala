@@ -26,5 +26,5 @@ case class TaxBand(name: String,
                    taxAmount: BigDecimal)
 
 object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+  implicit val formats: OFormat[TaxBand] = Json.format[TaxBand]
 }

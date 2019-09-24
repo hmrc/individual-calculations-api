@@ -26,5 +26,5 @@ case class CalculationSummary(incomeTax: IncomeTaxSummary,
                               taxRegime: String)
 
 object CalculationSummary {
-  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
+  implicit val formats: OFormat[CalculationSummary] = Json.format[CalculationSummary]
 }

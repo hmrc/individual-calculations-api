@@ -23,7 +23,7 @@ import utils.NestedJsonReads._
 case class Message(id: String, text: String)
 
 object Message {
-  implicit val format: OFormat[Message] = Json.format[Message]
+  implicit val formats: OFormat[Message] = Json.format[Message]
 }
 
 case class CalculationMessages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]) {

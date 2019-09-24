@@ -23,7 +23,7 @@ import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.GetIncomeTaxCalcFixture
-import v1.fixtures.taxableIncome.TaxableIncomeFixtures
+import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 

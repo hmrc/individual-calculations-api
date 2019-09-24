@@ -25,7 +25,7 @@ import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors._
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.taxableIncome.TaxableIncome
+import v1.models.response.getTaxableIncome.TaxableIncome
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext

@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
 
 object IncomeTax {
-  implicit val format: OFormat[IncomeTax] = Json.format[IncomeTax]
+  implicit val formats: OFormat[IncomeTax] = Json.format[IncomeTax]
 }
