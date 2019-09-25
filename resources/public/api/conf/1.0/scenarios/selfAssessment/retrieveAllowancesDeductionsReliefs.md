@@ -16,6 +16,10 @@
             <td><p>Simulates the scenario where errors exist and no calculation has been generated.</p></td>
         </tr>
         <tr>
+            <td><p>NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST</p></td>
+            <td><p>Simulates the scenario where no allowances, deductions and reliefs data exists.</p></td>
+        </tr>
+        <tr>
             <td><p>NOT_FOUND</p></td>
             <td><p>Simulates the scenario where no data can be found.</p></td>
         </tr>

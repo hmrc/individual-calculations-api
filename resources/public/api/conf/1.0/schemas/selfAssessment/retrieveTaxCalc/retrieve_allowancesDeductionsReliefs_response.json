@@ -27,8 +27,7 @@
           "maximum": 99999999999,
           "example": "1000"
         }
-      },
-      "required": ["totalAllowancesAndDeductions", "totalReliefs"]
+      }
     },
     "detail": {
       "title": "details",
@@ -133,7 +132,8 @@
                   "maximum": 99999999999,
                   "example": "1000"
                 }
-              }
+              },
+              "required": ["amountClaimed", "rate", "propertyFinanceRelief"]
             }
           }
         }
