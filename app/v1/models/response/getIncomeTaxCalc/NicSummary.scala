@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
 
 object NicSummary {
-  implicit val format: OFormat[NicSummary] = Json.format[NicSummary]
+  implicit val formats: OFormat[NicSummary] = Json.format[NicSummary]
 }

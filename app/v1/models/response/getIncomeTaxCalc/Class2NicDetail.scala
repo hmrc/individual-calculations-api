@@ -26,5 +26,5 @@ case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            actualClass2Nic: Option[Boolean])
 
 object Class2NicDetail {
-  implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
+  implicit val formats: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
 }

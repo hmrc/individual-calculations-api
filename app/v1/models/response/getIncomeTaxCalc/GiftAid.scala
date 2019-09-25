@@ -23,6 +23,6 @@ case class GiftAid(grossGiftAidPayments: BigDecimal,
                    giftAidTax: BigDecimal)
 
 object GiftAid {
-  implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
+  implicit val formats: OFormat[GiftAid] = Json.format[GiftAid]
 }
 

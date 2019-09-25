@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class IncomeTypeBreakdown(allowancesAllocated: BigDecimal, incomeTaxAmount: BigDecimal, taxBands: Option[Seq[TaxBand]])
 
 object IncomeTypeBreakdown {
-  implicit val format: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
+  implicit val formats: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
 }
