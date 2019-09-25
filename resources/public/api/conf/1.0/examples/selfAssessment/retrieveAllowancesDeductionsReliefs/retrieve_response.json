@@ -15,7 +15,7 @@
       "residentialFinanceCosts": {
         "amountClaimed": 1000,
         "allowableAmount": 1000,
-        "rate": 10,
+        "rate": 10.25,
         "propertyFinanceRelief": 1000
       }
     }

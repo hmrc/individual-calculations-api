@@ -11,7 +11,7 @@
       "properties": {
         "totalAllowancesAndDeductions": {
           "title": "totalAllowancesAndDeductions",
-          "description": "... This value must be between 0 and 99999999999. No decimals.",
+          "description": "The total allowances and deductions available to the calculation. This value must be between 0 and 99999999999. No decimals.",
           "type": "number",
           "multipleOf": 1,
           "minimum": 0,
@@ -20,7 +20,7 @@
         },
         "totalReliefs": {
           "title": "totalReliefs",
-          "description": "... This value must be between 0 and 99999999999. No decimals.",
+          "description": "The total reliefs available to the calculation. This value must be between 0 and 99999999999. No decimals.",
           "type": "number",
           "multipleOf": 1,
           "minimum": 0,
@@ -38,11 +38,11 @@
         "allowancesAndDeductions": {
           "title": "allowancesAndDeductions",
           "type": "object",
-          "description": "...",
+          "description": "Details the low-level allowances and deductions for the calculation.",
           "properties": {
             "personalAllowance": {
               "title": "personalAllowance",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "description": "The annual amount of personal allowance available for the tax year. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -51,7 +51,7 @@
             },
             "reducedPersonalAllowance": {
               "title": "reducedPersonalAllowance",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "description": "The annual amount that the personal allowance has been reduced to. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -60,7 +60,7 @@
             },
             "giftOfInvestmentsAndPropertyToCharity": {
               "title": "giftOfInvestmentsAndPropertyToCharity",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "description": "Investments and/or property gifts made to charity. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -69,7 +69,7 @@
             },
             "blindPersonsAllowance": {
               "title": "blindPersonsAllowance",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "description": "Blind persons allowance. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -78,7 +78,7 @@
             },
             "lossesAppliedToGeneralIncome": {
               "title": "lossesAppliedToGeneralIncome",
-              "description": "... This value must be between 0 and 99999999999. No decimals.",
+              "description": "Losses that have been applied to general income. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -90,16 +90,16 @@
         "reliefs": {
           "title": "reliefs",
           "type": "object",
-          "description": "...",
+          "description": "Details the low-level reliefs for the calculation.",
           "properties": {
             "residentialFinanceCosts": {
               "title": "residentialFinanceCosts",
               "type": "object",
-              "description": "...",
+              "description": "Details the residential finance cost reliefs for the calculation.",
               "properties": {
                 "amountClaimed": {
                   "title": "amountClaimed",
-                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "description": "The amount being claimed including any carry forward amounts. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
                   "multipleOf": 1,
                   "minimum": 0,
@@ -108,7 +108,7 @@
                 },
                 "allowableAmount": {
                   "title": "allowableAmount",
-                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "description": "The lower of: finance costs not deducted, property business profits, adjusted total income (exceeding Personal Allowance). This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
                   "multipleOf": 1,
                   "minimum": 0,
@@ -117,16 +117,16 @@
                 },
                 "rate": {
                   "title": "rate",
-                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "description": "The tax rate used for the calculation. The value must be between 0 and 99.99 up to 2 decimal places.",
                   "type": "number",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
+                  "maximum": 99.99,
+                  "example": "10.25"
                 },
                 "propertyFinanceRelief": {
                   "title": "propertyFinanceRelief",
-                  "description": "... This value must be between 0 and 99999999999. No decimals.",
+                  "description": "Property finance relief. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
                   "multipleOf": 1,
                   "minimum": 0,
