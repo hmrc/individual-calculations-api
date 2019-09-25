@@ -25,7 +25,7 @@ case class SelfEmploymentBusiness(
                                    totalExpenses: Option[BigDecimal],
                                    netProfit: Option[BigDecimal],
                                    netLoss: Option[BigDecimal],
-                                   class4loss: Option[BigInt],
+                                   class4Loss: Option[BigInt],
                                    totalAdditions: Option[BigDecimal],
                                    totalDeductions: Option[BigDecimal],
                                    accountingAdjustments: Option[BigDecimal],

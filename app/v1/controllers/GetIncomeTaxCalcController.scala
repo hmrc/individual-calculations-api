@@ -31,11 +31,11 @@ import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService 
 import scala.concurrent.ExecutionContext
 
 class GetIncomeTaxCalcController @Inject()(
-                                            authService: EnrolmentsAuthService,
-                                            lookupService: MtdIdLookupService,
-                                            parser: GetCalculationParser,
-                                            service: StandardService,
-                                            cc: ControllerComponents
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
+    parser: GetCalculationParser,
+    service: StandardService,
+    cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends StandardController[GetCalculationRawData,
                                GetCalculationRequest,
@@ -45,12 +45,12 @@ class GetIncomeTaxCalcController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxCalcController", endpointName = "getIncomeTaxCalc")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(
       playRequest: Request[AnyContent],
       req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse], GetIncomeTaxCalcResponse] =
-    RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse]](
-      RequestDefn.Get(req.backendCalculationUri))
+    RequestHandling[CalculationWrapperOrError[GetIncomeTaxCalcResponse]](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -62,8 +62,6 @@ class GetIncomeTaxCalcController @Inject()(
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
-
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   def getIncomeTaxCalc(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

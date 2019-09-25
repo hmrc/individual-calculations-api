@@ -17,40 +17,41 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.errors._
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getTaxableIncome.TaxableIncome
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
 
 class GetTaxableIncomeController @Inject()(
-                                            authService: EnrolmentsAuthService,
-                                            lookupService: MtdIdLookupService,
-                                            parser: GetCalculationParser,
-                                            service: StandardService,
-                                            cc: ControllerComponents
-                                          )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData,
-    GetCalculationRequest,
-    CalculationWrapperOrError[TaxableIncome],
-    TaxableIncome,
-    AnyContent](authService, lookupService, parser, service, cc) {
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
+    parser: GetCalculationParser,
+    service: StandardService,
+    cc: ControllerComponents
+)(implicit ec: ExecutionContext)
+    extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationWrapperOrError[TaxableIncome], TaxableIncome, AnyContent](
+      authService,
+      lookupService,
+      parser,
+      service,
+      cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[TaxableIncome], TaxableIncome] =
-    RequestHandling[CalculationWrapperOrError[TaxableIncome]](
-      RequestDefn.Get(req.backendCalculationUri))
+    RequestHandling[CalculationWrapperOrError[TaxableIncome]](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -58,12 +59,10 @@ class GetTaxableIncomeController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither[TaxableIncome] {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
-
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   def getTaxableIncome(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
