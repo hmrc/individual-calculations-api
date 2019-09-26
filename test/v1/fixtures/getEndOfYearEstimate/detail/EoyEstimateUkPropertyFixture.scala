@@ -14,33 +14,20 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getEndOfYearEstimate
+package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.EndOfYearEstimateSummary
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkProperty
 
-object EndOfYearEstimateSummaryFixture {
+object EoyEstimateUkPropertyFixture {
 
   val json: JsValue = Json.parse(
     """
       |{
-      | "totalEstimatedIncome" : 1000,
-      | "totalTaxableIncome" : 2000,
-      | "incomeTaxAmount" : 3000.98,
-      | "nic2" : 4000.98,
-      | "nic4" : 5000.98,
-      | "totalNicAmount" : 6000.98,
-      | "incomeTaxNicAmount" : 7000.98
+      | "taxableIncome" : 1000,
+      | "finalised" : true
       |}
     """.stripMargin)
 
-  val model = EndOfYearEstimateSummary(
-    Some(1000),
-    Some(2000),
-    Some(3000.98),
-    Some(4000.98),
-    Some(5000.98),
-    Some(6000.98),
-    Some(7000.98)
-  )
+  val model = EoyEstimateUkProperty(1000, Some(true))
 }

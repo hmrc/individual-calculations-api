@@ -18,30 +18,30 @@ package v1.fixtures.getEndOfYearEstimate
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getEndOfYearEstimate.detail._
-import v1.models.response.getEndOfYearEstimate.EndOfYearEstimateDetail
+import v1.models.response.getEndOfYearEstimate.EoyEstimateDetail
 
-object EndOfYearEstimateDetailFixture {
+object EoyEstimateDetailFixture {
 
   val json: JsValue = Json.parse(
     s"""
       |{
       | "selfEmployments" : [
-      |   ${EndOfYearEstimateSelfEmploymentsFixture.json}
+      |   ${EoyEstimateSelfEmploymentsFixture.json}
       | ],
-      | "ukPropertyFhl" : ${EndOfYearEstimateUkPropertyFixture.json},
-      | "ukPropertyNonFhl" : ${EndOfYearEstimateUkPropertyFixture.json},
+      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFixture.json},
+      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyFixture.json},
       | "ukSavings" : [
-      |   ${EndOfYearEstimateUkSavingsFixture.json}
+      |   ${EoyEstimateUkSavingsFixture.json}
       | ],
-      | "ukDividends" : ${EndOfYearEstimateUkDividendsFixture.json}
+      | "ukDividends" : ${EoyEstimateUkDividendsFixture.json}
       |}
     """.stripMargin)
 
-  val model = EndOfYearEstimateDetail(
-    Some(Seq(EndOfYearEstimateSelfEmploymentsFixture.model)),
-    Some(EndOfYearEstimateUkPropertyFixture.model),
-    Some(EndOfYearEstimateUkPropertyFixture.model),
-    Some(Seq(EndOfYearEstimateUkSavingsFixture.model)),
-    Some(EndOfYearEstimateUkDividendsFixture.model)
+  val model = EoyEstimateDetail(
+    Some(Seq(EoyEstimateSelfEmploymentsFixture.model)),
+    Some(EoyEstimateUkPropertyFixture.model),
+    Some(EoyEstimateUkPropertyFixture.model),
+    Some(Seq(EoyEstimateUkSavingsFixture.model)),
+    Some(EoyEstimateUkDividendsFixture.model)
   )
 }

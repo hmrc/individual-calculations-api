@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.detail
+package v1.fixtures.getEndOfYearEstimate.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkSavings
 
-case class EndOfYearEstimateUkDividends(taxableIncome: BigInt)
+object EoyEstimateUkSavingsFixture {
 
-object EndOfYearEstimateUkDividends {
-  implicit val formats: OFormat[EndOfYearEstimateUkDividends] = Json.format[EndOfYearEstimateUkDividends]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "savingsAccountId" : "yW4zuqfGBZGPlpq",
+      | "savingsAccountName" : "bank & building account 1",
+      | "taxableIncome" : 1000
+      |}
+    """.stripMargin)
+
+  val model = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", "bank & building account 1", 1000)
 }

@@ -17,18 +17,16 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EndOfYearEstimateUkSavings
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkDividends
 
-object EndOfYearEstimateUkSavingsFixture {
+object EoyEstimateUkDividendsFixture {
 
   val json: JsValue = Json.parse(
     """
       |{
-      | "savingsAccountId" : "yW4zuqfGBZGPlpq",
-      | "savingsAccountName" : "bank & building account 1",
       | "taxableIncome" : 1000
       |}
     """.stripMargin)
 
-  val model = EndOfYearEstimateUkSavings("yW4zuqfGBZGPlpq", "bank & building account 1", 1000)
+  val model = EoyEstimateUkDividends(1000)
 }

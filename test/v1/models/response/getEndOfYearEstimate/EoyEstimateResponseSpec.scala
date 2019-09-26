@@ -18,25 +18,25 @@ package v1.models.response.getEndOfYearEstimate
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EndOfYearEstimateResponseFixture
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
 
-class EndOfYearEstimateResponseSpec extends UnitSpec {
+class EoyEstimateResponseSpec extends UnitSpec {
 
   "EndOfYearEstimate" should {
 
     "read correctly from json" when {
 
       "provided with a valid json source" in {
-        val result = EndOfYearEstimateResponseFixture.backendJson.validate[EndOfYearEstimateResponse]
+        val result = EoyEstimateResponseFixture.backendJson.validate[EoyEstimateResponse]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe EndOfYearEstimateResponseFixture.model
+        result.get shouldBe EoyEstimateResponseFixture.model
       }
     }
 
     "write correctly to json" when {
 
       "provided with a valid model" in {
-        Json.toJson(EndOfYearEstimateResponseFixture.model) shouldBe EndOfYearEstimateResponseFixture.outputJson
+        Json.toJson(EoyEstimateResponseFixture.model) shouldBe EoyEstimateResponseFixture.outputJson
       }
     }
   }

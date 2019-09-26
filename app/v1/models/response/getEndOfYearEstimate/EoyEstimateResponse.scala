@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getEndOfYearEstimate.detail
+package v1.models.response.getEndOfYearEstimate
 
-import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EndOfYearEstimateSelfEmployments
+import play.api.libs.json._
 
-object EndOfYearEstimateSelfEmploymentsFixture {
+case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateDetail)
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "selfEmploymentId" : "XGIS00000001319",
-      | "taxableIncome" : 1000,
-      | "finalised" : true
-      |}
-    """.stripMargin)
-
-  val model = EndOfYearEstimateSelfEmployments("XGIS00000001319", 1000, Some(true))
+object EoyEstimateResponse {
+  implicit val writes: OWrites[EoyEstimateResponse] = Json.writes[EoyEstimateResponse]
+  implicit val reads: Reads[EoyEstimateResponse] =
+    (JsPath \ "endOfYearEstimate").read[EoyEstimateResponse](Json.reads[EoyEstimateResponse])
 }

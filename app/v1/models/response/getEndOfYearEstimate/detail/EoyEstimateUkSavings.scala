@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate
+package v1.models.response.getEndOfYearEstimate.detail
 
-import play.api.libs.json._
+import play.api.libs.json.{Json, OFormat}
 
-case class EndOfYearEstimateResponse(summary: EndOfYearEstimateSummary, detail: EndOfYearEstimateDetail)
+case class EoyEstimateUkSavings(
+                                       savingsAccountId: String,
+                                       savingsAccountName: String,
+                                       taxableIncome: BigInt
+                                     )
 
-object EndOfYearEstimateResponse {
-  implicit val writes: OWrites[EndOfYearEstimateResponse] = Json.writes[EndOfYearEstimateResponse]
-  implicit val reads: Reads[EndOfYearEstimateResponse] =
-    (JsPath \ "endOfYearEstimate").read[EndOfYearEstimateResponse](Json.reads[EndOfYearEstimateResponse])
+object EoyEstimateUkSavings {
+  implicit val formats: OFormat[EoyEstimateUkSavings] = Json.format[EoyEstimateUkSavings]
 }

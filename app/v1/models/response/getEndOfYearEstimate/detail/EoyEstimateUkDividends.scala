@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getEndOfYearEstimate.detail
+package v1.models.response.getEndOfYearEstimate.detail
 
-import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EndOfYearEstimateUkDividends
+import play.api.libs.json.{Json, OFormat}
 
-object EndOfYearEstimateUkDividendsFixture {
+case class EoyEstimateUkDividends(taxableIncome: BigInt)
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "taxableIncome" : 1000
-      |}
-    """.stripMargin)
-
-  val model = EndOfYearEstimateUkDividends(1000)
+object EoyEstimateUkDividends {
+  implicit val formats: OFormat[EoyEstimateUkDividends] = Json.format[EoyEstimateUkDividends]
 }

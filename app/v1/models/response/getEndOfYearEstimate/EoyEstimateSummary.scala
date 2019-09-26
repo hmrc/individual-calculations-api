@@ -18,7 +18,7 @@ package v1.models.response.getEndOfYearEstimate
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EndOfYearEstimateSummary(
+case class EoyEstimateSummary(
                                      totalEstimatedIncome: Option[BigInt],
                                      totalTaxableIncome: Option[BigInt],
                                      incomeTaxAmount: Option[BigDecimal],
@@ -28,6 +28,6 @@ case class EndOfYearEstimateSummary(
                                      incomeTaxNicAmount: Option[BigDecimal]
                                    )
 
-object EndOfYearEstimateSummary {
-  implicit val formats: OFormat[EndOfYearEstimateSummary] = Json.format[EndOfYearEstimateSummary]
+object EoyEstimateSummary {
+  implicit val formats: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
 }
