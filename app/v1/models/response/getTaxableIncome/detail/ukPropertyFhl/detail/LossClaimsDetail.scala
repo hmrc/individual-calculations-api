@@ -22,7 +22,7 @@ import utils.NestedJsonReads
 case class LossClaimsDetail(
                              lossesBroughtForward: Option[Seq[LossBroughtForward]],
                              resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
-                             carriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]]
+                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]]
                            )
 
 object LossClaimsDetail extends NestedJsonReads {
