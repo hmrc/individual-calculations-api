@@ -32,8 +32,6 @@ object GetIncomeTaxCalcFixture {
   val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
   val calculationDetail: CalculationDetail = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
 
-  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
-
   val getIncomeTaxCalcResponseObj = CalculationWrapperOrError.CalculationWrapper(GetIncomeTaxCalcResponse(summary = calculationSummary,
     detail = calculationDetail))
 
