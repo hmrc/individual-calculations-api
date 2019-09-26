@@ -391,6 +391,7 @@
                                   "description": "The type of loss.",
                                   "type": "string",
                                   "enum": [
+                                    "income",
                                     "class4-nics"
                                   ]
                                 }
@@ -438,6 +439,7 @@
                                   "description": "The type of loss.",
                                   "type": "string",
                                   "enum": [
+                                    "income",
                                     "class4-nics"
                                   ]
                                 }
@@ -497,6 +499,7 @@
                                   "description": "The type of loss brought forward.",
                                   "type": "string",
                                   "enum": [
+                                    "income",
                                     "class4-nics"
                                   ]
                                 }
