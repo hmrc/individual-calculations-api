@@ -59,7 +59,7 @@ trait JsonErrorValidators {
     }
   }
 
-  def testMandatoryProperty[A : Reads](json: JsValue)(property: String): Unit = {
+  def testMandatoryProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
     s"the JSON is missing the required property $property" should {
 
       val jsPath: JsPath = property.split("/").filterNot(_ == "").foldLeft(JsPath())(_ \ _)
@@ -79,6 +79,22 @@ trait JsonErrorValidators {
         filterErrorByPath(jsPath, jsError).message shouldBe JsonError.PATH_MISSING_EXCEPTION
       }
     }
+  }
+
+  def testOptionalProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
+    s"the JSON is missing the optional property $property" should {
+
+      val jsResult = json.as[JsObject].-(property).validate[A]
+
+      "not throw any errors" in {
+        jsResult.isError shouldBe false
+      }
+    }
+  }
+
+  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String], optionalProperties: Seq[String])(implicit rds: Reads[A]): Unit = {
+    mandatoryProperties.foreach(property => testMandatoryProperty(json)(property))
+    optionalProperties.foreach(property => testOptionalProperty(json)(property))
   }
 
   def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)
