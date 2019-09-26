@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getEndOfYearEstimate.detail
+package v1.models.response.getEndOfYearEstimate.detail
 
-import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkProperty
+import play.api.libs.json.{Json, OFormat}
 
-object EoyEstimateUkPropertyFixture {
+case class EoyEstimateUkPropertyNonFhl(taxableIncome: BigInt, finalised: Option[Boolean])
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "taxableIncome" : 1000,
-      | "finalised" : true
-      |}
-    """.stripMargin)
-
-  val model = EoyEstimateUkProperty(1000, Some(true))
+object EoyEstimateUkPropertyNonFhl {
+  implicit val formats: OFormat[EoyEstimateUkPropertyNonFhl] = Json.format[EoyEstimateUkPropertyNonFhl]
 }

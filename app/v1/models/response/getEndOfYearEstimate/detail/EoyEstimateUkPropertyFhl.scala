@@ -18,8 +18,8 @@ package v1.models.response.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateUkProperty(taxableIncome: BigInt, finalised: Option[Boolean])
+case class EoyEstimateUkPropertyFhl(taxableIncome: BigInt, finalised: Option[Boolean])
 
-object EoyEstimateUkProperty {
-  implicit val formats: OFormat[EoyEstimateUkProperty] = Json.format[EoyEstimateUkProperty]
+object EoyEstimateUkPropertyFhl {
+  implicit val formats: OFormat[EoyEstimateUkPropertyFhl] = Json.format[EoyEstimateUkPropertyFhl]
 }

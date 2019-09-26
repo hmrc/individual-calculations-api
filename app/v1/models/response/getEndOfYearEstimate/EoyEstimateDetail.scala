@@ -20,11 +20,11 @@ import play.api.libs.json.{Json, OFormat}
 import v1.models.response.getEndOfYearEstimate.detail._
 
 case class EoyEstimateDetail(
-                                    selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
-                                    ukPropertyFhl: Option[EoyEstimateUkProperty],
-                                    ukPropertyNonFhl: Option[EoyEstimateUkProperty],
-                                    ukSavings: Option[Seq[EoyEstimateUkSavings]],
-                                    ukDividends: Option[EoyEstimateUkDividends]
+                              selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
+                              ukPropertyFhl: Option[EoyEstimateUkPropertyFhl],
+                              ukPropertyNonFhl: Option[EoyEstimateUkPropertyFhl],
+                              ukSavings: Option[Seq[EoyEstimateUkSavings]],
+                              ukDividends: Option[EoyEstimateUkDividends]
                                   )
 
 object EoyEstimateDetail {

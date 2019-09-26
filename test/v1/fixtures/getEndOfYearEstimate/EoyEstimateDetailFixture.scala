@@ -28,8 +28,8 @@ object EoyEstimateDetailFixture {
       | "selfEmployments" : [
       |   ${EoyEstimateSelfEmploymentsFixture.json}
       | ],
-      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFixture.json},
-      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyFixture.json},
+      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFhlFixture.json},
+      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyNonFhlFixture.json},
       | "ukSavings" : [
       |   ${EoyEstimateUkSavingsFixture.json}
       | ],
@@ -39,8 +39,8 @@ object EoyEstimateDetailFixture {
 
   val model = EoyEstimateDetail(
     Some(Seq(EoyEstimateSelfEmploymentsFixture.model)),
-    Some(EoyEstimateUkPropertyFixture.model),
-    Some(EoyEstimateUkPropertyFixture.model),
+    Some(EoyEstimateUkPropertyFhlFixture.model),
+    Some(EoyEstimateUkPropertyNonFhlFixture.model),
     Some(Seq(EoyEstimateUkSavingsFixture.model)),
     Some(EoyEstimateUkDividendsFixture.model)
   )
