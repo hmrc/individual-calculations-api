@@ -22,7 +22,7 @@ import v1.models.response.getEndOfYearEstimate.detail._
 case class EoyEstimateDetail(
                               selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
                               ukPropertyFhl: Option[EoyEstimateUkPropertyFhl],
-                              ukPropertyNonFhl: Option[EoyEstimateUkPropertyFhl],
+                              ukPropertyNonFhl: Option[EoyEstimateUkPropertyNonFhl],
                               ukSavings: Option[Seq[EoyEstimateUkSavings]],
                               ukDividends: Option[EoyEstimateUkDividends]
                                   )
