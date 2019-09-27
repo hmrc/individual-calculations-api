@@ -17,7 +17,7 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhl
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhl
 
 object EoyEstimateUkPropertyNonFhlFixture {
 
@@ -29,5 +29,5 @@ object EoyEstimateUkPropertyNonFhlFixture {
       |}
     """.stripMargin)
 
-  val model = EoyEstimateUkPropertyFhl(1000, Some(true))
+  val model = EoyEstimateUkPropertyNonFhl(1000, Some(true))
 }
