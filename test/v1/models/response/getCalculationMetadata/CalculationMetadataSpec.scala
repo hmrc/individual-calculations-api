@@ -16,13 +16,13 @@
 
 package v1.models.response.getCalculationMetadata
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 
 class CalculationMetadataSpec extends UnitSpec {
 
-  val jsonInput = Json.parse("""{
+  val jsonInput: JsValue = Json.parse("""{
                           |  "metadata": {
                           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
                           |    "taxYear": "2018-19",
@@ -37,7 +37,7 @@ class CalculationMetadataSpec extends UnitSpec {
                           |}
                           |""".stripMargin)
 
-  val jsonOutput = Json.parse("""{
+  val jsonOutput: JsValue = Json.parse("""{
                            |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
                            |    "taxYear": "2018-19",
                            |    "requestedBy": "customer",
@@ -59,6 +59,7 @@ class CalculationMetadataSpec extends UnitSpec {
     calculationType = CalculationType.crystallisation,
     intentToCrystallise = true,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(123)
   )
 

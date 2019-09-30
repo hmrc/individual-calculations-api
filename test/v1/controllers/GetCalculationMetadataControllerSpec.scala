@@ -83,6 +83,7 @@ class GetCalculationMetadataControllerSpec
     calculationType = CalculationType.crystallisation,
     intentToCrystallise = true,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(123)
   )
 
