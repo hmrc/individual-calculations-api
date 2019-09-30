@@ -11,9 +11,9 @@
       "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     },
     "taxYear" : {
-      "description" : "The tax year that the calculation was performed in the format YYYY-YY",
+      "description" : "The tax year in which the calculation was performed in the format YYYY-YY",
       "type" : "string",
-      "example": "2018-19"
+      "example": "2019-20"
     },
     "requestedBy": {
       "description": "The requestor of the calculation. Currently agent will default to customer until it can be supported.",
@@ -31,7 +31,7 @@
       "example": "2019-06-17T09:22:59Z"
     },
     "calculationType": {
-      "description": "The type of calculation performed.",
+      "description": "The type of calculation performed. A \"crystallisation\" calculation is a calculation triggered via the \"Intent to crystallise\" endpoint under the \"Self Assessment (MTD)\" API.",
       "type": "string",
       "enum": ["inYear", "crystallisation"]
     },
@@ -45,13 +45,21 @@
       "type": "boolean",
       "example": "true"
     },
+    "totalIncomeTaxAndNicsDue": {
+      "description": "The total amount of Income Tax and National Insurance Contributions due. This field is not present if the calculationErrorCount value is greater than zero.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "2000.98"
+    },
     "calculationErrorCount": {
-      "description": "The number of error messages that were generated while attempting to perform the calculation. If this field is present then a calculation has not been performed, details of why the calculation has not been performed can be viewed by looking at the error messages under the \"Retrieve self assessment tax calculation messages\" endpoint",
+      "description": "A count of error messages generated during the calculation. If the field is present it indicates a calculation has not been performed. Further detail can be found in the \"Retrieve Self Assessment tax calculation messages\" endpoint about the errors.",
       "type": "number",
       "multipleOf": 1,
       "minimum": 1,
       "example": "2"
     }
   },
-  "required": ["id", "taxYear", "requestedBy", "calculationReason", "calculationTimestamp", "calculationType", "intentToCrystallise", "crystallised"]
+  "required": ["id", "taxYear", "requestedBy", "calculationReason", "calculationType", "intentToCrystallise", "crystallised"]
 }
