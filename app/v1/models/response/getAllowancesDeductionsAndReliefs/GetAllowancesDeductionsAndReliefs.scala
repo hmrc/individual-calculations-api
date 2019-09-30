@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.getAllowancesAndDeductions
 
-import play.api.libs.json.{ Json, OFormat }
+package v1.models.response.getAllowancesDeductionsAndReliefs
 
-case class CalculationDetail(
-    allowancesAndDeductions: Option[AllowancesAndDeductions],
-    reliefs: Option[Reliefs]
-)
+import play.api.libs.json._
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+case class GetAllowancesDeductionsAndReliefs(summary: CalculationSummary, detail: CalculationDetail)
+
+object GetAllowancesDeductionsAndReliefs {
+  implicit val reads: Reads[GetAllowancesDeductionsAndReliefs] =
+    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[GetAllowancesDeductionsAndReliefs])
+
+  implicit val writes: Writes[GetAllowancesDeductionsAndReliefs] = Json.writes[GetAllowancesDeductionsAndReliefs]
 }

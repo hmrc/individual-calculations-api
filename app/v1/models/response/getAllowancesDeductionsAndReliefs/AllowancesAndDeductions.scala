@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.getAllowancesAndDeductions
 
-import play.api.libs.json._
+package v1.models.response.getAllowancesDeductionsAndReliefs
 
-case class GetAllowancesAndDeductionsResponse(summary: CalculationSummary, detail: CalculationDetail)
+import play.api.libs.json.{ Json, OFormat }
 
-object GetAllowancesAndDeductionsResponse {
-  implicit val reads: Reads[GetAllowancesAndDeductionsResponse] =
-    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[GetAllowancesAndDeductionsResponse])
+case class AllowancesAndDeductions(
+    personalAllowance: Option[BigInt],
+    reducedPersonalAllowance: Option[BigInt],
+    giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
+    blindPersonsAllowance: Option[BigInt],
+    lossesAppliedToGeneralIncome: Option[BigInt]
+)
 
-  implicit val writes: Writes[GetAllowancesAndDeductionsResponse] = Json.writes[GetAllowancesAndDeductionsResponse]
+object AllowancesAndDeductions {
+  implicit val format: OFormat[AllowancesAndDeductions] = Json.format[AllowancesAndDeductions]
 }

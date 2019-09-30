@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.getAllowancesAndDeductions
 
-import play.api.libs.json.{Json, OFormat}
+package v1.models.response.getAllowancesDeductionsAndReliefs
 
-case class ResidentialFinanceCosts(
-    amountClaimed: BigInt,
-    allowableAmount: Option[BigInt],
-    rate: BigDecimal,
-    propertyFinanceRelief: BigInt
+import play.api.libs.json.{ Json, OFormat }
+
+case class CalculationDetail(
+    allowancesAndDeductions: Option[AllowancesAndDeductions],
+    reliefs: Option[Reliefs]
 )
 
-object ResidentialFinanceCosts {
-  implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+object CalculationDetail {
+  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
 }

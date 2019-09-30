@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.getAllowancesAndDeductions
+package v1.models.response.getAllowancesDeductionsAndReliefs
 
 import play.api.libs.json.Json
 import support.UnitSpec
 
-class GetAllowancesAndDeductionsResponseSpec extends UnitSpec {
+class GetAllowancesDeductionsAndReliefsSpec extends UnitSpec {
 
-  val model = GetAllowancesAndDeductionsResponse(
+  val model = GetAllowancesDeductionsAndReliefs(
     CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
     CalculationDetail(
       allowancesAndDeductions = Some(
@@ -70,7 +70,7 @@ class GetAllowancesAndDeductionsResponseSpec extends UnitSpec {
     "read from allowancesDeductionsAndReliefs object of backend response" in {
       val responseJson = Json.obj("allowancesDeductionsAndReliefs" -> json)
 
-      responseJson.as[GetAllowancesAndDeductionsResponse] shouldBe model
+      responseJson.as[GetAllowancesDeductionsAndReliefs] shouldBe model
     }
   }
 
