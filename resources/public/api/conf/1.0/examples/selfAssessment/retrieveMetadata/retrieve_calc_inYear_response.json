@@ -6,5 +6,6 @@
   "calculationTimestamp": "2019-02-15T08:22:15.094Z",
   "calculationType": "inYear",
   "intentToCrystallise": false,
-  "crystallised": false
+  "crystallised": false,
+  "totalIncomeTaxAndNicsDue": 2000.98
 }
