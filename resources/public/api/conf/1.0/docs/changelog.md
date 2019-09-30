@@ -1,1 +1,1 @@
-You can find the changelog in the [individual-calculations-api](https://github.com/hmrc/individual-calculations-api/wiki/Changelog) GitHub wiki.You can find the changelog in the [individual-calculations-api](https://github.com/hmrc/individual-calculations-api/wiki/Changelog) GitHub wiki.
+You can find the changelog in the [individual-calculations-api](https://github.com/hmrc/individual-calculations-api/wiki/Changelog) GitHub wiki.

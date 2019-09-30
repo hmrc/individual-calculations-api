@@ -52,6 +52,8 @@ object TypeFormatError extends MtdError("FORMAT_TYPE", "The provided type value 
 
 object NoMessagesExistError extends MtdError("NO_MESSAGES_PRESENT", "No messages present")
 
+object EndOfYearEstimateNotPresentError extends MtdError("END_OF_YEAR_ESTIMATE_NOT_PRESENT", "End of year estimate data will only be returned for an in-year calculation")
+
 // Rule Errors
 object RuleTaxYearNotSupportedError
     extends MtdError("RULE_TAX_YEAR_NOT_SUPPORTED", "Tax year not supported, because it precedes the earliest allowable tax year")

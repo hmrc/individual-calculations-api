@@ -3,6 +3,7 @@ GET       /:nino/self-assessment/:calcId                                 v1.cont
 GET       /:nino/self-assessment/:calcId/income-tax-nics-calculated      v1.controllers.GetIncomeTaxCalcController.getIncomeTaxCalc(nino: String, calcId: String)
 GET       /:nino/self-assessment/:calcId/taxable-income                  v1.controllers.GetTaxableIncomeController.getTaxableIncome(nino: String, calcId: String)
 GET       /:nino/self-assessment/:calcId/allowances-deductions-reliefs   v1.controllers.GetAllowancesDeductionsAndReliefsController.getAllowancesDeductionsAndReliefs(nino: String, calcId: String)
+GET       /:nino/self-assessment/:calcId/end-of-year-estimate            v1.controllers.GetEoyEstimateController.getEoyEstimate(nino: String, calcId: String)
 GET       /:nino/self-assessment/:calcId/messages                        v1.controllers.GetCalculationMessagesController.getMessages(nino: String, calcId: String)
 
 POST      /:nino/self-assessment                                         v1.controllers.TriggerCalculationController.triggerCalculation(nino: String)

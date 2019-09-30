@@ -28,6 +28,7 @@ case class CalculationMetadata(
     calculationType: CalculationType,
     intentToCrystallise: Boolean,
     crystallised: Boolean,
+    totalIncomeTaxAndNicsDue: Option[BigDecimal],
     calculationErrorCount: Option[Int]
 )
 
@@ -38,5 +39,4 @@ object CalculationMetadata {
 
   implicit def reads: Reads[CalculationMetadata] =
     (JsPath \ "metadata").read[CalculationMetadata](Json.reads[CalculationMetadata])
-
 }

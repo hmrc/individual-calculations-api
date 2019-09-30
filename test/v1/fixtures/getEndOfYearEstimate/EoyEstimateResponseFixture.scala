@@ -30,7 +30,7 @@ object EoyEstimateResponseFixture {
       |    "requestedBy": "customer",
       |    "calculationReason": "customerRequest",
       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
+      |    "calculationType": "inYear",
       |    "intentToCrystallise": true,
       |    "crystallised": false,
       |    "calculationErrorCount": 0
@@ -40,6 +40,23 @@ object EoyEstimateResponseFixture {
       |   "detail" : ${EoyEstimateDetailFixture.json.toString()}
       | }
       |}
+    """.stripMargin)
+
+  val errorCalculationTypeJson: JsValue = Json.parse(
+    s"""
+       |{
+       | "metadata": {
+       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+       |    "taxYear": "2018-19",
+       |    "requestedBy": "customer",
+       |    "calculationReason": "customerRequest",
+       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+       |    "calculationType": "crystallisation",
+       |    "intentToCrystallise": true,
+       |    "crystallised": false,
+       |    "calculationErrorCount": 0
+       |  }
+       |}
     """.stripMargin)
 
   val outputJson: JsValue = Json.parse(
