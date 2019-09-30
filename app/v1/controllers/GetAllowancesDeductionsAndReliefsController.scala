@@ -25,7 +25,7 @@ import v1.handling.{ RequestDefn, RequestHandling }
 import v1.models.errors._
 import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefs
+import v1.models.response.getAllowancesDeductionsAndReliefs.GetAllowancesDeductionsAndReliefs
 import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
@@ -39,8 +39,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 )(implicit ec: ExecutionContext)
     extends StandardController[GetCalculationRawData,
                                GetCalculationRequest,
-                               CalculationWrapperOrError[AllowancesDeductionsAndReliefs],
-                               AllowancesDeductionsAndReliefs,
+                               CalculationWrapperOrError[GetAllowancesDeductionsAndReliefs],
+                               GetAllowancesDeductionsAndReliefs,
                                AnyContent](authService, lookupService, parser, service, cc) {
   controller =>
 
@@ -49,8 +49,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 
   override def requestHandlingFor(
       playRequest: Request[AnyContent],
-      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs] =
-    RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefs]](RequestDefn.Get(req.backendCalculationUri))
+      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetAllowancesDeductionsAndReliefs], GetAllowancesDeductionsAndReliefs] =
+    RequestHandling[CalculationWrapperOrError[GetAllowancesDeductionsAndReliefs]](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,

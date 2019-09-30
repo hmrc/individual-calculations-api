@@ -20,13 +20,13 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.AllowancesDeductionsAndReliefsFixture._
 
-class AllowancesDeductionsAndReliefsSpec extends UnitSpec {
+class GetAllowancesDeductionsAndReliefsSpec extends UnitSpec {
 
   "reading from json" must {
     "read from allowancesDeductionsAndReliefs object of backend response" in {
       val responseJson = Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsJson)
 
-      responseJson.as[AllowancesDeductionsAndReliefs] shouldBe allowancesDeductionsAndReliefsModel
+      responseJson.as[GetAllowancesDeductionsAndReliefs] shouldBe allowancesDeductionsAndReliefsModel
     }
   }
 
@@ -37,8 +37,8 @@ class AllowancesDeductionsAndReliefsSpec extends UnitSpec {
   }
 
   "isEmpty" should {
-    def responseWithSummary(summary: CalculationSummary): AllowancesDeductionsAndReliefs =
-      AllowancesDeductionsAndReliefs(summary = summary, detail = CalculationDetail(None, None))
+    def responseWithSummary(summary: CalculationSummary): GetAllowancesDeductionsAndReliefs =
+      GetAllowancesDeductionsAndReliefs(summary = summary, detail = CalculationDetail(None, None))
 
     "return true" when {
       "summary totalAllowancesAndDeductions AND totalReliefs are not present" in {

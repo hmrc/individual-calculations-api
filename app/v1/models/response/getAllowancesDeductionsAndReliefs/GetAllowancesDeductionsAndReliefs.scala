@@ -18,7 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs
 
 import play.api.libs.json._
 
-case class AllowancesDeductionsAndReliefs(summary: CalculationSummary, detail: CalculationDetail) {
+case class GetAllowancesDeductionsAndReliefs(summary: CalculationSummary, detail: CalculationDetail) {
 
   def isEmpty: Boolean =
     (summary.totalAllowancesAndDeductions, summary.totalReliefs) match {
@@ -28,9 +28,9 @@ case class AllowancesDeductionsAndReliefs(summary: CalculationSummary, detail: C
     }
 }
 
-object AllowancesDeductionsAndReliefs {
-  implicit val reads: Reads[AllowancesDeductionsAndReliefs] =
-    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefs])
+object GetAllowancesDeductionsAndReliefs {
+  implicit val reads: Reads[GetAllowancesDeductionsAndReliefs] =
+    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[GetAllowancesDeductionsAndReliefs])
 
-  implicit val writes: Writes[AllowancesDeductionsAndReliefs] = Json.writes[AllowancesDeductionsAndReliefs]
+  implicit val writes: Writes[GetAllowancesDeductionsAndReliefs] = Json.writes[GetAllowancesDeductionsAndReliefs]
 }

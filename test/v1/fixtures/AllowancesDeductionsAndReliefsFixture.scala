@@ -22,7 +22,7 @@ import v1.models.response.getAllowancesDeductionsAndReliefs._
 
 object AllowancesDeductionsAndReliefsFixture {
 
-  val allowancesDeductionsAndReliefsModel = AllowancesDeductionsAndReliefs(
+  val allowancesDeductionsAndReliefsModel = GetAllowancesDeductionsAndReliefs(
     CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
     CalculationDetail(
       allowancesAndDeductions = Some(
