@@ -104,5 +104,27 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
+
+    "return NOT_FOUND with the error message" when {
+      "no allowances, deductions or reliefs exist" in new Test {
+        MockGetCalculationParser
+          .parse(rawData)
+          .returns(Right(requestData))
+
+        MockStandardService
+          .doService(RequestDefn.Get(uri), OK)
+          .returns(
+            Future.successful(
+              Right(ResponseWrapper(
+                correlationId,
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistModel)))))
+
+        val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
+
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+      }
+    }
   }
 }

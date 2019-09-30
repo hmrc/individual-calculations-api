@@ -16,7 +16,7 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
 import v1.models.response.getAllowancesDeductionsAndReliefs._
 
@@ -82,4 +82,7 @@ object AllowancesDeductionsAndReliefsFixture {
                  |  }
                  |}
                  |""".stripMargin).as[JsObject]
+
+  val noAllowancesDeductionsAndReliefsExistModel =
+    AllowancesDeductionsAndReliefs(CalculationSummary(None, None), CalculationDetail(None, None))
 }
