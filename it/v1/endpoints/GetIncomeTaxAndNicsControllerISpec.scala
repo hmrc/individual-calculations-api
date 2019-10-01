@@ -23,11 +23,10 @@ import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.GetIncomeTaxAndNicsFixture
-import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
+class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -35,7 +34,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
     val correlationId = "X-123"
     val calcId        = "12345678"
 
-    def uri: String = s"/$nino/self-assessment/$calcId/taxable-income"
+    def uri: String = s"/$nino/self-assessment/$calcId/income-tax-nics-calculated"
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -55,14 +54,14 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, TaxableIncomeFixtures.jsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxAndNicsFixture.successBodyFromBackEnd)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe TaxableIncomeFixtures.json
+        response.json shouldBe GetIncomeTaxAndNicsFixture.successOutputToVendor
       }
     }
 
@@ -146,5 +145,4 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
       }
     }
   }
-
 }
