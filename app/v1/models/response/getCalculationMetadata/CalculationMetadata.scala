@@ -24,7 +24,7 @@ case class CalculationMetadata(
     taxYear: String,
     requestedBy: CalculationRequestor,
     calculationReason: CalculationReason,
-    calculationTimestamp: String,
+    calculationTimestamp: Option[String],
     calculationType: CalculationType,
     intentToCrystallise: Boolean,
     crystallised: Boolean,
