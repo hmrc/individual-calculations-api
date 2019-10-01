@@ -158,6 +158,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -191,6 +192,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
