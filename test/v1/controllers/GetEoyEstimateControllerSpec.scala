@@ -63,7 +63,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
   private def uri = s"/$nino/self-assessment/$calcId"
 
-  private def queryUri = "/input/uri?type=info&type=warning&type=error"
+  private def queryUri = "/input/uri"
 
   "handleRequest" should {
     "return OK with the calculation" when {
