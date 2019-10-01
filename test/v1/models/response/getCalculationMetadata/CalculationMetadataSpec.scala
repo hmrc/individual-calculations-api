@@ -55,7 +55,7 @@ class CalculationMetadataSpec extends UnitSpec {
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
     calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = "2019-11-15T09:35:15.094Z",
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
     calculationType = CalculationType.crystallisation,
     intentToCrystallise = true,
     crystallised = false,
