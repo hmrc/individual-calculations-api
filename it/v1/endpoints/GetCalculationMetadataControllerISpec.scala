@@ -110,6 +110,7 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -142,6 +143,7 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 

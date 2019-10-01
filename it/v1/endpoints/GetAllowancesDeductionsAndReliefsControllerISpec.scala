@@ -78,6 +78,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
         response.status shouldBe FORBIDDEN
         response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
+        response.header("Content-Type") shouldBe Some("application/json")
       }
     }
 
@@ -97,6 +98,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
         response.status shouldBe NOT_FOUND
         response.json shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
+        response.header("Content-Type") shouldBe Some("application/json")
       }
     }
 
@@ -149,6 +151,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 

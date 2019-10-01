@@ -90,6 +90,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           val response: WSResponse = await(request.post(Json.parse(requestBody)))
           response.status shouldBe expectedStatus
           response.json shouldBe Json.toJson(expectedBody)
+          response.header("Content-Type") shouldBe Some("application/json")
         }
       }
 
@@ -113,6 +114,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         val response: WSResponse = await(request.post(Json.obj()))
         response.status shouldBe BAD_REQUEST
         response.json shouldBe Json.toJson(RuleIncorrectOrEmptyBodyError)
+        response.header("Content-Type") shouldBe Some("application/json")
       }
 
       "the backend returns a service error" when {
@@ -136,6 +138,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.post(Json.parse("""{"taxYear" : "2018-19"}""")))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 

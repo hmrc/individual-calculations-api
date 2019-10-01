@@ -79,6 +79,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe FORBIDDEN
         response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
+        response.header("Content-Type") shouldBe Some("application/json")
       }
     }
 
@@ -99,6 +100,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -131,6 +133,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
