@@ -57,7 +57,7 @@ class StandardConnectorSpec extends ConnectorSpec {
           .get(s"$baseUrl/some/uri",  queryParams)
           .returns(Future.successful(expected))
 
-        await(connector.doRequest(requestDefn)) shouldBe expected
+        await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
 
       "request is a post" in new Test {
@@ -70,7 +70,7 @@ class StandardConnectorSpec extends ConnectorSpec {
           .post(s"$baseUrl/some/uri", body)
           .returns(Future.successful(expected))
 
-        await(connector.doRequest(postRequestDefn)) shouldBe expected
+        await(connector.doRequest[Response](postRequestDefn)) shouldBe expected
       }
     }
 
@@ -84,7 +84,7 @@ class StandardConnectorSpec extends ConnectorSpec {
           .get(s"$baseUrl/some/uri",  queryParams)
           .returns(Future.successful(expected))
 
-        await(connector.doRequest(requestDefn)) shouldBe expected
+        await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
     }
 
@@ -97,7 +97,7 @@ class StandardConnectorSpec extends ConnectorSpec {
           .get(s"$baseUrl/some/uri",  queryParams)
           .returns(Future.failed(new Exception("unexpected exception")))
 
-        the[Exception] thrownBy await(connector.doRequest(requestDefn)) should have message "unexpected exception"
+        the[Exception] thrownBy await(connector.doRequest[Response](requestDefn)) should have message "unexpected exception"
       }
     }
   }

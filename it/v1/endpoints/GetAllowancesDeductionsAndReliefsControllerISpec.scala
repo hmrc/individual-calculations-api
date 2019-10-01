@@ -22,10 +22,11 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{ WSRequest, WSResponse }
 import support.IntegrationBaseSpec
+import v1.fixtures.{ AllowancesDeductionsAndReliefsFixture, GetIncomeTaxCalcFixture }
 import v1.models.errors._
 import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
 
-class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
+class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -33,9 +34,9 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
     val correlationId = "X-123"
     val calcId        = "12345678"
 
-    def uri: String = s"/$nino/self-assessment/$calcId"
+    def uri: String = s"/$nino/self-assessment/$calcId/allowances-deductions-reliefs"
 
-    def backendUrl: String = uri
+    def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
     def setupStubs(): StubMapping
 
@@ -46,50 +47,56 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-  "Calling the get calculation metadata endpoint" should {
+  "Calling the get income tax calculation endpoint" should {
     "return a 200 status code" when {
-
-      val successBody = Json.parse("""
-                                     |{
-                                     |  "metadata": {
-                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                     |    "taxYear": "2018-19",
-                                     |    "requestedBy": "customer",
-                                     |    "calculationReason": "customerRequest",
-                                     |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                     |    "calculationType": "crystallisation",
-                                     |    "intentToCrystallise": true,
-                                     |    "crystallised": false,
-                                     |    "calculationErrorCount": 123
-                                     |  }
-                                     |}""".stripMargin)
-
-      val successOutput = Json.parse("""
-                                     |{
-                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                     |    "taxYear": "2018-19",
-                                     |    "requestedBy": "customer",
-                                     |    "calculationReason": "customerRequest",
-                                     |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                     |    "calculationType": "crystallisation",
-                                     |    "intentToCrystallise": true,
-                                     |    "crystallised": false,
-                                     |    "calculationErrorCount": 123
-                                     |}""".stripMargin)
-
       "valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsFixture.jsonFromBackend)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successOutput
+        response.json shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson
+      }
+    }
+
+    "return 403" when {
+      "errors exist" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxCalcFixture.errorBodyFromBackEnd)
+        }
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe FORBIDDEN
+        response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
+      }
+    }
+
+    "return 404 (NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST)" when {
+      "no allowances, deductions or reliefs exist" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET,
+                                backendUrl,
+                                OK,
+                                AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
+        }
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe NOT_FOUND
+        response.json shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
       }
     }
 
@@ -157,4 +164,5 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
       }
     }
   }
+
 }

@@ -67,6 +67,8 @@ object RuleNoIncomeSubmissionsExistError extends MtdError("RULE_NO_INCOME_SUBMIS
 
 object RuleCalculationErrorMessagesExist extends MtdError("RULE_CALCULATION_ERROR_MESSAGES_EXIST", "Calculation error messages exist for the supplied calculation ID")
 
+object NoAllowancesDeductionsAndReliefsExist extends MtdError("NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST", "No allowances, deductions and reliefs data exists")
+
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
 

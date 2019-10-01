@@ -20,29 +20,29 @@ import play.api.libs.json.Json
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.fixtures.AllowancesDeductionsAndReliefsFixture
 import v1.handling.RequestDefn
 import v1.mocks.requestParsers.MockGetCalculationParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.errors.{EndOfYearEstimateNotPresentError, RuleCalculationErrorMessagesExist}
+import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.EoyEstimateWrapperOrError
-import v1.models.response.EoyEstimateWrapperOrError.EoyEstimateWrapper
+import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.response.CalculationWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetEoyEstimateControllerSpec extends ControllerBaseSpec
-  with MockEnrolmentsAuthService
-  with MockMtdIdLookupService
-  with MockGetCalculationParser
-  with MockStandardService {
+class GetAllowancesDeductionsAndReliefsControllerSpec
+    extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockGetCalculationParser
+    with MockStandardService {
 
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetEoyEstimateController(
+    val controller = new GetAllowancesDeductionsAndReliefsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
@@ -54,15 +54,14 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino = "AA123456A"
-  private val calcId = "someCalcId"
+  private val nino          = "AA123456A"
+  private val calcId        = "someCalcId"
   private val correlationId = "X-123"
 
-  private val rawData = GetCalculationRawData(nino, calcId)
+  private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
-  private def uri = s"/$nino/self-assessment/$calcId"
-
+  private def uri      = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri"
 
   "handleRequest" should {
@@ -74,12 +73,16 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.model)))))
+          .returns(
+            Future.successful(
+              Right(ResponseWrapper(
+                correlationId,
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel)))))
 
-        val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe EoyEstimateResponseFixture.outputJson
+        contentAsJson(result) shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
@@ -92,9 +95,9 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyErrorMessages))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
-        val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
@@ -102,20 +105,24 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
       }
     }
 
-    "return NOT FOUND with the error message" when {
-      "calculation type is crystallised" in new Test {
+    "return NOT_FOUND with the error message" when {
+      "no allowances, deductions or reliefs exist" in new Test {
         MockGetCalculationParser
           .parse(rawData)
           .returns(Right(requestData))
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyCrystallisedError))))
+          .returns(
+            Future.successful(
+              Right(ResponseWrapper(
+                correlationId,
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistModel)))))
 
-        val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe NOT_FOUND
-        contentAsJson(result) shouldBe Json.toJson(EndOfYearEstimateNotPresentError)
+        contentAsJson(result) shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
