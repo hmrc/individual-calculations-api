@@ -22,7 +22,7 @@ import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateUkSavingsSpec extends UnitSpec with JsonErrorValidators {
   testJsonProperties[EoyEstimateUkSavings](EoyEstimateUkSavingsFixture.json)(
-    mandatoryProperties = Seq("savingsAccountId", "savingsAccountName", "taxableIncome"),
-    optionalProperties = Seq()
+    mandatoryProperties = Seq("savingsAccountId", "taxableIncome"),
+    optionalProperties = Seq("savingsAccountName")
   )
 }
