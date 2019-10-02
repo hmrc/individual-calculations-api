@@ -16,13 +16,12 @@
 
 package v1.fixtures.getEndOfYearEstimate.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{ JsValue, Json }
 import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkSavings
 
 object EoyEstimateUkSavingsFixture {
 
-  val json: JsValue = Json.parse(
-    """
+  val json: JsValue = Json.parse("""
       |{
       | "savingsAccountId" : "yW4zuqfGBZGPlpq",
       | "savingsAccountName" : "bank & building account 1",
@@ -30,5 +29,5 @@ object EoyEstimateUkSavingsFixture {
       |}
     """.stripMargin)
 
-  val model = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", "bank & building account 1", 1000)
+  val model = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", Some("bank & building account 1"), 1000)
 }
