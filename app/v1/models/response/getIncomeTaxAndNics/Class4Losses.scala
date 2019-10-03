@@ -18,8 +18,8 @@ package v1.models.response.getIncomeTaxAndNics
 
 import play.api.libs.json._
 
-case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
+case class Class4Losses(totalClass4LossesAvailable: Option[BigInt], totalClass4LossesUsed: Option[BigInt])
 
-object NicDetail {
-  implicit val formats: OFormat[NicDetail] = Json.format[NicDetail]
+object Class4Losses {
+  implicit val format: OFormat[Class4Losses] = Json.format[Class4Losses]
 }
