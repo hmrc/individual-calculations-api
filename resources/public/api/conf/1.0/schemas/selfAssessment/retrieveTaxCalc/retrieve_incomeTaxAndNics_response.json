@@ -638,90 +638,140 @@
                 "underSmallProfitThreshold"
               ]
             },
-            "class4NicBands":{
-              "description":"Details the low-level Class 4 National Insurance Contributions",
-              "type":"array",
-              "title":"class4NicBands",
-              "items":{
-                "type":"object",
-                "properties":{
-                  "name":{
-                    "title":"name",
-                    "description":"The name of the tax band threshold.",
-                    "type":"string",
-                    "oneOf":[
-                      {
-                        "enum":[
-                          "ZRT"
-                        ],
-                        "description":"zero rate threshold"
-                      },
-                      {
-                        "enum":[
-                          "BRT"
-                        ],
-                        "description":"basic rate threshold"
-                      },
-                      {
-                        "enum":[
-                          "HRT"
-                        ],
-                        "description":"higher rate threshold"
-                      }
-                    ]
-                  },
-                  "rate":{
-                    "title":"rate",
-                    "description":"The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
-                    "type":"number",
-                    "example":"10.12",
-                    "minimum":0,
-                    "maximum":99.99,
-                    "multipleOf":0.01
-                  },
-                  "threshold":{
-                    "title":"threshold",
-                    "description":"The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
-                    "type":"number",
-                    "example":"1000",
-                    "minimum":0,
-                    "maximum":99999999999,
-                    "multipleOf":1
-                  },
-                  "apportionedThreshold":{
-                    "title":"apportionedThreshold",
-                    "description":"The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
-                    "type":"number",
-                    "example":"1000",
-                    "minimum":0,
-                    "maximum":99999999999,
-                    "multipleOf":1
-                  },
-                  "income":{
-                    "title":"income",
-                    "description":"The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
-                    "type":"number",
-                    "example":"1000",
-                    "minimum":0,
-                    "maximum":99999999999,
-                    "multipleOf":1
-                  },
-                  "amount":{
-                    "title":"amount",
-                    "description":"The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type":"number",
-                    "example":"1000.12",
-                    "minimum":0,
-                    "maximum":99999999999.99,
-                    "multipleOf":0.01
+            "class4Nics":{
+              "type": "object",
+              "title": "class4Nics",
+              "description": "Details the low-level Class 4 National Insurance Contributions",
+              "properties":{
+                "class4Losses":{
+                  "type": "object",
+                  "title": "class4Losses",
+                  "description": "Details the class 4 losses in relation to the Class 4 National Insurance Contributions",
+                  "properties":{
+                    "totalClass4LossesAvailable":{
+                      "title": "totalClass4LossesAvailable",
+                      "description": "Total class 4 losses that are available to the calculation. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "1000"
+                    },
+                    "totalClass4LossesUsed":{
+                      "title": "totalClass4LossesUsed",
+                      "description": "Total class 4 losses that have been used in the calculation. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "1000"
+                    }
                   }
                 },
-                "required":[
-                  "name",
-                  "rate",
-                  "income",
-                  "amount"
-                ]
+                "totalIncomeLiableToClass4Charge":{
+                  "title": "totalIncomeLiableToClass4Charge",
+                  "description": "Total income that is liable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                },
+                "totalIncomeChargeableToClass4":{
+                  "title": "totalIncomeChargeableToClass4",
+                  "description": "Total income that is chargeable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "1000"
+                },
+                "class4NicBands":{
+                  "description":"Details the low-level Class 4 National Insurance Contributions",
+                  "type":"array",
+                  "title":"class4NicBands",
+                  "items":{
+                    "type":"object",
+                    "properties":{
+                      "name":{
+                        "title":"name",
+                        "description":"The name of the tax band threshold.",
+                        "type":"string",
+                        "oneOf":[
+                          {
+                            "enum":[
+                              "ZRT"
+                            ],
+                            "description":"zero rate threshold"
+                          },
+                          {
+                            "enum":[
+                              "BRT"
+                            ],
+                            "description":"basic rate threshold"
+                          },
+                          {
+                            "enum":[
+                              "HRT"
+                            ],
+                            "description":"higher rate threshold"
+                          }
+                        ]
+                      },
+                      "rate":{
+                        "title":"rate",
+                        "description":"The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
+                        "type":"number",
+                        "example":"10.12",
+                        "minimum":0,
+                        "maximum":99.99,
+                        "multipleOf":0.01
+                      },
+                      "threshold":{
+                        "title":"threshold",
+                        "description":"The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
+                        "type":"number",
+                        "example":"1000",
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "multipleOf":1
+                      },
+                      "apportionedThreshold":{
+                        "title":"apportionedThreshold",
+                        "description":"The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
+                        "type":"number",
+                        "example":"1000",
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "multipleOf":1
+                      },
+                      "income":{
+                        "title":"income",
+                        "description":"The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
+                        "type":"number",
+                        "example":"1000",
+                        "minimum":0,
+                        "maximum":99999999999,
+                        "multipleOf":1
+                      },
+                      "amount":{
+                        "title":"amount",
+                        "description":"The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type":"number",
+                        "example":"1000.12",
+                        "minimum":0,
+                        "maximum":99999999999.99,
+                        "multipleOf":0.01
+                      }
+                    },
+                    "required":[
+                      "name",
+                      "rate",
+                      "income",
+                      "amount"
+                    ]
+                  }
+                }
               }
             }
           }
