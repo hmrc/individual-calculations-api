@@ -40,10 +40,6 @@
             <td><p>Simulates an example tax calculation with realistic data values, for a UK Non-FHL Property business with Savings.</p></td>
         </tr>
         <tr>
-            <td><p>UK_SE_GIFTAID_EXAMPLE</p></td>
-            <td><p>Simulates an example tax calculation with realistic data values, for a UK Self-Employment business with Gift Aid.</p></td>
-        </tr>
-        <tr>
             <td><p>UK_SE_SAVINGS_EXAMPLE</p></td>
             <td><p>Simulates an example tax calculation with realistic data values, for a UK Self-Employment business with Savings.</p></td>
         </tr>
