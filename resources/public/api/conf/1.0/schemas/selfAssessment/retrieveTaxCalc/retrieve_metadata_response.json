@@ -11,7 +11,7 @@
       "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     },
     "taxYear" : {
-      "description" : "The tax year in which the calculation was performed in the format YYYY-YY",
+      "description" : "The Tax year in which the calculation was performed in the format YYYY-YY",
       "type" : "string",
       "example": "2019-20"
     },
