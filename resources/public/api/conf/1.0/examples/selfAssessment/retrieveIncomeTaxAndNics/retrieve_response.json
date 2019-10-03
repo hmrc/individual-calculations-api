@@ -74,16 +74,24 @@
         "underSmallProfitThreshold": true,
         "actualClass2Nic": true
       },
-      "class4NicBands": [
-        {
-          "name": "ZRT",
-          "rate": 10.12,
-          "threshold": 1000,
-          "apportionedThreshold": 1000,
-          "income": 1000,
-          "amount": 1000.12
-        }
-      ]
+      "class4Nics": {
+        "class4Losses": {
+          "totalClass4LossesAvailable": 1000,
+          "totalClass4LossesUsed": 1000
+        },
+        "totalIncomeLiableToClass4Charge": 1000,
+        "totalIncomeChargeableToClass4": 1000,
+        "class4NicBands": [
+          {
+            "name": "ZRT",
+            "rate": 10.12,
+            "threshold": 1000,
+            "apportionedThreshold": 1000,
+            "income": 1000,
+            "amount": 1000.12
+          }
+        ]
+      }
     },
     "taxDeductedAtSource": {
       "savings": 1000,
