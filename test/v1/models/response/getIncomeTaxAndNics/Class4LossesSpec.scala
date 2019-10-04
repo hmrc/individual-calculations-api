@@ -28,7 +28,7 @@ class Class4LossesSpec extends UnitSpec {
       | "totalClass4LossesUsed" : 3002
       |}""".stripMargin)
 
-  "Class4L" should {
+  "Class4Losses" should {
 
     "write correctly to json" in {
       Json.toJson(model) shouldBe json

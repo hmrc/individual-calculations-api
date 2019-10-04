@@ -41,9 +41,9 @@ class NicDetailSpec extends UnitSpec {
        |		"class4NicBands": [{
        |			"name": "name",
        |			"rate": 100.25,
-       |			"threshold": 200.25,
-       |			"apportionedThreshold": 300.25,
-       |			"income": 400.25,
+       |			"threshold": 200,
+       |			"apportionedThreshold": 300,
+       |			"income": 400,
        |			"amount": 500.25
        |		}]
        |	}
@@ -58,9 +58,9 @@ class NicDetailSpec extends UnitSpec {
       Seq(NicBand(
         name = "name",
         rate = 100.25,
-        threshold = Some(200.25),
-        apportionedThreshold = Some(300.25),
-        income = 400.25,
+        threshold = Some(200),
+        apportionedThreshold = Some(300),
+        income = 400,
         amount = 500.25
       )))
   )
