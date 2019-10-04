@@ -20,9 +20,9 @@ import play.api.libs.json.{Json, OFormat}
 
 case class NicBand(name: String,
                    rate: BigDecimal,
-                   threshold: Option[BigDecimal],
-                   apportionedThreshold: Option[BigDecimal],
-                   income: BigDecimal,
+                   threshold: Option[BigInt],
+                   apportionedThreshold: Option[BigInt],
+                   income: BigInt,
                    amount: BigDecimal)
 
 object NicBand {

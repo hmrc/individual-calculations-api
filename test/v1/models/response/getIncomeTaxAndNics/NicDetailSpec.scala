@@ -22,33 +22,52 @@ import support.UnitSpec
 class NicDetailSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
-    s"""
-       |{
-       |  "class2Nics" : {
-       |    "weeklyRate" : 100.10,
-       |    "weeks" : 100.20,
-       |    "limit" : 100.30,
-       |    "apportionedLimit" : 100.40,
-       |    "underSmallProfitThreshold" : true,
-       |    "actualClass2Nic" : false
-       |  },
-       |  "class4NicBands" : [
-       |    {
-       |      "name" : "name",
-       |      "rate" : 200.10,
-       |      "threshold" : 200.20,
-       |      "apportionedThreshold" : 200.30,
-       |      "income" : 200.40,
-       |      "amount" : 200.50
-       |    }
-       |  ]
-       |}
-           """.stripMargin)
+    s"""{
+       |	"class2Nics": {
+       |		"weeklyRate": 100.1,
+       |		"weeks": 100.2,
+       |		"limit": 100.3,
+       |		"apportionedLimit": 100.4,
+       |		"underSmallProfitThreshold": true,
+       |		"actualClass2Nic": false
+       |	},
+       |	"class4Nics": {
+       |		"class4Losses": {
+       |			"totalClass4LossesAvailable": 3001,
+       |			"totalClass4LossesUsed": 3002
+       |		},
+       |		"totalIncomeLiableToClass4Charge": 3003,
+       |		"totalIncomeChargeableToClass4": 3004,
+       |		"class4NicBands": [{
+       |			"name": "name",
+       |			"rate": 100.25,
+       |			"threshold": 200,
+       |			"apportionedThreshold": 300,
+       |			"income": 400,
+       |			"amount": 500.25
+       |		}]
+       |	}
+       |}""".stripMargin)
 
-  val model = NicDetail(
-    Some(Class2NicDetail(Some(100.10), Some(100.20), Some(100.30), Some(100.40), true, Some(false))),
-    Some(Seq(NicBand("name", 200.10, Some(200.20), Some(200.30), 200.40, 200.50)))
+
+  val class4 = Class4NicDetail(
+    Some(Class4Losses(Some(3001), Some(3002))),
+    Some(3003),
+    Some(3004),
+    Some(
+      Seq(NicBand(
+        name = "name",
+        rate = 100.25,
+        threshold = Some(200),
+        apportionedThreshold = Some(300),
+        income = 400,
+        amount = 500.25
+      )))
   )
+
+  val model: NicDetail = NicDetail(
+    Some(Class2NicDetail(Some(100.10), Some(100.20), Some(100.30), Some(100.40), underSmallProfitThreshold = true, Some(false))),
+    Some(class4))
 
   "NicDetail" should {
 

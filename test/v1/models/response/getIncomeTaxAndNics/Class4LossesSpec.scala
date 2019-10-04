@@ -16,10 +16,26 @@
 
 package v1.models.response.getIncomeTaxAndNics
 
-import play.api.libs.json._
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
+class Class4LossesSpec extends UnitSpec {
 
-object NicDetail {
-  implicit val formats: OFormat[NicDetail] = Json.format[NicDetail]
+  val model: Class4Losses = Class4Losses(Some(3001), Some(3002))
+
+  val json: JsValue = Json.parse("""{
+      | "totalClass4LossesAvailable" : 3001,
+      | "totalClass4LossesUsed" : 3002
+      |}""".stripMargin)
+
+  "Class4Losses" should {
+
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
+    }
+
+    "read correctly from json" in {
+      json.validate[Class4Losses] shouldBe JsSuccess(model)
+    }
+  }
 }
