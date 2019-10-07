@@ -47,8 +47,8 @@ class GetCalculationMetadataController @Inject()(
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestDefinition[CalculationMetadata, CalculationMetadata] =
+  override def requestDefinitionFor(playRequest: Request[AnyContent],
+                                    req: GetCalculationRequest): RequestDefinition[CalculationMetadata, CalculationMetadata] =
     RequestDefinition.Get[CalculationMetadata, CalculationMetadata](
       uri = req.backendCalculationUri,
       passThroughErrors = Seq(

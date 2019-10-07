@@ -47,8 +47,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetAllowancesDeductionsAndReliefsController", endpointName = "getAllowancesDeductionsAndReliefs")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestDefinition[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs] =
+  override def requestDefinitionFor(playRequest: Request[AnyContent],
+                                    req: GetCalculationRequest): RequestDefinition[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs] =
     RequestDefinition.Get[CalculationWrapperOrError[AllowancesDeductionsAndReliefs], AllowancesDeductionsAndReliefs](
       uri = req.backendCalculationUri,
       passThroughErrors = Seq(

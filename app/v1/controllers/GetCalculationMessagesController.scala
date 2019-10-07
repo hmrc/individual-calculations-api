@@ -50,8 +50,8 @@ class GetCalculationMessagesController @Inject()(
     EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationMessagesRequest): RequestDefinition[CalculationMessages, CalculationMessages] =
+  override def requestDefinitionFor(playRequest: Request[AnyContent],
+                                    req: GetCalculationMessagesRequest): RequestDefinition[CalculationMessages, CalculationMessages] =
     RequestDefinition.Get[CalculationMessages, CalculationMessages](
       uri = req.backendCalculationUri,
       passThroughErrors = Seq(

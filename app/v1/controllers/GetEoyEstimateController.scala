@@ -49,7 +49,7 @@ class GetEoyEstimateController @Inject()(
   override implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetEoyEstimateController", endpointName = "getEoyEstimate")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent], req: GetCalculationRequest):
+  override def requestDefinitionFor(playRequest: Request[AnyContent], req: GetCalculationRequest):
   RequestDefinition[EoyEstimateWrapperOrError, EoyEstimateResponse] = {
     RequestDefinition.Get[EoyEstimateWrapperOrError, EoyEstimateResponse](
       uri = req.backendCalculationUri,

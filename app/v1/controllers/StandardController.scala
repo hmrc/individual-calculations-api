@@ -48,7 +48,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[A], req: Req): RequestDefinition[BackendResp, APIResp]
+  def requestDefinitionFor(playRequest: Request[A], req: Req): RequestDefinition[BackendResp, APIResp]
 
   val successCode: SuccessCode
 
@@ -56,7 +56,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
-        requestHandling = requestHandlingFor(request, parsedRequest)
+        requestHandling = requestDefinitionFor(request, parsedRequest)
         backendResponse <- EitherT(service.doService(requestHandling))
         response <- EitherT.fromEither[Future](requestHandling.successHandler(backendResponse))
       } yield {

@@ -50,8 +50,8 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
 
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
-  override def requestHandlingFor(playRequest: Request[JsValue],
-                                  req: TriggerCalculationRequest): RequestDefinition[TriggerCalculationResponse, TriggerCalculationResponse] =
+  override def requestDefinitionFor(playRequest: Request[JsValue],
+                                    req: TriggerCalculationRequest): RequestDefinition[TriggerCalculationResponse, TriggerCalculationResponse] =
     RequestDefinition.Post[TriggerCalculationResponse, TriggerCalculationResponse](
       uri = playRequest.path,
       body = playRequest.body,

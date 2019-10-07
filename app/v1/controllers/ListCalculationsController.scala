@@ -53,8 +53,8 @@ class ListCalculationsController @Inject()(
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: ListCalculationsRequest): RequestDefinition[ListCalculationsResponse, ListCalculationsResponse] =
+  override def requestDefinitionFor(playRequest: Request[AnyContent],
+                                    req: ListCalculationsRequest): RequestDefinition[ListCalculationsResponse, ListCalculationsResponse] =
     RequestDefinition.Get[ListCalculationsResponse, ListCalculationsResponse](
       uri = playRequest.path,
       passThroughErrors = Seq(

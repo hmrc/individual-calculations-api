@@ -80,7 +80,7 @@ class StandardControllerSpec extends ControllerBaseSpec with MockEnrolmentsAuthS
     ) {
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
-      override def requestHandlingFor(playRequest: Request[AnyContent], req: RequestData) = {
+      override def requestDefinitionFor(playRequest: Request[AnyContent], req: RequestData) = {
         RequestDefinition.Get[BackendResp, APIResp](
           uri = "url",
           successHandler = x=> Right(x.map(_ => mappedResponse))

@@ -40,6 +40,7 @@ trait MockStandardService extends MockFactory {
 
       val correctRequestHandling = argAssert { actualRequestHandling: RequestDefinition[Resp, _] =>
         actualRequestHandling.expectedSuccessCode shouldBe successStatus
+        actualRequestHandling.uri shouldBe requestDefn.uri
       }
 
       (mockStandardService
