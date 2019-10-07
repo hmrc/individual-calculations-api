@@ -9,7 +9,7 @@ is:
   - errors.noMessagesPresent
   - queryParameters.type
 displayName: Retrieve Self Assessment Tax Calculation Messages [test only]
-description: This endpoint allows you to retrieve info, warning and error level messages linked to the calculation ID. If there are any error messages for a calculation ID then a calculation could not be performed. The expectation for third party software is that the messages should be surfaced to end users to see. Third party software is not expected to code around these errors as they would a HTTP error.
+description: This endpoint allows you to retrieve 'info', 'warning' and 'error' level messages linked to a Calculation ID.  One or more error messages for a Calculation ID means a calculation could not be performed.  Vendor software should surface these messages to the end user.
 (annotations.sandboxData): !include scenarios/selfAssessment/retrieveMessages.md
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
