@@ -17,13 +17,13 @@
 package v1.connectors.httpparsers
 
 import play.api.Logger
+import play.api.http.Status._
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.http.HttpResponse
 import v1.models.errors._
 
 import scala.util.{ Success, Try }
-
-import play.api.http.Status._
 
 trait HttpParser {
 
@@ -38,7 +38,7 @@ trait HttpParser {
       }
     }
 
-    def parseResult[T](json: JsValue)(implicit reads: Reads[T]): Option[T] = json.validate[T] match {
+    private def parseResult[T](json: JsValue)(implicit reads: Reads[T]): Option[T] = json.validate[T] match {
 
       case JsSuccess(value, _) => Some(value)
       case JsError(error) =>
@@ -49,24 +49,21 @@ trait HttpParser {
 
   def retrieveCorrelationId(response: HttpResponse): String = response.header("CorrelationId").getOrElse("")
 
-  private val multipleErrorReads: Reads[List[BackendErrorCode]] = (__ \ "errors").read[List[BackendErrorCode]]
-
   def parseErrors(response: HttpResponse): BackendError = {
-    val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(response.status, List(err)))
-    lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(response.status, errs))
-    lazy val unableToParseJsonError = {
-      Logger.warn(s"unable to parse errors from response: ${response.body}")
-      OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)
-    }
 
-    val combinedErrors = {
-      multipleErrors match {
-        case Some(additionalErrors) => singleError.map(error => BackendErrors(response.status, error.errors ++ additionalErrors.errors))
-        case None => singleError
+    implicit val reads: Reads[BackendError] = (
+      ((__).read[BackendErrorCode] and
+        (__ \ "errors").readNullable[List[BackendErrorCode]]) { (singleError, errors) =>
+        BackendErrors(response.status, singleError :: errors.getOrElse(Nil))
       }
-    }
+    )
 
-    combinedErrors getOrElse unableToParseJsonError
+    response
+      .validateJson[BackendError]
+      .getOrElse {
+        Logger.warn(s"unable to parse errors from response: ${response.body}")
+        OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)
+      }
   }
 
 }
