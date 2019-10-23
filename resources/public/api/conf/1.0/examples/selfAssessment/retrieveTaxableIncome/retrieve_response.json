@@ -184,7 +184,7 @@
     "savingsAndGains": {
       "incomeReceived": 1000,
       "taxableIncome": 1000,
-      "savings": [
+      "ukSavings": [
         {
           "savingsAccountId": "SAVKB2UVwUTBQGJ",
           "savingsAccountName": "friendly name",
