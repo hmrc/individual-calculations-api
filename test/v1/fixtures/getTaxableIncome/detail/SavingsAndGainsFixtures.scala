@@ -26,12 +26,12 @@ object SavingsAndGainsFixtures {
   val savingsResponse2: Savings                              = Savings("anId2", "aName2", 400.1, Some(112.3), Some(556.3))
   val savingsSequence = Some(Seq(savingsResponse, savingsResponse2))
   val savingsAndGainsResponse: SavingsAndGains               = SavingsAndGains(incomeReceivedSAG, taxableIncomeSAG,savingsSequence)
-  val savingsAndGainsResponseWithoutSavings: SavingsAndGains = savingsAndGainsResponse.copy(savings = None)
+  val savingsAndGainsResponseWithoutSavings: SavingsAndGains = savingsAndGainsResponse.copy(ukSavings = None)
 
   val savingsAndGainsJson: JsValue = Json.parse(s"""{
        |   "incomeReceived" : $incomeReceivedSAG,
        |   "taxableIncome" : $taxableIncomeSAG,
-       |   "savings" : [
+       |   "ukSavings" : [
        |   {
        |     "savingsAccountId":"$incomeSourceId",
        |     "savingsAccountName":"$incomeSourceName",
