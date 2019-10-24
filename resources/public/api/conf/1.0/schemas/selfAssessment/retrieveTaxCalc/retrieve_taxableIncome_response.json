@@ -1172,7 +1172,7 @@
               "maximum": 99999999999,
               "example": "2000"
             },
-            "savings": {
+            "ukSavings": {
               "type": "array",
               "description": "A list of the savings income for each savings account.",
               "items": {
