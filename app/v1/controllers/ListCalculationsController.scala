@@ -17,14 +17,17 @@
 package v1.controllers
 
 import javax.inject.{Inject, Singleton}
+import play.api.libs.json.{OWrites, Writes}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
-import v1.models.response.listCalculations.ListCalculationsResponse
+import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsHateoasData, ListCalculationsResponse}
 import v1.services._
 
 import scala.concurrent.ExecutionContext
@@ -35,17 +38,17 @@ class ListCalculationsController @Inject()(
     lookupService: MtdIdLookupService,
     listCalculationsParser: ListCalculationsParser,
     service: StandardService,
+    hateoasFactory: HateoasFactory,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
-    extends StandardController[ListCalculationsRawData, ListCalculationsRequest, ListCalculationsResponse, ListCalculationsResponse, AnyContent](
-      authService,
-      lookupService,
-      listCalculationsParser,
-      service,
-      cc) {
+    extends StandardController[ListCalculationsRawData,
+                               ListCalculationsRequest,
+                               ListCalculationsResponse[CalculationListItem],
+                               HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]],
+                               AnyContent](authService, lookupService, listCalculationsParser, service, cc) {
   controller =>
 
-implicit  val endpointLogContext: EndpointLogContext =
+  implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "ListCalculationsController",
       endpointName = "listCalculations"
@@ -53,9 +56,11 @@ implicit  val endpointLogContext: EndpointLogContext =
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse, ListCalculationsResponse] = {
-    RequestHandling[ListCalculationsResponse](
+  override def requestHandlingFor(
+      playRequest: Request[AnyContent],
+      req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse[CalculationListItem],
+                                                     HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]]] = {
+    RequestHandling[ListCalculationsResponse[CalculationListItem]](
       RequestDefn
         .Get(playRequest.path)
         .withOptionalParams("taxYear" -> req.taxYear))
@@ -68,6 +73,9 @@ implicit  val endpointLogContext: EndpointLogContext =
         DownstreamError
       )
       .mapSuccess(notFoundErrorWhenEmpty)
+      .mapSuccessSimple { rawResponse =>
+        hateoasFactory.wrapList(rawResponse, ListCalculationsHateoasData(req.nino.nino))
+      }
   }
 
   def listCalculations(nino: String, taxYear: Option[String]): Action[AnyContent] =
@@ -77,7 +85,7 @@ implicit  val endpointLogContext: EndpointLogContext =
       doHandleRequest(rawData)
     }
 
-  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse]) =
+  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]) =
     responseWrapper.toErrorWhen {
       case response if response.calculations.isEmpty => MtdErrors(NOT_FOUND, NotFoundError)
     }

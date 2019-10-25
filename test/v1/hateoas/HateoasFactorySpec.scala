@@ -25,9 +25,6 @@ import v1.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
 class HateoasFactorySpec extends UnitSpec with MockAppConfig {
 
-  private val nino   = "AA111111A"
-  private val lossId = "123456789"
-
   val hateoasFactory = new HateoasFactory(mockAppConfig)
 
   case class Response(foo: String)

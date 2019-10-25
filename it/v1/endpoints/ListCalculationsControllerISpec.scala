@@ -37,6 +37,36 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
 
     def backendUrl: String = uri
 
+    val successBody = Json.parse(s"""{
+                                    |  "calculations": [
+                                    |    {
+                                    |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                    |      "calculationTimestamp": "2019-03-17T09:22:59Z",
+                                    |      "type": "inYear",
+                                    |      "requestedBy": "hmrc",
+                                    |      "links" : [
+                                    |       {
+                                    |         "href" : "/individuals/calculations$uri/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                    |         "rel": "self",
+                                    |         "method": "GET"
+                                    |       }
+                                    |      ]
+                                    |    }
+                                    |  ],
+                                    |  "links": [
+                                    |    {
+                                    |      "href": "/individuals/calculations$uri",
+                                    |      "rel": "self",
+                                    |      "method": "GET"
+                                    |    },
+                                    |    {
+                                    |      "href": "/individuals/calculations$uri",
+                                    |      "rel": "trigger",
+                                    |      "method": "POST"
+                                    |    }
+                                    |  ]
+                                    |}""".stripMargin)
+
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
@@ -53,18 +83,6 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
 
   "Calling the list calculations endpoint" should {
     "return a 200 status code" when {
-
-      val successBody = Json.parse("""{
-                                     |  "calculations": [
-                                     |    {
-                                     |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                     |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-                                     |      "type": "inYear",
-                                     |      "requestedBy": "hmrc"
-                                     |    }
-                                     |  ]
-                                     |}""".stripMargin)
-
       "valid request is made with a tax year" in new Test {
         override val taxYear = Some("2018-19")
 
