@@ -16,35 +16,98 @@
 
 package v1.handling
 
+import cats.implicits._
+import org.scalatest.Inside
 import play.api.http.Status._
 import support.UnitSpec
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestHandling.{ ErrorMapping, SuccessMapping }
-import v1.models.errors.MtdError
+import v1.handling.RequestHandling.ErrorMapping
+import v1.models.errors.{ErrorWrapper, MtdError, MtdErrors}
 import v1.models.outcomes.ResponseWrapper
 
-class RequestHandlingSpec extends UnitSpec {
+class RequestHandlingSpec extends UnitSpec with Inside {
 
   // WLOG
-  val passThroughErrors                              = List(MtdError("CODE", "error"))
-  val customErrorMapping: ErrorMapping               = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
-  val successMapping: SuccessMapping[String, String] = (r: ResponseWrapper[String]) => Right(r)
+  val passThroughErrors                = List(MtdError("CODE", "error"))
+  val customErrorMapping: ErrorMapping = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
 
   "RequestHandling" must {
     "be buildable" in {
 
-      RequestHandling[String](RequestDefn.Get("/some/path"))
-        .withRequestSuccessCode(ACCEPTED)
-        .mapErrors(customErrorMapping)
-        .withPassThroughErrors(passThroughErrors: _*)
-        .mapSuccess(successMapping) shouldBe
-        RequestHandling.Impl[String, String](
-          requestDefn = RequestDefn.Get("/some/path"),
-          successCode = SuccessCode(ACCEPTED),
-          passThroughErrors = passThroughErrors,
-          customErrorMapping = customErrorMapping,
-          successMapping = successMapping
-        )
+      val handling =
+        RequestHandling[String](RequestDefn.Get("/some/path"))
+          .withRequestSuccessCode(ACCEPTED)
+          .mapErrors(customErrorMapping)
+          .withPassThroughErrors(passThroughErrors: _*)
+
+      inside(handling) {
+        case RequestHandling.Impl(requestDefn, successCode, passThroughErrors, customErrorMapping, _) =>
+          requestDefn shouldBe RequestDefn.Get("/some/path")
+          successCode shouldBe SuccessCode(ACCEPTED)
+          passThroughErrors shouldBe passThroughErrors
+          customErrorMapping shouldBe customErrorMapping
+      }
+    }
+  }
+
+  "successMapping" when {
+    "single mapping" must {
+      "map" in {
+        val handling =
+          RequestHandling[String](RequestDefn.Get("/some/path"))
+            .mapSuccess {
+              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            }
+
+        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId1", 3)
+      }
+    }
+
+    "multiple mappings and all success" must {
+      "map in sequence" in {
+        val handling =
+          RequestHandling[String](RequestDefn.Get("/some/path"))
+            .mapSuccess {
+              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            }
+            .mapSuccess {
+              case ResponseWrapper(_, i) => Right(ResponseWrapper("corrId2", String.valueOf(i)))
+            }
+
+        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId2", "3")
+      }
+    }
+
+    "multiple mappings and some map to error" must {
+      "map to the first error" in {
+        val handling =
+          RequestHandling[String](RequestDefn.Get("/some/path"))
+            .mapSuccess {
+              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            }
+            .mapSuccess {
+              case ResponseWrapper(_, _) =>
+                ErrorWrapper(Some("corrId1"), MtdErrors(BAD_REQUEST, MtdError("code1", "error1"))).asLeft[ResponseWrapper[Int]]
+            }
+            .mapSuccess {
+              case ResponseWrapper(_, _) =>
+                ErrorWrapper(Some("corrId2"), MtdErrors(NOT_FOUND, MtdError("code2", "error2"))).asLeft[ResponseWrapper[Int]]
+            }
+
+        handling.successMapping(ResponseWrapper("corrId", "foo")).left.value shouldBe
+          ErrorWrapper(Some("corrId1"), MtdErrors(BAD_REQUEST, MtdError("code1", "error1")))
+      }
+    }
+
+    "simple mappings" must {
+      "map the payload" in {
+        val handling =
+          RequestHandling[String](RequestDefn.Get("/some/path"))
+            .mapSuccessSimple(_.length)
+            .mapSuccessSimple(String.valueOf)
+
+        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId", "3")
+      }
     }
   }
 

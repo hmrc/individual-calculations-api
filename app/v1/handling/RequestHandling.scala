@@ -61,8 +61,19 @@ object RequestHandling {
     def mapErrors(mappings: ErrorMapping): Impl[BackendResp, APIResp] =
       copy(customErrorMapping = mappings)
 
-    def mapSuccess[APIResp2](mapping: SuccessMapping[BackendResp, APIResp2]): Impl[BackendResp, APIResp2] =
-      copy(successMapping = mapping)
+    def mapSuccess[APIResp2](mapping: SuccessMapping[APIResp, APIResp2]): Impl[BackendResp, APIResp2] = {
+      val combinedMapping = { in: ResponseWrapper[BackendResp] =>
+        successMapping(in) match {
+          case Right(a) => mapping(a)
+          case Left(e)  => Left(e)
+        }
+      }
+
+      copy(successMapping = combinedMapping)
+    }
+
+    def mapSuccessSimple[APIResp2](mapping: APIResp => APIResp2): Impl[BackendResp, APIResp2] =
+      mapSuccess(resp => Right(resp.map(mapping)))
   }
 
   def apply[Resp: Reads](requestDefn: RequestDefn): Impl[Resp, Resp] = {
