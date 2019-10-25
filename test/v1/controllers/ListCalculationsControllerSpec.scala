@@ -22,13 +22,16 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handling.RequestDefn
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.{GET, POST}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
-import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
+import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsHateoasData, ListCalculationsResponse}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,6 +42,7 @@ class ListCalculationsControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockListCalculationsParser
+    with MockHateoasFactory
     with MockStandardService {
 
   trait Test {
@@ -49,6 +53,7 @@ class ListCalculationsControllerSpec
       lookupService = mockMtdIdLookupService,
       listCalculationsParser = mockListCalculationsParser,
       service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
       cc = cc
     )
 
@@ -66,10 +71,28 @@ class ListCalculationsControllerSpec
       |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |      "calculationTimestamp": "2019-03-17T09:22:59Z",
       |      "type": "inYear",
-      |      "requestedBy": "hmrc"
+      |      "requestedBy": "hmrc",
+      |      "links" : [
+      |         {
+      |           "href": "/foo/bar",
+      |           "method": "GET",
+      |           "rel": "test-item-relationship"
+      |         }
+      |      ]
       |    }
+      |  ],
+      |  "links" : [
+      |     {
+      |       "href": "/foo/bar",
+      |       "method": "POST",
+      |       "rel": "test-relationship"
+      |     }
       |  ]
       |}""".stripMargin)
+
+
+  val testItemHateoasLink       = Link(href = "/foo/bar", method = GET, rel = "test-item-relationship")
+  val testHateoasLink = Link(href = "/foo/bar", method = POST, rel = "test-relationship")
 
   val response = ListCalculationsResponse(
     Seq(
@@ -80,6 +103,17 @@ class ListCalculationsControllerSpec
         requestedBy = Some(CalculationRequestor.hmrc)
       )
     ))
+
+  val hateoasResponse = ListCalculationsResponse(
+    Seq(HateoasWrapper(
+      CalculationListItem(
+        id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        calculationTimestamp = "2019-03-17T09:22:59Z",
+        `type` = CalculationType.inYear,
+        requestedBy = Some(CalculationRequestor.hmrc)
+      ),
+      Seq(testItemHateoasLink)
+    )))
 
   private val rawData     = ListCalculationsRawData(nino, taxYear)
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
@@ -96,6 +130,10 @@ class ListCalculationsControllerSpec
         MockStandardService
           .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockHateoasFactory
+          .wrapList(response, ListCalculationsHateoasData(nino))
+          .returns(HateoasWrapper(hateoasResponse, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
 
@@ -130,7 +168,7 @@ class ListCalculationsControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks = allChecks[ListCalculationsResponse, ListCalculationsResponse](
+      val mappingChecks = allChecks[ListCalculationsResponse[CalculationListItem], ListCalculationsResponse[CalculationListItem]](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
         ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),

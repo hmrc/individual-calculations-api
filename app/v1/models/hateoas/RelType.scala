@@ -17,8 +17,7 @@
 package v1.models.hateoas
 
 object RelType {
-
-  // TODO add rel values here...
+  val TRIGGER = "trigger"
 
   val SELF = "self"
 }
