@@ -21,5 +21,11 @@ object RelType {
   val METADATA = "metadata"
   val EOY_ESTIMATE = "end-of-year-estimate"
 
+  val TAXABLE_INCOME = "taxable-income"
+
   val SELF = "self"
+
+  val METADATA = "metadata"
+
+  val MESSAGES = "messages"
 }

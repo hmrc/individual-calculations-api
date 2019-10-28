@@ -16,18 +16,22 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures
 import v1.handling.RequestDefn
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors.RuleCalculationErrorMessagesExist
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
+import v1.models.response.getTaxableIncome.TaxableIncomeHateoasData
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -36,7 +40,8 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   with MockEnrolmentsAuthService
   with MockMtdIdLookupService
   with MockGetCalculationParser
-  with MockStandardService {
+  with MockStandardService
+  with MockHateoasFactory {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -46,6 +51,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
       service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
       cc = cc
     )
 
@@ -63,6 +69,20 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   private def uri = s"/$nino/self-assessment/$calcId"
 
   private def queryUri = "/input/uri"
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
+  val linksJson: JsObject = Json.parse(
+    """
+      |{
+      |    "links": [
+      |      {
+      |       "href": "/foo/bar",
+      |       "method": "GET",
+      |       "rel": "test-relationship"
+      |      }
+      |    ]
+      |}
+      |""".stripMargin).as[JsObject]
 
   "handleRequest" should {
     "return OK with the calculation" when {
@@ -75,10 +95,14 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.CalculationWrapper(TaxableIncomeFixtures.taxableIncomeResponse)))))
 
+        MockHateoasFactory
+          .wrap(TaxableIncomeFixtures.taxableIncomeResponse, TaxableIncomeHateoasData(nino, calcId))
+          .returns(HateoasWrapper(TaxableIncomeFixtures.taxableIncomeResponse, Seq(testHateoasLink)))
+
         val result: Future[Result] = controller.getTaxableIncome(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe TaxableIncomeFixtures.json
+        contentAsJson(result) shouldBe TaxableIncomeFixtures.json.deepMerge(linksJson)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
