@@ -20,4 +20,8 @@ object RelType {
   val TRIGGER = "trigger"
 
   val SELF = "self"
+
+  val METADATA = "metadata"
+
+  val MESSAGES = "messages"
 }

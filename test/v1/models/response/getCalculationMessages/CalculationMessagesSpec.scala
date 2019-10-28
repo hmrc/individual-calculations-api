@@ -19,6 +19,10 @@ package v1.models.response.getCalculationMessages
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.Fixtures._
+import v1.hateoas.HateoasFactory
+import v1.mocks.MockAppConfig
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 
 class CalculationMessagesSpec extends UnitSpec {
 
@@ -62,6 +66,26 @@ class CalculationMessagesSpec extends UnitSpec {
       "display errors only" in {
         Json.toJson[CalculationMessages](messagesResponse(info = false, warn = false, error = true)) shouldBe outputMessagesErrorsJson
       }
+    }
+  }
+
+  "HateoasFactory" must {
+    class Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino           = "someNino"
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+    }
+
+    "expose the correct links" in new Test {
+      val item1 = CalculationMessages(Some(Seq(Message("a", "message"))), None, None)
+      hateoasFactory.wrap(item1, CalculationMessagesHateoasData(nino, "calcId")) shouldBe
+        HateoasWrapper(
+          item1,
+          Seq(
+            Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "metadata"),
+            Link(s"/individuals/calculations/$nino/self-assessment/calcId/messages", GET, "self")
+          )
+        )
     }
   }
 }

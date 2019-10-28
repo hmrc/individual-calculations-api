@@ -19,7 +19,7 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.Fixtures
@@ -53,7 +53,22 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
       val successBody = backendMessagesJson
 
-      val successOutput = outputMessagesJson
+      val hateoasLinks: JsValue = Json.parse("""{
+          |    "links":[
+          |      {
+          |          "href": "/individuals/calculations/AA123456A/self-assessment/12345678",
+          |         "method": "GET",
+          |         "rel": "metadata"
+          |         },
+          |      {
+          |         "href": "/individuals/calculations/AA123456A/self-assessment/12345678/messages",
+          |         "method": "GET",
+          |         "rel": "self"
+          |         }
+          |      ]
+          |}""".stripMargin)
+
+      val successOutput = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
       "valid request is made with no filter" in new Test {
         override def setupStubs(): StubMapping = {
@@ -82,7 +97,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe Fixtures.outputMessagesErrorsJson
+        response.json shouldBe Fixtures.outputMessagesErrorsJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
       }
 
       "valid request is made with multiple filters" in new Test {

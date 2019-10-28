@@ -16,19 +16,22 @@
 
 package v1.controllers
 
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
-import v1.models.response.getCalculationMessages.CalculationMessages
+import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData, Message}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,7 +42,8 @@ class GetCalculationMessagesControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationQueryParser
-    with MockStandardService {
+    with MockStandardService
+    with MockHateoasFactory{
 
   trait Test {
     val hc = HeaderCarrier()
@@ -49,7 +53,8 @@ class GetCalculationMessagesControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationQueryParser,
       service = mockStandardService,
-      cc = cc
+      cc = cc,
+      hateoasFactory = mockHateoasFactory
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
@@ -63,12 +68,24 @@ class GetCalculationMessagesControllerSpec
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
     CalculationMessages(if (info) Some(Seq(info1,info2)) else None, if (warn) Some(Seq(warn1,warn2)) else None, if (error) Some(Seq(err1,err2)) else None)
 
-  val responseBody: JsValue = outputMessagesJson
+  val hateoasLinks: JsValue = Json.parse("""{
+      |      "links":[
+      |        {
+      |          "href":"/foo/bar",
+      |          "method":"GET",
+      |          "rel":"test-relationship"
+      |         }
+      |      ]
+      |}""".stripMargin)
+
+  val responseBody: JsValue = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
   private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","warning","error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
   private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
 
   private def uri = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri?type=info&type=warning&type=error"
@@ -83,6 +100,10 @@ class GetCalculationMessagesControllerSpec
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockHateoasFactory
+          .wrap(response, CalculationMessagesHateoasData(nino, calcId))
+          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
 
@@ -109,6 +130,10 @@ class GetCalculationMessagesControllerSpec
       MockStandardService
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+      MockHateoasFactory
+        .wrap(response, CalculationMessagesHateoasData(nino, calcId))
+        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
 
