@@ -17,15 +17,18 @@
 package v1.controllers
 
 import javax.inject.Inject
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationMessagesParser
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
-import v1.models.response.getCalculationMessages.CalculationMessages
+import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
 
@@ -36,9 +39,10 @@ class GetCalculationMessagesController @Inject()(
                                                   lookupService: MtdIdLookupService,
                                                   parser: GetCalculationMessagesParser,
                                                   service: StandardService,
+                                                  hateoasFactory: HateoasFactory,
                                                   cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationMessagesRawData, GetCalculationMessagesRequest, CalculationMessages, CalculationMessages, AnyContent](
+  extends StandardController[GetCalculationMessagesRawData, GetCalculationMessagesRequest, CalculationMessages, HateoasWrapper[CalculationMessages], AnyContent](
     authService,
     lookupService,
     parser,
@@ -51,7 +55,7 @@ class GetCalculationMessagesController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, CalculationMessages] =
+                                  req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, HateoasWrapper[CalculationMessages]] =
     RequestHandling[CalculationMessages](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
@@ -60,6 +64,8 @@ class GetCalculationMessagesController @Inject()(
         TypeFormatError,
         NotFoundError
       ).mapSuccess(filterMessages(req.queryData))
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
 
   def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

@@ -53,7 +53,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
       val successBody = backendMessagesJson
 
-      val successOutput = outputMessagesJson
+      val successOutput = outputMessagesJsonHateoasISpec
 
       "valid request is made with no filter" in new Test {
         override def setupStubs(): StubMapping = {
@@ -82,7 +82,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe Fixtures.outputMessagesErrorsJson
+        response.json shouldBe Fixtures.outputMessagesErrorsJsonHateoasISpec
       }
 
       "valid request is made with multiple filters" in new Test {

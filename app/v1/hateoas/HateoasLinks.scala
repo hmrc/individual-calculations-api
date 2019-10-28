@@ -28,6 +28,9 @@ trait HateoasLinks {
   private def metadataUri(appConfig: AppConfig, nino: String, calcId: String): String =
     baseUri(appConfig, nino) + s"/$calcId"
 
+  private def messagesUri(appConfig: AppConfig, nino: String, calcId: String): String =
+    baseUri(appConfig, nino) + s"/$calcId" + "/messages"
+
   // API resource links
   def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
@@ -35,6 +38,13 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
-  def getMetadata(appConfig: AppConfig, nino: String, calcId: String): Link =
-    Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = SELF)
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = isSelf match {
+    case true => Link (href = metadataUri (appConfig, nino, calcId), method = GET, rel = SELF)
+    case false => Link (href = metadataUri (appConfig, nino, calcId), method = GET, rel = METADATA)
+  }
+
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = isSelf match {
+    case true => Link (href = messagesUri (appConfig, nino, calcId), method = GET, rel = SELF)
+    case false => Link (href = messagesUri (appConfig, nino, calcId), method = GET, rel = MESSAGES)
+  }
 }

@@ -45,13 +45,12 @@ object Fixtures {
       |     }
       |}""".stripMargin)
 
-  val backendNoMessagesJson: JsValue = Json.parse(    """{
+  val backendNoMessagesJson: JsValue = Json.parse("""{
       |     "messages" :{
       |     }
       |}""".stripMargin)
 
-  val backendMessagesInfoJson: JsValue = Json.parse(
-    """{
+  val backendMessagesInfoJson: JsValue = Json.parse("""{
       |     "messages" :{
       |        "info":[
       |        {"id":"info1", "text":"text1"},
@@ -60,8 +59,7 @@ object Fixtures {
       |     }
       |}""".stripMargin)
 
-  val backendMessagesWarningsJson: JsValue = Json.parse(
-    """{
+  val backendMessagesWarningsJson: JsValue = Json.parse("""{
       |     "messages" :{
       |        "warnings":[
       |        {"id":"warn1", "text":"text1"},
@@ -70,8 +68,7 @@ object Fixtures {
       |     }
       |}""".stripMargin)
 
-  val backendMessagesErrorsJson: JsValue = Json.parse(
-    """{
+  val backendMessagesErrorsJson: JsValue = Json.parse("""{
       |     "messages" :{
       |        "errors":[
       |        {"id":"err1", "text":"text1"},
@@ -81,8 +78,7 @@ object Fixtures {
       |}""".stripMargin)
 
 
-  val outputMessagesJson: JsValue = Json.parse(
-    """{
+  val outputMessagesJson: JsValue = Json.parse("""{
       |        "info":[
       |        {"id":"info1", "text":"text1"},
       |        {"id":"info2", "text":"text2"}
@@ -97,48 +93,112 @@ object Fixtures {
       |        ]
       |}""".stripMargin)
 
-  val outputMessagesInfoJson: JsValue = Json.parse(
-    """{
+  val outputMessagesJsonHateoas: JsValue = Json.parse("""{
+      |        "info":[
+      |        {"id":"info1", "text":"text1"},
+      |        {"id":"info2", "text":"text2"}
+      |        ],
+      |        "warnings":[
+      |        {"id":"warn1", "text":"text1"},
+      |        {"id":"warn2", "text":"text2"}
+      |        ],
+      |        "errors":[
+      |        {"id":"err1", "text":"text1"},
+      |        {"id":"err2", "text":"text2"}
+      |        ],
+      |        "links":[
+      |          {
+      |            "href":"/foo/bar",
+      |            "method":"GET",
+      |            "rel":"test-relationship"
+      |           }
+      |        ]
+      |}""".stripMargin)
+
+  val outputMessagesJsonHateoasISpec: JsValue = Json.parse("""{
+      |        "info":[
+      |        {"id":"info1", "text":"text1"},
+      |        {"id":"info2", "text":"text2"}
+      |        ],
+      |        "warnings":[
+      |        {"id":"warn1", "text":"text1"},
+      |        {"id":"warn2", "text":"text2"}
+      |        ],
+      |        "errors":[
+      |        {"id":"err1", "text":"text1"},
+      |        {"id":"err2", "text":"text2"}
+      |        ],
+      |        "links":[
+      |        {
+      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678",
+      |           "method":"GET",
+      |           "rel":"metadata"
+      |          },
+      |        {
+      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678/messages",
+      |            "method":"GET",
+      |           "rel":"self"
+      |           }
+      |        ]
+      |}""".stripMargin)
+
+  val outputMessagesInfoJson: JsValue = Json.parse("""{
       |        "info":[
       |        {"id":"info1", "text":"text1"},
       |        {"id":"info2", "text":"text2"}
       |        ]
       |}""".stripMargin)
 
-  val outputMessagesWarningsJson: JsValue = Json.parse(
-    """{
+  val outputMessagesWarningsJson: JsValue = Json.parse("""{
       |        "warnings":[
       |        {"id":"warn1", "text":"text1"},
       |        {"id":"warn2", "text":"text2"}
       |        ]
       |}""".stripMargin)
 
-  val outputMessagesErrorsJson: JsValue = Json.parse(
-    """{
+  val outputMessagesErrorsJson: JsValue = Json.parse("""{
       |        "errors":[
       |        {"id":"err1", "text":"text1"},
       |        {"id":"err2", "text":"text2"}
       |        ]
       |}""".stripMargin)
 
-  val errorBodyFromBackEnd: JsValue = Json.parse(s"""
-                                           |{
-                                           |  "metadata": {
-                                           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                           |    "taxYear": "2018-19",
-                                           |    "requestedBy": "customer",
-                                           |    "calculationReason": "customerRequest",
-                                           |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                           |    "calculationType": "crystallisation",
-                                           |    "intentToCrystallise": true,
-                                           |    "crystallised": false,
-                                           |    "calculationErrorCount": 2
-                                           |  },
-                                           |  "messages" :{
-                                           |     "errors":[
-                                           |        {"id":"err1", "text":"text1"},
-                                           |        {"id":"err2", "text":"text2"}
-                                           |     ]
-                                           |  }
-                                           |}""".stripMargin)
+  val outputMessagesErrorsJsonHateoasISpec: JsValue = Json.parse("""{
+      |        "errors":[
+      |        {"id":"err1", "text":"text1"},
+      |        {"id":"err2", "text":"text2"}
+      |        ],
+      |        "links":[
+      |        {
+      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678",
+      |           "method":"GET",
+      |           "rel":"metadata"
+      |          },
+      |        {
+      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678/messages",
+      |            "method":"GET",
+      |           "rel":"self"
+      |           }
+      |        ]
+      |}""".stripMargin)
+
+  val errorBodyFromBackEnd: JsValue = Json.parse(s"""{
+      |  "metadata": {
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "crystallisation",
+      |    "intentToCrystallise": true,
+      |    "crystallised": false,
+      |    "calculationErrorCount": 2
+      |  },
+      |  "messages" :{
+      |     "errors":[
+      |        {"id":"err1", "text":"text1"},
+      |        {"id":"err2", "text":"text2"}
+      |     ]
+      |  }
+      |}""".stripMargin)
 }
