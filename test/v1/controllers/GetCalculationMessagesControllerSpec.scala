@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
@@ -68,7 +68,17 @@ class GetCalculationMessagesControllerSpec
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
     CalculationMessages(if (info) Some(Seq(info1,info2)) else None, if (warn) Some(Seq(warn1,warn2)) else None, if (error) Some(Seq(err1,err2)) else None)
 
-  val responseBody: JsValue = outputMessagesJsonHateoas
+  val hateoasLinks: JsValue = Json.parse("""{
+      |      "links":[
+      |        {
+      |          "href":"/foo/bar",
+      |          "method":"GET",
+      |          "rel":"test-relationship"
+      |         }
+      |      ]
+      |}""".stripMargin)
+
+  val responseBody: JsValue = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
   val response: CalculationMessages = messagesResponse(info = true,warn = true,error = true)
 
   private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info","warning","error"))

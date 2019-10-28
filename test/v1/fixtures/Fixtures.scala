@@ -93,55 +93,6 @@ object Fixtures {
       |        ]
       |}""".stripMargin)
 
-  val outputMessagesJsonHateoas: JsValue = Json.parse("""{
-      |        "info":[
-      |        {"id":"info1", "text":"text1"},
-      |        {"id":"info2", "text":"text2"}
-      |        ],
-      |        "warnings":[
-      |        {"id":"warn1", "text":"text1"},
-      |        {"id":"warn2", "text":"text2"}
-      |        ],
-      |        "errors":[
-      |        {"id":"err1", "text":"text1"},
-      |        {"id":"err2", "text":"text2"}
-      |        ],
-      |        "links":[
-      |          {
-      |            "href":"/foo/bar",
-      |            "method":"GET",
-      |            "rel":"test-relationship"
-      |           }
-      |        ]
-      |}""".stripMargin)
-
-  val outputMessagesJsonHateoasISpec: JsValue = Json.parse("""{
-      |        "info":[
-      |        {"id":"info1", "text":"text1"},
-      |        {"id":"info2", "text":"text2"}
-      |        ],
-      |        "warnings":[
-      |        {"id":"warn1", "text":"text1"},
-      |        {"id":"warn2", "text":"text2"}
-      |        ],
-      |        "errors":[
-      |        {"id":"err1", "text":"text1"},
-      |        {"id":"err2", "text":"text2"}
-      |        ],
-      |        "links":[
-      |        {
-      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678",
-      |           "method":"GET",
-      |           "rel":"metadata"
-      |          },
-      |        {
-      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678/messages",
-      |            "method":"GET",
-      |           "rel":"self"
-      |           }
-      |        ]
-      |}""".stripMargin)
-
   val outputMessagesInfoJson: JsValue = Json.parse("""{
       |        "info":[
       |        {"id":"info1", "text":"text1"},
@@ -163,24 +114,6 @@ object Fixtures {
       |        ]
       |}""".stripMargin)
 
-  val outputMessagesErrorsJsonHateoasISpec: JsValue = Json.parse("""{
-      |        "errors":[
-      |        {"id":"err1", "text":"text1"},
-      |        {"id":"err2", "text":"text2"}
-      |        ],
-      |        "links":[
-      |        {
-      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678",
-      |           "method":"GET",
-      |           "rel":"metadata"
-      |          },
-      |        {
-      |           "href":"/individuals/calculations/AA123456A/self-assessment/12345678/messages",
-      |            "method":"GET",
-      |           "rel":"self"
-      |           }
-      |        ]
-      |}""".stripMargin)
 
   val errorBodyFromBackEnd: JsValue = Json.parse(s"""{
       |  "metadata": {
