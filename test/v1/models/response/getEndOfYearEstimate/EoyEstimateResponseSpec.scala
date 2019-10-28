@@ -16,9 +16,13 @@
 
 package v1.models.response.getEndOfYearEstimate
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.hateoas.HateoasFactory
+import v1.mocks.MockAppConfig
+import v1.models.hateoas.{ HateoasWrapper, Link }
+import v1.models.hateoas.Method.{ DELETE, GET, POST }
 
 class EoyEstimateResponseSpec extends UnitSpec {
 
@@ -38,6 +42,29 @@ class EoyEstimateResponseSpec extends UnitSpec {
       "provided with a valid model" in {
         Json.toJson(EoyEstimateResponseFixture.model) shouldBe EoyEstimateResponseFixture.outputJson
       }
+    }
+  }
+
+  "HateoasFactory" should {
+
+    class Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino           = "someNino"
+      val calcId         = "someCalcId"
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+    }
+
+    "return the correct hateoas links" in new Test {
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+
+      hateoasFactory.wrap(EoyEstimateResponseFixture.model, EoyEstimateResponseHateoasData(nino, calcId)) shouldBe
+        HateoasWrapper(
+          EoyEstimateResponseFixture.model,
+          Seq(
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "metadata"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "self")
+          )
+        )
     }
   }
 }

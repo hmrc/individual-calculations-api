@@ -16,19 +16,23 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
 import v1.handling.RequestDefn
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors.{EndOfYearEstimateNotPresentError, RuleCalculationErrorMessagesExist}
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.EoyEstimateWrapperOrError
 import v1.models.response.EoyEstimateWrapperOrError.EoyEstimateWrapper
+import v1.models.response.getEndOfYearEstimate.EoyEstimateResponseHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +41,8 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   with MockEnrolmentsAuthService
   with MockMtdIdLookupService
   with MockGetCalculationParser
-  with MockStandardService {
+  with MockStandardService
+  with MockHateoasFactory {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -47,6 +52,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
       service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
       cc = cc
     )
 
@@ -60,6 +66,19 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
   private val rawData = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
+
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel="test-relationship")
+
+  val linksJson = Json.parse(
+    """{
+      | "links" : [
+      |     {
+      |       "href": "/foo/bar",
+      |       "method": "GET",
+      |       "rel": "test-relationship"
+      |     }
+      |  ]
+      |}""".stripMargin).as[JsObject]
 
   private def uri = s"/$nino/self-assessment/$calcId"
 
@@ -76,10 +95,14 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.model)))))
 
+        MockHateoasFactory
+          .wrap(EoyEstimateResponseFixture.model, EoyEstimateResponseHateoasData(nino, calcId))
+          .returns(HateoasWrapper(EoyEstimateResponseFixture.model, Seq(testHateoasLink)))
+
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe EoyEstimateResponseFixture.outputJson
+        contentAsJson(result) shouldBe EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
