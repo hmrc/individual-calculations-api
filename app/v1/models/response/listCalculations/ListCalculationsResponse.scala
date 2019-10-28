@@ -18,7 +18,7 @@ package v1.models.response.listCalculations
 
 import cats.Functor
 import config.AppConfig
-import play.api.libs.json.{Format, Json, OFormat, OWrites, Reads, Writes}
+import play.api.libs.json.{Json, OWrites, Reads, Writes}
 import v1.hateoas.{HateoasLinks, HateoasListLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
@@ -46,7 +46,7 @@ object ListCalculationsResponse extends HateoasLinks {
       Seq(list(appConfig, data.nino), trigger(appConfig, data.nino))
 
     override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: CalculationListItem): Seq[Link] =
-      Seq(getMetadata(appConfig, data.nino, item.id))
+      Seq(getMetadata(appConfig, data.nino, item.id, isSelf = true))
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {

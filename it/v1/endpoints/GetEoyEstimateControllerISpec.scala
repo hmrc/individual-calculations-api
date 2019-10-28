@@ -19,7 +19,7 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.Fixtures
@@ -34,6 +34,21 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
     val nino          = "AA123456A"
     val correlationId = "X-123"
     val calcId        = "12345678"
+
+    val linksJson = Json.parse(s"""
+                                      |{
+                                      |  "links": [{
+                                      |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+                                      |      "method": "GET",
+                                      |      "rel": "metadata"
+                                      |    },
+                                      |    {
+                                      |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
+                                      |      "method": "GET",
+                                      |      "rel": "self"
+                                      |    }
+                                      |  ]
+                                      |}""".stripMargin).as[JsObject]
 
     def uri: String = s"/$nino/self-assessment/$calcId/end-of-year-estimate"
 
@@ -62,7 +77,8 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe EoyEstimateResponseFixture.outputJson
+
+        response.json shouldBe EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
       }
     }
 

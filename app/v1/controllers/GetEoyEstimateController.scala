@@ -17,42 +17,42 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.{ RequestDefn, RequestHandling }
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.hateoas.HateoasWrapper
+import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
 import v1.models.response.EoyEstimateWrapperOrError
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponse
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.models.response.getEndOfYearEstimate.{ EoyEstimateResponse, EoyEstimateResponseHateoasData }
+import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
 
 class GetEoyEstimateController @Inject()(
-                                          authService: EnrolmentsAuthService,
-                                          lookupService: MtdIdLookupService,
-                                          parser: GetCalculationParser,
-                                          service: StandardService,
-                                          cc: ControllerComponents
-                                        )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest,
-    EoyEstimateWrapperOrError, EoyEstimateResponse, AnyContent](
-    authService,
-    lookupService,
-    parser,
-    service,
-    cc) {
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
+    parser: GetCalculationParser,
+    service: StandardService,
+    hateoasFactory: HateoasFactory,
+    cc: ControllerComponents
+)(implicit ec: ExecutionContext)
+    extends StandardController[GetCalculationRawData,
+                               GetCalculationRequest,
+                               EoyEstimateWrapperOrError,
+                               HateoasWrapper[EoyEstimateResponse],
+                               AnyContent](authService, lookupService, parser, service, cc) {
   controller =>
 
   override implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetEoyEstimateController", endpointName = "getEoyEstimate")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent], req: GetCalculationRequest):
-  RequestHandling[EoyEstimateWrapperOrError, EoyEstimateResponse] = {
-    RequestHandling[EoyEstimateWrapperOrError](
-      RequestDefn.Get(req.backendCalculationUri))
+  override def requestHandlingFor(playRequest: Request[AnyContent],
+                                  req: GetCalculationRequest): RequestHandling[EoyEstimateWrapperOrError, HateoasWrapper[EoyEstimateResponse]] = {
+    RequestHandling[EoyEstimateWrapperOrError](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -60,18 +60,19 @@ class GetEoyEstimateController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
-          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(MtdErrors(NOT_FOUND, EndOfYearEstimateNotPresentError))
+          case EoyEstimateWrapperOrError.EoyErrorMessages         => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case EoyEstimateWrapperOrError.EoyCrystallisedError     => Left(MtdErrors(NOT_FOUND, EndOfYearEstimateNotPresentError))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, EoyEstimateResponseHateoasData(req.nino.nino, req.calculationId)))
   }
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   def getEoyEstimate(nino: String, calculationId: String): Action[AnyContent] =
-  authorisedAction(nino).async { implicit request =>
-    val rawData = GetCalculationRawData(nino, calculationId)
-    doHandleRequest(rawData)
-  }
+    authorisedAction(nino).async { implicit request =>
+      val rawData = GetCalculationRawData(nino, calculationId)
+      doHandleRequest(rawData)
+    }
 }

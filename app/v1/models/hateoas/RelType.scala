@@ -18,6 +18,8 @@ package v1.models.hateoas
 
 object RelType {
   val TRIGGER = "trigger"
+  val METADATA = "metadata"
+  val EOY_ESTIMATE = "end-of-year-estimate"
 
   val SELF = "self"
 }

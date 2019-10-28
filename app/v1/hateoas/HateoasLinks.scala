@@ -28,6 +28,9 @@ trait HateoasLinks {
   private def metadataUri(appConfig: AppConfig, nino: String, calcId: String): String =
     baseUri(appConfig, nino) + s"/$calcId"
 
+  private def eoyEstimateUri(appConfig: AppConfig, nino: String, calcId: String): String =
+    baseUri(appConfig, nino) + s"/$calcId/end-of-year-estimate"
+
   // API resource links
   def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
@@ -35,6 +38,9 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
-  def getMetadata(appConfig: AppConfig, nino: String, calcId: String): Link =
-    Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = SELF)
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else METADATA)
+
+  def getEoyEstimate(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = eoyEstimateUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else EOY_ESTIMATE)
 }
