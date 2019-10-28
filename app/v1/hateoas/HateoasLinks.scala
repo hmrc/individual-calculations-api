@@ -41,11 +41,11 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
-  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = {
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
     Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else METADATA)
   }
 
-  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = {
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
     Link(href = messagesUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else MESSAGES)
   }
 

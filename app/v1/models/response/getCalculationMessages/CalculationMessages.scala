@@ -46,7 +46,7 @@ object CalculationMessages extends HateoasLinks {
 
   implicit object CalculationMessagesLinksFactory extends HateoasLinksFactory[CalculationMessages, CalculationMessagesHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMessagesHateoasData): Seq[Link] = {
-      Seq(getMetadata(appConfig, data.nino, data.id, isSelf = false), getMessages(appConfig, data.nino, data.id))
+      Seq(getMetadata(appConfig, data.nino, data.id, isSelf = false), getMessages(appConfig, data.nino, data.id, isSelf = true))
     }
   }
 
