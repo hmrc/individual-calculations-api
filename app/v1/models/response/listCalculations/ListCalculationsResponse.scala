@@ -18,7 +18,7 @@ package v1.models.response.listCalculations
 
 import cats.Functor
 import config.AppConfig
-import play.api.libs.json.{Format, Json, OFormat, OWrites, Reads, Writes}
+import play.api.libs.json.{Json, OWrites, Reads, Writes}
 import v1.hateoas.{HateoasLinks, HateoasListLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
