@@ -69,7 +69,13 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   val json: JsValue = Json.parse("""{
       |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |  "links" : [{"href":"/foo/bar","method":"GET","rel":"test-relationship"}]
+      |  "links" : [
+      |      {
+      |      "href":"/foo/bar",
+      |      "method":"GET",
+      |      "rel":"test-relationship"
+      |      }
+      |   ]
       |}""".stripMargin)
 
   val triggerCalculation = TriggerCalculation(taxYear)
