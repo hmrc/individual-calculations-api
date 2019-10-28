@@ -25,18 +25,6 @@ trait HateoasLinks {
   private def baseUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
-  private def metadataUri(appConfig: AppConfig, nino: String, calcId: String): String =
-    baseUri(appConfig, nino) + s"/$calcId"
-
-  private def messagesUri(appConfig: AppConfig, nino: String, calcId: String): String =
-    baseUri(appConfig, nino) + s"/$calcId" + "/messages"
-
-  private def taxableIncomeUri(appConfig: AppConfig, nino: String, calcId: String): String =
-    baseUri(appConfig, nino) + s"/$calcId/taxable-income"
-
-  private def eoyEstimateUri(appConfig: AppConfig, nino: String, calcId: String): String =
-    baseUri(appConfig, nino) + s"/$calcId/end-of-year-estimate"
-
   // API resource links
   def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
@@ -44,17 +32,21 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
-  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
-    Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else METADATA)
-  }
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseUri(appConfig, nino) + s"/$calcId", method = GET, rel = if (isSelf) SELF else METADATA)
 
-  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
-    Link(href = messagesUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else MESSAGES)
-  }
+  def getIncomeTax(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseUri(appConfig, nino) + s"/$calcId/income-tax-nics-calculated", method = GET, rel = if (isSelf) SELF else INCOME_TAX)
 
   def getTaxableIncome(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
-    Link(href = taxableIncomeUri(appConfig, nino, calcId) , method = GET, rel = if(isSelf){SELF}else{TAXABLE_INCOME})
+    Link(href = baseUri(appConfig, nino) + s"/$calcId/taxable-income", method = GET, rel = if (isSelf) SELF else TAXABLE_INCOME)
+
+  def getAllowances(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseUri(appConfig, nino) + s"/$calcId/allowances-deductions-reliefs", method = GET, rel = if (isSelf) SELF else ALLOWANCES)
 
   def getEoyEstimate(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
-    Link(href = eoyEstimateUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else EOY_ESTIMATE)
+    Link(href = baseUri(appConfig, nino) + s"/$calcId/end-of-year-estimate", method = GET, rel = if (isSelf) SELF else EOY_ESTIMATE)
+
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseUri(appConfig, nino) + s"/$calcId/messages", method = GET, rel = if (isSelf) SELF else MESSAGES)
 }
