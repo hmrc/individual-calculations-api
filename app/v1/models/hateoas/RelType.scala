@@ -19,5 +19,9 @@ package v1.models.hateoas
 object RelType {
   val TRIGGER = "trigger"
 
+  val METADATA = "metadata"
+
+  val TAXABLEINCOME = "taxable-income"
+
   val SELF = "self"
 }
