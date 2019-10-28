@@ -31,6 +31,9 @@ trait HateoasLinks {
   private def messagesUri(appConfig: AppConfig, nino: String, calcId: String): String =
     baseUri(appConfig, nino) + s"/$calcId" + "/messages"
 
+  private def taxableIncomeUri(appConfig: AppConfig, nino: String, calcId: String): String =
+    baseUri(appConfig, nino) + s"/$calcId/taxable-income"
+
   // API resource links
   def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
@@ -38,11 +41,14 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
-  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = {
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
     Link(href = metadataUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else METADATA)
   }
 
-  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean = true): Link = {
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link = {
     Link(href = messagesUri(appConfig, nino, calcId), method = GET, rel = if (isSelf) SELF else MESSAGES)
   }
+
+  def getTaxableIncome(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = taxableIncomeUri(appConfig, nino, calcId) , method = GET, rel = if(isSelf){SELF}else{TAXABLE_INCOME})
 }

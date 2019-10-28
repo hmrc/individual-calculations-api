@@ -46,7 +46,7 @@ object ListCalculationsResponse extends HateoasLinks {
       Seq(list(appConfig, data.nino), trigger(appConfig, data.nino))
 
     override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: CalculationListItem): Seq[Link] =
-      Seq(getMetadata(appConfig, data.nino, item.id))
+      Seq(getMetadata(appConfig, data.nino, item.id, isSelf = true))
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {

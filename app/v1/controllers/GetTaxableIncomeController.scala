@@ -22,10 +22,12 @@ import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getTaxableIncome.TaxableIncome
+import v1.models.response.getTaxableIncome.{TaxableIncomeHateoasData, TaxableIncomeResponse}
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -35,12 +37,13 @@ class GetTaxableIncomeController @Inject()(
                                             lookupService: MtdIdLookupService,
                                             parser: GetCalculationParser,
                                             service: StandardService,
+                                            hateoasFactory: HateoasFactory,
                                             cc: ControllerComponents
                                           )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    CalculationWrapperOrError[TaxableIncome],
-    TaxableIncome,
+    CalculationWrapperOrError[TaxableIncomeResponse],
+    HateoasWrapper[TaxableIncomeResponse],
     AnyContent](authService, lookupService, parser, service, cc) {
   controller =>
 
@@ -48,8 +51,8 @@ class GetTaxableIncomeController @Inject()(
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[TaxableIncome], TaxableIncome] =
-    RequestHandling[CalculationWrapperOrError[TaxableIncome]](
+                                  req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
+    RequestHandling[CalculationWrapperOrError[TaxableIncomeResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
@@ -57,11 +60,13 @@ class GetTaxableIncomeController @Inject()(
         NotFoundError
       )
       .mapSuccess { responseWrapper =>
-        responseWrapper.mapToEither[TaxableIncome] {
+        responseWrapper.mapToEither[TaxableIncomeResponse] {
           case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
+      .mapSuccessSimple(rawResponse =>
+      hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, req.calculationId)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
