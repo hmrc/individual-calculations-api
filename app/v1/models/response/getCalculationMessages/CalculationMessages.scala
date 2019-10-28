@@ -16,9 +16,12 @@
 
 package v1.models.response.getCalculationMessages
 
+import config.AppConfig
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads._
+import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v1.models.hateoas.{HateoasData, Link}
 
 case class Message(id: String, text: String)
 
@@ -33,20 +36,22 @@ case class CalculationMessages(info: Option[Seq[Message]], warnings: Option[Seq[
   }
 }
 
-object CalculationMessages {
-  implicit val writes: Writes[CalculationMessages] = Json.writes[CalculationMessages]
+object CalculationMessages extends HateoasLinks {
+
+  implicit val writes: OWrites[CalculationMessages] = Json.writes[CalculationMessages]
   implicit val reads: Reads[CalculationMessages] = (
-    (__ \ "messages" \ "info").readNestedNullable[Seq[Message]].map {
-      case Some(info) if info.nonEmpty => Some(info)
-      case _ => None}
-      and
-      (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]].map {
-        case Some(warns) if warns.nonEmpty => Some(warns)
-        case _ => None}
-      and
-      (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]].map {
-        case Some(errs) if errs.nonEmpty => Some(errs)
-        case _ => None})(CalculationMessages.apply _)
+    (__ \ "messages" \ "info").readNestedNullable[Seq[Message]] and
+      (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]] and
+      (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]]) (CalculationMessages.apply _)
+
+  implicit object CalculationMessagesLinksFactory extends HateoasLinksFactory[CalculationMessages, CalculationMessagesHateoasData] {
+    override def links(appConfig: AppConfig, data: CalculationMessagesHateoasData): Seq[Link] = {
+      Seq(getMetadata(appConfig, data.nino, data.id, isSelf = false), getMessages(appConfig, data.nino, data.id))
+    }
+  }
+
 }
+
+case class CalculationMessagesHateoasData(nino: String, id: String) extends HateoasData
 
 

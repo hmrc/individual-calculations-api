@@ -24,4 +24,8 @@ object RelType {
   val TAXABLE_INCOME = "taxable-income"
 
   val SELF = "self"
+
+  val METADATA = "metadata"
+
+  val MESSAGES = "messages"
 }
