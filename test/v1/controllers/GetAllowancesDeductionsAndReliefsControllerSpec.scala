@@ -16,18 +16,23 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.AllowancesDeductionsAndReliefsFixture
+import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures
 import v1.handling.RequestDefn
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
-import v1.mocks.services.{ MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
+import v1.models.hateoas.Link
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
+import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +42,8 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
-    with MockStandardService {
+    with MockStandardService
+    with MockHateoasFactory {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -47,6 +53,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
       service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
       cc = cc
     )
 
@@ -63,6 +70,20 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
 
   private def uri      = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri"
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
+  val linksJson: JsObject = Json.parse(
+    """
+      |{
+      |    "links": [
+      |      {
+      |       "href": "/foo/bar",
+      |       "method": "GET",
+      |       "rel": "test-relationship"
+      |      }
+      |    ]
+      |}
+      |""".stripMargin).as[JsObject]
 
   "handleRequest" should {
     "return OK with the calculation" when {
@@ -78,6 +99,9 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
               Right(ResponseWrapper(
                 correlationId,
                 CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel)))))
+
+        MockHateoasFactory
+          .wrap(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel, AllowancesHateoasData(nino, calcId))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 

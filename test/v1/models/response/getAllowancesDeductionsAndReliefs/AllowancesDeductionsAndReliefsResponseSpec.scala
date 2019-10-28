@@ -77,10 +77,10 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
 
     "expose the correct links for retrieve" in {
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
-      AllowancesDeductionsAndReliefsResponse.LinksFactory.links(mockAppConfig, TaxableIncomeHateoasData(nino, calculationId)) shouldBe
+      AllowancesDeductionsAndReliefsResponse.LinksFactory.links(mockAppConfig, AllowancesHateoasData(nino, calculationId)) shouldBe
         Seq(
           Link(s"/individuals/calculations/$nino/self-assessment/$calculationId", GET, "metadata"),
-          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId/taxable-income", GET, "self")
+          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId/allowances-deductions-reliefs", GET, "self")
         )
     }
   }
