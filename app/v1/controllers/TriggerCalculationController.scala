@@ -22,9 +22,11 @@ import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculation.TriggerCalculationResponse
+import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -33,8 +35,9 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
                                              lookupService: MtdIdLookupService,
                                              triggerCalculationParser: TriggerCalculationParser,
                                              service: StandardService,
+                                             hateoasFactory: HateoasFactory,
                                              cc: ControllerComponents)(
-                                             implicit val ec: ExecutionContext) extends StandardController[TriggerCalculationRawData, TriggerCalculationRequest, TriggerCalculationResponse, TriggerCalculationResponse, JsValue](
+                                              implicit val ec: ExecutionContext) extends StandardController[TriggerCalculationRawData, TriggerCalculationRequest, TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse], JsValue](
   authService,
   lookupService,
   triggerCalculationParser,
@@ -51,7 +54,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlingFor(playRequest: Request[JsValue],
-                                  req: TriggerCalculationRequest): RequestHandling[TriggerCalculationResponse, TriggerCalculationResponse] = {
+                                  req: TriggerCalculationRequest): RequestHandling[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
     RequestHandling[TriggerCalculationResponse](
       RequestDefn.Post(playRequest.path, playRequest.body))
       .withPassThroughErrors(
@@ -64,6 +67,8 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
         RuleIncorrectOrEmptyBodyError
       )
       .withRequestSuccessCode(ACCEPTED)
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, TriggerCalculationHateaosData(req.nino.nino, rawResponse.id)))
 
   }
 

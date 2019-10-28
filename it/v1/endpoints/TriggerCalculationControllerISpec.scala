@@ -52,12 +52,16 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
     "return a 202 status code" when {
 
-      val successBody = Json.parse(
-        """
-          |{
-          | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-          |}
-        """.stripMargin)
+      val successBody = Json.parse("""{
+          | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          | "links":[
+          |   {
+          |   "href":"/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |   "method":"GET",
+          |   "rel":"self"
+          |     }
+          |   ]
+          |}""".stripMargin)
 
       "a valid request is made" in new Test {
         override def setupStubs(): StubMapping = {

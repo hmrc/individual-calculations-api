@@ -21,15 +21,19 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.RequestDefn
+import v1.handling.{RequestDefn, RequestHandling}
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.domain.TriggerCalculation
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculation.TriggerCalculationResponse
+import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
 import v1.support.BackendResponseMappingSupport
+import v1.models.hateoas.Link
+import v1.models.hateoas.Method.GET
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -38,6 +42,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
   with MockEnrolmentsAuthService
   with MockMtdIdLookupService
   with MockTriggerCalculationParser
+  with MockHateoasFactory
   with MockStandardService {
 
   trait Test {
@@ -48,7 +53,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
       lookupService = mockMtdIdLookupService,
       triggerCalculationParser = mockTriggerCalculationParser,
       service = mockStandardService,
-      cc = cc
+      cc = cc,
+      hateoasFactory = mockHateoasFactory
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
@@ -61,12 +67,23 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   val response = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
-  val json: JsValue = Json.parse("""{"id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"}""")
+  val json: JsValue = Json.parse("""{
+      |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |  "links" : [
+      |      {
+      |      "href":"/foo/bar",
+      |      "method":"GET",
+      |      "rel":"test-relationship"
+      |      }
+      |   ]
+      |}""".stripMargin)
 
   val triggerCalculation = TriggerCalculation(taxYear)
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
+
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   private def uri = "/"
 
@@ -80,6 +97,10 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         MockStandardService
           .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockHateoasFactory
+          .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
 
@@ -96,7 +117,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
+      val mappingChecks: RequestHandling[TriggerCalculationResponse, TriggerCalculationResponse] => Unit = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
         ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
@@ -108,7 +129,11 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)
-        .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse("fakeId")))))
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")))))
+
+      MockHateoasFactory
+        .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
 

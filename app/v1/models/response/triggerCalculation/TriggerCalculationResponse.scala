@@ -16,10 +16,21 @@
 
 package v1.models.response.triggerCalculation
 
+import config.AppConfig
 import play.api.libs.json.{Json, OFormat}
+import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v1.models.hateoas.{HateoasData, Link}
 
 case class TriggerCalculationResponse(id: String)
 
-object TriggerCalculationResponse {
+object TriggerCalculationResponse extends HateoasLinks {
   implicit val formats: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
+
+  implicit object TriggerLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateaosData] {
+    override def links(appConfig: AppConfig, data: TriggerCalculationHateaosData): Seq[Link] = {
+      Seq(getMetadata(appConfig, data.nino, data.id))
+    }
+  }
 }
+
+case class TriggerCalculationHateaosData(nino: String, id: String) extends HateoasData
