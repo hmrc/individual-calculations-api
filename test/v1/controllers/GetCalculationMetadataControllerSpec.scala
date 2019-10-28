@@ -21,15 +21,17 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getCalculationMetadata.CalculationMetadata
+import v1.models.response.getCalculationMetadata.{CalculationMetadata, CalculationMetadataHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,7 +42,8 @@ class GetCalculationMetadataControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
-    with MockStandardService {
+    with MockStandardService
+    with MockHateoasFactory{
 
   trait Test {
     val hc = HeaderCarrier()
@@ -50,6 +53,7 @@ class GetCalculationMetadataControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
       service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
       cc = cc
     )
 
@@ -71,7 +75,14 @@ class GetCalculationMetadataControllerSpec
       |    "calculationType": "crystallisation",
       |    "intentToCrystallise": true,
       |    "crystallised": false,
-      |    "calculationErrorCount": 123
+      |    "calculationErrorCount": 123,
+      |    "links": [
+      |      {
+      |       "href": "/foo/bar",
+      |       "method": "GET",
+      |       "rel": "test-relationship"
+      |      }
+      |    ]
       |}""".stripMargin)
 
   val response = CalculationMetadata(
@@ -93,6 +104,8 @@ class GetCalculationMetadataControllerSpec
   private def uri = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri"
 
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
   "handleRequest" should {
     "return OK the calculation metadata" when {
       "happy path" in new Test {
@@ -103,6 +116,10 @@ class GetCalculationMetadataControllerSpec
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockHateoasFactory
+          .wrap(response, CalculationMetadataHateoasData(nino, calcId))
+          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 
@@ -129,6 +146,10 @@ class GetCalculationMetadataControllerSpec
       MockStandardService
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+      MockHateoasFactory
+        .wrap(response, CalculationMetadataHateoasData(nino, calcId))
+        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 

@@ -31,7 +31,7 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
 
     val nino          = "AA123456A"
     val correlationId = "X-123"
-    val calcId        = "12345678"
+    val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def uri: String = s"/$nino/self-assessment/$calcId"
 
@@ -49,10 +49,18 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation metadata endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.parse("""
+      "valid request is made" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val successBody = Json.parse(s"""
                                      |{
                                      |  "metadata": {
-                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                     |    "id": "$calcId",
                                      |    "taxYear": "2018-19",
                                      |    "requestedBy": "customer",
                                      |    "calculationReason": "customerRequest",
@@ -64,9 +72,8 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
                                      |  }
                                      |}""".stripMargin)
 
-      val successOutput = Json.parse("""
-                                     |{
-                                     |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        val successOutput = Json.parse(s"""{
+                                     |    "id": "$calcId",
                                      |    "taxYear": "2018-19",
                                      |    "requestedBy": "customer",
                                      |    "calculationReason": "customerRequest",
@@ -74,16 +81,40 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
                                      |    "calculationType": "crystallisation",
                                      |    "intentToCrystallise": true,
                                      |    "crystallised": false,
-                                     |    "calculationErrorCount": 123
+                                     |    "calculationErrorCount": 123,
+                                     |    "links": [
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+                                     |       "method": "GET",
+                                     |       "rel": "self"
+                                     |      },
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
+                                     |       "method": "GET",
+                                     |       "rel": "income-tax-and-nics-calculated"
+                                     |      },
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/taxable-income",
+                                     |       "method": "GET",
+                                     |       "rel": "taxable-income"
+                                     |      },
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/allowances-deductions-reliefs",
+                                     |       "method": "GET",
+                                     |       "rel": "allowances-deductions-reliefs"
+                                     |      },
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
+                                     |       "method": "GET",
+                                     |       "rel": "end-of-year-estimate"
+                                     |      },
+                                     |      {
+                                     |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
+                                     |       "method": "GET",
+                                     |       "rel": "messages"
+                                     |      }
+                                     |    ]
                                      |}""".stripMargin)
-
-      "valid request is made" in new Test {
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
-        }
 
         val response: WSResponse = await(request.get)
 

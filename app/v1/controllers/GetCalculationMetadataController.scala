@@ -17,45 +17,48 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
-import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getCalculationMetadata.CalculationMetadata
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.handling.{ RequestDefn, RequestHandling }
+import v1.hateoas.HateoasFactory
+import v1.models.errors.{ CalculationIdFormatError, NinoFormatError, NotFoundError }
+import v1.models.hateoas.HateoasWrapper
+import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.response.getCalculationMetadata.{ CalculationMetadata, CalculationMetadataHateoasData }
+import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
 
 class GetCalculationMetadataController @Inject()(
-                                                  authService: EnrolmentsAuthService,
-                                                  lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationParser,
-                                                  service: StandardService,
-                                                  cc: ControllerComponents
-                                                )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, CalculationMetadata, AnyContent](
-    authService,
-    lookupService,
-    parser,
-    service,
-    cc) {
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
+    parser: GetCalculationParser,
+    service: StandardService,
+    hateoasFactory: HateoasFactory,
+    cc: ControllerComponents
+)(implicit ec: ExecutionContext)
+    extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, HateoasWrapper[CalculationMetadata], AnyContent](
+      authService,
+      lookupService,
+      parser,
+      service,
+      cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationMetadata, CalculationMetadata] =
-    RequestHandling[CalculationMetadata](
-      RequestDefn.Get(req.backendCalculationUri))
+                                  req: GetCalculationRequest): RequestHandling[CalculationMetadata, HateoasWrapper[CalculationMetadata]] =
+    RequestHandling[CalculationMetadata](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
         NotFoundError
       )
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
