@@ -29,10 +29,10 @@ trait HateoasLinks {
     baseUri(appConfig, nino) + s"/$calcId"
 
   // API resource links
-  def trigger(appConfig: AppConfig, nino: String) =
+  def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
 
-  def list(appConfig: AppConfig, nino: String) =
+  def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = GET, rel = SELF)
 
   def getMetadata(appConfig: AppConfig, nino: String, calcId: String): Link =
