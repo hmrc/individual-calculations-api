@@ -19,14 +19,20 @@ package v1.models.response.getAllowancesDeductionsAndReliefs
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.AllowancesDeductionsAndReliefsFixture._
+import v1.mocks.MockAppConfig
+import v1.models.hateoas.Link
+import v1.models.hateoas.Method.GET
 
-class AllowancesDeductionsAndReliefsSpec extends UnitSpec {
+class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig {
+
+  val nino: String = "AA123456A"
+  val calculationId: String = "calcId"
 
   "reading from json" must {
     "read from allowancesDeductionsAndReliefs object of backend response" in {
       val responseJson = Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsJson)
 
-      responseJson.as[AllowancesDeductionsAndReliefs] shouldBe allowancesDeductionsAndReliefsModel
+      responseJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe allowancesDeductionsAndReliefsModel
     }
   }
 
@@ -37,8 +43,8 @@ class AllowancesDeductionsAndReliefsSpec extends UnitSpec {
   }
 
   "isEmpty" should {
-    def responseWithSummary(summary: CalculationSummary): AllowancesDeductionsAndReliefs =
-      AllowancesDeductionsAndReliefs(summary = summary, detail = CalculationDetail(None, None))
+    def responseWithSummary(summary: CalculationSummary): AllowancesDeductionsAndReliefsResponse =
+      AllowancesDeductionsAndReliefsResponse(summary = summary, detail = CalculationDetail(None, None))
 
     "return true" when {
       "summary totalAllowancesAndDeductions AND totalReliefs are not present" in {
@@ -64,6 +70,18 @@ class AllowancesDeductionsAndReliefsSpec extends UnitSpec {
       "summary totalAllowancesAndDeductions AND totalReliefs are present both are at least one" in {
         responseWithSummary(CalculationSummary(Some(1), Some(1))).isEmpty shouldBe false
       }
+    }
+  }
+
+  "Links Factory" should {
+
+    "expose the correct links for retrieve" in {
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      AllowancesDeductionsAndReliefsResponse.LinksFactory.links(mockAppConfig, TaxableIncomeHateoasData(nino, calculationId)) shouldBe
+        Seq(
+          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId", GET, "metadata"),
+          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId/taxable-income", GET, "self")
+        )
     }
   }
 }

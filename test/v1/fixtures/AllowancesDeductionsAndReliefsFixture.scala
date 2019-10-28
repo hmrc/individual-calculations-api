@@ -22,7 +22,7 @@ import v1.models.response.getAllowancesDeductionsAndReliefs._
 
 object AllowancesDeductionsAndReliefsFixture {
 
-  val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
+  val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefsResponse = AllowancesDeductionsAndReliefsResponse(
     CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
     CalculationDetail(
       allowancesAndDeductions = Some(
@@ -83,6 +83,6 @@ object AllowancesDeductionsAndReliefsFixture {
                  |}
                  |""".stripMargin).as[JsObject]
 
-  val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefs =
-    AllowancesDeductionsAndReliefs(CalculationSummary(None, None), CalculationDetail(None, None))
+  val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefsResponse =
+    AllowancesDeductionsAndReliefsResponse(CalculationSummary(None, None), CalculationDetail(None, None))
 }
