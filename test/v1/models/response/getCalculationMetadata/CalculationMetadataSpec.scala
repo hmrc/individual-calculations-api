@@ -18,7 +18,13 @@ package v1.models.response.getCalculationMetadata
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.hateoas.HateoasFactory
+import v1.mocks.MockAppConfig
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.getEndOfYearEstimate.EoyEstimateResponseHateoasData
 
 class CalculationMetadataSpec extends UnitSpec {
 
@@ -74,6 +80,31 @@ class CalculationMetadataSpec extends UnitSpec {
       "read from metadata top level field" in {
         jsonInput.as[CalculationMetadata] shouldBe metadata
       }
+    }
+  }
+
+  "HateoasFactory" should {
+
+    class Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino           = "someNino"
+      val calcId         = "someCalcId"
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+    }
+
+    "return the correct hateoas links" in new Test {
+      hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId)) shouldBe
+        HateoasWrapper(
+          metadata,
+          Seq(
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/taxable-income", GET, "taxable-income"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/allowances-deductions-reliefs", GET, "allowances-deductions-reliefs"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "end-of-year-estimate"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/messages", GET, "messages")
+          )
+        )
     }
   }
 }

@@ -55,7 +55,6 @@ class EoyEstimateResponseSpec extends UnitSpec {
     }
 
     "return the correct hateoas links" in new Test {
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
 
       hateoasFactory.wrap(EoyEstimateResponseFixture.model, EoyEstimateResponseHateoasData(nino, calcId)) shouldBe
         HateoasWrapper(

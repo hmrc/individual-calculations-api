@@ -16,7 +16,10 @@
 
 package v1.models.response.getCalculationMetadata
 
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import config.AppConfig
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 
 case class CalculationMetadata(
@@ -32,11 +35,27 @@ case class CalculationMetadata(
     calculationErrorCount: Option[Int]
 )
 
-object CalculationMetadata {
+object CalculationMetadata extends HateoasLinks {
 
-  implicit val writes: Writes[CalculationMetadata] =
+  implicit val writes: OWrites[CalculationMetadata] =
     Json.writes[CalculationMetadata]
 
   implicit def reads: Reads[CalculationMetadata] =
     (JsPath \ "metadata").read[CalculationMetadata](Json.reads[CalculationMetadata])
+
+  implicit object LinkFactory extends HateoasLinksFactory[CalculationMetadata, CalculationMetadataHateoasData] {
+    override def links(appConfig: AppConfig, data: CalculationMetadataHateoasData): Seq[Link] = {
+      import data._
+      Seq(
+        getMetadata(appConfig, nino, calculationId, isSelf = true),
+        getIncomeTax(appConfig, nino, calculationId, isSelf = false),
+        getTaxableIncome(appConfig, nino, calculationId, isSelf = false),
+        getAllowances(appConfig, nino, calculationId, isSelf = false),
+        getEoyEstimate(appConfig, nino, calculationId, isSelf = false),
+        getMessages(appConfig, nino, calculationId, isSelf = false)
+      )
+    }
+  }
 }
+
+case class CalculationMetadataHateoasData(nino: String, calculationId: String) extends HateoasData
