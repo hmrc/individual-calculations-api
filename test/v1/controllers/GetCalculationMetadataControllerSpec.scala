@@ -75,7 +75,6 @@ class GetCalculationMetadataControllerSpec
       |    "calculationType": "crystallisation",
       |    "intentToCrystallise": true,
       |    "crystallised": false,
-      |    "calculationErrorCount": 123,
       |    "links": [
       |      {
       |       "href": "/foo/bar",
@@ -95,7 +94,7 @@ class GetCalculationMetadataControllerSpec
     intentToCrystallise = true,
     crystallised = false,
     totalIncomeTaxAndNicsDue = None,
-    calculationErrorCount = Some(123)
+    calculationErrorCount = None
   )
 
   private val rawData     = GetCalculationRawData(nino, calcId)
