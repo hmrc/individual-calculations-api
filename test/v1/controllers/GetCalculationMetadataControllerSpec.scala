@@ -24,7 +24,7 @@ import utils.Logging
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
@@ -43,7 +43,8 @@ class GetCalculationMetadataControllerSpec
     with MockMtdIdLookupService
     with MockGetCalculationParser
     with MockStandardService
-    with MockHateoasFactory{
+    with MockHateoasFactory
+    with MockAuditService{
 
   trait Test {
     val hc = HeaderCarrier()
@@ -54,6 +55,7 @@ class GetCalculationMetadataControllerSpec
       parser = mockGetCalculationParser,
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
+      auditService = mockAuditService,
       cc = cc
     )
 

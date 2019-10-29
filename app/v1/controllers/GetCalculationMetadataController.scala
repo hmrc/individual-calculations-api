@@ -17,17 +17,17 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.hateoas.HateoasFactory
-import v1.models.errors.{ CalculationIdFormatError, NinoFormatError, NotFoundError }
+import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
-import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
-import v1.models.response.getCalculationMetadata.{ CalculationMetadata, CalculationMetadataHateoasData }
-import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.response.getCalculationMetadata.{CalculationMetadata, CalculationMetadataHateoasData}
+import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
@@ -37,6 +37,7 @@ class GetCalculationMetadataController @Inject()(
     parser: GetCalculationParser,
     service: StandardService,
     hateoasFactory: HateoasFactory,
+    auditService: AuditService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, HateoasWrapper[CalculationMetadata], AnyContent](
@@ -44,6 +45,7 @@ class GetCalculationMetadataController @Inject()(
       lookupService,
       parser,
       service,
+      auditService,
       cc) {
   controller =>
 

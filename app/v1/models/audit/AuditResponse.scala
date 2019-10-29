@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.audit
 
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.{ JsValue, Json, OWrites }
 
-case class SampleAuditResponse(httpStatus: Int, errors: Option[Seq[AuditError]])
+case class AuditResponse(httpStatus: Int, errors: Option[Seq[AuditError]], body: Option[JsValue])
 
-object SampleAuditResponse {
-  implicit val writes: OWrites[SampleAuditResponse] = Json.writes[SampleAuditResponse]
+object AuditResponse {
+  implicit val writes: OWrites[AuditResponse] = Json.writes[AuditResponse]
+
+  def apply(httpStatus: Int, response: Either[Seq[AuditError], Option[JsValue]]): AuditResponse =
+    response match {
+      case Right(body) => AuditResponse(httpStatus, None, body)
+      case Left(errs)  => AuditResponse(httpStatus, Some(errs), None)
+    }
 }

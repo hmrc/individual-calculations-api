@@ -17,16 +17,16 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.models.errors._
-import v1.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getIncomeTaxAndNics.GetIncomeTaxAndNicsResponse
-import v1.services.{ EnrolmentsAuthService, MtdIdLookupService, StandardService }
+import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
@@ -35,13 +35,14 @@ class GetIncomeTaxAndNicsController @Inject()(
                                             lookupService: MtdIdLookupService,
                                             parser: GetCalculationParser,
                                             service: StandardService,
+                                            auditService: AuditService,
                                             cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends StandardController[GetCalculationRawData,
                                GetCalculationRequest,
                                CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
                                GetIncomeTaxAndNicsResponse,
-                               AnyContent](authService, lookupService, parser, service, cc) { controller =>
+                               AnyContent](authService, lookupService, parser, service, auditService, cc) { controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxAndNicsController", endpointName = "getIncomeTaxAndNics")

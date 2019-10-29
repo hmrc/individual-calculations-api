@@ -24,7 +24,7 @@ import utils.Logging
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.domain.TriggerCalculation
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
@@ -43,7 +43,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
   with MockMtdIdLookupService
   with MockTriggerCalculationParser
   with MockHateoasFactory
-  with MockStandardService {
+  with MockStandardService
+  with MockAuditService{
 
   trait Test {
     val hc = HeaderCarrier()
@@ -54,6 +55,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
       triggerCalculationParser = mockTriggerCalculationParser,
       service = mockStandardService,
       cc = cc,
+      auditService = mockAuditService,
       hateoasFactory = mockHateoasFactory
     )
 

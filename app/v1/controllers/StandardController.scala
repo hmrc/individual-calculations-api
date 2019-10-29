@@ -19,12 +19,13 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.MimeTypes
-import play.api.libs.json.{ Format, Json, Reads, Writes }
-import play.api.mvc.{ AnyContent, ControllerComponents, Request, Result }
+import play.api.libs.json.{ Json, Reads, Writes }
+import play.api.mvc.{ ControllerComponents, Request, Result }
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.RequestHandling
+import v1.handling.{ AuditHandling, RequestHandling }
 import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
@@ -36,6 +37,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     val lookupService: MtdIdLookupService,
     parser: RequestParser[Raw, Req],
     service: StandardService,
+    auditService: AuditService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
@@ -49,7 +51,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
   val successCode: SuccessCode
 
-  def doHandleRequest(rawData: Raw)(implicit request: Request[A]): Future[Result] = {
+  def doHandleRequest(rawData: Raw, auditHandling: Option[AuditHandling[_]] = None)(implicit request: Request[A]): Future[Result] = {
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
@@ -62,7 +64,18 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
             s"Success response received with CorrelationId: ${response.correlationId}"
         )
 
-        Status(successCode.status)(Json.toJson(response.responseData))
+        val status       = successCode.status
+        val responseBody = Json.toJson(response.responseData)
+
+        auditHandling.foreach { auditHandling =>
+          def auditSuccess[D](auditHandling: AuditHandling[D])(implicit hc: HeaderCarrier, ec: ExecutionContext) = {
+            implicit val writes: Writes[D] = auditHandling.writes
+            auditService.auditEvent(auditHandling.successEvent(response.correlationId, successCode.status, Some(responseBody)))
+          }
+          auditSuccess(auditHandling)
+        }
+
+        Status(status)(responseBody)
           .withApiHeaders(response.correlationId)
           .as(MimeTypes.JSON)
       }
@@ -70,8 +83,17 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     result.leftMap { errorWrapper =>
       val correlationId = getCorrelationId(errorWrapper)
       val errorBody     = errorWrapper.errors
+      val status        = errorWrapper.errors.statusCode
 
-      Status(errorWrapper.errors.statusCode)(Json.toJson(errorBody)).withApiHeaders(correlationId)
+      auditHandling.foreach { auditHandling =>
+        def auditSuccess[D](auditHandling: AuditHandling[D])(implicit hc: HeaderCarrier, ec: ExecutionContext) = {
+          implicit val writes: Writes[D] = auditHandling.writes
+          auditService.auditEvent(auditHandling.failureEvent(correlationId, status, errorBody.auditErrors))
+        }
+        auditSuccess(auditHandling)
+      }
+
+      Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
     }.merge
   }
 }
