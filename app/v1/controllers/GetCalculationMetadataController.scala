@@ -58,7 +58,7 @@ class GetCalculationMetadataController @Inject()(
         CalculationIdFormatError,
         NotFoundError
       )
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
