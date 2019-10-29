@@ -19,20 +19,35 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
-import play.api.libs.ws.{ WSRequest, WSResponse }
+import play.api.libs.json.{JsObject, Json}
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.{ AllowancesDeductionsAndReliefsFixture, GetIncomeTaxAndNicsFixture }
+import v1.fixtures.{AllowancesDeductionsAndReliefsFixture, GetIncomeTaxAndNicsFixture}
 import v1.models.errors._
-import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
+import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino          = "AA123456A"
+    val nino = "AA123456A"
     val correlationId = "X-123"
-    val calcId        = "12345678"
+    val calcId = "12345678"
+
+    val linksJson: JsObject = Json.parse(
+      s"""{
+         |    "links": [{
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+         |      "method": "GET",
+         |      "rel": "metadata"
+         |    },{
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/allowances-deductions-reliefs",
+         |      "method": "GET",
+         |      "rel": "self"
+         |    }
+         |    ]
+         |}
+         |""".stripMargin).as[JsObject]
 
     def uri: String = s"/$nino/self-assessment/$calcId/allowances-deductions-reliefs"
 
@@ -61,7 +76,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson
+        response.json shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
       }
     }
 
@@ -89,9 +104,9 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
           BackendStub.onSuccess(BackendStub.GET,
-                                backendUrl,
-                                OK,
-                                AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
+            backendUrl,
+            OK,
+            AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
         }
 
         val response: WSResponse = await(request.get)
@@ -107,7 +122,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
         def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String   = requestNino
+            override val nino: String = requestNino
             override val calcId: String = requestCalcId
 
             override def setupStubs(): StubMapping = {

@@ -16,13 +16,13 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
 import v1.models.response.getAllowancesDeductionsAndReliefs._
 
 object AllowancesDeductionsAndReliefsFixture {
 
-  val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
+  val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefsResponse = AllowancesDeductionsAndReliefsResponse(
     CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
     CalculationDetail(
       allowancesAndDeductions = Some(
@@ -42,47 +42,49 @@ object AllowancesDeductionsAndReliefsFixture {
     )
   )
 
-  val allowancesDeductionsAndReliefsJson: JsValue = Json.parse("""
-                          |{
-                          |  "summary": {
-                          |    "totalAllowancesAndDeductions": 12500,
-                          |    "totalReliefs": 12500
-                          |  },
-                          |  "detail":{
-                          |    "allowancesAndDeductions":{
-                          |      "personalAllowance": 12500,
-                          |      "reducedPersonalAllowance": 12500,
-                          |      "giftOfInvestmentsAndPropertyToCharity": 12500,
-                          |      "blindPersonsAllowance": 12500,
-                          |      "lossesAppliedToGeneralIncome": 12500
-                          |    },
-                          |    "reliefs": {
-                          |      "residentialFinanceCosts": {
-                          |        "amountClaimed": 12500,
-                          |        "allowableAmount": 12500,
-                          |        "rate": 20,
-                          |        "propertyFinanceRelief": 12500
-                          |      }
-                          |    }
-                          |  }
-                          |}
-                          |""".stripMargin)
+  val allowancesDeductionsAndReliefsJson: JsObject = Json.parse(
+    """
+      |{
+      |  "summary": {
+      |    "totalAllowancesAndDeductions": 12500,
+      |    "totalReliefs": 12500
+      |  },
+      |  "detail":{
+      |    "allowancesAndDeductions":{
+      |      "personalAllowance": 12500,
+      |      "reducedPersonalAllowance": 12500,
+      |      "giftOfInvestmentsAndPropertyToCharity": 12500,
+      |      "blindPersonsAllowance": 12500,
+      |      "lossesAppliedToGeneralIncome": 12500
+      |    },
+      |    "reliefs": {
+      |      "residentialFinanceCosts": {
+      |        "amountClaimed": 12500,
+      |        "allowableAmount": 12500,
+      |        "rate": 20,
+      |        "propertyFinanceRelief": 12500
+      |      }
+      |    }
+      |  }
+      |}
+      |""".stripMargin).as[JsObject]
 
   val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsJson)
 
   val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue =
     metadataJson.as[JsObject] ++
-      Json.parse("""
-                 |{
-                 |  "allowancesDeductionsAndReliefs": {
-                 |    "summary": {
-                 |    },
-                 |    "detail":{
-                 |    }
-                 |  }
-                 |}
-                 |""".stripMargin).as[JsObject]
+      Json.parse(
+        """
+          |{
+          |  "allowancesDeductionsAndReliefs": {
+          |    "summary": {
+          |    },
+          |    "detail":{
+          |    }
+          |  }
+          |}
+          |""".stripMargin).as[JsObject]
 
-  val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefs =
-    AllowancesDeductionsAndReliefs(CalculationSummary(None, None), CalculationDetail(None, None))
+  val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefsResponse =
+    AllowancesDeductionsAndReliefsResponse(CalculationSummary(None, None), CalculationDetail(None, None))
 }
