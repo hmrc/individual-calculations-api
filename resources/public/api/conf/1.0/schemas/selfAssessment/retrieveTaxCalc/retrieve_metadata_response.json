@@ -10,52 +10,71 @@
       "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
       "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     },
-    "taxYear" : {
-      "description" : "The Tax year in which the calculation was performed in the format YYYY-YY",
-      "type" : "string",
+    "taxYear": {
+      "description": "The Tax year in which the calculation was performed in the format YYYY-YY",
+      "type": "string",
       "example": "2019-20"
     },
     "requestedBy": {
       "description": "The requestor of the calculation. Currently agent will default to customer until it can be supported.",
       "type": "string",
-      "enum": ["customer", "hmrc", "agent"]
+      "enum": [
+        "customer",
+        "hmrc",
+        "agent"
+      ]
     },
-    "calculationReason" : {
+    "calculationReason": {
       "description": "The reason why the calculation was triggered",
       "type": "string",
-
-      "oneOf":[
+      "oneOf": [
         {
-          "enum":[ "customerRequest" ],
-          "description":"The calculation was triggered by the customer via software."
+          "enum": [
+            "customerRequest"
+          ],
+          "description": "The calculation was triggered by the customer via software."
         },
         {
-          "enum":[ "class2NICEvent" ],
-          "description":"The calculation was triggered internally by HMRC once the actual Class 2 NIC amount is available. This event is only applicable for an in-year \"crystallisation\" calculation type."
+          "enum": [
+            "class2NICEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC once the actual Class 2 NIC amount is available. This event is only applicable for an in-year \"crystallisation\" calculation type."
         },
         {
-          "enum":[ "newLossEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of a new pre-MTD brought forward loss made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
+          "enum": [
+            "newLossEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of a new pre-MTD brought forward loss made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
         },
         {
-          "enum":[ "newClaimEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of a new loss claim made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
+          "enum": [
+            "newClaimEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of a new loss claim made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
         },
         {
-          "enum":[ "updatedClaimEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of an updated loss claim made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
+          "enum": [
+            "updatedClaimEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of an updated loss claim made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
         },
         {
-          "enum":[ "updatedLossEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
+          "enum": [
+            "updatedLossEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer. This event is only applicable for a \"crystallisation\" calculation type. This event is not currently supported and will be supported in the future."
         },
         {
-          "enum":[ "newAnnualAdjustmentEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of a request for a new adjustable summary calculation by the customer. This event is not currently supported."
+          "enum": [
+            "newAnnualAdjustmentEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of a request for a new adjustable summary calculation by the customer. This event is not currently supported."
         },
         {
-          "enum":[ "updatedAnnualAdjustmentEvent" ],
-          "description":"The calculation was triggered internally by HMRC on receipt of an adjustment to an adjustable summary calculation made by the customer. This event is not currently supported."
+          "enum": [
+            "updatedAnnualAdjustmentEvent"
+          ],
+          "description": "The calculation was triggered internally by HMRC on receipt of an adjustment to an adjustable summary calculation made by the customer. This event is not currently supported."
         }
       ]
     },
@@ -67,7 +86,10 @@
     "calculationType": {
       "description": "The type of calculation performed. A \"crystallisation\" calculation is a calculation triggered via the \"Intent to crystallise\" endpoint under the \"Self Assessment (MTD)\" API.",
       "type": "string",
-      "enum": ["inYear", "crystallisation"]
+      "enum": [
+        "inYear",
+        "crystallisation"
+      ]
     },
     "intentToCrystallise": {
       "description": "Boolean value showing whether the calculation is intended to be crystallised against. Valid values are true or false",
@@ -93,7 +115,54 @@
       "multipleOf": 1,
       "minimum": 1,
       "example": "2"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
+            "description": "The relative url of the endpoint",
+            "type": "string",
+            "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+          },
+          "rel": {
+            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "type": "string",
+            "enum": [
+              "self",
+              "income-tax-and-nics-calculated",
+              "taxable-income",
+              "allowances-deductions-reliefs",
+              "end-of-year-estimate",
+              "messages"
+
+            ]
+          },
+          "method": {
+            "description": "The HTTP method type for the endpoint",
+            "type": "string",
+            "enum": [
+              "GET"
+            ]
+          }
+        },
+        "required": [
+          "href",
+          "rel",
+          "method"
+        ]
+      }
     }
   },
-  "required": ["id", "taxYear", "requestedBy", "calculationReason", "calculationType", "intentToCrystallise", "crystallised"]
+  "required": [
+    "id",
+    "taxYear",
+    "requestedBy",
+    "calculationReason",
+    "calculationType",
+    "intentToCrystallise",
+    "crystallised"
+  ]
 }

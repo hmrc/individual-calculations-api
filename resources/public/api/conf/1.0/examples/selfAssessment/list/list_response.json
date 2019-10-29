@@ -4,13 +4,39 @@
       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       "calculationTimestamp": "2019-03-17T09:22:59Z",
       "type": "inYear",
-      "requestedBy": "hmrc"
+      "requestedBy": "hmrc",
+      "links": [
+        {
+          "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          "rel": "self",
+          "method": "GET"
+        }
+      ]
     },
     {
       "id": "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
       "calculationTimestamp": "2019-06-17T18:45:59Z",
       "type": "crystallisation",
-      "requestedBy": "customer"
+      "requestedBy": "customer",
+      "links": [
+        {
+          "href": "/individuals/calculations/RW399019B/self-assessment/cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
+          "rel": "self",
+          "method": "GET"
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment",
+      "rel": "trigger",
+      "method": "POST"
     }
   ]
 }
