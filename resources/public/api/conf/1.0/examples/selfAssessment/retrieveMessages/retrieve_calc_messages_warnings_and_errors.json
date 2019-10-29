@@ -18,5 +18,17 @@
       "id": "C95005",
       "text": "Final confirmation of income and expenses for all business sources has not been provided"
     }
+  ],
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/messages",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "rel": "metadata",
+      "method": "GET"
+    }
   ]
 }
