@@ -39,13 +39,14 @@ class ListCalculationsController @Inject()(
     listCalculationsParser: ListCalculationsParser,
     service: StandardService,
     hateoasFactory: HateoasFactory,
+    auditService: AuditService,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends StandardController[ListCalculationsRawData,
                                ListCalculationsRequest,
                                ListCalculationsResponse[CalculationListItem],
                                HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]],
-                               AnyContent](authService, lookupService, listCalculationsParser, service, cc) {
+                               AnyContent](authService, lookupService, listCalculationsParser, service, auditService, cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =

@@ -27,7 +27,7 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
@@ -36,12 +36,14 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
                                              triggerCalculationParser: TriggerCalculationParser,
                                              service: StandardService,
                                              hateoasFactory: HateoasFactory,
+                                             auditService: AuditService,
                                              cc: ControllerComponents)(
                                               implicit val ec: ExecutionContext) extends StandardController[TriggerCalculationRawData, TriggerCalculationRequest, TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse], JsValue](
   authService,
   lookupService,
   triggerCalculationParser,
   service,
+  auditService,
   cc) {
   controller =>
 

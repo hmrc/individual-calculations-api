@@ -28,7 +28,7 @@ import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getTaxableIncome.{TaxableIncomeHateoasData, TaxableIncomeResponse}
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
@@ -38,13 +38,14 @@ class GetTaxableIncomeController @Inject()(
                                             parser: GetCalculationParser,
                                             service: StandardService,
                                             hateoasFactory: HateoasFactory,
+                                            auditService: AuditService,
                                             cc: ControllerComponents
                                           )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     CalculationWrapperOrError[TaxableIncomeResponse],
     HateoasWrapper[TaxableIncomeResponse],
-    AnyContent](authService, lookupService, parser, service, cc) {
+    AnyContent](authService, lookupService, parser, service, auditService, cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =

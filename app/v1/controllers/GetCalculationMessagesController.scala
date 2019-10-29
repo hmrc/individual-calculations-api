@@ -18,36 +18,37 @@ package v1.controllers
 
 import javax.inject.Inject
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationMessagesParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.{ RequestDefn, RequestHandling }
 import v1.hateoas.HateoasFactory
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
-import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
-import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.models.request.{ GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType }
+import v1.models.response.getCalculationMessages.{ CalculationMessages, CalculationMessagesHateoasData }
+import v1.services.{ AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService }
 import v1.support.MessagesFilter
 
 import scala.concurrent.ExecutionContext
 
 class GetCalculationMessagesController @Inject()(
-                                                  authService: EnrolmentsAuthService,
-                                                  lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationMessagesParser,
-                                                  service: StandardService,
-                                                  hateoasFactory: HateoasFactory,
-                                                  cc: ControllerComponents
-                                                )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationMessagesRawData, GetCalculationMessagesRequest, CalculationMessages, HateoasWrapper[CalculationMessages], AnyContent](
-    authService,
-    lookupService,
-    parser,
-    service,
-    cc) with MessagesFilter {
+    authService: EnrolmentsAuthService,
+    lookupService: MtdIdLookupService,
+    parser: GetCalculationMessagesParser,
+    service: StandardService,
+    hateoasFactory: HateoasFactory,
+    auditService: AuditService,
+    cc: ControllerComponents
+)(implicit ec: ExecutionContext)
+    extends StandardController[GetCalculationMessagesRawData,
+                               GetCalculationMessagesRequest,
+                               CalculationMessages,
+                               HateoasWrapper[CalculationMessages],
+                               AnyContent](authService, lookupService, parser, service, auditService, cc)
+    with MessagesFilter {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -56,16 +57,15 @@ class GetCalculationMessagesController @Inject()(
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: GetCalculationMessagesRequest): RequestHandling[CalculationMessages, HateoasWrapper[CalculationMessages]] =
-    RequestHandling[CalculationMessages](
-      RequestDefn.Get(req.backendCalculationUri))
+    RequestHandling[CalculationMessages](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
         TypeFormatError,
         NotFoundError
-      ).mapSuccess(filterMessages(req.queryData))
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
+      )
+      .mapSuccess(filterMessages(req.queryData))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
 
   def getMessages(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -73,14 +73,13 @@ class GetCalculationMessagesController @Inject()(
       doHandleRequest(rawData)
     }
 
-  def filterMessages(queries: Seq[MessageType])(messagesResponse: ResponseWrapper[CalculationMessages]):
-  Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
+  def filterMessages(queries: Seq[MessageType])(
+      messagesResponse: ResponseWrapper[CalculationMessages]): Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
     val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)
-    }
-    else {
-      Left(ErrorWrapper(Some(filteredResponse.correlationId),MtdErrors(NOT_FOUND, NoMessagesExistError) ))
+    } else {
+      Left(ErrorWrapper(Some(filteredResponse.correlationId), MtdErrors(NOT_FOUND, NoMessagesExistError)))
     }
   }
 }
