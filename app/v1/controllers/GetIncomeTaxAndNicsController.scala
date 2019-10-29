@@ -22,34 +22,37 @@ import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
+import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getIncomeTaxAndNics.GetIncomeTaxAndNicsResponse
-import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v1.models.response.getIncomeTaxAndNics.{GetIncomeTaxAndNicsResponse, TaxAndNicsHateoasData}
+import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
 class GetIncomeTaxAndNicsController @Inject()(
-                                            authService: EnrolmentsAuthService,
-                                            lookupService: MtdIdLookupService,
-                                            parser: GetCalculationParser,
-                                            service: StandardService,
-                                            auditService: AuditService,
-                                            cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationRawData,
-                               GetCalculationRequest,
-                               CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
-                               GetIncomeTaxAndNicsResponse,
-                               AnyContent](authService, lookupService, parser, service, auditService, cc) { controller =>
+                                               authService: EnrolmentsAuthService,
+                                               lookupService: MtdIdLookupService,
+                                               parser: GetCalculationParser,
+                                               service: StandardService,
+                                               hateoasFactory: HateoasFactory,
+                                               cc: ControllerComponents
+                                             )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationRawData,
+    GetCalculationRequest,
+    CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
+    HateoasWrapper[GetIncomeTaxAndNicsResponse],
+    AnyContent](authService, lookupService, parser, service, cc) {
+  controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxAndNicsController", endpointName = "getIncomeTaxAndNics")
 
   override def requestHandlingFor(
-      playRequest: Request[AnyContent],
-      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], GetIncomeTaxAndNicsResponse] =
+                                   playRequest: Request[AnyContent],
+                                   req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
     RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
@@ -59,10 +62,12 @@ class GetIncomeTaxAndNicsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, TaxAndNicsHateoasData(req.nino.nino, req.calculationId)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
