@@ -24,17 +24,98 @@
           "type": {
             "description": "The type of calculation performed.",
             "type": "string",
-            "enum": ["inYear", "crystallisation"]
+            "enum": [
+              "inYear",
+              "crystallisation"
+            ]
           },
           "requestedBy": {
             "description": "The requestor of the calculation. Currently agent will default to customer until it can be supported.",
             "type": "string",
-            "enum": ["customer", "hmrc", "agent"]
+            "enum": [
+              "customer",
+              "hmrc",
+              "agent"
+            ]
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "A list of endpoint links that indicate possible actions related to the current resource",
+              "properties": {
+                "href": {
+                  "description": "The relative url of the endpoint",
+                  "type": "string",
+                  "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+                },
+                "rel": {
+                  "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+                  "type": "string",
+                  "enum": [
+                    "self"
+                  ]
+                },
+                "method": {
+                  "description": "The HTTP method type for the endpoint",
+                  "type": "string",
+                  "enum": [
+                    "GET"
+                  ]
+                }
+              },
+              "required": [
+                "href",
+                "rel",
+                "method"
+              ]
+            }
           }
         },
-        "required": ["id", "calculationTimestamp", "type"]
+        "required": [
+          "id",
+          "calculationTimestamp",
+          "type"
+        ]
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
+            "description": "The relative url of the endpoint",
+            "type": "string",
+            "example": "/individuals/calculations/{nino}/self-assessment"
+          },
+          "rel": {
+            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "type": "string",
+            "enum": [
+              "self",
+              "trigger"
+            ]
+          },
+          "method": {
+            "description": "The HTTP method type for the endpoint",
+            "type": "string",
+            "enum": [
+              "GET",
+              "POST"
+            ]
+          }
+        },
+        "required": [
+          "href",
+          "rel",
+          "method"
+        ]
       }
     }
   },
-  "required": ["calculations"]
+  "required": [
+    "calculations"
+  ]
 }

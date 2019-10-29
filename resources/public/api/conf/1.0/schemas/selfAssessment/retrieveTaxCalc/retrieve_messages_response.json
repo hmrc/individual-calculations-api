@@ -9,7 +9,7 @@
       "items": {
         "type": "object",
         "description": "A list of info messages relating to the calculation ID.",
-        "properties":{
+        "properties": {
           "id": {
             "description": "The ID of the message.",
             "type": "string"
@@ -19,7 +19,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "text"]
+        "required": [
+          "id",
+          "text"
+        ]
       }
     },
     "warnings": {
@@ -27,7 +30,7 @@
       "items": {
         "type": "object",
         "description": "A list of warning messages relating to the calculation ID.",
-        "properties":{
+        "properties": {
           "id": {
             "description": "The ID of the message.",
             "type": "string"
@@ -37,7 +40,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "text"]
+        "required": [
+          "id",
+          "text"
+        ]
       }
     },
     "errors": {
@@ -45,7 +51,7 @@
       "items": {
         "type": "object",
         "description": "A list of error messages relating to the calculation ID.",
-        "properties":{
+        "properties": {
           "id": {
             "description": "The ID of the message.",
             "type": "string"
@@ -55,7 +61,44 @@
             "type": "string"
           }
         },
-        "required": ["id", "text"]
+        "required": [
+          "id",
+          "text"
+        ]
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
+            "description": "The relative url of the endpoint",
+            "type": "string",
+            "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+          },
+          "rel": {
+            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "type": "string",
+            "enum": [
+              "self",
+              "metadata"
+            ]
+          },
+          "method": {
+            "description": "The HTTP method type for the endpoint",
+            "type": "string",
+            "enum": [
+              "GET"
+            ]
+          }
+        },
+        "required": [
+          "href",
+          "rel",
+          "method"
+        ]
       }
     }
   }

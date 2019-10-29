@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package v1.models.response.getTaxableIncome
 
 import support.UnitSpec
