@@ -34,5 +34,17 @@
       "ukDividends": {
         "taxableIncome": 99999999
       }
+    },
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/end-of-year-estimate",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "rel": "metadata",
+      "method": "GET"
     }
+  ]
   }
