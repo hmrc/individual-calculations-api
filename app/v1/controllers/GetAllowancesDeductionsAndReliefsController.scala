@@ -24,35 +24,36 @@ import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{RequestDefn, RequestHandling}
 import v1.hateoas.HateoasFactory
 import v1.models.errors._
+import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
+import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData}
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
 class GetAllowancesDeductionsAndReliefsController @Inject()(
-    authService: EnrolmentsAuthService,
-    lookupService: MtdIdLookupService,
-    parser: GetCalculationParser,
-    service: StandardService,
-    hateoasFactory: HateoasFactory,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationRawData,
-                               GetCalculationRequest,
-                               CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],
-                               AllowancesDeductionsAndReliefsResponse,
-                               AnyContent](authService, lookupService, parser, service, cc) {
+                                                             authService: EnrolmentsAuthService,
+                                                             lookupService: MtdIdLookupService,
+                                                             parser: GetCalculationParser,
+                                                             service: StandardService,
+                                                             hateoasFactory: HateoasFactory,
+                                                             cc: ControllerComponents
+                                                           )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationRawData,
+    GetCalculationRequest,
+    CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],
+    HateoasWrapper[AllowancesDeductionsAndReliefsResponse],
+    AnyContent](authService, lookupService, parser, service, cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetAllowancesDeductionsAndReliefsController", endpointName = "getAllowancesDeductionsAndReliefs")
 
-  override def requestHandlingFor(
-      playRequest: Request[AnyContent],
-      req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], AllowancesDeductionsAndReliefsResponse] =
-    RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse]](RequestDefn.Get(req.backendCalculationUri))
+  override def requestHandlingFor(playRequest: Request[AnyContent],
+                                  req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
+    RequestHandling[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse]](
+      RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -65,6 +66,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
             if (calc.isEmpty) Left(MtdErrors(NOT_FOUND, NoAllowancesDeductionsAndReliefsExist)) else Right(calc)
         }
       }
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, AllowancesHateoasData(req.nino.nino, req.calculationId)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 

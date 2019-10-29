@@ -27,15 +27,15 @@ case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, d
     (summary.totalAllowancesAndDeductions, summary.totalReliefs) match {
       case (Some(x), _) if x > 0 => false
       case (_, Some(x)) if x > 0 => false
-      case _                     => true
+      case _ => true
     }
 }
 
-object AllowancesDeductionsAndReliefsResponse extends HateoasLinks{
+object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
   implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
     (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefsResponse])
 
-  implicit val writes: Writes[AllowancesDeductionsAndReliefsResponse] = Json.writes[AllowancesDeductionsAndReliefsResponse]
+  implicit val writes: OWrites[AllowancesDeductionsAndReliefsResponse] = Json.writes[AllowancesDeductionsAndReliefsResponse]
 
 
   implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData] {
@@ -43,7 +43,6 @@ object AllowancesDeductionsAndReliefsResponse extends HateoasLinks{
       Seq(getMetadata(appConfig, data.nino, data.calculationId, isSelf = false), getAllowances(appConfig, data.nino, data.calculationId, isSelf = true))
     }
   }
-
 
 }
 
