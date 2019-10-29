@@ -19,7 +19,7 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.GetIncomeTaxAndNicsFixture
@@ -33,6 +33,22 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
     val nino          = "AA123456A"
     val correlationId = "X-123"
     val calcId        = "12345678"
+
+
+    val linksJson: JsObject = Json.parse(
+      s"""{
+         |    "links": [{
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+         |      "method": "GET",
+         |      "rel": "metadata"
+         |    },{
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
+         |      "method": "GET",
+         |      "rel": "self"
+         |    }
+         |    ]
+         |}
+         |""".stripMargin).as[JsObject]
 
     def uri: String = s"/$nino/self-assessment/$calcId/income-tax-nics-calculated"
 
@@ -61,7 +77,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe GetIncomeTaxAndNicsFixture.successOutputToVendor
+        response.json shouldBe GetIncomeTaxAndNicsFixture.successOutputToVendor.deepMerge(linksJson)
       }
     }
 

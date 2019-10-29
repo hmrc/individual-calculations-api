@@ -16,7 +16,7 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getIncomeTaxAndNics._
 
@@ -32,8 +32,8 @@ object GetIncomeTaxAndNicsFixture {
   val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
   val calculationDetail: CalculationDetail = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
 
-  val getIncomeTaxAndNicsResponseObj = CalculationWrapperOrError.CalculationWrapper(GetIncomeTaxAndNicsResponse(summary = calculationSummary,
-    detail = calculationDetail))
+  val getIncomeTaxAndNicsResponseObj = CalculationWrapperOrError.CalculationWrapper(GetIncomeTaxAndNicsResponse(summary = calculationSummary, detail = calculationDetail))
+  val getIncomeTaxAndNicsResponse: GetIncomeTaxAndNicsResponse = GetIncomeTaxAndNicsResponse(calculationSummary, calculationDetail)
 
   val successBodyFromBackEnd: JsValue = Json.parse(s"""
                                   |{
@@ -86,7 +86,7 @@ object GetIncomeTaxAndNicsFixture {
                                  |  }
                                  |}""".stripMargin)
 
-  val successOutputToVendor: JsValue = Json.parse(s"""{
+  val successOutputToVendor: JsObject = Json.parse(s"""{
                                     |  "summary": {
                                     |     "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
                                     |     "nics" : ${Json.toJson(nicSummary).toString()},
@@ -101,5 +101,5 @@ object GetIncomeTaxAndNicsFixture {
                                     |     "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
                                     |  }
                                     |}
-                                    |""".stripMargin)
+                                    |""".stripMargin).as[JsObject]
 }
