@@ -25,6 +25,7 @@ import v1.handling.{RequestDefn, RequestHandling}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
@@ -99,6 +100,8 @@ class GetCalculationMetadataControllerSpec
     calculationErrorCount = None
   )
 
+  val error: ErrorWrapper = ErrorWrapper(Some(correlationId), MtdErrors(NOT_FOUND, NotFoundError))
+
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
@@ -127,6 +130,36 @@ class GetCalculationMetadataControllerSpec
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino,  calcId, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
+        MockedAuditService.verifyAuditEvent(event).once
+      }
+    }
+
+    "return FORBIDDEN with the correct error message" when {
+      "matching resource not found" in new Test {
+        MockGetCalculationParser
+          .parse(rawData)
+          .returns(Right(requestData))
+
+        MockStandardService
+          .doService(RequestDefn.Get(uri), OK)
+          .returns(Future.successful(Left(error)))
+
+        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
+
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(NotFoundError)
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino,  calcId, correlationId,
+          AuditResponse(NOT_FOUND, Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
