@@ -90,7 +90,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
-  val error = ErrorWrapper(Some(correlationId), MtdErrors(FORBIDDEN, RuleNoIncomeSubmissionsExistError ))
+  val error = ErrorWrapper(Some(correlationId), MtdErrors(FORBIDDEN, RuleNoIncomeSubmissionsExistError))
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
@@ -143,7 +143,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
         val detail = TriggerCalculationAuditDetail(
           "Individual", None, nino, Json.toJson(TaxYearWrapper("2017-18")), correlationId,
-          AuditResponse(FORBIDDEN, Some(List(AuditError("RULE_NO_INCOME_SUBMISSIONS_EXIST"))), None))
+          AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None))
         val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
