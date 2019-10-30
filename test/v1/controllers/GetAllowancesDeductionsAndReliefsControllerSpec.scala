@@ -25,6 +25,7 @@ import v1.handling.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
@@ -43,7 +44,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     with MockGetCalculationParser
     with MockStandardService
     with MockHateoasFactory
-    with MockAuditService{
+    with MockAuditService {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -108,12 +109,21 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(HateoasWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
+        val responseBody = AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
+        contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
+          "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
+
 
     "return FORBIDDEN with the error message" when {
       "error count is greater than zero" in new Test {
@@ -130,6 +140,13 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
+          "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -152,6 +169,13 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         status(result) shouldBe NOT_FOUND
         contentAsJson(result) shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoAllowancesDeductionsAndReliefsExist.code))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
+          "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
