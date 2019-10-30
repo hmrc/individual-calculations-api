@@ -19,18 +19,19 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.MimeTypes
-import play.api.libs.json.{ Json, Reads, Writes }
-import play.api.mvc.{ ControllerComponents, Request, Result }
+import play.api.libs.json.{JsValue, Json, Reads, Writes}
+import play.api.mvc.{AnyContent, ControllerComponents, Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.{ AuditHandling, RequestHandling }
+import v1.handling.{AuditHandling, RequestHandling}
+import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
 import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes, A](
     val authService: EnrolmentsAuthService,
@@ -95,5 +96,26 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
       Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
     }.merge
+  }
+
+  def getCalculationAuditHandler(auditType: String,
+                                 transactionName: String,
+                                 nino: String,
+                                 calculationId: String,
+                                 request: UserRequest[AnyContent]): AuditHandling[GetCalculationAuditDetail] = {
+    AuditHandling(
+      auditType,
+      transactionName,
+      successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
+        GetCalculationAuditDetail(request.userDetails,
+          nino, calculationId,
+          correlationId,
+          AuditResponse(status, Right(response))),
+      failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
+        GetCalculationAuditDetail(request.userDetails,
+          nino, calculationId,
+          correlationId,
+          AuditResponse(status, Left(errors)))
+    )
   }
 }
