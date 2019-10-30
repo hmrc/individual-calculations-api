@@ -32,7 +32,6 @@ object GetCalculationAuditDetail {
   def apply(userDetails: UserDetails,
             nino: String,
             calculationId: String,
-            request: JsValue,
             `X-CorrelationId`: String,
             auditResponse: AuditResponse): GetCalculationAuditDetail = {
 

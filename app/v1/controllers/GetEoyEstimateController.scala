@@ -24,7 +24,7 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{AuditHandling, RequestDefn, RequestHandling}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditError, AuditResponse, GetEOYEstimateAuditDetail}
+import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -81,12 +81,12 @@ class GetEoyEstimateController @Inject()(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
         successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
-          GetEOYEstimateAuditDetail(request.userDetails,
+          GetCalculationAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Right(response))),
         failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-          GetEOYEstimateAuditDetail(request.userDetails,
+          GetCalculationAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Left(errors)))

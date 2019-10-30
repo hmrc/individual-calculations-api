@@ -78,17 +78,15 @@ class GetTaxableIncomeController @Inject()(
       val rawData = GetCalculationRawData(nino, calculationId)
 
       val auditHandling = AuditHandling(
-        "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
-        "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
+        "retrieveSelfAssessmentTaxCalculationTaxableIncome",
+        "retrieve-self-assessment-tax-calculation-taxable-income",
         successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
-          GetCalculationAuditDetail(request.userDetails.userType,
-            request.userDetails.agentReferenceNumber,
+          GetCalculationAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Right(response))),
         failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-          GetCalculationAuditDetail(request.userDetails.userType,
-            request.userDetails.agentReferenceNumber,
+          GetCalculationAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Left(errors)))
