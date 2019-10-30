@@ -81,14 +81,12 @@ class GetEoyEstimateController @Inject()(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
         successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
-          GetEOYEstimateAuditDetail(request.userDetails.userType,
-            request.userDetails.agentReferenceNumber,
+          GetEOYEstimateAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Right(response))),
         failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-          GetEOYEstimateAuditDetail(request.userDetails.userType,
-            request.userDetails.agentReferenceNumber,
+          GetEOYEstimateAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Left(errors)))
