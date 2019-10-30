@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.audit
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.models.errors.CalculationIdFormatError
+import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
 
-class GetEOYEstimateAuditDetailSpec extends UnitSpec {
+class GetCalculationAuditDetailSpec extends UnitSpec {
 
-  val nino          = "ZG903729C"
-  val calculationId = "calculationId"
+  val nino = "ZG903729C"
+  val calculationId = "calcId"
 
   "writes" must {
     "work" when {
@@ -42,7 +43,7 @@ class GetEOYEstimateAuditDetailSpec extends UnitSpec {
                                  |}""".stripMargin)
 
         Json.toJson(
-          GetEOYEstimateAuditDetail(
+          GetCalculationAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
             nino = nino,
@@ -58,7 +59,6 @@ class GetEOYEstimateAuditDetailSpec extends UnitSpec {
           )) shouldBe json
       }
     }
-
     "work" when {
       "error response" in {
         val json = Json.parse(s"""
@@ -80,7 +80,7 @@ class GetEOYEstimateAuditDetailSpec extends UnitSpec {
                                  |""".stripMargin)
 
         Json.toJson(
-          GetEOYEstimateAuditDetail(
+          GetCalculationAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
             nino = nino,

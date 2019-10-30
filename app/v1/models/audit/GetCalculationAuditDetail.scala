@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.audit
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{JsValue, Json, OWrites, Writes}
 import v1.models.auth.UserDetails
 
-case class GetEOYEstimateAuditDetail(userType: String,
+case class GetCalculationAuditDetail(userType: String,
                                      agentReferenceNumber: Option[String],
                                      nino: String,
                                      calculationId: String,
                                      `X-CorrelationId`: String,
                                      response: AuditResponse)
 
-object GetEOYEstimateAuditDetail {
-  implicit val writes: Writes[GetEOYEstimateAuditDetail] = Json.writes[GetEOYEstimateAuditDetail]
+object GetCalculationAuditDetail {
+  implicit val writes: OWrites[GetCalculationAuditDetail] = Json.writes[GetCalculationAuditDetail]
 
   def apply(userDetails: UserDetails,
             nino: String,
             calculationId: String,
             `X-CorrelationId`: String,
-            auditResponse: AuditResponse): GetEOYEstimateAuditDetail = {
+            auditResponse: AuditResponse): GetCalculationAuditDetail = {
 
-    GetEOYEstimateAuditDetail(
+    GetCalculationAuditDetail(
       userType = userDetails.userType,
       agentReferenceNumber = userDetails.agentReferenceNumber,
       nino = nino,

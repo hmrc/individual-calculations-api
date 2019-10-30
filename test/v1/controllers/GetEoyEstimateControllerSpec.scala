@@ -25,7 +25,7 @@ import v1.handling.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetEOYEstimateAuditDetail}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors.{EndOfYearEstimateNotPresentError, RuleCalculationErrorMessagesExist}
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
@@ -109,7 +109,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetEOYEstimateAuditDetail(
+        val detail = GetCalculationAuditDetail(
           "Individual", None, nino,  calcId, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
@@ -133,7 +133,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetEOYEstimateAuditDetail(
+        val detail = GetCalculationAuditDetail(
           "Individual", None, nino, calcId, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
@@ -157,7 +157,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(EndOfYearEstimateNotPresentError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetEOYEstimateAuditDetail(
+        val detail = GetCalculationAuditDetail(
           "Individual", None, nino, calcId, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(EndOfYearEstimateNotPresentError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
