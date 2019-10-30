@@ -139,7 +139,7 @@ class GetCalculationMetadataControllerSpec
       }
     }
 
-    "return FORBIDDEN with the correct error message" when {
+    "return NOT_FOUND with the correct error message" when {
       "matching resource not found" in new Test {
         MockGetCalculationParser
           .parse(rawData)
