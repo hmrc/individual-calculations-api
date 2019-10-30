@@ -16,22 +16,23 @@
 
 package v1.controllers
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
-import v1.handling.{ RequestDefn, RequestHandling }
+import v1.handling.{RequestDefn, RequestHandling}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
-import v1.mocks.services.{ MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.Method.GET
-import v1.models.hateoas.{ HateoasWrapper, Link }
+import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{ GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType }
-import v1.models.response.getCalculationMessages.{ CalculationMessages, CalculationMessagesHateoasData, Message }
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
+import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -83,7 +84,6 @@ class GetCalculationMessagesControllerSpec
       |}""".stripMargin)
 
   val responseBody: JsValue         = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
-  val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
 
   private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
@@ -100,6 +100,8 @@ class GetCalculationMessagesControllerSpec
           .parse(rawData)
           .returns(Right(requestData))
 
+        val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
+
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
@@ -113,6 +115,38 @@ class GetCalculationMessagesControllerSpec
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino,  calcId, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
+        MockedAuditService.verifyAuditEvent(event).once
+      }
+    }
+
+    "return NOT_FOUND (NO_MESSAGES_PRESENT)" when {
+      "there are no messages" in new Test {
+        MockGetCalculationQueryParser
+          .parse(rawData)
+          .returns(Right(requestData))
+
+        val response: CalculationMessages = messagesResponse(info = false, warn = false, error = false)
+
+        MockStandardService
+          .doService(RequestDefn.Get(uri), OK)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
+
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(NoMessagesExistError)
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoMessagesExistError.code))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -129,6 +163,8 @@ class GetCalculationMessagesControllerSpec
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
         ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
       )
+
+      val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)

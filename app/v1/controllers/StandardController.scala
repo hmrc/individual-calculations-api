@@ -19,18 +19,17 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.MimeTypes
-import play.api.libs.json.{ Json, Reads, Writes }
-import play.api.mvc.{ ControllerComponents, Request, Result }
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.{Json, Reads, Writes}
+import play.api.mvc.{ControllerComponents, Request, Result}
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.{ AuditHandling, RequestHandling }
+import v1.handling.{AuditHandling, RequestHandling}
 import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIResp: Writes, A](
     val authService: EnrolmentsAuthService,
@@ -68,11 +67,11 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         val responseBody = Json.toJson(response.responseData)
 
         auditHandling.foreach { auditHandling =>
-          def auditSuccess[D](auditHandling: AuditHandling[D])(implicit hc: HeaderCarrier, ec: ExecutionContext) = {
+          def doAudit[D](auditHandling: AuditHandling[D]) = {
             implicit val writes: Writes[D] = auditHandling.writes
             auditService.auditEvent(auditHandling.successEvent(response.correlationId, successCode.status, Some(responseBody)))
           }
-          auditSuccess(auditHandling)
+          doAudit(auditHandling)
         }
 
         Status(status)(responseBody)
@@ -86,11 +85,11 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       val status        = errorWrapper.errors.statusCode
 
       auditHandling.foreach { auditHandling =>
-        def auditSuccess[D](auditHandling: AuditHandling[D])(implicit hc: HeaderCarrier, ec: ExecutionContext) = {
+        def doAudit[D](auditHandling: AuditHandling[D]) = {
           implicit val writes: Writes[D] = auditHandling.writes
           auditService.auditEvent(auditHandling.failureEvent(correlationId, status, errorBody.auditErrors))
         }
-        auditSuccess(auditHandling)
+        doAudit(auditHandling)
       }
 
       Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
