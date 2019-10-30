@@ -17,12 +17,14 @@
 package v1.controllers
 
 import javax.inject.Inject
+import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handling.{AuditHandling, RequestDefn, RequestHandling}
 import v1.hateoas.HateoasFactory
+import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -31,26 +33,26 @@ import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class GetCalculationMetadataController @Inject()(
-    authService: EnrolmentsAuthService,
-    lookupService: MtdIdLookupService,
-    parser: GetCalculationParser,
-    service: StandardService,
-    hateoasFactory: HateoasFactory,
-    auditService: AuditService,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, HateoasWrapper[CalculationMetadata], AnyContent](
-      authService,
-      lookupService,
-      parser,
-      service,
-      auditService,
-      cc) {
+class GetCalculationMetadataController @Inject()(authService: EnrolmentsAuthService,
+                                                 lookupService: MtdIdLookupService,
+                                                 parser: GetCalculationParser,
+                                                 service: StandardService,
+                                                 hateoasFactory: HateoasFactory,
+                                                 auditService: AuditService,
+                                                 cc: ControllerComponents
+                                                )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, HateoasWrapper[CalculationMetadata], AnyContent](
+    authService,
+    lookupService,
+    parser,
+    service,
+    auditService,
+    cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
                                   req: GetCalculationRequest): RequestHandling[CalculationMetadata, HateoasWrapper[CalculationMetadata]] =
@@ -60,13 +62,28 @@ class GetCalculationMetadataController @Inject()(
         CalculationIdFormatError,
         NotFoundError
       )
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
-
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
 
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
-      doHandleRequest(rawData)
+
+      val auditHandling = AuditHandling(
+        "retrieveSelfAssessmentTaxCalculationMetadata",
+        "retrieve-self-assessment-tax-calculation-metadata",
+        successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
+          GetCalculationAuditDetail(request.userDetails,
+            nino, calculationId,
+            correlationId,
+            AuditResponse(status, Right(response))),
+        failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
+          GetCalculationAuditDetail(request.userDetails,
+            nino, calculationId,
+            correlationId,
+            AuditResponse(status, Left(errors)))
+      )
+
+      doHandleRequest(rawData, Some(auditHandling))
     }
 }
