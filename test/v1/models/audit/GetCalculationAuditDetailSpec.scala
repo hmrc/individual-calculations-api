@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
 
-class GetTaxableIncomeAuditDetailSpec extends UnitSpec {
+class GetCalculationAuditDetailSpec extends UnitSpec {
 
   val nino = "ZG903729C"
   val calculationId = "calcId"
@@ -43,7 +43,7 @@ class GetTaxableIncomeAuditDetailSpec extends UnitSpec {
                                  |}""".stripMargin)
 
         Json.toJson(
-          GetTaxableIncomeAuditDetail(
+          GetCalculationAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
             nino = nino,
@@ -80,7 +80,7 @@ class GetTaxableIncomeAuditDetailSpec extends UnitSpec {
                                  |""".stripMargin)
 
         Json.toJson(
-          GetTaxableIncomeAuditDetail(
+          GetCalculationAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
             nino = nino,

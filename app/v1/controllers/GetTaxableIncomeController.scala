@@ -24,7 +24,7 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.handling.{AuditHandling, RequestDefn, RequestHandling}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditError, AuditResponse, GetTaxableIncomeAuditDetail}
+import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -81,13 +81,13 @@ class GetTaxableIncomeController @Inject()(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
         successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
-          GetTaxableIncomeAuditDetail(request.userDetails.userType,
+          GetCalculationAuditDetail(request.userDetails.userType,
             request.userDetails.agentReferenceNumber,
             nino, calculationId,
             correlationId,
             AuditResponse(status, Right(response))),
         failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-          GetTaxableIncomeAuditDetail(request.userDetails.userType,
+          GetCalculationAuditDetail(request.userDetails.userType,
             request.userDetails.agentReferenceNumber,
             nino, calculationId,
             correlationId,

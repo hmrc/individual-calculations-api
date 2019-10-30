@@ -19,24 +19,24 @@ package v1.models.audit
 import play.api.libs.json.{JsValue, Json, OWrites, Writes}
 import v1.models.auth.UserDetails
 
-case class GetTaxableIncomeAuditDetail(userType: String,
-                                       agentReferenceNumber: Option[String],
-                                       nino: String,
-                                       calculationId: String,
-                                       `X-CorrelationId`: String,
-                                       response: AuditResponse)
+case class GetCalculationAuditDetail(userType: String,
+                                     agentReferenceNumber: Option[String],
+                                     nino: String,
+                                     calculationId: String,
+                                     `X-CorrelationId`: String,
+                                     response: AuditResponse)
 
-object GetTaxableIncomeAuditDetail {
-  implicit val writes: OWrites[GetTaxableIncomeAuditDetail] = Json.writes[GetTaxableIncomeAuditDetail]
+object GetCalculationAuditDetail {
+  implicit val writes: OWrites[GetCalculationAuditDetail] = Json.writes[GetCalculationAuditDetail]
 
   def apply(userDetails: UserDetails,
             nino: String,
             calculationId: String,
             request: JsValue,
             `X-CorrelationId`: String,
-            auditResponse: AuditResponse): GetTaxableIncomeAuditDetail = {
+            auditResponse: AuditResponse): GetCalculationAuditDetail = {
 
-    GetTaxableIncomeAuditDetail(
+    GetCalculationAuditDetail(
       userType = userDetails.userType,
       agentReferenceNumber = userDetails.agentReferenceNumber,
       nino = nino,
