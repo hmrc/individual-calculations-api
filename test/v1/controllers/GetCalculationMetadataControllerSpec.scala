@@ -157,7 +157,7 @@ class GetCalculationMetadataControllerSpec
 
         val detail = GetCalculationAuditDetail(
           "Individual", None, nino,  calcId, correlationId,
-          AuditResponse(NOT_FOUND, Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))), None))
+          AuditResponse(NOT_FOUND, Some(List(AuditError(NotFoundError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
