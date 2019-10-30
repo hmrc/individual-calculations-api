@@ -25,6 +25,7 @@ import v1.handling.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetTaxableIncomeAuditDetail}
 import v1.models.errors.RuleCalculationErrorMessagesExist
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
@@ -102,10 +103,17 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
           .returns(HateoasWrapper(TaxableIncomeFixtures.taxableIncomeResponse, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getTaxableIncome(nino, calcId)(fakeGetRequest(queryUri))
+        val responseBody = TaxableIncomeFixtures.json.deepMerge(linksJson)
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe TaxableIncomeFixtures.json.deepMerge(linksJson)
+        contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetTaxableIncomeAuditDetail(
+          "Individual", None, nino,  calcId, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -124,6 +132,12 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetTaxableIncomeAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
