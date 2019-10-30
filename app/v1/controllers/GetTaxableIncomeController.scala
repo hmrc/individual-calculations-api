@@ -69,7 +69,7 @@ class GetTaxableIncomeController @Inject()(
         }
       }
       .mapSuccessSimple(rawResponse =>
-      hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, req.calculationId)))
+        hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, req.calculationId)))
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
