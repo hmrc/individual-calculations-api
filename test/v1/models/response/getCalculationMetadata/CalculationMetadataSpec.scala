@@ -92,8 +92,8 @@ class CalculationMetadataSpec extends UnitSpec {
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
-    "return the correct hateoas links" in new Test {
-      hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId)) shouldBe
+    "return the correct hateoas links when errors are not present" in new Test {
+      hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId, None)) shouldBe
         HateoasWrapper(
           metadata,
           Seq(
@@ -102,6 +102,17 @@ class CalculationMetadataSpec extends UnitSpec {
             Link("/individuals/calculations/someNino/self-assessment/someCalcId/taxable-income", GET, "taxable-income"),
             Link("/individuals/calculations/someNino/self-assessment/someCalcId/allowances-deductions-reliefs", GET, "allowances-deductions-reliefs"),
             Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "end-of-year-estimate"),
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId/messages", GET, "messages")
+          )
+        )
+    }
+
+    "return the correct hateoas links when errors are present" in new Test {
+      hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId, Some(1))) shouldBe
+        HateoasWrapper(
+          metadata,
+          Seq(
+            Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
             Link("/individuals/calculations/someNino/self-assessment/someCalcId/messages", GET, "messages")
           )
         )

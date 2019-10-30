@@ -46,16 +46,23 @@ object CalculationMetadata extends HateoasLinks {
   implicit object LinkFactory extends HateoasLinksFactory[CalculationMetadata, CalculationMetadataHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMetadataHateoasData): Seq[Link] = {
       import data._
-      Seq(
-        getMetadata(appConfig, nino, calculationId, isSelf = true),
-        getIncomeTax(appConfig, nino, calculationId, isSelf = false),
-        getTaxableIncome(appConfig, nino, calculationId, isSelf = false),
-        getAllowances(appConfig, nino, calculationId, isSelf = false),
-        getEoyEstimate(appConfig, nino, calculationId, isSelf = false),
-        getMessages(appConfig, nino, calculationId, isSelf = false)
-      )
+      if(data.errorCount.isEmpty) {
+        Seq(
+          getMetadata(appConfig, nino, calculationId, isSelf = true),
+          getIncomeTax(appConfig, nino, calculationId, isSelf = false),
+          getTaxableIncome(appConfig, nino, calculationId, isSelf = false),
+          getAllowances(appConfig, nino, calculationId, isSelf = false),
+          getEoyEstimate(appConfig, nino, calculationId, isSelf = false),
+          getMessages(appConfig, nino, calculationId, isSelf = false)
+        )
+      } else {
+        Seq(
+          getMetadata(appConfig, nino, calculationId, isSelf = true),
+          getMessages(appConfig, nino, calculationId, isSelf = false)
+        )
+      }
     }
   }
 }
 
-case class CalculationMetadataHateoasData(nino: String, calculationId: String) extends HateoasData
+case class CalculationMetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int]) extends HateoasData
