@@ -21,10 +21,11 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.GetIncomeTaxAndNicsFixture
-import v1.handling.RequestDefn
+import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
@@ -106,8 +107,16 @@ class GetIncomeTaxAndNicsControllerSpec
         val result: Future[Result] = controller.getIncomeTaxAndNics(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe GetIncomeTaxAndNicsFixture.successOutputToVendor.deepMerge(linksJson)
+        val responseBody: JsObject = GetIncomeTaxAndNicsFixture.successOutputToVendor.deepMerge(linksJson)
+        contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino,  calcId, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
+          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -126,6 +135,13 @@ class GetIncomeTaxAndNicsControllerSpec
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GetCalculationAuditDetail(
+          "Individual", None, nino, calcId, correlationId,
+          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
+          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }

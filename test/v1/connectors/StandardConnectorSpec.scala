@@ -18,7 +18,7 @@ package v1.connectors
 
 import play.api.libs.json.{JsString, Json, Reads}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestDefn
+import v1.handler.RequestDefn
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
 import v1.models.request.ListCalculationsRequest

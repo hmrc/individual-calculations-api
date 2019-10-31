@@ -21,7 +21,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
-import v1.handling.{AuditHandling, RequestDefn, RequestHandling}
+import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.{AuditError, AuditResponse, TriggerCalculationAuditDetail}
 import v1.models.errors._
@@ -56,9 +56,9 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
 
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
-  override def requestHandlingFor(playRequest: Request[JsValue],
-                                  req: TriggerCalculationRequest): RequestHandling[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
-    RequestHandling[TriggerCalculationResponse](
+  override def requestHandlerFor(playRequest: Request[JsValue],
+                                 req: TriggerCalculationRequest): RequestHandler[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
+    RequestHandler[TriggerCalculationResponse](
       RequestDefn.Post(playRequest.path, playRequest.body))
       .withPassThroughErrors(
         NinoFormatError,
@@ -78,21 +78,15 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   def triggerCalculation(nino: String): Action[JsValue] = authorisedAction(nino).async(parse.json) { implicit request =>
     val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(request.body))
 
-    val auditHandling = AuditHandling(
+    val auditHandling = AuditHandler(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
-      successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
+       eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
         TriggerCalculationAuditDetail(request.userDetails,
           nino,
           request.body,
           correlationId,
-          AuditResponse(status, Right(response))),
-      failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-        TriggerCalculationAuditDetail(request.userDetails,
-          nino,
-          request.body,
-          correlationId,
-          AuditResponse(status, Left(errors)))
+          auditResponse)
     )
 
     doHandleRequest(rawData ,Some(auditHandling))

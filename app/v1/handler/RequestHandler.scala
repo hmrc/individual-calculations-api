@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package v1.handling
+package v1.handler
 import play.api.http.Status._
 import play.api.libs.json.{ JsValue, Reads }
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestDefn.{ Get, Post }
-import v1.handling.RequestHandling.{ ErrorMapping, SuccessMapping }
+import v1.handler.RequestDefn.{ Get, Post }
+import v1.handler.RequestHandler.{ ErrorMapping, SuccessMapping }
 import v1.models.errors.{ ErrorWrapper, MtdError }
 import v1.models.outcomes.ResponseWrapper
 
-trait RequestHandling[BackendResp, APIResp] {
+trait RequestHandler[BackendResp, APIResp] {
 
   def requestDefn: RequestDefn
 
@@ -38,19 +38,19 @@ trait RequestHandling[BackendResp, APIResp] {
   def successMapping: SuccessMapping[BackendResp, APIResp]
 }
 
-object RequestHandling {
+object RequestHandler {
   type ErrorMapping                         = PartialFunction[String, (Int, MtdError)]
   type SuccessMapping[BackendResp, APIResp] = ResponseWrapper[BackendResp] => Either[ErrorWrapper, ResponseWrapper[APIResp]]
 
   def noMapping[Resp]: SuccessMapping[Resp, Resp] = (r: ResponseWrapper[Resp]) => Right(r)
 
-  case class Impl[BackendResp, APIResp] protected[handling] (
+  case class Impl[BackendResp, APIResp] protected[handler](
       requestDefn: RequestDefn,
       successCode: SuccessCode,
       passThroughErrors: Seq[MtdError] = Seq.empty,
       customErrorMapping: ErrorMapping = PartialFunction.empty,
       successMapping: SuccessMapping[BackendResp, APIResp])(implicit val reads: Reads[BackendResp])
-      extends RequestHandling[BackendResp, APIResp] {
+      extends RequestHandler[BackendResp, APIResp] {
 
     def withPassThroughErrors(errors: MtdError*): Impl[BackendResp, APIResp] =
       copy(passThroughErrors = errors)

@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -170,7 +170,7 @@ class GetCalculationMetadataControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandling[CalculationMetadata, CalculationMetadata] => Unit = allChecks[CalculationMetadata, CalculationMetadata](
+      val mappingChecks: RequestHandler[CalculationMetadata, CalculationMetadata] => Unit = allChecks[CalculationMetadata, CalculationMetadata](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),

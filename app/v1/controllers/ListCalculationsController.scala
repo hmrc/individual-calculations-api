@@ -21,7 +21,7 @@ import play.api.libs.json.{OWrites, Writes}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.ListCalculationsParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
@@ -57,11 +57,11 @@ class ListCalculationsController @Inject()(
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(
+  override def requestHandlerFor(
       playRequest: Request[AnyContent],
-      req: ListCalculationsRequest): RequestHandling[ListCalculationsResponse[CalculationListItem],
+      req: ListCalculationsRequest): RequestHandler[ListCalculationsResponse[CalculationListItem],
                                                      HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]]] = {
-    RequestHandling[ListCalculationsResponse[CalculationListItem]](
+    RequestHandler[ListCalculationsResponse[CalculationListItem]](
       RequestDefn
         .Get(playRequest.path)
         .withOptionalParams("taxYear" -> req.taxYear))

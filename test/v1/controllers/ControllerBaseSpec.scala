@@ -22,7 +22,7 @@ import play.api.test.Helpers.stubControllerComponents
 import play.api.test.{ FakeRequest, ResultExtractors }
 import support.UnitSpec
 import utils.Logging
-import v1.handling.RequestHandling
+import v1.handler.RequestHandler
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.support.BackendResponseMappingSupport
@@ -51,8 +51,8 @@ class ControllerBaseSpec
   def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
 
   def errorMappingCheck[BackendResp, APIResp](backendCode: String, backendStatus: Int, mtdError: MtdError, status: Int)(
-      implicit endpointLogContext: EndpointLogContext): RequestHandling[BackendResp, APIResp] => Unit =
-    (requestHandling: RequestHandling[BackendResp, APIResp]) => {
+      implicit endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit =
+    (requestHandling: RequestHandler[BackendResp, APIResp]) => {
 
       val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
       val requiredError = ErrorWrapper(Some("ignoredCorrelationId"), MtdErrors(status, mtdError))
@@ -62,7 +62,7 @@ class ControllerBaseSpec
     }
 
   def allChecks[BackendResp, APIResp](params: (String, Int, MtdError, Int)*)(
-      implicit endpointLogContext: EndpointLogContext): RequestHandling[BackendResp, APIResp] => Unit = { requestHandling =>
+      implicit endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit = { requestHandling =>
     params
       .map {
         case (backendCode, backendStatus, mtdError, status) => errorMappingCheck[BackendResp, APIResp](backendCode, backendStatus, mtdError, status)

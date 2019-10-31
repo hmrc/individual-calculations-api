@@ -19,15 +19,15 @@ package v1.controllers
 import cats.implicits._
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json._
-import play.api.mvc.{ Action, AnyContent, Request, Result }
+import play.api.mvc.{Action, AnyContent, Request, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.RequestDefn.Get
-import v1.handling.{ AuditHandling, RequestHandling }
-import v1.mocks.services.{ MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
-import v1.models.audit.{ AuditError, AuditEvent, AuditResponse, SampleAuditDetail }
+import v1.handler.RequestDefn.Get
+import v1.handler.{AuditHandler, RequestHandler}
+import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v1.models.audit.{AuditEvent, AuditResponse, SampleAuditDetail}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.RawData
@@ -95,8 +95,8 @@ class StandardControllerSpec
         ) {
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
-      override def requestHandlingFor(playRequest: Request[AnyContent], req: RequestData): RequestHandling.Impl[BackendResp, APIResp] = {
-        RequestHandling[BackendResp](requestDefn)
+      override def requestHandlerFor(playRequest: Request[AnyContent], req: RequestData): RequestHandler.Impl[BackendResp, APIResp] = {
+        RequestHandler[BackendResp](requestDefn)
           .mapSuccess(_.map(_ => mappedResponse).asRight)
       }
 
@@ -116,19 +116,14 @@ class StandardControllerSpec
         authorisedAction(nino).async { implicit request =>
           val rawData = Raw(nino)
 
-          val auditHandling = AuditHandling(
+          val auditHandling = AuditHandler(
             "auditType",
             "txName",
-            successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
+            eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
               SampleAuditDetail(request.userDetails.userType,
                                 request.userDetails.agentReferenceNumber,
                                 correlationId,
-                                AuditResponse(status, Right(response))),
-            failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-              SampleAuditDetail(request.userDetails.userType,
-                                request.userDetails.agentReferenceNumber,
-                                correlationId,
-                                AuditResponse(status, Left(errors)))
+                                auditResponse)
           )
 
           doHandleRequest(rawData, Some(auditHandling))(request)

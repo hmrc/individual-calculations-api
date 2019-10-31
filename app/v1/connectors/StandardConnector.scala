@@ -22,8 +22,8 @@ import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardHttpParser._
-import v1.handling.RequestDefn
-import v1.handling.RequestDefn.{Get, Post}
+import v1.handler.RequestDefn
+import v1.handler.RequestDefn.{Get, Post}
 
 import scala.concurrent.{ExecutionContext, Future}
 

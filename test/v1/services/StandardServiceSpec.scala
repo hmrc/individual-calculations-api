@@ -21,7 +21,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.connectors.{BackendOutcome, StandardConnector}
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 
@@ -53,7 +53,7 @@ class StandardServiceSpec extends ServiceSpec {
     val expected =
       Right(ResponseWrapper("correlationId", Response("someData")))
 
-    val requestHandling: RequestHandling[Response, Response] = new RequestHandling[Response, Response] {
+    val requestHandling: RequestHandler[Response, Response] = new RequestHandler[Response, Response] {
       override def requestDefn = test.requestDefn
 
       override def passThroughErrors = List(PassedThroughError)
@@ -62,7 +62,7 @@ class StandardServiceSpec extends ServiceSpec {
 
       override implicit val reads: Reads[Response]                      = implicitly
       override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
-      override def successMapping                                       = RequestHandling.noMapping
+      override def successMapping                                       = RequestHandler.noMapping
     }
 
     "use the connector with the RequestDefn" in new Test(Future.successful(expected)) {

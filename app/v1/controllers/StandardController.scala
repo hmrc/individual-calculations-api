@@ -24,7 +24,8 @@ import play.api.mvc.{ControllerComponents, Request, Result}
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handling.{AuditHandling, RequestHandling}
+import v1.handler.{AuditHandler, RequestHandler}
+import v1.models.audit.AuditResponse
 import v1.models.request.RawData
 import v1.services._
 import v1.support.BackendResponseMappingSupport
@@ -46,17 +47,17 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[A], req: Req): RequestHandling[BackendResp, APIResp]
+  def requestHandlerFor(playRequest: Request[A], req: Req): RequestHandler[BackendResp, APIResp]
 
   val successCode: SuccessCode
 
-  def doHandleRequest(rawData: Raw, auditHandling: Option[AuditHandling[_]] = None)(implicit request: Request[A]): Future[Result] = {
+  def doHandleRequest(rawData: Raw, auditHandler: Option[AuditHandler[_]] = None)(implicit request: Request[A]): Future[Result] = {
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
-        requestHandling = requestHandlingFor(request, parsedRequest)
-        backendResponse <- EitherT(service.doService(requestHandling))
-        response        <- EitherT.fromEither[Future](requestHandling.successMapping(backendResponse))
+        requestHandler = requestHandlerFor(request, parsedRequest)
+        backendResponse <- EitherT(service.doService(requestHandler))
+        response        <- EitherT.fromEither[Future](requestHandler.successMapping(backendResponse))
       } yield {
         logger.info(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -66,12 +67,12 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         val status       = successCode.status
         val responseBody = Json.toJson(response.responseData)
 
-        auditHandling.foreach { auditHandling =>
-          def doAudit[D](auditHandling: AuditHandling[D]) = {
-            implicit val writes: Writes[D] = auditHandling.writes
-            auditService.auditEvent(auditHandling.successEvent(response.correlationId, successCode.status, Some(responseBody)))
+        auditHandler.foreach { auditHandler =>
+          def doAudit[D](auditHandler: AuditHandler[D]) = {
+            implicit val writes: Writes[D] = auditHandler.writes
+            auditService.auditEvent(auditHandler.event(response.correlationId, AuditResponse(successCode.status, Right(Some(responseBody)))))
           }
-          doAudit(auditHandling)
+          doAudit(auditHandler)
         }
 
         Status(status)(responseBody)
@@ -84,12 +85,12 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       val errorBody     = errorWrapper.errors
       val status        = errorWrapper.errors.statusCode
 
-      auditHandling.foreach { auditHandling =>
-        def doAudit[D](auditHandling: AuditHandling[D]) = {
-          implicit val writes: Writes[D] = auditHandling.writes
-          auditService.auditEvent(auditHandling.failureEvent(correlationId, status, errorBody.auditErrors))
+      auditHandler.foreach { auditHandler =>
+        def doAudit[D](auditHandler: AuditHandler[D]) = {
+          implicit val writes: Writes[D] = auditHandler.writes
+          auditService.auditEvent(auditHandler.event(correlationId, AuditResponse(status, Left(errorBody.auditErrors))))
         }
-        doAudit(auditHandling)
+        doAudit(auditHandler)
       }
 
       Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
