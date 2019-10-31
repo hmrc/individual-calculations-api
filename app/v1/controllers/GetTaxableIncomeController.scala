@@ -22,7 +22,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{AuditHandling, RequestDefn, RequestHandling}
+import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
@@ -54,8 +54,8 @@ class GetTaxableIncomeController @Inject()(
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
 
   override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
-    RequestHandling[CalculationWrapperOrError[TaxableIncomeResponse]](
+                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
+    RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
@@ -77,22 +77,17 @@ class GetTaxableIncomeController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandling = AuditHandling(
+      val auditHandler = AuditHandler(
         "retrieveSelfAssessmentTaxCalculationTaxableIncome",
         "retrieve-self-assessment-tax-calculation-taxable-income",
-        successEventFactory = (correlationId: String, status: Int, response: Option[JsValue]) =>
+        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
           GetCalculationAuditDetail(request.userDetails,
             nino, calculationId,
             correlationId,
-            AuditResponse(status, Right(response))),
-        failureEventFactory = (correlationId: String, status: Int, errors: Seq[AuditError]) =>
-          GetCalculationAuditDetail(request.userDetails,
-            nino, calculationId,
-            correlationId,
-            AuditResponse(status, Left(errors)))
+            auditResponse)
       )
 
-      doHandleRequest(rawData, Some(auditHandling))
+      doHandleRequest(rawData, Some(auditHandler))
 
 
     }

@@ -21,7 +21,7 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -156,7 +156,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandling[TriggerCalculationResponse, TriggerCalculationResponse] => Unit = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
+      val mappingChecks: RequestHandler[TriggerCalculationResponse, TriggerCalculationResponse] => Unit = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
         ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),

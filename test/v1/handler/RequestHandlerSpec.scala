@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-package v1.handling
+package v1.handler
 
 import cats.implicits._
 import org.scalatest.Inside
 import play.api.http.Status._
 import support.UnitSpec
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handling.RequestHandling.ErrorMapping
+import v1.handler.RequestHandler.ErrorMapping
 import v1.models.errors.{ErrorWrapper, MtdError, MtdErrors}
 import v1.models.outcomes.ResponseWrapper
 
-class RequestHandlingSpec extends UnitSpec with Inside {
+class RequestHandlerSpec extends UnitSpec with Inside {
 
   // WLOG
   val passThroughErrors                = List(MtdError("CODE", "error"))
   val customErrorMapping: ErrorMapping = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
 
-  "RequestHandling" must {
+  "RequestHandler" must {
     "be buildable" in {
 
       val handling =
-        RequestHandling[String](RequestDefn.Get("/some/path"))
+        RequestHandler[String](RequestDefn.Get("/some/path"))
           .withRequestSuccessCode(ACCEPTED)
           .mapErrors(customErrorMapping)
           .withPassThroughErrors(passThroughErrors: _*)
 
       inside(handling) {
-        case RequestHandling.Impl(requestDefn, successCode, passThroughErrors, customErrorMapping, _) =>
+        case RequestHandler.Impl(requestDefn, successCode, passThroughErrors, customErrorMapping, _) =>
           requestDefn shouldBe RequestDefn.Get("/some/path")
           successCode shouldBe SuccessCode(ACCEPTED)
           passThroughErrors shouldBe passThroughErrors
@@ -54,7 +54,7 @@ class RequestHandlingSpec extends UnitSpec with Inside {
     "single mapping" must {
       "map" in {
         val handling =
-          RequestHandling[String](RequestDefn.Get("/some/path"))
+          RequestHandler[String](RequestDefn.Get("/some/path"))
             .mapSuccess {
               case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
             }
@@ -66,7 +66,7 @@ class RequestHandlingSpec extends UnitSpec with Inside {
     "multiple mappings and all success" must {
       "map in sequence" in {
         val handling =
-          RequestHandling[String](RequestDefn.Get("/some/path"))
+          RequestHandler[String](RequestDefn.Get("/some/path"))
             .mapSuccess {
               case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
             }
@@ -81,7 +81,7 @@ class RequestHandlingSpec extends UnitSpec with Inside {
     "multiple mappings and some map to error" must {
       "map to the first error" in {
         val handling =
-          RequestHandling[String](RequestDefn.Get("/some/path"))
+          RequestHandler[String](RequestDefn.Get("/some/path"))
             .mapSuccess {
               case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
             }
@@ -102,7 +102,7 @@ class RequestHandlingSpec extends UnitSpec with Inside {
     "simple mappings" must {
       "map the payload" in {
         val handling =
-          RequestHandling[String](RequestDefn.Get("/some/path"))
+          RequestHandler[String](RequestDefn.Get("/some/path"))
             .mapSuccessSimple(_.length)
             .mapSuccessSimple(String.valueOf)
 

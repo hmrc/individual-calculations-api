@@ -21,8 +21,9 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
+import v1.models.audit.{AuditResponse, GetCalculationAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -53,8 +54,9 @@ class GetIncomeTaxAndNicsController @Inject()(
 
   override def requestHandlingFor(
                                    playRequest: Request[AnyContent],
-                                   req: GetCalculationRequest): RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse], HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
-    RequestHandling[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
+                                   req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
+                                   HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
+    RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
@@ -75,6 +77,17 @@ class GetIncomeTaxAndNicsController @Inject()(
   def getIncomeTaxAndNics(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
-      doHandleRequest(rawData)
+
+      val auditHandling = AuditHandler(
+        "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
+        "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
+        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+          GetCalculationAuditDetail(request.userDetails,
+            nino, calculationId,
+            correlationId,
+            auditResponse)
+      )
+
+      doHandleRequest(rawData, Some(auditHandling))
     }
 }

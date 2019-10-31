@@ -22,7 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.Fixtures._
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -157,7 +157,7 @@ class GetCalculationMessagesControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandling[CalculationMessages, CalculationMessages] => Unit = allChecks[CalculationMessages, CalculationMessages](
+      val mappingChecks: RequestHandler[CalculationMessages, CalculationMessages] => Unit = allChecks[CalculationMessages, CalculationMessages](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),

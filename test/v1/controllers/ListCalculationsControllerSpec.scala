@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.handling.RequestDefn
+import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}

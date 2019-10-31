@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
-import v1.handling.RequestDefn
+import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -72,7 +72,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel="test-relationship")
 
-  val linksJson = Json.parse(
+  val linksJson: JsObject = Json.parse(
     """{
       | "links" : [
       |     {
@@ -104,7 +104,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
 
-        val responseBody = EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
+        val responseBody: JsObject = EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)

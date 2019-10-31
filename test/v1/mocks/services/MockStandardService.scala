@@ -21,7 +21,7 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.Matchers
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.handling.{RequestDefn, RequestHandling}
+import v1.handler.{RequestDefn, RequestHandler}
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.services.StandardService
@@ -37,20 +37,20 @@ trait MockStandardService extends MockFactory {
 
     def doService[Resp, _](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
 
-      val correctRequestHandling = argAssert { actualRequestHandling: RequestHandling[Resp, _] =>
+      val correctRequestHandling = argAssert { actualRequestHandling: RequestHandler[Resp, _] =>
         actualRequestHandling.requestDefn shouldBe requestDefn
         actualRequestHandling.successCode.status shouldBe successStatus
       }
 
       (mockStandardService
-        .doService(_: RequestHandling[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .doService(_: RequestHandler[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
         .expects(correctRequestHandling, *, *, *)
     }
 
     def doServiceWithMappings[BackendResp, APIResp](
-        mappingAssertion: RequestHandling[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
+        mappingAssertion: RequestHandler[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
       (mockStandardService
-        .doService(_: RequestHandling[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
+        .doService(_: RequestHandler[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
         .expects(argAssert(mappingAssertion), *, *, *)
     }
   }

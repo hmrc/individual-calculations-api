@@ -66,7 +66,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
     val requestHandler: VersionRoutingRequestHandler =
       new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, Action)
 
-    def stubHandling(router: Router, path: String)(handler: Option[Handler]): CallHandler1[RequestHeader, Option[Handler]] =
+    def stubHandler(router: Router, path: String)(handler: Option[Handler]): CallHandler1[RequestHeader, Option[Handler]] =
       (router.handlerFor _)
         .expects(where { r: RequestHeader =>
           r.path == path
@@ -97,7 +97,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
 
     "return 406" in new Test {
       val handler: Handler = mock[Handler]
-      stubHandling(defaultRouter, "path")(None)
+      stubHandler(defaultRouter, "path")(None)
 
       val request: RequestHeader = buildRequest("path")
       inside(requestHandler.routeRequest(request)) {
@@ -126,7 +126,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
 
     "return 404" in new Test {
       val handler: Handler = mock[Handler]
-      stubHandling(defaultRouter, "path")(None)
+      stubHandler(defaultRouter, "path")(None)
 
       private val request = buildRequest("path")
 
@@ -147,7 +147,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
       "return 404 Not Found" in new Test {
         val handler: Handler = mock[Handler]
 
-        stubHandling(defaultRouter, "path")(None)
+        stubHandler(defaultRouter, "path")(None)
 
         private val request = buildRequest("path")
         inside(requestHandler.routeRequest(request)) {
@@ -167,7 +167,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
       "handler found" should {
         "use it" in new Test {
           val handler: Handler = mock[Handler]
-          stubHandling(router, "path/")(Some(handler))
+          stubHandler(router, "path/")(Some(handler))
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
@@ -177,8 +177,8 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
         "try without the trailing slash" in new Test {
           val handler: Handler = mock[Handler]
           inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
+            stubHandler(router, "path/")(None)
+            stubHandler(router, "path")(Some(handler))
           }
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
@@ -193,9 +193,9 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
         "use it" in new Test {
           val handler: Handler = mock[Handler]
 
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
-          stubHandling(router, "path/")(Some(handler))
+          stubHandler(defaultRouter, "path/")(None)
+          stubHandler(defaultRouter, "path")(None)
+          stubHandler(router, "path/")(Some(handler))
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
@@ -205,11 +205,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
         "try without the trailing slash" in new Test {
           val handler: Handler = mock[Handler]
 
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
+          stubHandler(defaultRouter, "path/")(None)
+          stubHandler(defaultRouter, "path")(None)
           inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
+            stubHandler(router, "path/")(None)
+            stubHandler(router, "path")(Some(handler))
           }
 
           requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
