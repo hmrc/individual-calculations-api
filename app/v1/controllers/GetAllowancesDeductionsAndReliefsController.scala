@@ -52,7 +52,6 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetAllowancesDeductionsAndReliefsController", endpointName = "getAllowancesDeductionsAndReliefs")
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
@@ -72,6 +71,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
       }
       .mapSuccessSimple(rawResponse =>
         hateoasFactory.wrap(rawResponse, AllowancesHateoasData(req.nino.nino, req.calculationId)))
+
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
