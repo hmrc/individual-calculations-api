@@ -53,14 +53,14 @@ class StandardHttpParserSpec extends UnitSpec {
       val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
 
       "return a Right backend response containing the model object if the response json corresponds to a model object" in {
-        val httpResponse = HttpResponse(OK, Some(backendExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(OK, Some(backendExpectedJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Right(backendResponse)
       }
 
       "return an outbound 500 DownstreamError if a model object cannot be read from the response json" in {
         val badFieldTypeJson: JsValue = Json.obj("incomeSourceId" -> 1234, "incomeSourceName" -> 1234)
-        val httpResponse = HttpResponse(OK, Some(badFieldTypeJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(OK, Some(badFieldTypeJson), Map("X-CorrelationId" -> Seq(correlationId)))
         val expected = ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError))
 
         httpReads.read(method, url, httpResponse) shouldBe Left(expected)
@@ -76,7 +76,7 @@ class StandardHttpParserSpec extends UnitSpec {
         implicit val successCode: SuccessCode = SuccessCode(PARTIAL_CONTENT)
         val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
 
-        val httpResponse = HttpResponse(PARTIAL_CONTENT, Some(backendExpectedJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(PARTIAL_CONTENT, Some(backendExpectedJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Right(backendResponse)
       }
@@ -89,7 +89,7 @@ class StandardHttpParserSpec extends UnitSpec {
 
       "receiving a 204 response" should {
         "return a Right backend response with the correct correlationId and no responseData" in {
-          val httpResponse = HttpResponse(NO_CONTENT, responseHeaders = Map("CorrelationId" -> Seq(correlationId)))
+          val httpResponse = HttpResponse(NO_CONTENT, responseHeaders = Map("X-CorrelationId" -> Seq(correlationId)))
 
           httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
         }
@@ -105,7 +105,7 @@ class StandardHttpParserSpec extends UnitSpec {
       val httpReads: HttpReads[BackendOutcome[Unit]] = implicitly
 
       "use that status code for success" in {
-        val httpResponse = HttpResponse(PARTIAL_CONTENT, responseHeaders = Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(PARTIAL_CONTENT, responseHeaders = Map("X-CorrelationId" -> Seq(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
       }
@@ -171,13 +171,13 @@ class StandardHttpParserSpec extends UnitSpec {
       statusCode =>
         s"receiving a $statusCode response" should {
           "be able to parse a single error with the same status code" in {
-            val httpResponse = HttpResponse(statusCode, Some(singleErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+            val httpResponse = HttpResponse(statusCode, Some(singleErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
             httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, BackendErrors.single(statusCode, BackendErrorCode("CODE"))))
           }
 
           "be able to parse multiple errors with the same status code" in {
-            val httpResponse = HttpResponse(statusCode, Some(multipleErrorsJson), Map("CorrelationId" -> Seq(correlationId)))
+            val httpResponse = HttpResponse(statusCode, Some(multipleErrorsJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
             httpReads.read(method, url, httpResponse) shouldBe {
               Left(ResponseWrapper(correlationId, BackendErrors(statusCode, List(BackendErrorCode("CODE"), BackendErrorCode("CODE 1"), BackendErrorCode("CODE 2")))))
@@ -185,13 +185,13 @@ class StandardHttpParserSpec extends UnitSpec {
           }
 
           "return an outbound 500 DownstreamError when errors are returned without a primary error" in {
-            val httpResponse = HttpResponse(statusCode, Some(missingPrimaryErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+            val httpResponse = HttpResponse(statusCode, Some(missingPrimaryErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
             httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
           }
 
           "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-            val httpResponse = HttpResponse(statusCode, Some(malformedErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+            val httpResponse = HttpResponse(statusCode, Some(malformedErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
             httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
           }
@@ -202,13 +202,13 @@ class StandardHttpParserSpec extends UnitSpec {
     Seq(INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE).foreach(responseCode =>
       s"receiving a $responseCode response" should {
         "return an outbound 500 DownstreamError when the error returned matches the Error model" in {
-          val httpResponse = HttpResponse(responseCode, Some(singleErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+          val httpResponse = HttpResponse(responseCode, Some(singleErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
           httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
         }
 
         "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-          val httpResponse = HttpResponse(responseCode, Some(malformedErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+          val httpResponse = HttpResponse(responseCode, Some(malformedErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
           httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
         }
@@ -218,13 +218,13 @@ class StandardHttpParserSpec extends UnitSpec {
     "receiving an unexpected response" should {
       val responseCode = 499
       "return an outbound 500 DownstreamError when the error returned matches the Error model" in {
-        val httpResponse = HttpResponse(responseCode, Some(singleErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(responseCode, Some(singleErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
       }
 
       "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-        val httpResponse = HttpResponse(responseCode, Some(malformedErrorJson), Map("CorrelationId" -> Seq(correlationId)))
+        val httpResponse = HttpResponse(responseCode, Some(malformedErrorJson), Map("X-CorrelationId" -> Seq(correlationId)))
 
         httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
       }
