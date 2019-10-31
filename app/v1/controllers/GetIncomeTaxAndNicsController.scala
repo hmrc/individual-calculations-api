@@ -52,7 +52,7 @@ class GetIncomeTaxAndNicsController @Inject()(
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxAndNicsController", endpointName = "getIncomeTaxAndNics")
 
-  override def requestHandlingFor(
+  override def requestHandlerFor(
                                    playRequest: Request[AnyContent],
                                    req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
                                    HateoasWrapper[GetIncomeTaxAndNicsResponse]] =

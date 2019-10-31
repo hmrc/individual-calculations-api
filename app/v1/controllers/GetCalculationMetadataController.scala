@@ -54,8 +54,8 @@ class GetCalculationMetadataController @Inject()(authService: EnrolmentsAuthServ
     EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandler[CalculationMetadata, HateoasWrapper[CalculationMetadata]] =
+  override def requestHandlerFor(playRequest: Request[AnyContent],
+                                 req: GetCalculationRequest): RequestHandler[CalculationMetadata, HateoasWrapper[CalculationMetadata]] =
     RequestHandler[CalculationMetadata](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,

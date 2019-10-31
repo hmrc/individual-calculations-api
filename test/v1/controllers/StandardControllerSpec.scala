@@ -95,7 +95,7 @@ class StandardControllerSpec
         ) {
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
-      override def requestHandlingFor(playRequest: Request[AnyContent], req: RequestData): RequestHandler.Impl[BackendResp, APIResp] = {
+      override def requestHandlerFor(playRequest: Request[AnyContent], req: RequestData): RequestHandler.Impl[BackendResp, APIResp] = {
         RequestHandler[BackendResp](requestDefn)
           .mapSuccess(_.map(_ => mappedResponse).asRight)
       }

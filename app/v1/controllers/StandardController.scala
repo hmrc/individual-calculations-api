@@ -47,7 +47,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
   implicit val endpointLogContext: EndpointLogContext
 
-  def requestHandlingFor(playRequest: Request[A], req: Req): RequestHandler[BackendResp, APIResp]
+  def requestHandlerFor(playRequest: Request[A], req: Req): RequestHandler[BackendResp, APIResp]
 
   val successCode: SuccessCode
 
@@ -55,7 +55,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
-        requestHandler = requestHandlingFor(request, parsedRequest)
+        requestHandler = requestHandlerFor(request, parsedRequest)
         backendResponse <- EitherT(service.doService(requestHandler))
         response        <- EitherT.fromEither[Future](requestHandler.successMapping(backendResponse))
       } yield {
@@ -68,9 +68,9 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         val responseBody = Json.toJson(response.responseData)
 
         auditHandler.foreach { auditHandler =>
-          def doAudit[D](auditHandling: AuditHandler[D]) = {
-            implicit val writes: Writes[D] = auditHandling.writes
-            auditService.auditEvent(auditHandling.event(response.correlationId, AuditResponse(successCode.status, Right(Some(responseBody)))))
+          def doAudit[D](auditHandler: AuditHandler[D]) = {
+            implicit val writes: Writes[D] = auditHandler.writes
+            auditService.auditEvent(auditHandler.event(response.correlationId, AuditResponse(successCode.status, Right(Some(responseBody)))))
           }
           doAudit(auditHandler)
         }
@@ -86,9 +86,9 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       val status        = errorWrapper.errors.statusCode
 
       auditHandler.foreach { auditHandler =>
-        def doAudit[D](auditHandling: AuditHandler[D]) = {
-          implicit val writes: Writes[D] = auditHandling.writes
-          auditService.auditEvent(auditHandling.event(correlationId, AuditResponse(status, Left(errorBody.auditErrors))))
+        def doAudit[D](auditHandler: AuditHandler[D]) = {
+          implicit val writes: Writes[D] = auditHandler.writes
+          auditService.auditEvent(auditHandler.event(correlationId, AuditResponse(status, Left(errorBody.auditErrors))))
         }
         doAudit(auditHandler)
       }

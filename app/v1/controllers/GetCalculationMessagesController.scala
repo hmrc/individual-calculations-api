@@ -56,8 +56,8 @@ class GetCalculationMessagesController @Inject()(
     EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationMessagesRequest): RequestHandler[CalculationMessages, HateoasWrapper[CalculationMessages]] =
+  override def requestHandlerFor(playRequest: Request[AnyContent],
+                                 req: GetCalculationMessagesRequest): RequestHandler[CalculationMessages, HateoasWrapper[CalculationMessages]] =
     RequestHandler[CalculationMessages](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,

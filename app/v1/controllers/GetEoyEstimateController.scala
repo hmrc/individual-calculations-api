@@ -53,8 +53,8 @@ class GetEoyEstimateController @Inject()(
   override implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetEoyEstimateController", endpointName = "getEoyEstimate")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandler[EoyEstimateWrapperOrError, HateoasWrapper[EoyEstimateResponse]] = {
+  override def requestHandlerFor(playRequest: Request[AnyContent],
+                                 req: GetCalculationRequest): RequestHandler[EoyEstimateWrapperOrError, HateoasWrapper[EoyEstimateResponse]] = {
     RequestHandler[EoyEstimateWrapperOrError](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,

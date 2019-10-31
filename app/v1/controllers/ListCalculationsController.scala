@@ -57,7 +57,7 @@ class ListCalculationsController @Inject()(
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlingFor(
+  override def requestHandlerFor(
       playRequest: Request[AnyContent],
       req: ListCalculationsRequest): RequestHandler[ListCalculationsResponse[CalculationListItem],
                                                      HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]]] = {

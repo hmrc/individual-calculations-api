@@ -37,14 +37,14 @@ trait MockStandardService extends MockFactory {
 
     def doService[Resp, _](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Resp]]]] = {
 
-      val correctRequestHandling = argAssert { actualRequestHandling: RequestHandler[Resp, _] =>
-        actualRequestHandling.requestDefn shouldBe requestDefn
-        actualRequestHandling.successCode.status shouldBe successStatus
+      val correctRequestHandler = argAssert { actualRequestHandler: RequestHandler[Resp, _] =>
+        actualRequestHandler.requestDefn shouldBe requestDefn
+        actualRequestHandler.successCode.status shouldBe successStatus
       }
 
       (mockStandardService
         .doService(_: RequestHandler[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(correctRequestHandling, *, *, *)
+        .expects(correctRequestHandler, *, *, *)
     }
 
     def doServiceWithMappings[BackendResp, APIResp](

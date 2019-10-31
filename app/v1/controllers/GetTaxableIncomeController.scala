@@ -53,8 +53,8 @@ class GetTaxableIncomeController @Inject()(
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
 
-  override def requestHandlingFor(playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
+  override def requestHandlerFor(playRequest: Request[AnyContent],
+                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
     RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
