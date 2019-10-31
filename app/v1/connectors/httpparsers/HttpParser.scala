@@ -47,16 +47,17 @@ trait HttpParser {
     }
   }
 
-  def retrieveCorrelationId(response: HttpResponse): String = response.header("CorrelationId").getOrElse("")
+  def retrieveCorrelationId(response: HttpResponse): String = response.header("X-CorrelationId").getOrElse("")
 
   def parseErrors(response: HttpResponse): BackendError = {
 
-    implicit val reads: Reads[BackendError] = (
-      ((__).read[BackendErrorCode] and
-        (__ \ "errors").readNullable[List[BackendErrorCode]]) { (singleError, errors) =>
+    implicit val reads: Reads[BackendError] =
+      (
+        (__).read[BackendErrorCode] and
+        (__ \ "errors").readNullable[List[BackendErrorCode]]
+      ) { (singleError, errors) =>
         BackendErrors(response.status, singleError :: errors.getOrElse(Nil))
       }
-    )
 
     response
       .validateJson[BackendError]
