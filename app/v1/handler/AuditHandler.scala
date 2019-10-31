@@ -17,7 +17,9 @@
 package v1.handler
 
 import play.api.libs.json.Writes
-import v1.models.audit.{AuditEvent, AuditResponse}
+import play.api.mvc.AnyContent
+import v1.controllers.UserRequest
+import v1.models.audit.{AuditEvent, AuditResponse, GetCalculationAuditDetail}
 
 case class AuditHandler[Details](auditType: String,
                                  transactionName: String,
@@ -25,5 +27,20 @@ case class AuditHandler[Details](auditType: String,
 
   def event(correlationId: String, auditResponse: AuditResponse): AuditEvent[Details] =
     AuditEvent(auditType, transactionName, eventFactory(correlationId, auditResponse))
+}
 
+object AuditHandler {
+  def getCalculationHandler(auditType: String,
+                            transactionName: String,
+                            nino: String,
+                            calculationId: String,
+                            request: UserRequest[AnyContent]): AuditHandler[GetCalculationAuditDetail] = AuditHandler(
+    auditType,
+    transactionName,
+    eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+      GetCalculationAuditDetail(request.userDetails,
+        nino, calculationId,
+        correlationId,
+        auditResponse)
+  )
 }

@@ -22,6 +22,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
+import v1.handler.AuditHandler.getCalculationHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
@@ -77,16 +78,12 @@ class GetEoyEstimateController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandling = AuditHandler(
+      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
-        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
-          GetCalculationAuditDetail(request.userDetails,
-            nino, calculationId,
-            correlationId,
-            auditResponse)
+        nino, calculationId, request
       )
 
-      doHandleRequest(rawData, Some(auditHandling))
+      doHandleRequest(rawData, Some(auditHandler))
     }
 }

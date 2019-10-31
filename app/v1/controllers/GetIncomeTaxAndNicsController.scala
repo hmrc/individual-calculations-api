@@ -21,6 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
+import v1.handler.AuditHandler.getCalculationHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.{AuditResponse, GetCalculationAuditDetail}
@@ -78,16 +79,12 @@ class GetIncomeTaxAndNicsController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandling = AuditHandler(
+      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
         "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
         "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
-        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
-          GetCalculationAuditDetail(request.userDetails,
-            nino, calculationId,
-            correlationId,
-            auditResponse)
+        nino, calculationId, request
       )
 
-      doHandleRequest(rawData, Some(auditHandling))
+      doHandleRequest(rawData, Some(auditHandler))
     }
 }
