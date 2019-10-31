@@ -17,14 +17,14 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
+import v1.handler.AuditHandler._
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.GetCalculationAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -78,16 +78,12 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandling = AuditHandler(
+      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
         "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
         "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
-          GetCalculationAuditDetail(request.userDetails,
-            nino, calculationId,
-            correlationId,
-            auditResponse)
+        nino, calculationId, request
       )
 
-      doHandleRequest(rawData, Some(auditHandling))
+      doHandleRequest(rawData, Some(auditHandler))
     }
 }

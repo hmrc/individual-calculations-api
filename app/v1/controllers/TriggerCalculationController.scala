@@ -78,7 +78,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   def triggerCalculation(nino: String): Action[JsValue] = authorisedAction(nino).async(parse.json) { implicit request =>
     val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(request.body))
 
-    val auditHandling = AuditHandler(
+    val auditHandler = AuditHandler(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
        eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
@@ -89,6 +89,6 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
           auditResponse)
     )
 
-    doHandleRequest(rawData ,Some(auditHandling))
+    doHandleRequest(rawData ,Some(auditHandler))
   }
 }
