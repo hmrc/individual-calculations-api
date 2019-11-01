@@ -33,13 +33,14 @@ import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class GetCalculationMetadataController @Inject()(authService: EnrolmentsAuthService,
-                                                 lookupService: MtdIdLookupService,
-                                                 parser: GetCalculationParser,
-                                                 service: StandardService,
-                                                 hateoasFactory: HateoasFactory,
-                                                 auditService: AuditService,
-                                                 cc: ControllerComponents
+class GetCalculationMetadataController @Inject()(
+                                                  authService: EnrolmentsAuthService,
+                                                  lookupService: MtdIdLookupService,
+                                                  parser: GetCalculationParser,
+                                                  service: StandardService,
+                                                  hateoasFactory: HateoasFactory,
+                                                  auditService: AuditService,
+                                                  cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
