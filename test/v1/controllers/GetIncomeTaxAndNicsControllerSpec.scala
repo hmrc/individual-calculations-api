@@ -25,7 +25,7 @@ import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
@@ -111,8 +111,8 @@ class GetIncomeTaxAndNicsControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetCalculationAuditDetail(
-          "Individual", None, nino,  calcId, correlationId,
+        val detail = GenericAuditDetail(
+          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
@@ -136,8 +136,8 @@ class GetIncomeTaxAndNicsControllerSpec
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetCalculationAuditDetail(
-          "Individual", None, nino, calcId, correlationId,
+        val detail = GenericAuditDetail(
+          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)

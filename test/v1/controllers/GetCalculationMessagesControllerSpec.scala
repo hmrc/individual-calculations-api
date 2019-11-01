@@ -26,7 +26,7 @@ import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
@@ -116,8 +116,8 @@ class GetCalculationMessagesControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetCalculationAuditDetail(
-          "Individual", None, nino,  calcId, correlationId,
+        val detail = GenericAuditDetail(
+          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -142,8 +142,8 @@ class GetCalculationMessagesControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NoMessagesExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GetCalculationAuditDetail(
-          "Individual", None, nino, calcId, correlationId,
+        val detail = GenericAuditDetail(
+          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoMessagesExistError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once

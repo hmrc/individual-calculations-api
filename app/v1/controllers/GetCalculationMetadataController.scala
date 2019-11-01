@@ -17,15 +17,14 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handler.AuditHandler.getCalculationHandler
+import v1.handler.AuditHandler.getGenericHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.GenericAuditDetail
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -42,13 +41,11 @@ class GetCalculationMetadataController @Inject()(authService: EnrolmentsAuthServ
                                                  auditService: AuditService,
                                                  cc: ControllerComponents
                                                 )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData, GetCalculationRequest, CalculationMetadata, HateoasWrapper[CalculationMetadata], AnyContent](
-    authService,
-    lookupService,
-    parser,
-    service,
-    auditService,
-    cc) {
+  extends StandardController[GetCalculationRawData,
+    GetCalculationRequest,
+    CalculationMetadata,
+    HateoasWrapper[CalculationMetadata],
+    AnyContent](authService, lookupService, parser, service, auditService, cc) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -70,10 +67,12 @@ class GetCalculationMetadataController @Inject()(authService: EnrolmentsAuthServ
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
+      val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
+
+      val auditHandler: AuditHandler[GenericAuditDetail] = getGenericHandler(
         "retrieveSelfAssessmentTaxCalculationMetadata",
         "retrieve-self-assessment-tax-calculation-metadata",
-        nino, calculationId, request
+        Some(paramMap), request, sendBody = false
       )
 
       doHandleRequest(rawData, Some(auditHandler))

@@ -21,10 +21,10 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handler.AuditHandler.getCalculationHandler
+import v1.handler.AuditHandler.getGenericHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -52,11 +52,12 @@ class GetIncomeTaxAndNicsController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetIncomeTaxAndNicsController", endpointName = "getIncomeTaxAndNics")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(
-                                   playRequest: Request[AnyContent],
-                                   req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
-                                   HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
+                                  playRequest: Request[AnyContent],
+                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
+    HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
     RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
@@ -73,16 +74,16 @@ class GetIncomeTaxAndNicsController @Inject()(
       .mapSuccessSimple(rawResponse =>
         hateoasFactory.wrap(rawResponse, TaxAndNicsHateoasData(req.nino.nino, req.calculationId)))
 
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
-
   def getIncomeTaxAndNics(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
+      val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
+
+      val auditHandler: AuditHandler[GenericAuditDetail] = getGenericHandler(
         "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
         "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
-        nino, calculationId, request
+        Some(paramMap), request, sendBody = false
       )
 
       doHandleRequest(rawData, Some(auditHandler))

@@ -20,7 +20,7 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
 
-class GetCalculationAuditDetailSpec extends UnitSpec {
+class GenericAuditDetailSpec extends UnitSpec {
 
   val nino = "ZG903729C"
   val calculationId = "calcId"
@@ -29,25 +29,25 @@ class GetCalculationAuditDetailSpec extends UnitSpec {
     "work" when {
       "success response" in {
         val json = Json.parse(s"""{
-                                 |    "userType": "Agent",
-                                 |    "agentReferenceNumber":"012345678",
-                                 |    "nino": "$nino",
-                                 |    "calculationId" : "$calculationId",
-                                 |    "response":{
-                                 |      "httpStatus": 200,
-                                 |      "body":{
-                                 |        "foo": "value"
-                                 |      }
-                                 |    },
-                                 |    "X-CorrelationId": "a1e8057e-fbbc-47a8-a8b478d9f015c253"
-                                 |}""".stripMargin)
+            |    "userType": "Agent",
+            |    "agentReferenceNumber":"012345678",
+            |    "nino": "$nino",
+            |    "calculationId" : "$calculationId",
+            |    "response":{
+            |      "httpStatus": 200,
+            |      "body":{
+            |        "foo": "value"
+            |      }
+            |    },
+            |    "X-CorrelationId": "a1e8057e-fbbc-47a8-a8b478d9f015c253"
+            |}""".stripMargin)
 
         Json.toJson(
-          GetCalculationAuditDetail(
+          GenericAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
-            nino = nino,
-            calculationId = calculationId,
+            Some(Map("nino" -> nino, "calculationId" -> calculationId)),
+            None,
             `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
             response = AuditResponse(
               200,
@@ -80,11 +80,11 @@ class GetCalculationAuditDetailSpec extends UnitSpec {
                                  |""".stripMargin)
 
         Json.toJson(
-          GetCalculationAuditDetail(
+          GenericAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
-            nino = nino,
-            calculationId = calculationId,
+            Some(Map("nino" -> nino, "calculationId" -> calculationId)),
+            None,
             `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
             response = AuditResponse(
               400,

@@ -24,7 +24,7 @@ import v1.controllers.requestParsers.GetCalculationParser
 import v1.handler.AuditHandler._
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.GetCalculationAuditDetail
+import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
@@ -52,6 +52,7 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetAllowancesDeductionsAndReliefsController", endpointName = "getAllowancesDeductionsAndReliefs")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
@@ -72,16 +73,16 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
       .mapSuccessSimple(rawResponse =>
         hateoasFactory.wrap(rawResponse, AllowancesHateoasData(req.nino.nino, req.calculationId)))
 
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
-
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
+      val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
+
+      val auditHandler: AuditHandler[GenericAuditDetail] = getGenericHandler(
         "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
         "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-        nino, calculationId, request
+        Some(paramMap), request, sendBody = false
       )
 
       doHandleRequest(rawData, Some(auditHandler))
