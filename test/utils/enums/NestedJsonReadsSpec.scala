@@ -30,8 +30,8 @@ class NestedJsonReadsSpec extends UnitSpec {
       |     "c" : "string",
       |     "d" : 2
       |   },
-      |   "c" : {
-      |     "e" : "d"
+      |   "i" : {
+      |     "e" : "example"
       |   },
       |   "d" : [
       |   {"f": 0},
@@ -57,5 +57,13 @@ class NestedJsonReadsSpec extends UnitSpec {
       jsonOutput.validate[Test] shouldBe a[JsSuccess[_]]
     }
   }
+
+  "A missing section from the third path" should {
+
+    "return a None as the third parameter" in {
+      jsonOutput.as[Test] shouldBe Test("string",2,None,None)
+    }
+  }
+
 
 }
