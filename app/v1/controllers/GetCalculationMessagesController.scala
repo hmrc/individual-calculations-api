@@ -75,12 +75,10 @@ class GetCalculationMessagesController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
 
-      val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
-
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMessages",
         "retrieve-self-assessment-tax-calculation-messages",
-        Some(paramMap), request
+        Map("nino" -> nino, "calculationId" -> calculationId), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

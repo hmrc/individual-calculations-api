@@ -23,21 +23,21 @@ import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
 case class AuditHandler[Details](auditType: String,
                                  transactionName: String,
-                                 eventFactory: (String, AuditResponse) => Details)(implicit val writes: Writes[Details]) {
+                                 detailFactory: (String, AuditResponse) => Details)(implicit val writes: Writes[Details]) {
 
   def event(correlationId: String, auditResponse: AuditResponse): AuditEvent[Details] =
-    AuditEvent(auditType, transactionName, eventFactory(correlationId, auditResponse))
+    AuditEvent(auditType, transactionName, detailFactory(correlationId, auditResponse))
 }
 
 object AuditHandler {
 
   def withBody(auditType: String,
                transactionName: String,
-               pathParams: Option[Map[String, String]],
+               pathParams: Map[String, String],
                request: UserRequest[JsValue]): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
-    eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+    detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
       GenericAuditDetail(request.userDetails,
         pathParams,
         Some(request.body),
@@ -47,11 +47,11 @@ object AuditHandler {
 
   def withoutBody(auditType: String,
                transactionName: String,
-               pathParams: Option[Map[String, String]],
+               pathParams: Map[String, String],
                request: UserRequest[AnyContent]): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
-    eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+    detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
       GenericAuditDetail(request.userDetails,
         pathParams,
         None,

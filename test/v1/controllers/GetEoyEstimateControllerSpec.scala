@@ -110,7 +110,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -134,7 +134,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -158,7 +158,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(EndOfYearEstimateNotPresentError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once

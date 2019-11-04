@@ -117,7 +117,7 @@ class GetCalculationMessagesControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -143,7 +143,7 @@ class GetCalculationMessagesControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoMessagesExistError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once

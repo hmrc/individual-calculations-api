@@ -77,12 +77,10 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   def triggerCalculation(nino: String): Action[JsValue] = authorisedAction(nino).async(parse.json) { implicit request =>
     val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(request.body))
 
-    val paramMap: Map[String, String] = Map("nino" -> nino)
-
     val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withBody(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
-      Some(paramMap), request
+      Map("nino" -> nino), request
     )
 
     doHandleRequest(rawData, Some(auditHandler))

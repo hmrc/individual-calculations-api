@@ -132,7 +132,7 @@ class GetCalculationMetadataControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -156,7 +156,7 @@ class GetCalculationMetadataControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(List(AuditError(NotFoundError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once

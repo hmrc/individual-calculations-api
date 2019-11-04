@@ -80,12 +80,10 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
 
-      val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
-
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
         "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-        Some(paramMap),request
+        Map("nino" -> nino, "calculationId" -> calculationId), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

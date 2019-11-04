@@ -56,7 +56,7 @@ class StandardControllerSpec
     implicit val writes: Writes[APIResp] = Json.writes[APIResp]
   }
 
-  val mockParser = mock[RequestParser[Raw, RequestData]]
+  val mockParser: RequestParser[Raw, RequestData] = mock[RequestParser[Raw, RequestData]]
 
   object MockParser {
 
@@ -111,7 +111,7 @@ class StandardControllerSpec
 
     val controller = new TestController
 
-    val controllerWithAudit = new TestController {
+    val controllerWithAudit: TestController = new TestController {
       override def handleRequest(nino: String): Action[AnyContent] =
         authorisedAction(nino).async { implicit request =>
           val rawData = Raw(nino)
@@ -119,7 +119,7 @@ class StandardControllerSpec
           val auditHandling = AuditHandler(
             "auditType",
             "txName",
-            eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+            detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
               SampleAuditDetail(request.userDetails.userType,
                                 request.userDetails.agentReferenceNumber,
                                 correlationId,
@@ -161,7 +161,7 @@ class StandardControllerSpec
         val result: Future[Result] = controllerWithAudit.handleRequest(nino)(fakeGetRequest(uri))
 
         status(result) shouldBe OK
-        val responseBody = Json.toJson(mappedResponse)
+        val responseBody: JsValue = Json.toJson(mappedResponse)
         contentAsJson(result) shouldBe responseBody
 
         val detail = SampleAuditDetail("Individual", None, correlationId, AuditResponse(OK, Right(Some(responseBody))))
@@ -173,8 +173,8 @@ class StandardControllerSpec
     "parser errors occurs" should {
       "return the error as per spec" in new Test {
         // WLOG
-        val statusCode = BAD_REQUEST
-        val error      = NinoFormatError
+        val statusCode: Int = BAD_REQUEST
+        val error: MtdError = NinoFormatError
 
         MockParser
           .parse(Raw(nino))
@@ -191,8 +191,8 @@ class StandardControllerSpec
     "service errors occur" when {
       "return the errors" in new Test {
         // WLOG
-        val statusCode = NOT_FOUND
-        val errors     = MtdErrors(statusCode, NotFoundError)
+        val statusCode: Int = NOT_FOUND
+        val errors: MtdErrors = MtdErrors(statusCode, NotFoundError)
 
         MockParser
           .parse(Raw(nino))
@@ -211,8 +211,8 @@ class StandardControllerSpec
 
       "perform auditing if required" in new Test {
         // WLOG
-        val statusCode = NOT_FOUND
-        val errors     = MtdErrors(statusCode, NotFoundError)
+        val statusCode: Int = NOT_FOUND
+        val errors: MtdErrors     = MtdErrors(statusCode, NotFoundError)
 
         MockParser
           .parse(Raw(nino))

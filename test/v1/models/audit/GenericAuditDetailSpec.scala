@@ -46,7 +46,7 @@ class GenericAuditDetailSpec extends UnitSpec {
           GenericAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
-            Some(Map("nino" -> nino, "calculationId" -> calculationId)),
+            Map("nino" -> nino, "calculationId" -> calculationId),
             None,
             `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
             response = AuditResponse(
@@ -83,7 +83,7 @@ class GenericAuditDetailSpec extends UnitSpec {
           GenericAuditDetail(
             userType = "Agent",
             agentReferenceNumber = Some("012345678"),
-            Some(Map("nino" -> nino, "calculationId" -> calculationId)),
+            Map("nino" -> nino, "calculationId" -> calculationId),
             None,
             `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
             response = AuditResponse(

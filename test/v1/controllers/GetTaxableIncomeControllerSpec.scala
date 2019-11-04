@@ -110,7 +110,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -134,7 +134,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
         MockedAuditService.verifyAuditEvent(event).once

@@ -116,7 +116,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None,  correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None,  correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)
@@ -142,7 +142,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)
@@ -171,7 +171,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino, "calculationId" -> calcId)), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoAllowancesDeductionsAndReliefsExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)

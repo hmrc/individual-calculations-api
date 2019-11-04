@@ -22,7 +22,7 @@ import v1.models.auth.UserDetails
 
 case class GenericAuditDetail(userType: String,
                               agentReferenceNumber: Option[String],
-                              pathParams: Option[Map[String, String]],
+                              pathParams: Map[String, String],
                               requestBody: Option[JsValue],
                               `X-CorrelationId`: String,
                               response: AuditResponse)
@@ -32,14 +32,14 @@ object GenericAuditDetail {
   implicit val writes: OWrites[GenericAuditDetail] = (
     (JsPath \ "userType").write[String] and
       (JsPath \ "agentReferenceNumber").writeNullable[String] and
-      JsPath.writeNullable[Map[String, String]] and
+      JsPath.write[Map[String, String]] and
       (JsPath \ "request").writeNullable[JsValue] and
       (JsPath \ "X-CorrelationId").write[String] and
       (JsPath \ "response").write[AuditResponse]
     ) (unlift(GenericAuditDetail.unapply))
 
   def apply(userDetails: UserDetails,
-            pathParams: Option[Map[String, String]],
+            pathParams: Map[String, String],
             requestBody: Option[JsValue],
             `X-CorrelationId`: String,
             auditResponse: AuditResponse): GenericAuditDetail = {

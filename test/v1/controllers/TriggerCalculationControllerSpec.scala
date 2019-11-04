@@ -119,7 +119,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino)), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
+          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(ACCEPTED, None, Some(json)))
         val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -143,7 +143,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Some(Map("nino" -> nino)), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
+          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None))
         val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
