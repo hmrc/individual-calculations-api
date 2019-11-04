@@ -23,7 +23,7 @@ import utils.NestedJsonReads._
 
 class NestedJsonReadsSpec extends UnitSpec {
 
-  val jsonOutput: JsValue = Json.parse(
+  val firstOutput: JsValue = Json.parse(
     """{
       | "a" : {
       |   "b" : {
@@ -40,6 +40,41 @@ class NestedJsonReadsSpec extends UnitSpec {
       | }
       |}""".stripMargin)
 
+
+  val secondOutput: JsValue = Json.parse(
+    """{
+      | "a" : {
+      |   "b" : {
+      |     "c" : "string",
+      |     "d" : 2
+      |   },
+      |   "c" : {
+      |     "e" : "example"
+      |   },
+      |   "d" : {
+      |     "f": [ 0, 1, 2, 3 ]
+      |   }
+      |  }
+      |}""".stripMargin)
+
+  val thirdOutput: JsValue = Json.parse(
+    """{
+      | "a" : {
+      |   "b" : {
+      |     "c" : true,
+      |     "d" : "notaString"
+      |   },
+      |   "i" : {
+      |     "e" : "example"
+      |   },
+      |   "d" : [
+      |   {"f": 0},
+      |   {"f": 0}
+      |   ]
+      | }
+      |}""".stripMargin)
+
+
   case class Test(param: String, param2: Int, param3: Option[String], param4: Option[Seq[Int]])
 
   object Test {
@@ -47,23 +82,41 @@ class NestedJsonReadsSpec extends UnitSpec {
       (JsPath \ "a" \ "b" \ "c").read[String] and
         (__ \ "a" \ "b" \ "d").read[Int] and
         (__ \ "a" \ "c" \ "e").readNestedNullable[String] and
-        (__ \ "a" \ "d" \\ "f" ).readNestedNullable[Seq[Int]]
+        (__ \ "a" \ "d" \\ "f").readNestedNullable[Seq[Int]]
       ) (Test.apply _)
   }
 
   "Valid Json" should {
 
     "return JsSuccess" in {
-      jsonOutput.validate[Test] shouldBe a[JsSuccess[_]]
+      firstOutput.validate[Test] shouldBe a[JsSuccess[_]]
     }
   }
 
   "A missing section from the third path" should {
 
     "return a None as the third parameter" in {
-      jsonOutput.as[Test] shouldBe Test("string",2,None,None)
+      firstOutput.as[Test] shouldBe Test("string", 2, None, None)
     }
   }
+
+  "With no missing sections" should {
+
+    "return a full test as the second parameter" in {
+      secondOutput.as[Test] shouldBe Test("string", 2, Some("example"), Some(Seq(0,1,2,3)))
+    }
+  }
+
+  "With invalid values" should {
+
+    "return a JsError" in {
+      thirdOutput.validate[Test] shouldBe a[JsError]
+    }
+  }
+
+
+
+
 
 
 }
