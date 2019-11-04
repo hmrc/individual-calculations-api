@@ -82,10 +82,10 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
         "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-        Some(paramMap), request, sendBody = false
+        Some(paramMap),request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

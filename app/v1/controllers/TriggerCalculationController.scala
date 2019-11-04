@@ -48,7 +48,11 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "TriggerCalculationController", endpointName = "triggerCalculation")
+    EndpointLogContext(
+      controllerName = "TriggerCalculationController",
+      endpointName = "triggerCalculation"
+    )
+
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlerFor(playRequest: Request[JsValue],
@@ -75,10 +79,10 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
 
     val paramMap: Map[String, String] = Map("nino" -> nino)
 
-    val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+    val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withBody(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
-      Some(paramMap), request, sendBody = true
+      Some(paramMap), request
     )
 
     doHandleRequest(rawData, Some(auditHandler))

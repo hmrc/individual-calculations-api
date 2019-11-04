@@ -49,7 +49,11 @@ class GetCalculationMetadataController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetCalculationMetadataController", endpointName = "getMetadata")
+    EndpointLogContext(
+      controllerName = "GetCalculationMetadataController",
+      endpointName = "getMetadata"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
@@ -69,10 +73,10 @@ class GetCalculationMetadataController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMetadata",
         "retrieve-self-assessment-tax-calculation-metadata",
-        Some(paramMap), request, sendBody = false
+        Some(paramMap), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

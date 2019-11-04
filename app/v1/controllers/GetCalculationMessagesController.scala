@@ -52,7 +52,11 @@ class GetCalculationMessagesController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
+    EndpointLogContext(
+      controllerName = "GetCalculationMessagesController",
+      endpointName = "getMessages"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
@@ -73,10 +77,10 @@ class GetCalculationMessagesController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMessages",
         "retrieve-self-assessment-tax-calculation-messages",
-        Some(paramMap), request, sendBody = false
+        Some(paramMap), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

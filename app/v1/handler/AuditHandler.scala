@@ -17,6 +17,7 @@
 package v1.handler
 
 import play.api.libs.json.{JsValue, Writes}
+import play.api.mvc.AnyContent
 import v1.controllers.UserRequest
 import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
@@ -30,17 +31,30 @@ case class AuditHandler[Details](auditType: String,
 
 object AuditHandler {
 
-  def apply[A](auditType: String,
+  def withBody(auditType: String,
                transactionName: String,
                pathParams: Option[Map[String, String]],
-               request: UserRequest[A],
-               sendBody: Boolean): AuditHandler[GenericAuditDetail] = AuditHandler(
+               request: UserRequest[JsValue]): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
     eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
       GenericAuditDetail(request.userDetails,
         pathParams,
-        if(sendBody) Some(request.body.asInstanceOf[JsValue]) else None,
+        Some(request.body),
+        correlationId,
+        auditResponse)
+  )
+
+  def withoutBody(auditType: String,
+               transactionName: String,
+               pathParams: Option[Map[String, String]],
+               request: UserRequest[AnyContent]): AuditHandler[GenericAuditDetail] = AuditHandler(
+    auditType,
+    transactionName,
+    eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
+      GenericAuditDetail(request.userDetails,
+        pathParams,
+        None,
         correlationId,
         auditResponse)
   )

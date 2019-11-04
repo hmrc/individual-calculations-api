@@ -50,7 +50,11 @@ class GetTaxableIncomeController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
+    EndpointLogContext(
+      controllerName = "GetTaxableIncomeController",
+      endpointName = "getTaxableIncome"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
@@ -77,10 +81,10 @@ class GetTaxableIncomeController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationTaxableIncome",
         "retrieve-self-assessment-tax-calculation-taxable-income",
-        Some(paramMap), request, sendBody = false
+        Some(paramMap), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))

@@ -50,7 +50,11 @@ class GetEoyEstimateController @Inject()(
   controller =>
 
   override implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetEoyEstimateController", endpointName = "getEoyEstimate")
+    EndpointLogContext(
+      controllerName = "GetEoyEstimateController",
+      endpointName = "getEoyEstimate"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
@@ -77,10 +81,10 @@ class GetEoyEstimateController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
-        Some(paramMap), request, sendBody = false
+        Some(paramMap), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
