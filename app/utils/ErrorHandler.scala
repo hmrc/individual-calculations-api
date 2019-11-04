@@ -38,7 +38,7 @@ class ErrorHandler @Inject()(
                               config: Configuration,
                               auditConnector: AuditConnector,
                               httpAuditEvent: HttpAuditEvent
-                            )(implicit ec: ExecutionContext) extends JsonErrorHandler(auditConnector, httpAuditEvent) {
+                            )(implicit ec: ExecutionContext) extends JsonErrorHandler(auditConnector, httpAuditEvent, config) {
 
   import httpAuditEvent.dataEvent
 

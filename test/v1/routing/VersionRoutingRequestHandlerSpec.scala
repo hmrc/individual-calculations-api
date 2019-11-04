@@ -23,6 +23,7 @@ import v1.mocks.MockAppConfig
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Inside, Matchers}
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpErrorHandler, HttpFilters}
@@ -35,11 +36,12 @@ import routing.{VersionRoutingMap, VersionRoutingRequestHandler}
 import support.UnitSpec
 import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
-class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockFactory with Inside with MockAppConfig{
+class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockFactory with Inside with MockAppConfig with GuiceOneAppPerSuite {
   test =>
 
   implicit private val actorSystem: ActorSystem = ActorSystem("test")
   implicit private val mat: Materializer        = ActorMaterializer()
+  val action: DefaultActionBuilder = app.injector.instanceOf[DefaultActionBuilder]
 
   private val defaultRouter = mock[Router]
   private val v1Router      = mock[Router]
@@ -62,9 +64,8 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Matchers with MockF
                                                                            |version-2.enabled = true
                                                                          """.stripMargin))))
 
-    //noinspection ScalaDeprecation
     val requestHandler: VersionRoutingRequestHandler =
-      new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, Action)
+      new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, action)
 
     def stubHandler(router: Router, path: String)(handler: Option[Handler]): CallHandler1[RequestHeader, Option[Handler]] =
       (router.handlerFor _)
