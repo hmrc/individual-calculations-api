@@ -30,11 +30,11 @@ case class AuditHandler[Details](auditType: String,
 
 object AuditHandler {
 
-  def getGenericHandler[A](auditType: String,
-                        transactionName: String,
-                        pathParams: Option[Map[String, String]],
-                        request: UserRequest[A],
-                        sendBody: Boolean): AuditHandler[GenericAuditDetail] = AuditHandler(
+  def apply[A](auditType: String,
+               transactionName: String,
+               pathParams: Option[Map[String, String]],
+               request: UserRequest[A],
+               sendBody: Boolean): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
     eventFactory = (correlationId: String, auditResponse: AuditResponse) =>

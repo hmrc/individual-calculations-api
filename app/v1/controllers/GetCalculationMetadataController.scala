@@ -21,7 +21,6 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.handler.AuditHandler.getGenericHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.GenericAuditDetail
@@ -70,7 +69,7 @@ class GetCalculationMetadataController @Inject()(
 
       val paramMap: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
 
-      val auditHandler: AuditHandler[GenericAuditDetail] = getGenericHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
         "retrieveSelfAssessmentTaxCalculationMetadata",
         "retrieve-self-assessment-tax-calculation-metadata",
         Some(paramMap), request, sendBody = false

@@ -21,7 +21,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
-import v1.handler.AuditHandler.getGenericHandler
+import v1.handler.AuditHandler.apply
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.GenericAuditDetail
@@ -80,7 +80,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
 
     val paramMap: Map[String, String] = Map("nino" -> nino)
 
-    val auditHandler: AuditHandler[GenericAuditDetail] = getGenericHandler(
+    val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
       Some(paramMap), request, sendBody = true
