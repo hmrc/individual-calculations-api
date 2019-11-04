@@ -50,7 +50,11 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetAllowancesDeductionsAndReliefsController", endpointName = "getAllowancesDeductionsAndReliefs")
+    EndpointLogContext(
+      controllerName = "GetAllowancesDeductionsAndReliefsController",
+      endpointName = "getAllowancesDeductionsAndReliefs"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],

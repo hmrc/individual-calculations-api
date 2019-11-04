@@ -21,7 +21,6 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
-import v1.handler.AuditHandler.apply
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.GenericAuditDetail
@@ -49,11 +48,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(
-      controllerName = "TriggerCalculationController",
-      endpointName = "triggerCalculation"
-    )
-
+    EndpointLogContext(controllerName = "TriggerCalculationController", endpointName = "triggerCalculation")
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlerFor(playRequest: Request[JsValue],

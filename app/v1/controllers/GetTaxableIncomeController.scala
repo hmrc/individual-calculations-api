@@ -51,6 +51,7 @@ class GetTaxableIncomeController @Inject()(
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "GetTaxableIncomeController", endpointName = "getTaxableIncome")
+  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
@@ -70,8 +71,6 @@ class GetTaxableIncomeController @Inject()(
       .mapSuccessSimple(rawResponse =>
         hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, req.calculationId)))
 
-  override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
-
   def getTaxableIncome(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
@@ -84,11 +83,6 @@ class GetTaxableIncomeController @Inject()(
         Some(paramMap), request, sendBody = false
       )
 
-
-
-
       doHandleRequest(rawData, Some(auditHandler))
-
-
     }
 }
