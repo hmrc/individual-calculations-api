@@ -18,8 +18,11 @@ package v1.models.response.getIncomeTaxAndNics
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
+import v1.fixtures.GetIncomeTaxAndNicsFixture
+import v1.models.utils.JsonErrorValidators
 
-class CalculationDetailSpec extends UnitSpec {
+class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+
 
   val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
   val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, true, Some(false))), None)

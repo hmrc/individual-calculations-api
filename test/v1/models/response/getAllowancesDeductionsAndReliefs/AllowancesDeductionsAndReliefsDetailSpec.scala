@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getAllowancesDeductionsAndReliefs
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v1.fixtures.AllowancesDeductionsAndReliefsFixture
+import v1.models.utils.JsonErrorValidators
 
-case class CalculationDetail(incomeTax: IncomeTaxDetail,
-                             nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
+class AllowancesDeductionsAndReliefsDetailSpec extends UnitSpec with JsonErrorValidators {
+  testJsonProperties[CalculationDetail](AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq("allowancesAndDeductions", "reliefs")
+  )
 
-object CalculationDetail {
-  implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]
 }

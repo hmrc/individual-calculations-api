@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.response.getIncomeTaxAndNics
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CalculationDetail(incomeTax: IncomeTaxDetail,
-                             nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
+case class IncomeTaxAndNicsDetail(
+                                 summary: Option[Seq[CalculationSummary]],
+                                 detail: Option[Seq[CalculationDetail]]
+                                 )
 
-object CalculationDetail {
-  implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+object IncomeTaxAndNicsDetail {
+  implicit val formats: OFormat[IncomeTaxAndNicsDetail] = Json.format[IncomeTaxAndNicsDetail]
 }

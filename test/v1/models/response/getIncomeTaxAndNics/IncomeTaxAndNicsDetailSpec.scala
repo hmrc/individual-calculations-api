@@ -16,12 +16,13 @@
 
 package v1.models.response.getIncomeTaxAndNics
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v1.fixtures.GetIncomeTaxAndNicsFixture
+import v1.models.utils.JsonErrorValidators
 
-case class CalculationDetail(incomeTax: IncomeTaxDetail,
-                             nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
-
-object CalculationDetail {
-  implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+class IncomeTaxAndNicsDetailSpec extends UnitSpec with JsonErrorValidators {
+  testJsonProperties[IncomeTaxAndNicsDetail](GetIncomeTaxAndNicsFixture.successOutputToVendor)(
+    mandatoryProperties = Seq("summary","detail"),
+    optionalProperties = Seq()
+  )
 }
