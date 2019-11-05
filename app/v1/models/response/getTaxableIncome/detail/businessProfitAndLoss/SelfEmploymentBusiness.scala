@@ -34,8 +34,7 @@ case class SelfEmploymentBusiness(
                                    taxableProfit: Option[BigInt],
                                    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                                    lossClaimsSummary: Option[LossClaimsSummary],
-                                   lossClaimsDetail: Option[LossClaimsDetail]
-                                 )
+                                   lossClaimsDetail: Option[LossClaimsDetail])
 
 object SelfEmploymentBusiness extends NestedJsonReads {
   implicit val formats: OFormat[SelfEmploymentBusiness] = Json.format[SelfEmploymentBusiness]

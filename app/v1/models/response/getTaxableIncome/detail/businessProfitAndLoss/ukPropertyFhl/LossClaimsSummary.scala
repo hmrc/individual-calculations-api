@@ -18,12 +18,10 @@ package v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPrope
 
 import play.api.libs.json._
 
-case class LossClaimsSummary(
-                              lossForCSFHL: Option[BigInt],
-                              totalBroughtForwardIncomeTaxLosses: Option[BigInt],
-                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
-                              totalIncomeTaxLossesCarriedForward: Option[BigInt]
-                            )
+case class LossClaimsSummary(lossForCSFHL: Option[BigInt],
+                             totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
 
 object LossClaimsSummary {
   implicit val formats: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]

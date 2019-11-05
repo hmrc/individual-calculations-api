@@ -18,8 +18,7 @@ package v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPrope
 
 import play.api.libs.json._
 
-case class DefaultCarriedForwardLoss(taxYearLossIncurred: String,
-                                     currentLossValue: BigInt)
+case class DefaultCarriedForwardLoss(taxYearLossIncurred: String, currentLossValue: BigInt)
 
 object DefaultCarriedForwardLoss {
   implicit val formats: OFormat[DefaultCarriedForwardLoss] = Json.format[DefaultCarriedForwardLoss]

@@ -18,14 +18,12 @@ package v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.selfEmp
 
 import play.api.libs.json._
 
-case class CarriedForwardLoss(
-                               claimId: Option[String],
-                               claimType: String,
-                               taxYearClaimMade: Option[String],
-                               taxYearLossIncurred: String,
-                               currentLossValue: BigInt,
-                               lossType: String
-                             )
+case class CarriedForwardLoss(claimId: Option[String],
+                              claimType: String,
+                              taxYearClaimMade: Option[String],
+                              taxYearLossIncurred: String,
+                              currentLossValue: BigInt,
+                              lossType: String)
 
 object CarriedForwardLoss {
   implicit val formats: OFormat[CarriedForwardLoss] = Json.format[CarriedForwardLoss]

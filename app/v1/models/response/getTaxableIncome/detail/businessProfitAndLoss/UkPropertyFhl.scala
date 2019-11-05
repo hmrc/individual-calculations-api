@@ -30,8 +30,7 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          taxableProfit: Option[BigInt],
                          taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                          lossClaimsSummary: Option[LossClaimsSummary],
-                         lossClaimsDetail: Option[LossClaimsDetail]
-                        )
+                         lossClaimsDetail: Option[LossClaimsDetail])
 
 object UkPropertyFhl {
   implicit val formats: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]

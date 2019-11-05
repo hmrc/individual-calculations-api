@@ -20,11 +20,9 @@ import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, ResultOfClaimApplied}
 
-case class LossClaimsDetail(
-                             lossesBroughtForward: Option[Seq[LossBroughtForward]],
-                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
-                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]]
-                           )
+case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
+                            resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
+                            defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]])
 
 object LossClaimsDetail extends NestedJsonReads {
   implicit val formats: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]

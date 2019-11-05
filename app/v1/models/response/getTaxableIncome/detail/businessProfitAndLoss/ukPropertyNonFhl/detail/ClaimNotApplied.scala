@@ -18,9 +18,7 @@ package v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPrope
 
 import play.api.libs.json._
 
-case class ClaimNotApplied(claimId: String,
-                           taxYearClaimMade: String,
-                           claimType: String)
+case class ClaimNotApplied(claimId: String, taxYearClaimMade: String, claimType: String)
 
 object ClaimNotApplied {
   implicit val formats: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]

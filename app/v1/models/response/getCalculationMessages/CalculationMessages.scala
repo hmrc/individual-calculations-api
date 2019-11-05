@@ -30,7 +30,7 @@ object Message {
 }
 
 case class CalculationMessages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]) {
-  def hasMessages: Boolean = if (this == CalculationMessages.empty) false else true
+  val hasMessages: Boolean = if (this == CalculationMessages.empty) false else true
 }
 
 object CalculationMessages extends HateoasLinks {
