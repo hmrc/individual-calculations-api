@@ -17,7 +17,7 @@
 package v1.fixtures.getTaxableIncome.ukPropertyFhl
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.LossBroughtForward
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyFhl.detail.LossBroughtForward
 
 object LossBroughtForwardFixtures {
   val lossId: String = "0yriP9QrW2jTa6n"

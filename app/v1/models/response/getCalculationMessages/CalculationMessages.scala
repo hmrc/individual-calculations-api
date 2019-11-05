@@ -30,13 +30,12 @@ object Message {
 }
 
 case class CalculationMessages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]) {
-  def hasMessages: Boolean = this match {
-    case CalculationMessages(None,None,None) => false
-    case _ => true
-  }
+  def hasMessages: Boolean = if (this == CalculationMessages.empty) false else true
 }
 
 object CalculationMessages extends HateoasLinks {
+
+  val empty: CalculationMessages = CalculationMessages(None, None, None)
 
   implicit val writes: OWrites[CalculationMessages] = Json.writes[CalculationMessages]
   implicit val reads: Reads[CalculationMessages] = (

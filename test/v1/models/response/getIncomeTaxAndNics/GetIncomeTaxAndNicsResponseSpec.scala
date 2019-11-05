@@ -21,6 +21,8 @@ import support.UnitSpec
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
+import v1.models.response.getIncomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
+import v1.models.response.getIncomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 
 class GetIncomeTaxAndNicsResponseSpec extends  UnitSpec with MockAppConfig{
 

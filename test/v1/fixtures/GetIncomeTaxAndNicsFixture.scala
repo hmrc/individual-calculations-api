@@ -19,6 +19,8 @@ package v1.fixtures
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getIncomeTaxAndNics._
+import v1.models.response.getIncomeTaxAndNics.detail.{CalculationDetail, Class2NicDetail, IncomeTaxDetail, IncomeTypeBreakdown, NicDetail, TaxDeductedAtSource}
+import v1.models.response.getIncomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary, NicSummary}
 
 object GetIncomeTaxAndNicsFixture {
 

@@ -18,13 +18,11 @@ package v1.models.response.getCalculationMetadata
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponseHateoasData
 
 class CalculationMetadataSpec extends UnitSpec {
 

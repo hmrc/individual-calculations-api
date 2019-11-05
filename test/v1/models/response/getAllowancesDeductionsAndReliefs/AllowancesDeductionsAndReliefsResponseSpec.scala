@@ -22,6 +22,8 @@ import v1.fixtures.AllowancesDeductionsAndReliefsFixture._
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
+import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig {
 

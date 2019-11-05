@@ -17,7 +17,7 @@
 package v1.fixtures.getTaxableIncome.ukPropertyNonFhl
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.UkPropertyNonFhl
 
 object UkPropertyNonFhlFixtures {
 

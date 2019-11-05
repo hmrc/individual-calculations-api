@@ -29,5 +29,5 @@ object CalculationReason {
   case object newClaimEvent     extends CalculationReason
   case object updatedClaimEvent extends CalculationReason
 
-  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
+  implicit val formats: Format[CalculationReason] = Enums.format[CalculationReason]
 }

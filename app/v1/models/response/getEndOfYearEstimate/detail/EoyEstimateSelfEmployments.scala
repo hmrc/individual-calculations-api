@@ -18,11 +18,7 @@ package v1.models.response.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateSelfEmployments(
-                                     selfEmploymentId: String,
-                                     taxableIncome: BigInt,
-                                     finalised: Option[Boolean]
-                                   )
+case class EoyEstimateSelfEmployments(selfEmploymentId: String, taxableIncome: BigInt, finalised: Option[Boolean])
 
 object EoyEstimateSelfEmployments {
   implicit val formats: OFormat[EoyEstimateSelfEmployments] = Json.format[EoyEstimateSelfEmployments]

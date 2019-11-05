@@ -18,7 +18,9 @@ package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
 
-case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
+case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
+                             savingsAndGains: Option[SavingsAndGains],
+                             dividends: Option[Dividends])
 
 object CalculationDetail {
   implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]

@@ -17,7 +17,7 @@
 package v1.fixtures
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getCalculationMessages.Message
+import v1.models.response.getCalculationMessages._
 
 object Fixtures {
   val err1 = Message("err1", "text1")

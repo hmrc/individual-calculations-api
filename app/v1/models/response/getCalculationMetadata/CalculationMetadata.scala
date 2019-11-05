@@ -22,31 +22,27 @@ import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 
-case class CalculationMetadata(
-    id: String,
-    taxYear: String,
-    requestedBy: CalculationRequestor,
-    calculationReason: CalculationReason,
-    calculationTimestamp: Option[String],
-    calculationType: CalculationType,
-    intentToCrystallise: Boolean,
-    crystallised: Boolean,
-    totalIncomeTaxAndNicsDue: Option[BigDecimal],
-    calculationErrorCount: Option[Int]
-)
+case class CalculationMetadata(id: String,
+                               taxYear: String,
+                               requestedBy: CalculationRequestor,
+                               calculationReason: CalculationReason,
+                               calculationTimestamp: Option[String],
+                               calculationType: CalculationType,
+                               intentToCrystallise: Boolean,
+                               crystallised: Boolean,
+                               totalIncomeTaxAndNicsDue: Option[BigDecimal],
+                               calculationErrorCount: Option[Int])
 
 object CalculationMetadata extends HateoasLinks {
 
-  implicit val writes: OWrites[CalculationMetadata] =
-    Json.writes[CalculationMetadata]
-
+  implicit val writes: OWrites[CalculationMetadata] = Json.writes[CalculationMetadata]
   implicit def reads: Reads[CalculationMetadata] =
     (JsPath \ "metadata").read[CalculationMetadata](Json.reads[CalculationMetadata])
 
   implicit object LinkFactory extends HateoasLinksFactory[CalculationMetadata, CalculationMetadataHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMetadataHateoasData): Seq[Link] = {
       import data._
-      if(data.errorCount.isEmpty) {
+      if (data.errorCount.isEmpty) {
         Seq(
           getMetadata(appConfig, nino, calculationId, isSelf = true),
           getIncomeTax(appConfig, nino, calculationId, isSelf = false),
@@ -63,6 +59,7 @@ object CalculationMetadata extends HateoasLinks {
       }
     }
   }
+
 }
 
 case class CalculationMetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int]) extends HateoasData

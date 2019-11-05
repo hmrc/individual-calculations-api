@@ -16,14 +16,14 @@
 
 package v1.fixtures.getTaxableIncome.detail
 
-import play.api.libs.json.{JsArray, JsValue, Json}
 import v1.models.response.getTaxableIncome.detail.BusinessProfitAndLoss
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FhlDefaultCarriedForwardLoss, LossBroughtForward => FhlLossBroughtForward, LossClaimsDetail => FhlLossClaimsDetail, ResultOfClaimApplied => FhlResultOfClaimApplied}
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FhlLossClaimsSummary}
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.{ClaimNotApplied, DefaultCarriedForwardLoss => NonFhlDefaultCarriedForwardLoss, LossBroughtForward => NonFhlLossBroughtForward, LossClaimsDetail => NonFhlLossClaimsDetail, ResultOfClaimApplied => NonFhlResultOfClaimApplied}
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFhlLossClaimsSummary}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.{UkPropertyFhl, UkPropertyNonFhl}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FhlDefaultCarriedForwardLoss, LossBroughtForward => FhlLossBroughtForward, ResultOfClaimApplied => FhlResultOfClaimApplied}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyFhl.{LossClaimsSummary => FhlLossClaimsSummary}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyFhl.{LossClaimsDetail => FhlLossClaimsDetail}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyNonFhl.{LossClaimsSummary => NonFhlLossClaimsSummary}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyNonFhl.{LossClaimsDetail => NonFhlLossClaimsDetail}
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.ukPropertyNonFhl.detail.{ClaimNotApplied, DefaultCarriedForwardLoss => NonFhlDefaultCarriedForwardLoss, LossBroughtForward => NonFhlLossBroughtForward, ResultOfClaimApplied => NonFhlResultOfClaimApplied}
 
 object BusinessProfitAndLossFixtures {
 

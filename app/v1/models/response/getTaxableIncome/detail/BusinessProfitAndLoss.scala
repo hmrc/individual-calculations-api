@@ -17,9 +17,7 @@
 package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
-import v1.models.response.getTaxableIncome.detail.selfEmployment.SelfEmploymentBusiness
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
+import v1.models.response.getTaxableIncome.detail.businessProfitAndLoss.{SelfEmploymentBusiness, UkPropertyFhl, UkPropertyNonFhl}
 
 case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmploymentBusiness]],
                                  ukPropertyFhl: Option[UkPropertyFhl],
