@@ -18,6 +18,7 @@ package v1.models.response.getIncomeTaxAndNics
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getIncomeTaxAndNics.detail.{GiftAid, IncomeTaxDetail, IncomeTypeBreakdown}
 
 class IncomeTaxDetailSpec extends UnitSpec {
 

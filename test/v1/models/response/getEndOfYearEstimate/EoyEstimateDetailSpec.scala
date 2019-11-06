@@ -18,6 +18,7 @@ package v1.models.response.getEndOfYearEstimate
 
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateDetailFixture
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateDetail
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {

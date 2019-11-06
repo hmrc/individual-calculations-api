@@ -18,11 +18,7 @@ package v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json._
 
-case class LossBroughtForward(
-                               taxYearLossIncurred: String,
-                               currentLossValue: BigInt,
-                               mtdLoss: Boolean
-                             )
+case class LossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
 
 
 object LossBroughtForward {

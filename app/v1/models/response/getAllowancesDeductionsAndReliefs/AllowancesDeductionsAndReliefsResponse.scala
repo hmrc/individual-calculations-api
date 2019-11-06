@@ -20,9 +20,10 @@ import config.AppConfig
 import play.api.libs.json._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
+import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, detail: CalculationDetail) {
-
   def isEmpty: Boolean =
     (summary.totalAllowancesAndDeductions, summary.totalReliefs) match {
       case (Some(x), _) if x > 0 => false
@@ -32,11 +33,10 @@ case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, d
 }
 
 object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
-  implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
-    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefsResponse])
 
   implicit val writes: OWrites[AllowancesDeductionsAndReliefsResponse] = Json.writes[AllowancesDeductionsAndReliefsResponse]
-
+  implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
+    (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefsResponse])
 
   implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData] {
     override def links(appConfig: AppConfig, data: AllowancesHateoasData): Seq[Link] = {

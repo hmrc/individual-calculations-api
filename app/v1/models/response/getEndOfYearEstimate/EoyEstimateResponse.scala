@@ -18,13 +18,15 @@ package v1.models.response.getEndOfYearEstimate
 
 import config.AppConfig
 import play.api.libs.json._
-import v1.hateoas.{ HateoasLinks, HateoasLinksFactory }
-import v1.models.hateoas.{ HateoasData, Link }
-import v1.models.hateoas.Method.GET
+import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v1.models.hateoas.{HateoasData, Link}
+import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateDetail
+import v1.models.response.getEndOfYearEstimate.summary.EoyEstimateSummary
 
 case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateDetail)
 
 object EoyEstimateResponse extends HateoasLinks {
+
   implicit val writes: OWrites[EoyEstimateResponse] = Json.writes[EoyEstimateResponse]
   implicit val reads: Reads[EoyEstimateResponse] =
     (JsPath \ "endOfYearEstimate").read[EoyEstimateResponse](Json.reads[EoyEstimateResponse])
@@ -38,6 +40,7 @@ object EoyEstimateResponse extends HateoasLinks {
       )
     }
   }
+
 }
 
 case class EoyEstimateResponseHateoasData(nino: String, calculationId: String) extends HateoasData
