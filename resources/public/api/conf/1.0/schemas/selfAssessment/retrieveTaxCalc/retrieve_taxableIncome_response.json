@@ -960,7 +960,7 @@
                     },
                     "lossClaimsDetail": {
                       "type": "object",
-                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property Non-FHL\n\nThis section will only be present for a crystallisation calculation.",
+                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property Non-FHL This section will only be present for a crystallisation calculation.",
                       "properties": {
                         "lossesBroughtForward": {
                           "type": "array",
