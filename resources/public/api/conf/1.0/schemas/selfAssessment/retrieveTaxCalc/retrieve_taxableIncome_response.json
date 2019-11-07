@@ -106,7 +106,7 @@
                     "properties": {
                       "selfEmploymentId": {
                         "title": "selfEmploymentId",
-                        "description": "A unique identifier for the self-employment business income source. Must conform to the regular expression: ^X[A-Z0-9]{1}IS[0-9]{11}$",
+                        "description": "A unique identifier for the self-employment business income source.",
                         "type": "string",
                         "example": "XGIS00000001319",
                         "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
@@ -336,7 +336,7 @@
                               "properties": {
                                 "claimId": {
                                   "title": "claimId",
-                                  "description": "The Claim ID of the loss. Must conform to the regular expression: ^[A-Za-z0-9]{15}$",
+                                  "description": "The Claim ID of the loss.",
                                   "type": "string",
                                   "example": "EzluDU2ObK02SdA",
                                   "pattern": "^[A-Za-z0-9]{15}$"
@@ -460,7 +460,7 @@
                               "properties": {
                                 "claimId": {
                                   "title": "claimId",
-                                  "description": "The Claim ID of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                  "description": "The Claim ID of the loss.",
                                   "type": "string",
                                   "example": "EzluDU2ObK02SdA",
                                   "pattern": "^[A-Za-z0-9]{15}$"
@@ -520,7 +520,7 @@
                               "properties": {
                                 "claimId": {
                                   "title": "claimId",
-                                  "description": "The Claim ID of the loss. Must conform to the regular expression: ^[A-Za-z0-9]{15}$",
+                                  "description": "The Claim ID of the loss.",
                                   "type": "string",
                                   "example": "EzluDU2ObK02SdA",
                                   "pattern": "^[A-Za-z0-9]{15}$"
@@ -739,7 +739,7 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The Claim ID of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The Claim ID of the loss.",
                                 "type": "string",
                                 "example": "EzluDU2ObK02SdA",
                                 "pattern": "^[A-Za-z0-9]{15}$"
@@ -1005,7 +1005,7 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The Claim ID of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The Claim ID of the loss.",
                                 "type": "string",
                                 "example": "EzluDU2ObK02SdA",
                                 "pattern": "^[A-Za-z0-9]{15}$"
@@ -1110,7 +1110,7 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The Claim ID of the loss. Must conform to the regular expression: ^[A-Za-z0-9]{15}$",
+                                "description": "The Claim ID of the loss.",
                                 "type": "string",
                                 "example": "EzluDU2ObK02SdA",
                                 "pattern": "^[A-Za-z0-9]{15}$"
