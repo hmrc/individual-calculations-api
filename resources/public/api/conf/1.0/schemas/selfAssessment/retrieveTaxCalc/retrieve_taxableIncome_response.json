@@ -415,7 +415,7 @@
                               "properties": {
                                 "taxYearLossIncurred": {
                                   "title": "taxYearLossIncurred",
-                                  "description": "The tax year the loss arose Format: YYYY-YY",
+                                  "description": "The tax year the loss arose. Format: YYYY-YY",
                                   "type": "string",
                                   "example": "2019-20"
                                 },
@@ -837,7 +837,7 @@
                   "properties": {
                     "totalIncome": {
                       "title": "totalIncome",
-                      "description": "TThe total income received for UK Property Non-FHL This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "description": "TThe total income received for UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
                       "minimum": 0,
@@ -931,7 +931,7 @@
                       "properties": {
                         "totalBroughtForwardIncomeTaxLosses": {
                           "title": "totalBroughtForwardIncomeTaxLosses",
-                          "description": "The total sum of Income Tax losses brought forward from earlier years for UK Property Non-FHL This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -960,7 +960,7 @@
                     },
                     "lossClaimsDetail": {
                       "type": "object",
-                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property Non-FHL This section will only be present for a crystallisation calculation.",
+                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property Non-FHL. This section will only be present for a crystallisation calculation.",
                       "properties": {
                         "lossesBroughtForward": {
                           "type": "array",
@@ -1275,7 +1275,7 @@
             "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
           },
           "rel": {
-            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
             "type": "string",
             "enum": [
               "self",
