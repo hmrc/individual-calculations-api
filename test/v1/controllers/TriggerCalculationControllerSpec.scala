@@ -25,7 +25,7 @@ import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.audit.{AuditError, AuditEvent, AuditResponse, TriggerCalculationAuditDetail}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.domain.TriggerCalculation
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
@@ -117,8 +117,9 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = TriggerCalculationAuditDetail(
-          "Individual", None, nino, Json.toJson(TaxYearWrapper("2017-18")), correlationId,
+
+        val detail = GenericAuditDetail(
+          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(ACCEPTED, None, Some(json)))
         val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -141,8 +142,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = TriggerCalculationAuditDetail(
-          "Individual", None, nino, Json.toJson(TaxYearWrapper("2017-18")), correlationId,
+        val detail = GenericAuditDetail(
+          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None))
         val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
