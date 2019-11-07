@@ -147,15 +147,6 @@
                         "maximum": 99999999999.99,
                         "example": "2000.98"
                       },
-                      "class4Loss": {
-                        "title": "class4Loss",
-                        "description": "The class 4 loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "multipleOf": 1,
-                        "minimum": 0,
-                        "maximum": 999999999999,
-                        "example": "2000"
-                      },
                       "totalAdditions": {
                         "title": "totalAdditions",
                         "description": "The total additions for the self-employment business. The additions relate to the additions mentioned in the Business Income Source Summary. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -183,6 +174,15 @@
                         "maximum": 99999999999.99,
                         "example": "2000.98"
                       },
+                      "taxableProfit": {
+                        "title": "taxableProfit",
+                        "description": "The taxable profit for the self-employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": "2000"
+                      },
                       "adjustedIncomeTaxLoss": {
                         "title": "adjustedIncomeTaxLoss",
                         "description": "The adjusted Income Tax loss for the self-employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
@@ -192,13 +192,13 @@
                         "maximum": 99999999999,
                         "example": "2000"
                       },
-                      "taxableProfit": {
-                        "title": "taxableProfit",
-                        "description": "The taxable profit for the self-employment business after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                      "class4Loss": {
+                        "title": "class4Loss",
+                        "description": "The class 4 loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
                         "multipleOf": 1,
                         "minimum": 0,
-                        "maximum": 99999999999,
+                        "maximum": 999999999999,
                         "example": "2000"
                       },
                       "taxableProfitAfterIncomeTaxLossesDeduction": {
@@ -623,18 +623,18 @@
                       "maximum": 999999999999.99,
                       "example": "-2000.98"
                     },
-                    "adjustedIncomeTaxLoss": {
-                      "title": "adjustedIncomeTaxLoss",
-                      "description": "The adjusted Income Tax loss for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
                       "multipleOf": 1,
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "2000"
                     },
-                    "taxableProfit": {
-                      "title": "taxableProfit",
-                      "description": "The taxable profit for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss for UK Property FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
                       "multipleOf": 1,
                       "minimum": 0,
@@ -898,18 +898,18 @@
                       "maximum": 999999999999.99,
                       "example": "-2000.98"
                     },
-                    "adjustedIncomeTaxLoss": {
-                      "title": "adjustedIncomeTaxLoss",
-                      "description": "The adjusted Income Tax loss for the UK Property Non-FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit for UK Property Non-FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
                       "multipleOf": 1,
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "2000"
                     },
-                    "taxableProfit": {
-                      "title": "taxableProfit",
-                      "description": "The taxable profit for UK Property Non-FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss for the UK Property Non-FHL after all additions and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
                       "multipleOf": 1,
                       "minimum": 0,
