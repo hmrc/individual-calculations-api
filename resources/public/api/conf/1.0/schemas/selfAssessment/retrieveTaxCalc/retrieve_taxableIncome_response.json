@@ -985,7 +985,7 @@
                               },
                               "mtdLoss": {
                                 "title": "mtdLoss",
-                                "description": "Indicates the loss was registered by the taxpayer on joining MTD.",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
                                 "type": "boolean",
                                 "example": "false"
                               }
