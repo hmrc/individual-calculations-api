@@ -665,184 +665,193 @@
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "1000"
-                    }
-                  }
-                },
-                "totalIncomeLiableToClass4Charge": {
-                  "title": "totalIncomeLiableToClass4Charge",
-                  "description": "Total income that is liable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
-                  "type": "number",
-                  "multipleOf": 1,
-                  "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
-                },
-                "totalIncomeChargeableToClass4": {
-                  "title": "totalIncomeChargeableToClass4",
-                  "description": "Total income that is chargeable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
-                  "type": "number",
-                  "multipleOf": 1,
-                  "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
-                },
-                "class4NicBands": {
-                  "description": "Details the low-level Class 4 National Insurance Contributions",
-                  "type": "array",
-                  "title": "class4NicBands",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "title": "name",
-                        "description": "The name of the tax band threshold.",
-                        "type": "string",
-                        "oneOf": [
-                          {
-                            "enum": [
-                              "ZRT"
-                            ],
-                            "description": "zero rate threshold"
-                          },
-                          {
-                            "enum": [
-                              "BRT"
-                            ],
-                            "description": "basic rate threshold"
-                          },
-                          {
-                            "enum": [
-                              "HRT"
-                            ],
-                            "description": "higher rate threshold"
-                          }
-                        ]
-                      },
-                      "rate": {
-                        "title": "rate",
-                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
-                        "type": "number",
-                        "example": "10.12",
-                        "minimum": 0,
-                        "maximum": 99.99,
-                        "multipleOf": 0.01
-                      },
-                      "threshold": {
-                        "title": "threshold",
-                        "description": "The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "example": "1000",
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "multipleOf": 1
-                      },
-                      "apportionedThreshold": {
-                        "title": "apportionedThreshold",
-                        "description": "The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
-                        "type": "number",
-                        "example": "1000",
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "multipleOf": 1
-                      },
-                      "income": {
-                        "title": "income",
-                        "description": "The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
-                        "type": "number",
-                        "example": "1000",
-                        "minimum": 0,
-                        "maximum": 99999999999,
-                        "multipleOf": 1
-                      },
-                      "amount": {
-                        "title": "amount",
-                        "description": "The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                        "type": "number",
-                        "example": "1000.12",
-                        "minimum": 0,
-                        "maximum": 99999999999.99,
-                        "multipleOf": 0.01
-                      }
                     },
-                    "required": [
-                      "name",
-                      "rate",
-                      "income",
-                      "amount"
-                    ]
+                    "totalClass4LossesCarriedForward": {
+                      "title": "totalClass4LossesCarriedForward",
+                      "description": "Total Class 4 National Insurance Contributions losses that have not been used in the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "10000"
+                    }
+                  },
+                  "totalIncomeLiableToClass4Charge": {
+                    "title": "totalIncomeLiableToClass4Charge",
+                    "description": "Total income that is liable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "1000"
+                  },
+                  "totalIncomeChargeableToClass4": {
+                    "title": "totalIncomeChargeableToClass4",
+                    "description": "Total income that is chargeable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "1000"
+                  },
+                  "class4NicBands": {
+                    "description": "Details the low-level Class 4 National Insurance Contributions",
+                    "type": "array",
+                    "title": "class4NicBands",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "title": "name",
+                          "description": "The name of the tax band threshold.",
+                          "type": "string",
+                          "oneOf": [
+                            {
+                              "enum": [
+                                "ZRT"
+                              ],
+                              "description": "zero rate threshold"
+                            },
+                            {
+                              "enum": [
+                                "BRT"
+                              ],
+                              "description": "basic rate threshold"
+                            },
+                            {
+                              "enum": [
+                                "HRT"
+                              ],
+                              "description": "higher rate threshold"
+                            }
+                          ]
+                        },
+                        "rate": {
+                          "title": "rate",
+                          "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
+                          "type": "number",
+                          "example": "10.12",
+                          "minimum": 0,
+                          "maximum": 99.99,
+                          "multipleOf": 0.01
+                        },
+                        "threshold": {
+                          "title": "threshold",
+                          "description": "The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "example": "1000",
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "multipleOf": 1
+                        },
+                        "apportionedThreshold": {
+                          "title": "apportionedThreshold",
+                          "description": "The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
+                          "type": "number",
+                          "example": "1000",
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "multipleOf": 1
+                        },
+                        "income": {
+                          "title": "income",
+                          "description": "The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "example": "1000",
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "multipleOf": 1
+                        },
+                        "amount": {
+                          "title": "amount",
+                          "description": "The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "type": "number",
+                          "example": "1000.12",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "rate",
+                        "income",
+                        "amount"
+                      ]
+                    }
                   }
                 }
               }
             }
-          }
-        },
-        "taxDeductedAtSource": {
-          "title": "taxDeductedAtSource",
-          "type": "object",
-          "description": "Summarises income received that has already been tax deducted.",
-          "properties": {
-            "savings": {
-              "title": "savings",
-              "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 1,
-              "minimum": 0,
-              "maximum": 99999999999,
-              "example": "1000"
-            },
-            "ukLandAndProperty": {
-              "title": "ukLandAndProperty",
-              "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 1,
-              "minimum": 0,
-              "maximum": 99999999999,
-              "example": "1000"
+          },
+          "taxDeductedAtSource": {
+            "title": "taxDeductedAtSource",
+            "type": "object",
+            "description": "Summarises income received that has already been tax deducted.",
+            "properties": {
+              "savings": {
+                "title": "savings",
+                "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "1000"
+              },
+              "ukLandAndProperty": {
+                "title": "ukLandAndProperty",
+                "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "1000"
+              }
             }
-          }
-        }
-      },
-      "required": [
-        "incomeTax"
-      ]
-    },
-    "links": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
-        "properties": {
-          "href": {
-            "description": "The relative url of the endpoint",
-            "type": "string",
-            "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
-          },
-          "rel": {
-            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
-            "type": "string",
-            "enum": [
-              "self",
-              "metadata"
-            ]
-          },
-          "method": {
-            "description": "The HTTP method type for the endpoint",
-            "type": "string",
-            "enum": [
-              "GET"
-            ]
           }
         },
         "required": [
-          "href",
-          "rel",
-          "method"
+          "incomeTax"
         ]
+      },
+      "links": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "A list of endpoint links that indicate possible actions related to the current resource",
+          "properties": {
+            "href": {
+              "description": "The relative url of the endpoint",
+              "type": "string",
+              "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+            },
+            "rel": {
+              "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+              "type": "string",
+              "enum": [
+                "self",
+                "metadata"
+              ]
+            },
+            "method": {
+              "description": "The HTTP method type for the endpoint",
+              "type": "string",
+              "enum": [
+                "GET"
+              ]
+            }
+          },
+          "required": [
+            "href",
+            "rel",
+            "method"
+          ]
+        }
       }
-    }
-  },
-  "required": [
-    "summary",
-    "detail"
-  ]
+    },
+    "required": [
+      "summary",
+      "detail"
+    ]
+  }
 }
