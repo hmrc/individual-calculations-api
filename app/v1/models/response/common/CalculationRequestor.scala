@@ -21,10 +21,10 @@ import utils.enums.Enums
 
 sealed trait CalculationRequestor
 
-object CalculationRequestor{
+object CalculationRequestor {
   case object customer extends CalculationRequestor
   case object hmrc extends CalculationRequestor
   case object agent extends CalculationRequestor
 
-  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
+  implicit val formats: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }

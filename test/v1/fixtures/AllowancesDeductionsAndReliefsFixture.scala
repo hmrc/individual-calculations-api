@@ -19,6 +19,8 @@ package v1.fixtures
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
 import v1.models.response.getAllowancesDeductionsAndReliefs._
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{CalculationDetail, AllowancesAndDeductions, Reliefs, ResidentialFinanceCosts}
+import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 object AllowancesDeductionsAndReliefsFixture {
 

@@ -17,15 +17,13 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationMessagesParser
-import v1.handler.AuditHandler.getCalculationHandler
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
-import v1.models.audit.{AuditError, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
@@ -37,24 +35,28 @@ import v1.support.MessagesFilter
 import scala.concurrent.ExecutionContext
 
 class GetCalculationMessagesController @Inject()(
-    authService: EnrolmentsAuthService,
-    lookupService: MtdIdLookupService,
-    parser: GetCalculationMessagesParser,
-    service: StandardService,
-    hateoasFactory: HateoasFactory,
-    auditService: AuditService,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends StandardController[GetCalculationMessagesRawData,
-                               GetCalculationMessagesRequest,
-                               CalculationMessages,
-                               HateoasWrapper[CalculationMessages],
-                               AnyContent](authService, lookupService, parser, service, auditService, cc)
+                                                  authService: EnrolmentsAuthService,
+                                                  lookupService: MtdIdLookupService,
+                                                  parser: GetCalculationMessagesParser,
+                                                  service: StandardService,
+                                                  hateoasFactory: HateoasFactory,
+                                                  auditService: AuditService,
+                                                  cc: ControllerComponents
+                                                )(implicit ec: ExecutionContext)
+  extends StandardController[GetCalculationMessagesRawData,
+    GetCalculationMessagesRequest,
+    CalculationMessages,
+    HateoasWrapper[CalculationMessages],
+    AnyContent](authService, lookupService, parser, service, auditService, cc)
     with MessagesFilter {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(controllerName = "GetCalculationMessagesController", endpointName = "getMessages")
+    EndpointLogContext(
+      controllerName = "GetCalculationMessagesController",
+      endpointName = "getMessages"
+    )
+
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
@@ -73,17 +75,17 @@ class GetCalculationMessagesController @Inject()(
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
 
-      val auditHandler: AuditHandler[GetCalculationAuditDetail] = getCalculationHandler(
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMessages",
         "retrieve-self-assessment-tax-calculation-messages",
-        nino, calculationId, request
+        Map("nino" -> nino, "calculationId" -> calculationId), request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
 
   def filterMessages(queries: Seq[MessageType])(
-      messagesResponse: ResponseWrapper[CalculationMessages]): Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
+    messagesResponse: ResponseWrapper[CalculationMessages]): Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
     val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)

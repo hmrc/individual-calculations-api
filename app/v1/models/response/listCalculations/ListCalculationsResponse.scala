@@ -18,26 +18,24 @@ package v1.models.response.listCalculations
 
 import cats.Functor
 import config.AppConfig
-import play.api.libs.json.{Json, OWrites, Reads, Writes}
+import play.api.libs.json.{Json, OFormat, OWrites, Reads, Writes}
 import v1.hateoas.{HateoasLinks, HateoasListLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
 
-case class CalculationListItem(
-    id: String,
-    calculationTimestamp: String,
-    `type`: CalculationType,
-    requestedBy: Option[CalculationRequestor]
-)
+case class CalculationListItem(id: String,
+                               calculationTimestamp: String,
+                               `type`: CalculationType,
+                               requestedBy: Option[CalculationRequestor])
 
 object CalculationListItem {
-  implicit val writes: OWrites[CalculationListItem] = Json.writes[CalculationListItem]
-  implicit val reads: Reads[CalculationListItem] = Json.reads
+  implicit val formats: OFormat[CalculationListItem] = Json.format[CalculationListItem]
 }
 
 case class ListCalculationsResponse[I](calculations: Seq[I])
 
 object ListCalculationsResponse extends HateoasLinks {
+
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = Json.writes[ListCalculationsResponse[I]]
   implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = Json.reads
 

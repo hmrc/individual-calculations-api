@@ -18,15 +18,13 @@ package v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json._
 
-case class ResultOfClaimApplied(
-                                 claimId: Option[String],
-                                 taxYearClaimMade: String,
-                                 claimType: String,
-                                 mtdLoss: Boolean,
-                                 taxYearLossIncurred: String,
-                                 lossAmountUsed: BigInt,
-                                 remainingLossValue: BigInt
-                               )
+case class ResultOfClaimApplied(claimId: Option[String],
+                                taxYearClaimMade: String,
+                                claimType: String,
+                                mtdLoss: Boolean,
+                                taxYearLossIncurred: String,
+                                lossAmountUsed: BigInt,
+                                remainingLossValue: BigInt)
 
 object ResultOfClaimApplied {
   implicit val formats: OFormat[ResultOfClaimApplied] = Json.format[ResultOfClaimApplied]

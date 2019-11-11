@@ -19,7 +19,7 @@ package v1.models.response.getEndOfYearEstimate
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateSummaryFixture
 import v1.models.utils.JsonErrorValidators
-import v1.models.response.getEndOfYearEstimate.EoyEstimateSummary._
+import v1.models.response.getEndOfYearEstimate.summary.EoyEstimateSummary
 
 class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
   testJsonProperties[EoyEstimateSummary](EoyEstimateSummaryFixture.json)(

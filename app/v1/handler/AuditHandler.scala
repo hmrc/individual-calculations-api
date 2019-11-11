@@ -16,30 +16,45 @@
 
 package v1.handler
 
-import play.api.libs.json.Writes
+import play.api.libs.json.{JsValue, Writes}
 import play.api.mvc.AnyContent
 import v1.controllers.UserRequest
-import v1.models.audit.{AuditEvent, AuditResponse, GetCalculationAuditDetail}
+import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
 case class AuditHandler[Details](auditType: String,
                                  transactionName: String,
-                                 eventFactory: (String, AuditResponse) => Details)(implicit val writes: Writes[Details]) {
+                                 detailFactory: (String, AuditResponse) => Details)(implicit val writes: Writes[Details]) {
 
   def event(correlationId: String, auditResponse: AuditResponse): AuditEvent[Details] =
-    AuditEvent(auditType, transactionName, eventFactory(correlationId, auditResponse))
+    AuditEvent(auditType, transactionName, detailFactory(correlationId, auditResponse))
 }
 
 object AuditHandler {
-  def getCalculationHandler(auditType: String,
-                            transactionName: String,
-                            nino: String,
-                            calculationId: String,
-                            request: UserRequest[AnyContent]): AuditHandler[GetCalculationAuditDetail] = AuditHandler(
+
+  def withBody(auditType: String,
+               transactionName: String,
+               pathParams: Map[String, String],
+               request: UserRequest[JsValue]): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
-    eventFactory = (correlationId: String, auditResponse: AuditResponse) =>
-      GetCalculationAuditDetail(request.userDetails,
-        nino, calculationId,
+    detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
+      GenericAuditDetail(request.userDetails,
+        pathParams,
+        Some(request.body),
+        correlationId,
+        auditResponse)
+  )
+
+  def withoutBody(auditType: String,
+               transactionName: String,
+               pathParams: Map[String, String],
+               request: UserRequest[AnyContent]): AuditHandler[GenericAuditDetail] = AuditHandler(
+    auditType,
+    transactionName,
+    detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
+      GenericAuditDetail(request.userDetails,
+        pathParams,
+        None,
         correlationId,
         auditResponse)
   )

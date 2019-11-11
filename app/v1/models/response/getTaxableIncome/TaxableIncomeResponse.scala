@@ -25,7 +25,8 @@ import v1.models.response.getTaxableIncome.summary.CalculationSummary
 
 case class TaxableIncomeResponse(summary: CalculationSummary, detail: CalculationDetail)
 
-object TaxableIncomeResponse extends HateoasLinks{
+object TaxableIncomeResponse extends HateoasLinks {
+
   implicit val writes: OWrites[TaxableIncomeResponse] = Json.writes[TaxableIncomeResponse]
   implicit val reads: Reads[TaxableIncomeResponse] = (JsPath \ "taxableIncome").read[TaxableIncomeResponse](Json.reads[TaxableIncomeResponse])
 
@@ -34,6 +35,7 @@ object TaxableIncomeResponse extends HateoasLinks{
       Seq(getMetadata(appConfig, data.nino, data.calculationId, isSelf = false), getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true))
     }
   }
+
 }
 
 case class TaxableIncomeHateoasData(nino: String, calculationId: String) extends HateoasData

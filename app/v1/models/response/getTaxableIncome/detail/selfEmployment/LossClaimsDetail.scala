@@ -17,6 +17,7 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment
 
 import play.api.libs.json._
+import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.{CarriedForwardLoss, ClaimNotApplied, LossBroughtForward, ResultOfClaimApplied, UnclaimedLoss}
 
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],

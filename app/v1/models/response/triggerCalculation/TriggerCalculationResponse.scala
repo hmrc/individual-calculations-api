@@ -24,6 +24,7 @@ import v1.models.hateoas.{HateoasData, Link}
 case class TriggerCalculationResponse(id: String)
 
 object TriggerCalculationResponse extends HateoasLinks {
+
   implicit val formats: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
 
   implicit object TriggerLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateaosData] {
@@ -31,6 +32,7 @@ object TriggerCalculationResponse extends HateoasLinks {
       Seq(getMetadata(appConfig, data.nino, data.id, isSelf = true))
     }
   }
+
 }
 
 case class TriggerCalculationHateaosData(nino: String, id: String) extends HateoasData
