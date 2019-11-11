@@ -39,7 +39,7 @@ class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configurati
 
   val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
   val backendBaseUrl: String = config.baseUrl("individual-calculations")
-
+  val endpointsEnabled: Boolean = config.getBoolean("api-definitions.endpoints.enabled")
   val apiGatewayContext: String = config.getString("api.gateway.context")
 
   def apiStatus(version: String): String = config.getString(s"api.$version.status")
