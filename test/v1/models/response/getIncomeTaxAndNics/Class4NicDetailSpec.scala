@@ -23,7 +23,7 @@ import v1.models.response.getIncomeTaxAndNics.detail.{Class4Losses, Class4NicDet
 class Class4NicDetailSpec extends UnitSpec {
 
   val model = Class4NicDetail(
-    Some(Class4Losses(Some(3001), Some(3002))),
+    Some(Class4Losses(Some(3001), Some(3002), Some(3003))),
     Some(3003),
     Some(3004),
     Some(
@@ -40,7 +40,8 @@ class Class4NicDetailSpec extends UnitSpec {
   val json: JsValue = Json.parse("""{
       | "class4Losses" : {
       | "totalClass4LossesAvailable" : 3001,
-      | "totalClass4LossesUsed" : 3002
+      | "totalClass4LossesUsed" : 3002,
+      | "totalClass4LossesCarriedForward" : 3003
       | },
       | "totalIncomeLiableToClass4Charge" : 3003,
       | "totalIncomeChargeableToClass4" :3004,
