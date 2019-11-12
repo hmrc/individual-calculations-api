@@ -364,7 +364,7 @@
                                 },
                                 "taxYearLossIncurred": {
                                   "title": "taxYearLossIncurred",
-                                  "description": "The tax year the loss arose Format: YYYY-YY",
+                                  "description": "The tax year the loss arose. Format: YYYY-YY",
                                   "type": "string",
                                   "example": "2019-20"
                                 },
@@ -766,7 +766,7 @@
                               },
                               "taxYearLossIncurred": {
                                 "title": "taxYearLossIncurred",
-                                "description": "The tax year the loss.Format: YYYY-YY",
+                                "description": "The tax year the loss. Format: YYYY-YY",
                                 "type": "string",
                                 "example": "2019-20"
                               },
@@ -882,7 +882,7 @@
                     },
                     "totalDeductions": {
                       "title": "totalDeductions",
-                      "description": "The total deductions from the net loss (or additions to the net profit) for the UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "description": "The total deductions from the net loss (or additions to the net profit) for UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
                       "minimum": 0,
@@ -940,7 +940,7 @@
                         },
                         "broughtForwardIncomeTaxLossesUsed": {
                           "title": "broughtForwardIncomeTaxLossesUsed",
-                          "description": "TThis is the total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "This is the total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
