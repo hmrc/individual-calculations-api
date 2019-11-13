@@ -16,14 +16,13 @@
 package config
 
 import play.api.http.Status
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import support.IntegrationBaseSpec
 
 class DocumentationISpec extends IntegrationBaseSpec {
 
-  val apiDefinitionJson = Json.parse(
-    """
+  val apiDefinitionJson: JsValue = Json.parse("""
       |{
       |  "scopes":[
       |    {
