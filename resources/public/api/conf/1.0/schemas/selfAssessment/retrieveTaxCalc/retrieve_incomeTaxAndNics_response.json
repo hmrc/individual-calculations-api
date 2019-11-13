@@ -595,7 +595,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
-                  "example": "110"
+                  "example": "110.99"
                 },
                 "weeks": {
                   "title": "weeks",
