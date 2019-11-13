@@ -30,6 +30,7 @@ trait AppConfig {
 
   def apiStatus(version: String): String
 
+  def endpointsEnabled: Boolean
 
   def featureSwitch: Option[Configuration]
 }
