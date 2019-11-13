@@ -646,6 +646,15 @@
               "title": "class4Nics",
               "description": "Details the breakdown of Class 4 National Insurance Contributions charged.",
               "properties": {
+                "totalIncomeLiableToClass4Charge": {
+                  "title": "totalIncomeLiableToClass4Charge",
+                  "description": "Total income that is liable to Class 4 National Insurance Contributions before Class 4 National Insurance Contributions losses have been applied. This value must be between 0 and 99999999999. No decimals.",
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 0,
+                  "maximum": 99999999999,
+                  "example": "10000"
+                },
                 "class4Losses": {
                   "type": "object",
                   "title": "class4Losses",
@@ -679,15 +688,6 @@
                       "example": "10000"
                     }
                   }
-                },
-                "totalIncomeLiableToClass4Charge": {
-                  "title": "totalIncomeLiableToClass4Charge",
-                  "description": "Total income that is liable to Class 4 National Insurance Contributions before Class 4 National Insurance Contributions losses have been applied. This value must be between 0 and 99999999999. No decimals.",
-                  "type": "number",
-                  "multipleOf": 1,
-                  "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "10000"
                 },
                 "totalIncomeChargeableToClass4": {
                   "title": "totalIncomeChargeableToClass4",

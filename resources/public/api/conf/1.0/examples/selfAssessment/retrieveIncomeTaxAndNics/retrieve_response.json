@@ -75,13 +75,13 @@
         "actualClass2Nic": true
       },
       "class4Nics": {
+        "totalIncomeChargeableToClass4": 1000,
         "class4Losses": {
           "totalClass4LossesAvailable": 1000,
           "totalClass4LossesUsed": 1000,
           "totalClass4LossesCarriedForward": 1000
         },
         "totalIncomeLiableToClass4Charge": 1000,
-        "totalIncomeChargeableToClass4": 1000,
         "class4NicBands": [
           {
             "name": "ZRT",
