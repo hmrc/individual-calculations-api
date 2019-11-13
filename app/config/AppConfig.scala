@@ -30,7 +30,7 @@ trait AppConfig {
 
   def apiStatus(version: String): String
 
-  def endpointsEnabled: Boolean
+  def endpointsEnabled(version: String): Boolean
 
   def featureSwitch: Option[Configuration]
 }
@@ -40,12 +40,13 @@ class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configurati
 
   val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
   val backendBaseUrl: String = config.baseUrl("individual-calculations")
-  val endpointsEnabled: Boolean = config.getBoolean("api-definitions.endpoints.enabled")
   val apiGatewayContext: String = config.getString("api.gateway.context")
 
   def apiStatus(version: String): String = config.getString(s"api.$version.status")
 
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
+
+  def endpointsEnabled(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.enabled")
 }
 
 trait FixedConfig {
