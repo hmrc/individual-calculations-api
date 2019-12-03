@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.AllowancesDeductionsAndReliefsFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsFixture
 import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
@@ -109,7 +109,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(HateoasWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
-        val responseBody: JsObject = AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
+        val responseBody: JsObject = AllowancesDeductionsAndReliefsFixture.json.deepMerge(linksJson)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -123,7 +123,6 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
-
 
     "return FORBIDDEN with the error message" when {
       "error count is greater than zero" in new Test {

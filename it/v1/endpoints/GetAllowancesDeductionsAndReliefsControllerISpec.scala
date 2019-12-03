@@ -22,7 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.{AllowancesDeductionsAndReliefsFixture, GetIncomeTaxAndNicsFixture}
+import v1.fixtures.GetIncomeTaxAndNicsFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsFixture
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -76,7 +77,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
+        response.json shouldBe AllowancesDeductionsAndReliefsFixture.json.deepMerge(linksJson)
       }
     }
 

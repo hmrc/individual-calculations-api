@@ -18,29 +18,27 @@ package v1.models.response.getAllowancesDeductionsAndReliefs
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.AllowancesDeductionsAndReliefsFixture._
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
+import v1.models.utils.JsonErrorValidators
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsFixture._
 
-class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig {
+class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig with JsonErrorValidators {
 
   val nino: String = "AA123456A"
   val calculationId: String = "calcId"
 
-  "reading from json" must {
-    "read from allowancesDeductionsAndReliefs object of backend response" in {
-      val responseJson = Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsJson)
-
-      responseJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe allowancesDeductionsAndReliefsModel
-    }
-  }
+  testJsonProperties[AllowancesDeductionsAndReliefsResponse](json)(
+    mandatoryProperties = Seq("allowancesDeductionsAndReliefsResponse"),
+    optionalProperties = Seq()
+  )
 
   "writing to Json" must {
     "work as per example in tech spec" in {
-      Json.toJson(allowancesDeductionsAndReliefsModel) shouldBe allowancesDeductionsAndReliefsJson
+      Json.toJson(allowancesDeductionsAndReliefsModel) shouldBe json
     }
   }
 

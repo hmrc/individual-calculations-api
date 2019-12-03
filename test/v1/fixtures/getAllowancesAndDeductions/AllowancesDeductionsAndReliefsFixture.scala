@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.fixtures.getAllowancesAndDeductions
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
-import v1.models.response.getAllowancesDeductionsAndReliefs._
-import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{CalculationDetail, AllowancesAndDeductions, Reliefs, ResidentialFinanceCosts}
+import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{AllowancesAndDeductions, CalculationDetail, Reliefs, ResidentialFinanceCosts}
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 object AllowancesDeductionsAndReliefsFixture {
@@ -44,34 +44,36 @@ object AllowancesDeductionsAndReliefsFixture {
     )
   )
 
-  val allowancesDeductionsAndReliefsJson: JsObject = Json.parse(
+  val json: JsObject = Json.parse(
     """
       |{
-      |  "summary": {
-      |    "totalAllowancesAndDeductions": 12500,
-      |    "totalReliefs": 12500
-      |  },
-      |  "detail":{
-      |    "allowancesAndDeductions":{
-      |      "personalAllowance": 12500,
-      |      "reducedPersonalAllowance": 12500,
-      |      "giftOfInvestmentsAndPropertyToCharity": 12500,
-      |      "blindPersonsAllowance": 12500,
-      |      "lossesAppliedToGeneralIncome": 12500
+      |  "allowancesDeductionsAndReliefs" : {
+      |    "summary": {
+      |      "totalAllowancesAndDeductions": 12500,
+      |      "totalReliefs": 12500
       |    },
-      |    "reliefs": {
-      |      "residentialFinanceCosts": {
-      |        "amountClaimed": 12500,
-      |        "allowableAmount": 12500,
-      |        "rate": 20,
-      |        "propertyFinanceRelief": 12500
+      |    "detail":{
+      |      "allowancesAndDeductions":{
+      |        "personalAllowance": 12500,
+      |        "reducedPersonalAllowance": 12500,
+      |        "giftOfInvestmentsAndPropertyToCharity": 12500,
+      |        "blindPersonsAllowance": 12500,
+      |        "lossesAppliedToGeneralIncome": 12500
+      |      },
+      |      "reliefs": {
+      |        "residentialFinanceCosts": {
+      |          "amountClaimed": 12500,
+      |          "allowableAmount": 12500,
+      |          "rate": 20,
+      |          "propertyFinanceRelief": 12500
+      |        }
       |      }
       |    }
       |  }
       |}
       |""".stripMargin).as[JsObject]
 
-  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsJson)
+  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> json)
 
   val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue =
     metadataJson.as[JsObject] ++
