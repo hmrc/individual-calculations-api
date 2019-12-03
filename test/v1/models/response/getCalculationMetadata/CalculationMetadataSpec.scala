@@ -16,56 +16,17 @@
 
 package v1.models.response.getCalculationMetadata
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getMetadata.CalculationMetadataFixture
+import v1.fixtures.getMetadata.CalculationMetadataFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
-import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
-import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.utils.JsonErrorValidators
 
-class CalculationMetadataSpec extends UnitSpec {
-
-  val jsonInput: JsValue = Json.parse("""{
-                          |  "metadata": {
-                          |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                          |    "taxYear": "2018-19",
-                          |    "requestedBy": "customer",
-                          |    "calculationReason": "customerRequest",
-                          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                          |    "calculationType": "crystallisation",
-                          |    "intentToCrystallise": true,
-                          |    "crystallised": false,
-                          |    "calculationErrorCount": 123
-                          |  }
-                          |}
-                          |""".stripMargin)
-
-  val jsonOutput: JsValue = Json.parse("""{
-                           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                           |    "taxYear": "2018-19",
-                           |    "requestedBy": "customer",
-                           |    "calculationReason": "customerRequest",
-                           |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                           |    "calculationType": "crystallisation",
-                           |    "intentToCrystallise": true,
-                           |    "crystallised": false,
-                           |    "calculationErrorCount": 123
-                           |  }
-                           |""".stripMargin)
-
-  val metadata = CalculationMetadata(
-    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    taxYear = "2018-19",
-    requestedBy = CalculationRequestor.customer,
-    calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
-    calculationType = CalculationType.crystallisation,
-    intentToCrystallise = true,
-    crystallised = false,
-    totalIncomeTaxAndNicsDue = None,
-    calculationErrorCount = Some(123)
-  )
+class CalculationMetadataSpec extends UnitSpec with JsonErrorValidators {
 
   "GetCalculationMetatdata" when {
     "written to JSON" should {
@@ -74,19 +35,18 @@ class CalculationMetadataSpec extends UnitSpec {
       }
     }
 
-    "read from json" should {
-      "read from metadata top level field" in {
-        jsonInput.as[CalculationMetadata] shouldBe metadata
-      }
-    }
+    testJsonProperties[CalculationMetadata](CalculationMetadataFixture.mtdJson)(
+      mandatoryProperties = Seq("metadata"),
+      optionalProperties = Seq()
+    )
   }
 
   "HateoasFactory" should {
 
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
-      val calcId         = "someCalcId"
+      val nino = "someNino"
+      val calcId = "someCalcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

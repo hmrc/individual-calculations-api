@@ -45,7 +45,8 @@ object GetCalculationMessagesFixture {
   )
 
   val mtdJson: JsValue = Json.parse(
-    """{
+    """
+      |{
       |  "info":[
       |    {"id":"info1", "text":"text1"},
       |    {"id":"info2", "text":"text2"}

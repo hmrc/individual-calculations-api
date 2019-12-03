@@ -22,8 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.Fixtures
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.fixtures.getMetadata.CalculationMetadataFixture
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -35,7 +35,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
     val correlationId = "X-123"
     val calcId        = "12345678"
 
-    val linksJson = Json.parse(s"""
+    val linksJson: JsObject = Json.parse(s"""
                                       |{
                                       |  "links": [{
                                       |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
@@ -88,7 +88,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, Fixtures.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, CalculationMetadataFixture.errorBodyFromBackEnd)
         }
 
         val response: WSResponse = await(request.get)

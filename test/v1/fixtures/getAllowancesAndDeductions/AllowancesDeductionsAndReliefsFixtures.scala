@@ -19,7 +19,7 @@ package v1.fixtures.getAllowancesAndDeductions
 import play.api.libs.json.{JsObject, Json}
 
 object ResidentialFinancialCostsFixture {
-  val mtdJson: JsObject = Json.parse(
+  val modelJson: JsObject = Json.parse(
     """
       |{
       |  "amountClaimed" : 12500,
@@ -31,11 +31,11 @@ object ResidentialFinancialCostsFixture {
 }
 
 object ReliefsFixture {
-  val mtdJson: JsObject = Json.obj("residentialFinanceCosts" -> ResidentialFinancialCostsFixture.mtdJson)
+  val modelJson: JsObject = Json.obj("residentialFinanceCosts" -> ResidentialFinancialCostsFixture.modelJson)
 }
 
 object AllowancesAndDeductionsFixture {
-  val mtdJson: JsObject = Json.parse(
+  val modelJson: JsObject = Json.parse(
     """
       |{
       |  "personalAllowance": 12500,
@@ -48,12 +48,12 @@ object AllowancesAndDeductionsFixture {
 }
 
 object CalculationDetailFixture {
-  val mtdJson: JsObject = Json.obj("reliefs" -> ReliefsFixture.mtdJson) ++
-    Json.obj("allowancesAndDeductions" -> AllowancesAndDeductionsFixture.mtdJson)
+  val modelJson: JsObject = Json.obj("reliefs" -> ReliefsFixture.modelJson) ++
+    Json.obj("allowancesAndDeductions" -> AllowancesAndDeductionsFixture.modelJson)
 }
 
 object CalculationSummaryFixture {
-  val mtdJson: JsObject = Json.parse(
+  val modelJson: JsObject = Json.parse(
     """
       |{
       |  "totalAllowancesAndDeductions": 12500,

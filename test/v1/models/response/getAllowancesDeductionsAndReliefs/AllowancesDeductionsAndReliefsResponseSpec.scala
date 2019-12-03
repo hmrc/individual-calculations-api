@@ -32,14 +32,14 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
   val nino: String = "AA123456A"
   val calculationId: String = "calcId"
 
-  testJsonProperties[AllowancesDeductionsAndReliefsResponse](AllowancesDeductionsAndReliefsResponseFixture.json)(
+  testJsonProperties[AllowancesDeductionsAndReliefsResponse](AllowancesDeductionsAndReliefsResponseFixture.modelJson)(
     mandatoryProperties = Seq("allowancesDeductionsAndReliefs"),
     optionalProperties = Seq()
   )
 
   "writing to Json" must {
     "work as per example in tech spec" in {
-      Json.toJson(allowancesDeductionsAndReliefsModel) shouldBe json
+      Json.toJson(allowancesDeductionsAndReliefsModel) shouldBe modelJson
     }
   }
 

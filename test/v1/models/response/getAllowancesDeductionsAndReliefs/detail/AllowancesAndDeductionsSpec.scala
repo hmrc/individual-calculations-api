@@ -22,7 +22,7 @@ import v1.models.utils.JsonErrorValidators
 
 class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[AllowancesAndDeductions](AllowancesAndDeductionsFixture.mtdJson)(
+  testJsonProperties[AllowancesAndDeductions](AllowancesAndDeductionsFixture.modelJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
       "personalAllowance",

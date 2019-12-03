@@ -109,7 +109,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
-        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.json.deepMerge(linksJson)
+        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.modelJson.deepMerge(linksJson)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody

@@ -22,7 +22,7 @@ import v1.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[Reliefs](ReliefsFixture.mtdJson)(
+  testJsonProperties[Reliefs](ReliefsFixture.modelJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("residentialFinanceCosts")
   )

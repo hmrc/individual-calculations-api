@@ -44,12 +44,10 @@ object AllowancesDeductionsAndReliefsResponseFixture {
     )
   )
 
-  val json: JsObject = Json.obj("summary" -> CalculationSummaryFixture.mtdJson) ++
-    Json.obj("detail" -> CalculationDetailFixture.mtdJson)
+  val modelJson: JsObject = Json.obj("summary" -> CalculationSummaryFixture.modelJson) ++
+    Json.obj("detail" -> CalculationDetailFixture.modelJson)
 
-  val wrappedJson: JsObject = Json.obj("allowancesDeductionsAndReliefs" -> json)
-
-  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ wrappedJson
+  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> modelJson)
 
   val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.parse(
     """
