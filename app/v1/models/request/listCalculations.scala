@@ -20,4 +20,4 @@ import uk.gov.hmrc.domain.Nino
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[String])
+case class ListCalculationsRequest(nino: Nino, taxYear: String)

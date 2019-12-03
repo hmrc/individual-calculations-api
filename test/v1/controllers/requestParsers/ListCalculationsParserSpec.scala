@@ -37,7 +37,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), Some(taxYear)))
+        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), taxYear))
       }
     }
 

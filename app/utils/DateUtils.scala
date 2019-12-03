@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package utils
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import utils.DateUtils
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import java.time.{LocalDate, Year}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+object DateUtils {
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), DateUtils.getTaxYear(data.taxYear))
+  def getTaxYear(taxYearOpt: Option[String], currentDate: LocalDate = LocalDate.now()): String = taxYearOpt match {
+    case Some(taxYear) => taxYear
+    case None =>
+      val fiscalYearStartDate = LocalDate.parse(s"${currentDate.getYear.toString}-04-05")
+
+      if(currentDate.isAfter(fiscalYearStartDate)){
+        s"${currentDate.getYear}-${currentDate.getYear. +(1).toString.drop(2)}"
+      }
+      else {
+        s"${currentDate.getYear. -(1)}-${currentDate.getYear.toString.drop(2)}"
+      }
+  }
 }
