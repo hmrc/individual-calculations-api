@@ -17,12 +17,12 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.detail.CalculationDetailFixture
+import v1.fixtures.getAllowancesAndDeductions.CalculationDetailFixture
 import v1.models.utils.JsonErrorValidators
 
 class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[CalculationDetail](CalculationDetailFixture.json)(
+  testJsonProperties[CalculationDetail](CalculationDetailFixture.mtdJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("allowancesAndDeductions", "reliefs")
   )

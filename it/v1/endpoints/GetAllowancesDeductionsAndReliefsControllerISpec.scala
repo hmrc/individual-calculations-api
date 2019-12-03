@@ -23,7 +23,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.GetIncomeTaxAndNicsFixture
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -70,14 +70,14 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsFixture.jsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.jsonFromBackend)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe AllowancesDeductionsAndReliefsFixture.json.deepMerge(linksJson)
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.json.deepMerge(linksJson)
       }
     }
 
@@ -107,7 +107,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           BackendStub.onSuccess(BackendStub.GET,
             backendUrl,
             OK,
-            AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
+            AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
         }
 
         val response: WSResponse = await(request.get)

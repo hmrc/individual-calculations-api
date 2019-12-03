@@ -48,9 +48,6 @@ object CalculationMessages extends HateoasLinks {
       Seq(getMetadata(appConfig, data.nino, data.id, isSelf = false), getMessages(appConfig, data.nino, data.id, isSelf = true))
     }
   }
-
 }
 
 case class CalculationMessagesHateoasData(nino: String, id: String) extends HateoasData
-
-

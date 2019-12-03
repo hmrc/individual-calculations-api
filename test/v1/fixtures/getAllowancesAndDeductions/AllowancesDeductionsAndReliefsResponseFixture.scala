@@ -22,7 +22,7 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductions
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{AllowancesAndDeductions, CalculationDetail, Reliefs, ResidentialFinanceCosts}
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
-object AllowancesDeductionsAndReliefsFixture {
+object AllowancesDeductionsAndReliefsResponseFixture {
 
   val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefsResponse = AllowancesDeductionsAndReliefsResponse(
     CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
@@ -44,50 +44,24 @@ object AllowancesDeductionsAndReliefsFixture {
     )
   )
 
-  val json: JsObject = Json.parse(
+  val json: JsObject = Json.obj("summary" -> CalculationSummaryFixture.mtdJson) ++
+    Json.obj("detail" -> CalculationDetailFixture.mtdJson)
+
+  val wrappedJson: JsObject = Json.obj("allowancesDeductionsAndReliefs" -> json)
+
+  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ wrappedJson
+
+  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.parse(
     """
       |{
-      |  "allowancesDeductionsAndReliefs" : {
+      |  "allowancesDeductionsAndReliefs": {
       |    "summary": {
-      |      "totalAllowancesAndDeductions": 12500,
-      |      "totalReliefs": 12500
       |    },
       |    "detail":{
-      |      "allowancesAndDeductions":{
-      |        "personalAllowance": 12500,
-      |        "reducedPersonalAllowance": 12500,
-      |        "giftOfInvestmentsAndPropertyToCharity": 12500,
-      |        "blindPersonsAllowance": 12500,
-      |        "lossesAppliedToGeneralIncome": 12500
-      |      },
-      |      "reliefs": {
-      |        "residentialFinanceCosts": {
-      |          "amountClaimed": 12500,
-      |          "allowableAmount": 12500,
-      |          "rate": 20,
-      |          "propertyFinanceRelief": 12500
-      |        }
-      |      }
       |    }
       |  }
       |}
-      |""".stripMargin).as[JsObject]
-
-  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> json)
-
-  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue =
-    metadataJson.as[JsObject] ++
-      Json.parse(
-        """
-          |{
-          |  "allowancesDeductionsAndReliefs": {
-          |    "summary": {
-          |    },
-          |    "detail":{
-          |    }
-          |  }
-          |}
-          |""".stripMargin).as[JsObject]
+    """.stripMargin).as[JsObject]
 
   val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefsResponse =
     AllowancesDeductionsAndReliefsResponse(CalculationSummary(None, None), CalculationDetail(None, None))

@@ -18,61 +18,42 @@ package v1.models.response.getCalculationMessages
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.Fixtures._
+import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture._
+import v1.fixtures.getCalculationMessages.{GetCalculationMessagesFixture, MessageFixture}
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.utils.JsonErrorValidators
 
-class CalculationMessagesSpec extends UnitSpec {
+class CalculationMessagesSpec extends UnitSpec with JsonErrorValidators {
 
-  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
-    CalculationMessages(if (info) Some(Seq(info1, info2)) else None,
-      if (warn) Some(Seq(warn1, warn2)) else None,
-      if (error) Some(Seq(err1, err2)) else None)
+  "Message" when {
+    testJsonProperties[Message](MessageFixture.mtdJson)(
+      mandatoryProperties = Seq("id", "text"),
+      optionalProperties = Seq()
+    )
+  }
 
   "GetCalculationMessages" when {
 
-    "read from json" should {
-      "read from the json as a  whole CalculationMessage" in {
-        backendMessagesJson.as[CalculationMessages] shouldBe messagesResponse(info = true, warn = true, error = true)
-      }
+    testJsonProperties[CalculationMessages](GetCalculationMessagesFixture.mtdJson)(
+      mandatoryProperties = Seq(),
+      optionalProperties = Seq("info", "warnings", "errors")
+    )
 
-      "read from the json as Info CalculationMessage" in {
-        backendMessagesInfoJson.as[CalculationMessages] shouldBe messagesResponse(info = true, warn = false, error = false)
-      }
-
-      "read from the json as Warnings CalculationMessage" in {
-        backendMessagesWarningsJson.as[CalculationMessages] shouldBe messagesResponse(info = false, warn = true, error = false)
-      }
-
-      "read from the json as Errors CalculationMessage" in {
-        backendMessagesErrorsJson.as[CalculationMessages] shouldBe messagesResponse(info = false, warn = false, error = true)
-      }
-    }
     "written to JSON" should {
       "take the full messages form" in {
-        Json.toJson[CalculationMessages](messagesResponse(info = true, warn = true, error = true)) shouldBe outputMessagesJson
-      }
-
-      "display info only" in {
-        Json.toJson[CalculationMessages](messagesResponse(info = true, warn = false, error = false)) shouldBe outputMessagesInfoJson
-      }
-
-      "display warnings only" in {
-        Json.toJson[CalculationMessages](messagesResponse(info = false, warn = true, error = false)) shouldBe outputMessagesWarningsJson
-      }
-
-      "display errors only" in {
-        Json.toJson[CalculationMessages](messagesResponse(info = false, warn = false, error = true)) shouldBe outputMessagesErrorsJson
+        Json.toJson[CalculationMessages](response) shouldBe outputMessagesJson
       }
     }
   }
 
   "HateoasFactory" must {
+
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
+      val nino = "someNino"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

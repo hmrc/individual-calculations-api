@@ -22,8 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.Fixtures
-import v1.fixtures.Fixtures._
+import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture
+import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -51,7 +51,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = backendMessagesJson
+      val successBody = GetCalculationMessagesFixture.mtdJson
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[
@@ -97,7 +97,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe Fixtures.outputMessagesErrorsJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+        response.json shouldBe outputMessagesErrorsJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
       }
 
       "valid request is made with multiple filters" in new Test {

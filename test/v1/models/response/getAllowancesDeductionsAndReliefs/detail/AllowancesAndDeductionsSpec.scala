@@ -17,12 +17,12 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.detail.AllowancesAndDeductionsFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesAndDeductionsFixture
 import v1.models.utils.JsonErrorValidators
 
 class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[AllowancesAndDeductions](AllowancesAndDeductionsFixture.json)(
+  testJsonProperties[AllowancesAndDeductions](AllowancesAndDeductionsFixture.mtdJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
       "personalAllowance",

@@ -16,7 +16,7 @@
 
 package v1.models.response.getAllowancesDeductionsAndReliefs
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Link
@@ -24,15 +24,16 @@ import v1.models.hateoas.Method.GET
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 import v1.models.utils.JsonErrorValidators
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsFixture._
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture._
 
 class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig with JsonErrorValidators {
 
   val nino: String = "AA123456A"
   val calculationId: String = "calcId"
 
-  testJsonProperties[AllowancesDeductionsAndReliefsResponse](json)(
-    mandatoryProperties = Seq("allowancesDeductionsAndReliefsResponse"),
+  testJsonProperties[AllowancesDeductionsAndReliefsResponse](AllowancesDeductionsAndReliefsResponseFixture.json)(
+    mandatoryProperties = Seq("allowancesDeductionsAndReliefs"),
     optionalProperties = Seq()
   )
 

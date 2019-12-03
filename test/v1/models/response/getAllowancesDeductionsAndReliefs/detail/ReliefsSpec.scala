@@ -17,14 +17,13 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.detail.ReliefsFixture
+import v1.fixtures.getAllowancesAndDeductions.ReliefsFixture
 import v1.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[Reliefs](ReliefsFixture.json)(
+  testJsonProperties[Reliefs](ReliefsFixture.mtdJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("residentialFinanceCosts")
   )
-
 }
