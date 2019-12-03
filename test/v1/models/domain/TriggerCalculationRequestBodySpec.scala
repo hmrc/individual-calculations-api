@@ -16,17 +16,17 @@
 
 package v1.models.domain
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
-class TriggerCalculationSpec extends UnitSpec {
+class TriggerCalculationRequestBodySpec extends UnitSpec {
 
-  val json = Json.parse(
+  val json: JsValue = Json.parse(
     """{
       |  "taxYear" : "2018-19"
       |}""".stripMargin)
 
-  val response = TriggerCalculation("2018-19")
+  val response = TriggerCalculationRequestBody("2018-19")
 
   "JSON writes" must {
     "align with spec" in {
@@ -36,7 +36,7 @@ class TriggerCalculationSpec extends UnitSpec {
 
   "JSON reads" must {
     "align with back-end response" in {
-      json.as[TriggerCalculation] shouldBe response
+      json.as[TriggerCalculationRequestBody] shouldBe response
     }
   }
 

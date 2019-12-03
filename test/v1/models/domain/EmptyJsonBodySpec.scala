@@ -16,12 +16,12 @@
 
 package v1.models.domain
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class EmptyJsonBodySpec extends UnitSpec {
 
-  val json = Json.parse(
+  val json: JsValue = Json.parse(
     """{
       |
       |}""".stripMargin)
@@ -31,5 +31,4 @@ class EmptyJsonBodySpec extends UnitSpec {
       Json.toJson(EmptyJsonBody) shouldBe json
     }
   }
-
 }

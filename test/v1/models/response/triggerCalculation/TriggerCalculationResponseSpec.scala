@@ -20,12 +20,13 @@ import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
+import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.models.hateoas.Method.{GET, POST}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse("""
+  val json: JsValue = Json.parse(
+    """
       |{
       | "id": "testId"
       |}
@@ -49,7 +50,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
   "HateoasFactory" must {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
+      val nino = "someNino"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

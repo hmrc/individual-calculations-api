@@ -22,8 +22,7 @@ import support.UnitSpec
 class BackendErrorCodeSpec extends UnitSpec {
 
   "reads" should {
-    val json = Json.parse(
-      """
+    val json = Json.parse("""
         |{
         |   "code": "CODE",
         |   "reason": "ignored"
