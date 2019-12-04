@@ -16,9 +16,12 @@
 
 package v1.controllers.requestParsers
 
+import java.time.LocalDate
+
 import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
+import v1.mocks.MockCurrentDateProvider
 import v1.mocks.validators.MockListCalculationsValidator
 import v1.models.errors._
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
@@ -27,17 +30,40 @@ class ListCalculationsParserSpec extends UnitSpec {
   val nino = "AA123456B"
   val taxYear = "2017-18"
 
-  trait Test extends MockListCalculationsValidator {
-    lazy val parser = new ListCalculationsParser(mockValidator)
+  trait Test extends MockListCalculationsValidator with MockCurrentDateProvider{
+    lazy val parser = new ListCalculationsParser(mockValidator, mockCurrentDateProvider)
   }
 
   "parse" when {
-    "valid input" should {
-      "parse the request" in new Test {
+    "valid data is supplied" should {
+      "return a valid request object" in new Test {
+        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.now())
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), taxYear))
+      }
+    }
+
+    "data with out tax year supplied is after 5th April of the year" should {
+      "return a valid request object" in new Test {
+
+        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-06"))
+        val data = ListCalculationsRawData(nino, None)
+        MockValidator.validate(data).returns(Nil)
+
+        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), taxYear))
+      }
+    }
+
+    "data with out tax year supplied is on or before 5th April of the year" should {
+      "return a valid request object" in new Test {
+
+        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-05"))
+        val data = ListCalculationsRawData(nino, None)
+        MockValidator.validate(data).returns(Nil)
+
+        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), "2016-17"))
       }
     }
 

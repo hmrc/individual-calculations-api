@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package v1.mocks
 
 import java.time.LocalDate
 
-object DateUtils {
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import utils.CurrentDateProvider
 
-  def getTaxYear(taxYearOpt: Option[String], currentDate: LocalDate): String = taxYearOpt match {
-    case Some(taxYear) => taxYear
-    case None =>
-      val fiscalYearStartDate = LocalDate.parse(s"${currentDate.getYear.toString}-04-05")
 
-      if(currentDate.isAfter(fiscalYearStartDate)){
-        s"${currentDate.getYear}-${currentDate.getYear. +(1).toString.drop(2)}"
-      }
-      else {
-        s"${currentDate.getYear. -(1)}-${currentDate.getYear.toString.drop(2)}"
-      }
+trait MockCurrentDateProvider extends MockFactory {
+
+  val mockCurrentDateProvider: CurrentDateProvider = mock[CurrentDateProvider]
+
+  object MockCurrentDateProvider {
+
+    def getCurrentDate(): CallHandler[LocalDate] = (mockCurrentDateProvider.getCurrentDate _).expects()
   }
 }

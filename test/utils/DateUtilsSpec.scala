@@ -25,7 +25,7 @@ class DateUtilsSpec extends UnitSpec{
   "getTaxYear" should {
     "return a tax year" when {
       "mtd formatted string tax year is supplied" in {
-        DateUtils.getTaxYear(Some("2018-19")) shouldBe "2018-19"
+        DateUtils.getTaxYear(Some("2018-19"), LocalDate.now()) shouldBe "2018-19"
       }
 
       "no tax year is supplied and the date is 5th April of the current year" in {
