@@ -21,7 +21,6 @@ import v1.fixtures.getAllowancesAndDeductions.ResidentialFinancialCostsFixture
 import v1.models.utils.JsonErrorValidators
 
 class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
-
   testJsonProperties[ResidentialFinanceCosts](ResidentialFinancialCostsFixture.modelJson)(
     mandatoryProperties = Seq("amountClaimed", "rate", "propertyFinanceRelief"),
     optionalProperties = Seq("allowableAmount")

@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class AuditError(errorCode: String)
 
 object AuditError {
-  implicit val formats: OFormat[AuditError] = Json.format[AuditError]
+  implicit val format: OFormat[AuditError] = Json.format[AuditError]
 }

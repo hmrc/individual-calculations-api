@@ -36,7 +36,6 @@ class CalculationMessagesSpec extends UnitSpec with JsonErrorValidators {
   }
 
   "GetCalculationMessages" when {
-
     testJsonProperties[CalculationMessages](GetCalculationMessagesFixture.mtdJson)(
       mandatoryProperties = Seq(),
       optionalProperties = Seq("info", "warnings", "errors")

@@ -25,7 +25,7 @@ case class GenericAuditDetail(userType: String,
                               pathParams: Map[String, String],
                               requestBody: Option[JsValue],
                               `X-CorrelationId`: String,
-                              response: AuditResponse)
+                              auditResponse: AuditResponse)
 
 object GenericAuditDetail {
 
@@ -47,10 +47,10 @@ object GenericAuditDetail {
     GenericAuditDetail(
       userType = userDetails.userType,
       agentReferenceNumber = userDetails.agentReferenceNumber,
-      pathParams,
-      requestBody,
-      `X-CorrelationId`,
-      auditResponse
+      pathParams = pathParams,
+      requestBody = requestBody,
+      `X-CorrelationId` = `X-CorrelationId`,
+      auditResponse = auditResponse
     )
   }
 }
