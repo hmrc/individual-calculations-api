@@ -16,7 +16,7 @@
 
 package v1.fixtures.audit
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.audit.AuditResponseFixture._
 import v1.models.audit.GenericAuditDetail
 
@@ -25,21 +25,37 @@ object GenericAuditDetailFixture {
   private val nino: String = "ZG903729C"
   private val calculationId: String = "calcId"
 
-  val genericAuditDetailJsonSuccess: JsObject = Json.parse(s"""
-      |{
-      |    "userType": "Agent",
-      |    "agentReferenceNumber":"012345678",
-      |    "nino": "$nino",
-      |    "calculationId" : "$calculationId",
-      |    "response":{
-      |      "httpStatus": 200,
-      |      "body": $body
-      |    },
-      |    "X-CorrelationId": "a1e8057e-fbbc-47a8-a8b478d9f015c253"
-      |}
-    """.stripMargin).as[JsObject]
+  val genericAuditDetailModelSuccess: GenericAuditDetail = GenericAuditDetail(
+    userType = "Agent",
+    agentReferenceNumber = Some("012345678"),
+    pathParams = Map("nino" -> nino, "calculationId" -> calculationId),
+    requestBody = None,
+    `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
+    auditResponse = auditResponseModelWithBody
+  )
 
-   val genericAuditDetailJsonError: JsObject = Json.parse(s"""
+  val genericAuditDetailModelError: GenericAuditDetail = genericAuditDetailModelSuccess.copy(
+    auditResponse = auditResponseModelWithErrors
+  )
+
+  val genericAuditDetailJsonSuccess: JsValue = Json.parse(
+    s"""
+       |{
+       |    "userType": "Agent",
+       |    "agentReferenceNumber":"012345678",
+       |    "nino": "$nino",
+       |    "calculationId" : "$calculationId",
+       |    "response":{
+       |      "httpStatus": 200,
+       |      "body": $body
+       |    },
+       |    "X-CorrelationId": "a1e8057e-fbbc-47a8-a8b478d9f015c253"
+       |}
+    """.stripMargin
+  )
+
+  val genericAuditDetailJsonError: JsValue = Json.parse(
+    s"""
        |{
        |    "userType": "Agent",
        |    "agentReferenceNumber":"012345678",
@@ -48,16 +64,6 @@ object GenericAuditDetailFixture {
        |    "response": $auditResponseJsonWithErrors,
        |    "X-CorrelationId":"a1e8057e-fbbc-47a8-a8b478d9f015c253"
        |}
-     """.stripMargin).as[JsObject]
-
-   val genericAuditDetailModelSuccess: GenericAuditDetail = GenericAuditDetail(
-    userType = "Agent",
-    agentReferenceNumber = Some("012345678"),
-    pathParams = Map("nino" -> nino, "calculationId" -> calculationId),
-    requestBody = None,
-    `X-CorrelationId` = "a1e8057e-fbbc-47a8-a8b478d9f015c253",
-    auditResponse = auditResponseModelWithBody
-   )
-
-   val genericAuditDetailModelError: GenericAuditDetail = genericAuditDetailModelSuccess.copy(auditResponse = auditResponseModelWithErrors)
+     """.stripMargin
+  )
 }

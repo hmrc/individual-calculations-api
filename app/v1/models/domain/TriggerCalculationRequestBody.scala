@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class TriggerCalculationRequestBody(taxYear: String)
 
 object TriggerCalculationRequestBody {
-  implicit val formats: OFormat[TriggerCalculationRequestBody] = Json.format[TriggerCalculationRequestBody]
+  implicit val format: OFormat[TriggerCalculationRequestBody] = Json.format[TriggerCalculationRequestBody]
 }

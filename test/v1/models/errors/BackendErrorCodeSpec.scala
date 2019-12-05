@@ -16,22 +16,25 @@
 
 package v1.models.errors
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class BackendErrorCodeSpec extends UnitSpec {
 
-  "reads" should {
-    val json = Json.parse("""
-        |{
-        |   "code": "CODE",
-        |   "reason": "ignored"
-        |}
-      """.stripMargin
-    )
+  val backendErrorCodeJson: JsValue = Json.parse(
+    """
+      |{
+      |   "code": "CODE",
+      |   "reason": "ignored"
+      |}
+    """.stripMargin
+  )
 
-    "generate the correct error code" in {
-      json.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
+  "BackendErrorCode" when {
+    "read from valid JSON" should {
+      "produce the expected BackendErrorCode object" in {
+        backendErrorCodeJson.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
+      }
     }
   }
 }

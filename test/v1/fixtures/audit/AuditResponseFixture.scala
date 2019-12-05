@@ -17,26 +17,27 @@
 package v1.fixtures.audit
 
 import play.api.http.Status.{BAD_REQUEST, OK}
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import v1.models.audit.{AuditError, AuditResponse}
 
 object AuditResponseFixture {
 
   val auditErrors: Seq[AuditError] = Seq(AuditError("FORMAT_NINO"), AuditError("FORMAT_TAX_YEAR"))
-  val body: JsValue = Json.parse("""{ "aField" : "aValue" }""".stripMargin)
+  val body: JsValue = Json.parse("""{ "aField" : "aValue" }""")
 
   val auditResponseModelWithBody: AuditResponse = AuditResponse(OK, Right(Some(body)))
   val auditResponseModelWithErrors: AuditResponse = AuditResponse(BAD_REQUEST, Left(auditErrors))
 
-  val auditResponseJsonWithBody: JsObject = Json.parse(
+  val auditResponseJsonWithBody: JsValue = Json.parse(
     s"""
        |{
        |  "httpStatus": 200,
        |  "body" : $body
        |}
-    """.stripMargin).as[JsObject]
+    """.stripMargin
+  )
 
-  val auditResponseJsonWithErrors: JsObject = Json.parse(
+  val auditResponseJsonWithErrors: JsValue = Json.parse(
     s"""
        |{
        |  "httpStatus": 400,
@@ -49,5 +50,6 @@ object AuditResponseFixture {
        |    }
        |  ]
        |}
-   """.stripMargin).as[JsObject]
+    """.stripMargin
+  )
 }

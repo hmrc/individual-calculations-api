@@ -16,81 +16,60 @@
 
 package v1.models.errors
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class MtdErrorsSpec extends UnitSpec {
 
   val correlationId = "X-123"
-
   val statusCode = 123
 
+  val mtdErrorsModelSingle = MtdErrors(statusCode, NinoFormatError)
+  val mtdErrorsModelMultiple: MtdErrors = MtdErrors(statusCode, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))
+
+  val mtdErrorJsonSingle: JsValue = Json.parse(
+    """
+      |{
+      |   "code": "FORMAT_NINO",
+      |   "message": "The provided NINO is invalid"
+      |}
+    """.stripMargin
+  )
+
+  val mtdErrorJsonMultiple: JsValue = Json.parse(
+    """
+      |{
+      |   "code": "INVALID_REQUEST",
+      |   "message": "Invalid request",
+      |   "errors": [
+      |       {
+      |         "code": "FORMAT_NINO",
+      |         "message": "The provided NINO is invalid"
+      |       },
+      |       {
+      |         "code": "FORMAT_TAX_YEAR",
+      |         "message": "The provided tax year is invalid"
+      |       }
+      |   ]
+      |}
+    """.stripMargin
+  )
+
   "Rendering a error response with one error" should {
-    val error = MtdErrors(statusCode, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(mtdErrorsModelSingle) shouldBe mtdErrorJsonSingle
     }
   }
 
   "Rendering a error response with one error and an empty sequence of errors" should {
-    val error = MtdErrors(statusCode, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(mtdErrorsModelSingle.copy(errors = Some(Seq.empty))) shouldBe mtdErrorJsonSingle
     }
   }
 
   "Rendering a error response with two errors" should {
-    val error = MtdErrors(statusCode,
-                          BadRequestError,
-                          Some(
-                            Seq(
-                              NinoFormatError,
-                              TaxYearFormatError
-                            )
-                          ))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "INVALID_REQUEST",
-        |   "message": "Invalid request",
-        |   "errors": [
-        |       {
-        |         "code": "FORMAT_NINO",
-        |         "message": "The provided NINO is invalid"
-        |       },
-        |       {
-        |         "code": "FORMAT_TAX_YEAR",
-        |         "message": "The provided tax year is invalid"
-        |       }
-        |   ]
-        |}
-      """.stripMargin
-    )
-
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(mtdErrorsModelMultiple) shouldBe mtdErrorJsonMultiple
     }
   }
-
 }

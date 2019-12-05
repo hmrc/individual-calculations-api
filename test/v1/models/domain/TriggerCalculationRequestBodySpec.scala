@@ -21,23 +21,27 @@ import support.UnitSpec
 
 class TriggerCalculationRequestBodySpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
-    """{
+  val triggerCalculationRequestBodyModel = TriggerCalculationRequestBody("2018-19")
+
+  val triggerCalculationRequestBodyJson: JsValue = Json.parse(
+    """
+      |{
       |  "taxYear" : "2018-19"
-      |}""".stripMargin)
+      |}
+    """.stripMargin
+  )
 
-  val response = TriggerCalculationRequestBody("2018-19")
+  "TriggerCalculationRequestBody" when {
+    "read from valid JSON" should {
+      "produce the expected TriggerCalculationRequestBody object" in {
+        triggerCalculationRequestBodyJson.as[TriggerCalculationRequestBody] shouldBe triggerCalculationRequestBodyModel
+      }
+    }
 
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
+    "written to JSON" must {
+      "produce the expected JsObject" in {
+        Json.toJson(triggerCalculationRequestBodyModel) shouldBe triggerCalculationRequestBodyJson
+      }
     }
   }
-
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationRequestBody] shouldBe response
-    }
-  }
-
 }

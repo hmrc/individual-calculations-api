@@ -21,8 +21,7 @@ import v1.models.audit.AuditError
 
 case class MtdErrors(statusCode: Int, error: MtdError, errors: Option[Seq[MtdError]] = None) {
 
-  def auditErrors: Seq[AuditError] =
-    allErrors.map(error => AuditError(error.code))
+  def auditErrors: Seq[AuditError] = allErrors.map(error => AuditError(error.code))
 
   private def allErrors: Seq[MtdError] = errors match {
     case Some(seq) => seq
@@ -43,7 +42,6 @@ object MtdErrors {
         case Some(errors) if errors.nonEmpty => json + ("errors" -> Json.toJson(errors))
         case _ => json
       }
-
     }
   }
 }
