@@ -16,44 +16,21 @@
 
 package v1.models.hateoas
 
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.Json
 import support.UnitSpec
-import v1.models.hateoas.Method.GET
+import v1.fixtures.hateoas.HateoasWrapperFixture._
 
 class HateoasWrapperSpec extends UnitSpec {
 
-  case class TestMtdResponse(field1: String, field2: Int)
+  "HateoasWrapper" when {
+    "written to JSON" should {
+      "produce the expected JsObject (links)" in {
+        Json.toJson(hateoasWrapperModel) shouldBe testMtdResponseJson
+      }
 
-  object TestMtdResponse {
-    implicit val writes: OWrites[TestMtdResponse] = Json.writes[TestMtdResponse]
-  }
-
-  "HateoasWrapper writes" must {
-    "place links alongside wrapped object fields" in {
-      Json.toJson(HateoasWrapper(TestMtdResponse("value1", 123), Seq(Link("/some/resource", GET, "thing")))) shouldBe
-        Json.parse("""
-      |{
-      |"field1": "value1",
-      |"field2": 123,
-      |"links" : [
-      |  {
-      |    "href": "/some/resource",
-      |    "rel": "thing",
-      |    "method": "GET"
-      |  }
-      | ]
-      |}
-      """.stripMargin)
-    }
-
-    "not write links array if there are no links" in {
-      Json.toJson(HateoasWrapper(TestMtdResponse("value1", 123), Nil)) shouldBe
-        Json.parse("""
-                     |{
-                     |"field1": "value1",
-                     |"field2": 123
-                     |}
-    """.stripMargin)
+      "produce the expected JsObject (no links)" in {
+        Json.toJson(hateoasWrapperModelNoLinks) shouldBe testMtdResponseJsonNoLinks
+      }
     }
   }
 }

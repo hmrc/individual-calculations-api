@@ -26,5 +26,5 @@ object Method {
   case object POST extends Method
   case object DELETE extends Method
 
-  implicit val formats: Format[Method] = Enums.format[Method]
+  implicit val format: Format[Method] = Enums.format[Method]
 }

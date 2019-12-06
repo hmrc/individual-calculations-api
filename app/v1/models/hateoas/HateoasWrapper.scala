@@ -18,6 +18,8 @@ package v1.models.hateoas
 
 import play.api.libs.json.{JsObject, Json, OWrites, Writes}
 
+case class HateoasWrapper[A](payload: A, links: Seq[Link])
+
 object HateoasWrapper {
   implicit def writes[A: OWrites]: Writes[HateoasWrapper[A]] = Writes { w =>
     // Explicitly use writes method rather than Json.toJson so that we don't have to
@@ -33,5 +35,3 @@ object HateoasWrapper {
     }
   }
 }
-
-case class HateoasWrapper[A](payload: A, links: Seq[Link])

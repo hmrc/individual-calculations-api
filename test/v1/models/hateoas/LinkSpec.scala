@@ -16,15 +16,30 @@
 
 package v1.models.hateoas
 
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v1.models.hateoas.Method._
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.RelType._
 
-class MethodSpec extends UnitSpec with EnumJsonSpecSupport {
+class LinkSpec extends UnitSpec {
 
-  testRoundTrip[Method](
-    ("GET", GET),
-    ("POST", POST),
-    ("DELETE", DELETE)
+  val linkModel: Link = Link("aRef", GET, SELF)
+
+  val linkJson: JsValue = Json.parse(
+    """
+      |{
+      |  "href" : "aRef",
+      |  "method" : "GET",
+      |  "rel" : "self"
+      |}
+    """.stripMargin
   )
+
+  "Link" when {
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(linkModel) shouldBe linkJson
+      }
+    }
+  }
 }
