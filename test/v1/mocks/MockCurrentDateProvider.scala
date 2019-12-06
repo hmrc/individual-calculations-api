@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.mocks
 
-import uk.gov.hmrc.domain.Nino
+import java.time.LocalDate
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import utils.CurrentDateProvider
 
-case class ListCalculationsRequest(nino: Nino, taxYear: String)
+
+trait MockCurrentDateProvider extends MockFactory {
+
+  val mockCurrentDateProvider: CurrentDateProvider = mock[CurrentDateProvider]
+
+  object MockCurrentDateProvider {
+
+    def getCurrentDate(): CallHandler[LocalDate] = (mockCurrentDateProvider.getCurrentDate _).expects()
+  }
+}

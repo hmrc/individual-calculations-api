@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package utils
 
-import uk.gov.hmrc.domain.Nino
+import java.time.LocalDate
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+object DateUtils {
 
-case class ListCalculationsRequest(nino: Nino, taxYear: String)
+  def getTaxYear(taxYearOpt: Option[String], currentDate: LocalDate): String = taxYearOpt match {
+    case Some(taxYear) => taxYear
+    case None =>
+      val fiscalYearStartDate = LocalDate.parse(s"${currentDate.getYear.toString}-04-05")
+
+      if(currentDate.isAfter(fiscalYearStartDate)){
+        s"${currentDate.getYear}-${currentDate.getYear. +(1).toString.drop(2)}"
+      }
+      else {
+        s"${currentDate.getYear. -(1)}-${currentDate.getYear.toString.drop(2)}"
+      }
+  }
+}
