@@ -16,8 +16,10 @@
 
 package v1.support
 
-import v1.models.request._
+import v1.models.domain.MessageType
 import v1.models.response.getCalculationMessages.CalculationMessages
+
+import scala.annotation.tailrec
 
 trait MessagesFilter {
   def filter(calculationMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
@@ -31,6 +33,7 @@ trait MessagesFilter {
       }
     }
 
+    @tailrec
     def filterLoop(filteredMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
       typeQueries.toList match {
         case Nil => calculationMessages

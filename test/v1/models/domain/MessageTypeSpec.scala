@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.domain
 
-object TaxYear {
+import support.UnitSpec
 
-  /**
-    * @param taxYear tax year in MTD format (e.g. 2017-18)
-    * @return in the form of the year ending, format used by DES (e.g. 2018)
-    */
-  def toYearEnding(taxYear: String): String =
-    taxYear.take(2) + taxYear.drop(5)
+class MessageTypeSpec extends UnitSpec {
+
+  "MessageType" when {
+    "toTypeClass" should {
+      "return the correct MessageType object for valid message types" in {
+        MessageType.toTypeClass("info") shouldBe MessageType.info
+        MessageType.toTypeClass("warning") shouldBe MessageType.warning
+        MessageType.toTypeClass("error") shouldBe MessageType.error
+      }
+
+      "return a none message type for invalid options" in {
+        MessageType.toTypeClass("shminfo") shouldBe MessageType.none
+      }
+    }
+  }
 }

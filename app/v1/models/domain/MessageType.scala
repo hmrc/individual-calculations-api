@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.domain
 
 sealed trait MessageType
 

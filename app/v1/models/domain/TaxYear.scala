@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.hateoas
+package v1.models.domain
 
-object RelType {
+object TaxYear {
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
-
-  val SELF = "self"
+  /**
+    * @param taxYear tax year in MTD format (e.g. 2017-18)
+    * @return in the form of the year ending, format used by DES (e.g. 2018)
+    */
+  def toYearEnding(taxYear: String): String =
+    taxYear.take(2) + taxYear.takeRight(2)
 }

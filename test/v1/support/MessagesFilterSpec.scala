@@ -17,7 +17,7 @@
 package v1.support
 
 import support.UnitSpec
-import v1.models.request.MessageType
+import v1.models.domain.MessageType
 import v1.models.response.getCalculationMessages.{CalculationMessages, Message}
 
 class MessagesFilterSpec extends UnitSpec {

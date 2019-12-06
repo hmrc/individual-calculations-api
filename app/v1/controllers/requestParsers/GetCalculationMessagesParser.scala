@@ -19,7 +19,8 @@ package v1.controllers.requestParsers
 import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.GetCalculationMessagesValidator
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
+import v1.models.domain.MessageType
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
 
 class GetCalculationMessagesParser @Inject()(val validator: GetCalculationMessagesValidator)
   extends RequestParser[GetCalculationMessagesRawData, GetCalculationMessagesRequest] {

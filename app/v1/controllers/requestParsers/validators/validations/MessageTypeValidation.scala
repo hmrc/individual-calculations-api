@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.hateoas
+package v1.controllers.requestParsers.validators.validations
 
-object RelType {
+import v1.models.errors.{MtdError, TypeFormatError}
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
+object MessageTypeValidation {
 
-  val SELF = "self"
+  val typeOptions: Seq[String] = Seq("info", "warning", "error")
+
+  def validateList(queryParams :Seq[String]): List[MtdError] ={
+    queryParams.flatMap(param => validate(param)).toList
+  }
+
+  def validate(`type`: String): List[MtdError] = if (typeOptions.contains(`type`)) {
+    Nil
+  } else {
+    List(TypeFormatError)
+  }
+
 }

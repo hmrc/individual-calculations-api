@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators.validations
+package v1.models.domain
 
-import v1.models.errors.{MtdError, TypeFormatError}
+import support.UnitSpec
 
-object TypeValidation {
+class TaxYearSpec extends UnitSpec {
 
-  val typeOptions: Seq[String] = Seq("info", "warning", "error")
-
-  def validateList(queryParams :Seq[String]): List[MtdError] ={
-    queryParams.flatMap(param => validate(param)).toList
+  "TaxYear" when {
+    "toYearEnding" should {
+      "convert a tax year from MTD format to DES format" in {
+        TaxYear.toYearEnding("2018-19") shouldBe "2019"
+      }
+    }
   }
-
-  def validate(`type`: String): List[MtdError] = if (typeOptions.contains(`type`)) {
-    Nil
-  } else {
-    List(TypeFormatError)
-  }
-
 }
