@@ -22,9 +22,9 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 
 object HateoasWrapperFixture {
 
-  private case class TestMtdResponse(field1: String, field2: Int)
+  case class TestMtdResponse(field1: String, field2: Int)
 
-  private object TestMtdResponse {
+  object TestMtdResponse {
     implicit val writes: OWrites[TestMtdResponse] = Json.writes[TestMtdResponse]
   }
 

@@ -16,34 +16,44 @@
 
 package v1.models.outcomes
 
+import play.api.http.Status._
 import support.UnitSpec
-import v1.models.errors.{ ErrorWrapper, MtdError, MtdErrors }
+import v1.models.errors.{DownstreamError, ErrorWrapper, MtdError, MtdErrors}
 
 class ResponseWrapperSpec extends UnitSpec {
-  "ResponseMapper" when {
-    "mapping" should {
-      "work" in {
+
+  "ResponseWrapper" when {
+    "mapped" should {
+      "map the response data correctly" in {
         ResponseWrapper("id", "someString").map(_.toLowerCase) shouldBe ResponseWrapper("id", "somestring")
       }
     }
 
-    "converting to error" when {
-      // WLOG
-      val errors = MtdErrors(400, MtdError("CODE", "message"))
-
-      "does not map partial function" should {
-        "leave as is" in {
-          val responseWrapper = ResponseWrapper("id", "nonempty")
-          responseWrapper.toErrorWhen { case "" => errors } shouldBe Right(responseWrapper)
-        }
+    "mapped to an Either" should {
+      "wrap a successful response correctly" in {
+        val mappedResponse = ResponseWrapper("id", "someString").mapToEither { case "someString" => Right("aSuccess") }
+        mappedResponse shouldBe Right(ResponseWrapper("id", "aSuccess"))
       }
 
-      "matches partial function" should {
-        "map to the error" in {
-          ResponseWrapper("id", "").toErrorWhen { case "" => errors } shouldBe Left(ErrorWrapper(Some("id"), errors))
-        }
+      "wrap an error response correctly" in {
+        val err = MtdErrors(IM_A_TEAPOT, DownstreamError, None)
+        val mappedResponse = ResponseWrapper("id", "someString").mapToEither { case "someString" => Left(err) }
+        mappedResponse shouldBe Left(ErrorWrapper(Some("id"), err))
       }
     }
 
+    "toErrorWhen" should {
+
+      val errors = MtdErrors(BAD_REQUEST, MtdError("CODE", "message"))
+
+      "return a success when the error condition is not met" in {
+        val responseWrapper = ResponseWrapper("id", "nonempty")
+        responseWrapper.toErrorWhen { case "" => errors } shouldBe Right(responseWrapper)
+      }
+
+      "return errors when the error condition is met" in {
+        ResponseWrapper("id", "").toErrorWhen { case "" => errors } shouldBe Left(ErrorWrapper(Some("id"), errors))
+      }
+    }
   }
 }
