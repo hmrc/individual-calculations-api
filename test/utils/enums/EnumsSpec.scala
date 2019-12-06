@@ -25,6 +25,7 @@ import support.UnitSpec
 sealed trait Enum
 
 object Enum {
+
   case object `enum-one`   extends Enum
   case object `enum-two`   extends Enum
   case object `enum-three` extends Enum

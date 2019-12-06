@@ -22,6 +22,7 @@ import utils.enums.Enums
 sealed trait Method
 
 object Method {
+
   case object GET extends Method
   case object POST extends Method
   case object DELETE extends Method
