@@ -59,7 +59,8 @@ object AllowancesDeductionsAndReliefsResponseFixture {
       |    }
       |  }
       |}
-    """.stripMargin).as[JsObject]
+    """.stripMargin
+  ).as[JsObject]
 
   val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefsResponse =
     AllowancesDeductionsAndReliefsResponse(CalculationSummary(None, None), CalculationDetail(None, None))

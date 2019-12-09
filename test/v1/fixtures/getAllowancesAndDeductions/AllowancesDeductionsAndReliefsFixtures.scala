@@ -19,6 +19,7 @@ package v1.fixtures.getAllowancesAndDeductions
 import play.api.libs.json.{JsObject, Json}
 
 object ResidentialFinancialCostsFixture {
+
   val modelJson: JsObject = Json.parse(
     """
       |{
@@ -27,7 +28,8 @@ object ResidentialFinancialCostsFixture {
       |  "rate" : 20,
       |  "propertyFinanceRelief" : 12500
       |}
-    """.stripMargin).as[JsObject]
+    """.stripMargin
+  ).as[JsObject]
 }
 
 object ReliefsFixture {
@@ -35,6 +37,7 @@ object ReliefsFixture {
 }
 
 object AllowancesAndDeductionsFixture {
+
   val modelJson: JsObject = Json.parse(
     """
       |{
@@ -44,7 +47,8 @@ object AllowancesAndDeductionsFixture {
       |  "blindPersonsAllowance": 12500,
       |  "lossesAppliedToGeneralIncome": 12500
       |}
-    """.stripMargin).as[JsObject]
+    """.stripMargin
+  ).as[JsObject]
 }
 
 object CalculationDetailFixture {
@@ -53,11 +57,13 @@ object CalculationDetailFixture {
 }
 
 object CalculationSummaryFixture {
+
   val modelJson: JsObject = Json.parse(
     """
       |{
       |  "totalAllowancesAndDeductions": 12500,
       |  "totalReliefs": 12500
       |}
-    """.stripMargin).as[JsObject]
+    """.stripMargin
+  ).as[JsObject]
 }

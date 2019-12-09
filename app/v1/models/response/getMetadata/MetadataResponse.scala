@@ -42,7 +42,9 @@ object MetadataResponse extends HateoasLinks {
 
   implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, CalculationMetadataHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMetadataHateoasData): Seq[Link] = {
+
       import data._
+
       if (data.errorCount.isEmpty) {
         Seq(
           getMetadata(appConfig, nino, calculationId, isSelf = true),
@@ -58,6 +60,7 @@ object MetadataResponse extends HateoasLinks {
           getMessages(appConfig, nino, calculationId, isSelf = false)
         )
       }
+
     }
   }
 

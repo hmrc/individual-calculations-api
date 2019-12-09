@@ -24,5 +24,5 @@ case class ResidentialFinanceCosts(amountClaimed: BigInt,
                                    propertyFinanceRelief: BigInt)
 
 object ResidentialFinanceCosts {
-  implicit val formats: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+  implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
 }

@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigInt])
 
 object CalculationSummary {
-  implicit val formats: OFormat[CalculationSummary] = Json.format[CalculationSummary]
+  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
 }

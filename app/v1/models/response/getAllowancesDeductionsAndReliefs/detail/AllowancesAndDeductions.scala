@@ -25,5 +25,5 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    lossesAppliedToGeneralIncome: Option[BigInt])
 
 object AllowancesAndDeductions {
-  implicit val formats: OFormat[AllowancesAndDeductions] = Json.format[AllowancesAndDeductions]
+  implicit val format: OFormat[AllowancesAndDeductions] = Json.format[AllowancesAndDeductions]
 }

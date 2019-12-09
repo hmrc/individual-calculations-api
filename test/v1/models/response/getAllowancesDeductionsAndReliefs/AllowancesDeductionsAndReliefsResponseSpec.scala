@@ -16,16 +16,17 @@
 
 package v1.models.response.getAllowancesDeductionsAndReliefs
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture._
+import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
-import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 import v1.models.utils.JsonErrorValidators
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture._
 
 class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig with JsonErrorValidators {
 
@@ -74,15 +75,25 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
     }
   }
 
-  "Links Factory" should {
+  "LinksFactory" when {
 
-    "expose the correct links for retrieve" in {
+    class Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino = "someNino"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
-      AllowancesDeductionsAndReliefsResponse.LinksFactory.links(mockAppConfig, AllowancesHateoasData(nino, calculationId)) shouldBe
-        Seq(
-          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId", GET, "metadata"),
-          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId/allowances-deductions-reliefs", GET, "self")
-        )
+    }
+
+    "wrapping a AllowancesDeductionsAndReliefsResponse object" should {
+      "expose the correct links for retrieve" in new Test {
+        hateoasFactory.wrap(allowancesDeductionsAndReliefsModel, AllowancesHateoasData(nino, calculationId)) shouldBe
+          HateoasWrapper(
+            allowancesDeductionsAndReliefsModel,
+            Seq(
+              Link("/individuals/calculations/someNino/self-assessment/calcId", GET, "metadata"),
+              Link("/individuals/calculations/someNino/self-assessment/calcId/allowances-deductions-reliefs", GET, "self")
+            )
+          )
+      }
     }
   }
 }
