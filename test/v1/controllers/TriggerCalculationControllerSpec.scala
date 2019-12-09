@@ -70,7 +70,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   private case class TaxYearWrapper(taxYear: String)
    private object TaxYearWrapper {
-    implicit val formats: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
+    implicit val format: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
   }
 
   val response = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
