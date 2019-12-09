@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.detail
+package v1.models.response.getEoyEstimate.detail
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixture
+import v1.models.utils.JsonErrorValidators
 
-case class EoyEstimateSelfEmployments(selfEmploymentId: String, taxableIncome: BigInt, finalised: Option[Boolean])
+class EoyEstimateUkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
+  testJsonProperties[EoyEstimateUkPropertyFhl](EoyEstimateUkPropertyFhlFixture.json)(
+    mandatoryProperties = Seq("taxableIncome"),
+    optionalProperties = Seq("finalised")
+  )
 
-object EoyEstimateSelfEmployments {
-  implicit val formats: OFormat[EoyEstimateSelfEmployments] = Json.format[EoyEstimateSelfEmployments]
 }

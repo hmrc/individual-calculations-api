@@ -18,7 +18,7 @@ package v1.models.response
 
 import play.api.libs.json.{JsPath, Reads}
 import v1.models.response.common.CalculationType
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponse
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 sealed trait EoyEstimateWrapperOrError
 

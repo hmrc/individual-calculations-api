@@ -19,7 +19,7 @@ package v1.models.response
 import play.api.libs.json.{JsPath, Json, Reads}
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponse
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
 

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate
+package v1.models.response.getEoyEstimate.detail
 
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateDetailFixture
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateDetail
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixture
 import v1.models.utils.JsonErrorValidators
 
-class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateDetail](EoyEstimateDetailFixture.json)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq("selfEmployments", "ukPropertyFhl", "ukPropertyNonFhl", "ukSavings", "ukDividends")
+class EoyEstimateUkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {
+  testJsonProperties[EoyEstimateUkPropertyNonFhl](EoyEstimateUkPropertyNonFhlFixture.json)(
+    mandatoryProperties = Seq("taxableIncome"),
+    optionalProperties = Seq("finalised")
   )
+
 }

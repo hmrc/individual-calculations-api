@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.detail
+package v1.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateUkPropertyFhl(taxableIncome: BigInt, finalised: Option[Boolean])
+case class EoyEstimateUkPropertyNonFhl(taxableIncome: BigInt, finalised: Option[Boolean])
 
-object EoyEstimateUkPropertyFhl {
-  implicit val formats: OFormat[EoyEstimateUkPropertyFhl] = Json.format[EoyEstimateUkPropertyFhl]
+object EoyEstimateUkPropertyNonFhl {
+  implicit val formats: OFormat[EoyEstimateUkPropertyNonFhl] = Json.format[EoyEstimateUkPropertyNonFhl]
 }

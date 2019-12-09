@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.detail
+package v1.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
-                             ukPropertyFhl: Option[EoyEstimateUkPropertyFhl],
-                             ukPropertyNonFhl: Option[EoyEstimateUkPropertyNonFhl],
-                             ukSavings: Option[Seq[EoyEstimateUkSavings]],
-                             ukDividends: Option[EoyEstimateUkDividends])
+case class EoyEstimateSelfEmployments(selfEmploymentId: String, taxableIncome: BigInt, finalised: Option[Boolean])
 
-object EoyEstimateDetail {
-  implicit val formats: OFormat[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
+object EoyEstimateSelfEmployments {
+  implicit val formats: OFormat[EoyEstimateSelfEmployments] = Json.format[EoyEstimateSelfEmployments]
 }

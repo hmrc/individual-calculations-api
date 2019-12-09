@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.detail
+package v1.models.response.getEoyEstimate.detail
 
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSavingsFixture

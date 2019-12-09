@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate
+package v1.models.response.getEoyEstimate
 
 import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec

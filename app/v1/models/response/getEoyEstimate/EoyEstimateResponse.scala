@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate
+package v1.models.response.getEoyEstimate
 
 import config.AppConfig
 import play.api.libs.json._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateDetail
-import v1.models.response.getEndOfYearEstimate.summary.EoyEstimateSummary
+import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
+import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
 case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateDetail)
 

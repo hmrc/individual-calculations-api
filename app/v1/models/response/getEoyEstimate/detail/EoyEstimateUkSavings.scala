@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate
+package v1.models.response.getEoyEstimate.detail
 
-import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateSummaryFixture
-import v1.models.utils.JsonErrorValidators
-import v1.models.response.getEndOfYearEstimate.summary.EoyEstimateSummary
+import play.api.libs.json.{Json, OFormat}
 
-class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateSummary](EoyEstimateSummaryFixture.json)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq("totalEstimatedIncome", "totalTaxableIncome", "incomeTaxAmount", "nic2", "nic4", "totalNicAmount", "incomeTaxNicAmount")
-  )
+case class EoyEstimateUkSavings(savingsAccountId: String, savingsAccountName: Option[String], taxableIncome: BigInt)
+
+object EoyEstimateUkSavings {
+  implicit val formats: OFormat[EoyEstimateUkSavings] = Json.format[EoyEstimateUkSavings]
 }

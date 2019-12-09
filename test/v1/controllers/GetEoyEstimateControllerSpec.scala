@@ -33,7 +33,7 @@ import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.EoyEstimateWrapperOrError
 import v1.models.response.EoyEstimateWrapperOrError.EoyEstimateWrapper
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponseHateoasData
+import v1.models.response.getEoyEstimate.EoyEstimateResponseHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

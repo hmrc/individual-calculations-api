@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEndOfYearEstimate.summary
+package v1.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
-                              totalTaxableIncome: Option[BigInt],
-                              incomeTaxAmount: Option[BigDecimal],
-                              nic2: Option[BigDecimal],
-                              nic4: Option[BigDecimal],
-                              totalNicAmount: Option[BigDecimal],
-                              incomeTaxNicAmount: Option[BigDecimal])
+case class EoyEstimateUkPropertyFhl(taxableIncome: BigInt, finalised: Option[Boolean])
 
-object EoyEstimateSummary {
-  implicit val formats: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
+object EoyEstimateUkPropertyFhl {
+  implicit val formats: OFormat[EoyEstimateUkPropertyFhl] = Json.format[EoyEstimateUkPropertyFhl]
 }

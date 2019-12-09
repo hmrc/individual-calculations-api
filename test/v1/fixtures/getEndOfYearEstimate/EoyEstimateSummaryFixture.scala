@@ -17,7 +17,7 @@
 package v1.fixtures.getEndOfYearEstimate
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.summary.EoyEstimateSummary
+import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
 object EoyEstimateSummaryFixture {
 
