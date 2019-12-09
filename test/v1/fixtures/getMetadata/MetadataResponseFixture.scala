@@ -18,11 +18,11 @@ package v1.fixtures.getMetadata
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getCalculationMetadata.CalculationMetadata
+import v1.models.response.getMetadata.MetadataResponse
 
-object CalculationMetadataFixture {
+object MetadataResponseFixture {
 
-  val metadata = CalculationMetadata(
+  val metadata = MetadataResponse(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,

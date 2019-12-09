@@ -23,7 +23,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
-import v1.fixtures.getMetadata.CalculationMetadataFixture
+import v1.fixtures.getMetadata.MetadataResponseFixture
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -88,7 +88,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, CalculationMetadataFixture.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, MetadataResponseFixture.errorBodyFromBackEnd)
         }
 
         val response: WSResponse = await(request.get)

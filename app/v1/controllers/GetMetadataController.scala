@@ -27,24 +27,23 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getCalculationMetadata.{CalculationMetadata, CalculationMetadataHateoasData}
+import v1.models.response.getMetadata.{CalculationMetadataHateoasData, MetadataResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
-class GetCalculationMetadataController @Inject()(
-                                                  authService: EnrolmentsAuthService,
-                                                  lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationParser,
-                                                  service: StandardService,
-                                                  hateoasFactory: HateoasFactory,
-                                                  auditService: AuditService,
-                                                  cc: ControllerComponents
-                                                )(implicit ec: ExecutionContext)
+class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
+                                      lookupService: MtdIdLookupService,
+                                      parser: GetCalculationParser,
+                                      service: StandardService,
+                                      hateoasFactory: HateoasFactory,
+                                      auditService: AuditService,
+                                      cc: ControllerComponents
+                                     )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    CalculationMetadata,
-    HateoasWrapper[CalculationMetadata],
+    MetadataResponse,
+    HateoasWrapper[MetadataResponse],
     AnyContent](authService, lookupService, parser, service, auditService, cc) {
   controller =>
 
@@ -57,8 +56,8 @@ class GetCalculationMetadataController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[CalculationMetadata, HateoasWrapper[CalculationMetadata]] =
-    RequestHandler[CalculationMetadata](RequestDefn.Get(req.backendCalculationUri))
+                                 req: GetCalculationRequest): RequestHandler[MetadataResponse, HateoasWrapper[MetadataResponse]] =
+    RequestHandler[MetadataResponse](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,

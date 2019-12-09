@@ -49,6 +49,7 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
   }
 
   "LinksFactory" when {
+
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"

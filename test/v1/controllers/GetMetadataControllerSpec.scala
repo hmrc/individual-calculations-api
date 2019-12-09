@@ -32,13 +32,13 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getCalculationMetadata.{CalculationMetadata, CalculationMetadataHateoasData}
+import v1.models.response.getMetadata.{MetadataResponse, CalculationMetadataHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetCalculationMetadataControllerSpec
+class GetMetadataControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -50,7 +50,7 @@ class GetCalculationMetadataControllerSpec
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetCalculationMetadataController(
+    val controller = new GetMetadataController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationParser,
@@ -87,7 +87,7 @@ class GetCalculationMetadataControllerSpec
       |    ]
       |}""".stripMargin)
 
-  val response = CalculationMetadata(
+  val response = MetadataResponse(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
@@ -170,7 +170,7 @@ class GetCalculationMetadataControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandler[CalculationMetadata, CalculationMetadata] => Unit = allChecks[CalculationMetadata, CalculationMetadata](
+      val mappingChecks: RequestHandler[MetadataResponse, MetadataResponse] => Unit = allChecks[MetadataResponse, MetadataResponse](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),

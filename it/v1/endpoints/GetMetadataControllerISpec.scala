@@ -25,7 +25,7 @@ import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
+class GetMetadataControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
