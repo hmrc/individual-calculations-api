@@ -32,7 +32,7 @@ class MtdErrorSpec extends UnitSpec {
 
   "MtdError" when {
     "written to JSON" should {
-      "produce the expected JSON" in {
+      "produce the expected JsObject" in {
         Json.toJson(MtdError("CODE", "some message")) shouldBe mtdErrorJson
       }
     }

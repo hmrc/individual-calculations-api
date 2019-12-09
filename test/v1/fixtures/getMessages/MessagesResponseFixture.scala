@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getCalculationMessages
+package v1.fixtures.getMessages
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getCalculationMessages.{CalculationMessages, Message}
+import v1.models.response.getMessages.{MessagesResponse, Message}
 
 object MessageFixture {
+
   val mtdJson: JsValue = Json.parse(
     """
       |{
       |  "id":"info1",
       |  "text":"text1"
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }
 
-object GetCalculationMessagesFixture {
+object MessagesResponseFixture {
 
   val err1: Message = Message("err1", "text1")
   val err2: Message = Message("err2", "text2")
@@ -38,7 +40,7 @@ object GetCalculationMessagesFixture {
   val warn1: Message = Message("warn1", "text1")
   val warn2: Message = Message("warn2", "text2")
 
-  val response: CalculationMessages = CalculationMessages(
+  val response: MessagesResponse = MessagesResponse(
     Some(Seq(info1, info2)),
     Some(Seq(warn1, warn2)),
     Some(Seq(err1, err2))
@@ -60,7 +62,8 @@ object GetCalculationMessagesFixture {
       |    {"id":"err2", "text":"text2"}
       |  ]
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val backendNoMessagesJson: JsValue = Json.parse(
     """
@@ -68,7 +71,8 @@ object GetCalculationMessagesFixture {
       |  "messages" :{
       |  }
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val backendMessagesInfoJson: JsValue = Json.parse(
     """
@@ -80,7 +84,8 @@ object GetCalculationMessagesFixture {
       |     ]
       |  }
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val outputMessagesJson: JsValue = Json.parse(
     """
@@ -98,7 +103,8 @@ object GetCalculationMessagesFixture {
       |    {"id":"err2", "text":"text2"}
       |  ]
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val outputMessagesErrorsJson: JsValue = Json.parse(
     """
@@ -108,5 +114,6 @@ object GetCalculationMessagesFixture {
       |    {"id":"err2", "text":"text2"}
       |  ]
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }

@@ -20,17 +20,17 @@ import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.validators.GetCalculationMessagesValidator
 import v1.models.errors.MtdError
-import v1.models.request.GetCalculationMessagesRawData
+import v1.models.request.GetMessagesRawData
 
-class MockGetCalculationMessagesValidator extends MockFactory {
+class MockGetMessagesResponseValidator extends MockFactory {
 
   val mockValidator: GetCalculationMessagesValidator = mock[GetCalculationMessagesValidator]
 
   object MockValidator {
 
-    def validate(data: GetCalculationMessagesRawData): CallHandler1[GetCalculationMessagesRawData, List[MtdError]] = {
+    def validate(data: GetMessagesRawData): CallHandler1[GetMessagesRawData, List[MtdError]] = {
       (mockValidator
-        .validate(_: GetCalculationMessagesRawData))
+        .validate(_: GetMessagesRawData))
         .expects(data)
     }
   }

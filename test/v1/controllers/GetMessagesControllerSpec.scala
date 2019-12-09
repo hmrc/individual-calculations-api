@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture._
+import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
@@ -32,14 +32,14 @@ import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
-import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
+import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
+import v1.models.response.getMessages.{MessagesResponse, CalculationMessagesHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetCalculationMessagesControllerSpec
+class GetMessagesControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -51,7 +51,7 @@ class GetCalculationMessagesControllerSpec
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetCalculationMessagesController(
+    val controller = new GetMessagesController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationQueryParser,
@@ -69,8 +69,8 @@ class GetCalculationMessagesControllerSpec
   private val calcId        = "someCalcId"
   private val correlationId = "X-123"
 
-  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): CalculationMessages =
-    CalculationMessages(if (info) Some(Seq(info1, info2)) else None,
+  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): MessagesResponse =
+    MessagesResponse(if (info) Some(Seq(info1, info2)) else None,
                         if (warn) Some(Seq(warn1, warn2)) else None,
                         if (error) Some(Seq(err1, err2)) else None)
 
@@ -86,9 +86,9 @@ class GetCalculationMessagesControllerSpec
 
   val responseBody: JsValue         = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
-  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
+  private val rawData     = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
-  private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
+  private val requestData = GetMessagesRequest(Nino(nino), calcId, typeQueries)
   val testHateoasLink     = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   private def uri      = s"/$nino/self-assessment/$calcId"
@@ -101,7 +101,7 @@ class GetCalculationMessagesControllerSpec
           .parse(rawData)
           .returns(Right(requestData))
 
-        val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
+        val response: MessagesResponse = messagesResponse(info = true, warn = true, error = true)
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
@@ -131,7 +131,7 @@ class GetCalculationMessagesControllerSpec
           .parse(rawData)
           .returns(Right(requestData))
 
-        val response: CalculationMessages = messagesResponse(info = false, warn = false, error = false)
+        val response: MessagesResponse = messagesResponse(info = false, warn = false, error = false)
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
@@ -158,14 +158,14 @@ class GetCalculationMessagesControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandler[CalculationMessages, CalculationMessages] => Unit = allChecks[CalculationMessages, CalculationMessages](
+      val mappingChecks: RequestHandler[MessagesResponse, MessagesResponse] => Unit = allChecks[MessagesResponse, MessagesResponse](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
         ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
       )
 
-      val response: CalculationMessages = messagesResponse(info = true, warn = true, error = true)
+      val response: MessagesResponse = messagesResponse(info = true, warn = true, error = true)
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)

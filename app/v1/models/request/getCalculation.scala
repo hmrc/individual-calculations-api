@@ -32,6 +32,6 @@ case class GetCalculationRawData(nino: String, calculationId: String) extends Ra
 
 case class GetCalculationRequest(nino: Nino, calculationId: String) extends CommonCalculationRequest
 
-case class GetCalculationMessagesRawData(nino: String,calculationId: String, queryData: Seq[String]) extends RawData
+case class GetMessagesRawData(nino: String, calculationId: String, queryData: Seq[String]) extends RawData
 
-case class GetCalculationMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[MessageType]) extends CommonCalculationRequest
+case class GetMessagesRequest(nino: Nino, calculationId: String, queryData: Seq[MessageType]) extends CommonCalculationRequest

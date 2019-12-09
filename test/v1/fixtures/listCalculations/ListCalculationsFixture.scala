@@ -24,21 +24,21 @@ object ListCalculationsFixture {
 
   val listItemResponse: CalculationListItem =
     CalculationListItem(
-      id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-      calculationTimestamp = "2019-06-17T18:45:59Z",
-      `type` = CalculationType.crystallisation,
-      requestedBy = None
+      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      calculationTimestamp = "2019-03-17T09:22:59Z",
+      `type` = CalculationType.inYear,
+      requestedBy = Some(CalculationRequestor.hmrc)
     )
 
   val listCalculationsResponse: ListCalculationsResponse[CalculationListItem] = ListCalculationsResponse(
     Seq(
+      listItemResponse,
       CalculationListItem(
-        id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        calculationTimestamp = "2019-03-17T09:22:59Z",
-        `type` = CalculationType.inYear,
-        requestedBy = Some(CalculationRequestor.hmrc)
-      ),
-      listItemResponse
+        id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
+        calculationTimestamp = "2019-06-17T18:45:59Z",
+        `type` = CalculationType.crystallisation,
+        requestedBy = None
+      )
     )
   )
 

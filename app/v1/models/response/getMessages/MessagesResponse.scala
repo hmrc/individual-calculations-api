@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculationMessages
+package v1.models.response.getMessages
 
 import config.AppConfig
 import play.api.libs.functional.syntax._
@@ -26,28 +26,33 @@ import v1.models.hateoas.{HateoasData, Link}
 case class Message(id: String, text: String)
 
 object Message {
-  implicit val formats: OFormat[Message] = Json.format[Message]
+  implicit val format: OFormat[Message] = Json.format[Message]
 }
 
-case class CalculationMessages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]) {
-  val hasMessages: Boolean = if (this == CalculationMessages.empty) false else true
+case class MessagesResponse(info: Option[Seq[Message]],
+                            warnings: Option[Seq[Message]],
+                            errors: Option[Seq[Message]]) {
+
+  val hasMessages: Boolean = if (this == MessagesResponse.empty) false else true
 }
 
-object CalculationMessages extends HateoasLinks {
+object MessagesResponse extends HateoasLinks {
 
-  val empty: CalculationMessages = CalculationMessages(None, None, None)
+  val empty: MessagesResponse = MessagesResponse(None, None, None)
 
-  implicit val writes: OWrites[CalculationMessages] = Json.writes[CalculationMessages]
-  implicit val reads: Reads[CalculationMessages] = (
+  implicit val writes: OWrites[MessagesResponse] = Json.writes[MessagesResponse]
+  implicit val reads: Reads[MessagesResponse] = (
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]] and
       (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]] and
-      (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]]) (CalculationMessages.apply _)
+      (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]]
+    )(MessagesResponse.apply _)
 
-  implicit object CalculationMessagesLinksFactory extends HateoasLinksFactory[CalculationMessages, CalculationMessagesHateoasData] {
+  implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, CalculationMessagesHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMessagesHateoasData): Seq[Link] = {
       Seq(getMetadata(appConfig, data.nino, data.id, isSelf = false), getMessages(appConfig, data.nino, data.id, isSelf = true))
     }
   }
+
 }
 
 case class CalculationMessagesHateoasData(nino: String, id: String) extends HateoasData

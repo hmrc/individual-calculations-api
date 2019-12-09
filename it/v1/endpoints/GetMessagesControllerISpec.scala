@@ -22,12 +22,12 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture
-import v1.fixtures.getCalculationMessages.GetCalculationMessagesFixture._
+import v1.fixtures.getMessages.MessagesResponseFixture
+import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
+class GetMessagesControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -51,7 +51,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.obj("messages" -> GetCalculationMessagesFixture.mtdJson)
+      val successBody = Json.obj("messages" -> MessagesResponseFixture.mtdJson)
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[
