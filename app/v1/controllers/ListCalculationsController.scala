@@ -68,7 +68,7 @@ class ListCalculationsController @Inject()(
         NinoFormatError,
         TaxYearFormatError,
         RuleTaxYearNotSupportedError,
-        RuleTaxYearRangeExceededError,
+        RuleTaxYearRangeInvalidError,
         NotFoundError,
         DownstreamError
       )

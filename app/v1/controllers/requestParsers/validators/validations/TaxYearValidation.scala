@@ -16,7 +16,7 @@
 
 package v1.controllers.requestParsers.validators.validations
 
-import v1.models.errors.{ MtdError, RuleTaxYearRangeExceededError, TaxYearFormatError }
+import v1.models.errors.{ MtdError, RuleTaxYearRangeInvalidError, TaxYearFormatError }
 
 object TaxYearValidation {
 
@@ -31,7 +31,7 @@ object TaxYearValidation {
       if (end - start == 1) {
         NoValidationErrors
       } else {
-        List(RuleTaxYearRangeExceededError)
+        List(RuleTaxYearRangeInvalidError)
       }
     } else {
       List(TaxYearFormatError)
