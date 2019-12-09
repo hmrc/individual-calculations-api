@@ -63,7 +63,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
         NinoFormatError,
         TaxYearFormatError,
         RuleTaxYearNotSupportedError,
-        RuleTaxYearRangeExceededError,
+        RuleTaxYearRangeInvalidError,
         DownstreamError,
         RuleNoIncomeSubmissionsExistError,
         RuleIncorrectOrEmptyBodyError
