@@ -25,5 +25,5 @@ case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployme
                              ukDividends: Option[EoyEstimateUkDividends])
 
 object EoyEstimateDetail {
-  implicit val formats: OFormat[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
+  implicit val format: OFormat[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
 }

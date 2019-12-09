@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class EoyEstimateUkSavings(savingsAccountId: String, savingsAccountName: Option[String], taxableIncome: BigInt)
 
 object EoyEstimateUkSavings {
-  implicit val formats: OFormat[EoyEstimateUkSavings] = Json.format[EoyEstimateUkSavings]
+  implicit val format: OFormat[EoyEstimateUkSavings] = Json.format[EoyEstimateUkSavings]
 }
