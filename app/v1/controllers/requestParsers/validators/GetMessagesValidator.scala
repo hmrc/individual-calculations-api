@@ -20,7 +20,7 @@ import v1.controllers.requestParsers.validators.validations.{ CalculationIdValid
 import v1.models.errors.MtdError
 import v1.models.request.GetMessagesRawData
 
-class GetCalculationMessagesValidator extends Validator[GetMessagesRawData] {
+class GetMessagesValidator extends Validator[GetMessagesRawData] {
   private val validationSet = List(parameterFormatValidation)
 
   override def validate(data: GetMessagesRawData): List[MtdError] = {

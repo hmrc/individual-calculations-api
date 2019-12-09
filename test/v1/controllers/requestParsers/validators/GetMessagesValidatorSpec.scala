@@ -20,8 +20,8 @@ import support.UnitSpec
 import v1.models.errors.{ CalculationIdFormatError, NinoFormatError, TypeFormatError }
 import v1.models.request.GetMessagesRawData
 
-class GetMessagesResponseValidatorSpec extends UnitSpec {
-  val validator                  = new GetCalculationMessagesValidator()
+class GetMessagesValidatorSpec extends UnitSpec {
+  val validator                  = new GetMessagesValidator()
   private val validNino          = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 

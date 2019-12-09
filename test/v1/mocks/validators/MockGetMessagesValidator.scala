@@ -18,13 +18,13 @@ package v1.mocks.validators
 
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.validators.GetCalculationMessagesValidator
+import v1.controllers.requestParsers.validators.GetMessagesValidator
 import v1.models.errors.MtdError
 import v1.models.request.GetMessagesRawData
 
-class MockGetMessagesResponseValidator extends MockFactory {
+class MockGetMessagesValidator extends MockFactory {
 
-  val mockValidator: GetCalculationMessagesValidator = mock[GetCalculationMessagesValidator]
+  val mockValidator: GetMessagesValidator = mock[GetMessagesValidator]
 
   object MockValidator {
 
@@ -34,4 +34,5 @@ class MockGetMessagesResponseValidator extends MockFactory {
         .expects(data)
     }
   }
+
 }
