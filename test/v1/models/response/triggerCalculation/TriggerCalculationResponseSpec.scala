@@ -37,7 +37,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
 
   "TriggerCalculationResponse" when {
     "read from valid JSON" should {
-      "return the expected TriggerCalculationResponse object" in {
+      "produce the expected TriggerCalculationResponse object" in {
         json.as[TriggerCalculationResponse] shouldBe response
       }
     }

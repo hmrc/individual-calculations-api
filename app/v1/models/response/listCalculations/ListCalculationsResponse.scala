@@ -18,7 +18,7 @@ package v1.models.response.listCalculations
 
 import cats.Functor
 import config.AppConfig
-import play.api.libs.json.{Json, OFormat, OWrites, Reads, Writes}
+import play.api.libs.json._
 import v1.hateoas.{HateoasLinks, HateoasListLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
@@ -29,7 +29,7 @@ case class CalculationListItem(id: String,
                                requestedBy: Option[CalculationRequestor])
 
 object CalculationListItem {
-  implicit val formats: OFormat[CalculationListItem] = Json.format[CalculationListItem]
+  implicit val format: OFormat[CalculationListItem] = Json.format[CalculationListItem]
 }
 
 case class ListCalculationsResponse[I](calculations: Seq[I])
@@ -37,6 +37,7 @@ case class ListCalculationsResponse[I](calculations: Seq[I])
 object ListCalculationsResponse extends HateoasLinks {
 
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = Json.writes[ListCalculationsResponse[I]]
+
   implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = Json.reads
 
   implicit object LinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, CalculationListItem, ListCalculationsHateoasData] {
@@ -51,6 +52,7 @@ object ListCalculationsResponse extends HateoasLinks {
     override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
       ListCalculationsResponse(fa.calculations.map(f))
   }
+
 }
 
 case class ListCalculationsHateoasData(nino: String) extends HateoasData
