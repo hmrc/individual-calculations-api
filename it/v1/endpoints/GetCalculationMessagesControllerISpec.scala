@@ -51,7 +51,7 @@ class GetCalculationMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = GetCalculationMessagesFixture.mtdJson
+      val successBody = Json.obj("messages" -> GetCalculationMessagesFixture.mtdJson)
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[

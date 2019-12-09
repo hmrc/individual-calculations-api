@@ -31,7 +31,7 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
+import v1.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v1.support.BackendResponseMappingSupport
 import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
@@ -108,7 +108,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+          .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
@@ -172,7 +172,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")))))
 
       MockHateoasFactory
-        .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+        .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))

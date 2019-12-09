@@ -43,7 +43,6 @@ class ResponseWrapperSpec extends UnitSpec {
     }
 
     "toErrorWhen" should {
-
       val errors = MtdErrors(BAD_REQUEST, MtdError("CODE", "message"))
 
       "return a success when the error condition is not met" in {

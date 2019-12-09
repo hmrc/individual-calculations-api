@@ -35,34 +35,33 @@ class TriggerCalculationResponseSpec extends UnitSpec {
 
   val response = TriggerCalculationResponse("testId")
 
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
+  "TriggerCalculationResponse" when {
+    "read from valid JSON" should {
+      "return the expected TriggerCalculationResponse object" in {
+        json.as[TriggerCalculationResponse] shouldBe response
+      }
+    }
+
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(response) shouldBe json
+      }
     }
   }
 
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
-    }
-  }
-
-  "HateoasFactory" must {
+  "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
-    "expose the correct links" in new Test {
-      val item1 = TriggerCalculationResponse("calcId")
-      hateoasFactory.wrap(item1, TriggerCalculationHateaosData(nino, "calcId")) shouldBe
-        HateoasWrapper(
-          item1,
-          Seq(
-            Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self")
-          )
-        )
+    "wrapping a TriggerCalculationResponse object" should {
+      "expose the correct links" in new Test {
+        val item1 = TriggerCalculationResponse("calcId")
+        hateoasFactory.wrap(item1, TriggerCalculationHateoasData(nino, "calcId")) shouldBe
+          HateoasWrapper(item1, Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self")))
+      }
     }
   }
 }

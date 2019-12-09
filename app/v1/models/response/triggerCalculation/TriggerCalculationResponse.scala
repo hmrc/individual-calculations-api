@@ -25,14 +25,14 @@ case class TriggerCalculationResponse(id: String)
 
 object TriggerCalculationResponse extends HateoasLinks {
 
-  implicit val formats: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
+  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
 
-  implicit object TriggerLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateaosData] {
-    override def links(appConfig: AppConfig, data: TriggerCalculationHateaosData): Seq[Link] = {
+  implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
+    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] = {
       Seq(getMetadata(appConfig, data.nino, data.id, isSelf = true))
     }
   }
 
 }
 
-case class TriggerCalculationHateaosData(nino: String, id: String) extends HateoasData
+case class TriggerCalculationHateoasData(nino: String, id: String) extends HateoasData
