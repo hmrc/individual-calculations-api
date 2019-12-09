@@ -50,7 +50,7 @@ class ListCalculationsResponseSpec extends UnitSpec {
     }
 
     "wrapping a ListCalculationsResponse object" should {
-      "expose the correct links for list" in new Test {
+      "expose the correct hateoas links" in new Test {
         val item1 = CalculationListItem("calcId", "timestamp", CalculationType.inYear, None)
         hateoasFactory.wrapList(ListCalculationsResponse(Seq(item1)), ListCalculationsHateoasData(nino)) shouldBe
           HateoasWrapper(

@@ -57,7 +57,7 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
     }
 
     "wrapping a MessagesResponse object" should {
-      "expose the correct links" in new Test {
+      "expose the correct hateoas links" in new Test {
         val item1 = MessagesResponse(Some(Seq(Message("a", "message"))), None, None)
         hateoasFactory.wrap(item1, CalculationMessagesHateoasData(nino, "calcId")) shouldBe
           HateoasWrapper(
