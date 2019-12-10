@@ -17,19 +17,20 @@
 package v1.models.domain
 
 import support.UnitSpec
+import MessageType._
 
 class MessageTypeSpec extends UnitSpec {
 
   "MessageType" when {
     "toTypeClass" should {
       "return the correct MessageType object for valid message types" in {
-        MessageType.toTypeClass("info") shouldBe MessageType.info
-        MessageType.toTypeClass("warning") shouldBe MessageType.warning
-        MessageType.toTypeClass("error") shouldBe MessageType.error
+        toTypeClass("info") shouldBe MessageType.info
+        toTypeClass("warning") shouldBe MessageType.warning
+        toTypeClass("error") shouldBe MessageType.error
       }
 
       "return a none message type for invalid options" in {
-        MessageType.toTypeClass("shminfo") shouldBe MessageType.none
+        toTypeClass("shminfo") shouldBe MessageType.none
       }
     }
   }

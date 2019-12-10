@@ -23,31 +23,19 @@ import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 object EoyEstimateResponseFixture {
 
-  val model = EoyEstimateResponse(EoyEstimateSummaryFixture.model, EoyEstimateDetailFixture.model)
+  val eoyEstimateResponseModel: EoyEstimateResponse =
+    EoyEstimateResponse(EoyEstimateSummaryFixture.eoyEstimateSummaryModel, EoyEstimateDetailFixture.eoyEstimateDetailModel)
 
-  val backendJson: JsValue = Json.parse(
+  val eoyEstimateResponseJson: JsObject = Json.parse(
     s"""
-      |{
-      | "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "inYear",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 0
-      |  },
-      | "endOfYearEstimate" : {
-      |   "summary" : ${EoyEstimateSummaryFixture.json.toString()},
-      |   "detail" : ${EoyEstimateDetailFixture.json.toString()}
-      | }
-      |}
+       |{
+       |  "summary" : ${EoyEstimateSummaryFixture.eoyEstimateSummaryJson.toString()},
+       |  "detail" : ${EoyEstimateDetailFixture.eoyEstimateDetailJson.toString()}
+       |}
     """.stripMargin
-  )
+  ).as[JsObject]
 
-  val errorCalculationTypeJson: JsValue = Json.parse(
+  val eoyEstimateResponseTopLevelJsonWithMetadata: JsValue = Json.parse(
     s"""
        |{
        | "metadata": {
@@ -56,21 +44,16 @@ object EoyEstimateResponseFixture {
        |    "requestedBy": "customer",
        |    "calculationReason": "customerRequest",
        |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
+       |    "calculationType": "inYear",
        |    "intentToCrystallise": true,
        |    "crystallised": false,
        |    "calculationErrorCount": 0
-       |  }
+       |  },
+       | "endOfYearEstimate" : {
+       |   "summary" : ${EoyEstimateSummaryFixture.eoyEstimateSummaryJson.toString()},
+       |   "detail" : ${EoyEstimateDetailFixture.eoyEstimateDetailJson.toString()}
+       | }
        |}
     """.stripMargin
   )
-
-  val outputJson: JsObject = Json.parse(
-    s"""
-      |{
-      |  "summary" : ${EoyEstimateSummaryFixture.json.toString()},
-      |  "detail" : ${EoyEstimateDetailFixture.json.toString()}
-      |}
-    """.stripMargin
-  ).as[JsObject]
 }

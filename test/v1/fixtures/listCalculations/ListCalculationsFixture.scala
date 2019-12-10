@@ -20,9 +20,9 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.{CalculationRequestor, CalculationType}
 import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
 
-object ListCalculationsFixture {
+object CalculationListItemFixture {
 
-  val listItemResponse: CalculationListItem =
+  val calculationListItemModel: CalculationListItem =
     CalculationListItem(
       id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       calculationTimestamp = "2019-03-17T09:22:59Z",
@@ -30,19 +30,36 @@ object ListCalculationsFixture {
       requestedBy = Some(CalculationRequestor.hmrc)
     )
 
-  val listCalculationsResponse: ListCalculationsResponse[CalculationListItem] = ListCalculationsResponse(
-    Seq(
-      listItemResponse,
-      CalculationListItem(
-        id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-        calculationTimestamp = "2019-06-17T18:45:59Z",
-        `type` = CalculationType.crystallisation,
-        requestedBy = None
+  val calculationListItemJson: JsValue = Json.parse(
+    """
+      |{
+      |   "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |   "calculationTimestamp": "2019-03-17T09:22:59Z",
+      |   "type": "inYear",
+      |   "requestedBy": "hmrc"
+      |}
+    """.stripMargin
+  )
+}
+
+object ListCalculationsFixture {
+
+  import v1.fixtures.listCalculations.CalculationListItemFixture._
+
+  val listCalculationsResponseModel: ListCalculationsResponse[CalculationListItem] =
+    ListCalculationsResponse(
+      Seq(
+        calculationListItemModel,
+        CalculationListItem(
+          id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
+          calculationTimestamp = "2019-06-17T18:45:59Z",
+          `type` = CalculationType.crystallisation,
+          requestedBy = None
+        )
       )
     )
-  )
 
-  val listCalculationsJson: JsValue = Json.parse(
+  val listCalculationsResponseJson: JsValue = Json.parse(
     """
       |{
       |  "calculations": [
@@ -61,16 +78,4 @@ object ListCalculationsFixture {
       |}
     """.stripMargin
   )
-
-  val listItemJson: JsValue = Json.parse(
-    """
-      |{
-      |   "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |   "calculationTimestamp": "2019-03-17T09:22:59Z",
-      |   "type": "inYear",
-      |   "requestedBy": "hmrc"
-      |}
-    """.stripMargin
-  )
-
 }

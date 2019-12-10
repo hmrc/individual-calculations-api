@@ -18,6 +18,7 @@ package v1.models.response.listCalculations
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.listCalculations.CalculationListItemFixture.{calculationListItemJson, calculationListItemModel}
 import v1.fixtures.listCalculations.ListCalculationsFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
@@ -27,22 +28,35 @@ import v1.models.response.common.CalculationType
 
 class ListCalculationsResponseSpec extends UnitSpec {
 
+  "CalculationListItem" when {
+    "read from valid JSON" should {
+      "produce the expected CalculationListItem" in {
+        calculationListItemJson.as[CalculationListItem] shouldBe calculationListItemModel
+      }
+    }
+
+    "written to JSON" must {
+      "produce the expected JsObject" in {
+        Json.toJson(calculationListItemModel) shouldBe calculationListItemJson
+      }
+    }
+  }
+
   "ListCalculationsResponse" when {
     "read from valid JSON" should {
       "produce the expected ListCalculationsResponse object" in {
-        listCalculationsJson.as[ListCalculationsResponse[CalculationListItem]] shouldBe listCalculationsResponse
+        listCalculationsResponseJson.as[ListCalculationsResponse[CalculationListItem]] shouldBe listCalculationsResponseModel
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson(listCalculationsResponse) shouldBe listCalculationsJson
+        Json.toJson(listCalculationsResponseModel) shouldBe listCalculationsResponseJson
       }
     }
   }
 
   "LinksFactory" when {
-
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"

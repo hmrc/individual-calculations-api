@@ -51,7 +51,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.obj("messages" -> MessagesResponseFixture.mtdJson)
+      val successBody = Json.obj("messages" -> MessagesResponseFixture.messagesResponseJson)
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[
@@ -68,7 +68,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           |      ]
           |}""".stripMargin)
 
-      val successOutput = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+      val successOutput = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
       "valid request is made with no filter" in new Test {
         override def setupStubs(): StubMapping = {
@@ -97,7 +97,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe outputMessagesErrorsJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+        response.json shouldBe messagesResponseJsonErrors.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
       }
 
       "valid request is made with multiple filters" in new Test {
@@ -123,7 +123,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, backendNoMessagesJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonEmpty)
         }
 
         val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
@@ -138,7 +138,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, backendMessagesInfoJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonInfo)
         }
 
         val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)

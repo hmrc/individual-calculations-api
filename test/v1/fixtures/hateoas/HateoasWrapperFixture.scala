@@ -28,7 +28,7 @@ object HateoasWrapperFixture {
     implicit val writes: OWrites[TestMtdResponse] = Json.writes[TestMtdResponse]
   }
 
-  val hateoasWrapperModel: HateoasWrapper[TestMtdResponse] =
+  val hateoasWrapperModelWithLinks: HateoasWrapper[TestMtdResponse] =
     HateoasWrapper(
       payload = TestMtdResponse("value1", 1),
       links = Seq(
@@ -40,9 +40,9 @@ object HateoasWrapperFixture {
       )
     )
 
-  val hateoasWrapperModelNoLinks: HateoasWrapper[TestMtdResponse] = hateoasWrapperModel.copy(links = Nil)
+  val hateoasWrapperModelWithoutLinks: HateoasWrapper[TestMtdResponse] = hateoasWrapperModelWithLinks.copy(links = Nil)
 
-  val testMtdResponseJson: JsValue = Json.parse(
+  val hateoasWrapperJsonWithLinks: JsValue = Json.parse(
     """
       |{
       |  "field1": "value1",
@@ -58,7 +58,7 @@ object HateoasWrapperFixture {
     """.stripMargin
   )
 
-  val testMtdResponseJsonNoLinks: JsValue = Json.parse(
+  val hateoasWrapperJsonWithoutLinks: JsValue = Json.parse(
     """
       |{
       |  "field1": "value1",

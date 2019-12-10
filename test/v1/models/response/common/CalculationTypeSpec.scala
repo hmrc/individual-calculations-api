@@ -21,7 +21,6 @@ import utils.enums.EnumJsonSpecSupport
 import v1.models.response.common.CalculationType._
 
 class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
-
   testRoundTrip[CalculationType](
     ("inYear", inYear),
     ("crystallisation", crystallisation)

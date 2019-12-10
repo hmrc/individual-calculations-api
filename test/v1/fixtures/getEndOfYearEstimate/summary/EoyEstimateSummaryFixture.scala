@@ -21,17 +21,18 @@ import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
 object EoyEstimateSummaryFixture {
 
-  val model = EoyEstimateSummary(
-    Some(1000),
-    Some(2000),
-    Some(3000.98),
-    Some(4000.98),
-    Some(5000.98),
-    Some(6000.98),
-    Some(7000.98)
-  )
+  val eoyEstimateSummaryModel: EoyEstimateSummary =
+    EoyEstimateSummary(
+      Some(1000),
+      Some(2000),
+      Some(3000.98),
+      Some(4000.98),
+      Some(5000.98),
+      Some(6000.98),
+      Some(7000.98)
+    )
 
-  val json: JsValue = Json.parse(
+  val eoyEstimateSummaryJson: JsValue = Json.parse(
     """
       |{
       | "totalEstimatedIncome" : 1000,

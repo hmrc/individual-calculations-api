@@ -21,7 +21,7 @@ import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateDetail](EoyEstimateDetailFixture.json)(
+  testJsonProperties[EoyEstimateDetail](EoyEstimateDetailFixture.eoyEstimateDetailJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("selfEmployments", "ukPropertyFhl", "ukPropertyNonFhl", "ukSavings", "ukDividends")
   )

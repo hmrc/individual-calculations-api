@@ -16,60 +16,29 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.errors.MtdErrorsFixture._
 
 class MtdErrorsSpec extends UnitSpec {
 
-  val correlationId = "X-123"
-  val statusCode = 123
-
-  val mtdErrorsModelSingle = MtdErrors(statusCode, NinoFormatError)
-  val mtdErrorsModelMultiple: MtdErrors = MtdErrors(statusCode, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))
-
-  val mtdErrorJsonSingle: JsValue = Json.parse(
-    """
-      |{
-      |   "code": "FORMAT_NINO",
-      |   "message": "The provided NINO is invalid"
-      |}
-    """.stripMargin
-  )
-
-  val mtdErrorJsonMultiple: JsValue = Json.parse(
-    """
-      |{
-      |   "code": "INVALID_REQUEST",
-      |   "message": "Invalid request",
-      |   "errors": [
-      |       {
-      |         "code": "FORMAT_NINO",
-      |         "message": "The provided NINO is invalid"
-      |       },
-      |       {
-      |         "code": "FORMAT_TAX_YEAR",
-      |         "message": "The provided tax year is invalid"
-      |       }
-      |   ]
-      |}
-    """.stripMargin
-  )
-
-  "Rendering a error response with one error" should {
-    "generate the correct JSON" in {
-      Json.toJson(mtdErrorsModelSingle) shouldBe mtdErrorJsonSingle
+  "MtdErrors" when {
+    "written to JSON with a single error" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelSingle) shouldBe mtdErrorsJsonSingle
+      }
     }
-  }
 
-  "Rendering a error response with one error and an empty sequence of errors" should {
-    "generate the correct JSON" in {
-      Json.toJson(mtdErrorsModelSingle.copy(errors = Some(Seq.empty))) shouldBe mtdErrorJsonSingle
+    "written to JSON with a single error and an empty sequence of errors" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelSingle.copy(errors = Some(Seq.empty))) shouldBe mtdErrorsJsonSingle
+      }
     }
-  }
 
-  "Rendering a error response with two errors" should {
-    "generate the correct JSON" in {
-      Json.toJson(mtdErrorsModelMultiple) shouldBe mtdErrorJsonMultiple
+    "written to JSON with multiple errors" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelMultiple) shouldBe mtdErrorsJsonMultiple
+      }
     }
   }
 }

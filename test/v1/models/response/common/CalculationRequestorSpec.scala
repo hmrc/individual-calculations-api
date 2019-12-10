@@ -21,7 +21,6 @@ import utils.enums.EnumJsonSpecSupport
 import v1.models.response.common.CalculationRequestor._
 
 class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
-
   testRoundTrip[CalculationRequestor](
     ("customer", customer),
     ("hmrc", hmrc),

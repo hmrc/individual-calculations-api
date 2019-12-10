@@ -21,7 +21,7 @@ import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixture
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateSelfEmploymentsSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateSelfEmployments](EoyEstimateSelfEmploymentsFixture.json)(
+  testJsonProperties[EoyEstimateSelfEmployments](EoyEstimateSelfEmploymentsFixture.eoyEstimateSelfEmploymentsJson)(
     mandatoryProperties = Seq("selfEmploymentId", "taxableIncome"),
     optionalProperties = Seq("finalised")
   )

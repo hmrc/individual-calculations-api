@@ -29,20 +29,20 @@ import v1.models.utils.JsonErrorValidators
 class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
 
   "MetadataResponse" when {
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson[MetadataResponse](metadata) shouldBe jsonOutput
+    "read from valid JSON" should {
+      "produce the expected MetadataResponseObject" in {
+        metadataResponseTopLevelJsonWithMessages.as[MetadataResponse] shouldBe metadataResponseModel
       }
     }
 
-    testJsonProperties[MetadataResponse](MetadataResponseFixture.mtdJson)(
-      mandatoryProperties = Seq("metadata"),
-      optionalProperties = Seq()
-    )
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson[MetadataResponse](metadataResponseModel) shouldBe metadataResponseJson
+      }
+    }
   }
 
   "LinksFactory" when {
-
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
@@ -52,9 +52,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
 
     "wrapping a MetadataResponse object" should {
       "expose the correct hateoas links when errors are not present" in new Test {
-        hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId, None)) shouldBe
+        hateoasFactory.wrap(metadataResponseModel, CalculationMetadataHateoasData(nino, calcId, None)) shouldBe
           HateoasWrapper(
-            metadata,
+            metadataResponseModel,
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
@@ -67,9 +67,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are present" in new Test {
-        hateoasFactory.wrap(metadata, CalculationMetadataHateoasData(nino, calcId, Some(1))) shouldBe
+        hateoasFactory.wrap(metadataResponseModel, CalculationMetadataHateoasData(nino, calcId, Some(1))) shouldBe
           HateoasWrapper(
-            metadata,
+            metadataResponseModel,
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/messages", GET, "messages")

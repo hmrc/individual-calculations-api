@@ -21,14 +21,14 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateSelfEmployments
 
 object EoyEstimateSelfEmploymentsFixture {
 
-  val json: JsValue = Json.parse(
+  val eoyEstimateSelfEmploymentsModel = EoyEstimateSelfEmployments("XGIS00000001319", 1, Some(true))
+
+  val eoyEstimateSelfEmploymentsJson: JsValue = Json.parse(
     """
       |{
       | "selfEmploymentId" : "XGIS00000001319",
-      | "taxableIncome" : 1000,
+      | "taxableIncome" : 1,
       | "finalised" : true
       |}
     """.stripMargin)
-
-  val model = EoyEstimateSelfEmployments("XGIS00000001319", 1000, Some(true))
 }

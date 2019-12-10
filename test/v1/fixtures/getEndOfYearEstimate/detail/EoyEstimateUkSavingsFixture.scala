@@ -21,13 +21,14 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateUkSavings
 
 object EoyEstimateUkSavingsFixture {
 
-  val json: JsValue = Json.parse("""
-      |{
-      | "savingsAccountId" : "yW4zuqfGBZGPlpq",
-      | "savingsAccountName" : "bank & building account 1",
-      | "taxableIncome" : 1000
-      |}
-    """.stripMargin)
+  val eoyEstimateUkSavingsModel = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", Some("bank & building account 1"), 1)
 
-  val model = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", Some("bank & building account 1"), 1000)
+  val eoyEstimateUkSavingsJson: JsValue = Json.parse("""
+      |{
+      |   "savingsAccountId" : "yW4zuqfGBZGPlpq",
+      |   "savingsAccountName" : "bank & building account 1",
+      |   "taxableIncome" : 1
+      |}
+    """.stripMargin
+  )
 }

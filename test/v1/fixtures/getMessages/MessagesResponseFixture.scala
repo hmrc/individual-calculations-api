@@ -21,7 +21,7 @@ import v1.models.response.getMessages.{MessagesResponse, Message}
 
 object MessageFixture {
 
-  val mtdJson: JsValue = Json.parse(
+  val messageJson: JsValue = Json.parse(
     """
       |{
       |  "id":"info1",
@@ -40,13 +40,13 @@ object MessagesResponseFixture {
   val warn1: Message = Message("warn1", "text1")
   val warn2: Message = Message("warn2", "text2")
 
-  val response: MessagesResponse = MessagesResponse(
+  val messagesResponseModel: MessagesResponse = MessagesResponse(
     Some(Seq(info1, info2)),
     Some(Seq(warn1, warn2)),
     Some(Seq(err1, err2))
   )
 
-  val mtdJson: JsValue = Json.parse(
+  val messagesResponseJson: JsValue = Json.parse(
     """
       |{
       |  "info": [
@@ -65,32 +65,22 @@ object MessagesResponseFixture {
     """.stripMargin
   )
 
-  val backendNoMessagesJson: JsValue = Json.parse(
+  val messagesResponseJsonErrors: JsValue = Json.parse(
     """
       |{
-      |  "messages" :{
-      |  }
+      |  "errors":[
+      |    {"id":"err1", "text":"text1"},
+      |    {"id":"err2", "text":"text2"}
+      |  ]
       |}
     """.stripMargin
   )
 
-  val backendMessagesInfoJson: JsValue = Json.parse(
+  val messagesResponseTopLevelJson: JsValue = Json.parse(
     """
       |{
-      |  "messages" :{
-      |     "info":[
-      |     {"id":"info1", "text":"text1"},
-      |     {"id":"info2", "text":"text2"}
-      |     ]
-      |  }
-      |}
-    """.stripMargin
-  )
-
-  val outputMessagesJson: JsValue = Json.parse(
-    """
-      |{
-      |  "info":[
+      | "messages" : {
+      |  "info": [
       |    {"id":"info1", "text":"text1"},
       |    {"id":"info2", "text":"text2"}
       |  ],
@@ -103,16 +93,28 @@ object MessagesResponseFixture {
       |    {"id":"err2", "text":"text2"}
       |  ]
       |}
+      |}
     """.stripMargin
   )
 
-  val outputMessagesErrorsJson: JsValue = Json.parse(
+  val messagesResponseTopLevelJsonEmpty: JsValue = Json.parse(
     """
       |{
-      |  "errors":[
-      |    {"id":"err1", "text":"text1"},
-      |    {"id":"err2", "text":"text2"}
-      |  ]
+      |  "messages" :{
+      |  }
+      |}
+    """.stripMargin
+  )
+
+  val messagesResponseTopLevelJsonInfo: JsValue = Json.parse(
+    """
+      |{
+      |  "messages" :{
+      |     "info":[
+      |     {"id":"info1", "text":"text1"},
+      |     {"id":"info2", "text":"text2"}
+      |     ]
+      |  }
       |}
     """.stripMargin
   )

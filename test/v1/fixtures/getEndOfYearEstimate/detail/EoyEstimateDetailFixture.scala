@@ -21,26 +21,26 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixture {
 
-  val model = EoyEstimateDetail(
-    Some(Seq(EoyEstimateSelfEmploymentsFixture.model)),
-    Some(EoyEstimateUkPropertyFhlFixture.model),
-    Some(EoyEstimateUkPropertyNonFhlFixture.model),
-    Some(Seq(EoyEstimateUkSavingsFixture.model)),
-    Some(EoyEstimateUkDividendsFixture.model)
+  val eoyEstimateDetailModel = EoyEstimateDetail(
+    Some(Seq(EoyEstimateSelfEmploymentsFixture.eoyEstimateSelfEmploymentsModel)),
+    Some(EoyEstimateUkPropertyFhlFixture.eoyEstimateUkPropertyFhlModel),
+    Some(EoyEstimateUkPropertyNonFhlFixture.eoyEstimateUkPropertyNonFhlModel),
+    Some(Seq(EoyEstimateUkSavingsFixture.eoyEstimateUkSavingsModel)),
+    Some(EoyEstimateUkDividendsFixture.eoyEstimateUkDividendsModel)
   )
 
-  val json: JsValue = Json.parse(
+  val eoyEstimateDetailJson: JsValue = Json.parse(
     s"""
       |{
       | "selfEmployments" : [
-      |   ${EoyEstimateSelfEmploymentsFixture.json}
+      |   ${EoyEstimateSelfEmploymentsFixture.eoyEstimateSelfEmploymentsJson}
       | ],
-      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFhlFixture.json},
-      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyNonFhlFixture.json},
+      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFhlFixture.eoyEstimateUkPropertyFhlJson},
+      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyNonFhlFixture.eoyEstimateUkPropertyNonFhlJson},
       | "ukSavings" : [
-      |   ${EoyEstimateUkSavingsFixture.json}
+      |   ${EoyEstimateUkSavingsFixture.eoyEstimateUkSavingsJson}
       | ],
-      | "ukDividends" : ${EoyEstimateUkDividendsFixture.json}
+      | "ukDividends" : ${EoyEstimateUkDividendsFixture.eoyEstimateUkDividendsJson}
       |}
     """.stripMargin
   )

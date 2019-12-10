@@ -27,7 +27,7 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
     "error count positive" should {
       val json =
         Json.parse(s"""{
-                     |  "endOfYearEstimate": ${EoyEstimateResponseFixture.outputJson},
+                     |  "endOfYearEstimate": ${EoyEstimateResponseFixture.eoyEstimateResponseJson},
                      |  "metadata": {
                      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
                      |    "taxYear": "2018-19",
@@ -72,7 +72,7 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
     "no error count" should {
       val json = Json.parse(
         s"""{
-          |  "endOfYearEstimate": ${EoyEstimateResponseFixture.outputJson},
+          |  "endOfYearEstimate": ${EoyEstimateResponseFixture.eoyEstimateResponseJson},
           |  "metadata": {
           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           |    "taxYear": "2018-19",
@@ -87,14 +87,14 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
           |""".stripMargin)
 
       "return a EoyEstimateWrapper" in {
-        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.model)
+        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)
       }
     }
 
     "error count zero" should {
       val json = Json.parse(
         s"""{
-          |  "endOfYearEstimate": ${EoyEstimateResponseFixture.outputJson},
+          |  "endOfYearEstimate": ${EoyEstimateResponseFixture.eoyEstimateResponseJson},
           |  "metadata": {
           |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           |    "taxYear": "2018-19",
@@ -110,14 +110,14 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
           |""".stripMargin)
 
       "return a EoyEstimateWrapper" in {
-        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.model)
+        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)
       }
     }
 
     "no calculation type" should {
       val json = Json.parse(
         s"""{
-           |  "endOfYearEstimate": ${EoyEstimateResponseFixture.outputJson},
+           |  "endOfYearEstimate": ${EoyEstimateResponseFixture.eoyEstimateResponseJson},
            |  "metadata": {
            |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
            |    "taxYear": "2018-19",
@@ -131,14 +131,14 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
            |""".stripMargin)
 
       "return a EoyEstimateWrapper" in {
-        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.model)
+        json.as[EoyEstimateWrapperOrError] shouldBe EoyEstimateWrapperOrError.EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)
       }
     }
 
     "calculation type of crystallisation" should {
       val json = Json.parse(
         s"""{
-           |  "endOfYearEstimate": ${EoyEstimateResponseFixture.outputJson},
+           |  "endOfYearEstimate": ${EoyEstimateResponseFixture.eoyEstimateResponseJson},
            |  "metadata": {
            |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
            |    "taxYear": "2018-19",

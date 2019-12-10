@@ -21,7 +21,7 @@ import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkDividendsFixture
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateUkDividendSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateUkDividends](EoyEstimateUkDividendsFixture.json)(
+  testJsonProperties[EoyEstimateUkDividends](EoyEstimateUkDividendsFixture.eoyEstimateUkDividendsJson)(
     mandatoryProperties = Seq("taxableIncome"),
     optionalProperties = Seq()
   )

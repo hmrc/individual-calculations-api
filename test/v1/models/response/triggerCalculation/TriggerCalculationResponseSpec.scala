@@ -25,7 +25,9 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
+  val triggerCalculationResponseModel = TriggerCalculationResponse("testId")
+
+  val triggerCalculationResponseJson: JsValue = Json.parse(
     """
       |{
       | "id": "testId"
@@ -33,24 +35,21 @@ class TriggerCalculationResponseSpec extends UnitSpec {
     """.stripMargin
   )
 
-  val response = TriggerCalculationResponse("testId")
-
   "TriggerCalculationResponse" when {
     "read from valid JSON" should {
       "produce the expected TriggerCalculationResponse object" in {
-        json.as[TriggerCalculationResponse] shouldBe response
+        triggerCalculationResponseJson.as[TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson(response) shouldBe json
+        Json.toJson(triggerCalculationResponseModel) shouldBe triggerCalculationResponseJson
       }
     }
   }
 
   "LinksFactory" when {
-
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"

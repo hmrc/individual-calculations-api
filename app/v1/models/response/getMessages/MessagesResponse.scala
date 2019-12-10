@@ -32,6 +32,7 @@ object Message {
 case class MessagesResponse(info: Option[Seq[Message]],
                             warnings: Option[Seq[Message]],
                             errors: Option[Seq[Message]]) {
+
   val hasMessages: Boolean = if (this == MessagesResponse.empty) false else true
 }
 

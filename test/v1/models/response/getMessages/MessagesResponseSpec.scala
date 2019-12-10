@@ -19,7 +19,7 @@ package v1.models.response.getMessages
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getMessages.MessagesResponseFixture._
-import v1.fixtures.getMessages.{MessageFixture, MessagesResponseFixture}
+import v1.fixtures.getMessages.MessageFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
@@ -29,27 +29,27 @@ import v1.models.utils.JsonErrorValidators
 class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
 
   "Message" when {
-    testJsonProperties[Message](MessageFixture.mtdJson)(
+    testJsonProperties[Message](messageJson)(
       mandatoryProperties = Seq("id", "text"),
       optionalProperties = Seq()
     )
   }
 
   "MessagesResponse" when {
-    testJsonProperties[MessagesResponse](MessagesResponseFixture.mtdJson)(
-      mandatoryProperties = Seq(),
-      optionalProperties = Seq("info", "warnings", "errors")
-    )
+    "read from valid JSON" should {
+      "produce the expected MessagesResponse object" in {
+        messagesResponseTopLevelJson.as[MessagesResponse] shouldBe messagesResponseModel
+      }
+    }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson[MessagesResponse](response) shouldBe outputMessagesJson
+        Json.toJson[MessagesResponse](messagesResponseModel) shouldBe messagesResponseJson
       }
     }
   }
 
   "LinksFactory" when {
-
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"

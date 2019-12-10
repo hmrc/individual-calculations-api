@@ -84,7 +84,7 @@ class GetMessagesControllerSpec
       |      ]
       |}""".stripMargin)
 
-  val responseBody: JsValue         = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+  val responseBody: JsValue         = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
   private val rawData     = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))

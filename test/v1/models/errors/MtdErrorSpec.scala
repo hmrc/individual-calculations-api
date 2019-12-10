@@ -16,24 +16,16 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.errors.MtdErrorsFixture._
 
 class MtdErrorSpec extends UnitSpec {
-
-  val mtdErrorJson: JsValue = Json.parse(
-    """
-      |{
-      |   "code": "CODE",
-      |   "message": "some message"
-      |}
-    """.stripMargin
-  )
 
   "MtdError" when {
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson(MtdError("CODE", "some message")) shouldBe mtdErrorJson
+        Json.toJson(NinoFormatError) shouldBe mtdErrorsJsonSingle
       }
     }
   }

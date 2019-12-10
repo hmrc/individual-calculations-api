@@ -16,49 +16,43 @@
 
 package v1.models.response.getEoyEstimate
 
-import play.api.libs.json.{ JsSuccess, Json }
+import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
-import v1.models.hateoas.{ HateoasWrapper, Link }
-import v1.models.hateoas.Method.{ DELETE, GET, POST }
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 
 class EoyEstimateResponseSpec extends UnitSpec {
 
-  "EndOfYearEstimate" should {
-
-    "read correctly from json" when {
-
-      "provided with a valid json source" in {
-        val result = EoyEstimateResponseFixture.backendJson.validate[EoyEstimateResponse]
-        result shouldBe a[JsSuccess[_]]
-        result.get shouldBe EoyEstimateResponseFixture.model
+  "EoyEstimateResponse" when {
+    "read from valid JSON" should {
+      "produce the expected EoyEstimateResponse object" in {
+        eoyEstimateResponseTopLevelJsonWithMetadata.as[EoyEstimateResponse] shouldBe eoyEstimateResponseModel
       }
     }
 
-    "write correctly to json" when {
-
-      "provided with a valid model" in {
-        Json.toJson(EoyEstimateResponseFixture.model) shouldBe EoyEstimateResponseFixture.outputJson
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(eoyEstimateResponseModel) shouldBe eoyEstimateResponseJson
       }
     }
   }
 
   "HateoasFactory" should {
-
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
-      val calcId         = "someCalcId"
+      val nino = "someNino"
+      val calcId = "someCalcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "return the correct hateoas links" in new Test {
 
-      hateoasFactory.wrap(EoyEstimateResponseFixture.model, EoyEstimateResponseHateoasData(nino, calcId)) shouldBe
+      hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateResponseHateoasData(nino, calcId)) shouldBe
         HateoasWrapper(
-          EoyEstimateResponseFixture.model,
+          eoyEstimateResponseModel,
           Seq(
             Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "metadata"),
             Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "self")
