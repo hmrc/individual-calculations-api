@@ -53,7 +53,6 @@ object GenericAuditDetailFixture {
        |}
     """.stripMargin
   )
-
   val genericAuditDetailJsonError: JsValue = Json.parse(
     s"""
        |{

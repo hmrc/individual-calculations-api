@@ -22,11 +22,10 @@ import v1.models.audit.{AuditError, AuditResponse}
 
 object AuditResponseFixture {
 
-  val auditErrors: Seq[AuditError] = Seq(AuditError("FORMAT_NINO"), AuditError("FORMAT_TAX_YEAR"))
+  val auditErrors: Seq[AuditError] = Seq(AuditError(errorCode = "FORMAT_NINO"), AuditError(errorCode = "FORMAT_TAX_YEAR"))
   val body: JsValue = Json.parse("""{ "aField" : "aValue" }""")
-
-  val auditResponseModelWithBody: AuditResponse = AuditResponse(OK, Right(Some(body)))
-  val auditResponseModelWithErrors: AuditResponse = AuditResponse(BAD_REQUEST, Left(auditErrors))
+  val auditResponseModelWithBody: AuditResponse = AuditResponse(httpStatus = OK, response = Right(Some(body)))
+  val auditResponseModelWithErrors: AuditResponse = AuditResponse(httpStatus = BAD_REQUEST, response = Left(auditErrors))
 
   val auditResponseJsonWithBody: JsValue = Json.parse(
     s"""

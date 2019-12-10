@@ -23,13 +23,13 @@ object EoyEstimateSummaryFixture {
 
   val eoyEstimateSummaryModel: EoyEstimateSummary =
     EoyEstimateSummary(
-      Some(1000),
-      Some(2000),
-      Some(3000.98),
-      Some(4000.98),
-      Some(5000.98),
-      Some(6000.98),
-      Some(7000.98)
+      totalEstimatedIncome = Some(1000),
+      totalTaxableIncome = Some(2000),
+      incomeTaxAmount = Some(3000.98),
+      nic2 = Some(4000.98),
+      nic4 = Some(5000.98),
+      totalNicAmount = Some(6000.98),
+      incomeTaxNicAmount = Some(7000.98)
     )
 
   val eoyEstimateSummaryJson: JsValue = Json.parse(

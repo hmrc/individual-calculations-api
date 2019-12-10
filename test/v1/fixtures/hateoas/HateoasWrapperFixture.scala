@@ -30,7 +30,7 @@ object HateoasWrapperFixture {
 
   val hateoasWrapperModelWithLinks: HateoasWrapper[TestMtdResponse] =
     HateoasWrapper(
-      payload = TestMtdResponse("value1", 1),
+      payload = TestMtdResponse(field1 = "value1", field2 = 1),
       links = Seq(
         Link(
           href = "/some/resource",

@@ -24,13 +24,13 @@ class MessageTypeSpec extends UnitSpec {
   "MessageType" when {
     "toTypeClass" should {
       "return the correct MessageType object for valid message types" in {
-        toTypeClass("info") shouldBe MessageType.info
-        toTypeClass("warning") shouldBe MessageType.warning
-        toTypeClass("error") shouldBe MessageType.error
+        toTypeClass(`type` = "info") shouldBe MessageType.info
+        toTypeClass(`type` = "warning") shouldBe MessageType.warning
+        toTypeClass(`type` = "error") shouldBe MessageType.error
       }
 
       "return a none message type for invalid options" in {
-        toTypeClass("shminfo") shouldBe MessageType.none
+        toTypeClass(`type` = "shminfo") shouldBe MessageType.none
       }
     }
   }

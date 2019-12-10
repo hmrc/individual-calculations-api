@@ -21,7 +21,7 @@ import support.UnitSpec
 
 class TriggerCalculationRequestBodySpec extends UnitSpec {
 
-  val triggerCalculationRequestBodyModel = TriggerCalculationRequestBody("2018-19")
+  val triggerCalculationRequestBodyModel = TriggerCalculationRequestBody(taxYear = "2018-19")
 
   val triggerCalculationRequestBodyJson: JsValue = Json.parse(
     """

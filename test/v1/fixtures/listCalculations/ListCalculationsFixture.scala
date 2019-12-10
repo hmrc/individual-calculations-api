@@ -48,7 +48,7 @@ object ListCalculationsFixture {
 
   val listCalculationsResponseModel: ListCalculationsResponse[CalculationListItem] =
     ListCalculationsResponse(
-      Seq(
+      calculations = Seq(
         calculationListItemModel,
         CalculationListItem(
           id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",

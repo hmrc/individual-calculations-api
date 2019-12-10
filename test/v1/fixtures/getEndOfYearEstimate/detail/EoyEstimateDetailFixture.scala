@@ -17,31 +17,37 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkDividendsFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSavingsFixture._
 import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixture {
 
-  val eoyEstimateDetailModel = EoyEstimateDetail(
-    Some(Seq(EoyEstimateSelfEmploymentsFixture.eoyEstimateSelfEmploymentsModel)),
-    Some(EoyEstimateUkPropertyFhlFixture.eoyEstimateUkPropertyFhlModel),
-    Some(EoyEstimateUkPropertyNonFhlFixture.eoyEstimateUkPropertyNonFhlModel),
-    Some(Seq(EoyEstimateUkSavingsFixture.eoyEstimateUkSavingsModel)),
-    Some(EoyEstimateUkDividendsFixture.eoyEstimateUkDividendsModel)
-  )
+  val eoyEstimateDetailModel: EoyEstimateDetail =
+    EoyEstimateDetail(
+      selfEmployments = Some(Seq(eoyEstimateSelfEmploymentsModel)),
+      ukPropertyFhl = Some(eoyEstimateUkPropertyFhlModel),
+      ukPropertyNonFhl = Some(eoyEstimateUkPropertyNonFhlModel),
+      ukSavings = Some(Seq(eoyEstimateUkSavingsModel)),
+      ukDividends = Some(eoyEstimateUkDividendsModel)
+    )
 
   val eoyEstimateDetailJson: JsValue = Json.parse(
     s"""
-      |{
-      | "selfEmployments" : [
-      |   ${EoyEstimateSelfEmploymentsFixture.eoyEstimateSelfEmploymentsJson}
-      | ],
-      | "ukPropertyFhl" : ${EoyEstimateUkPropertyFhlFixture.eoyEstimateUkPropertyFhlJson},
-      | "ukPropertyNonFhl" : ${EoyEstimateUkPropertyNonFhlFixture.eoyEstimateUkPropertyNonFhlJson},
-      | "ukSavings" : [
-      |   ${EoyEstimateUkSavingsFixture.eoyEstimateUkSavingsJson}
-      | ],
-      | "ukDividends" : ${EoyEstimateUkDividendsFixture.eoyEstimateUkDividendsJson}
-      |}
+       |{
+       | "selfEmployments" : [
+       |   $eoyEstimateSelfEmploymentsJson
+       | ],
+       | "ukPropertyFhl" : $eoyEstimateUkPropertyFhlJson,
+       | "ukPropertyNonFhl" : $eoyEstimateUkPropertyNonFhlJson,
+       | "ukSavings" : [
+       |   $eoyEstimateUkSavingsJson
+       | ],
+       | "ukDividends" : $eoyEstimateUkDividendsJson
+       |}
     """.stripMargin
   )
 }

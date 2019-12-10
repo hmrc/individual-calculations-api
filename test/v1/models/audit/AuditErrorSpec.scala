@@ -21,7 +21,7 @@ import support.UnitSpec
 
 class AuditErrorSpec extends UnitSpec {
 
-  private val auditErrorModel: AuditError = AuditError("FORMAT_NINO")
+  private val auditErrorModel: AuditError = AuditError(errorCode = "FORMAT_NINO")
 
   private val auditErrorJson: JsValue = Json.parse(
     """

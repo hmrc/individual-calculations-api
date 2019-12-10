@@ -23,10 +23,13 @@ object MtdErrorsFixture {
 
   val statusCode: Int = 123
 
-  val mtdErrorsModelSingle: MtdErrors = MtdErrors(statusCode, NinoFormatError)
+  val mtdErrorsModelSingle: MtdErrors = MtdErrors(statusCode = statusCode, error = NinoFormatError)
 
   val mtdErrorsModelMultiple: MtdErrors = MtdErrors(
-    statusCode, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))
+    statusCode = statusCode,
+    error = BadRequestError,
+    errors = Some(Seq(NinoFormatError, TaxYearFormatError)
+    )
   )
 
   val mtdErrorsJsonSingle: JsValue = Json.parse(

@@ -33,17 +33,17 @@ object MessageFixture {
 
 object MessagesResponseFixture {
 
-  val err1: Message = Message("err1", "text1")
-  val err2: Message = Message("err2", "text2")
-  val info1: Message = Message("info1", "text1")
-  val info2: Message = Message("info2", "text2")
-  val warn1: Message = Message("warn1", "text1")
-  val warn2: Message = Message("warn2", "text2")
+  val err1: Message = Message(id = "err1", text = "text1")
+  val err2: Message = Message(id = "err2", text = "text2")
+  val info1: Message = Message(id = "info1", text = "text1")
+  val info2: Message = Message(id = "info2", text = "text2")
+  val warn1: Message = Message(id = "warn1", text = "text1")
+  val warn2: Message = Message(id = "warn2", text = "text2")
 
   val messagesResponseModel: MessagesResponse = MessagesResponse(
-    Some(Seq(info1, info2)),
-    Some(Seq(warn1, warn2)),
-    Some(Seq(err1, err2))
+    info = Some(Seq(info1, info2)),
+    warnings = Some(Seq(warn1, warn2)),
+    errors = Some(Seq(err1, err2))
   )
 
   val messagesResponseJson: JsValue = Json.parse(

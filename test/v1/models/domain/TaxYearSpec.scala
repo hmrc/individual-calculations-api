@@ -23,7 +23,7 @@ class TaxYearSpec extends UnitSpec {
   "TaxYear" when {
     "toYearEnding" should {
       "convert a tax year from MTD format to DES format" in {
-        TaxYear.toYearEnding("2018-19") shouldBe "2019"
+        TaxYear.toYearEnding(taxYear = "2018-19") shouldBe "2019"
       }
     }
   }

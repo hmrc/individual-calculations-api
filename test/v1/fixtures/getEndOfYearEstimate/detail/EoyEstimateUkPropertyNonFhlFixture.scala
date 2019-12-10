@@ -21,12 +21,12 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateUkPropertyNonFhl
 
 object EoyEstimateUkPropertyNonFhlFixture {
   
-  val eoyEstimateUkPropertyNonFhlModel = EoyEstimateUkPropertyNonFhl(1, Some(true))
+  val eoyEstimateUkPropertyNonFhlModel = EoyEstimateUkPropertyNonFhl(taxableIncome = 1002, finalised = Some(true))
 
   val eoyEstimateUkPropertyNonFhlJson: JsValue = Json.parse(
     """
       |{
-      | "taxableIncome" : 1,
+      | "taxableIncome" : 1002,
       | "finalised" : true
       |}
     """.stripMargin)
