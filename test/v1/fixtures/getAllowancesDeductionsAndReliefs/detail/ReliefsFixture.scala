@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getAllowancesAndDeductions.detail
+package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{JsObject, Json}
-import v1.fixtures.getAllowancesAndDeductions.detail.ResidentialFinancialCostsFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ResidentialFinancialCostsFixture._
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.Reliefs
 
 object ReliefsFixture {

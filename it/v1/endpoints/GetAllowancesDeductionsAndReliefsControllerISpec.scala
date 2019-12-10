@@ -23,7 +23,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.GetIncomeTaxAndNicsFixture
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 

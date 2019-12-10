@@ -18,7 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET

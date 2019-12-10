@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.getAllowancesAndDeductions.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
 import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser

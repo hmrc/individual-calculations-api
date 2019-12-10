@@ -17,7 +17,7 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.summary
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.summary.CalculationSummaryFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.summary.CalculationSummaryFixture._
 import v1.models.utils.JsonErrorValidators
 
 class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {

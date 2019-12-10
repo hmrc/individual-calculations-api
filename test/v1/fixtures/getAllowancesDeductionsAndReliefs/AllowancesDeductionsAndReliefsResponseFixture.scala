@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getAllowancesAndDeductions
+package v1.fixtures.getAllowancesDeductionsAndReliefs
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.getAllowancesAndDeductions.detail.CalculationDetailFixture._
-import v1.fixtures.getAllowancesAndDeductions.summary.CalculationSummaryFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.CalculationDetailFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.summary.CalculationSummaryFixture._
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
 import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
