@@ -14,16 +14,34 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEoyEstimate
+package v1.fixtures.getEndOfYearEstimate.summary
 
-import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateSummaryFixture
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
-class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateSummary](EoyEstimateSummaryFixture.json)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq("totalEstimatedIncome", "totalTaxableIncome", "incomeTaxAmount", "nic2", "nic4", "totalNicAmount", "incomeTaxNicAmount")
+object EoyEstimateSummaryFixture {
+
+  val model = EoyEstimateSummary(
+    Some(1000),
+    Some(2000),
+    Some(3000.98),
+    Some(4000.98),
+    Some(5000.98),
+    Some(6000.98),
+    Some(7000.98)
+  )
+
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "totalEstimatedIncome" : 1000,
+      | "totalTaxableIncome" : 2000,
+      | "incomeTaxAmount" : 3000.98,
+      | "nic2" : 4000.98,
+      | "nic4" : 5000.98,
+      | "totalNicAmount" : 6000.98,
+      | "incomeTaxNicAmount" : 7000.98
+      |}
+    """.stripMargin
   )
 }

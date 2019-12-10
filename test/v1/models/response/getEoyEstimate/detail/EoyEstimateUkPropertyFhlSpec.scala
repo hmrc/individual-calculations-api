@@ -25,5 +25,4 @@ class EoyEstimateUkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
     mandatoryProperties = Seq("taxableIncome"),
     optionalProperties = Seq("finalised")
   )
-
 }

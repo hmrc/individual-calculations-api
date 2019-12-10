@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEoyEstimate.detail
+package v1.models.response.getEoyEstimate.summary
 
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixture
+import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture
 import v1.models.utils.JsonErrorValidators
 
-class EoyEstimateUkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateUkPropertyNonFhl](EoyEstimateUkPropertyNonFhlFixture.json)(
-    mandatoryProperties = Seq("taxableIncome"),
-    optionalProperties = Seq("finalised")
+class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
+  testJsonProperties[EoyEstimateSummary](EoyEstimateSummaryFixture.json)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq(
+      "totalEstimatedIncome",
+      "totalTaxableIncome",
+      "incomeTaxAmount",
+      "nic2",
+      "nic4",
+      "totalNicAmount",
+      "incomeTaxNicAmount"
+    )
   )
 }

@@ -25,5 +25,4 @@ class EoyEstimateSelfEmploymentsSpec extends UnitSpec with JsonErrorValidators {
     mandatoryProperties = Seq("selfEmploymentId", "taxableIncome"),
     optionalProperties = Seq("finalised")
   )
-
 }

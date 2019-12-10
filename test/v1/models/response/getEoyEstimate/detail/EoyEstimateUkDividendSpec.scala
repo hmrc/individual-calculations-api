@@ -25,5 +25,4 @@ class EoyEstimateUkDividendSpec extends UnitSpec with JsonErrorValidators {
     mandatoryProperties = Seq("taxableIncome"),
     optionalProperties = Seq()
   )
-
 }

@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getEndOfYearEstimate
+package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getEndOfYearEstimate.detail._
 import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixture {
+
+  val model = EoyEstimateDetail(
+    Some(Seq(EoyEstimateSelfEmploymentsFixture.model)),
+    Some(EoyEstimateUkPropertyFhlFixture.model),
+    Some(EoyEstimateUkPropertyNonFhlFixture.model),
+    Some(Seq(EoyEstimateUkSavingsFixture.model)),
+    Some(EoyEstimateUkDividendsFixture.model)
+  )
 
   val json: JsValue = Json.parse(
     s"""
@@ -35,13 +42,6 @@ object EoyEstimateDetailFixture {
       | ],
       | "ukDividends" : ${EoyEstimateUkDividendsFixture.json}
       |}
-    """.stripMargin)
-
-  val model = EoyEstimateDetail(
-    Some(Seq(EoyEstimateSelfEmploymentsFixture.model)),
-    Some(EoyEstimateUkPropertyFhlFixture.model),
-    Some(EoyEstimateUkPropertyNonFhlFixture.model),
-    Some(Seq(EoyEstimateUkSavingsFixture.model)),
-    Some(EoyEstimateUkDividendsFixture.model)
+    """.stripMargin
   )
 }

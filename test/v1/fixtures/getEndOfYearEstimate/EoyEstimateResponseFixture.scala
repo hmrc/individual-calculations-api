@@ -17,9 +17,13 @@
 package v1.fixtures.getEndOfYearEstimate
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture
+import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture
 import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 object EoyEstimateResponseFixture {
+
+  val model = EoyEstimateResponse(EoyEstimateSummaryFixture.model, EoyEstimateDetailFixture.model)
 
   val backendJson: JsValue = Json.parse(
     s"""
@@ -40,7 +44,8 @@ object EoyEstimateResponseFixture {
       |   "detail" : ${EoyEstimateDetailFixture.json.toString()}
       | }
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val errorCalculationTypeJson: JsValue = Json.parse(
     s"""
@@ -57,7 +62,8 @@ object EoyEstimateResponseFixture {
        |    "calculationErrorCount": 0
        |  }
        |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
   val outputJson: JsObject = Json.parse(
     s"""
@@ -65,7 +71,6 @@ object EoyEstimateResponseFixture {
       |  "summary" : ${EoyEstimateSummaryFixture.json.toString()},
       |  "detail" : ${EoyEstimateDetailFixture.json.toString()}
       |}
-    """.stripMargin).as[JsObject]
-
-  val model = EoyEstimateResponse(EoyEstimateSummaryFixture.model, EoyEstimateDetailFixture.model)
+    """.stripMargin
+  ).as[JsObject]
 }

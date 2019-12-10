@@ -41,16 +41,21 @@ object ListCalculationsResponse extends HateoasLinks {
   implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = Json.reads
 
   implicit object LinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, CalculationListItem, ListCalculationsHateoasData] {
-    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] =
-      Seq(list(appConfig, data.nino), trigger(appConfig, data.nino))
+    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] = {
+      import data.nino
+      Seq(list(appConfig, nino), trigger(appConfig, nino))
+    }
 
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: CalculationListItem): Seq[Link] =
-      Seq(getMetadata(appConfig, data.nino, item.id, isSelf = true))
+    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: CalculationListItem): Seq[Link] = {
+      import data.nino, item.id
+      Seq(getMetadata(appConfig, nino, id, isSelf = true))
+    }
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
-    override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
+    override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] = {
       ListCalculationsResponse(fa.calculations.map(f))
+    }
   }
 
 }

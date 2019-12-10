@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getEoyEstimate
+package v1.models.response.getEoyEstimate.detail
 
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateDetailFixture
-import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {

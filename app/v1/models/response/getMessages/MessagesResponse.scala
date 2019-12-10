@@ -32,7 +32,6 @@ object Message {
 case class MessagesResponse(info: Option[Seq[Message]],
                             warnings: Option[Seq[Message]],
                             errors: Option[Seq[Message]]) {
-
   val hasMessages: Boolean = if (this == MessagesResponse.empty) false else true
 }
 
@@ -45,13 +44,14 @@ object MessagesResponse extends HateoasLinks {
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]] and
       (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]] and
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]]
-    )(MessagesResponse.apply _)
+    ) (MessagesResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, CalculationMessagesHateoasData] {
     override def links(appConfig: AppConfig, data: CalculationMessagesHateoasData): Seq[Link] = {
+      import data.{id, nino}
       Seq(
-        getMetadata(appConfig, data.nino, data.id, isSelf = false),
-        getMessages(appConfig, data.nino, data.id, isSelf = true)
+        getMetadata(appConfig, nino, id, isSelf = false),
+        getMessages(appConfig, nino, id, isSelf = true)
       )
     }
   }
