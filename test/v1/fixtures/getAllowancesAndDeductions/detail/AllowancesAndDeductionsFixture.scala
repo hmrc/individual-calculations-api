@@ -14,31 +14,23 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getAllowancesAndDeductions
+package v1.fixtures.getAllowancesAndDeductions.detail
 
 import play.api.libs.json.{JsObject, Json}
-
-object ResidentialFinancialCostsFixture {
-
-  val modelJson: JsObject = Json.parse(
-    """
-      |{
-      |  "amountClaimed" : 12500,
-      |  "allowableAmount" : 12500,
-      |  "rate" : 20,
-      |  "propertyFinanceRelief" : 12500
-      |}
-    """.stripMargin
-  ).as[JsObject]
-}
-
-object ReliefsFixture {
-  val modelJson: JsObject = Json.obj("residentialFinanceCosts" -> ResidentialFinancialCostsFixture.modelJson)
-}
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeductions
 
 object AllowancesAndDeductionsFixture {
 
-  val modelJson: JsObject = Json.parse(
+  val allowancesAndDeductionsModel: AllowancesAndDeductions =
+    AllowancesAndDeductions(
+      personalAllowance = Some(12500),
+      reducedPersonalAllowance = Some(12500),
+      giftOfInvestmentsAndPropertyToCharity = Some(12500),
+      blindPersonsAllowance = Some(12500),
+      lossesAppliedToGeneralIncome = Some(12500)
+    )
+
+  val allowancesAndDeductionsJson: JsObject = Json.parse(
     """
       |{
       |  "personalAllowance": 12500,
@@ -46,23 +38,6 @@ object AllowancesAndDeductionsFixture {
       |  "giftOfInvestmentsAndPropertyToCharity": 12500,
       |  "blindPersonsAllowance": 12500,
       |  "lossesAppliedToGeneralIncome": 12500
-      |}
-    """.stripMargin
-  ).as[JsObject]
-}
-
-object CalculationDetailFixture {
-  val modelJson: JsObject = Json.obj("reliefs" -> ReliefsFixture.modelJson) ++
-    Json.obj("allowancesAndDeductions" -> AllowancesAndDeductionsFixture.modelJson)
-}
-
-object CalculationSummaryFixture {
-
-  val modelJson: JsObject = Json.parse(
-    """
-      |{
-      |  "totalAllowancesAndDeductions": 12500,
-      |  "totalReliefs": 12500
       |}
     """.stripMargin
   ).as[JsObject]

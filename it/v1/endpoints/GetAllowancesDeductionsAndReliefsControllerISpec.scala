@@ -70,14 +70,14 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.jsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.modelJson.deepMerge(linksJson)
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
       }
     }
 

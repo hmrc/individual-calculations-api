@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package v1.models.response.getAllowancesDeductionsAndReliefs.detail
+package v1.fixtures.getAllowancesAndDeductions.summary
 
-import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.detail.ReliefsFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{JsObject, Json}
+import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[Reliefs](reliefsJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq("residentialFinanceCosts")
-  )
+object CalculationSummaryFixture {
+
+  val calculationSummaryModel: CalculationSummary =
+    CalculationSummary(
+      totalAllowancesAndDeductions = Some(1),
+      totalReliefs = Some(2)
+    )
+
+  val calculationSummaryJson: JsObject = Json.parse(
+    """
+      |{
+      |  "totalAllowancesAndDeductions": 1,
+      |  "totalReliefs": 2
+      |}
+    """.stripMargin
+  ).as[JsObject]
 }

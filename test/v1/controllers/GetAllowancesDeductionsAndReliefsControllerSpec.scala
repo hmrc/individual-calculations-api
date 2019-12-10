@@ -102,14 +102,14 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsModel)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
 
         MockHateoasFactory
-          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsModel, AllowancesHateoasData(nino, calcId))
-          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsModel, Seq(testHateoasLink)))
+          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, AllowancesHateoasData(nino, calcId))
+          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
-        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.modelJson.deepMerge(linksJson)
+        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -161,7 +161,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistModel)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModelEmpty)))))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 

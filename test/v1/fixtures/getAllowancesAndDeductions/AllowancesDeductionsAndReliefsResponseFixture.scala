@@ -17,39 +17,37 @@
 package v1.fixtures.getAllowancesAndDeductions
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getAllowancesAndDeductions.detail.CalculationDetailFixture._
+import v1.fixtures.getAllowancesAndDeductions.summary.CalculationSummaryFixture._
 import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
 import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
-import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{AllowancesAndDeductions, CalculationDetail, Reliefs, ResidentialFinanceCosts}
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 object AllowancesDeductionsAndReliefsResponseFixture {
 
-  val allowancesDeductionsAndReliefsModel: AllowancesDeductionsAndReliefsResponse = AllowancesDeductionsAndReliefsResponse(
-    CalculationSummary(totalAllowancesAndDeductions = Some(12500), totalReliefs = Some(12500)),
-    CalculationDetail(
-      allowancesAndDeductions = Some(
-        AllowancesAndDeductions(
-          personalAllowance = Some(12500),
-          reducedPersonalAllowance = Some(12500),
-          giftOfInvestmentsAndPropertyToCharity = Some(12500),
-          blindPersonsAllowance = Some(12500),
-          lossesAppliedToGeneralIncome = Some(12500)
-        )
+  val allowancesDeductionsAndReliefsResponseModel: AllowancesDeductionsAndReliefsResponse =
+    AllowancesDeductionsAndReliefsResponse(
+      summary = calculationSummaryModel,
+      detail = calculationDetailModel
+    )
+
+  val allowancesDeductionsAndReliefsResponseModelEmpty: AllowancesDeductionsAndReliefsResponse =
+    AllowancesDeductionsAndReliefsResponse(
+      summary = CalculationSummary(
+        totalAllowancesAndDeductions = None,
+        totalReliefs = None
       ),
-      reliefs = Some(
-        Reliefs(
-          residentialFinanceCosts =
-            Some(ResidentialFinanceCosts(amountClaimed = 12500, allowableAmount = Some(12500), rate = 20.0, propertyFinanceRelief = 12500)))
+      detail = CalculationDetail(
+        allowancesAndDeductions = None,
+        reliefs = None
       )
     )
-  )
 
-  val modelJson: JsObject = Json.obj("summary" -> CalculationSummaryFixture.modelJson) ++
-    Json.obj("detail" -> CalculationDetailFixture.modelJson)
+  val allowancesDeductionsAndReliefsResponseJson: JsObject = Json.obj("summary" -> calculationSummaryJson) ++
+    Json.obj("detail" -> calculationDetailJson)
 
-  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj("allowancesDeductionsAndReliefs" -> modelJson)
-
-  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.parse(
+  val allowancesDeductionsAndReliefsResponseJsonEmpty: JsObject = Json.parse(
     """
       |{
       |  "allowancesDeductionsAndReliefs": {
@@ -62,6 +60,9 @@ object AllowancesDeductionsAndReliefsResponseFixture {
     """.stripMargin
   ).as[JsObject]
 
-  val noAllowancesDeductionsAndReliefsExistModel: AllowancesDeductionsAndReliefsResponse =
-    AllowancesDeductionsAndReliefsResponse(CalculationSummary(None, None), CalculationDetail(None, None))
+  val allowancesDeductionsAndReliefsTopLevelJson: JsValue = metadataJson.as[JsObject] ++
+    Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsResponseJson)
+
+  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataJson.as[JsObject] ++
+    allowancesDeductionsAndReliefsResponseJsonEmpty
 }

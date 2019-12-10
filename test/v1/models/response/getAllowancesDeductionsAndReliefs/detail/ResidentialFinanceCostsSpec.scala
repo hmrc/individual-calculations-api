@@ -17,11 +17,11 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesAndDeductions.ResidentialFinancialCostsFixture
+import v1.fixtures.getAllowancesAndDeductions.detail.ResidentialFinancialCostsFixture._
 import v1.models.utils.JsonErrorValidators
 
 class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[ResidentialFinanceCosts](ResidentialFinancialCostsFixture.modelJson)(
+  testJsonProperties[ResidentialFinanceCosts](residentialFinancialCostsJson)(
     mandatoryProperties = Seq("amountClaimed", "rate", "propertyFinanceRelief"),
     optionalProperties = Seq("allowableAmount")
   )
