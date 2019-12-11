@@ -14,31 +14,39 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.detail.GiftAid
 
-class GiftAidSpec extends UnitSpec {
-
+class NicBandSpec extends UnitSpec {
   val json: JsValue = Json.parse(
     s"""
-       |{
-       | "grossGiftAidPayments": 100.25,
-       | "rate": 200.25,
-       | "giftAidTax": 300.25
-       |}
+       |				{
+       |					"name": "name",
+       |					"rate": 100.25,
+       |					"threshold": 200,
+       |					"apportionedThreshold": 300,
+       |					"income": 400,
+       |					"amount": 500.25
+       |				}
            """.stripMargin)
 
-  val model = GiftAid(100.25, 200.25, 300.25)
+  val model = NicBand(
+    name = "name",
+    rate = 100.25,
+    threshold = Some(200),
+    apportionedThreshold = Some(300),
+    income = 400,
+    amount = 500.25
+  )
 
-  "GiftAid" should {
+  "NicBand" should {
 
     "read from json correctly" when {
 
       "provided with valid json" in {
-        json.as[GiftAid] shouldBe model
+        json.as[NicBand] shouldBe model
       }
     }
 

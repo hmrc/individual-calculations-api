@@ -14,44 +14,29 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.detail.TaxBand
 
-class TaxBandSpec extends UnitSpec {
+class Class4LossesSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "name": "name",
-      | "rate": 100.25,
-      | "bandLimit" : 400.25,
-      | "apportionedBandLimit" : 500.25,
-      | "income" : 600.25,
-      | "taxAmount" : 700.25
-      |}
-    """.stripMargin)
+  val model: Class4Losses = Class4Losses(Some(3001), Some(3002), Some(3003))
 
-  val model =
-    TaxBand(
-      name = "name",
-      rate = 100.25,
-      bandLimit = 400.25,
-      apportionedBandLimit = 500.25,
-      income = 600.25,
-      taxAmount = 700.25
-    )
+  val json: JsValue = Json.parse("""{
+      | "totalClass4LossesAvailable" : 3001,
+      | "totalClass4LossesUsed" : 3002,
+      | "totalClass4LossesCarriedForward" : 3003
+      |}""".stripMargin)
 
-  "TaxBand" should {
+  "Class4Losses" should {
 
     "write correctly to json" in {
       Json.toJson(model) shouldBe json
     }
 
     "read correctly from json" in {
-      json.validate[TaxBand] shouldBe JsSuccess(model)
+      json.validate[Class4Losses] shouldBe JsSuccess(model)
     }
   }
 }

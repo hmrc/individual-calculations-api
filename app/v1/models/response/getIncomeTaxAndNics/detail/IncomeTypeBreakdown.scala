@@ -23,5 +23,5 @@ case class IncomeTypeBreakdown(allowancesAllocated: BigDecimal,
                                taxBands: Option[Seq[TaxBand]])
 
 object IncomeTypeBreakdown {
-  implicit val formats: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
+  implicit val format: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
 }

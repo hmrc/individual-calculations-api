@@ -14,39 +14,36 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary, NicSummary}
 
-class CalculationSummarySpec extends UnitSpec {
+class CalculationDetailSpec extends UnitSpec {
 
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val nicSummary = NicSummary(Some(200.25), None, None)
+  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
+  val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, true, Some(false))), None)
+  val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
 
   val json: JsValue = Json.parse(
     s"""
-      |{
-      | "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-      | "nics" : ${Json.toJson(nicSummary).toString()},
-      | "totalIncomeTaxNicsCharged" : 300.25,
-      | "totalTaxDeducted" : 400.25,
-      | "totalIncomeTaxAndNicsDue" : 500.25,
-      | "taxRegime" : "UK"
-      |}
+       |{
+       | "incomeTax" : ${Json.toJson(incomeTaxDetail).toString()},
+       | "nics" : ${Json.toJson(nicDetail).toString()},
+       | "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
+       |}
     """.stripMargin)
 
-  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
+  val model = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
 
-  "CalculationSummary" should {
+  "CalculationDetail" should {
 
     "write to json correctly" in {
       Json.toJson(model) shouldBe json
     }
 
     "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
+      json.validate[CalculationDetail] shouldBe JsSuccess(model)
     }
   }
 }

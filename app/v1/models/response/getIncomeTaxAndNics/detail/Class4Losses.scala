@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class Class4Losses(totalClass4LossesAvailable: Option[BigInt], totalClass4LossesUsed: Option[BigInt], totalClass4LossesCarriedForward: Option[BigInt])
 
 object Class4Losses {
-  implicit val formats: OFormat[Class4Losses] = Json.format[Class4Losses]
+  implicit val format: OFormat[Class4Losses] = Json.format[Class4Losses]
 }

@@ -28,12 +28,16 @@ case class GetIncomeTaxAndNicsResponse(summary: CalculationSummary, detail: Calc
 object GetIncomeTaxAndNicsResponse extends HateoasLinks {
 
   implicit val writes: OWrites[GetIncomeTaxAndNicsResponse] = Json.writes[GetIncomeTaxAndNicsResponse]
-  implicit def reads: Reads[GetIncomeTaxAndNicsResponse] =
-    ( JsPath \ "incomeTaxAndNicsCalculated").read[GetIncomeTaxAndNicsResponse](Json.reads[GetIncomeTaxAndNicsResponse])
+  implicit val reads: Reads[GetIncomeTaxAndNicsResponse] =
+    (JsPath \ "incomeTaxAndNicsCalculated").read[GetIncomeTaxAndNicsResponse](Json.reads[GetIncomeTaxAndNicsResponse])
 
   implicit object LinksFactory extends HateoasLinksFactory[GetIncomeTaxAndNicsResponse, TaxAndNicsHateoasData] {
     override def links(appConfig: AppConfig, data: TaxAndNicsHateoasData): Seq[Link] = {
-      Seq(getMetadata(appConfig, data.nino, data.calculationId, isSelf = false), getIncomeTax(appConfig, data.nino, data.calculationId, isSelf = true))
+      import data.{calculationId, nino}
+      Seq(
+        getMetadata(appConfig, nino, calculationId, isSelf = false),
+        getIncomeTax(appConfig, nino, calculationId, isSelf = true)
+      )
     }
   }
 

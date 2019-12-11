@@ -14,40 +14,51 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.detail.{IncomeTypeBreakdown, TaxBand}
 
-class IncomeTypeBreakdownSpec extends UnitSpec {
+class IncomeTaxDetailSpec extends UnitSpec {
+
   val json: JsValue = Json.parse(
     """
       |{
-      | "allowancesAllocated" : 100.25,
-      | "incomeTaxAmount" : 200.25,
-      | "taxBands" : [
-      |   {
-      |     "name" : "name",
-      |     "rate" : 300.25,
-      |     "bandLimit" : 600.25,
-      |     "apportionedBandLimit" : 700.25,
-      |     "income" : 800.25,
-      |     "taxAmount" : 900.25
-      |   }
-      | ]
+      | "payPensionsProfit" : {
+      |   "allowancesAllocated": 100.25,
+      |   "incomeTaxAmount" :100.50
+      | },
+      |   "savingsAndGains" : {
+      |   "allowancesAllocated": 200.25,
+      |   "incomeTaxAmount" :200.50
+      | },
+      | "dividends" : {
+      |   "allowancesAllocated": 300.25,
+      |   "incomeTaxAmount" :300.50
+      | },
+      | "giftAid" : {
+      |   "grossGiftAidPayments" : 400.25,
+      |   "rate" : 400.50,
+      |   "giftAidTax" : 400.75
+      | }
       |}
     """.stripMargin)
 
-  val model = IncomeTypeBreakdown(100.25, 200.25,
-    Some(Seq(TaxBand("name", 300.25, 600.25, 700.25, 800.25, 900.25))))
+  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
 
-  "IncomeTaxSummary" should {
+  val model = IncomeTaxDetail(
+    Some(incomeTypeBreakdown(100)),
+    Some(incomeTypeBreakdown(200)),
+    Some(incomeTypeBreakdown(300)),
+    Some(GiftAid(400.25, 400.50, 400.75))
+  )
+
+  "IncomeTaxDetail" should {
 
     "read from json correctly" when {
 
       "provided with valid json" in {
-        json.as[IncomeTypeBreakdown] shouldBe model
+        json.as[IncomeTaxDetail] shouldBe model
       }
     }
 

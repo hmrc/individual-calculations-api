@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
 
 object NicDetail {
-  implicit val formats: OFormat[NicDetail] = Json.format[NicDetail]
+  implicit val format: OFormat[NicDetail] = Json.format[NicDetail]
 }

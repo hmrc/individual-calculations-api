@@ -14,39 +14,31 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
-class IncomeTaxSummarySpec extends UnitSpec {
+class TaxDeductedAtSourceSpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
     """
       |{
-      | "incomeTaxCharged" : 2000.00,
-      | "incomeTaxDueAfterReliefs" : 1525.22,
-      | "incomeTaxDueAfterGiftAid" : 120.10
+      | "ukLandAndProperty" : 100.25,
+      | "savings" : 200.25
       |}
     """.stripMargin)
 
-  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
 
-  "IncomeTaxSummary" should {
+  "TaxDeductedAtSource" should {
 
-    "read from json correctly" when {
-
-      "provided with valid json" in {
-        json.as[IncomeTaxSummary] shouldBe model
-      }
+    "read correctly from json" in {
+      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
     }
 
-    "write to json correctly" when {
-
-      "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
-      }
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
     }
   }
 }

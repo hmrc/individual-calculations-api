@@ -14,40 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.summary
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.detail.NicBand
 
-class NicBandSpec extends UnitSpec {
+class IncomeTaxSummarySpec extends UnitSpec {
+
   val json: JsValue = Json.parse(
-    s"""
-       |				{
-       |					"name": "name",
-       |					"rate": 100.25,
-       |					"threshold": 200,
-       |					"apportionedThreshold": 300,
-       |					"income": 400,
-       |					"amount": 500.25
-       |				}
-           """.stripMargin)
+    """
+      |{
+      | "incomeTaxCharged" : 2000.00,
+      | "incomeTaxDueAfterReliefs" : 1525.22,
+      | "incomeTaxDueAfterGiftAid" : 120.10
+      |}
+    """.stripMargin)
 
-  val model = NicBand(
-    name = "name",
-    rate = 100.25,
-    threshold = Some(200),
-    apportionedThreshold = Some(300),
-    income = 400,
-    amount = 500.25
-  )
+  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
 
-  "NicBand" should {
+  "IncomeTaxSummary" should {
 
     "read from json correctly" when {
 
       "provided with valid json" in {
-        json.as[NicBand] shouldBe model
+        json.as[IncomeTaxSummary] shouldBe model
       }
     }
 

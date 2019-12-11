@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics
+package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.models.response.getIncomeTaxAndNics.detail.{Class2NicDetail, Class4Losses, Class4NicDetail, NicBand, NicDetail}
 
 class NicDetailSpec extends UnitSpec {
 

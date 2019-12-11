@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal], savings: Option[BigDecimal])
 
 object TaxDeductedAtSource {
-  implicit val formats: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
+  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
 }
