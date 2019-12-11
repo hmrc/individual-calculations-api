@@ -21,6 +21,7 @@ import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeducti
 import v1.models.utils.JsonErrorValidators
 
 class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[AllowancesAndDeductions](allowancesAndDeductionsJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(

@@ -21,6 +21,7 @@ import v1.fixtures.getAllowancesDeductionsAndReliefs.summary.CalculationSummaryF
 import v1.models.utils.JsonErrorValidators
 
 class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[CalculationSummary](calculationSummaryJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("totalAllowancesAndDeductions", "totalReliefs")

@@ -21,6 +21,7 @@ import utils.enums.EnumJsonSpecSupport
 import v1.models.response.common.CalculationReason._
 
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
+
   testRoundTrip[CalculationReason](
     ("customerRequest", customerRequest),
     ("class2NICEvent", class2NICEvent),

@@ -33,10 +33,13 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
   val calculationId: String = "calcId"
 
   "AllowancesDeductionsAndReliefsResponse" when {
-    testJsonProperties[AllowancesDeductionsAndReliefsResponse](allowancesDeductionsAndReliefsResponseJson)(
-      mandatoryProperties = Seq("allowancesDeductionsAndReliefs"),
-      optionalProperties = Seq()
-    )
+
+    "read from valid JSON" should {
+      "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
+        allowancesDeductionsAndReliefsResponseJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe
+          allowancesDeductionsAndReliefsResponseModel
+      }
+    }
 
     "written to JSON" must {
       "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
