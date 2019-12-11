@@ -21,13 +21,18 @@ import v1.models.response.getIncomeTaxAndNics.detail.TaxDeductedAtSource
 
 object TaxDeductedAtSourceFixture {
 
-  val json: JsValue = Json.parse(
+  val taxDeductedAtSourceModel: TaxDeductedAtSource =
+    TaxDeductedAtSource(
+      ukLandAndProperty = Some(100.25),
+      savings = Some(200.25)
+    )
+
+  val taxDeductedAtSourceJson: JsValue = Json.parse(
   """
     |{
     | "ukLandAndProperty" : 100.25,
     | "savings" : 200.25
     |}
-    """.stripMargin)
-
-  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
+  """.stripMargin
+  )
 }

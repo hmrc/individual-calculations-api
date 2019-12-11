@@ -24,11 +24,11 @@ class CalculationDetailSpec extends UnitSpec {
 
   "CalculationDetail" should {
     "write to json correctly" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(calculationDetailModel) shouldBe calculationDetailJson
     }
 
     "read from json correctly" in {
-      json.validate[CalculationDetail] shouldBe JsSuccess(model)
+      calculationDetailJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailModel)
     }
   }
 }

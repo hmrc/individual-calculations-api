@@ -17,39 +17,28 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.{GiftAid, IncomeTaxDetail, IncomeTypeBreakdown}
+import v1.fixtures.getIncomeTaxAndNics.detail.GiftAidFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTypeBreakdownFixture._
+import v1.models.response.getIncomeTaxAndNics.detail.IncomeTaxDetail
 
 object IncomeTaxDetailFixture {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "payPensionsProfit" : {
-      |   "allowancesAllocated": 100.25,
-      |   "incomeTaxAmount" :100.50
-      | },
-      |   "savingsAndGains" : {
-      |   "allowancesAllocated": 200.25,
-      |   "incomeTaxAmount" :200.50
-      | },
-      | "dividends" : {
-      |   "allowancesAllocated": 300.25,
-      |   "incomeTaxAmount" :300.50
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
-      |}
-    """.stripMargin)
+  def incomeTaxDetailModel: IncomeTaxDetail =
+    IncomeTaxDetail(
+      payPensionsProfit = Some(incomeTypeBreakdownModel(100)),
+      savingsAndGains = Some(incomeTypeBreakdownModel(200)),
+      dividends = Some(incomeTypeBreakdownModel(300)),
+      giftAid = Some(giftAidModel)
+    )
 
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
-
-  val model = IncomeTaxDetail(
-    Some(incomeTypeBreakdown(100)),
-    Some(incomeTypeBreakdown(200)),
-    Some(incomeTypeBreakdown(300)),
-    Some(GiftAid(400.25, 400.50, 400.75))
+  def incomeTaxDetailJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "payPensionsProfit" : ${incomeTypeBreakdownJson(100)},
+       |   "savingsAndGains" : ${incomeTypeBreakdownJson(200)},
+       |   "dividends" : ${incomeTypeBreakdownJson(300)},
+       |   "giftAid" : ${giftAidJson.toString()}
+       |}
+    """.stripMargin
   )
 }

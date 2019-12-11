@@ -18,21 +18,26 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getIncomeTaxAndNics.detail._
+import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.NicDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
 
 object CalculationDetailFixture {
 
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
-  val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, true, Some(false))), None)
-  val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
+  def calculationDetailModel: CalculationDetail =
+    CalculationDetail(
+      incomeTax = incomeTaxDetailModel,
+      nics = Some(nicDetailModel),
+      taxDeductedAtSource = Some(taxDeductedAtSourceModel)
+    )
 
-  val json: JsValue = Json.parse(
+  def calculationDetailJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax" : ${Json.toJson(incomeTaxDetail).toString()},
-       | "nics" : ${Json.toJson(nicDetail).toString()},
-       | "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
+       | "incomeTax" : ${Json.toJson(incomeTaxDetailJson).toString()},
+       | "nics" : ${Json.toJson(nicDetailJson).toString()},
+       | "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSourceJson).toString()}
        |}
-    """.stripMargin)
-
-  val model = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
+    """.stripMargin
+  )
 }

@@ -17,28 +17,42 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.{IncomeTypeBreakdown, TaxBand}
+import v1.fixtures.getIncomeTaxAndNics.detail.TaxBandFixture._
+import v1.models.response.getIncomeTaxAndNics.detail.IncomeTypeBreakdown
 
 object IncomeTypeBreakdownFixture {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "allowancesAllocated" : 100.25,
-      | "incomeTaxAmount" : 200.25,
-      | "taxBands" : [
-      |   {
-      |     "name" : "name",
-      |     "rate" : 300.25,
-      |     "bandLimit" : 600.25,
-      |     "apportionedBandLimit" : 700.25,
-      |     "income" : 800.25,
-      |     "taxAmount" : 900.25
-      |   }
-      | ]
-      |}
-    """.stripMargin)
+  val incomeTypeBreakdownModel: IncomeTypeBreakdown =
+    IncomeTypeBreakdown(
+      allowancesAllocated = 100.25,
+      incomeTaxAmount = 100.50,
+      taxBands = Some(Seq(taxBandModel))
+    )
 
-  val model = IncomeTypeBreakdown(100.25, 200.25,
-    Some(Seq(TaxBand("name", 300.25, 600.25, 700.25, 800.25, 900.25))))
+  val incomeTypeBreakdownJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "allowancesAllocated" : 100.25,
+       |   "incomeTaxAmount" : 100.50,
+       |   "taxBands" : [${taxBandJson.toString()}]
+       |}
+    """.stripMargin
+  )
+
+  def incomeTypeBreakdownModel(input: BigDecimal): IncomeTypeBreakdown =
+    IncomeTypeBreakdown(
+      allowancesAllocated = input + 0.25,
+      incomeTaxAmount = input + 0.5,
+      taxBands = Some(Seq(taxBandModel(2 * input)))
+    )
+
+  def incomeTypeBreakdownJson(input: BigDecimal): String = Json.parse(
+    s"""
+       |{
+       |   "allowancesAllocated" : ${input + 0.25},
+       |   "incomeTaxAmount" : ${input + 0.5},
+       |   "taxBands" : [${taxBandJson(input * 2).toString()}]
+       |}
+    """.stripMargin
+  ).toString()
 }

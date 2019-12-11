@@ -25,13 +25,13 @@ class NicDetailSpec extends UnitSpec {
   "NicDetail" should {
     "read from json correctly" when {
       "provided with valid json" in {
-        json.as[NicDetail] shouldBe model
+        nicDetailJson.as[NicDetail] shouldBe nicDetailModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(nicDetailModel) shouldBe nicDetailJson
       }
     }
   }

@@ -17,56 +17,23 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getIncomeTaxAndNics.detail.Class2NicDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.Class4NicDetailFixture._
 import v1.models.response.getIncomeTaxAndNics.detail._
 
 object NicDetailFixture {
 
-  val json: JsValue = Json.parse(
+  val nicDetailModel: NicDetail =
+    NicDetail(
+      class2Nics = Some(class2NicDetailModel),
+      class4Nics = Some(class4NicDetailModel)
+    )
+
+  val nicDetailJson: JsValue = Json.parse(
     s"""{
-       |	"class2Nics": {
-       |		"weeklyRate": 100.1,
-       |		"weeks": 100.2,
-       |		"limit": 100.3,
-       |		"apportionedLimit": 100.4,
-       |		"underSmallProfitThreshold": true,
-       |		"actualClass2Nic": false
-       |	},
-       |	"class4Nics": {
-       |		"class4Losses": {
-       |			"totalClass4LossesAvailable": 3001,
-       |			"totalClass4LossesUsed": 3002,
-       |      "totalClass4LossesCarriedForward" : 3003
-       |		},
-       |		"totalIncomeLiableToClass4Charge": 3003,
-       |		"totalIncomeChargeableToClass4": 3004,
-       |		"class4NicBands": [{
-       |			"name": "name",
-       |			"rate": 100.25,
-       |			"threshold": 200,
-       |			"apportionedThreshold": 300,
-       |			"income": 400,
-       |			"amount": 500.25
-       |		}]
-       |	}
-       |}""".stripMargin)
-
-
-  val class4 = Class4NicDetail(
-    Some(Class4Losses(Some(3001), Some(3002), Some(3003))),
-    Some(3003),
-    Some(3004),
-    Some(
-      Seq(NicBand(
-        name = "name",
-        rate = 100.25,
-        threshold = Some(200),
-        apportionedThreshold = Some(300),
-        income = 400,
-        amount = 500.25
-      )))
+       |	"class2Nics": ${class2NicDetailJson.toString()},
+       |	"class4Nics": ${class4NicDetailJson.toString()}
+       |}
+    """.stripMargin
   )
-
-  val model: NicDetail = NicDetail(
-    Some(Class2NicDetail(Some(100.10), Some(100.20), Some(100.30), Some(100.40), underSmallProfitThreshold = true, Some(false))),
-    Some(class4))
 }

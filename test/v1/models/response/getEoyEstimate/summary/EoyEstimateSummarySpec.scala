@@ -21,6 +21,7 @@ import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[EoyEstimateSummary](EoyEstimateSummaryFixture.eoyEstimateSummaryJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(

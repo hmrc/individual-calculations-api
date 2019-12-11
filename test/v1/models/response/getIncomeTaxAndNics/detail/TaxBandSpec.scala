@@ -24,11 +24,11 @@ class TaxBandSpec extends UnitSpec {
 
   "TaxBand" should {
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(taxBandModel) shouldBe taxBandJson
     }
 
     "read correctly from json" in {
-      json.validate[TaxBand] shouldBe JsSuccess(model)
+      taxBandJson.validate[TaxBand] shouldBe JsSuccess(taxBandModel)
     }
   }
 }

@@ -25,13 +25,13 @@ class NicBandSpec extends UnitSpec {
   "NicBand" should {
     "read from json correctly" when {
       "provided with valid json" in {
-        json.as[NicBand] shouldBe model
+        nicBandJson.as[NicBand] shouldBe nicBandModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(nicBandModel) shouldBe nicBandJson
       }
     }
   }

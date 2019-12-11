@@ -24,11 +24,11 @@ class Class4LossesSpec extends UnitSpec {
 
   "Class4Losses" should {
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(class4LossesModel) shouldBe class4LossesJson
     }
 
     "read correctly from json" in {
-      json.validate[Class4Losses] shouldBe JsSuccess(model)
+      class4LossesJson.validate[Class4Losses] shouldBe JsSuccess(class4LossesModel)
     }
   }
 }

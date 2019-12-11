@@ -21,7 +21,17 @@ import v1.models.response.getIncomeTaxAndNics.detail.TaxBand
 
 object TaxBandFixture {
 
-  val json: JsValue = Json.parse(
+  val taxBandModel: TaxBand =
+    TaxBand(
+      name = "name",
+      rate = 100.25,
+      bandLimit = 400.25,
+      apportionedBandLimit = 500.25,
+      income = 600.25,
+      taxAmount = 700.25
+    )
+
+  val taxBandJson: JsValue = Json.parse(
     """
       |{
       | "name": "name",
@@ -31,15 +41,30 @@ object TaxBandFixture {
       | "income" : 600.25,
       | "taxAmount" : 700.25
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val model =
+  def taxBandModel(input: BigDecimal): TaxBand = {
     TaxBand(
       name = "name",
-      rate = 100.25,
-      bandLimit = 400.25,
-      apportionedBandLimit = 500.25,
-      income = 600.25,
-      taxAmount = 700.25
+      rate = input + 0.17,
+      bandLimit = input + 0.34,
+      apportionedBandLimit = input + 0.51,
+      income = input + 0.68,
+      taxAmount = input + 0.85
     )
+  }
+
+  def taxBandJson(input: BigDecimal): JsValue = Json.parse(
+    s"""
+      |{
+      | "name": "name",
+      | "rate": ${input + 0.17},
+      | "bandLimit" : ${input + 0.34},
+      | "apportionedBandLimit" : ${input + 0.51},
+      | "income" : ${input + 0.68},
+      | "taxAmount" : ${input + 0.85}
+      |}
+    """.stripMargin
+  )
 }

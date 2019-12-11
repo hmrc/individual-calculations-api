@@ -25,13 +25,13 @@ class GiftAidSpec extends UnitSpec {
   "GiftAid" should {
     "read from json correctly" when {
       "provided with valid json" in {
-        json.as[GiftAid] shouldBe model
+        giftAidJson.as[GiftAid] shouldBe giftAidModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(giftAidModel) shouldBe giftAidJson
       }
     }
   }

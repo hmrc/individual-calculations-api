@@ -24,11 +24,11 @@ class Class4NicDetailSpec extends UnitSpec {
 
   "Class4NicDetail" should {
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(class4NicDetailModel) shouldBe class4NicDetailJson
     }
 
     "read correctly from json" in {
-      json.validate[Class4NicDetail] shouldBe JsSuccess(model)
+      class4NicDetailJson.validate[Class4NicDetail] shouldBe JsSuccess(class4NicDetailModel)
     }
   }
 }

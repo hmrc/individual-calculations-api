@@ -24,11 +24,11 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
 
   "TaxDeductedAtSource" should {
     "read correctly from json" in {
-      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
+      taxDeductedAtSourceJson.validate[TaxDeductedAtSource] shouldBe JsSuccess(taxDeductedAtSourceModel)
     }
 
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(taxDeductedAtSourceModel) shouldBe taxDeductedAtSourceJson
     }
   }
 }
