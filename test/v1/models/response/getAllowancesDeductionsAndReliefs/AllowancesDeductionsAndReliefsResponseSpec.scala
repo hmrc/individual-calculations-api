@@ -33,10 +33,9 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
   val calculationId: String = "calcId"
 
   "AllowancesDeductionsAndReliefsResponse" when {
-
     "read from valid JSON" should {
       "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
-        allowancesDeductionsAndReliefsResponseJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe
+        allowancesDeductionsAndReliefsTopLevelJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe
           allowancesDeductionsAndReliefsResponseModel
       }
     }
