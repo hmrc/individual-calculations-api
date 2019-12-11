@@ -20,14 +20,21 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
 object IncomeTaxSummaryFixture {
-  val json: JsValue = Json.parse(
+
+  val incomeTaxSummaryModel: IncomeTaxSummary =
+    IncomeTaxSummary(
+      incomeTaxCharged = 2000.00,
+      incomeTaxDueAfterReliefs = Some(1525.22),
+      incomeTaxDueAfterGiftAid = Some(120.10)
+    )
+
+  val incomeTaxSummaryJson: JsValue = Json.parse(
     """
       |{
       | "incomeTaxCharged" : 2000.00,
       | "incomeTaxDueAfterReliefs" : 1525.22,
       | "incomeTaxDueAfterGiftAid" : 120.10
       |}
-    """.stripMargin)
-
-  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
+    """.stripMargin
+  )
 }

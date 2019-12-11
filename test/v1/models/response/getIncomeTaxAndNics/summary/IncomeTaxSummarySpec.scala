@@ -25,13 +25,13 @@ class IncomeTaxSummarySpec extends UnitSpec {
   "IncomeTaxSummary" should {
     "read from json correctly" when {
       "provided with valid json" in {
-        json.as[IncomeTaxSummary] shouldBe model
+        incomeTaxSummaryJson.as[IncomeTaxSummary] shouldBe incomeTaxSummaryModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(incomeTaxSummaryModel) shouldBe incomeTaxSummaryJson
       }
     }
   }

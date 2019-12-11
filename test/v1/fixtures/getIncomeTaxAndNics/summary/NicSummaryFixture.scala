@@ -20,14 +20,21 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getIncomeTaxAndNics.summary.NicSummary
 
 object NicSummaryFixture {
-  val json: JsValue = Json.parse(
+
+  val nicSummaryModel: NicSummary =
+    NicSummary(
+      class2NicsAmount = Some(100.25),
+      class4NicsAmount = Some(200.25),
+      totalNic = Some(300.25)
+    )
+
+  val nicSummaryJson: JsValue = Json.parse(
     """
       |{
       | "class2NicsAmount" : 100.25,
       | "class4NicsAmount" : 200.25,
       | "totalNic" : 300.25
       |}
-    """.stripMargin)
-
-  val model = NicSummary(Some(100.25), Some(200.25), Some(300.25))
+    """.stripMargin
+  )
 }

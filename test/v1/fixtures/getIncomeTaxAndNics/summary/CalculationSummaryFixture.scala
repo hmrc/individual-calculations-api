@@ -17,23 +17,31 @@
 package v1.fixtures.getIncomeTaxAndNics.summary
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary, NicSummary}
+import v1.fixtures.getIncomeTaxAndNics.summary.IncomeTaxSummaryFixture._
+import v1.fixtures.getIncomeTaxAndNics.summary.NicSummaryFixture._
+import v1.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 
 object CalculationSummaryFixture {
-  val incomeTaxSummary = IncomeTaxSummary(100.25, None, None)
-  val nicSummary = NicSummary(Some(200.25), None, None)
 
-  val json: JsValue = Json.parse(
+  val calculationSummaryModel: CalculationSummary =
+    CalculationSummary(
+      incomeTax = incomeTaxSummaryModel,
+      nics = Some(nicSummaryModel),
+      totalIncomeTaxNicsCharged = Some(300.25),
+      totalTaxDeducted = Some(400.25),
+      totalIncomeTaxAndNicsDue = 500.25,
+      taxRegime = "UK"
+    )
+
+  val calculationSummaryJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax" : ${Json.toJson(incomeTaxSummary).toString()},
-       | "nics" : ${Json.toJson(nicSummary).toString()},
+       | "incomeTax" : ${Json.toJson(incomeTaxSummaryJson).toString()},
+       | "nics" : ${Json.toJson(nicSummaryJson).toString()},
        | "totalIncomeTaxNicsCharged" : 300.25,
        | "totalTaxDeducted" : 400.25,
        | "totalIncomeTaxAndNicsDue" : 500.25,
        | "taxRegime" : "UK"
        |}
     """.stripMargin)
-
-  val model = CalculationSummary(incomeTaxSummary, Some(nicSummary), Some(300.25), Some(400.25), 500.25, "UK")
 }
