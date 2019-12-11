@@ -16,28 +16,13 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
+import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
 
 class CalculationDetailSpec extends UnitSpec {
 
-  val incomeTaxDetail = IncomeTaxDetail(Some(IncomeTypeBreakdown(100.25, 200.25, None)), None, None, None)
-  val nicDetail = NicDetail(Some(Class2NicDetail(Some(300.25), None, None, None, true, Some(false))), None)
-  val taxDeductedAtSource = TaxDeductedAtSource(Some(400.25), None)
-
-  val json: JsValue = Json.parse(
-    s"""
-       |{
-       | "incomeTax" : ${Json.toJson(incomeTaxDetail).toString()},
-       | "nics" : ${Json.toJson(nicDetail).toString()},
-       | "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSource).toString()}
-       |}
-    """.stripMargin)
-
-  val model = CalculationDetail(incomeTaxDetail, Some(nicDetail), Some(taxDeductedAtSource))
-
   "CalculationDetail" should {
-
     "write to json correctly" in {
       Json.toJson(model) shouldBe json
     }

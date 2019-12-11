@@ -16,21 +16,13 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
+import v1.fixtures.getIncomeTaxAndNics.detail.Class4LossesFixture._
 
 class Class4LossesSpec extends UnitSpec {
 
-  val model: Class4Losses = Class4Losses(Some(3001), Some(3002), Some(3003))
-
-  val json: JsValue = Json.parse("""{
-      | "totalClass4LossesAvailable" : 3001,
-      | "totalClass4LossesUsed" : 3002,
-      | "totalClass4LossesCarriedForward" : 3003
-      |}""".stripMargin)
-
   "Class4Losses" should {
-
     "write correctly to json" in {
       Json.toJson(model) shouldBe json
     }

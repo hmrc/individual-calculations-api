@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics.summary
+package v1.fixtures.getIncomeTaxAndNics.summary
 
-import play.api.libs.json.{JsSuccess, Json}
-import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
-class CalculationSummarySpec extends UnitSpec {
+object IncomeTaxSummaryFixture {
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "incomeTaxCharged" : 2000.00,
+      | "incomeTaxDueAfterReliefs" : 1525.22,
+      | "incomeTaxDueAfterGiftAid" : 120.10
+      |}
+    """.stripMargin)
 
-  "CalculationSummary" should {
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
-    }
-
-    "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
-    }
-  }
+  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
 }

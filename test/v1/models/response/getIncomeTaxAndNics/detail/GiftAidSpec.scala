@@ -16,33 +16,20 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getIncomeTaxAndNics.detail.GiftAidFixture._
 
 class GiftAidSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
-    s"""
-       |{
-       | "grossGiftAidPayments": 100.25,
-       | "rate": 200.25,
-       | "giftAidTax": 300.25
-       |}
-           """.stripMargin)
-
-  val model = GiftAid(100.25, 200.25, 300.25)
-
   "GiftAid" should {
-
     "read from json correctly" when {
-
       "provided with valid json" in {
         json.as[GiftAid] shouldBe model
       }
     }
 
     "write to json correctly" when {
-
       "a valid model is provided" in {
         Json.toJson(model) shouldBe json
       }

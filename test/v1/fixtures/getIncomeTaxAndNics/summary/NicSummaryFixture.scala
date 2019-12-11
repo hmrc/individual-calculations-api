@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics.summary
+package v1.fixtures.getIncomeTaxAndNics.summary
 
-import play.api.libs.json.{JsSuccess, Json}
-import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.summary.NicSummary
 
-class CalculationSummarySpec extends UnitSpec {
+object NicSummaryFixture {
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "class2NicsAmount" : 100.25,
+      | "class4NicsAmount" : 200.25,
+      | "totalNic" : 300.25
+      |}
+    """.stripMargin)
 
-  "CalculationSummary" should {
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
-    }
-
-    "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
-    }
-  }
+  val model = NicSummary(Some(100.25), Some(200.25), Some(300.25))
 }

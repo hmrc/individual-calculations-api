@@ -16,54 +16,20 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
 
 class IncomeTaxDetailSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "payPensionsProfit" : {
-      |   "allowancesAllocated": 100.25,
-      |   "incomeTaxAmount" :100.50
-      | },
-      |   "savingsAndGains" : {
-      |   "allowancesAllocated": 200.25,
-      |   "incomeTaxAmount" :200.50
-      | },
-      | "dividends" : {
-      |   "allowancesAllocated": 300.25,
-      |   "incomeTaxAmount" :300.50
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
-      |}
-    """.stripMargin)
-
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
-
-  val model = IncomeTaxDetail(
-    Some(incomeTypeBreakdown(100)),
-    Some(incomeTypeBreakdown(200)),
-    Some(incomeTypeBreakdown(300)),
-    Some(GiftAid(400.25, 400.50, 400.75))
-  )
-
   "IncomeTaxDetail" should {
-
     "read from json correctly" when {
-
       "provided with valid json" in {
         json.as[IncomeTaxDetail] shouldBe model
       }
     }
 
     "write to json correctly" when {
-
       "a valid model is provided" in {
         Json.toJson(model) shouldBe json
       }

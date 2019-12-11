@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.fixtures.getIncomeTaxAndNics
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics._
-import v1.models.response.getIncomeTaxAndNics.detail.{CalculationDetail, Class2NicDetail, IncomeTaxDetail, IncomeTypeBreakdown, NicDetail, TaxDeductedAtSource}
+import v1.models.response.getIncomeTaxAndNics.GetIncomeTaxAndNicsResponse
+import v1.models.response.getIncomeTaxAndNics.detail._
 import v1.models.response.getIncomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary, NicSummary}
 import v1.models.response.wrappers.CalculationWrapperOrError
 

@@ -16,33 +16,20 @@
 
 package v1.models.response.getIncomeTaxAndNics.summary
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getIncomeTaxAndNics.summary.NicSummaryFixture._
 
 class NicSummarySpec extends UnitSpec {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "class2NicsAmount" : 100.25,
-      | "class4NicsAmount" : 200.25,
-      | "totalNic" : 300.25
-      |}
-    """.stripMargin)
-
-  val model = NicSummary(Some(100.25), Some(200.25), Some(300.25))
-
   "NicSummary" should {
-
     "read from json correctly" when {
-
       "provided with valid json" in {
         json.as[NicSummary] shouldBe model
       }
     }
 
     "write to json correctly" when {
-
       "a valid model is provided" in {
         Json.toJson(model) shouldBe json
       }

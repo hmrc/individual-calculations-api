@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getIncomeTaxAndNics.summary
+package v1.fixtures.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
-import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.TaxDeductedAtSource
 
-class CalculationSummarySpec extends UnitSpec {
+object TaxDeductedAtSourceFixture {
 
-  "CalculationSummary" should {
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
-    }
+  val json: JsValue = Json.parse(
+  """
+    |{
+    | "ukLandAndProperty" : 100.25,
+    | "savings" : 200.25
+    |}
+    """.stripMargin)
 
-    "read from json correctly" in {
-      json.validate[CalculationSummary] shouldBe JsSuccess(model)
-    }
-  }
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
 }
