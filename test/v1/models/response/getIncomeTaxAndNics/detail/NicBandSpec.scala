@@ -16,23 +16,22 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.NicBandFixture._
+import v1.models.utils.JsonErrorValidators
 
-class NicBandSpec extends UnitSpec {
+class NicBandSpec extends UnitSpec with JsonErrorValidators {
 
-  "NicBand" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        nicBandJson.as[NicBand] shouldBe nicBandModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(nicBandModel) shouldBe nicBandJson
-      }
-    }
-  }
+  testJsonProperties[NicBand](nicBandJson)(
+    mandatoryProperties = Seq(
+      "name",
+      "rate",
+      "income",
+      "amount"
+    ),
+    optionalProperties = Seq(
+      "threshold",
+      "apportionedThreshold"
+    )
+  )
 }

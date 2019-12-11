@@ -16,19 +16,17 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v1.models.utils.JsonErrorValidators
 
-class TaxDeductedAtSourceSpec extends UnitSpec {
+class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
 
-  "TaxDeductedAtSource" should {
-    "read correctly from json" in {
-      taxDeductedAtSourceJson.validate[TaxDeductedAtSource] shouldBe JsSuccess(taxDeductedAtSourceModel)
-    }
-
-    "write correctly to json" in {
-      Json.toJson(taxDeductedAtSourceModel) shouldBe taxDeductedAtSourceJson
-    }
-  }
+  testJsonProperties[TaxDeductedAtSource](taxDeductedAtSourceJson)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq(
+      "ukLandAndProperty",
+      "savings"
+    )
+  )
 }

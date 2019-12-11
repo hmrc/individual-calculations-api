@@ -16,23 +16,19 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTypeBreakdownFixture._
+import v1.models.utils.JsonErrorValidators
 
-class IncomeTypeBreakdownSpec extends UnitSpec {
+class IncomeTypeBreakdownSpec extends UnitSpec with JsonErrorValidators {
 
-  "IncomeTaxSummary" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        incomeTypeBreakdownJson.as[IncomeTypeBreakdown] shouldBe incomeTypeBreakdownModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(incomeTypeBreakdownModel) shouldBe incomeTypeBreakdownJson
-      }
-    }
-  }
+  testJsonProperties[IncomeTypeBreakdown](incomeTypeBreakdownJson)(
+    mandatoryProperties = Seq(
+      "allowancesAllocated",
+      "incomeTaxAmount"
+    ),
+    optionalProperties = Seq(
+      "taxBands"
+    )
+  )
 }

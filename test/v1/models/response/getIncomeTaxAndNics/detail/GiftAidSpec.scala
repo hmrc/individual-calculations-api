@@ -16,23 +16,18 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.GiftAidFixture._
+import v1.models.utils.JsonErrorValidators
 
-class GiftAidSpec extends UnitSpec {
+class GiftAidSpec extends UnitSpec with JsonErrorValidators {
 
-  "GiftAid" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        giftAidJson.as[GiftAid] shouldBe giftAidModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(giftAidModel) shouldBe giftAidJson
-      }
-    }
-  }
+  testJsonProperties[GiftAid](giftAidJson)(
+    mandatoryProperties = Seq(
+      "grossGiftAidPayments",
+      "rate",
+      "giftAidTax"
+    ),
+    optionalProperties = Seq()
+  )
 }

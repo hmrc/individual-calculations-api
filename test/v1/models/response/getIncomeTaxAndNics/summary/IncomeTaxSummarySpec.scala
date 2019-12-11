@@ -16,23 +16,19 @@
 
 package v1.models.response.getIncomeTaxAndNics.summary
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.summary.IncomeTaxSummaryFixture._
+import v1.models.utils.JsonErrorValidators
 
-class IncomeTaxSummarySpec extends UnitSpec {
+class IncomeTaxSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  "IncomeTaxSummary" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        incomeTaxSummaryJson.as[IncomeTaxSummary] shouldBe incomeTaxSummaryModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(incomeTaxSummaryModel) shouldBe incomeTaxSummaryJson
-      }
-    }
-  }
+  testJsonProperties[IncomeTaxSummary](incomeTaxSummaryJson)(
+    mandatoryProperties = Seq(
+      "incomeTaxCharged"
+    ),
+    optionalProperties = Seq(
+      "incomeTaxDueAfterReliefs",
+      "incomeTaxDueAfterGiftAid"
+    )
+  )
 }

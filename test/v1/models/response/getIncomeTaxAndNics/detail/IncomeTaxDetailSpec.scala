@@ -16,23 +16,19 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
+import v1.models.utils.JsonErrorValidators
 
-class IncomeTaxDetailSpec extends UnitSpec {
+class IncomeTaxDetailSpec extends UnitSpec with JsonErrorValidators {
 
-  "IncomeTaxDetail" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        incomeTaxDetailJson.as[IncomeTaxDetail] shouldBe incomeTaxDetailModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(incomeTaxDetailModel) shouldBe incomeTaxDetailJson
-      }
-    }
-  }
+  testJsonProperties[IncomeTaxDetail](incomeTaxDetailJson)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq(
+      "payPensionsProfit",
+      "savingsAndGains",
+      "dividends",
+      "giftAid"
+    )
+  )
 }

@@ -16,23 +16,18 @@
 
 package v1.models.response.getIncomeTaxAndNics.summary
 
-import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.summary.NicSummaryFixture._
+import v1.models.utils.JsonErrorValidators
 
-class NicSummarySpec extends UnitSpec {
+class NicSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  "NicSummary" should {
-    "read from json correctly" when {
-      "provided with valid json" in {
-        nicSummaryJson.as[NicSummary] shouldBe nicSummaryModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(nicSummaryModel) shouldBe nicSummaryJson
-      }
-    }
-  }
+  testJsonProperties[NicSummary](nicSummaryJson)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq(
+      "class2NicsAmount",
+      "class4NicsAmount",
+      "totalNic"
+    )
+  )
 }

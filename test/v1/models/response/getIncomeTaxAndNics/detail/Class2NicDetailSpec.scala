@@ -16,19 +16,22 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.Class2NicDetailFixture._
+import v1.models.utils.JsonErrorValidators
 
-class Class2NicDetailSpec extends UnitSpec {
+class Class2NicDetailSpec extends UnitSpec with JsonErrorValidators {
 
-  "Class2NicDetail" should {
-    "write correctly to json" in {
-      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailJson
-    }
-
-    "read correctly from json" in {
-      class2NicDetailJson.validate[Class2NicDetail] shouldBe JsSuccess(class2NicDetailModel)
-    }
-  }
+  testJsonProperties[Class2NicDetail](class2NicDetailJson)(
+    mandatoryProperties = Seq(
+      "underSmallProfitThreshold"
+    ),
+    optionalProperties = Seq(
+      "weeklyRate",
+      "weeks",
+      "limit",
+      "apportionedLimit",
+      "actualClass2Nic"
+    )
+  )
 }

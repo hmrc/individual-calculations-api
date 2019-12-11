@@ -16,19 +16,21 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getIncomeTaxAndNics.detail.TaxBandFixture._
+import v1.models.utils.JsonErrorValidators
 
-class TaxBandSpec extends UnitSpec {
+class TaxBandSpec extends UnitSpec with JsonErrorValidators {
 
-  "TaxBand" should {
-    "write correctly to json" in {
-      Json.toJson(taxBandModel) shouldBe taxBandJson
-    }
-
-    "read correctly from json" in {
-      taxBandJson.validate[TaxBand] shouldBe JsSuccess(taxBandModel)
-    }
-  }
+  testJsonProperties[TaxBand](taxBandJson)(
+    mandatoryProperties = Seq(
+      "name",
+      "rate",
+      "bandLimit",
+      "apportionedBandLimit",
+      "income",
+      "taxAmount"
+    ),
+    optionalProperties = Seq()
+  )
 }
