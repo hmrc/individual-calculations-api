@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.wrappers
 
 import play.api.libs.json.{JsPath, Reads}
 import v1.models.response.common.CalculationType
@@ -23,6 +23,7 @@ import v1.models.response.getEoyEstimate.EoyEstimateResponse
 sealed trait EoyEstimateWrapperOrError
 
 object EoyEstimateWrapperOrError {
+
   case class EoyEstimateWrapper(eoyEstimate: EoyEstimateResponse) extends EoyEstimateWrapperOrError
   case object EoyErrorMessages        extends EoyEstimateWrapperOrError
   case object EoyCrystallisedError    extends EoyEstimateWrapperOrError
@@ -37,8 +38,7 @@ object EoyEstimateWrapperOrError {
     } yield result
   }
 
-  def readsErrorChecker[A](errCount: Int,
-                           calcType: CalculationType)(implicit rds: Reads[A]): Reads[EoyEstimateWrapperOrError] = {
+  def readsErrorChecker[A](errCount: Int, calcType: CalculationType)(implicit rds: Reads[A]): Reads[EoyEstimateWrapperOrError] = {
     if (errCount > 0) {
       Reads.pure[EoyEstimateWrapperOrError](EoyErrorMessages)
     }

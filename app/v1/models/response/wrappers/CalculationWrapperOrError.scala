@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.wrappers
 
 import play.api.libs.json.{JsPath, Reads}
 
@@ -30,7 +30,7 @@ object CalculationWrapperOrError {
   case class CalculationWrapper[A](a: A) extends CalculationWrapperOrError[A]
   case object ErrorsInCalculation        extends CalculationWrapperOrError[Nothing]
 
-  // Note: the implicit Reads[A] must correctly locate the embeded calculation object
+  // Note: the implicit Reads[A] must correctly locate the embedded calculation object
   // from within the JSON as it is received from the backend microservice.
   implicit def reads[A: Reads]: Reads[CalculationWrapperOrError[A]] = {
 

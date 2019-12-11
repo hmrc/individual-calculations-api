@@ -37,6 +37,4 @@ class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
         )
     }
   }
-
-
 }

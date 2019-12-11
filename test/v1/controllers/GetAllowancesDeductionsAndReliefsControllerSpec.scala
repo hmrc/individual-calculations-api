@@ -31,8 +31,8 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.CalculationWrapperOrError
 import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesHateoasData
+import v1.models.response.wrappers.CalculationWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
