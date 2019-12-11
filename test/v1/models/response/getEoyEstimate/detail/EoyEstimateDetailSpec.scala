@@ -17,11 +17,12 @@
 package v1.models.response.getEoyEstimate.detail
 
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
 import v1.models.utils.JsonErrorValidators
 
 class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
-  testJsonProperties[EoyEstimateDetail](EoyEstimateDetailFixture.eoyEstimateDetailJson)(
+
+  testJsonProperties[EoyEstimateDetail](eoyEstimateDetailJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq("selfEmployments", "ukPropertyFhl", "ukPropertyNonFhl", "ukSavings", "ukDividends")
   )
