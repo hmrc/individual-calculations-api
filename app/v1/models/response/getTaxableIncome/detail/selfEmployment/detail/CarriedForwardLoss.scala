@@ -26,5 +26,5 @@ case class CarriedForwardLoss(claimId: Option[String],
                               lossType: String)
 
 object CarriedForwardLoss {
-  implicit val formats: OFormat[CarriedForwardLoss] = Json.format[CarriedForwardLoss]
+  implicit val format: OFormat[CarriedForwardLoss] = Json.format[CarriedForwardLoss]
 }

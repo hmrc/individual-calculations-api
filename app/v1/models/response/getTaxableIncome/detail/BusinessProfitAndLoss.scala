@@ -26,5 +26,5 @@ case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmploymentBusin
                                  ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
 object BusinessProfitAndLoss {
-  implicit val formats: OFormat[BusinessProfitAndLoss] = Json.format[BusinessProfitAndLoss]
+  implicit val format: OFormat[BusinessProfitAndLoss] = Json.format[BusinessProfitAndLoss]
 }

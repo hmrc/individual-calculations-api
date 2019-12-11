@@ -24,5 +24,5 @@ case class LossBroughtForward(lossType: String,
                               mtdLoss: Boolean)
 
 object LossBroughtForward {
-  implicit val formats: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
+  implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class ClaimNotApplied(claimId: String, taxYearClaimMade: String, claimType: String)
 
 object ClaimNotApplied {
-  implicit val formats: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
+  implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
 }

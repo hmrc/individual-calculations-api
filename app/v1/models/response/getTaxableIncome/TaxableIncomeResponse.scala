@@ -32,7 +32,10 @@ object TaxableIncomeResponse extends HateoasLinks {
 
   implicit object LinksFactory extends HateoasLinksFactory[TaxableIncomeResponse, TaxableIncomeHateoasData] {
     override def links(appConfig: AppConfig, data: TaxableIncomeHateoasData): Seq[Link] = {
-      Seq(getMetadata(appConfig, data.nino, data.calculationId, isSelf = false), getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true))
+      Seq(
+        getMetadata(appConfig, data.nino, data.calculationId, isSelf = false),
+        getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true)
+      )
     }
   }
 

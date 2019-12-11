@@ -22,5 +22,5 @@ case class LossBroughtForward(taxYearLossIncurred: String, currentLossValue: Big
 
 
 object LossBroughtForward {
-  implicit val formats: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
+  implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

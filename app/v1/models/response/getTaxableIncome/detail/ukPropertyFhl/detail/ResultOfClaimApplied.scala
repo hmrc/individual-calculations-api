@@ -27,5 +27,5 @@ case class ResultOfClaimApplied(claimId: Option[String],
                                 remainingLossValue: BigInt)
 
 object ResultOfClaimApplied {
-  implicit val formats: OFormat[ResultOfClaimApplied] = Json.format[ResultOfClaimApplied]
+  implicit val format: OFormat[ResultOfClaimApplied] = Json.format[ResultOfClaimApplied]
 }

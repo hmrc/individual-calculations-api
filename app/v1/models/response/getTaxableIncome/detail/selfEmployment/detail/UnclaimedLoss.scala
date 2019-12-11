@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class UnclaimedLoss(taxYearLossIncurred: String, currentLossValue: BigInt, expires: String, lossType: String)
 
 object UnclaimedLoss {
-  implicit val formats: OFormat[UnclaimedLoss] = Json.format[UnclaimedLoss]
+  implicit val format: OFormat[UnclaimedLoss] = Json.format[UnclaimedLoss]
 }

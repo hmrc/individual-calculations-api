@@ -27,5 +27,5 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
 }
 
 object LossClaimsDetail {
-  implicit val formats: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
+  implicit val format: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
 }

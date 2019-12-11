@@ -26,5 +26,5 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
                             claimsNotApplied: Option[Seq[ClaimNotApplied]])
 
 object LossClaimsDetail extends NestedJsonReads {
-  implicit val formats: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
+  implicit val format: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
 }

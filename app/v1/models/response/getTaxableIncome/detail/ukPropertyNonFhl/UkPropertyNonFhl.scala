@@ -33,5 +33,5 @@ case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             lossClaimsDetail: Option[LossClaimsDetail])
 
 object UkPropertyNonFhl extends NestedJsonReads {
-  implicit val formats: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
+  implicit val format: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
 }

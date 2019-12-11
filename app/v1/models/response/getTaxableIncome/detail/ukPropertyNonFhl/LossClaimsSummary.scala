@@ -23,5 +23,5 @@ case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              totalIncomeTaxLossesCarriedForward: Option[BigInt])
 
 object LossClaimsSummary {
-  implicit val formats: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
+  implicit val format: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
 }

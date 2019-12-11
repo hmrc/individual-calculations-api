@@ -19,22 +19,21 @@ package v1.models.response.getTaxableIncome.detail.selfEmployment
 import play.api.libs.json._
 import utils.NestedJsonReads
 
-case class SelfEmploymentBusiness(
-                                   selfEmploymentId: String,
-                                   totalIncome: Option[BigDecimal],
-                                   totalExpenses: Option[BigDecimal],
-                                   netProfit: Option[BigDecimal],
-                                   netLoss: Option[BigDecimal],
-                                   class4Loss: Option[BigInt],
-                                   totalAdditions: Option[BigDecimal],
-                                   totalDeductions: Option[BigDecimal],
-                                   accountingAdjustments: Option[BigDecimal],
-                                   adjustedIncomeTaxLoss: Option[BigDecimal],
-                                   taxableProfit: Option[BigInt],
-                                   taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
-                                   lossClaimsSummary: Option[LossClaimsSummary],
-                                   lossClaimsDetail: Option[LossClaimsDetail])
+case class SelfEmploymentBusiness(selfEmploymentId: String,
+                                  totalIncome: Option[BigDecimal],
+                                  totalExpenses: Option[BigDecimal],
+                                  netProfit: Option[BigDecimal],
+                                  netLoss: Option[BigDecimal],
+                                  class4Loss: Option[BigInt],
+                                  totalAdditions: Option[BigDecimal],
+                                  totalDeductions: Option[BigDecimal],
+                                  accountingAdjustments: Option[BigDecimal],
+                                  adjustedIncomeTaxLoss: Option[BigDecimal],
+                                  taxableProfit: Option[BigInt],
+                                  taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
+                                  lossClaimsSummary: Option[LossClaimsSummary],
+                                  lossClaimsDetail: Option[LossClaimsDetail])
 
 object SelfEmploymentBusiness extends NestedJsonReads {
-  implicit val formats: OFormat[SelfEmploymentBusiness] = Json.format[SelfEmploymentBusiness]
+  implicit val format: OFormat[SelfEmploymentBusiness] = Json.format[SelfEmploymentBusiness]
 }
