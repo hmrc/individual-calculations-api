@@ -23,7 +23,7 @@ import v1.models.response.getTaxableIncome.TaxableIncomeResponse
 
 object TaxableIncomeFixtures {
 
-  val taxableIncomeResponse: TaxableIncomeResponse = TaxableIncomeResponse(summaryResponse, detailResponse)
+  val taxableIncomeResponse: TaxableIncomeResponse = TaxableIncomeResponse(calculationSummaryModel, detailResponse)
 
   val metadataJson: JsValue = Json.parse(
     """
@@ -44,7 +44,7 @@ object TaxableIncomeFixtures {
 
   val json: JsObject = Json
     .obj("detail" -> detailJson)
-    .deepMerge(Json.obj("summary" -> summaryJson))
+    .deepMerge(Json.obj("summary" -> calculationSummaryJson))
 
   val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj(("taxableIncome", json))
 

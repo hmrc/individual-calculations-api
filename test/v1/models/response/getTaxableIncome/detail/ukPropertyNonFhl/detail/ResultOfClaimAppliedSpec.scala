@@ -35,10 +35,16 @@ class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[Test](testJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "taxYearClaimMade",
+      "claimType",
+      "mtdLoss",
+      "taxYearLossIncurred",
+      "lossAmountUsed",
+      "remainingLossValue"
     ),
     optionalProperties = Seq(
-      "optional"
+      "claimId",
+      "originatingClaimId"
     )
   )
 }

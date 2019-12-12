@@ -35,10 +35,10 @@ class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[Test](testJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "taxYearLossIncurred",
+      "currentLossValue",
+      "mtdLoss"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }

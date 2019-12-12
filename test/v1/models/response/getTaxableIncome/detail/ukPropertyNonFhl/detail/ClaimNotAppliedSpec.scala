@@ -33,12 +33,12 @@ class ClaimNotAppliedSpec extends UnitSpec with JsonErrorValidators {
       |}
       |""".stripMargin)
 
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[ClaimNotApplied](testJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "claimId",
+      "taxYearClaimMade",
+      "claimType"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }

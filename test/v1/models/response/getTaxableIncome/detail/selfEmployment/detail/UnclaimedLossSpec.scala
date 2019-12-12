@@ -16,29 +16,19 @@
 
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.UnclaimedLossFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class UnclaimedLossSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[UnclaimedLoss](unclaimedLossJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "taxYearLossIncurred",
+      "currentLossValue",
+      "expires",
+      "lossType"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }

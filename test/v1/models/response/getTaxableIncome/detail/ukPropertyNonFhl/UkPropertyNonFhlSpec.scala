@@ -33,12 +33,21 @@ class UkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {
       |}
       |""".stripMargin)
 
-  testJsonProperties[Test](testJson)(
-    mandatoryProperties = Seq(
-      "mandatory"
-    ),
+  testJsonProperties[UkPropertyNonFhl](testJson)(
+    mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "optional"
+      "totalIncome",
+      "totalExpenses",
+      "netProfit",
+      "netLoss",
+      "totalAdditions",
+      "totalDeductions",
+      "accountingAdjustments",
+      "adjustedIncomeTaxLoss",
+      "taxableProfit",
+      "taxableProfitAfterIncomeTaxLossesDeduction",
+      "lossClaimsSummary",
+      "lossClaimsDetail"
     )
   )
 }

@@ -16,29 +16,27 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyFhl
 
-import play.api.libs.json._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixtures._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 
 class UkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[Test](testJson)(
-    mandatoryProperties = Seq(
-      "mandatory"
-    ),
+  testJsonProperties[UkPropertyFhl](mtdUkPropertyFhlObj)(
+    mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "optional"
+      "totalIncome",
+      "totalExpenses",
+      "netProfit",
+      "netLoss",
+      "totalAdditions",
+      "totalDeductions",
+      "accountingAdjustments",
+      "adjustedIncomeTaxLoss",
+      "taxableProfit",
+      "taxableProfitAfterIncomeTaxLossesDeduction",
+      "lossClaimsSummary",
+      "lossClaimsDetail"
     )
   )
 }

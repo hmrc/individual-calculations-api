@@ -17,8 +17,9 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json._
+import v1.models.response.common.TypeOfClaim
 
-case class ClaimNotApplied(claimId: String, taxYearClaimMade: String, claimType: String)
+case class ClaimNotApplied(claimId: String, taxYearClaimMade: String, claimType: TypeOfClaim)
 
 object ClaimNotApplied {
   implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]

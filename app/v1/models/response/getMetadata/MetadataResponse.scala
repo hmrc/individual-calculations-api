@@ -37,7 +37,7 @@ object MetadataResponse extends HateoasLinks {
 
   implicit val writes: OWrites[MetadataResponse] = Json.writes[MetadataResponse]
 
-  implicit def reads: Reads[MetadataResponse] =
+  implicit val reads: Reads[MetadataResponse] =
     (JsPath \ "metadata").read[MetadataResponse](Json.reads[MetadataResponse])
 
   implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, CalculationMetadataHateoasData] {

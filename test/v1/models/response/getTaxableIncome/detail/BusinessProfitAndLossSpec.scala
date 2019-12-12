@@ -33,12 +33,12 @@ class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
       |}
       |""".stripMargin)
 
-  testJsonProperties[Test](testJson)(
-    mandatoryProperties = Seq(
-      "mandatory"
-    ),
+  testJsonProperties[BusinessProfitAndLoss](testJson)(
+    mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "optional"
+      "selfEmployments",
+      "ukPropertyFhl",
+      "ukPropertyNonFhl"
     )
   )
 }

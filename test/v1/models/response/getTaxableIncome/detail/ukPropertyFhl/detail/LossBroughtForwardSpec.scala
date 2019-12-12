@@ -16,29 +16,18 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail
 
-import play.api.libs.json._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
+import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail.LossBroughtForwardFixtures._
 
 class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[LossBroughtForward](lossBroughtForwardJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "taxYearLossIncurred",
+      "currentLossValue",
+      "mtdLoss"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }

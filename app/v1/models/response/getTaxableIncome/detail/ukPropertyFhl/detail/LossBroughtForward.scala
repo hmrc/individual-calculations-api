@@ -20,7 +20,6 @@ import play.api.libs.json._
 
 case class LossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
 
-
 object LossBroughtForward {
   implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

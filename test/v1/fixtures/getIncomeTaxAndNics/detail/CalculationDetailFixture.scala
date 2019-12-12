@@ -34,9 +34,9 @@ object CalculationDetailFixture {
   def calculationDetailJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax" : ${Json.toJson(incomeTaxDetailJson).toString()},
-       | "nics" : ${Json.toJson(nicDetailJson).toString()},
-       | "taxDeductedAtSource" : ${Json.toJson(taxDeductedAtSourceJson).toString()}
+       | "incomeTax" : ${incomeTaxDetailJson.toString()},
+       | "nics" : ${nicDetailJson.toString()},
+       | "taxDeductedAtSource" : ${taxDeductedAtSourceJson.toString()}
        |}
     """.stripMargin
   )

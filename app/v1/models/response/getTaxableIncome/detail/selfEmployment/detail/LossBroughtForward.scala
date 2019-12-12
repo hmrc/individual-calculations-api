@@ -17,8 +17,9 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json._
+import v1.models.response.common.LossType
 
-case class LossBroughtForward(lossType: String,
+case class LossBroughtForward(lossType: LossType,
                               taxYearLossIncurred: String,
                               currentLossValue: BigDecimal,
                               mtdLoss: Boolean)

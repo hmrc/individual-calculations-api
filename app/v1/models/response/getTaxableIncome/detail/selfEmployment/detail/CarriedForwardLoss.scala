@@ -17,13 +17,14 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json._
+import v1.models.response.common.{LossType, TypeOfClaim}
 
 case class CarriedForwardLoss(claimId: Option[String],
-                              claimType: String,
+                              claimType: TypeOfClaim,
                               taxYearClaimMade: Option[String],
                               taxYearLossIncurred: String,
                               currentLossValue: BigInt,
-                              lossType: String)
+                              lossType: LossType)
 
 object CarriedForwardLoss {
   implicit val format: OFormat[CarriedForwardLoss] = Json.format[CarriedForwardLoss]

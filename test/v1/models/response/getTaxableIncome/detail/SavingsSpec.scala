@@ -25,7 +25,7 @@ class SavingsSpec extends UnitSpec with JsonErrorValidators {
   case class Test(mandatory: String, optional: Option[String])
   object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
 
-  val testJson = Json.parse(
+  val testJson: JsValue = Json.parse(
     """
       |{
       |   "mandatory" : "value",
@@ -33,12 +33,15 @@ class SavingsSpec extends UnitSpec with JsonErrorValidators {
       |}
       |""".stripMargin)
 
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[Savings](testJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "savingsAccountId",
+      "savingsAccountName",
+      "grossIncome"
     ),
     optionalProperties = Seq(
-      "optional"
+      "netIncome",
+      "taxDeducted"
     )
   )
 }

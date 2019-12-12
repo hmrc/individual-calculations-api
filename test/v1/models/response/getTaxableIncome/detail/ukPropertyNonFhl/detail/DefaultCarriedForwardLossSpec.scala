@@ -33,12 +33,11 @@ class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
       |}
       |""".stripMargin)
 
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[DefaultCarriedForwardLoss](testJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "taxYearLossIncurred",
+      "currentLossValue"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }

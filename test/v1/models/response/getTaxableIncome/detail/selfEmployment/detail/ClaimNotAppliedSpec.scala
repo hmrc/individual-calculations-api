@@ -16,29 +16,18 @@
 
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json._
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.ClaimNotAppliedFixtures._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 
 class ClaimNotAppliedSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[Test](testJson)(
+  testJsonProperties[ClaimNotApplied](claimNotAppliedJson)(
     mandatoryProperties = Seq(
-      "mandatory"
+      "claimId",
+      "taxYearClaimMade",
+      "claimType"
     ),
-    optionalProperties = Seq(
-      "optional"
-    )
+    optionalProperties = Seq()
   )
 }
