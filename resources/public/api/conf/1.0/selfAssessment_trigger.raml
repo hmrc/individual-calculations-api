@@ -9,7 +9,7 @@ is:
   - errors.clientOrAgentNotAuthorised
   - errors.incorrectOrEmptyBody
   - errors.ruleNoIncomeSubmissionExists
-displayName: Trigger a Self Assessment Tax Calculation [test only]
+displayName: Trigger a Self Assessment Tax Calculation
 description: This endpoint allows the user to trigger a self-assessment tax calculation for a given tax year. It should be called whenever income data is updated through a periodic or annual endpoint. It can take up to 5 seconds for a Calculation ID to be returned when triggering a tax calculation. The result of the calculation can be seen using the "Retrieve Self Assessment Tax Calculation Metadata" endpoint.
 (annotations.sandboxData): !include scenarios/selfAssessment/trigger.md
 (annotations.scope): "write:self-assessment"
