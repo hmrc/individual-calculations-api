@@ -21,13 +21,21 @@ import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.Defaul
 
 object DefaultCarriedForwardLossFixtures {
 
-  val defaultCarriedForwardLossMtdJson: JsValue = Json.parse(
+  val taxYearLossIncurred: String = "2018-19"
+  val currentLossValue: BigInt = 2000
+
+  val defaultCarriedForwardLossModel: DefaultCarriedForwardLoss =
+    DefaultCarriedForwardLoss(
+      taxYearLossIncurred = taxYearLossIncurred,
+      currentLossValue = currentLossValue
+    )
+
+  val defaultCarriedForwardLossJson: JsValue = Json.parse(
     """
       |{
-      | "taxYearLossIncurred" : "2018-19",
-      | "currentLossValue" : 2000
+      |   "taxYearLossIncurred" : "2018-19",
+      |   "currentLossValue" : 2000
       |}
-    """.stripMargin)
-
-  val defaultCarriedForwardLossModel = DefaultCarriedForwardLoss("2018-19", 2000)
+    """.stripMargin
+  )
 }

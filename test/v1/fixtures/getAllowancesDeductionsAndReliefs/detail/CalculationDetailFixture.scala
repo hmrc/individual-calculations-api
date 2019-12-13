@@ -16,7 +16,7 @@
 
 package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeductionsFixture._
 import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
@@ -29,6 +29,12 @@ object CalculationDetailFixture {
       reliefs = Some(reliefsModel)
     )
 
-  val calculationDetailJson: JsObject = Json.obj("reliefs" -> reliefsJson) ++
-    Json.obj("allowancesAndDeductions" -> allowancesAndDeductionsJson)
+  val calculationDetailJson: JsValue = Json.parse(
+    s"""
+      |{
+      |   "reliefs" : $reliefsJson,
+      |   "allowancesAndDeductions" : $allowancesAndDeductionsJson
+      |}
+    """.stripMargin
+  )
 }

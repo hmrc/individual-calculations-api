@@ -16,24 +16,13 @@
 
 package v1.models.response.getTaxableIncome.detail
 
-import play.api.libs.json._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.SavingsFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class SavingsSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson: JsValue = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[Savings](testJson)(
+  testJsonProperties[Savings](savingsJson)(
     mandatoryProperties = Seq(
       "savingsAccountId",
       "savingsAccountName",

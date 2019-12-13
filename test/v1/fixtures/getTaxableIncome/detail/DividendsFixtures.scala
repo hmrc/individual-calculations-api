@@ -20,16 +20,22 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getTaxableIncome.detail.Dividends
 
 object DividendsFixtures {
-  val incomeReceived: BigInt       = 100
-  val taxableIncome: BigInt        = 200
-  val dividendsResponse: Dividends = Dividends(incomeReceived, taxableIncome)
 
-  val dividendsJson: JsValue = Json.parse(s"""{
-       |    "incomeReceived":$incomeReceived,
-       |    "taxableIncome":$taxableIncome
-       |}""".stripMargin)
+  val incomeReceived: BigInt = 100
+  val taxableIncome: BigInt = 200
 
-  val dividendsInvalidJson: JsValue = Json.parse(s"""{
-       |    "incomeReceived":$incomeReceived
-       |}""".stripMargin)
+  val dividendsModel: Dividends =
+    Dividends(
+      incomeReceived = incomeReceived,
+      taxableIncome = taxableIncome
+    )
+
+  val dividendsJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "incomeReceived":$incomeReceived,
+       |   "taxableIncome":$taxableIncome
+       |}
+    """.stripMargin
+  )
 }

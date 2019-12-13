@@ -21,62 +21,24 @@ import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossC
 
 object LossClaimsSummaryFixtures {
 
-  val incomeSourceId: String                                 = "AAIS12345678904"
-  val incomeSourceType: String                               = "01"
-  val incomeSourceName: String                               = "abcdefghijklm"
-  val totalIncome: BigDecimal                                    = 1000.00
-  val totalExpenses: BigDecimal                                  = 1000.00
-  val netProfit: BigDecimal                                      = 1000.00
-  val netLoss: BigDecimal                                        = 1000.00
-  val totalAdditions: BigDecimal                                 = 1000.00
-  val totalDeductions: BigDecimal                                = 1000.00
-  val accountingAdjustments: BigDecimal                      = -1000.00
-  val taxableProfit: BigDecimal                                  = 1000.00
-  val adjustedIncomeTaxLoss: BigDecimal                      = 1000.00
   val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
-  val lossForCSFHL: Option[BigInt]                       = Some(1000)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1000)
-  val taxableProfitAfterIncomeTaxLossesDeduction: BigDecimal = 1000.00
-  val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1000)
-  val class4Loss: BigDecimal                                 = 1000.00
-  val totalBroughtForwardClass4Losses: Option[BigDecimal]    = Some(1000.00)
-  val broughtForwardClass4LossesUsed: Option[BigDecimal]     = Some(1000.00)
-  val carrySidewaysClass4LossesUsed: Option[BigDecimal]      = Some(1000.00)
-  val totalClass4LossesCarriedForward: Option[BigDecimal]    = Some(1000.00)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1001)
+  val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1002)
 
-  val lossClaimSummaryDesJson: JsValue = Json.parse(s"""{
-                                                       |    "incomeSourceId": "$incomeSourceId",
-                                                       |    "incomeSourceType": "$incomeSourceType",
-                                                       |    "incomeSourceName": "$incomeSourceName",
-                                                       |    "totalIncome": $totalIncome,
-                                                       |    "totalExpenses": $totalExpenses,
-                                                       |    "netProfit": $netProfit,
-                                                       |    "netLoss": $netLoss,
-                                                       |    "totalAdditions": $totalAdditions,
-                                                       |    "totalDeductions": $totalDeductions,
-                                                       |    "accountingAdjustments": $accountingAdjustments,
-                                                       |    "taxableProfit": $taxableProfit,
-                                                       |    "adjustedIncomeTaxLoss": $adjustedIncomeTaxLoss,
-                                                       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
-                                                       |    "lossForCSFHL": ${lossForCSFHL.get},
-                                                       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
-                                                       |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
-                                                       |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
-                                                       |    "class4Loss": $class4Loss,
-                                                       |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
-                                                       |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
-                                                       |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
-                                                       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
-                                                       |}""".stripMargin)
+  val lossClaimsSummaryModel: LossClaimsSummary =
+    LossClaimsSummary(
+      totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
+      broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward
+    )
 
-  val lossClaimsSummaryJson: JsValue = Json.parse(
-    """
+  val lossClaimSummaryJson: JsValue = Json.parse(
+    s"""
       |{
-      | "totalBroughtForwardIncomeTaxLosses" : 1000,
-      | "broughtForwardIncomeTaxLossesUsed" : 1000,
-      | "totalIncomeTaxLossesCarriedForward" : 1000
+      |   "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
+      |   "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+      |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get}
       |}
-    """.stripMargin)
-
-  val lossClaimsSummaryModel = LossClaimsSummary(Some(1000), Some(1000), Some(1000))
+    """.stripMargin
+  )
 }

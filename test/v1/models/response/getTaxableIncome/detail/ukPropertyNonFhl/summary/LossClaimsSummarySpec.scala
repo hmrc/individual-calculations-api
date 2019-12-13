@@ -16,27 +16,13 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary
 
-import play.api.libs.json.{Json, Reads}
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixtures._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 
 class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  case class Test(mandatory: String, optional: Option[String])
-
-  object Test {
-    implicit val reads: Reads[Test] = Json.reads[Test]
-  }
-
-  testJsonProperties[LossClaimsSummary](testJson)(
+  testJsonProperties[LossClaimsSummary](lossClaimSummaryJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
       "totalBroughtForwardIncomeTaxLosses",

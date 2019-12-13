@@ -22,7 +22,7 @@ import v1.models.utils.JsonErrorValidators
 
 class UkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[UkPropertyFhl](mtdUkPropertyFhlObj)(
+  testJsonProperties[UkPropertyFhl](ukPropertyFhlJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
       "totalIncome",

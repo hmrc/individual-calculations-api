@@ -24,18 +24,18 @@ import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 
 object UkPropertyFhlFixtures {
 
-  val totalIncome: Option[BigDecimal] = Some(1000.00)
-  val totalExpenses: Option[BigDecimal] = Some(1000.00)
-  val netProfit: Option[BigDecimal] = Some(1000.00)
-  val netLoss: Option[BigDecimal] = Some(1000.00)
-  val totalAdditions: Option[BigDecimal] = Some(1000.00)
-  val totalDeductions: Option[BigDecimal] = Some(1000.00)
-  val accountingAdjustments: Option[BigDecimal] = Some(1000.00)
+  val totalIncome: Option[BigDecimal] = Some(1000.01)
+  val totalExpenses: Option[BigDecimal] = Some(1000.02)
+  val netProfit: Option[BigDecimal] = Some(1000.03)
+  val netLoss: Option[BigDecimal] = Some(1000.04)
+  val totalAdditions: Option[BigDecimal] = Some(1000.05)
+  val totalDeductions: Option[BigDecimal] = Some(1000.06)
+  val accountingAdjustments: Option[BigDecimal] = Some(1000.07)
   val adjustedIncomeTaxLoss: Option[BigInt] = None
-  val taxableProfit: Option[BigInt] = Some(1000)
+  val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
 
-  val ukPropertyFhlObject: UkPropertyFhl =
+  val ukPropertyFhlModel: UkPropertyFhl =
     UkPropertyFhl(
       totalIncome = totalIncome,
       totalExpenses = totalExpenses,
@@ -51,7 +51,7 @@ object UkPropertyFhlFixtures {
       lossClaimsDetail = Some(lossClaimsDetailModel)
     )
 
-  val mtdUkPropertyFhlObj: JsValue = Json.parse(
+  val ukPropertyFhlJson: JsValue = Json.parse(
     s"""
        |{
        |   "totalIncome": ${totalIncome.get},

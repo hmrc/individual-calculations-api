@@ -16,45 +16,32 @@
 
 package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotAppliedFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.DefaultCarriedForwardLossFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForwardFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.ResultOfClaimAppliedFixtures._
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetail
 
 object LossClaimsDetailFixtures extends UnitSpec {
 
-  def incomeSourceTypeField(incomeSourceType: String): JsObject = Json.parse(
-    s"""
-      |{
-      | "incomeSourceType" : "$incomeSourceType"
-      |}
-    """.stripMargin).asInstanceOf[JsObject]
+  val lossClaimsDetailModel: LossClaimsDetail =
+    LossClaimsDetail(
+      lossesBroughtForward = Some(Seq(lossBroughtForwardModel)),
+      resultOfClaimsApplied = Some(Seq(resultOfClaimAppliedModel)),
+      defaultCarriedForwardLosses = Some(Seq(defaultCarriedForwardLossModel)),
+      claimsNotApplied = Some(Seq(claimNotAppliedModel))
+    )
 
   val lossClaimsDetailMtdJson: JsValue = Json.parse(
     s"""
-      |{
-      | "lossesBroughtForward" : [
-      |   ${LossBroughtForwardFixtures.lossBroughtForwardMtdJson.toString()}
-      | ],
-      | "resultOfClaimsApplied" : [
-      |   ${ResultOfClaimAppliedFixtures.resultOfClaimAppliedMtdJson.toString()}
-      | ],
-      | "defaultCarriedForwardLosses" :[
-      |   ${DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossMtdJson.toString()}
-      | ],
-      | "claimsNotApplied" : [
-      |   ${ClaimNotAppliedFixtures.claimNotAppliedJson.toString()}
-      | ]
-      |}
-    """.stripMargin)
-
-  val emptyJson: JsValue = Json.obj()
-
-  val lossClaimsDetailModel = LossClaimsDetail(
-    Some(Seq(LossBroughtForwardFixtures.lossBroughtForwardModel)),
-    Some(Seq(ResultOfClaimAppliedFixtures.resultOfClaimAppliedModel)),
-    Some(Seq(DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel)),
-    Some(Seq(ClaimNotAppliedFixtures.claimNotAppliedModel))
+       |{
+       |   "lossesBroughtForward" : [$lossBroughtForwardJson],
+       |   "resultOfClaimsApplied" : [$resultOfClaimAppliedJson],
+       |   "defaultCarriedForwardLosses" :[$defaultCarriedForwardLossJson],
+       |   "claimsNotApplied" : [$claimNotAppliedJson]
+       |}
+    """.stripMargin
   )
-
-  val emptyLossClaimsDetailModel = LossClaimsDetail(None, None, None, None)
 }

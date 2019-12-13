@@ -17,21 +17,29 @@
 package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.common.TypeOfClaim
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
 
-  val claimNotAppliedModel = ClaimNotApplied("EzluDU2ObK02SdA", "2018-19", "carry-sideways")
+  val claimId: String = "EzluDU2ObK02SdA"
+  val taxYearClaimMade = "2018-19"
+  val claimType: TypeOfClaim = TypeOfClaim.`carry-sideways`
+
+  val claimNotAppliedModel: ClaimNotApplied =
+    ClaimNotApplied(
+      claimId = claimId,
+      taxYearClaimMade = taxYearClaimMade,
+      claimType = claimType
+    )
 
   val claimNotAppliedJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "claimId" : "EzluDU2ObK02SdA",
-      | "taxYearClaimMade" : "2018-19",
-      | "claimType" : "carry-sideways"
+      |   "claimId" : "$claimId",
+      |   "taxYearClaimMade" : "$taxYearClaimMade",
+      |   "claimType" : ${Json.toJson(claimType)}
       |}
     """.stripMargin
   )
-
-
 }

@@ -16,64 +16,56 @@
 
 package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl
 
-import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetailFixtures
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixtures
+import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetailFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixtures._
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 
 object UkPropertyNonFhlFixtures {
 
-  def businessProfitAndLossJson(incomeSourceType: String): JsValue = Json.parse(
+  val totalIncome: Option[BigDecimal] = Some(2000.98)
+  val totalExpenses: Option[BigDecimal] = Some(2000.98)
+  val netProfit: Option[BigDecimal] = Some(2000.98)
+  val netLoss: Option[BigDecimal] = Some(2000.98)
+  val totalAdditions: Option[BigDecimal] = Some(2000.98)
+  val totalDeductions: Option[BigDecimal] = Some(2000.98)
+  val accountingAdjustments: Option[BigDecimal] = Some(-2000.98)
+  val adjustedIncomeTaxLoss: Option[BigInt] = Some(2000)
+  val taxableProfit: Option[BigInt] = Some(2000)
+  val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2000)
+
+  val ukPropertyNonFhlModel: UkPropertyNonFhl =
+    UkPropertyNonFhl(
+      totalIncome = totalIncome,
+      totalExpenses = totalExpenses,
+      netProfit = netProfit,
+      netLoss = netLoss,
+      totalAdditions = totalAdditions,
+      totalDeductions = totalDeductions,
+      accountingAdjustments = accountingAdjustments,
+      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
+      taxableProfit = taxableProfit,
+      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
+      lossClaimsSummary = Some(lossClaimsSummaryModel),
+      lossClaimsDetail = Some(lossClaimsDetailModel)
+    )
+
+  val ukPropertyNonFhlJson: JsValue = Json.parse(
     s"""
-      |{
-      | "incomeSourceType" : "$incomeSourceType",
-      | "totalIncome" : 2000.98,
-      | "totalExpenses" : 2000.98,
-      | "netProfit" : 2000.98,
-      | "netLoss" : 2000.98,
-      | "totalAdditions" : 2000.98,
-      | "totalDeductions" : 2000.98,
-      | "accountingAdjustments" : -2000.98,
-      | "taxableProfit" : 2000,
-      | "adjustedIncomeTaxLoss" : 2000,
-      | "taxableProfitAfterIncomeTaxLossesDeduction" : 2000
-      |}
-    """.stripMargin).asInstanceOf[JsObject].deepMerge(LossClaimsSummaryFixtures.lossClaimsSummaryJson.asInstanceOf[JsObject])
-
-  val ukPropertyNonFhlMtdJson: JsValue = Json.parse(
-    s"""
-      |{
-      | "totalIncome" : 2000.98,
-      | "totalExpenses" : 2000.98,
-      | "netProfit" : 2000.98,
-      | "netLoss" : 2000.98,
-      | "totalAdditions" : 2000.98,
-      | "totalDeductions" : 2000.98,
-      | "accountingAdjustments" : -2000.98,
-      | "taxableProfit" : 2000,
-      | "adjustedIncomeTaxLoss" : 2000,
-      | "taxableProfitAfterIncomeTaxLossesDeduction" : 2000,
-      | "lossClaimsSummary" : ${LossClaimsSummaryFixtures.lossClaimsSummaryJson.toString()},
-      | "lossClaimsDetail" : ${LossClaimsDetailFixtures.lossClaimsDetailMtdJson.toString()}
-      |}
-    """.stripMargin)
-
-  val emptyJson: JsValue = Json.obj()
-
-  val ukPropertyNonFhlModel = UkPropertyNonFhl(
-    Some(2000.98),
-    Some(2000.98),
-    Some(2000.98),
-    Some(2000.98),
-    Some(2000.98),
-    Some(2000.98),
-    Some(-2000.98),
-    Some(2000),
-    Some(2000),
-    Some(2000),
-    Some(LossClaimsSummaryFixtures.lossClaimsSummaryModel),
-    Some(LossClaimsDetailFixtures.lossClaimsDetailModel)
+       |{
+       |   "totalIncome" : 2000.98,
+       |   "totalExpenses" : 2000.98,
+       |   "netProfit" : 2000.98,
+       |   "netLoss" : 2000.98,
+       |  "totalAdditions" : 2000.98,
+       |   "totalDeductions" : 2000.98,
+       |   "accountingAdjustments" : -2000.98,
+       |   "taxableProfit" : 2000,
+       |   "adjustedIncomeTaxLoss" : 2000,
+       |   "taxableProfitAfterIncomeTaxLossesDeduction" : 2000,
+       |   "lossClaimsSummary" : $lossClaimSummaryJson,
+       |   "lossClaimsDetail" : $lossClaimsDetailMtdJson
+       |}
+    """.stripMargin
   )
-
-  val emptyUkPropertyNonFhlModel = UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, None)
 }

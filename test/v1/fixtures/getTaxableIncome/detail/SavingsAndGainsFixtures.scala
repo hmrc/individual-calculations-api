@@ -21,47 +21,23 @@ import v1.fixtures.getTaxableIncome.detail.SavingsFixtures._
 import v1.models.response.getTaxableIncome.detail.{Savings, SavingsAndGains}
 
 object SavingsAndGainsFixtures {
-  val incomeReceivedSAG: BigInt                              = 392
-  val taxableIncomeSAG: BigInt                               = 3920
-  val savingsResponse2: Savings                              = Savings("anId2", "aName2", 400.1, Some(112.3), Some(556.3))
-  val savingsSequence = Some(Seq(savingsResponse, savingsResponse2))
-  val savingsAndGainsResponse: SavingsAndGains               = SavingsAndGains(incomeReceivedSAG, taxableIncomeSAG,savingsSequence)
-  val savingsAndGainsResponseWithoutSavings: SavingsAndGains = savingsAndGainsResponse.copy(ukSavings = None)
 
-  val savingsAndGainsJson: JsValue = Json.parse(s"""{
+  val incomeReceivedSAG: BigInt = 392
+  val taxableIncomeSAG: BigInt = 3920
+
+  val savingsAndGainsModel: SavingsAndGains =
+    SavingsAndGains(
+      incomeReceived = incomeReceivedSAG,
+      taxableIncome = taxableIncomeSAG,
+      ukSavings = Some(Seq(savingsModel))
+    )
+
+  val savingsAndGainsJson: JsValue = Json.parse(
+    s"""{
        |   "incomeReceived" : $incomeReceivedSAG,
        |   "taxableIncome" : $taxableIncomeSAG,
-       |   "ukSavings" : [
-       |   {
-       |     "savingsAccountId":"$incomeSourceId",
-       |     "savingsAccountName":"$incomeSourceName",
-       |     "grossIncome":$grossIncome,
-       |     "netIncome": ${netIncome.get},
-       |     "taxDeducted": ${taxDeducted.get}
-       |     },
-       |   {
-       |     "savingsAccountId":"${incomeSourceId concat "2"}",
-       |     "savingsAccountName":"${incomeSourceName concat "2"}",
-       |     "grossIncome":${grossIncome + 100},
-       |     "netIncome": ${netIncome.get + 100},
-       |     "taxDeducted": ${taxDeducted.get + 100}
-       |     }
-       |     ]
-       |}""".stripMargin)
-
-  val savingsAndGainsJsonWithoutSavings: JsValue = Json.parse(s"""{
-       |   "incomeReceived" : $incomeReceivedSAG,
-       |   "taxableIncome" : $taxableIncomeSAG
-       |}""".stripMargin)
-
-  val savingsAndGainsInvalidJson: JsValue = Json.parse(s"""{
-       |   "taxCalculation" : {
-       |     "incomeTax" : {
-       |       "savingsAndGains" : {
-       |        "taxableIncome": $taxableIncomeSAG
-       |       }
-       |     }
-       |   }
-       |}""".stripMargin)
-
+       |   "ukSavings" : [$savingsJson]
+       |}
+    """.stripMargin
+  )
 }

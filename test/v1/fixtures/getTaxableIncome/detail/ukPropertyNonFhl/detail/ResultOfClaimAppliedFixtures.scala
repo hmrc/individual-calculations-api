@@ -17,39 +17,43 @@
 package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.common.TypeOfClaim
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.ResultOfClaimApplied
 
 object ResultOfClaimAppliedFixtures {
 
-  val resultOfClaimAppliedMtdJson: JsValue = Json.parse(
-    """
-      |{
-      | "claimId" : "EzluDU2ObK02SdA",
-      | "originatingClaimId" : "EzluDU2ObK02SdA",
-      | "taxYearClaimMade" : "2018-19",
-      | "claimType" : "carry-forward",
-      | "mtdLoss" : false,
-      | "taxYearLossIncurred" : "2018-19",
-      | "lossAmountUsed" : 2000,
-      | "remainingLossValue" : 2000
-      |}
+  val claimId: Option[String] = Some("EzluDU2ObK02SdA")
+  val originatingClaimId: Option[String] = Some("EzluDU2ObK02SdA")
+  val taxYearClaimMade: String = "2018-19"
+  val claimType: TypeOfClaim = TypeOfClaim.`carry-forward`
+  val mtdLoss: Boolean = false
+  val taxYearLossIncurred: String = "2018-19"
+  val lossAmountUsed: BigInt = 2000
+  val remainingLossValue: BigInt = 2000
+
+  val resultOfClaimAppliedModel: ResultOfClaimApplied =
+    ResultOfClaimApplied(
+      claimId = claimId,
+      originatingClaimId = originatingClaimId,
+      taxYearClaimMade = taxYearClaimMade,
+      claimType = claimType,
+      mtdLoss = mtdLoss,
+      taxYearLossIncurred = taxYearLossIncurred,
+      lossAmountUsed = lossAmountUsed,
+      remainingLossValue = remainingLossValue
+    )
+
+  val resultOfClaimAppliedJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "claimId" : "${claimId.get}",
+       |   "originatingClaimId" : "${originatingClaimId.get}",
+       |   "taxYearClaimMade" : "$taxYearClaimMade",
+       |   "claimType" : ${Json.toJson(claimType)},
+       |   "mtdLoss" : $mtdLoss,
+       |   "taxYearLossIncurred" : "$taxYearLossIncurred",
+       |   "lossAmountUsed" : $lossAmountUsed,
+       |   "remainingLossValue" : $remainingLossValue
+       |}
     """.stripMargin)
-
-  val resultOfClaimAppliedMtdJsonWithoutOptionals: JsValue = Json.parse(
-    """
-      |{
-      | "taxYearClaimMade" : "2018-19",
-      | "claimType" : "carry-forward",
-      | "mtdLoss" : false,
-      | "taxYearLossIncurred" : "2018-19",
-      | "lossAmountUsed" : 2000,
-      | "remainingLossValue" : 2000
-      |}
-    """.stripMargin)
-
-  val resultOfClaimAppliedModel = ResultOfClaimApplied(Some("EzluDU2ObK02SdA"), Some("EzluDU2ObK02SdA"), "2018-19",
-    "carry-forward", mtdLoss = false, "2018-19", 2000, 2000)
-
-  val resultOfClaimAppliedModelWithoutOptionals = ResultOfClaimApplied(None, None, "2018-19",
-    "carry-forward", mtdLoss = false, "2018-19", 2000, 2000)
 }

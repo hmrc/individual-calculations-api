@@ -21,14 +21,24 @@ import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBr
 
 object LossBroughtForwardFixtures {
 
-  val lossBroughtForwardMtdJson: JsValue = Json.parse(
-    """
-      |{
-      | "taxYearLossIncurred" : "2018-19",
-      | "currentLossValue" : 2000,
-      | "mtdLoss" : false
-      |}
-    """.stripMargin)
+  val taxYearLossIncurred: String = "2018-19"
+  val currentLossValue: Int = 2000
+  val mtdLoss: Boolean = false
 
-  val lossBroughtForwardModel = LossBroughtForward("2018-19", 2000, mtdLoss = false)
+  val lossBroughtForwardModel: LossBroughtForward =
+    LossBroughtForward(
+      taxYearLossIncurred = taxYearLossIncurred,
+      currentLossValue = currentLossValue,
+      mtdLoss = mtdLoss
+    )
+
+  val lossBroughtForwardJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "taxYearLossIncurred" : "$taxYearLossIncurred",
+       |   "currentLossValue" : $currentLossValue,
+       |   "mtdLoss" : $mtdLoss
+       |}
+    """.stripMargin
+  )
 }

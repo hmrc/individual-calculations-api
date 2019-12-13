@@ -19,7 +19,7 @@ package v1.fixtures.getAllowancesDeductionsAndReliefs
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.CalculationDetailFixture._
 import v1.fixtures.getAllowancesDeductionsAndReliefs.summary.CalculationSummaryFixture._
-import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures.metadataJson
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
@@ -60,9 +60,9 @@ object AllowancesDeductionsAndReliefsResponseFixture {
     """.stripMargin
   ).as[JsObject]
 
-  val allowancesDeductionsAndReliefsTopLevelJson: JsValue = metadataJson.as[JsObject] ++
+  val allowancesDeductionsAndReliefsTopLevelJson: JsValue = metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
     Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsResponseJson)
 
-  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataJson.as[JsObject] ++
+  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
     allowancesDeductionsAndReliefsResponseJsonEmpty
 }

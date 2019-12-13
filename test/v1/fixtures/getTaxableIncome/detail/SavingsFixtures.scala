@@ -20,32 +20,31 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getTaxableIncome.detail.Savings
 
 object SavingsFixtures {
-  val incomeSourceId: String                   = "anId"
-  val incomeSourceName: String                 = "aName"
-  val grossIncome: BigDecimal                  = 300.1
-  val netIncome: Option[BigDecimal]            = Some(12.3)
-  val taxDeducted: Option[BigDecimal]          = Some(456.3)
-  val savingsResponse: Savings                 = Savings(incomeSourceId, incomeSourceName, grossIncome, netIncome, taxDeducted)
-  val savingsResponseWithoutOptionals: Savings = savingsResponse.copy(netIncome = None, taxDeducted = None)
 
-  val savingsJson: JsValue = Json.parse(s"""{
-       |    "savingsAccountId":"$incomeSourceId",
-       |    "savingsAccountName":"$incomeSourceName",
-       |    "grossIncome":$grossIncome,
-       |    "netIncome": ${netIncome.get},
-       |    "taxDeducted": ${taxDeducted.get}
-       |}""".stripMargin)
+  val incomeSourceId: String = "anId"
+  val incomeSourceName: String = "aName"
+  val grossIncome: BigDecimal = 300.1
+  val netIncome: Option[BigDecimal] = Some(12.3)
+  val taxDeducted: Option[BigDecimal] = Some(456.3)
 
-  val savingsJsonWithoutOptionals: JsValue = Json.parse(s"""{
-       |    "savingsAccountId":"$incomeSourceId",
-       |    "savingsAccountName":"$incomeSourceName",
-       |    "grossIncome":$grossIncome
-       |}""".stripMargin)
+  val savingsModel: Savings =
+    Savings(
+      savingsAccountId = incomeSourceId,
+      savingsAccountName = incomeSourceName,
+      grossIncome = grossIncome,
+      netIncome = netIncome,
+      taxDeducted = taxDeducted
+    )
 
-  val savingsInvalidJson: JsValue = Json.parse(s"""{
-       |    "incomeSourceName":"$incomeSourceName",
-       |    "grossIncome":$grossIncome,
-       |    "netIncome": ${netIncome.get},
-       |    "taxDeducted": ${taxDeducted.get}
-       |}""".stripMargin)
+  val savingsJson: JsValue = Json.parse(
+    s"""
+      |{
+      |    "savingsAccountId":"$incomeSourceId",
+      |    "savingsAccountName":"$incomeSourceName",
+      |    "grossIncome":$grossIncome,
+      |    "netIncome": ${netIncome.get},
+      |    "taxDeducted": ${taxDeducted.get}
+      |}
+    """.stripMargin
+  )
 }

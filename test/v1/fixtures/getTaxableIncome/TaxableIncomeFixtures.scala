@@ -23,30 +23,20 @@ import v1.models.response.getTaxableIncome.TaxableIncomeResponse
 
 object TaxableIncomeFixtures {
 
-  val taxableIncomeResponse: TaxableIncomeResponse = TaxableIncomeResponse(calculationSummaryModel, detailResponse)
+  val taxableIncomeResponseModel: TaxableIncomeResponse =
+    TaxableIncomeResponse(
+      summary = calculationSummaryModel,
+      detail = calculationDetailModel
+    )
 
-  val metadataJson: JsValue = Json.parse(
-    """
+  val taxableIncomeResponseJson: JsValue = Json.parse(
+    s"""
       |{
-      | "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 0
-      |  }
+      |   "summary" : $calculationSummaryJson,
+      |   "detail" : $calculationDetailJson
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val json: JsObject = Json
-    .obj("detail" -> detailJson)
-    .deepMerge(Json.obj("summary" -> calculationSummaryJson))
-
-  val jsonFromBackend: JsValue = metadataJson.as[JsObject] ++ Json.obj(("taxableIncome", json))
-
-  val emptyJson: JsObject = JsObject.empty
+  val taxableIncomeResponseTopLevelJson: JsValue = Json.obj("taxableIncome" -> taxableIncomeResponseJson)
 }

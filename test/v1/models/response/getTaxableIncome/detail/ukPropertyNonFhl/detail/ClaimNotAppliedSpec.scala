@@ -16,24 +16,13 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
-import play.api.libs.json._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotAppliedFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ClaimNotAppliedSpec extends UnitSpec with JsonErrorValidators {
 
-  case class Test(mandatory: String, optional: Option[String])
-  object Test {implicit val reads: Reads[Test] = Json.reads[Test]}
-
-  val testJson = Json.parse(
-    """
-      |{
-      |   "mandatory" : "value",
-      |   "optional" : "value"
-      |}
-      |""".stripMargin)
-
-  testJsonProperties[ClaimNotApplied](testJson)(
+  testJsonProperties[ClaimNotApplied](claimNotAppliedJson)(
     mandatoryProperties = Seq(
       "claimId",
       "taxYearClaimMade",

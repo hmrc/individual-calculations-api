@@ -17,47 +17,40 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixtures._
 import v1.models.response.getTaxableIncome.detail.PayPensionsProfit
 
 object PayPensionsProfitFixtures {
-  val incomeReceivedPPP: BigInt                  = 1
-  val taxableIncomePPP: BigInt                   = 2
-  val totalSelfEmploymentProfit: Option[BigInt]  = Some(3)
-  val totalPropertyProfit: Option[BigInt]        = Some(1)
-  val totalFHLPropertyProfit: Option[BigInt]     = Some(2)
+
+  val incomeReceivedPPP: BigInt = 1
+  val taxableIncomePPP: BigInt = 2
+  val totalSelfEmploymentProfit: Option[BigInt] = Some(3)
+  val totalPropertyProfit: Option[BigInt] = Some(1)
+  val totalFHLPropertyProfit: Option[BigInt] = Some(2)
   val totalUKOtherPropertyProfit: Option[BigInt] = Some(3)
 
-  val payPensionsProfitResponse: PayPensionsProfit = PayPensionsProfit(
-    incomeReceivedPPP,
-    taxableIncomePPP,
-    totalSelfEmploymentProfit,
-    totalPropertyProfit,
-    totalFHLPropertyProfit,
-    totalUKOtherPropertyProfit,
-    None
+  val payPensionsProfitModel: PayPensionsProfit =
+    PayPensionsProfit(
+      incomeReceived = incomeReceivedPPP,
+      taxableIncome = taxableIncomePPP,
+      totalSelfEmploymentProfit = totalSelfEmploymentProfit,
+      totalPropertyProfit = totalPropertyProfit,
+      totalFHLPropertyProfit = totalFHLPropertyProfit,
+      totalUKOtherPropertyProfit = totalUKOtherPropertyProfit,
+      businessProfitAndLoss = Some(businessProfitAndLossModel)
+    )
+
+  val payPensionsProfitJson: JsValue = Json.parse(
+    s"""
+       |{
+       |    "incomeReceived" : $incomeReceivedPPP,
+       |    "taxableIncome" : $taxableIncomePPP,
+       |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
+       |    "totalPropertyProfit" : ${totalPropertyProfit.get},
+       |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
+       |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get},
+       |    "businessProfitAndLoss" : $businessProfitAndLossJson
+       |}
+    """.stripMargin
   )
-
-  val payPensionsProfitResponseWithoutOptionalFields: PayPensionsProfit =
-    PayPensionsProfit(incomeReceivedPPP, taxableIncomePPP, None, None, None, None, None)
-
-  val payPensionsProfitJson: JsValue = Json.parse(s"""{
-      |    "incomeReceived" : $incomeReceivedPPP,
-      |    "taxableIncome" : $taxableIncomePPP,
-      |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
-      |    "totalPropertyProfit" : ${totalPropertyProfit.get},
-      |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
-      |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
-      |}""".stripMargin)
-
-  val payPensionsProfitJsonWithoutOptionalFields: JsValue = Json.parse(s"""{
-      |    "incomeReceived" : $incomeReceivedPPP,
-      |    "taxableIncome" : $taxableIncomePPP
-      |}""".stripMargin)
-
-  val payPensionsProfitInvalidJson: JsValue = Json.parse(s"""{
-      |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
-      |    "totalPropertyProfit" : ${totalPropertyProfit.get},
-      |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
-      |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
-      |}""".stripMargin)
 }

@@ -23,20 +23,21 @@ import v1.fixtures.getTaxableIncome.detail.SavingsAndGainsFixtures._
 import v1.models.response.getTaxableIncome.detail.CalculationDetail
 
 object CalculationDetailFixtures {
-  val detailResponse           = CalculationDetail(Some(payPensionsProfitResponse), Some(savingsAndGainsResponse), Some(dividendsResponse))
-  val detailResponseWithoutPPP = CalculationDetail(None, Some(savingsAndGainsResponse), Some(dividendsResponse))
-  val detailResponseWithoutSAG = CalculationDetail(Some(payPensionsProfitResponse), None, Some(dividendsResponse))
-  val detailResponseWithoutDiv = CalculationDetail(Some(payPensionsProfitResponse), Some(savingsAndGainsResponse), None)
 
-  val dividendsJsonComponent: JsObject         = Json.obj("dividends"         -> dividendsJson)
-  val savingsAndGainsJsonComponent: JsObject   = Json.obj("savingsAndGains"   -> savingsAndGainsJson)
-  val payPensionsProfitJsonComponent: JsObject = Json.obj("payPensionsProfit" -> payPensionsProfitJson)
+  val calculationDetailModel: CalculationDetail =
+    CalculationDetail(
+      payPensionsProfit = Some(payPensionsProfitModel),
+      savingsAndGains = Some(savingsAndGainsModel),
+      dividends = Some(dividendsModel)
+    )
 
-  val detailJson: JsValue           = dividendsJsonComponent.deepMerge(savingsAndGainsJsonComponent).deepMerge(payPensionsProfitJsonComponent)
-  val detailJsonWithoutPPP: JsValue = dividendsJsonComponent.deepMerge(savingsAndGainsJsonComponent)
-  val detailJsonWithoutSAG: JsValue = dividendsJsonComponent.deepMerge(payPensionsProfitJsonComponent)
-  val detailJsonWithoutDiv: JsValue = savingsAndGainsJsonComponent.deepMerge(payPensionsProfitJsonComponent)
-
-  val emptyDetailResponse = CalculationDetail(None, None, None)
-
+  val calculationDetailJson: JsValue = Json.parse(
+    s"""
+      |{
+      |   "payPensionsProfit" : $payPensionsProfitJson,
+      |   "savingsAndGains" : $savingsAndGainsJson,
+      |   "dividends" : $dividendsJson
+      |}
+    """.stripMargin
+  )
 }

@@ -36,7 +36,7 @@ object SelfEmploymentFixtures {
   val adjustedIncomeTaxLoss: Option[BigDecimal] = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
 
-  val selfEmploymentBusinessDefaultResponse: SelfEmployment =
+  val selfEmploymentModel: SelfEmployment =
     SelfEmployment(
       selfEmploymentId = selfEmploymentId,
       totalIncome = totalIncome,
