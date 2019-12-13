@@ -50,7 +50,7 @@ class EoyEstimateResponseSpec extends UnitSpec {
 
     "return the correct hateoas links" in new Test {
 
-      hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateResponseHateoasData(nino, calcId)) shouldBe
+      hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId)) shouldBe
         HateoasWrapper(
           eoyEstimateResponseModel,
           Seq(

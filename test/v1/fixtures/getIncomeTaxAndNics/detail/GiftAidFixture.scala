@@ -21,19 +21,23 @@ import v1.models.response.getIncomeTaxAndNics.detail.GiftAid
 
 object GiftAidFixture {
 
+  val grossGiftAidPayments: BigDecimal = 100.25
+  val rate: BigDecimal = 200.25
+  val giftAidTax: BigDecimal = 300.25
+
   val giftAidModel: GiftAid =
     GiftAid(
-      grossGiftAidPayments = 100.25,
-      rate = 200.25,
-      giftAidTax = 300.25
+      grossGiftAidPayments = grossGiftAidPayments,
+      rate = rate,
+      giftAidTax = giftAidTax
     )
 
   val giftAidJson: JsValue = Json.parse(
     s"""
        |{
-       |   "grossGiftAidPayments": 100.25,
-       |   "rate": 200.25,
-       |   "giftAidTax": 300.25
+       |   "grossGiftAidPayments": $grossGiftAidPayments,
+       |   "rate": $rate,
+       |   "giftAidTax": $giftAidTax
        |}
     """.stripMargin
   )

@@ -18,7 +18,7 @@ package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
-import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.CarriedForwardLossFixtures._
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.CarriedForwardLossFixture._
 
 class CarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
 

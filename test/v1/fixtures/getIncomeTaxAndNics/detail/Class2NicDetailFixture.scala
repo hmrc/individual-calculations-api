@@ -21,6 +21,13 @@ import v1.models.response.getIncomeTaxAndNics.detail.Class2NicDetail
 
 object Class2NicDetailFixture {
 
+  val weeklyRate: Option[BigDecimal] = Some(100.25)
+  val weeks: Option[BigDecimal] = Some(200.25)
+  val limit: Option[BigDecimal] = Some(300.25)
+  val apportionedLimit: Option[BigDecimal] = Some(400.25)
+  val underSmallProfitThreshold: Boolean = true
+  val actualClass2Nic: Option[Boolean] = Some(false)
+
   val class2NicDetailModel: Class2NicDetail =
     Class2NicDetail(
       weeklyRate = Some(100.25),
@@ -32,15 +39,15 @@ object Class2NicDetailFixture {
     )
 
   val class2NicDetailJson: JsValue = Json.parse(
-    """
-      |{
-      |   "weeklyRate" : 100.25,
-      |   "weeks" : 200.25,
-      |   "limit" : 300.25,
-      |   "apportionedLimit" : 400.25,
-      |   "underSmallProfitThreshold" : true,
-      |   "actualClass2Nic" : false
-      |}
+    s"""
+       |{
+       |   "weeklyRate" : ${weeklyRate.get},
+       |   "weeks" : ${weeks.get},
+       |   "limit" : ${limit.get},
+       |   "apportionedLimit" : ${apportionedLimit.get},
+       |   "underSmallProfitThreshold" : $underSmallProfitThreshold,
+       |   "actualClass2Nic" : ${actualClass2Nic.get}
+       |}
     """.stripMargin
   )
 }

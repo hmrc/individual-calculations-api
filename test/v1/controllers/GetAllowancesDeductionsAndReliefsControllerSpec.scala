@@ -31,7 +31,7 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesHateoasData
+import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsHateoasData
 import v1.models.response.wrappers.CalculationWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -105,7 +105,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
                 CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
 
         MockHateoasFactory
-          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, AllowancesHateoasData(nino, calcId))
+          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
           .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))

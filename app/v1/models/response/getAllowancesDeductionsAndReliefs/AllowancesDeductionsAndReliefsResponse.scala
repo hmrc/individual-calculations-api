@@ -39,8 +39,8 @@ object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
   implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
     (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefsResponse])
 
-  implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData] {
-    override def links(appConfig: AppConfig, data: AllowancesHateoasData): Seq[Link] = {
+  implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesDeductionsAndReliefsHateoasData] {
+    override def links(appConfig: AppConfig, data: AllowancesDeductionsAndReliefsHateoasData): Seq[Link] = {
       Seq(
         getMetadata(appConfig, data.nino, data.calculationId, isSelf = false),
         getAllowances(appConfig, data.nino, data.calculationId, isSelf = true)
@@ -50,4 +50,4 @@ object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
 
 }
 
-case class AllowancesHateoasData(nino: String, calculationId: String) extends HateoasData
+case class AllowancesDeductionsAndReliefsHateoasData(nino: String, calculationId: String) extends HateoasData

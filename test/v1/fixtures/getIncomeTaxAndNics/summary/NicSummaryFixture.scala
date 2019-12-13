@@ -21,19 +21,23 @@ import v1.models.response.getIncomeTaxAndNics.summary.NicSummary
 
 object NicSummaryFixture {
 
+  val class2NicsAmount: Option[BigDecimal] = Some(100.25)
+  val class4NicsAmount: Option[BigDecimal] = Some(200.25)
+  val totalNic: Option[BigDecimal] = Some(300.25)
+
   val nicSummaryModel: NicSummary =
     NicSummary(
-      class2NicsAmount = Some(100.25),
-      class4NicsAmount = Some(200.25),
-      totalNic = Some(300.25)
+      class2NicsAmount = class2NicsAmount,
+      class4NicsAmount = class4NicsAmount,
+      totalNic = totalNic
     )
 
   val nicSummaryJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "class2NicsAmount" : 100.25,
-      | "class4NicsAmount" : 200.25,
-      | "totalNic" : 300.25
+      |   "class2NicsAmount" : ${class2NicsAmount.get},
+      |   "class4NicsAmount" : ${class4NicsAmount.get},
+      |   "totalNic" : ${totalNic.get}
       |}
     """.stripMargin
   )

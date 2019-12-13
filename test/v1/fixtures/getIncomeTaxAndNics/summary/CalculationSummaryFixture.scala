@@ -23,25 +23,30 @@ import v1.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 
 object CalculationSummaryFixture {
 
+  val totalIncomeTaxNicsCharged: Option[BigDecimal] = Some(300.25)
+  val totalTaxDeducted: Option[BigDecimal] = Some(400.25)
+  val totalIncomeTaxAndNicsDue: BigDecimal = 500.25
+  val taxRegime: String = "UK"
+
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
       incomeTax = incomeTaxSummaryModel,
       nics = Some(nicSummaryModel),
-      totalIncomeTaxNicsCharged = Some(300.25),
-      totalTaxDeducted = Some(400.25),
-      totalIncomeTaxAndNicsDue = 500.25,
-      taxRegime = "UK"
+      totalIncomeTaxNicsCharged = totalIncomeTaxNicsCharged,
+      totalTaxDeducted = totalTaxDeducted,
+      totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
+      taxRegime = taxRegime
     )
 
   val calculationSummaryJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax" : ${Json.toJson(incomeTaxSummaryJson).toString()},
-       | "nics" : ${Json.toJson(nicSummaryJson).toString()},
-       | "totalIncomeTaxNicsCharged" : 300.25,
-       | "totalTaxDeducted" : 400.25,
-       | "totalIncomeTaxAndNicsDue" : 500.25,
-       | "taxRegime" : "UK"
+       |   "incomeTax" : $incomeTaxSummaryJson,
+       |   "nics" : $nicSummaryJson,
+       |   "totalIncomeTaxNicsCharged" : ${totalIncomeTaxNicsCharged.get},
+       |   "totalTaxDeducted" : ${totalTaxDeducted.get},
+       |   "totalIncomeTaxAndNicsDue" : $totalIncomeTaxAndNicsDue,
+       |   "taxRegime" : "$taxRegime"
        |}
     """.stripMargin)
 }

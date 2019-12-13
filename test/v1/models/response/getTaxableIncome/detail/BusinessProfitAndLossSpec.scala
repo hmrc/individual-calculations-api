@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixtures._
+import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
 import v1.models.utils.JsonErrorValidators
 
 class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {

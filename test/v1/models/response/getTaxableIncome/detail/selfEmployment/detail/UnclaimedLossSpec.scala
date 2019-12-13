@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.UnclaimedLossFixtures._
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.UnclaimedLossFixture._
 import v1.models.utils.JsonErrorValidators
 
 class UnclaimedLossSpec extends UnitSpec with JsonErrorValidators {

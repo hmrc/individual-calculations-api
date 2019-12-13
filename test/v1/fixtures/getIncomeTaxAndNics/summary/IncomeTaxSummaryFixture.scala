@@ -21,6 +21,10 @@ import v1.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
 object IncomeTaxSummaryFixture {
 
+  val incomeTaxCharged: BigDecimal = 2000.00
+  val incomeTaxDueAfterReliefs: Option[BigDecimal] = Some(1525.22)
+  val incomeTaxDueAfterGiftAid: Option[BigDecimal] = Some(120.10)
+
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
       incomeTaxCharged = 2000.00,
@@ -29,11 +33,11 @@ object IncomeTaxSummaryFixture {
     )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "incomeTaxCharged" : 2000.00,
-      | "incomeTaxDueAfterReliefs" : 1525.22,
-      | "incomeTaxDueAfterGiftAid" : 120.10
+      |   "incomeTaxCharged" : $incomeTaxCharged,
+      |   "incomeTaxDueAfterReliefs" : ${incomeTaxDueAfterReliefs.get},
+      |   "incomeTaxDueAfterGiftAid" : ${incomeTaxDueAfterGiftAid.get}
       |}
     """.stripMargin
   )

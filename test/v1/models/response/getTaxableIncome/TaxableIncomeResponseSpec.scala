@@ -21,7 +21,7 @@ import support.UnitSpec
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures._
+import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.hateoas.Method.GET
 
 class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {

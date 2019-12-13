@@ -32,7 +32,7 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getMetadata.{MetadataResponse, CalculationMetadataHateoasData}
+import v1.models.response.getMetadata.{MetadataResponse, MetadataHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -122,7 +122,7 @@ class GetMetadataControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, CalculationMetadataHateoasData(nino, calcId, None))
+          .wrap(response, MetadataHateoasData(nino, calcId, None))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
@@ -182,7 +182,7 @@ class GetMetadataControllerSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
       MockHateoasFactory
-        .wrap(response, CalculationMetadataHateoasData(nino, calcId, None))
+        .wrap(response, MetadataHateoasData(nino, calcId, None))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))

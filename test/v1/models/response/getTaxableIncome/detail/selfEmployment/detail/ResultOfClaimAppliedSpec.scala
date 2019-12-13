@@ -16,7 +16,7 @@
 
 package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
-import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.ResultOfClaimAppliedFixtures._
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.ResultOfClaimAppliedFixture._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 

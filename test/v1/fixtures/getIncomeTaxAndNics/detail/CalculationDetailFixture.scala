@@ -17,26 +17,26 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail._
 import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.NicDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v1.models.response.getIncomeTaxAndNics.detail._
 
 object CalculationDetailFixture {
 
-  def calculationDetailModel: CalculationDetail =
+  val calculationDetailModel: CalculationDetail =
     CalculationDetail(
       incomeTax = incomeTaxDetailModel,
       nics = Some(nicDetailModel),
       taxDeductedAtSource = Some(taxDeductedAtSourceModel)
     )
 
-  def calculationDetailJson: JsValue = Json.parse(
+  val calculationDetailJson: JsValue = Json.parse(
     s"""
        |{
-       | "incomeTax" : ${incomeTaxDetailJson.toString()},
-       | "nics" : ${nicDetailJson.toString()},
-       | "taxDeductedAtSource" : ${taxDeductedAtSourceJson.toString()}
+       |   "incomeTax" : $incomeTaxDetailJson,
+       |   "nics" : $nicDetailJson,
+       |   "taxDeductedAtSource" : $taxDeductedAtSourceJson
        |}
     """.stripMargin
   )

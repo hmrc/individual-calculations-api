@@ -22,8 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.getIncomeTaxAndNics.GetIncomeTaxAndNicsFixture
-import v1.fixtures.getTaxableIncome.TaxableIncomeFixtures._
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
+import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -87,7 +87,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxAndNicsFixture.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorBodyFromBackEnd)
         }
 
         val response: WSResponse = await(request.get)

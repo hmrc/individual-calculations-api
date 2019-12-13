@@ -32,7 +32,7 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.wrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
-import v1.models.response.getEoyEstimate.EoyEstimateResponseHateoasData
+import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
 import v1.models.response.wrappers.EoyEstimateWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -99,7 +99,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)))))
 
         MockHateoasFactory
-          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseModel, EoyEstimateResponseHateoasData(nino, calcId))
+          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId))
           .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))

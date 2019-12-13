@@ -47,8 +47,8 @@ object MessagesResponse extends HateoasLinks {
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]]
     ) (MessagesResponse.apply _)
 
-  implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, CalculationMessagesHateoasData] {
-    override def links(appConfig: AppConfig, data: CalculationMessagesHateoasData): Seq[Link] = {
+  implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, MessagesHateoasData] {
+    override def links(appConfig: AppConfig, data: MessagesHateoasData): Seq[Link] = {
       import data.{id, nino}
       Seq(
         getMetadata(appConfig, nino, id, isSelf = false),
@@ -59,4 +59,4 @@ object MessagesResponse extends HateoasLinks {
 
 }
 
-case class CalculationMessagesHateoasData(nino: String, id: String) extends HateoasData
+case class MessagesHateoasData(nino: String, id: String) extends HateoasData

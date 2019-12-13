@@ -16,7 +16,7 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyFhl
 
-import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixture._
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 

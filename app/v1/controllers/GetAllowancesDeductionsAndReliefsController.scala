@@ -27,7 +27,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData}
+import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsResponse, AllowancesDeductionsAndReliefsHateoasData}
 import v1.models.response.wrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -74,7 +74,7 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
         }
       }
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, AllowancesHateoasData(req.nino.nino, req.calculationId)))
+        hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, req.calculationId)))
 
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

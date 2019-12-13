@@ -19,6 +19,7 @@ package v1.fixtures.getMetadata
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.getMetadata.MetadataResponse
+import v1.fixtures.getMessages.MessagesResponseFixture._
 
 object MetadataResponseFixture {
 
@@ -33,7 +34,7 @@ object MetadataResponseFixture {
       intentToCrystallise = true,
       crystallised = false,
       totalIncomeTaxAndNicsDue = None,
-      calculationErrorCount = Some(2)
+      calculationErrorCount = None
     )
 
   val metadataResponseJson: JsValue = Json.parse(
@@ -46,31 +47,15 @@ object MetadataResponseFixture {
       |   "calculationTimestamp": "2019-11-15T09:35:15.094Z",
       |   "calculationType": "crystallisation",
       |   "intentToCrystallise": true,
-      |   "crystallised": false,
-      |   "calculationErrorCount": 2
+      |   "crystallised": false
       |}
   """.stripMargin)
 
   val metadataResponseTopLevelJsonWithMessages: JsValue = Json.parse(
     s"""
        |{
-       |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 2
-       |  },
-       |  "messages" :{
-       |     "errors":[
-       |        {"id":"err1", "text":"text1"},
-       |        {"id":"err2", "text":"text2"}
-       |     ]
-       |  }
+       |  "metadata": $metadataResponseJson,
+       |  "messages": $messagesResponseJsonErrors
        |}
   """.stripMargin)
 

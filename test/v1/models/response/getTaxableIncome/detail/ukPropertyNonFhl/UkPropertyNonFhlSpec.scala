@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixture._
 import v1.models.utils.JsonErrorValidators
 
 class UkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {

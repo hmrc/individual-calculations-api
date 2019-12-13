@@ -37,7 +37,7 @@ object IncomeTaxDetailFixture {
        |   "payPensionsProfit" : ${incomeTypeBreakdownJson(100)},
        |   "savingsAndGains" : ${incomeTypeBreakdownJson(200)},
        |   "dividends" : ${incomeTypeBreakdownJson(300)},
-       |   "giftAid" : ${giftAidJson.toString()}
+       |   "giftAid" : $giftAidJson
        |}
     """.stripMargin
   )

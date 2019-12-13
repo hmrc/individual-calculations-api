@@ -31,8 +31,8 @@ object EoyEstimateResponse extends HateoasLinks {
   implicit val reads: Reads[EoyEstimateResponse] =
     (JsPath \ "endOfYearEstimate").read[EoyEstimateResponse](Json.reads[EoyEstimateResponse])
 
-  implicit object LinksFactory extends HateoasLinksFactory[EoyEstimateResponse, EoyEstimateResponseHateoasData] {
-    override def links(appConfig: AppConfig, data: EoyEstimateResponseHateoasData): Seq[Link] = {
+  implicit object LinksFactory extends HateoasLinksFactory[EoyEstimateResponse, EoyEstimateHateoasData] {
+    override def links(appConfig: AppConfig, data: EoyEstimateHateoasData): Seq[Link] = {
       import data.{calculationId, nino}
       Seq(
         getMetadata(appConfig, nino, calculationId, isSelf = false),
@@ -43,4 +43,4 @@ object EoyEstimateResponse extends HateoasLinks {
 
 }
 
-case class EoyEstimateResponseHateoasData(nino: String, calculationId: String) extends HateoasData
+case class EoyEstimateHateoasData(nino: String, calculationId: String) extends HateoasData

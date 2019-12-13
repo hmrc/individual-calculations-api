@@ -22,12 +22,17 @@ import v1.models.response.listCalculations.{CalculationListItem, ListCalculation
 
 object CalculationListItemFixture {
 
+  val id: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val calculationTimestamp: String = "2019-03-17T09:22:59Z"
+  val `type`: CalculationType = CalculationType.inYear
+  val requestedBy: Option[CalculationRequestor] = Some(CalculationRequestor.hmrc)
+
   val calculationListItemModel: CalculationListItem =
     CalculationListItem(
-      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      calculationTimestamp = "2019-03-17T09:22:59Z",
-      `type` = CalculationType.inYear,
-      requestedBy = Some(CalculationRequestor.hmrc)
+      id = id,
+      calculationTimestamp = calculationTimestamp,
+      `type` = `type`,
+      requestedBy = requestedBy
     )
 
   val calculationListItemJson: JsValue = Json.parse(

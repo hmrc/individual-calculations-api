@@ -21,32 +21,39 @@ import v1.models.response.getIncomeTaxAndNics.detail.TaxBand
 
 object TaxBandFixture {
 
+  val name: String = "name"
+  val rate: BigDecimal = 100.25
+  val bandLimit: BigDecimal = 400.25
+  val apportionedBandLimit: BigDecimal= 500.25
+  val income: BigDecimal = 600.25
+  val taxAmount: BigDecimal = 700.25
+
   val taxBandModel: TaxBand =
     TaxBand(
-      name = "name",
-      rate = 100.25,
-      bandLimit = 400.25,
-      apportionedBandLimit = 500.25,
-      income = 600.25,
-      taxAmount = 700.25
+      name = name,
+      rate = rate,
+      bandLimit = bandLimit,
+      apportionedBandLimit = apportionedBandLimit,
+      income = income,
+      taxAmount = taxAmount
     )
 
   val taxBandJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "name": "name",
-      | "rate": 100.25,
-      | "bandLimit" : 400.25,
-      | "apportionedBandLimit" : 500.25,
-      | "income" : 600.25,
-      | "taxAmount" : 700.25
+      |   "name": "$name",
+      |   "rate": $rate,
+      |   "bandLimit" : $bandLimit,
+      |   "apportionedBandLimit" : $apportionedBandLimit,
+      |   "income" : $income,
+      |   "taxAmount" : $taxAmount
       |}
     """.stripMargin
   )
 
   def taxBandModel(input: BigDecimal): TaxBand = {
     TaxBand(
-      name = "name",
+      name = name,
       rate = input + 0.17,
       bandLimit = input + 0.34,
       apportionedBandLimit = input + 0.51,
@@ -58,12 +65,12 @@ object TaxBandFixture {
   def taxBandJson(input: BigDecimal): JsValue = Json.parse(
     s"""
       |{
-      | "name": "name",
-      | "rate": ${input + 0.17},
-      | "bandLimit" : ${input + 0.34},
-      | "apportionedBandLimit" : ${input + 0.51},
-      | "income" : ${input + 0.68},
-      | "taxAmount" : ${input + 0.85}
+      |   "name": "$name",
+      |   "rate": ${input + 0.17},
+      |   "bandLimit" : ${input + 0.34},
+      |   "apportionedBandLimit" : ${input + 0.51},
+      |   "income" : ${input + 0.68},
+      |   "taxAmount" : ${input + 0.85}
       |}
     """.stripMargin
   )

@@ -23,22 +23,25 @@ import v1.models.response.getIncomeTaxAndNics.detail.Class4NicDetail
 
 object Class4NicDetailFixture {
 
+  val totalIncomeLiableToClass4Charge: Option[BigInt] = Some(3003)
+  val totalIncomeChargeableToClass4: Option[BigInt] = Some(3004)
+
   val class4NicDetailModel: Class4NicDetail =
     Class4NicDetail(
       class4Losses = Some(class4LossesModel),
-      totalIncomeLiableToClass4Charge = Some(3003),
-      totalIncomeChargeableToClass4 = Some(3004),
+      totalIncomeLiableToClass4Charge = totalIncomeLiableToClass4Charge,
+      totalIncomeChargeableToClass4 = totalIncomeChargeableToClass4,
       class4NicBands = Some(Seq(nicBandModel))
     )
 
   val class4NicDetailJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "class4Losses": ${class4LossesJson.toString()},
-      |   "totalIncomeLiableToClass4Charge": 3003,
-      |   "totalIncomeChargeableToClass4": 3004,
-      |   "class4NicBands": [${nicBandJson.toString()}]
-      |}
+       |{
+       |   "class4Losses": $class4LossesJson,
+       |   "totalIncomeLiableToClass4Charge": ${totalIncomeLiableToClass4Charge.get},
+       |   "totalIncomeChargeableToClass4": ${totalIncomeChargeableToClass4.get},
+       |   "class4NicBands": [$nicBandJson]
+       |}
     """.stripMargin
   )
 }

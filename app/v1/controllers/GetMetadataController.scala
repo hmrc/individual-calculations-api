@@ -27,7 +27,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getMetadata.{CalculationMetadataHateoasData, MetadataResponse}
+import v1.models.response.getMetadata.{MetadataHateoasData, MetadataResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -64,7 +64,7 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, CalculationMetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
+        hateoasFactory.wrap(rawResponse, MetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
 
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

@@ -27,7 +27,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getIncomeTaxAndNics.{GetIncomeTaxAndNicsResponse, TaxAndNicsHateoasData}
+import v1.models.response.getIncomeTaxAndNics.{IncomeTaxAndNicsResponse, IncomeTaxAndNicsHateoasData}
 import v1.models.response.wrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -44,8 +44,8 @@ class GetIncomeTaxAndNicsController @Inject()(
                                              )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
-    HateoasWrapper[GetIncomeTaxAndNicsResponse],
+    CalculationWrapperOrError[IncomeTaxAndNicsResponse],
+    HateoasWrapper[IncomeTaxAndNicsResponse],
     AnyContent](authService, lookupService, parser, service, auditService, cc) {
   controller =>
 
@@ -59,9 +59,9 @@ class GetIncomeTaxAndNicsController @Inject()(
 
   override def requestHandlerFor(
                                   playRequest: Request[AnyContent],
-                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse],
-    HateoasWrapper[GetIncomeTaxAndNicsResponse]] =
-    RequestHandler[CalculationWrapperOrError[GetIncomeTaxAndNicsResponse]](
+                                  req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[IncomeTaxAndNicsResponse],
+    HateoasWrapper[IncomeTaxAndNicsResponse]] =
+    RequestHandler[CalculationWrapperOrError[IncomeTaxAndNicsResponse]](
       RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
@@ -75,7 +75,7 @@ class GetIncomeTaxAndNicsController @Inject()(
         }
       }
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TaxAndNicsHateoasData(req.nino.nino, req.calculationId)))
+        hateoasFactory.wrap(rawResponse, IncomeTaxAndNicsHateoasData(req.nino.nino, req.calculationId)))
 
   def getIncomeTaxAndNics(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

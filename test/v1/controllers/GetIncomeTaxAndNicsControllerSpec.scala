@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.getIncomeTaxAndNics.GetIncomeTaxAndNicsFixture
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
@@ -31,7 +31,7 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getIncomeTaxAndNics.TaxAndNicsHateoasData
+import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsHateoasData
 import v1.models.response.wrappers.CalculationWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -97,17 +97,17 @@ class GetIncomeTaxAndNicsControllerSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, GetIncomeTaxAndNicsFixture.getIncomeTaxAndNicsResponseObj))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, wrappedIncomeTaxAndNicsModel))))
 
         MockHateoasFactory
-            .wrap(GetIncomeTaxAndNicsFixture.getIncomeTaxAndNicsResponse, TaxAndNicsHateoasData(nino, calcId))
-          .returns(HateoasWrapper(GetIncomeTaxAndNicsFixture.getIncomeTaxAndNicsResponse, Seq(testHateoasLink)))
+            .wrap(incomeTaxAndNicsResponseModel, IncomeTaxAndNicsHateoasData(nino, calcId))
+          .returns(HateoasWrapper(incomeTaxAndNicsResponseModel, Seq(testHateoasLink)))
 
 
         val result: Future[Result] = controller.getIncomeTaxAndNics(nino, calcId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        val responseBody: JsObject = GetIncomeTaxAndNicsFixture.successOutputToVendor.deepMerge(linksJson)
+        val responseBody: JsObject = incomeTaxNicsResponseJson.as[JsObject].deepMerge(linksJson)
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 

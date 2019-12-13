@@ -29,7 +29,7 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.{CalculationMessagesHateoasData, MessagesResponse}
+import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
 
@@ -69,7 +69,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccess(filterMessages(req.queryData))
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, req.calculationId)))
 
   def filterMessages(queries: Seq[MessageType])(
     messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {

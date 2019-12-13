@@ -21,20 +21,24 @@ import v1.models.response.getIncomeTaxAndNics.detail.Class4Losses
 
 object Class4LossesFixture {
 
+  val totalClass4LossesAvailable: Option[BigInt] = Some(3001)
+  val totalClass4LossesUsed: Option[BigInt] = Some(3002)
+  val totalClass4LossesCarriedForward: Option[BigInt] = Some(3003)
+
   val class4LossesModel: Class4Losses =
     Class4Losses(
-      totalClass4LossesAvailable = Some(3001),
-      totalClass4LossesUsed = Some(3002),
-      totalClass4LossesCarriedForward = Some(3003)
+      totalClass4LossesAvailable = totalClass4LossesAvailable,
+      totalClass4LossesUsed = totalClass4LossesUsed,
+      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
     )
 
   val class4LossesJson: JsValue = Json.parse(
-    """
-      |{
-      | "totalClass4LossesAvailable" : 3001,
-      | "totalClass4LossesUsed" : 3002,
-      | "totalClass4LossesCarriedForward" : 3003
-      |}
+    s"""
+       |{
+       |   "totalClass4LossesAvailable" : ${totalClass4LossesAvailable.get},
+       |   "totalClass4LossesUsed" : ${totalClass4LossesUsed.get},
+       |   "totalClass4LossesCarriedForward" : ${totalClass4LossesCarriedForward.get}
+       |}
     """.stripMargin
   )
 }

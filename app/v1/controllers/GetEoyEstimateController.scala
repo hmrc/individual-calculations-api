@@ -27,7 +27,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getEoyEstimate.{EoyEstimateResponse, EoyEstimateResponseHateoasData}
+import v1.models.response.getEoyEstimate.{EoyEstimateResponse, EoyEstimateHateoasData}
 import v1.models.response.wrappers.EoyEstimateWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -72,7 +72,7 @@ class GetEoyEstimateController @Inject()(
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, EoyEstimateResponseHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, EoyEstimateHateoasData(req.nino.nino, req.calculationId)))
   }
 
   def getEoyEstimate(nino: String, calculationId: String): Action[AnyContent] =

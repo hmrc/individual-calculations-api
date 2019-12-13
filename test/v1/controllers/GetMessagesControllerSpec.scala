@@ -33,7 +33,7 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.{MessagesResponse, CalculationMessagesHateoasData}
+import v1.models.response.getMessages.{MessagesResponse, MessagesHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -108,7 +108,7 @@ class GetMessagesControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, CalculationMessagesHateoasData(nino, calcId))
+          .wrap(response, MessagesHateoasData(nino, calcId))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
@@ -172,7 +172,7 @@ class GetMessagesControllerSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
       MockHateoasFactory
-        .wrap(response, CalculationMessagesHateoasData(nino, calcId))
+        .wrap(response, MessagesHateoasData(nino, calcId))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))

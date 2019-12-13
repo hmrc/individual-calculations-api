@@ -30,9 +30,10 @@ object NicDetailFixture {
     )
 
   val nicDetailJson: JsValue = Json.parse(
-    s"""{
-       |	"class2Nics": ${class2NicDetailJson.toString()},
-       |	"class4Nics": ${class4NicDetailJson.toString()}
+    s"""
+       |{
+       |   "class2Nics": $class2NicDetailJson,
+       |   "class4Nics": $class4NicDetailJson
        |}
     """.stripMargin
   )

@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForwardFixtures._
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForwardFixture._
 import v1.models.utils.JsonErrorValidators
 
 class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {

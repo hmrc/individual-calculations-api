@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.PayPensionsProfitFixtures._
+import v1.fixtures.getTaxableIncome.detail.PayPensionsProfitFixture._
 import v1.models.utils.JsonErrorValidators
 
 class PayPensionsProfitSpec extends UnitSpec with JsonErrorValidators {

@@ -58,9 +58,11 @@ class TriggerCalculationResponseSpec extends UnitSpec {
 
     "wrapping a TriggerCalculationResponse object" should {
       "expose the correct hateoas links" in new Test {
-        val item1 = TriggerCalculationResponse("calcId")
-        hateoasFactory.wrap(item1, TriggerCalculationHateoasData(nino, "calcId")) shouldBe
-          HateoasWrapper(item1, Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self")))
+        hateoasFactory.wrap(triggerCalculationResponseModel, TriggerCalculationHateoasData(nino, "calcId")) shouldBe
+          HateoasWrapper(
+            triggerCalculationResponseModel,
+            Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self"))
+          )
       }
     }
   }

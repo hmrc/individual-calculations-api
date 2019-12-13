@@ -40,8 +40,8 @@ object MetadataResponse extends HateoasLinks {
   implicit val reads: Reads[MetadataResponse] =
     (JsPath \ "metadata").read[MetadataResponse](Json.reads[MetadataResponse])
 
-  implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, CalculationMetadataHateoasData] {
-    override def links(appConfig: AppConfig, data: CalculationMetadataHateoasData): Seq[Link] = {
+  implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, MetadataHateoasData] {
+    override def links(appConfig: AppConfig, data: MetadataHateoasData): Seq[Link] = {
       import data.{calculationId, errorCount, nino}
       if (errorCount.isEmpty) {
         Seq(
@@ -63,4 +63,4 @@ object MetadataResponse extends HateoasLinks {
 
 }
 
-case class CalculationMetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int]) extends HateoasData
+case class MetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int]) extends HateoasData

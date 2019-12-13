@@ -87,7 +87,7 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
 
     "wrapping a AllowancesDeductionsAndReliefsResponse object" should {
       "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(allowancesDeductionsAndReliefsResponseModel, AllowancesHateoasData(nino, calculationId)) shouldBe
+        hateoasFactory.wrap(allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calculationId)) shouldBe
           HateoasWrapper(
             allowancesDeductionsAndReliefsResponseModel,
             Seq(

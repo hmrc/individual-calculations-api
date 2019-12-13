@@ -52,7 +52,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
 
     "wrapping a MetadataResponse object" should {
       "expose the correct hateoas links when errors are not present" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, CalculationMetadataHateoasData(nino, calcId, None)) shouldBe
+        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None)) shouldBe
           HateoasWrapper(
             metadataResponseModel,
             Seq(
@@ -67,7 +67,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are present" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, CalculationMetadataHateoasData(nino, calcId, Some(1))) shouldBe
+        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, Some(1))) shouldBe
           HateoasWrapper(
             metadataResponseModel,
             Seq(
