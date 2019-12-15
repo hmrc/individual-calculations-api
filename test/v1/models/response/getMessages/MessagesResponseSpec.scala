@@ -30,7 +30,10 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
 
   "Message" when {
     testJsonProperties[Message](messageJson)(
-      mandatoryProperties = Seq("id", "text"),
+      mandatoryProperties = Seq(
+        "id",
+        "text"
+      ),
       optionalProperties = Seq()
     )
   }
@@ -53,17 +56,18 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
+      val calcId = "id"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a MessagesResponse object" should {
       "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(messagesResponseModel, MessagesHateoasData(nino, "calcId")) shouldBe
+        hateoasFactory.wrap(messagesResponseModel, MessagesHateoasData(nino, calcId)) shouldBe
           HateoasWrapper(
             messagesResponseModel,
             Seq(
-              Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "metadata"),
-              Link(s"/individuals/calculations/$nino/self-assessment/calcId/messages", GET, "self")
+              Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "metadata"),
+              Link(s"/individuals/calculations/$nino/self-assessment/$calcId/messages", GET, "self")
             )
           )
       }

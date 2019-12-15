@@ -24,13 +24,23 @@ object AuditResponseFixture {
 
   val auditErrors: Seq[AuditError] = Seq(AuditError(errorCode = "FORMAT_NINO"), AuditError(errorCode = "FORMAT_TAX_YEAR"))
   val body: JsValue = Json.parse("""{ "aField" : "aValue" }""")
-  val auditResponseModelWithBody: AuditResponse = AuditResponse(httpStatus = OK, response = Right(Some(body)))
-  val auditResponseModelWithErrors: AuditResponse = AuditResponse(httpStatus = BAD_REQUEST, response = Left(auditErrors))
+
+  val auditResponseModelWithBody: AuditResponse =
+    AuditResponse(
+      httpStatus = OK,
+      response = Right(Some(body))
+    )
+
+  val auditResponseModelWithErrors: AuditResponse =
+    AuditResponse(
+      httpStatus = BAD_REQUEST,
+      response = Left(auditErrors)
+    )
 
   val auditResponseJsonWithBody: JsValue = Json.parse(
     s"""
        |{
-       |  "httpStatus": 200,
+       |  "httpStatus": $OK,
        |  "body" : $body
        |}
     """.stripMargin
@@ -39,7 +49,7 @@ object AuditResponseFixture {
   val auditResponseJsonWithErrors: JsValue = Json.parse(
     s"""
        |{
-       |  "httpStatus": 400,
+       |  "httpStatus": $BAD_REQUEST,
        |  "errors" : [
        |    {
        |      "errorCode" : "FORMAT_NINO"

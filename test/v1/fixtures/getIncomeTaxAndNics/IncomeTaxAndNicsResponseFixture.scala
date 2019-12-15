@@ -21,8 +21,8 @@ import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
 import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsResponse
-import v1.models.response.wrappers.CalculationWrapperOrError
-import v1.models.response.wrappers.CalculationWrapperOrError._
+import v1.models.response.calculationWrappers.CalculationWrapperOrError
+import v1.models.response.calculationWrappers.CalculationWrapperOrError._
 
 object IncomeTaxAndNicsResponseFixture {
 
@@ -31,6 +31,9 @@ object IncomeTaxAndNicsResponseFixture {
       summary = calculationSummaryModel,
       detail = calculationDetailModel
     )
+
+  val wrappedIncomeTaxAndNicsResponseModel: CalculationWrapperOrError[IncomeTaxAndNicsResponse] =
+    CalculationWrapper(incomeTaxAndNicsResponseModel)
 
   val incomeTaxNicsResponseJson: JsValue = Json.parse(
     s"""
@@ -41,10 +44,7 @@ object IncomeTaxAndNicsResponseFixture {
     """.stripMargin
   )
 
-  val wrappedIncomeTaxAndNicsModel: CalculationWrapperOrError[IncomeTaxAndNicsResponse] =
-    CalculationWrapper(incomeTaxAndNicsResponseModel)
-
-  val successBodyFromBackEnd: JsValue = Json.parse(
+  val incomeTaxAndNicsResponseTopLevelJson: JsValue = Json.parse(
     s"""
        |{
        |  "metadata": $metadataResponseJson,
@@ -54,7 +54,7 @@ object IncomeTaxAndNicsResponseFixture {
        |   }
        |}""".stripMargin)
 
-  val errorBodyFromBackEnd: JsValue = Json.parse(
+  val errorResponseTopLevelJson: JsValue = Json.parse(
     s"""
        |{
        |  "metadata": {

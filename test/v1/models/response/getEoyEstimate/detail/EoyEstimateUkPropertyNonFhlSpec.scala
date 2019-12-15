@@ -23,7 +23,11 @@ import v1.models.utils.JsonErrorValidators
 class EoyEstimateUkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[EoyEstimateUkPropertyNonFhl](eoyEstimateUkPropertyNonFhlJson)(
-    mandatoryProperties = Seq("taxableIncome"),
-    optionalProperties = Seq("finalised")
+    mandatoryProperties = Seq(
+      "taxableIncome"
+    ),
+    optionalProperties = Seq(
+      "finalised"
+    )
   )
 }

@@ -29,9 +29,6 @@ import v1.models.utils.JsonErrorValidators
 
 class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig with JsonErrorValidators {
 
-  val nino: String = "AA123456A"
-  val calculationId: String = "calcId"
-
   "AllowancesDeductionsAndReliefsResponse" when {
     "read from valid JSON" should {
       "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
@@ -82,12 +79,13 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
+      val calcId: String = "calcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a AllowancesDeductionsAndReliefsResponse object" should {
       "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calculationId)) shouldBe
+        hateoasFactory.wrap(allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calcId)) shouldBe
           HateoasWrapper(
             allowancesDeductionsAndReliefsResponseModel,
             Seq(

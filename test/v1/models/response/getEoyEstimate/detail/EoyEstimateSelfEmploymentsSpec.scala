@@ -23,7 +23,12 @@ import v1.models.utils.JsonErrorValidators
 class EoyEstimateSelfEmploymentsSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[EoyEstimateSelfEmployments](eoyEstimateSelfEmploymentsJson)(
-    mandatoryProperties = Seq("selfEmploymentId", "taxableIncome"),
-    optionalProperties = Seq("finalised")
+    mandatoryProperties = Seq(
+      "selfEmploymentId",
+      "taxableIncome"
+    ),
+    optionalProperties = Seq(
+      "finalised"
+    )
   )
 }

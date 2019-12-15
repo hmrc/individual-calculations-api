@@ -44,7 +44,8 @@ object AllowancesDeductionsAndReliefsResponseFixture {
       )
     )
 
-  val allowancesDeductionsAndReliefsResponseJson: JsObject = Json.obj("summary" -> calculationSummaryJson) ++
+  val allowancesDeductionsAndReliefsResponseJson: JsObject =
+    Json.obj("summary" -> calculationSummaryJson) ++
     Json.obj("detail" -> calculationDetailJson)
 
   val allowancesDeductionsAndReliefsResponseJsonEmpty: JsObject = Json.parse(
@@ -60,9 +61,11 @@ object AllowancesDeductionsAndReliefsResponseFixture {
     """.stripMargin
   ).as[JsObject]
 
-  val allowancesDeductionsAndReliefsTopLevelJson: JsValue = metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
+  val allowancesDeductionsAndReliefsTopLevelJson: JsValue =
+    metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
     Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsResponseJson)
 
-  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
+  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue =
+    metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
     allowancesDeductionsAndReliefsResponseJsonEmpty
 }

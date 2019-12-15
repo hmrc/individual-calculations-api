@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
 import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture._
 import v1.models.response.getEoyEstimate.EoyEstimateResponse
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 
 object EoyEstimateResponseFixture {
 
@@ -32,29 +33,19 @@ object EoyEstimateResponseFixture {
   val eoyEstimateResponseJson: JsObject = Json.parse(
     s"""
        |{
-       |  "summary" : ${eoyEstimateSummaryJson.toString()},
-       |  "detail" : ${eoyEstimateDetailJson.toString()}
+       |  "summary" : $eoyEstimateSummaryJson,
+       |  "detail" : $eoyEstimateDetailJson
        |}
     """.stripMargin
   ).as[JsObject]
 
-  val eoyEstimateResponseTopLevelJsonWithMetadata: JsValue = Json.parse(
+  val eoyEstimateResponseTopLevelJson: JsValue = Json.parse(
     s"""
        |{
-       | "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "inYear",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 0
-       |  },
+       | "metadata": $metadataResponseJson,
        | "endOfYearEstimate" : {
-       |   "summary" : ${eoyEstimateSummaryJson.toString()},
-       |   "detail" : ${eoyEstimateDetailJson.toString()}
+       |   "summary" : $eoyEstimateSummaryJson,
+       |   "detail" : $eoyEstimateDetailJson
        | }
        |}
     """.stripMargin

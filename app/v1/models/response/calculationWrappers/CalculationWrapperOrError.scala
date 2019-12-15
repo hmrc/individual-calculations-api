@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.wrappers
+package v1.models.response.calculationWrappers
 
 import play.api.libs.json.{JsPath, Reads}
 
@@ -27,6 +27,7 @@ import play.api.libs.json.{JsPath, Reads}
 sealed trait CalculationWrapperOrError[+A]
 
 object CalculationWrapperOrError {
+
   case class CalculationWrapper[A](a: A) extends CalculationWrapperOrError[A]
   case object ErrorsInCalculation        extends CalculationWrapperOrError[Nothing]
 

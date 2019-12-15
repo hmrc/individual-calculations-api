@@ -20,14 +20,21 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getEoyEstimate.detail.EoyEstimateUkPropertyNonFhl
 
 object EoyEstimateUkPropertyNonFhlFixture {
-  
-  val eoyEstimateUkPropertyNonFhlModel = EoyEstimateUkPropertyNonFhl(taxableIncome = 1002, finalised = Some(true))
+
+  val taxableIncome: BigInt = 1003
+  val finalised: Option[Boolean] = Some(true)
+
+  val eoyEstimateUkPropertyNonFhlModel: EoyEstimateUkPropertyNonFhl =
+    EoyEstimateUkPropertyNonFhl(
+      taxableIncome = taxableIncome,
+      finalised = finalised)
 
   val eoyEstimateUkPropertyNonFhlJson: JsValue = Json.parse(
-    """
-      |{
-      | "taxableIncome" : 1002,
-      | "finalised" : true
-      |}
-    """.stripMargin)
+    s"""
+       |{
+       | "taxableIncome" : $taxableIncome,
+       | "finalised" : ${finalised.get}
+       |}
+    """.stripMargin
+  )
 }

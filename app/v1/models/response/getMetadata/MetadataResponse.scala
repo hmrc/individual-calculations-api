@@ -36,7 +36,6 @@ case class MetadataResponse(id: String,
 object MetadataResponse extends HateoasLinks {
 
   implicit val writes: OWrites[MetadataResponse] = Json.writes[MetadataResponse]
-
   implicit val reads: Reads[MetadataResponse] =
     (JsPath \ "metadata").read[MetadataResponse](Json.reads[MetadataResponse])
 

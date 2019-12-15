@@ -70,7 +70,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, taxableIncomeResponseJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, taxableIncomeResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -87,7 +87,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)

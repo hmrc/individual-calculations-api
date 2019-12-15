@@ -16,65 +16,86 @@
 
 package v1.fixtures.getMetadata
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.getMetadata.MetadataResponse
-import v1.fixtures.getMessages.MessagesResponseFixture._
 
 object MetadataResponseFixture {
 
+  val id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val taxYear = "2018-19"
+  val requestedBy: CalculationRequestor = CalculationRequestor.customer
+  val calculationReason: CalculationReason = CalculationReason.customerRequest
+  val calculationTimestamp: Option[String] = Some("2019-11-15T09:35:15.094Z")
+  val calculationType: CalculationType = CalculationType.inYear
+  val intentToCrystallise: Boolean = true
+  val crystallised: Boolean = false
+  val totalIncomeTaxAndNicsDue: Option[BigDecimal] = None
+  val calculationErrorCount: Option[Int] = None
+
   val metadataResponseModel: MetadataResponse =
     MetadataResponse(
-      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      taxYear = "2018-19",
-      requestedBy = CalculationRequestor.customer,
-      calculationReason = CalculationReason.customerRequest,
-      calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
-      calculationType = CalculationType.crystallisation,
-      intentToCrystallise = true,
-      crystallised = false,
-      totalIncomeTaxAndNicsDue = None,
-      calculationErrorCount = None
+      id = id,
+      taxYear = taxYear,
+      requestedBy = requestedBy,
+      calculationReason = calculationReason,
+      calculationTimestamp = calculationTimestamp,
+      calculationType = calculationType,
+      intentToCrystallise = intentToCrystallise,
+      crystallised = crystallised,
+      totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
+      calculationErrorCount = calculationErrorCount
     )
 
   val metadataResponseJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      |   "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |   "taxYear": "2018-19",
-      |   "requestedBy": "customer",
-      |   "calculationReason": "customerRequest",
-      |   "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |   "calculationType": "crystallisation",
-      |   "intentToCrystallise": true,
-      |   "crystallised": false
+      |   "id": "$id",
+      |   "taxYear": "$taxYear",
+      |   "requestedBy": "$requestedBy",
+      |   "calculationReason": "$calculationReason",
+      |   "calculationTimestamp": "${calculationTimestamp.get}",
+      |   "calculationType": "$calculationType",
+      |   "intentToCrystallise": $intentToCrystallise,
+      |   "crystallised": $crystallised
       |}
   """.stripMargin)
 
-  val metadataResponseTopLevelJsonWithMessages: JsValue = Json.parse(
+  val metadataResponseTopLevelJsonWithErrors: JsValue = Json.parse(
     s"""
        |{
-       |  "metadata": $metadataResponseJson,
-       |  "messages": $messagesResponseJsonErrors
+       |   "metadata": {
+       |      "id": "$id",
+       |      "taxYear": "$taxYear",
+       |      "requestedBy": "$requestedBy",
+       |      "calculationReason": "$calculationReason",
+       |      "calculationTimestamp": "${calculationTimestamp.get}",
+       |      "calculationType": "$calculationType",
+       |      "intentToCrystallise": $intentToCrystallise,
+       |      "crystallised": $crystallised,
+       |      "calculationErrorCount" : 2
+       |   },
+       |   "messages": $messagesResponseJsonErrors
        |}
   """.stripMargin)
 
+  val metadataResponseTopLevelJsonWithoutErrors: JsObject =
+    Json.obj("metadata" -> metadataResponseJson)
 
-  val metadataResponseTopLevelJsonWithoutErrors: JsValue = Json.parse(
+  val metadataResponseTopLevelJsonCrystallised: JsValue = Json.parse(
     s"""
        |{
-       | "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 0
-       |  }
+       |   "metadata" : {
+       |      "id": "$id",
+       |      "taxYear": "$taxYear",
+       |      "requestedBy": "$requestedBy",
+       |      "calculationReason": "$calculationReason",
+       |      "calculationTimestamp": "${calculationTimestamp.get}",
+       |      "calculationType": "crystallisation",
+       |      "intentToCrystallise": $intentToCrystallise,
+       |      "crystallised": true
+       |   }
        |}
-    """.stripMargin
-  )
+  """.stripMargin)
 }

@@ -37,7 +37,6 @@ case class ListCalculationsResponse[I](calculations: Seq[I])
 object ListCalculationsResponse extends HateoasLinks {
 
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = Json.writes[ListCalculationsResponse[I]]
-
   implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = Json.reads
 
   implicit object LinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, CalculationListItem, ListCalculationsHateoasData] {
@@ -47,7 +46,8 @@ object ListCalculationsResponse extends HateoasLinks {
     }
 
     override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: CalculationListItem): Seq[Link] = {
-      import data.nino, item.id
+      import data.nino
+      import item.id
       Seq(getMetadata(appConfig, nino, id, isSelf = true))
     }
   }

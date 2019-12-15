@@ -31,9 +31,9 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.wrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
-import v1.models.response.wrappers.EoyEstimateWrapperOrError
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

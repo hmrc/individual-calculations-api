@@ -21,12 +21,18 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateUkDividends
 
 object EoyEstimateUkDividendsFixture {
 
-  val eoyEstimateUkDividendsModel = EoyEstimateUkDividends(taxableIncome = 1004)
+  val taxableIncome: BigInt = 100
+
+  val eoyEstimateUkDividendsModel: EoyEstimateUkDividends =
+    EoyEstimateUkDividends(
+      taxableIncome = taxableIncome
+    )
 
   val eoyEstimateUkDividendsJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "taxableIncome" : 1004
+      |   "taxableIncome" : $taxableIncome
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }

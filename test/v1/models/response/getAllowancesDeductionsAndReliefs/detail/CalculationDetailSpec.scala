@@ -24,6 +24,9 @@ class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[CalculationDetail](calculationDetailJson)(
     mandatoryProperties = Seq(),
-    optionalProperties = Seq("allowancesAndDeductions", "reliefs")
+    optionalProperties = Seq(
+      "allowancesAndDeductions",
+      "reliefs"
+    )
   )
 }

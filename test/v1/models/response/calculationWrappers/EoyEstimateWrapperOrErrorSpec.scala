@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.wrappers
+package v1.models.response.calculationWrappers
 
 import support.UnitSpec
-import v1.fixtures.wrappers.EoyEstimateWrapperOrErrorFixture._
-import v1.models.response.wrappers.EoyEstimateWrapperOrError._
+import v1.fixtures.calculationWrappers.EoyEstimateWrapperOrErrorFixture._
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError._
 
 
 class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
@@ -32,19 +32,19 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
 
     "read from valid JSON with no error count" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutErrorCount.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimate
+        eoyEstimateWrapperJsonWithoutErrorCount.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
       }
     }
 
     "read from valid JSON with an error count of zero" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutErrors.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimate
+        eoyEstimateWrapperJsonWithoutErrors.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
       }
     }
 
     "read from valid JSON with no calculation type" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutCalculationType.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimate
+        eoyEstimateWrapperJsonWithoutCalculationType.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
       }
     }
 

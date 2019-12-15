@@ -21,27 +21,35 @@ import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
 object EoyEstimateSummaryFixture {
 
+  val totalEstimatedIncome: Option[BigInt] = Some(1000)
+  val totalTaxableIncome: Option[BigInt] = Some(2000)
+  val incomeTaxAmount: Option[BigDecimal] = Some(3000.98)
+  val nic2: Option[BigDecimal] = Some(4000.98)
+  val nic4: Option[BigDecimal] = Some(5000.98)
+  val totalNicAmount: Option[BigDecimal] = Some(6000.98)
+  val incomeTaxNicAmount: Option[BigDecimal] = Some(7000.98)
+
   val eoyEstimateSummaryModel: EoyEstimateSummary =
     EoyEstimateSummary(
-      totalEstimatedIncome = Some(1000),
-      totalTaxableIncome = Some(2000),
-      incomeTaxAmount = Some(3000.98),
-      nic2 = Some(4000.98),
-      nic4 = Some(5000.98),
-      totalNicAmount = Some(6000.98),
-      incomeTaxNicAmount = Some(7000.98)
+      totalEstimatedIncome = totalEstimatedIncome,
+      totalTaxableIncome = totalTaxableIncome,
+      incomeTaxAmount = incomeTaxAmount,
+      nic2 = nic2,
+      nic4 = nic4,
+      totalNicAmount = totalNicAmount,
+      incomeTaxNicAmount = incomeTaxNicAmount
     )
 
   val eoyEstimateSummaryJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "totalEstimatedIncome" : 1000,
-      | "totalTaxableIncome" : 2000,
-      | "incomeTaxAmount" : 3000.98,
-      | "nic2" : 4000.98,
-      | "nic4" : 5000.98,
-      | "totalNicAmount" : 6000.98,
-      | "incomeTaxNicAmount" : 7000.98
+      |   "totalEstimatedIncome" : ${totalEstimatedIncome.get},
+      |   "totalTaxableIncome" : ${totalTaxableIncome.get},
+      |   "incomeTaxAmount" : ${incomeTaxAmount.get},
+      |   "nic2" : ${nic2.get},
+      |   "nic4" : ${nic4.get},
+      |   "totalNicAmount" : ${totalNicAmount.get},
+      |   "incomeTaxNicAmount" : ${incomeTaxNicAmount.get}
       |}
     """.stripMargin
   )

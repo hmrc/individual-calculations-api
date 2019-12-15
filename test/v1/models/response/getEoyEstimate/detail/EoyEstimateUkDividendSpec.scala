@@ -23,7 +23,9 @@ import v1.models.utils.JsonErrorValidators
 class EoyEstimateUkDividendSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[EoyEstimateUkDividends](eoyEstimateUkDividendsJson)(
-    mandatoryProperties = Seq("taxableIncome"),
+    mandatoryProperties = Seq(
+      "taxableIncome"
+    ),
     optionalProperties = Seq()
   )
 }

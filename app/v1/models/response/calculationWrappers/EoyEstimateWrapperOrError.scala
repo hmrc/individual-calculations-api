@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.wrappers
+package v1.models.response.calculationWrappers
 
 import play.api.libs.json.{JsPath, Reads}
 import v1.models.response.common.CalculationType

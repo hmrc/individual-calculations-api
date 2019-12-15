@@ -17,6 +17,7 @@
 package v1.fixtures.getTaxableIncome
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.fixtures.getTaxableIncome.detail.CalculationDetailFixture._
 import v1.fixtures.getTaxableIncome.summary.CalculationSummaryFixture._
 import v1.models.response.getTaxableIncome.TaxableIncomeResponse
@@ -31,12 +32,14 @@ object TaxableIncomeResponseFixture {
 
   val taxableIncomeResponseJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "summary" : $calculationSummaryJson,
-      |   "detail" : $calculationDetailJson
-      |}
+       |{
+       |   "summary" : $calculationSummaryJson,
+       |   "detail" : $calculationDetailJson
+       |}
     """.stripMargin
   )
 
-  val taxableIncomeResponseTopLevelJson: JsValue = Json.obj("taxableIncome" -> taxableIncomeResponseJson)
+  val taxableIncomeResponseTopLevelJson: JsValue =
+    Json.obj("taxableIncome" -> taxableIncomeResponseJson) ++
+      metadataResponseTopLevelJsonWithoutErrors.as[JsObject]
 }

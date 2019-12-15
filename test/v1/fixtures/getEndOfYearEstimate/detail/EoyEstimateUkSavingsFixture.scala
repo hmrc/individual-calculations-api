@@ -21,20 +21,24 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateUkSavings
 
 object EoyEstimateUkSavingsFixture {
 
+  val savingsAccountId: String = "yW4zuqfGBZGPlpq"
+  val savingsAccountName: Option[String] = Some("bank & building account 1")
+  val taxableIncome: BigInt = 1001
+
   val eoyEstimateUkSavingsModel: EoyEstimateUkSavings =
     EoyEstimateUkSavings(
-      savingsAccountId = "yW4zuqfGBZGPlpq",
-      savingsAccountName = Some("bank & building account 1"),
-      taxableIncome = 1001
+      savingsAccountId = savingsAccountId,
+      savingsAccountName = savingsAccountName,
+      taxableIncome = taxableIncome
     )
 
   val eoyEstimateUkSavingsJson: JsValue = Json.parse(
-    """
-      |{
-      |   "savingsAccountId" : "yW4zuqfGBZGPlpq",
-      |   "savingsAccountName" : "bank & building account 1",
-      |   "taxableIncome" : 1001
-      |}
+    s"""
+       |{
+       |   "savingsAccountId" : "$savingsAccountId",
+       |   "savingsAccountName" : "${savingsAccountName.get}",
+       |   "taxableIncome" : $taxableIncome
+       |}
     """.stripMargin
   )
 }

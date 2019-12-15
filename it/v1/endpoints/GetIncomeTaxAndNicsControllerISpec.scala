@@ -71,7 +71,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, incomeTaxAndNicsResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -88,7 +88,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package v1.fixtures.wrappers
+package v1.fixtures.calculationWrappers
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture.{eoyEstimateResponseJson, eoyEstimateResponseModel}
-import v1.models.response.wrappers.EoyEstimateWrapperOrError
-import v1.models.response.wrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 
 object EoyEstimateWrapperOrErrorFixture {
   
-  val wrappedEoyEstimate: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseModel)
+  val wrappedEoyEstimateModel: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseModel)
 
   val eoyEstimateWrapperJsonWithErrors: JsValue = Json.parse(
     s"""

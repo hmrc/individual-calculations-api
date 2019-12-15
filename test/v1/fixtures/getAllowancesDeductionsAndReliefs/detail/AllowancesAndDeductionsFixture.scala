@@ -21,23 +21,29 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.detail.AllowancesAnd
 
 object AllowancesAndDeductionsFixture {
 
+  val personalAllowance: Option[BigInt] = Some(12500)
+  val reducedPersonalAllowance: Option[BigInt] = Some(12501)
+  val giftOfInvestmentsAndPropertyToCharity: Option[BigInt] = Some(12502)
+  val blindPersonsAllowance: Option[BigInt] = Some(12503)
+  val lossesAppliedToGeneralIncome: Option[BigInt] = Some(12504)
+
   val allowancesAndDeductionsModel: AllowancesAndDeductions =
     AllowancesAndDeductions(
-      personalAllowance = Some(12500),
-      reducedPersonalAllowance = Some(12500),
-      giftOfInvestmentsAndPropertyToCharity = Some(12500),
-      blindPersonsAllowance = Some(12500),
-      lossesAppliedToGeneralIncome = Some(12500)
+      personalAllowance = personalAllowance,
+      reducedPersonalAllowance = reducedPersonalAllowance,
+      giftOfInvestmentsAndPropertyToCharity = giftOfInvestmentsAndPropertyToCharity,
+      blindPersonsAllowance = blindPersonsAllowance,
+      lossesAppliedToGeneralIncome = lossesAppliedToGeneralIncome
     )
 
   val allowancesAndDeductionsJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      |  "personalAllowance": 12500,
-      |  "reducedPersonalAllowance": 12500,
-      |  "giftOfInvestmentsAndPropertyToCharity": 12500,
-      |  "blindPersonsAllowance": 12500,
-      |  "lossesAppliedToGeneralIncome": 12500
+      |  "personalAllowance": ${personalAllowance.get},
+      |  "reducedPersonalAllowance": ${reducedPersonalAllowance.get},
+      |  "giftOfInvestmentsAndPropertyToCharity": ${giftOfInvestmentsAndPropertyToCharity.get},
+      |  "blindPersonsAllowance": ${blindPersonsAllowance.get},
+      |  "lossesAppliedToGeneralIncome": ${lossesAppliedToGeneralIncome.get}
       |}
     """.stripMargin
   )

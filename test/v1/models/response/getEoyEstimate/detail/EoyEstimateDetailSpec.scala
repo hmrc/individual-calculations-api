@@ -24,6 +24,12 @@ class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[EoyEstimateDetail](eoyEstimateDetailJson)(
     mandatoryProperties = Seq(),
-    optionalProperties = Seq("selfEmployments", "ukPropertyFhl", "ukPropertyNonFhl", "ukSavings", "ukDividends")
+    optionalProperties = Seq(
+      "selfEmployments",
+      "ukPropertyFhl",
+      "ukPropertyNonFhl",
+      "ukSavings",
+      "ukDividends"
+    )
   )
 }

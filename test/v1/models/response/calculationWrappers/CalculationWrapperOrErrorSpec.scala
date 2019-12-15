@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.wrappers
+package v1.models.response.calculationWrappers
 
 import play.api.libs.json.JsError
 import support.UnitSpec
-import v1.fixtures.wrappers.CalculationWrapperOrErrorFixture._
-import v1.models.response.wrappers.CalculationWrapperOrError.ErrorsInCalculation
+import v1.fixtures.calculationWrappers.CalculationWrapperOrErrorFixture._
+import v1.models.response.calculationWrappers.CalculationWrapperOrError.ErrorsInCalculation
 
 class CalculationWrapperOrErrorSpec extends UnitSpec {
 

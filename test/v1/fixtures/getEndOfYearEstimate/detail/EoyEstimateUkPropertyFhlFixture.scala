@@ -21,13 +21,20 @@ import v1.models.response.getEoyEstimate.detail.EoyEstimateUkPropertyFhl
 
 object EoyEstimateUkPropertyFhlFixture {
 
-  val eoyEstimateUkPropertyFhlModel = EoyEstimateUkPropertyFhl(taxableIncome = 1003, finalised = Some(true))
+  val taxableIncome: BigInt = 1003
+  val finalised: Option[Boolean] = Some(true)
+
+  val eoyEstimateUkPropertyFhlModel: EoyEstimateUkPropertyFhl =
+    EoyEstimateUkPropertyFhl(
+      taxableIncome = taxableIncome,
+      finalised = finalised
+    )
 
   val eoyEstimateUkPropertyFhlJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      | "taxableIncome" : 1003,
-      | "finalised" : true
+      |   "taxableIncome" : $taxableIncome,
+      |   "finalised" : ${finalised.get}
       |}
     """.stripMargin)
 }

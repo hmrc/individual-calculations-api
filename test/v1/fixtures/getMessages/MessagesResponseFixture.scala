@@ -17,7 +17,7 @@
 package v1.fixtures.getMessages
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getMessages.{MessagesResponse, Message}
+import v1.models.response.getMessages.{Message, MessagesResponse}
 
 object MessageFixture {
 
@@ -35,16 +35,19 @@ object MessagesResponseFixture {
 
   val err1: Message = Message(id = "err1", text = "text1")
   val err2: Message = Message(id = "err2", text = "text2")
+
   val info1: Message = Message(id = "info1", text = "text1")
   val info2: Message = Message(id = "info2", text = "text2")
+
   val warn1: Message = Message(id = "warn1", text = "text1")
   val warn2: Message = Message(id = "warn2", text = "text2")
 
-  val messagesResponseModel: MessagesResponse = MessagesResponse(
-    info = Some(Seq(info1, info2)),
-    warnings = Some(Seq(warn1, warn2)),
-    errors = Some(Seq(err1, err2))
-  )
+  val messagesResponseModel: MessagesResponse =
+    MessagesResponse(
+      info = Some(Seq(info1, info2)),
+      warnings = Some(Seq(warn1, warn2)),
+      errors = Some(Seq(err1, err2))
+    )
 
   val messagesResponseJson: JsValue = Json.parse(
     """
@@ -71,6 +74,17 @@ object MessagesResponseFixture {
       |  "errors":[
       |    {"id":"err1", "text":"text1"},
       |    {"id":"err2", "text":"text2"}
+      |  ]
+      |}
+    """.stripMargin
+  )
+
+  val messagesResponseJsonInfo: JsValue = Json.parse(
+    """
+      |{
+      |  "info": [
+      |    {"id":"info1", "text":"text1"},
+      |    {"id":"info2", "text":"text2"}
       |  ]
       |}
     """.stripMargin

@@ -29,7 +29,7 @@ class EoyEstimateResponseSpec extends UnitSpec {
   "EoyEstimateResponse" when {
     "read from valid JSON" should {
       "produce the expected EoyEstimateResponse object" in {
-        eoyEstimateResponseTopLevelJsonWithMetadata.as[EoyEstimateResponse] shouldBe eoyEstimateResponseModel
+        eoyEstimateResponseTopLevelJson.as[EoyEstimateResponse] shouldBe eoyEstimateResponseModel
       }
     }
 
@@ -40,7 +40,7 @@ class EoyEstimateResponseSpec extends UnitSpec {
     }
   }
 
-  "HateoasFactory" should {
+  "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
@@ -48,16 +48,17 @@ class EoyEstimateResponseSpec extends UnitSpec {
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
-    "return the correct hateoas links" in new Test {
-
-      hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId)) shouldBe
-        HateoasWrapper(
-          eoyEstimateResponseModel,
-          Seq(
-            Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "metadata"),
-            Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "self")
+    "wrapping an EoyEstimateResponse object" should {
+      "return the correct hateoas links" in new Test {
+        hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId)) shouldBe
+          HateoasWrapper(
+            eoyEstimateResponseModel,
+            Seq(
+              Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "metadata"),
+              Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "self")
+            )
           )
-        )
+      }
     }
   }
 }

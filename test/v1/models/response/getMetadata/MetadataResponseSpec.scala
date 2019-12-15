@@ -31,7 +31,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
   "MetadataResponse" when {
     "read from valid JSON" should {
       "produce the expected MetadataResponseObject" in {
-        metadataResponseTopLevelJsonWithMessages.as[MetadataResponse] shouldBe metadataResponseModel
+        metadataResponseTopLevelJsonWithoutErrors.as[MetadataResponse] shouldBe metadataResponseModel
       }
     }
 

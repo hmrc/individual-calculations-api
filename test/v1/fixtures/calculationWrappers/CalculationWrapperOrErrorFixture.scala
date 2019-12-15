@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.fixtures.wrappers
+package v1.fixtures.calculationWrappers
 
 import play.api.libs.json.{JsPath, JsValue, Json, Reads}
-import v1.models.response.wrappers.CalculationWrapperOrError.CalculationWrapper
-import v1.models.response.wrappers.CalculationWrapperOrError
+import v1.models.response.calculationWrappers.CalculationWrapperOrError.CalculationWrapper
+import v1.models.response.calculationWrappers.CalculationWrapperOrError
 
 object CalculationWrapperOrErrorFixture {
 

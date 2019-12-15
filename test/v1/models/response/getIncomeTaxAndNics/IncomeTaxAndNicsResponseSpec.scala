@@ -26,13 +26,17 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 
 class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
 
-  "GetIncomeTaxCalcResponse" should {
-    "write to json correctly" in {
-      Json.toJson(incomeTaxAndNicsResponseModel) shouldBe incomeTaxNicsResponseJson
+  "IncomeTaxNicsResponse" when {
+    "read from valid JSON" should {
+      "produce the expected IncomeTaxNicsResponse object" in {
+        incomeTaxAndNicsResponseTopLevelJson.as[IncomeTaxAndNicsResponse] shouldBe incomeTaxAndNicsResponseModel
+      }
     }
 
-    "read from json correctly" in {
-      successBodyFromBackEnd.as[IncomeTaxAndNicsResponse] shouldBe incomeTaxAndNicsResponseModel
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(incomeTaxAndNicsResponseModel) shouldBe incomeTaxNicsResponseJson
+      }
     }
   }
 
@@ -57,5 +61,4 @@ class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
       }
     }
   }
-
 }

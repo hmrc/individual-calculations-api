@@ -24,7 +24,6 @@ import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.{GET, POST}
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.models.response.common.CalculationType
 
 class ListCalculationsResponseSpec extends UnitSpec {
 
@@ -60,16 +59,22 @@ class ListCalculationsResponseSpec extends UnitSpec {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino = "someNino"
+      val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a ListCalculationsResponse object" should {
       "expose the correct hateoas links" in new Test {
-        val item1 = CalculationListItem("calcId", "timestamp", CalculationType.inYear, None)
-        hateoasFactory.wrapList(ListCalculationsResponse(Seq(item1)), ListCalculationsHateoasData(nino)) shouldBe
+        hateoasFactory.wrapList(ListCalculationsResponse(Seq(calculationListItemModel)), ListCalculationsHateoasData(nino)) shouldBe
           HateoasWrapper(
             ListCalculationsResponse(
-              Seq(HateoasWrapper(item1, Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self"))))),
+              Seq(
+                HateoasWrapper(
+                  calculationListItemModel,
+                  Seq(Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "self"))
+                )
+              )
+            ),
             Seq(
               Link(s"/individuals/calculations/$nino/self-assessment", GET, "self"),
               Link(s"/individuals/calculations/$nino/self-assessment", POST, "trigger")

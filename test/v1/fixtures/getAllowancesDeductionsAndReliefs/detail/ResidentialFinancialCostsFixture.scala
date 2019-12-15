@@ -21,21 +21,26 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.detail.ResidentialFi
 
 object ResidentialFinancialCostsFixture {
 
+  val amountClaimed: BigInt = 12500
+  val allowableAmount: Option[BigInt] = Some(12500)
+  val rate: BigDecimal = 20.0
+  val propertyFinanceRelief: BigInt = 12500
+
   val residentialFinancialCostsModel: ResidentialFinanceCosts =
     ResidentialFinanceCosts(
-      amountClaimed = 12500,
-      allowableAmount = Some(12500),
-      rate = 20.0,
-      propertyFinanceRelief = 12500
+      amountClaimed = amountClaimed,
+      allowableAmount = allowableAmount,
+      rate = rate,
+      propertyFinanceRelief = propertyFinanceRelief
     )
 
   val residentialFinancialCostsJson: JsValue = Json.parse(
-    """
+    s"""
       |{
-      |  "amountClaimed" : 12500,
-      |  "allowableAmount" : 12500,
-      |  "rate" : 20,
-      |  "propertyFinanceRelief" : 12500
+      |  "amountClaimed" : $amountClaimed,
+      |  "allowableAmount" : ${allowableAmount.get},
+      |  "rate" : $rate,
+      |  "propertyFinanceRelief" : $propertyFinanceRelief
       |}
     """.stripMargin
   )

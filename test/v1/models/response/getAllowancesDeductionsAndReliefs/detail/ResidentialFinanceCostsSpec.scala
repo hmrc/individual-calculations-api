@@ -23,7 +23,13 @@ import v1.models.utils.JsonErrorValidators
 class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[ResidentialFinanceCosts](residentialFinancialCostsJson)(
-    mandatoryProperties = Seq("amountClaimed", "rate", "propertyFinanceRelief"),
-    optionalProperties = Seq("allowableAmount")
+    mandatoryProperties = Seq(
+      "amountClaimed",
+      "rate",
+      "propertyFinanceRelief"
+    ),
+    optionalProperties = Seq(
+      "allowableAmount"
+    )
   )
 }
