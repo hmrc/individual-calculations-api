@@ -16,7 +16,7 @@
 
 package v1.controllers.requestParsers.validators
 
-import v1.controllers.requestParsers.validators.validations.{ CalculationIdValidation, NinoValidation, TypeValidation}
+import v1.controllers.requestParsers.validators.validations.{ CalculationIdValidation, NinoValidation, MessageTypeValidation}
 import v1.models.errors.MtdError
 import v1.models.request.GetCalculationMessagesRawData
 
@@ -28,6 +28,10 @@ class GetCalculationMessagesValidator extends Validator[GetCalculationMessagesRa
   }
 
   private def parameterFormatValidation: GetCalculationMessagesRawData => List[List[MtdError]] = { data =>
-    List(NinoValidation.validate(data.nino), CalculationIdValidation.validate(data.calculationId), TypeValidation.validateList(data.queryData))
+    List(
+      NinoValidation.validate(data.nino),
+      CalculationIdValidation.validate(data.calculationId),
+      MessageTypeValidation.validateList(data.queryData)
+    )
   }
 }

@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators.validations
 
 import v1.models.errors.{MtdError, TypeFormatError}
 
-object TypeValidation {
+object MessageTypeValidation {
 
   val typeOptions: Seq[String] = Seq("info", "warning", "error")
 

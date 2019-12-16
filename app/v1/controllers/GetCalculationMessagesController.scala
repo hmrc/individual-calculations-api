@@ -24,10 +24,11 @@ import v1.controllers.requestParsers.GetCalculationMessagesParser
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.GenericAuditDetail
+import v1.models.domain.MessageType
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
 import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter

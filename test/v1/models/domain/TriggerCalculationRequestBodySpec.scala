@@ -19,14 +19,28 @@ package v1.models.domain
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
-class EmptyJsonBodySpec extends UnitSpec {
+class TriggerCalculationRequestBodySpec extends UnitSpec {
 
-  val emptyJson: JsValue = Json.parse("""{}""")
+  val triggerCalculationRequestBodyModel = TriggerCalculationRequestBody(taxYear = "2018-19")
 
-  "EmptyJsonBody" when {
-    "written to JSON" should {
+  val triggerCalculationRequestBodyJson: JsValue = Json.parse(
+    """
+      |{
+      |  "taxYear" : "2018-19"
+      |}
+    """.stripMargin
+  )
+
+  "TriggerCalculationRequestBody" when {
+    "read from valid JSON" should {
+      "produce the expected TriggerCalculationRequestBody object" in {
+        triggerCalculationRequestBodyJson.as[TriggerCalculationRequestBody] shouldBe triggerCalculationRequestBodyModel
+      }
+    }
+
+    "written to JSON" must {
       "produce the expected JsObject" in {
-        Json.toJson(EmptyJsonBody) shouldBe emptyJson
+        Json.toJson(triggerCalculationRequestBodyModel) shouldBe triggerCalculationRequestBodyJson
       }
     }
   }

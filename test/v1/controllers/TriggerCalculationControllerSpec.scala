@@ -26,7 +26,7 @@ import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v1.models.domain.TriggerCalculation
+import v1.models.domain.TriggerCalculationRequestBody
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
@@ -86,7 +86,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
       |   ]
       |}""".stripMargin)
 
-  val triggerCalculation = TriggerCalculation(taxYear)
+  val triggerCalculation = TriggerCalculationRequestBody(taxYear)
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)

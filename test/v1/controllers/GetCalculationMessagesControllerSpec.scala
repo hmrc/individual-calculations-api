@@ -27,11 +27,12 @@ import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import v1.models.domain.MessageType
 import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType}
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
 import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.support.BackendResponseMappingSupport
 

@@ -20,8 +20,9 @@ import play.api.http.Status._
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockGetCalculationMessagesValidator
+import v1.models.domain.MessageType
 import v1.models.errors._
-import v1.models.request.{ GetCalculationMessagesRawData, GetCalculationMessagesRequest, MessageType }
+import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
 
 class GetCalculationQueryParserSpec extends UnitSpec {
   val nino          = "AA111111A"
@@ -37,7 +38,13 @@ class GetCalculationQueryParserSpec extends UnitSpec {
         val data = GetCalculationMessagesRawData(nino, calculationId, Seq("errors"))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(GetCalculationMessagesRequest(Nino(nino), calculationId, Seq(MessageType.toTypeClass("errors"))))
+        parser.parseRequest(data) shouldBe Right(
+          GetCalculationMessagesRequest(
+            Nino(nino),
+            calculationId,
+            Seq(MessageType.toTypeClass("errors"))
+          )
+        )
       }
     }
   }

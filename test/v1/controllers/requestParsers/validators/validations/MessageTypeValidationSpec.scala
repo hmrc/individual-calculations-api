@@ -20,21 +20,21 @@ import support.UnitSpec
 import v1.models.errors.TypeFormatError
 import v1.models.utils.JsonErrorValidators
 
-class TypeValidationSpec extends UnitSpec with JsonErrorValidators {
+class MessageTypeValidationSpec extends UnitSpec with JsonErrorValidators {
 
   "validate" should {
     "return no errors" when {
       "when a valid type is supplied" in {
 
         val validType        = "error"
-        val validationResult = TypeValidation.validate(validType)
+        val validationResult = MessageTypeValidation.validate(validType)
         validationResult.isEmpty shouldBe true
       }
 
       "when a list of valid types is supplied" in {
 
         val validTypes       = Seq("info", "warning", "error")
-        val validationResult = TypeValidation.validateList(validTypes)
+        val validationResult = MessageTypeValidation.validateList(validTypes)
         validationResult.isEmpty shouldBe true
       }
     }
@@ -43,7 +43,7 @@ class TypeValidationSpec extends UnitSpec with JsonErrorValidators {
       "when an invalid type is supplied" in {
 
         val invalidType      = "errors"
-        val validationResult = TypeValidation.validate(invalidType)
+        val validationResult = MessageTypeValidation.validate(invalidType)
         validationResult.isEmpty shouldBe false
         validationResult.length shouldBe 1
         validationResult.head shouldBe TypeFormatError
@@ -54,7 +54,7 @@ class TypeValidationSpec extends UnitSpec with JsonErrorValidators {
       "many invalid types are supplied" in {
 
         val invalidTypes     = Seq("shmerror", "shminfo", "shmarning")
-        val validationResult = TypeValidation.validateList(invalidTypes)
+        val validationResult = MessageTypeValidation.validateList(invalidTypes)
         validationResult.isEmpty shouldBe false
         validationResult.length shouldBe 3
         validationResult.distinct shouldBe List(TypeFormatError)

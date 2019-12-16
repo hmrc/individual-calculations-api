@@ -17,9 +17,12 @@
 package v1.models.request
 
 import uk.gov.hmrc.domain.Nino
+import v1.models.domain.MessageType
 
 trait CommonCalculationRequest {
+
   def nino: Nino
+
   def calculationId: String
 
   def backendCalculationUri: String = s"/$nino/self-assessment/$calculationId"

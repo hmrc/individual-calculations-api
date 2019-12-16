@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators.validations
+package v1.models.domain
 
-import v1.models.domain.TaxYear
-import v1.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+object TaxYear {
 
-object MinTaxYearValidation {
-
-  // @param taxYear In format YYYY-YY
-  def validate(taxYear: String, minTaxYear: Int): List[MtdError] = {
-
-    val taxYearEnding = Integer.parseInt(TaxYear.toYearEnding(taxYear))
-
-    if (taxYearEnding >= minTaxYear) NoValidationErrors else List(RuleTaxYearNotSupportedError)
-  }
+  /**
+    * @param taxYear tax year in MTD format (e.g. 2017-18)
+    * @return in the form of the year ending, format used by DES (e.g. 2018)
+    */
+  def toYearEnding(taxYear: String): String =
+    taxYear.take(2) + taxYear.takeRight(2)
 }

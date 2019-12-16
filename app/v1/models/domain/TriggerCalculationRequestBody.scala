@@ -18,8 +18,8 @@ package v1.models.domain
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TriggerCalculation(taxYear: String)
+case class TriggerCalculationRequestBody(taxYear: String)
 
-object TriggerCalculation {
-  implicit val formats: OFormat[TriggerCalculation] = Json.format[TriggerCalculation]
+object TriggerCalculationRequestBody {
+  implicit val format: OFormat[TriggerCalculationRequestBody] = Json.format[TriggerCalculationRequestBody]
 }
