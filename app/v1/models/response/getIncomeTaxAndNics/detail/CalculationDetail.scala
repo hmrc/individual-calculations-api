@@ -23,5 +23,5 @@ case class CalculationDetail(incomeTax: IncomeTaxDetail,
                              taxDeductedAtSource: Option[TaxDeductedAtSource])
 
 object CalculationDetail {
-  implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
 }

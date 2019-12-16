@@ -29,7 +29,7 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
+import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
 
@@ -45,8 +45,8 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetMessagesRawData,
     GetMessagesRequest,
-    CalculationMessages,
-    HateoasWrapper[CalculationMessages],
+    MessagesResponse,
+    HateoasWrapper[MessagesResponse],
     AnyContent](authService, lookupService, parser, service, auditService, cc)
     with MessagesFilter {
   controller =>
@@ -60,8 +60,8 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetMessagesRequest): RequestHandler[CalculationMessages, HateoasWrapper[CalculationMessages]] =
-    RequestHandler[CalculationMessages](RequestDefn.Get(req.backendCalculationUri))
+                                 req: GetMessagesRequest): RequestHandler[MessagesResponse, HateoasWrapper[MessagesResponse]] =
+    RequestHandler[MessagesResponse](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -69,10 +69,10 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccess(filterMessages(req.queryData))
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, req.calculationId)))
 
   def filterMessages(queries: Seq[MessageType])(
-    messagesResponse: ResponseWrapper[CalculationMessages]): Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
+    messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {
     val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)

@@ -28,5 +28,5 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit extends NestedJsonReads{
-  implicit val formats: OFormat[PayPensionsProfit] = Json.format[PayPensionsProfit]
+  implicit val format: OFormat[PayPensionsProfit] = Json.format[PayPensionsProfit]
 }

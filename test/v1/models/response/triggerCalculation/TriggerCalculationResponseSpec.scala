@@ -20,48 +20,50 @@ import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
+import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.models.hateoas.Method.{GET, POST}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 
-  val json: JsValue = Json.parse("""
+  val triggerCalculationResponseModel = TriggerCalculationResponse("testId")
+
+  val triggerCalculationResponseJson: JsValue = Json.parse(
+    """
       |{
       | "id": "testId"
       |}
     """.stripMargin
   )
 
-  val response = TriggerCalculationResponse("testId")
+  "TriggerCalculationResponse" when {
+    "read from valid JSON" should {
+      "produce the expected TriggerCalculationResponse object" in {
+        triggerCalculationResponseJson.as[TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
+      }
+    }
 
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(response) shouldBe json
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(triggerCalculationResponseModel) shouldBe triggerCalculationResponseJson
+      }
     }
   }
 
-  "JSON reads" must {
-    "align with back-end response" in {
-      json.as[TriggerCalculationResponse] shouldBe response
-    }
-  }
-
-  "HateoasFactory" must {
+  "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
+      val nino = "someNino"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
-    "expose the correct links" in new Test {
-      val item1 = TriggerCalculationResponse("calcId")
-      hateoasFactory.wrap(item1, TriggerCalculationHateaosData(nino, "calcId")) shouldBe
-        HateoasWrapper(
-          item1,
-          Seq(
-            Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self")
+    "wrapping a TriggerCalculationResponse object" should {
+      "expose the correct hateoas links" in new Test {
+        hateoasFactory.wrap(triggerCalculationResponseModel, TriggerCalculationHateoasData(nino, "calcId")) shouldBe
+          HateoasWrapper(
+            triggerCalculationResponseModel,
+            Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self"))
           )
-        )
+      }
     }
   }
 }

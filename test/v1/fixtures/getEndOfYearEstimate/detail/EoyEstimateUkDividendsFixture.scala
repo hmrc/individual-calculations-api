@@ -17,16 +17,22 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkDividends
+import v1.models.response.getEoyEstimate.detail.EoyEstimateUkDividends
 
 object EoyEstimateUkDividendsFixture {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "taxableIncome" : 1000
-      |}
-    """.stripMargin)
+  val taxableIncome: BigInt = 100
 
-  val model = EoyEstimateUkDividends(1000)
+  val eoyEstimateUkDividendsModel: EoyEstimateUkDividends =
+    EoyEstimateUkDividends(
+      taxableIncome = taxableIncome
+    )
+
+  val eoyEstimateUkDividendsJson: JsValue = Json.parse(
+    s"""
+      |{
+      |   "taxableIncome" : $taxableIncome
+      |}
+    """.stripMargin
+  )
 }

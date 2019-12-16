@@ -17,6 +17,8 @@
 package v1.models.response.getTaxableIncome.detail.ukPropertyFhl
 
 import play.api.libs.json._
+import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetail
+import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          totalExpenses: Option[BigDecimal],
@@ -32,5 +34,5 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          lossClaimsDetail: Option[LossClaimsDetail])
 
 object UkPropertyFhl {
-  implicit val formats: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]
+  implicit val format: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]
 }

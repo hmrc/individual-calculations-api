@@ -34,4 +34,5 @@ class MockGetMessagesValidator extends MockFactory {
         .expects(data)
     }
   }
+
 }

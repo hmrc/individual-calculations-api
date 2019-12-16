@@ -16,27 +16,49 @@
 
 package v1.models.response.getTaxableIncome
 
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
-import v1.models.hateoas.Link
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.hateoas.Method.GET
 
 class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
 
-  val nino: String = "AA123456A"
-  val calculationId: String = "calcId"
+  "TaxableIncomeResponse" when {
+    "read from valid JSON" should {
+      "produce the expected TaxableIncomeResponse Object" in {
+        taxableIncomeResponseTopLevelJson.as[TaxableIncomeResponse] shouldBe taxableIncomeResponseModel
+      }
+    }
 
-  "Links Factory" should {
-
-    "expose the correct links for retrieve" in {
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
-      TaxableIncomeResponse.LinksFactory.links(mockAppConfig, TaxableIncomeHateoasData(nino, calculationId)) shouldBe
-        Seq(
-          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId", GET, "metadata"),
-          Link(s"/individuals/calculations/$nino/self-assessment/$calculationId/taxable-income", GET, "self")
-        )
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(taxableIncomeResponseModel) shouldBe taxableIncomeResponseJson
+      }
     }
   }
 
+  "LinksFactory" when {
+    class Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino = "someNino"
+      val calcId = "someCalcId"
+      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+    }
 
+    "wrapping a TaxableIncomeResponse object" should {
+      "expose the correct hateoas links" in new Test {
+        hateoasFactory.wrap(taxableIncomeResponseModel, TaxableIncomeHateoasData(nino, calcId)) shouldBe
+        HateoasWrapper(
+          taxableIncomeResponseModel,
+          Seq(
+            Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "metadata"),
+            Link(s"/individuals/calculations/$nino/self-assessment/$calcId/taxable-income", GET, "self")
+          )
+        )
+      }
+    }
+  }
 }

@@ -31,9 +31,9 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.EoyEstimateWrapperOrError
-import v1.models.response.EoyEstimateWrapperOrError.EoyEstimateWrapper
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponseHateoasData
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
+import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -96,15 +96,15 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.model)))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)))))
 
         MockHateoasFactory
-          .wrap(EoyEstimateResponseFixture.model, EoyEstimateResponseHateoasData(nino, calcId))
-          .returns(HateoasWrapper(EoyEstimateResponseFixture.model, Seq(testHateoasLink)))
+          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId))
+          .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
 
-        val responseBody: JsObject = EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
+        val responseBody: JsObject = EoyEstimateResponseFixture.eoyEstimateResponseJson.deepMerge(linksJson)
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)

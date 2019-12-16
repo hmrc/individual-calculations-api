@@ -24,5 +24,5 @@ case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
                            giftAid: Option[GiftAid])
 
 object IncomeTaxDetail {
-  implicit val formats: OFormat[IncomeTaxDetail] = Json.format[IncomeTaxDetail]
+  implicit val format: OFormat[IncomeTaxDetail] = Json.format[IncomeTaxDetail]
 }

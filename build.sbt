@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import TestPhases.oneForkedJvmPerTest
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings}
 import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings

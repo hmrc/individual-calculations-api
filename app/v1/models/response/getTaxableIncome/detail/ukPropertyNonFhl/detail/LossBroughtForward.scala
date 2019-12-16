@@ -18,10 +18,8 @@ package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.json._
 
-case class LossBroughtForward(taxYearLossIncurred: String,
-                              currentLossValue: BigInt,
-                              mtdLoss: Boolean)
+case class LossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
 
 object LossBroughtForward {
-  implicit val formats: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
+  implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

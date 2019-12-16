@@ -25,5 +25,5 @@ case class Savings(savingsAccountId: String,
                    taxDeducted: Option[BigDecimal])
 
 object Savings {
-  implicit val formats: OFormat[Savings] = Json.format[Savings]
+  implicit val format: OFormat[Savings] = Json.format[Savings]
 }

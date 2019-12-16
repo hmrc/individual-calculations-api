@@ -24,5 +24,5 @@ case class Class4NicDetail(class4Losses: Option[Class4Losses],
                            class4NicBands: Option[Seq[NicBand]])
 
 object Class4NicDetail {
-  implicit val formats: OFormat[Class4NicDetail] = Json.format[Class4NicDetail]
+  implicit val format: OFormat[Class4NicDetail] = Json.format[Class4NicDetail]
 }

@@ -17,14 +17,14 @@
 package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
-import v1.models.response.getTaxableIncome.detail.selfEmployment.SelfEmploymentBusiness
+import v1.models.response.getTaxableIncome.detail.selfEmployment.SelfEmployment
 import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 
-case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmploymentBusiness]],
+case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
                                  ukPropertyFhl: Option[UkPropertyFhl],
                                  ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
 object BusinessProfitAndLoss {
-  implicit val formats: OFormat[BusinessProfitAndLoss] = Json.format[BusinessProfitAndLoss]
+  implicit val format: OFormat[BusinessProfitAndLoss] = Json.format[BusinessProfitAndLoss]
 }

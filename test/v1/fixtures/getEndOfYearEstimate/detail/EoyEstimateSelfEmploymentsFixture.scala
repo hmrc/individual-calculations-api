@@ -17,18 +17,28 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateSelfEmployments
+import v1.models.response.getEoyEstimate.detail.EoyEstimateSelfEmployments
 
 object EoyEstimateSelfEmploymentsFixture {
 
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "selfEmploymentId" : "XGIS00000001319",
-      | "taxableIncome" : 1000,
-      | "finalised" : true
-      |}
-    """.stripMargin)
+  val selfEmploymentId: String = "XGIS00000001319"
+  val taxableIncome: BigInt = 1005
+  val finalised: Option[Boolean] = Some(true)
 
-  val model = EoyEstimateSelfEmployments("XGIS00000001319", 1000, Some(true))
+  val eoyEstimateSelfEmploymentsModel: EoyEstimateSelfEmployments =
+    EoyEstimateSelfEmployments(
+      selfEmploymentId = selfEmploymentId,
+      taxableIncome = taxableIncome,
+      finalised = finalised
+    )
+
+  val eoyEstimateSelfEmploymentsJson: JsValue = Json.parse(
+    s"""
+      |{
+      |   "selfEmploymentId" : "$selfEmploymentId",
+      |   "taxableIncome" : $taxableIncome,
+      |   "finalised" : ${finalised.get}
+      |}
+    """.stripMargin
+  )
 }

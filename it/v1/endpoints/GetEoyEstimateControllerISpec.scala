@@ -22,8 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.Fixtures
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture._
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -31,26 +31,27 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino          = "AA123456A"
+    val nino = "AA123456A"
     val correlationId = "X-123"
-    val calcId        = "12345678"
+    val calcId = "12345678"
 
-    val linksJson = Json.parse(s"""
-                                      |{
-                                      |  "links": [{
-                                      |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
-                                      |      "method": "GET",
-                                      |      "rel": "metadata"
-                                      |    },
-                                      |    {
-                                      |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
-                                      |      "method": "GET",
-                                      |      "rel": "self"
-                                      |    }
-                                      |  ]
-                                      |}""".stripMargin).as[JsObject]
-
-    def uri: String = s"/$nino/self-assessment/$calcId/end-of-year-estimate"
+    val linksJson: JsObject = Json.parse(
+      s"""
+         |{
+         |  "links": [{
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+         |      "method": "GET",
+         |      "rel": "metadata"
+         |    },
+         |    {
+         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
+         |      "method": "GET",
+         |      "rel": "self"
+         |    }
+         |  ]
+         |}
+      """.stripMargin
+    ).as[JsObject]
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -61,6 +62,8 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
+
+    def uri: String = s"/$nino/self-assessment/$calcId/end-of-year-estimate"
   }
 
   "Calling the get income tax calculation endpoint" should {
@@ -70,7 +73,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, EoyEstimateResponseFixture.backendJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, eoyEstimateResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -78,7 +81,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
 
-        response.json shouldBe EoyEstimateResponseFixture.outputJson.deepMerge(linksJson)
+        response.json shouldBe eoyEstimateResponseJson.deepMerge(linksJson)
       }
     }
 
@@ -88,7 +91,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, Fixtures.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, metadataResponseTopLevelJsonWithErrors)
         }
 
         val response: WSResponse = await(request.get)
@@ -105,7 +108,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, EoyEstimateResponseFixture.errorCalculationTypeJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, metadataResponseTopLevelJsonCrystallised)
         }
 
         val response: WSResponse = await(request.get)
@@ -121,7 +124,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
         def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String   = requestNino
+            override val nino: String = requestNino
             override val calcId: String = requestCalcId
 
             override def setupStubs(): StubMapping = {
@@ -182,5 +185,4 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
       }
     }
   }
-
 }
