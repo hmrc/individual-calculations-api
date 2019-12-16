@@ -101,7 +101,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         ("AA1123A", """{"taxYear" : "2017-18"}""", BAD_REQUEST, NinoFormatError),
         ("AA123456A", """{"taxYear" : "20177"}""", BAD_REQUEST, TaxYearFormatError),
         ("AA123456A", """{"taxYear" : "2015-16"}""", BAD_REQUEST, RuleTaxYearNotSupportedError),
-        ("AA123456A", """{"taxYear" : "2020-22"}""", BAD_REQUEST, RuleTaxYearRangeExceededError),
+        ("AA123456A", """{"taxYear" : "2020-22"}""", BAD_REQUEST, RuleTaxYearRangeInvalidError),
         ("AA123456A", """{"invalid" : "2017-18"}""", BAD_REQUEST, RuleIncorrectOrEmptyBodyError)
       )
 
@@ -150,7 +150,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (FORBIDDEN, "RULE_NO_INCOME_SUBMISSIONS_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError),
           (BAD_REQUEST, "RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          (BAD_REQUEST, "RULE_TAX_YEAR_RANGE_EXCEEDED", BAD_REQUEST, RuleTaxYearRangeExceededError),
+          (BAD_REQUEST, "RULE_TAX_YEAR_RANGE_INVALID", BAD_REQUEST, RuleTaxYearRangeInvalidError),
           (BAD_REQUEST, "RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)

@@ -63,12 +63,12 @@ class ListCalculationsController @Inject()(
     RequestHandler[ListCalculationsResponse[CalculationListItem]](
       RequestDefn
         .Get(playRequest.path)
-        .withOptionalParams("taxYear" -> req.taxYear))
+        .withParams("taxYear" -> req.taxYear))
       .withPassThroughErrors(
         NinoFormatError,
         TaxYearFormatError,
         RuleTaxYearNotSupportedError,
-        RuleTaxYearRangeExceededError,
+        RuleTaxYearRangeInvalidError,
         NotFoundError,
         DownstreamError
       )

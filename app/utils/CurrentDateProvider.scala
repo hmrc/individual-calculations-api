@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package utils
 
-import uk.gov.hmrc.domain.Nino
+import java.time.LocalDate
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+import javax.inject.{Inject, Singleton}
 
-case class ListCalculationsRequest(nino: Nino, taxYear: String)
+@Singleton
+class CurrentDateProvider @Inject()() {
+  def getCurrentDate(): LocalDate = LocalDate.now()
+}

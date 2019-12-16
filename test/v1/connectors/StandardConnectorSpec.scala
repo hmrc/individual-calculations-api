@@ -77,7 +77,7 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an backend error response" when {
 
       "an error response is returned from the backend" in new Test {
-        val request  = ListCalculationsRequest(nino, None)
+        val request  = ListCalculationsRequest(nino, "2019-20")
         val expected = Left(BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND ERROR CODE")))
 
         MockedHttpClient
@@ -91,7 +91,7 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an exception" when {
 
       "when an unexpected error is returned" in new Test {
-        val request = ListCalculationsRequest(nino, None)
+        val request = ListCalculationsRequest(nino, "2019-20")
 
         MockedHttpClient
           .get(s"$baseUrl/some/uri",  queryParams)

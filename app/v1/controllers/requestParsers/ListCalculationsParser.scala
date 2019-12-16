@@ -18,12 +18,14 @@ package v1.controllers.requestParsers
 
 import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
+import utils.{CurrentDateProvider, DateUtils}
 import v1.controllers.requestParsers.validators.ListCalculationsValidator
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
+class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator,
+                                       val dateProvider: CurrentDateProvider)
     extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear)
+    ListCalculationsRequest(Nino(data.nino), DateUtils.getTaxYear(data.taxYear, dateProvider.getCurrentDate()))
 }

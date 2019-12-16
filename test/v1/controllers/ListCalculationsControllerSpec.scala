@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
@@ -64,10 +64,10 @@ class ListCalculationsControllerSpec
   }
 
   private val nino          = "AA123456A"
-  private val taxYear       = Some("2017-18")
+  private val taxYear       = "2017-18"
   private val correlationId = "X-123"
 
-  val responseBody = Json.parse("""{
+  val responseBody: JsValue = Json.parse("""{
       |  "calculations": [
       |    {
       |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -117,7 +117,7 @@ class ListCalculationsControllerSpec
       Seq(testItemHateoasLink)
     )))
 
-  private val rawData     = ListCalculationsRawData(nino, taxYear)
+  private val rawData     = ListCalculationsRawData(nino, Some(taxYear))
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
 
   private def uri = "/input/uri"
@@ -130,14 +130,14 @@ class ListCalculationsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
+          .doService(RequestDefn.Get(uri).withParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
           .wrapList(response, ListCalculationsHateoasData(nino))
           .returns(HateoasWrapper(hateoasResponse, Seq(testHateoasLink)))
 
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.listCalculations(nino, Some(taxYear))(fakeGetRequest(uri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -152,10 +152,10 @@ class ListCalculationsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri).withOptionalParams("taxYear" -> taxYear), OK)
+          .doService(RequestDefn.Get(uri).withParams("taxYear" -> taxYear), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
 
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
+        val result: Future[Result] = controller.listCalculations(nino, Some(taxYear))(fakeGetRequest(uri))
 
         status(result) shouldBe NOT_FOUND
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
@@ -170,11 +170,11 @@ class ListCalculationsControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks = allChecks[ListCalculationsResponse[CalculationListItem], ListCalculationsResponse[CalculationListItem]](
+      private val mappingChecks = allChecks[ListCalculationsResponse[CalculationListItem], ListCalculationsResponse[CalculationListItem]](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
         ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
-        ("RULE_TAX_YEAR_RANGE_EXCEEDED", BAD_REQUEST, RuleTaxYearRangeExceededError, BAD_REQUEST),
+        ("RULE_TAX_YEAR_RANGE_INVALID", BAD_REQUEST, RuleTaxYearRangeInvalidError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
         ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
       )
@@ -183,7 +183,7 @@ class ListCalculationsControllerSpec
         .doServiceWithMappings(mappingChecks)
         .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
 
-      val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest(uri))
+      val result: Future[Result] = controller.listCalculations(nino, Some(taxYear))(fakeGetRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
