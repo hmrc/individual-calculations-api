@@ -30,7 +30,7 @@ trait EnumJsonSpecSupport {
     */
 
   def testRoundTrip[A: Format](namesAndValues: (String, A)*): Unit =
-    "JSON formats" must {
+    "JSON format" must {
       "support round trip" in {
         namesAndValues.foreach {
           case (name, obj) =>

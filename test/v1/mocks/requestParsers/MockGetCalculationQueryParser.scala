@@ -18,18 +18,18 @@ package v1.mocks.requestParsers
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.GetCalculationMessagesParser
-import v1.models.request.GetCalculationMessagesRequest
+import v1.controllers.requestParsers.GetMessagesParser
+import v1.models.request.GetMessagesRequest
 import v1.models.errors.ErrorWrapper
-import v1.models.request.GetCalculationMessagesRawData
+import v1.models.request.GetMessagesRawData
 
 trait MockGetCalculationQueryParser extends MockFactory {
 
-  val mockGetCalculationQueryParser: GetCalculationMessagesParser = mock[GetCalculationMessagesParser]
+  val mockGetCalculationQueryParser: GetMessagesParser = mock[GetMessagesParser]
 
   object MockGetCalculationQueryParser {
-    def parse(data: GetCalculationMessagesRawData): CallHandler[Either[ErrorWrapper, GetCalculationMessagesRequest]] = {
-      (mockGetCalculationQueryParser.parseRequest(_: GetCalculationMessagesRawData)).expects(data)
+    def parse(data: GetMessagesRawData): CallHandler[Either[ErrorWrapper, GetMessagesRequest]] = {
+      (mockGetCalculationQueryParser.parseRequest(_: GetMessagesRawData)).expects(data)
     }
   }
 }

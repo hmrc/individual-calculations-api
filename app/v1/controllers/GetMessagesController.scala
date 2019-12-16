@@ -20,7 +20,7 @@ import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.controllers.requestParsers.GetCalculationMessagesParser
+import v1.controllers.requestParsers.GetMessagesParser
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v1.hateoas.HateoasFactory
 import v1.models.audit.GenericAuditDetail
@@ -28,24 +28,23 @@ import v1.models.domain.MessageType
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
+import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
 import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
 
 import scala.concurrent.ExecutionContext
 
-class GetCalculationMessagesController @Inject()(
-                                                  authService: EnrolmentsAuthService,
-                                                  lookupService: MtdIdLookupService,
-                                                  parser: GetCalculationMessagesParser,
-                                                  service: StandardService,
-                                                  hateoasFactory: HateoasFactory,
-                                                  auditService: AuditService,
-                                                  cc: ControllerComponents
-                                                )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationMessagesRawData,
-    GetCalculationMessagesRequest,
+class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
+                                      lookupService: MtdIdLookupService,
+                                      parser: GetMessagesParser,
+                                      service: StandardService,
+                                      hateoasFactory: HateoasFactory,
+                                      auditService: AuditService,
+                                      cc: ControllerComponents
+                                     )(implicit ec: ExecutionContext)
+  extends StandardController[GetMessagesRawData,
+    GetMessagesRequest,
     CalculationMessages,
     HateoasWrapper[CalculationMessages],
     AnyContent](authService, lookupService, parser, service, auditService, cc)
@@ -61,7 +60,7 @@ class GetCalculationMessagesController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationMessagesRequest): RequestHandler[CalculationMessages, HateoasWrapper[CalculationMessages]] =
+                                 req: GetMessagesRequest): RequestHandler[CalculationMessages, HateoasWrapper[CalculationMessages]] =
     RequestHandler[CalculationMessages](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
@@ -72,19 +71,6 @@ class GetCalculationMessagesController @Inject()(
       .mapSuccess(filterMessages(req.queryData))
       .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, CalculationMessagesHateoasData(req.nino.nino, req.calculationId)))
 
-  def getMessages(nino: String, calculationId: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
-      val rawData = GetCalculationMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
-
-      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
-        "retrieveSelfAssessmentTaxCalculationMessages",
-        "retrieve-self-assessment-tax-calculation-messages",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
-      )
-
-      doHandleRequest(rawData, Some(auditHandler))
-    }
-
   def filterMessages(queries: Seq[MessageType])(
     messagesResponse: ResponseWrapper[CalculationMessages]): Either[ErrorWrapper, ResponseWrapper[CalculationMessages]] = {
     val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
@@ -94,4 +80,17 @@ class GetCalculationMessagesController @Inject()(
       Left(ErrorWrapper(Some(filteredResponse.correlationId), MtdErrors(NOT_FOUND, NoMessagesExistError)))
     }
   }
+
+  def getMessages(nino: String, calculationId: String): Action[AnyContent] =
+    authorisedAction(nino).async { implicit request =>
+      val rawData = GetMessagesRawData(nino, calculationId, request.queryString.getOrElse("type", Seq()))
+
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
+        "retrieveSelfAssessmentTaxCalculationMessages",
+        "retrieve-self-assessment-tax-calculation-messages",
+        Map("nino" -> nino, "calculationId" -> calculationId), request
+      )
+
+      doHandleRequest(rawData, Some(auditHandler))
+    }
 }

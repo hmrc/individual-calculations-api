@@ -18,20 +18,16 @@ package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations.{ CalculationIdValidation, NinoValidation, MessageTypeValidation}
 import v1.models.errors.MtdError
-import v1.models.request.GetCalculationMessagesRawData
+import v1.models.request.GetMessagesRawData
 
-class GetCalculationMessagesValidator extends Validator[GetCalculationMessagesRawData] {
+class GetMessagesValidator extends Validator[GetMessagesRawData] {
   private val validationSet = List(parameterFormatValidation)
 
-  override def validate(data: GetCalculationMessagesRawData): List[MtdError] = {
+  override def validate(data: GetMessagesRawData): List[MtdError] = {
     run(validationSet, data).distinct
   }
 
-  private def parameterFormatValidation: GetCalculationMessagesRawData => List[List[MtdError]] = { data =>
-    List(
-      NinoValidation.validate(data.nino),
-      CalculationIdValidation.validate(data.calculationId),
-      MessageTypeValidation.validateList(data.queryData)
-    )
+  private def parameterFormatValidation: GetMessagesRawData => List[List[MtdError]] = { data =>
+    List(NinoValidation.validate(data.nino), CalculationIdValidation.validate(data.calculationId), MessageTypeValidation.validateList(data.queryData))
   }
 }

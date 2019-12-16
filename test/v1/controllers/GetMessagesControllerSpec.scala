@@ -32,14 +32,14 @@ import v1.models.errors._
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{GetCalculationMessagesRawData, GetCalculationMessagesRequest}
+import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
 import v1.models.response.getCalculationMessages.{CalculationMessages, CalculationMessagesHateoasData}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetCalculationMessagesControllerSpec
+class GetMessagesControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -51,7 +51,7 @@ class GetCalculationMessagesControllerSpec
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetCalculationMessagesController(
+    val controller = new GetMessagesController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockGetCalculationQueryParser,
@@ -86,9 +86,9 @@ class GetCalculationMessagesControllerSpec
 
   val responseBody: JsValue         = outputMessagesJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
-  private val rawData     = GetCalculationMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
+  private val rawData     = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
-  private val requestData = GetCalculationMessagesRequest(Nino(nino), calcId, typeQueries)
+  private val requestData = GetMessagesRequest(Nino(nino), calcId, typeQueries)
   val testHateoasLink     = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   private def uri      = s"/$nino/self-assessment/$calcId"
