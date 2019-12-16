@@ -27,7 +27,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
+import v1.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -70,7 +70,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
       )
       .withRequestSuccessCode(ACCEPTED)
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TriggerCalculationHateaosData(req.nino.nino, rawResponse.id)))
+        hateoasFactory.wrap(rawResponse, TriggerCalculationHateoasData(req.nino.nino, rawResponse.id)))
 
   }
 

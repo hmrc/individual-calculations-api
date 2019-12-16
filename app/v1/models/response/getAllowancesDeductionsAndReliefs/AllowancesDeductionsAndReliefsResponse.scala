@@ -24,6 +24,7 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDe
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
 case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, detail: CalculationDetail) {
+
   def isEmpty: Boolean =
     (summary.totalAllowancesAndDeductions, summary.totalReliefs) match {
       case (Some(x), _) if x > 0 => false
@@ -38,12 +39,15 @@ object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
   implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
     (__ \ "allowancesDeductionsAndReliefs").read(Json.reads[AllowancesDeductionsAndReliefsResponse])
 
-  implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesHateoasData] {
-    override def links(appConfig: AppConfig, data: AllowancesHateoasData): Seq[Link] = {
-      Seq(getMetadata(appConfig, data.nino, data.calculationId, isSelf = false), getAllowances(appConfig, data.nino, data.calculationId, isSelf = true))
+  implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesDeductionsAndReliefsHateoasData] {
+    override def links(appConfig: AppConfig, data: AllowancesDeductionsAndReliefsHateoasData): Seq[Link] = {
+      Seq(
+        getMetadata(appConfig, data.nino, data.calculationId, isSelf = false),
+        getAllowances(appConfig, data.nino, data.calculationId, isSelf = true)
+      )
     }
   }
 
 }
 
-case class AllowancesHateoasData(nino: String, calculationId: String) extends HateoasData
+case class AllowancesDeductionsAndReliefsHateoasData(nino: String, calculationId: String) extends HateoasData

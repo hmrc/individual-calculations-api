@@ -16,34 +16,46 @@
 
 package v1.models.outcomes
 
+import play.api.http.Status._
 import support.UnitSpec
-import v1.models.errors.{ ErrorWrapper, MtdError, MtdErrors }
+import v1.models.errors.{DownstreamError, ErrorWrapper, MtdError, MtdErrors}
 
 class ResponseWrapperSpec extends UnitSpec {
-  "ResponseMapper" when {
-    "mapping" should {
-      "work" in {
-        ResponseWrapper("id", "someString").map(_.toLowerCase) shouldBe ResponseWrapper("id", "somestring")
+
+  val wrappedResponse: ResponseWrapper[String] = ResponseWrapper(correlationId = "id", responseData = "someString")
+
+  def wrapResponse(responseData: String): ResponseWrapper[String] = wrappedResponse.copy(responseData = responseData)
+
+  "ResponseWrapper" when {
+    "mapped" should {
+      "map the response data correctly" in {
+        wrappedResponse.map(_.toLowerCase) shouldBe wrapResponse(responseData = "somestring")
       }
     }
 
-    "converting to error" when {
-      // WLOG
-      val errors = MtdErrors(400, MtdError("CODE", "message"))
-
-      "does not map partial function" should {
-        "leave as is" in {
-          val responseWrapper = ResponseWrapper("id", "nonempty")
-          responseWrapper.toErrorWhen { case "" => errors } shouldBe Right(responseWrapper)
-        }
+    "mapped to an Either" should {
+      "wrap a successful response correctly" in {
+        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Right("aSuccess") }
+        mappedResponse shouldBe Right(wrapResponse(responseData = "aSuccess"))
       }
 
-      "matches partial function" should {
-        "map to the error" in {
-          ResponseWrapper("id", "").toErrorWhen { case "" => errors } shouldBe Left(ErrorWrapper(Some("id"), errors))
-        }
+      "wrap an error response correctly" in {
+        val err = MtdErrors(IM_A_TEAPOT, DownstreamError, None)
+        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
+        mappedResponse shouldBe Left(ErrorWrapper(Some("id"), err))
       }
     }
 
+    "toErrorWhen" should {
+      val errors = MtdErrors(statusCode = BAD_REQUEST, error = MtdError("CODE", "message"))
+
+      "return a success when the error condition is not met" in {
+        wrappedResponse.toErrorWhen { case "" => errors } shouldBe Right(wrappedResponse)
+      }
+
+      "return errors when the error condition is met" in {
+        wrapResponse(responseData = "").toErrorWhen { case "" => errors } shouldBe Left(ErrorWrapper(Some("id"), errors))
+      }
+    }
   }
 }

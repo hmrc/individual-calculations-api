@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.AllowancesDeductionsAndReliefsFixture
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
 import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
@@ -31,8 +31,8 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.CalculationWrapperOrError
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesHateoasData
+import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsHateoasData
+import v1.models.response.calculationWrappers.CalculationWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -102,14 +102,14 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
 
         MockHateoasFactory
-          .wrap(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel, AllowancesHateoasData(nino, calcId))
-          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsModel, Seq(testHateoasLink)))
+          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
+          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
-        val responseBody: JsObject = AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
+        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -123,7 +123,6 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
-
 
     "return FORBIDDEN with the error message" when {
       "error count is greater than zero" in new Test {
@@ -162,7 +161,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistModel)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModelEmpty)))))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 

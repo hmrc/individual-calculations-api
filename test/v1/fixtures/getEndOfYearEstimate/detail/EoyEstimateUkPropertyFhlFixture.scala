@@ -17,17 +17,24 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhl
+import v1.models.response.getEoyEstimate.detail.EoyEstimateUkPropertyFhl
 
 object EoyEstimateUkPropertyFhlFixture {
 
-  val json: JsValue = Json.parse(
-    """
+  val taxableIncome: BigInt = 1003
+  val finalised: Option[Boolean] = Some(true)
+
+  val eoyEstimateUkPropertyFhlModel: EoyEstimateUkPropertyFhl =
+    EoyEstimateUkPropertyFhl(
+      taxableIncome = taxableIncome,
+      finalised = finalised
+    )
+
+  val eoyEstimateUkPropertyFhlJson: JsValue = Json.parse(
+    s"""
       |{
-      | "taxableIncome" : 1000,
-      | "finalised" : true
+      |   "taxableIncome" : $taxableIncome,
+      |   "finalised" : ${finalised.get}
       |}
     """.stripMargin)
-
-  val model = EoyEstimateUkPropertyFhl(1000, Some(true))
 }

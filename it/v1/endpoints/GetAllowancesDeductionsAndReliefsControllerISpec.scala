@@ -22,7 +22,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.{AllowancesDeductionsAndReliefsFixture, GetIncomeTaxAndNicsFixture}
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -69,14 +70,14 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsFixture.jsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe AllowancesDeductionsAndReliefsFixture.allowancesDeductionsAndReliefsJson.deepMerge(linksJson)
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
       }
     }
 
@@ -86,7 +87,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxAndNicsFixture.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -106,7 +107,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           BackendStub.onSuccess(BackendStub.GET,
             backendUrl,
             OK,
-            AllowancesDeductionsAndReliefsFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
+            AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
         }
 
         val response: WSResponse = await(request.get)

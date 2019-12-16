@@ -16,13 +16,15 @@
 
 package v1.support
 
-import v1.models.request._
-import v1.models.response.getCalculationMessages.CalculationMessages
+import v1.models.domain.MessageType
+import v1.models.response.getMessages.MessagesResponse
+
+import scala.annotation.tailrec
 
 trait MessagesFilter {
-  def filter(calculationMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
+  def filter(calculationMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
 
-    def filterMessages(filteredMessages: CalculationMessages, typeQuery: MessageType): CalculationMessages = {
+    def filterMessages(filteredMessages: MessagesResponse, typeQuery: MessageType): MessagesResponse = {
       typeQuery match {
         case MessageType.error => filteredMessages.copy(errors = calculationMessages.errors)
         case MessageType.warning => filteredMessages.copy(warnings = calculationMessages.warnings)
@@ -31,7 +33,8 @@ trait MessagesFilter {
       }
     }
 
-    def filterLoop(filteredMessages: CalculationMessages, typeQueries: Seq[MessageType]): CalculationMessages = {
+    @tailrec
+    def filterLoop(filteredMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
       typeQueries.toList match {
         case Nil => calculationMessages
         case query :: Nil => filterMessages(filteredMessages, query)
@@ -39,6 +42,6 @@ trait MessagesFilter {
       }
     }
 
-    filterLoop(CalculationMessages(None, None, None), typeQueries)
+    filterLoop(MessagesResponse(None, None, None), typeQueries)
   }
 }

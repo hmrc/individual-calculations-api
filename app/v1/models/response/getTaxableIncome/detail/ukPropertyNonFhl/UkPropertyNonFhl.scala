@@ -18,6 +18,8 @@ package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl
 
 import play.api.libs.json._
 import utils.NestedJsonReads
+import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetail
+import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummary
 
 case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             totalExpenses: Option[BigDecimal],
@@ -33,5 +35,5 @@ case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             lossClaimsDetail: Option[LossClaimsDetail])
 
 object UkPropertyNonFhl extends NestedJsonReads {
-  implicit val formats: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
+  implicit val format: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
 }

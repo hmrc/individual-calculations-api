@@ -27,7 +27,7 @@ import v1.controllers.requestParsers.RequestParser
 import v1.handler.RequestDefn.Get
 import v1.handler.{AuditHandler, RequestHandler}
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v1.models.audit.{AuditEvent, AuditResponse, SampleAuditDetail}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.RawData
@@ -66,7 +66,7 @@ class StandardControllerSpec
   }
 
   trait Test extends MockEnrolmentsAuthService with MockMtdIdLookupService {
-    def uri           = "/input/uri"
+    def uri: String = "/input/uri"
     val correlationId = "X-123"
     val nino          = "nino"
     val rawData       = Raw("data")
@@ -120,10 +120,7 @@ class StandardControllerSpec
             "auditType",
             "txName",
             detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
-              SampleAuditDetail(request.userDetails.userType,
-                                request.userDetails.agentReferenceNumber,
-                                correlationId,
-                                auditResponse)
+              GenericAuditDetail(request.userDetails, Map(), None, correlationId, auditResponse)
           )
 
           doHandleRequest(rawData, Some(auditHandling))(request)
@@ -164,7 +161,9 @@ class StandardControllerSpec
         val responseBody: JsValue = Json.toJson(mappedResponse)
         contentAsJson(result) shouldBe responseBody
 
-        val detail = SampleAuditDetail("Individual", None, correlationId, AuditResponse(OK, Right(Some(responseBody))))
+        val detail = GenericAuditDetail("Individual", None, Map(), None, "X-123",
+          AuditResponse(200, None, Some(Json.parse("""{"data":"dataMapped"}"""))))
+
         val event  = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
@@ -228,7 +227,9 @@ class StandardControllerSpec
         contentAsJson(result) shouldBe Json.toJson(errors)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = SampleAuditDetail("Individual", None, correlationId, AuditResponse(statusCode, Left(errors.auditErrors)))
+        val detail = GenericAuditDetail("Individual",None,Map(),None,"X-123",
+          AuditResponse(404,Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))),None))
+
         val event  = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }

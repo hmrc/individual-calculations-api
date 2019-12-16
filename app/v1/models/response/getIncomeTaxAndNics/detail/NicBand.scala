@@ -26,5 +26,5 @@ case class NicBand(name: String,
                    amount: BigDecimal)
 
 object NicBand {
-  implicit val formats: OFormat[NicBand] = Json.format[NicBand]
+  implicit val format: OFormat[NicBand] = Json.format[NicBand]
 }

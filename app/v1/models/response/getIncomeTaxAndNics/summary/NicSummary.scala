@@ -23,5 +23,5 @@ case class NicSummary(class2NicsAmount: Option[BigDecimal],
                       totalNic: Option[BigDecimal])
 
 object NicSummary {
-  implicit val formats: OFormat[NicSummary] = Json.format[NicSummary]
+  implicit val format: OFormat[NicSummary] = Json.format[NicSummary]
 }

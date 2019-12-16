@@ -19,10 +19,11 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
+import play.api.libs.json
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.GetIncomeTaxAndNicsFixture
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -70,14 +71,14 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxAndNicsFixture.successBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, incomeTaxAndNicsResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe GetIncomeTaxAndNicsFixture.successOutputToVendor.deepMerge(linksJson)
+        response.json shouldBe incomeTaxNicsResponseJson.as[JsObject].deepMerge(linksJson)
       }
     }
 
@@ -87,7 +88,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, GetIncomeTaxAndNicsFixture.errorBodyFromBackEnd)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)

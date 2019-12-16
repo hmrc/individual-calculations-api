@@ -23,5 +23,5 @@ case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
                              dividends: Option[Dividends])
 
 object CalculationDetail {
-  implicit val formats: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
 }

@@ -26,12 +26,12 @@ import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v1.models.domain.TriggerCalculation
+import v1.models.domain.TriggerCalculationRequestBody
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-import v1.models.response.triggerCalculation.{TriggerCalculationHateaosData, TriggerCalculationResponse}
+import v1.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v1.support.BackendResponseMappingSupport
 import v1.models.hateoas.Link
 import v1.models.hateoas.Method.GET
@@ -70,7 +70,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   private case class TaxYearWrapper(taxYear: String)
    private object TaxYearWrapper {
-    implicit val formats: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
+    implicit val format: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
   }
 
   val response = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
@@ -86,7 +86,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
       |   ]
       |}""".stripMargin)
 
-  val triggerCalculation = TriggerCalculation(taxYear)
+  val triggerCalculation = TriggerCalculationRequestBody(taxYear)
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
@@ -108,7 +108,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+          .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
@@ -172,7 +172,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")))))
 
       MockHateoasFactory
-        .wrap(response, TriggerCalculationHateaosData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
+        .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))

@@ -16,18 +16,29 @@
 
 package v1.fixtures.getEndOfYearEstimate.detail
 
-import play.api.libs.json.{ JsValue, Json }
-import v1.models.response.getEndOfYearEstimate.detail.EoyEstimateUkSavings
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getEoyEstimate.detail.EoyEstimateUkSavings
 
 object EoyEstimateUkSavingsFixture {
 
-  val json: JsValue = Json.parse("""
-      |{
-      | "savingsAccountId" : "yW4zuqfGBZGPlpq",
-      | "savingsAccountName" : "bank & building account 1",
-      | "taxableIncome" : 1000
-      |}
-    """.stripMargin)
+  val savingsAccountId: String = "yW4zuqfGBZGPlpq"
+  val savingsAccountName: Option[String] = Some("bank & building account 1")
+  val taxableIncome: BigInt = 1001
 
-  val model = EoyEstimateUkSavings("yW4zuqfGBZGPlpq", Some("bank & building account 1"), 1000)
+  val eoyEstimateUkSavingsModel: EoyEstimateUkSavings =
+    EoyEstimateUkSavings(
+      savingsAccountId = savingsAccountId,
+      savingsAccountName = savingsAccountName,
+      taxableIncome = taxableIncome
+    )
+
+  val eoyEstimateUkSavingsJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "savingsAccountId" : "$savingsAccountId",
+       |   "savingsAccountName" : "${savingsAccountName.get}",
+       |   "taxableIncome" : $taxableIncome
+       |}
+    """.stripMargin
+  )
 }

@@ -16,20 +16,18 @@
 
 package v1.models.domain
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class EmptyJsonBodySpec extends UnitSpec {
 
-  val json = Json.parse(
-    """{
-      |
-      |}""".stripMargin)
+  val emptyJson: JsValue = Json.parse("""{}""")
 
-  "JSON writes" must {
-    "align with spec" in {
-      Json.toJson(EmptyJsonBody) shouldBe json
+  "EmptyJsonBody" when {
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(EmptyJsonBody) shouldBe emptyJson
+      }
     }
   }
-
 }

@@ -18,79 +18,27 @@ package v1.models.errors
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.errors.MtdErrorsFixture._
 
 class MtdErrorsSpec extends UnitSpec {
 
-  val correlationId = "X-123"
+  "MtdErrors" when {
+    "written to JSON with a single error" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelSingle) shouldBe mtdErrorsJsonSingle
+      }
+    }
 
-  val statusCode = 123
+    "written to JSON with a single error and an empty sequence of errors" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelSingle.copy(errors = Some(Seq.empty))) shouldBe mtdErrorsJsonSingle
+      }
+    }
 
-  "Rendering a error response with one error" should {
-    val error = MtdErrors(statusCode, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
-    "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+    "written to JSON with multiple errors" should {
+      "produce the expected JsObject" in {
+        Json.toJson(mtdErrorsModelMultiple) shouldBe mtdErrorsJsonMultiple
+      }
     }
   }
-
-  "Rendering a error response with one error and an empty sequence of errors" should {
-    val error = MtdErrors(statusCode, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
-    "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
-    }
-  }
-
-  "Rendering a error response with two errors" should {
-    val error = MtdErrors(statusCode,
-                          BadRequestError,
-                          Some(
-                            Seq(
-                              NinoFormatError,
-                              TaxYearFormatError
-                            )
-                          ))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "INVALID_REQUEST",
-        |   "message": "Invalid request",
-        |   "errors": [
-        |       {
-        |         "code": "FORMAT_NINO",
-        |         "message": "The provided NINO is invalid"
-        |       },
-        |       {
-        |         "code": "FORMAT_TAX_YEAR",
-        |         "message": "The provided tax year is invalid"
-        |       }
-        |   ]
-        |}
-      """.stripMargin
-    )
-
-    "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
-    }
-  }
-
 }

@@ -21,6 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class GiftAid(grossGiftAidPayments: BigDecimal, rate: BigDecimal, giftAidTax: BigDecimal)
 
 object GiftAid {
-  implicit val formats: OFormat[GiftAid] = Json.format[GiftAid]
+  implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
 }
-

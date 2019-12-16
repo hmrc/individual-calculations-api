@@ -17,55 +17,37 @@
 package v1.fixtures.getEndOfYearEstimate
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.models.response.getEndOfYearEstimate.EoyEstimateResponse
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
+import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture._
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 
 object EoyEstimateResponseFixture {
 
-  val backendJson: JsValue = Json.parse(
-    s"""
-      |{
-      | "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "inYear",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 0
-      |  },
-      | "endOfYearEstimate" : {
-      |   "summary" : ${EoyEstimateSummaryFixture.json.toString()},
-      |   "detail" : ${EoyEstimateDetailFixture.json.toString()}
-      | }
-      |}
-    """.stripMargin)
+  val eoyEstimateResponseModel: EoyEstimateResponse =
+    EoyEstimateResponse(
+      summary = eoyEstimateSummaryModel,
+      detail = eoyEstimateDetailModel
+    )
 
-  val errorCalculationTypeJson: JsValue = Json.parse(
+  val eoyEstimateResponseJson: JsObject = Json.parse(
     s"""
        |{
-       | "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 0
-       |  }
+       |  "summary" : $eoyEstimateSummaryJson,
+       |  "detail" : $eoyEstimateDetailJson
        |}
-    """.stripMargin)
+    """.stripMargin
+  ).as[JsObject]
 
-  val outputJson: JsObject = Json.parse(
+  val eoyEstimateResponseTopLevelJson: JsValue = Json.parse(
     s"""
-      |{
-      |  "summary" : ${EoyEstimateSummaryFixture.json.toString()},
-      |  "detail" : ${EoyEstimateDetailFixture.json.toString()}
-      |}
-    """.stripMargin).as[JsObject]
-
-  val model = EoyEstimateResponse(EoyEstimateSummaryFixture.model, EoyEstimateDetailFixture.model)
+       |{
+       | "metadata": $metadataResponseJson,
+       | "endOfYearEstimate" : {
+       |   "summary" : $eoyEstimateSummaryJson,
+       |   "detail" : $eoyEstimateDetailJson
+       | }
+       |}
+    """.stripMargin
+  )
 }
