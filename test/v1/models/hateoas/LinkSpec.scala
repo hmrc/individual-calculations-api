@@ -16,15 +16,30 @@
 
 package v1.models.hateoas
 
-object RelType {
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import v1.models.hateoas.Method.GET
+import v1.models.hateoas.RelType._
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
+class LinkSpec extends UnitSpec {
 
-  val SELF = "self"
+  val linkModel: Link = Link(href = "aRef", method = GET, rel = SELF)
+
+  val linkJson: JsValue = Json.parse(
+    """
+      |{
+      |  "href" : "aRef",
+      |  "method" : "GET",
+      |  "rel" : "self"
+      |}
+    """.stripMargin
+  )
+
+  "Link" when {
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(linkModel) shouldBe linkJson
+      }
+    }
+  }
 }
