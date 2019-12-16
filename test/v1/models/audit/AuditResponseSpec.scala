@@ -16,15 +16,23 @@
 
 package v1.models.audit
 
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.Json
+import support.UnitSpec
+import v1.fixtures.audit.AuditResponseFixture._
 
-case class SampleAuditDetail(
-    userType: String,
-    agentReferenceNumber: Option[String],
-    `X-CorrelationId`: String,
-    response: AuditResponse
-)
+class AuditResponseSpec extends UnitSpec {
 
-object SampleAuditDetail {
-  implicit val writes: OWrites[SampleAuditDetail] = Json.writes[SampleAuditDetail]
+  "AuditResponse" when {
+    "written to JSON with a body" should {
+      "produce the expected JsObject" in {
+        Json.toJson(auditResponseModelWithBody) shouldBe auditResponseJsonWithBody
+      }
+    }
+
+    "written to JSON with Audit Errors" should {
+      "produce the expected JsObject" in {
+        Json.toJson(auditResponseModelWithErrors) shouldBe auditResponseJsonWithErrors
+      }
+    }
+  }
 }
