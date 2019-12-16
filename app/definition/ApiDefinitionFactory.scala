@@ -59,8 +59,9 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) {
     )
 
   private[definition] def buildAPIStatus(version: String): APIStatus = {
-    APIStatus.parser.lift(appConfig.apiStatus(version))
-      .find(_.toString == appConfig.apiStatus(version))
+    lazy val apiStatus =  appConfig.apiStatus(version)
+    APIStatus.parser.lift(apiStatus)
+      .find(_.toString == apiStatus)
       .getOrElse {
         Logger.error(s"[ApiDefinition][buildApiStatus] no API Status found in config.  Reverting to Alpha")
         APIStatus.ALPHA
