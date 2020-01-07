@@ -33,7 +33,6 @@ object AppDependencies {
     "org.scalatest"          %% "scalatest"          % "3.0.8"             % scope,
     "org.scalacheck"         %% "scalacheck"         % "1.14.2"            % scope,
     "org.scalamock"          %% "scalamock"          % "4.4.0"             % scope,
-    "org.mockito"            %  "mockito-core"       % "3.1.0"            % scope,
     "org.pegdown"            % "pegdown"             % "1.6.0"             % scope,
     "com.typesafe.play"      %% "play-test"          % PlayVersion.current % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2"             % scope,
