@@ -16,14 +16,13 @@
 
 package utils
 
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
-import org.scalatestplus.mockito._
+import org.joda.time.DateTime
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.Status
 import play.api.http.Status.UNSUPPORTED_MEDIA_TYPE
 import play.api.libs.json.Json
+import play.api.mvc.RequestHeader
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import support.UnitSpec
@@ -39,7 +38,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec with MockitoSugar with GuiceOneAppPerSuite {
+class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   def versionHeader: (String, String) = ACCEPT -> s"application/vnd.hmrc.1.0+json"
 
@@ -48,11 +47,25 @@ class ErrorHandlerSpec extends UnitSpec with MockitoSugar with GuiceOneAppPerSui
 
     val requestHeader = FakeRequest().withHeaders(versionHeader)
 
-    val auditConnector = MockitoSugar.mock[AuditConnector]
-    val httpAuditEvent = MockitoSugar.mock[HttpAuditEvent]
+    val auditConnector = mock[AuditConnector]
+    val httpAuditEvent = mock[HttpAuditEvent]
 
-    when(auditConnector.sendEvent(any[DataEvent]())(any[HeaderCarrier](), any[ExecutionContext]()))
-      .thenReturn(Future.successful(Success))
+    val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
+
+    val dataEvent = DataEvent(
+      auditSource = "auditSource",
+      auditType = "event.auditType",
+      eventId = "",
+      tags = eventTags,
+      detail = Map("test" -> "test"),
+      generatedAt = DateTime.now()
+    )
+
+    (httpAuditEvent.dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String])(_: HeaderCarrier)).expects(*, *, *, *, *)
+      .returns(dataEvent)
+
+    (auditConnector.sendEvent(_ : DataEvent)(_: HeaderCarrier, _: ExecutionContext)).expects(*, *, *)
+      .returns(Future.successful(Success))
 
     val configuration = Configuration("appName" -> "myApp")
     val handler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
