@@ -25,7 +25,7 @@
           "multipleOf": 1,
           "minimum": 0,
           "maximum": 99999999999,
-          "example": "1000"
+          "example": "1000.25"
         }
       }
     },
