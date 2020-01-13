@@ -7,11 +7,11 @@
     "summary": {
       "title": "summary",
       "type": "object",
-      "description": "Details the high-level allowances, deductions and reliefs for the calculation.",
+      "description": "Details of allowances, deductions and reliefs used in the calculation.",
       "properties": {
         "totalAllowancesAndDeductions": {
           "title": "totalAllowancesAndDeductions",
-          "description": "The total allowances and deductions available to the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "description": "The total allowances and deductions used in the calculation. This value must be between 0 and 99999999999. No decimals.",
           "type": "number",
           "multipleOf": 1,
           "minimum": 0,
@@ -20,7 +20,7 @@
         },
         "totalReliefs": {
           "title": "totalReliefs",
-          "description": "The total reliefs available to the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "description": "The total reliefs used in the calculation. This value must be between 0 and 99999999999.99. No decimals.",
           "type": "number",
           "multipleOf": 1,
           "minimum": 0,
@@ -32,16 +32,16 @@
     "detail": {
       "title": "details",
       "type": "object",
-      "description": "Details the low-level allowances, deductions and reliefs for the calculation.",
+      "description": "Details the breakdown of allowances, deductions and reliefs used in the calculation.",
       "properties": {
         "allowancesAndDeductions": {
           "title": "allowancesAndDeductions",
           "type": "object",
-          "description": "Details the low-level allowances and deductions for the calculation.",
+          "description": "Details allowances and deductions used in the calculation.",
           "properties": {
             "personalAllowance": {
               "title": "personalAllowance",
-              "description": "The annual amount of personal allowance available for the tax year. This value must be between 0 and 99999999999. No decimals.",
+              "description": "The personal allowance available for the tax year. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -50,7 +50,7 @@
             },
             "reducedPersonalAllowance": {
               "title": "reducedPersonalAllowance",
-              "description": "The annual amount that the personal allowance has been reduced to. This value must be between 0 and 99999999999. No decimals.",
+              "description": "The amount that the personal allowance has been reduced to. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
               "minimum": 0,
@@ -89,12 +89,12 @@
         "reliefs": {
           "title": "reliefs",
           "type": "object",
-          "description": "Details the low-level reliefs for the calculation.",
+          "description": "Details the reliefs used in the calculation.",
           "properties": {
             "residentialFinanceCosts": {
               "title": "residentialFinanceCosts",
               "type": "object",
-              "description": "Details the residential finance cost reliefs for the calculation.",
+              "description": "Details the residential finance cost reliefs used in the calculation.",
               "properties": {
                 "amountClaimed": {
                   "title": "amountClaimed",
@@ -116,7 +116,7 @@
                 },
                 "rate": {
                   "title": "rate",
-                  "description": "The tax rate used for the calculation. The value must be between 0 and 99.99 up to 2 decimal places.",
+                  "description": "The tax rate used in the calculation. This value must be between 0 and 99.99 up to 2 decimal places.",
                   "type": "number",
                   "multipleOf": 0.01,
                   "minimum": 0,
