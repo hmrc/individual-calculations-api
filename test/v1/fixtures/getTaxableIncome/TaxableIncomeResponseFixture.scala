@@ -27,7 +27,8 @@ object TaxableIncomeResponseFixture {
   val taxableIncomeResponseModel: TaxableIncomeResponse =
     TaxableIncomeResponse(
       summary = calculationSummaryModel,
-      detail = calculationDetailModel
+      detail = calculationDetailModel,
+      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     )
 
   val taxableIncomeResponseJson: JsValue = Json.parse(

@@ -29,6 +29,7 @@ import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.getTaxableIncome.{TaxableIncomeHateoasData, TaxableIncomeResponse}
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
+import v1.models.response.getMetadata.MetadataResponse
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -73,7 +74,7 @@ class GetTaxableIncomeController @Inject()(
         }
       }
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, req.calculationId)))
+        hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, rawResponse.id)))
 
   def getTaxableIncome(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
