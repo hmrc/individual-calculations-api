@@ -64,7 +64,7 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, MetadataHateoasData(req.nino.nino, req.calculationId, rawResponse.calculationErrorCount)))
+        hateoasFactory.wrap(rawResponse, MetadataHateoasData(req.nino.nino, rawResponse.id, rawResponse.calculationErrorCount)))
 
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
