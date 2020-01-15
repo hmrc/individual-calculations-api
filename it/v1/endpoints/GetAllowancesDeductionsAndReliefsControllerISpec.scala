@@ -33,7 +33,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
     val nino = "AA123456A"
     val correlationId = "X-123"
-    val calcId = "12345678"
+    val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     val linksJson: JsObject = Json.parse(
       s"""{
