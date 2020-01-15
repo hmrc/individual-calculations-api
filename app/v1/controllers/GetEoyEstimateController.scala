@@ -72,7 +72,7 @@ class GetEoyEstimateController @Inject()(
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, EoyEstimateHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, EoyEstimateHateoasData(req.nino.nino, rawResponse.id)))
   }
 
   def getEoyEstimate(nino: String, calculationId: String): Action[AnyContent] =

@@ -64,7 +64,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   }
 
   private val nino = "AA123456A"
-  private val calcId = "someCalcId"
+  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId = "X-123"
 
   private val rawData = GetCalculationRawData(nino, calcId)
