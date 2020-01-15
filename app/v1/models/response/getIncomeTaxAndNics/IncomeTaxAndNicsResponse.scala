@@ -18,18 +18,23 @@ package v1.models.response.getIncomeTaxAndNics
 
 import config.AppConfig
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.getIncomeTaxAndNics.detail.CalculationDetail
 import v1.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 
-case class IncomeTaxAndNicsResponse(summary: CalculationSummary, detail: CalculationDetail)
+case class IncomeTaxAndNicsResponse(summary: CalculationSummary, detail: CalculationDetail, id: String)
 
 object IncomeTaxAndNicsResponse extends HateoasLinks {
 
   implicit val writes: OWrites[IncomeTaxAndNicsResponse] = Json.writes[IncomeTaxAndNicsResponse]
   implicit val reads: Reads[IncomeTaxAndNicsResponse] =
-    (JsPath \ "incomeTaxAndNicsCalculated").read[IncomeTaxAndNicsResponse](Json.reads[IncomeTaxAndNicsResponse])
+    (
+      (JsPath \ "incomeTaxAndNicsCalculated" \ "summary").read[CalculationSummary] and
+        (JsPath \ "incomeTaxAndNicsCalculated" \ "detail").read[CalculationDetail] and
+        (JsPath \ "metadata" \ "id").read[String]
+      )(IncomeTaxAndNicsResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[IncomeTaxAndNicsResponse, IncomeTaxAndNicsHateoasData] {
     override def links(appConfig: AppConfig, data: IncomeTaxAndNicsHateoasData): Seq[Link] = {
