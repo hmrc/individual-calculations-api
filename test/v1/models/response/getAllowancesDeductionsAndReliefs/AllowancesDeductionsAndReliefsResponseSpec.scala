@@ -45,7 +45,7 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
 
     "isEmpty" should {
       def responseWithSummary(summary: CalculationSummary): AllowancesDeductionsAndReliefsResponse =
-        AllowancesDeductionsAndReliefsResponse(summary = summary, detail = CalculationDetail(None, None))
+        AllowancesDeductionsAndReliefsResponse(summary = summary, detail = CalculationDetail(None, None), id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
       "return true" when {
         "summary totalAllowancesAndDeductions AND totalReliefs are not present" in {
