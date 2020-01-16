@@ -19,7 +19,6 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
@@ -31,13 +30,11 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino          = "AA123456A"
-    val correlationId = "X-123"
-    val calcId        = "12345678"
+    val nino           = "AA123456A"
+    val correlationId  = "X-123"
+    val calcId: String = fixtureCalculationId
 
-
-    val linksJson: JsObject = Json.parse(
-      s"""{
+    val linksJson: JsObject = Json.parse(s"""{
          |    "links": [{
          |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
          |      "method": "GET",

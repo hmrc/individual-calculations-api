@@ -26,10 +26,13 @@ import v1.models.response.calculationWrappers.CalculationWrapperOrError._
 
 object IncomeTaxAndNicsResponseFixture {
 
+  val fixtureCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+
   val incomeTaxAndNicsResponseModel: IncomeTaxAndNicsResponse =
     IncomeTaxAndNicsResponse(
       summary = calculationSummaryModel,
-      detail = calculationDetailModel
+      detail = calculationDetailModel,
+      id = fixtureCalculationId
     )
 
   val wrappedIncomeTaxAndNicsResponseModel: CalculationWrapperOrError[IncomeTaxAndNicsResponse] =
@@ -39,7 +42,8 @@ object IncomeTaxAndNicsResponseFixture {
     s"""
        |{
        |   "summary": $calculationSummaryJson,
-       |   "detail": $calculationDetailJson
+       |   "detail": $calculationDetailJson,
+       |   "id": "$fixtureCalculationId"
        |}
     """.stripMargin
   )
@@ -58,7 +62,7 @@ object IncomeTaxAndNicsResponseFixture {
     s"""
        |{
        |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+       |    "id": "$fixtureCalculationId",
        |    "taxYear": "2018-19",
        |    "requestedBy": "customer",
        |    "calculationReason": "customerRequest",
