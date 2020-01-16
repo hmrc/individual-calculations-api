@@ -18,18 +18,27 @@ package v1.models.response.getEoyEstimate
 
 import config.AppConfig
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
 import v1.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
-case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateDetail)
+case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateDetail, id: String)
 
 object EoyEstimateResponse extends HateoasLinks {
 
-  implicit val writes: OWrites[EoyEstimateResponse] = Json.writes[EoyEstimateResponse]
-  implicit val reads: Reads[EoyEstimateResponse] =
-    (JsPath \ "endOfYearEstimate").read[EoyEstimateResponse](Json.reads[EoyEstimateResponse])
+  implicit val writes: OWrites[EoyEstimateResponse] = new OWrites[EoyEstimateResponse] {
+    def writes(response: EoyEstimateResponse): JsObject =
+      Json.obj(
+        "summary" -> response.summary,
+        "detail" -> response.detail
+      )
+  }
+  implicit val reads: Reads[EoyEstimateResponse] = (
+    (JsPath \ "endOfYearEstimate" \ "summary").read[EoyEstimateSummary] and
+      (JsPath \ "endOfYearEstimate" \ "detail").read[EoyEstimateDetail] and
+      (JsPath \ "metadata" \ "id").read[String])(EoyEstimateResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[EoyEstimateResponse, EoyEstimateHateoasData] {
     override def links(appConfig: AppConfig, data: EoyEstimateHateoasData): Seq[Link] = {
