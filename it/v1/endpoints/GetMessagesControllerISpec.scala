@@ -24,6 +24,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.fixtures.getMessages.MessagesResponseFixture
 import v1.fixtures.getMessages.MessagesResponseFixture._
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -33,7 +34,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
 
     val nino                      = "AA123456A"
     val correlationId             = "X-123"
-    val calcId                    = "12345678"
+    val calcId                    = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -51,17 +52,19 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.obj("messages" -> MessagesResponseFixture.messagesResponseJson)
+      val successBody = Json.obj(
+        "metadata" -> metadataResponseJson,
+        "messages" -> MessagesResponseFixture.messagesResponseJson)
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[
           |      {
-          |          "href": "/individuals/calculations/AA123456A/self-assessment/12345678",
+          |         "href": "/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           |         "method": "GET",
           |         "rel": "metadata"
           |         },
           |      {
-          |         "href": "/individuals/calculations/AA123456A/self-assessment/12345678/messages",
+          |         "href": "/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/messages",
           |         "method": "GET",
           |         "rel": "self"
           |         }
@@ -77,7 +80,6 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           MtdIdLookupStub.ninoFound(nino)
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
-
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK

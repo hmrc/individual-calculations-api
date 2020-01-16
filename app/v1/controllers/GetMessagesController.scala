@@ -69,7 +69,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccess(filterMessages(req.queryData))
-      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, req.calculationId)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, rawResponse.id)))
 
   def filterMessages(queries: Seq[MessageType])(
     messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {

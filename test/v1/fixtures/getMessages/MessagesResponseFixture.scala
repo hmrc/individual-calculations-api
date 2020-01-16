@@ -17,9 +17,12 @@
 package v1.fixtures.getMessages
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.getMessages.{Message, MessagesResponse}
 
 object MessageFixture {
+
+  val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val messageJson: JsValue = Json.parse(
     """
@@ -32,6 +35,7 @@ object MessageFixture {
 }
 
 object MessagesResponseFixture {
+  val calcId = "someCalcId"
 
   val err1: Message = Message(id = "err1", text = "text1")
   val err2: Message = Message(id = "err2", text = "text2")
@@ -46,11 +50,11 @@ object MessagesResponseFixture {
     MessagesResponse(
       info = Some(Seq(info1, info2)),
       warnings = Some(Seq(warn1, warn2)),
-      errors = Some(Seq(err1, err2))
+      errors = Some(Seq(err1, err2)), calcId
     )
 
   val messagesResponseJson: JsValue = Json.parse(
-    """
+    s"""
       |{
       |  "info": [
       |    {"id":"info1", "text":"text1"},
@@ -91,8 +95,18 @@ object MessagesResponseFixture {
   )
 
   val messagesResponseTopLevelJson: JsValue = Json.parse(
-    """
+    s"""
       |{
+      |   "metadata": {
+      |     "id": "$calcId",
+      |     "taxYear": "2018-19",
+      |     "requestedBy": "${CalculationRequestor.customer}",
+      |     "calculationReason": "${CalculationReason.customerRequest}",
+      |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |     "calculationType": "${CalculationType.inYear}",
+      |     "intentToCrystallise": true,
+      |     "crystallised": false
+      |   },
       | "messages" : {
       |  "info": [
       |    {"id":"info1", "text":"text1"},
@@ -114,6 +128,16 @@ object MessagesResponseFixture {
   val messagesResponseTopLevelJsonEmpty: JsValue = Json.parse(
     """
       |{
+      |   "metadata": {
+      |     "id": "$calcId",
+      |     "taxYear": "2018-19",
+      |     "requestedBy": "${CalculationRequestor.customer}",
+      |     "calculationReason": "${CalculationReason.customerRequest}",
+      |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |     "calculationType": "${CalculationType.inYear}",
+      |     "intentToCrystallise": true,
+      |     "crystallised": false
+      |   },
       |  "messages" :{
       |  }
       |}
@@ -123,6 +147,16 @@ object MessagesResponseFixture {
   val messagesResponseTopLevelJsonInfo: JsValue = Json.parse(
     """
       |{
+      |   "metadata": {
+      |     "id": "$calcId",
+      |     "taxYear": "2018-19",
+      |     "requestedBy": "${CalculationRequestor.customer}",
+      |     "calculationReason": "${CalculationReason.customerRequest}",
+      |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |     "calculationType": "${CalculationType.inYear}",
+      |     "intentToCrystallise": true,
+      |     "crystallised": false
+      |   },
       |  "messages" :{
       |     "info":[
       |     {"id":"info1", "text":"text1"},

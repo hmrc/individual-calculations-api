@@ -66,13 +66,12 @@ class GetMessagesControllerSpec
   }
 
   private val nino          = "AA123456A"
-  private val calcId        = "someCalcId"
   private val correlationId = "X-123"
 
   def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): MessagesResponse =
     MessagesResponse(if (info) Some(Seq(info1, info2)) else None,
                         if (warn) Some(Seq(warn1, warn2)) else None,
-                        if (error) Some(Seq(err1, err2)) else None)
+                        if (error) Some(Seq(err1, err2)) else None, calcId)
 
   val hateoasLinks: JsValue = Json.parse("""{
       |      "links":[

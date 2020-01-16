@@ -22,10 +22,13 @@ import v1.models.response.getMessages.{MessagesResponse, Message}
 
 class MessagesFilterSpec extends UnitSpec {
   val filter: MessagesFilter = new MessagesFilter {}
+  val calcId = "someCalcId"
+
   val messages = MessagesResponse(
     Some(Seq(Message("infoId", "infoMessage"))),
     Some(Seq(Message("warningId", "warningMessage"))),
-    Some(Seq(Message("errorId", "errorMessage")))
+    Some(Seq(Message("errorId", "errorMessage"))),
+    calcId
   )
 
   "Calling filter" should {
@@ -33,21 +36,21 @@ class MessagesFilterSpec extends UnitSpec {
     "return only error messages" when {
 
       "provided with an error filter" in {
-        filter.filter(messages, Seq(MessageType.error)) shouldBe MessagesResponse(None, None, Some(Seq(Message("errorId", "errorMessage"))))
+        filter.filter(messages, Seq(MessageType.error)) shouldBe MessagesResponse(None, None, Some(Seq(Message("errorId", "errorMessage"))), calcId)
       }
     }
 
     "return only warning messages" when {
 
       "provided with a warning filter" in {
-        filter.filter(messages, Seq(MessageType.warning)) shouldBe MessagesResponse(None, Some(Seq(Message("warningId", "warningMessage"))), None)
+        filter.filter(messages, Seq(MessageType.warning)) shouldBe MessagesResponse(None, Some(Seq(Message("warningId", "warningMessage"))), None, calcId)
       }
     }
 
     "return only info messages" when {
 
       "provided with an info filter" in {
-        filter.filter(messages, Seq(MessageType.info)) shouldBe MessagesResponse(Some(Seq(Message("infoId", "infoMessage"))), None, None)
+        filter.filter(messages, Seq(MessageType.info)) shouldBe MessagesResponse(Some(Seq(Message("infoId", "infoMessage"))), None, None, calcId)
       }
     }
 
@@ -80,19 +83,19 @@ class MessagesFilterSpec extends UnitSpec {
     "return an empty message set" when {
 
       "provided with an error filter and no error messages" in {
-        filter.filter(messages.copy(errors = None), Seq(MessageType.error)) shouldBe MessagesResponse(None, None, None)
+        filter.filter(messages.copy(errors = None), Seq(MessageType.error)) shouldBe MessagesResponse(None, None, None, calcId)
       }
 
       "provided with a warning filter and no warning messages" in {
-        filter.filter(messages.copy(warnings = None), Seq(MessageType.warning)) shouldBe MessagesResponse(None, None, None)
+        filter.filter(messages.copy(warnings = None), Seq(MessageType.warning)) shouldBe MessagesResponse(None, None, None, calcId)
       }
 
       "provided with an info filter and no info messages" in {
-        filter.filter(messages.copy(info = None), Seq(MessageType.info)) shouldBe MessagesResponse(None, None, None)
+        filter.filter(messages.copy(info = None), Seq(MessageType.info)) shouldBe MessagesResponse(None, None, None, calcId)
       }
 
       "provided with only an invalid filter" in {
-        filter.filter(messages, Seq(MessageType.none)) shouldBe MessagesResponse(None, None, None)
+        filter.filter(messages, Seq(MessageType.none)) shouldBe MessagesResponse(None, None, None, calcId)
       }
     }
   }

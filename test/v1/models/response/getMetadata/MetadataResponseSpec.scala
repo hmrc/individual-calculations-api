@@ -18,7 +18,6 @@ package v1.models.response.getMetadata
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getMetadata.MetadataResponseFixture
 import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
