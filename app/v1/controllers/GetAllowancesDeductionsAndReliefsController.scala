@@ -74,7 +74,7 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
         }
       }
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, req.calculationId)))
+        hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, rawResponse.id)))
 
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>

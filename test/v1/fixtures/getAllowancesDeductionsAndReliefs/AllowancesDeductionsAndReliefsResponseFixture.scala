@@ -29,7 +29,8 @@ object AllowancesDeductionsAndReliefsResponseFixture {
   val allowancesDeductionsAndReliefsResponseModel: AllowancesDeductionsAndReliefsResponse =
     AllowancesDeductionsAndReliefsResponse(
       summary = calculationSummaryModel,
-      detail = calculationDetailModel
+      detail = calculationDetailModel,
+      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     )
 
   val allowancesDeductionsAndReliefsResponseModelEmpty: AllowancesDeductionsAndReliefsResponse =
@@ -41,7 +42,8 @@ object AllowancesDeductionsAndReliefsResponseFixture {
       detail = CalculationDetail(
         allowancesAndDeductions = None,
         reliefs = None
-      )
+      ),
+      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     )
 
   val allowancesDeductionsAndReliefsResponseJson: JsObject =
