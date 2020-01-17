@@ -98,21 +98,21 @@
               "properties": {
                 "amountClaimed": {
                   "title": "amountClaimed",
-                  "description": "The amount being claimed including any carry forward amounts. This value must be between 0 and 99999999999. No decimals.",
+                  "description": "The amount being claimed including any carry forward amounts. This value must be between 0 and 99999999999.99.",
                   "type": "number",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
+                  "maximum": 99999999999.99,
+                  "example": "1000.25"
                 },
                 "allowableAmount": {
                   "title": "allowableAmount",
-                  "description": "The lower of: finance costs not deducted, property business profits, adjusted total income (exceeding Personal Allowance). This value must be between 0 and 99999999999. No decimals.",
+                  "description": "The lower of: finance costs not deducted, property business profits, adjusted total income (exceeding Personal Allowance). This value must be between 0 and 99999999999.99.",
                   "type": "number",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
+                  "maximum": 99999999999.99,
+                  "example": "1000.25"
                 },
                 "rate": {
                   "title": "rate",
@@ -125,12 +125,12 @@
                 },
                 "propertyFinanceRelief": {
                   "title": "propertyFinanceRelief",
-                  "description": "Property finance relief. This value must be between 0 and 99999999999. No decimals.",
+                  "description": "Property finance relief. This value must be between 0 and 99999999999.99.",
                   "type": "number",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
-                  "maximum": 99999999999,
-                  "example": "1000"
+                  "maximum": 99999999999.99,
+                  "example": "1000.25"
                 }
               },
               "required": ["amountClaimed", "rate", "propertyFinanceRelief"]
