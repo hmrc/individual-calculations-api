@@ -21,10 +21,10 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.detail.ResidentialFi
 
 object ResidentialFinancialCostsFixture {
 
-  val amountClaimed: BigInt = 12500
-  val allowableAmount: Option[BigInt] = Some(12500)
+  val amountClaimed: BigDecimal = 12500.25
+  val allowableAmount: Option[BigDecimal] = Some(12500.25)
   val rate: BigDecimal = 20.0
-  val propertyFinanceRelief: BigInt = 12500
+  val propertyFinanceRelief: BigDecimal = 12500.25
 
   val residentialFinancialCostsModel: ResidentialFinanceCosts =
     ResidentialFinanceCosts(

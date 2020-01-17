@@ -18,10 +18,10 @@ package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ResidentialFinanceCosts(amountClaimed: BigInt,
-                                   allowableAmount: Option[BigInt],
+case class ResidentialFinanceCosts(amountClaimed: BigDecimal,
+                                   allowableAmount: Option[BigDecimal],
                                    rate: BigDecimal,
-                                   propertyFinanceRelief: BigInt)
+                                   propertyFinanceRelief: BigDecimal)
 
 object ResidentialFinanceCosts {
   implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]

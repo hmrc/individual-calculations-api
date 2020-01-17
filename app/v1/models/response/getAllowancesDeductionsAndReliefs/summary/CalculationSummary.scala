@@ -18,7 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs.summary
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigInt])
+case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigDecimal])
 
 object CalculationSummary {
   implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]

@@ -22,7 +22,7 @@ import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationS
 object CalculationSummaryFixture {
 
   val totalAllowancesAndDeductions: Option[BigInt] = Some(1)
-  val totalReliefs: Option[BigInt] = Some(2)
+  val totalReliefs: Option[BigDecimal] = Some(1000.25)
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
