@@ -26,7 +26,6 @@ class UnclaimedLossSpec extends UnitSpec with JsonErrorValidators {
     mandatoryProperties = Seq(
       "taxYearLossIncurred",
       "currentLossValue",
-      "expires",
       "lossType"
     ),
     optionalProperties = Seq()
