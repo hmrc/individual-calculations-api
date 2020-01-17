@@ -29,6 +29,7 @@
             "lossClaimsSummary": {
               "totalBroughtForwardIncomeTaxLosses": 1000,
               "broughtForwardIncomeTaxLossesUsed": 1000,
+              "carrySidewaysIncomeTaxLossesUsed": 1000,
               "totalIncomeTaxLossesCarriedForward": 1000,
               "totalBroughtForwardClass4Losses": 1000,
               "broughtForwardClass4LossesUsed": 1000,
@@ -60,7 +61,6 @@
                 {
                   "taxYearLossIncurred": "2018-19",
                   "currentLossValue": 1000,
-                  "expires": "2018-19",
                   "lossType": "class4-nics"
                 }
               ],
@@ -99,6 +99,7 @@
             "lossForCSFHL": 1000,
             "totalBroughtForwardIncomeTaxLosses": 1000,
             "broughtForwardIncomeTaxLossesUsed": 1000,
+            "carrySidewaysIncomeTaxLossesUsed": 1000,
             "totalIncomeTaxLossesCarriedForward": 1000
           },
           "lossClaimsDetail": {
