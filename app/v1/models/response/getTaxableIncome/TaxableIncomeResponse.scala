@@ -17,8 +17,8 @@
 package v1.models.response.getTaxableIncome
 
 import config.AppConfig
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.getTaxableIncome.detail.CalculationDetail
@@ -39,16 +39,19 @@ object TaxableIncomeResponse extends HateoasLinks {
   implicit val reads: Reads[TaxableIncomeResponse] = (
     (JsPath \ "taxableIncome" \ "summary").read[CalculationSummary] and
       (JsPath \ "taxableIncome" \ "detail").read[CalculationDetail] and
-      (JsPath \ "metadata" \ "id").read[String])(TaxableIncomeResponse.apply _)
+      (JsPath \ "metadata" \ "id").read[String]) (TaxableIncomeResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[TaxableIncomeResponse, TaxableIncomeHateoasData] {
     override def links(appConfig: AppConfig, data: TaxableIncomeHateoasData): Seq[Link] = {
+
       Seq(
         getMetadata(appConfig, data.nino, data.calculationId, isSelf = false),
         getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true)
       )
     }
+
   }
+
 }
 
 case class TaxableIncomeHateoasData(nino: String, calculationId: String) extends HateoasData

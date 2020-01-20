@@ -17,7 +17,7 @@
 package v1.models.response.getTaxableIncome.detail.selfEmployment
 
 import play.api.libs.json._
-import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.LossClaimsDetail
+import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v1.models.response.getTaxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 case class SelfEmployment(selfEmploymentId: String,
@@ -33,7 +33,8 @@ case class SelfEmployment(selfEmploymentId: String,
                           taxableProfit: Option[BigInt],
                           taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                           lossClaimsSummary: Option[LossClaimsSummary],
-                          lossClaimsDetail: Option[LossClaimsDetail])
+                          lossClaimsDetail: Option[LossClaimsDetail],
+                          bsas: Option[BusinessSourceAdjustableSummary])
 
 object SelfEmployment {
   implicit val format: OFormat[SelfEmployment] = Json.format[SelfEmployment]

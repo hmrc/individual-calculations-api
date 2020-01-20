@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.hateoas
+package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
-object RelType {
+import play.api.libs.json.{Format, Json}
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
+case class BusinessSourceAdjustableSummary(bsasId: String,
+                                           applied: Boolean)
 
-  val SUBMIT_ADJUSTMENTS = "retrieve-self-employment-accounting-adjustments"
+object BusinessSourceAdjustableSummary {
 
-  val SELF = "self"
+  implicit val format: Format[BusinessSourceAdjustableSummary] = Json.format[BusinessSourceAdjustableSummary]
 }

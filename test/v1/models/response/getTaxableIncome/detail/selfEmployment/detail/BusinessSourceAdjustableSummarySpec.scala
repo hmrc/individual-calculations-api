@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.hateoas
+package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
 
-object RelType {
+import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.selfEmployment.SelfEmploymentFixture._
+import v1.models.utils.JsonErrorValidators
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
+class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  val SUBMIT_ADJUSTMENTS = "retrieve-self-employment-accounting-adjustments"
-
-  val SELF = "self"
+  testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
+    mandatoryProperties = Seq("bsasId", "applied"),
+    optionalProperties = Seq()
+  )
 }

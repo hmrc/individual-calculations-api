@@ -39,7 +39,8 @@ class SelfEmploymentSpec extends UnitSpec with JsonErrorValidators {
       "taxableProfit",
       "taxableProfitAfterIncomeTaxLossesDeduction",
       "lossClaimsSummary",
-      "lossClaimsDetail"
+      "lossClaimsDetail",
+      "bsas"
     )
   )
 }
