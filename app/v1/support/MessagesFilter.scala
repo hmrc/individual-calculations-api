@@ -42,6 +42,6 @@ trait MessagesFilter {
       }
     }
 
-    filterLoop(MessagesResponse(None, None, None), typeQueries)
+    filterLoop(MessagesResponse(None, None, None, calculationMessages.id), typeQueries)
   }
 }
