@@ -210,6 +210,63 @@
                         "maximum": 99999999999,
                         "example": "5000"
                       },
+                      "bsas": {
+                        "type": "object",
+                        "title": "Business Source Adjustable Summary",
+                        "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for this self-employment business have been used in this calculation.",
+                        "properties": {
+                          "bsasId": {
+                            "type": "string",
+                            "title": "Business Source Account Summary ID",
+                            "description": "The unique identifier of the Business Source Adjustable Summary for this self-employment business.",
+                            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                            "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                          },
+                          "applied": {
+                            "type": "boolean",
+                            "title": "Applied",
+                            "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                            "example": "false"
+                          },
+                          "links": {
+                            "type": "array",
+                            "title": "Links",
+                            "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
+                            "items": {
+                              "type": "object",
+                              "description": "A list of endpoint links that indicate possible actions related to the current resource.",
+                              "properties": {
+                                "href": {
+                                  "description": "The relative url of the endpoint.",
+                                  "type": "string",
+                                  "example": "/sample-context/AA123456A"
+                                },
+                                "rel": {
+                                  "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
+                                  "type": "string",
+                                  "example": "self"
+                                },
+                                "method": {
+                                  "description": "The HTTP method type for the endpoint.",
+                                  "type": "string",
+                                  "enum": [
+                                    "GET",
+                                    "POST",
+                                    "PUT",
+                                    "DELETE"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "href",
+                                "rel",
+                                "method"
+                              ]
+                            }
+                          }
+                        },
+                        "required": ["bsasId", "applied", "links"]
+                      },
                       "lossClaimsSummary": {
                         "type": "object",
                         "description": "Summarises losses and claims for the self-employment business. This will only be present for a crystallisation calculation.",
@@ -652,6 +709,63 @@
                       "maximum": 99999999999,
                       "example": "2000"
                     },
+                    "bsas": {
+                      "type": "object",
+                      "title": "Business Source Adjustable Summary",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for UK Property FHL have been used in this calculation.",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for UK Property FHL.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "Applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        },
+                        "links": {
+                          "type": "array",
+                          "title": "Links",
+                          "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
+                          "items": {
+                            "type": "object",
+                            "description": "A list of endpoint links that indicate possible actions related to the current resource.",
+                            "properties": {
+                              "href": {
+                                "description": "The relative url of the endpoint.",
+                                "type": "string",
+                                "example": "/sample-context/AA123456A"
+                              },
+                              "rel": {
+                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
+                                "type": "string",
+                                "example": "self"
+                              },
+                              "method": {
+                                "description": "The HTTP method type for the endpoint.",
+                                "type": "string",
+                                "enum": [
+                                  "GET",
+                                  "POST",
+                                  "PUT",
+                                  "DELETE"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "href",
+                              "rel",
+                              "method"
+                            ]
+                          }
+                        }
+                      },
+                      "required": ["bsasId", "applied", "links"]
+                    },
                     "lossClaimsSummary": {
                       "type": "object",
                       "description": "Summarises losses and claims for the UK Property FHL. This section will only be present for a crystallisation calculation ",
@@ -926,6 +1040,63 @@
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "2000"
+                    },
+                    "bsas": {
+                      "type": "object",
+                      "title": "Business Source Adjustable Summary",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for UK Property Non-FHL have been used in this calculation.",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for UK Property Non-FHL.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "Applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        },
+                        "links": {
+                          "type": "array",
+                          "title": "Links",
+                          "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
+                          "items": {
+                            "type": "object",
+                            "description": "A list of endpoint links that indicate possible actions related to the current resource.",
+                            "properties": {
+                              "href": {
+                                "description": "The relative url of the endpoint.",
+                                "type": "string",
+                                "example": "/sample-context/AA123456A"
+                              },
+                              "rel": {
+                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
+                                "type": "string",
+                                "example": "self"
+                              },
+                              "method": {
+                                "description": "The HTTP method type for the endpoint.",
+                                "type": "string",
+                                "enum": [
+                                  "GET",
+                                  "POST",
+                                  "PUT",
+                                  "DELETE"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "href",
+                              "rel",
+                              "method"
+                            ]
+                          }
+                        }
+                      },
+                      "required": ["bsasId", "applied", "links"]
                     },
                     "lossClaimsSummary": {
                       "type": "object",
