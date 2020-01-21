@@ -20,6 +20,7 @@ import play.api.libs.json.{Json, _}
 
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
                              broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
+                             carrySidewaysIncomeTaxLossesUsed: Option[BigDecimal],
                              totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
                              totalBroughtForwardClass4Losses: Option[BigDecimal],
                              broughtForwardClass4LossesUsed: Option[BigDecimal],

@@ -28,11 +28,13 @@ object LossClaimSummaryFixture {
   val broughtForwardClass4LossesUsed: Option[BigDecimal] = Some(2)
   val carrySidewaysClass4LossesUsed: Option[BigDecimal] = Some(2)
   val totalClass4LossesCarriedForward: Option[BigDecimal] = Some(3)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigDecimal] = Some(2)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
     LossClaimsSummary(
       totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
       broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
       totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
       totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
       broughtForwardClass4LossesUsed = broughtForwardClass4LossesUsed,
@@ -44,6 +46,7 @@ object LossClaimSummaryFixture {
     s"""{
        |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
        |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+       |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
        |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
        |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
        |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
