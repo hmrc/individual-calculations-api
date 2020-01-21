@@ -26,7 +26,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.models.auth.UserDetails
 import v1.models.errors.{DownstreamError, UnauthorisedError}
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class EnrolmentsAuthServiceSpec extends ServiceSpec {

@@ -17,7 +17,6 @@
 package v1.controllers.requestParsers.validators.validations
 
 import play.api.libs.json._
-import play.api.mvc.AnyContentAsJson
 import v1.models.errors.MtdError
 
 object JsonFormatValidation {

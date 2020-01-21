@@ -37,7 +37,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
       override val authService: EnrolmentsAuthService = mockEnrolmentsAuthService
       override val lookupService: MtdIdLookupService  = mockMtdIdLookupService
 
-      def action(nino: String): Action[AnyContent] = authorisedAction(nino).async { implicit request =>
+      def action(nino: String): Action[AnyContent] = authorisedAction(nino).async {
         Future.successful(Ok(Json.obj()))
       }
     }

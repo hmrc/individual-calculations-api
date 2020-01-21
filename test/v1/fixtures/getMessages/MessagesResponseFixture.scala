@@ -126,7 +126,7 @@ object MessagesResponseFixture {
   )
 
   val messagesResponseTopLevelJsonEmpty: JsValue = Json.parse(
-    """
+    s"""
       |{
       |   "metadata": {
       |     "id": "$calcId",
@@ -145,7 +145,7 @@ object MessagesResponseFixture {
   )
 
   val messagesResponseTopLevelJsonInfo: JsValue = Json.parse(
-    """
+    s"""
       |{
       |   "metadata": {
       |     "id": "$calcId",
