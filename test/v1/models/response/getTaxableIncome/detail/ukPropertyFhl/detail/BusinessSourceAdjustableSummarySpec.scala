@@ -14,30 +14,26 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail.ukPropertyFhl
+package v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail
 
-import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixture._
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getTaxableIncome.detail.BusinessSourceAdjustableSummary
 import v1.models.utils.JsonErrorValidators
 
-class UkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
+class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[UkPropertyFhl](ukPropertyFhlJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "totalIncome",
-      "totalExpenses",
-      "netProfit",
-      "netLoss",
-      "totalAdditions",
-      "totalDeductions",
-      "accountingAdjustments",
-      "adjustedIncomeTaxLoss",
-      "taxableProfit",
-      "taxableProfitAfterIncomeTaxLossesDeduction",
-      "lossClaimsSummary",
-      "lossClaimsDetail",
-      "bsas"
-    )
+  val bsasJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+       |   "applied": true
+       |}
+    """.stripMargin
+  )
+
+  testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
+    mandatoryProperties = Seq("bsasId", "applied"),
+    optionalProperties = Seq()
   )
 }
