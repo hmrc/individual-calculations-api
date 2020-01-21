@@ -250,10 +250,7 @@
                                   "description": "The HTTP method type for the endpoint.",
                                   "type": "string",
                                   "enum": [
-                                    "GET",
-                                    "POST",
-                                    "PUT",
-                                    "DELETE"
+                                    "GET"
                                   ]
                                 }
                               },
@@ -749,10 +746,7 @@
                                 "description": "The HTTP method type for the endpoint.",
                                 "type": "string",
                                 "enum": [
-                                  "GET",
-                                  "POST",
-                                  "PUT",
-                                  "DELETE"
+                                  "GET"
                                 ]
                               }
                             },
@@ -1081,10 +1075,7 @@
                                 "description": "The HTTP method type for the endpoint.",
                                 "type": "string",
                                 "enum": [
-                                  "GET",
-                                  "POST",
-                                  "PUT",
-                                  "DELETE"
+                                  "GET"
                                 ]
                               }
                             },
