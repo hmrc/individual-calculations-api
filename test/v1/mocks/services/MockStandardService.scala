@@ -18,7 +18,7 @@ package v1.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.handler.{RequestDefn, RequestHandler}

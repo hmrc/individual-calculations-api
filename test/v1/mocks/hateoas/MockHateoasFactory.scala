@@ -30,14 +30,13 @@ trait MockHateoasFactory extends MockFactory {
 
   object MockHateoasFactory {
 
-    def wrap[A, D <: HateoasData](a: A, data: D)(implicit lf: HateoasLinksFactory[A, D]): CallHandler[HateoasWrapper[A]] = {
+    def wrap[A, D <: HateoasData](a: A, data: D): CallHandler[HateoasWrapper[A]] = {
       (mockHateoasFactory
         .wrap(_: A, _: D)(_: HateoasLinksFactory[A, D]))
         .expects(a, data, *)
     }
 
-    def wrapList[A[_]: Functor, I, D <: HateoasData](a: A[I], data: D)(
-        implicit lf: HateoasListLinksFactory[A, I, D]): CallHandler[HateoasWrapper[A[HateoasWrapper[I]]]] = {
+    def wrapList[A[_]: Functor, I, D <: HateoasData](a: A[I], data: D): CallHandler[HateoasWrapper[A[HateoasWrapper[I]]]] = {
       (mockHateoasFactory
         .wrapList(_: A[I], _: D)(_: Functor[A], _: HateoasListLinksFactory[A, I, D]))
         .expects(a, data, *, *)

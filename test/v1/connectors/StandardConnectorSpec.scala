@@ -21,7 +21,6 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.handler.RequestDefn
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
-import v1.models.request.ListCalculationsRequest
 
 import scala.concurrent.Future
 
@@ -77,7 +76,6 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an backend error response" when {
 
       "an error response is returned from the backend" in new Test {
-        val request  = ListCalculationsRequest(nino, "2019-20")
         val expected = Left(BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND ERROR CODE")))
 
         MockedHttpClient
@@ -91,8 +89,6 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an exception" when {
 
       "when an unexpected error is returned" in new Test {
-        val request = ListCalculationsRequest(nino, "2019-20")
-
         MockedHttpClient
           .get(s"$baseUrl/some/uri",  queryParams)
           .returns(Future.failed(new Exception("unexpected exception")))

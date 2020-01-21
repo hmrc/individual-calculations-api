@@ -18,7 +18,7 @@ package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.SavingsFixture._
-import v1.models.response.getTaxableIncome.detail.{Savings, SavingsAndGains}
+import v1.models.response.getTaxableIncome.detail.SavingsAndGains
 
 object SavingsAndGainsFixture {
 

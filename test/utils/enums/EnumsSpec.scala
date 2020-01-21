@@ -18,7 +18,7 @@ package utils.enums
 
 import cats.Show
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import org.scalatest.Inspectors
 import play.api.libs.json._
 import support.UnitSpec
 
@@ -39,7 +39,7 @@ object Foo {
   implicit def fmts[A: Format]: Format[Foo[A]] = Json.format[Foo[A]]
 }
 
-class EnumsSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks {
+class EnumsSpec extends UnitSpec with Inspectors {
 
   import Enum._
 
@@ -58,19 +58,19 @@ class EnumsSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks {
           """.stripMargin)
 
     "generates reads" in {
-      forAll { value: Enum =>
+      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         json(value).as[Foo[Enum]] shouldBe Foo(value)
       }
     }
 
     "generates writes" in {
-      forAll { value: Enum =>
+      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         Json.toJson(Foo(value)) shouldBe json(value)
       }
     }
 
     "allow roundtrip" in {
-      forAll { value: Enum =>
+      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         val foo = Foo(value)
         Json.toJson(foo).as[Foo[Enum]] shouldBe foo
       }
