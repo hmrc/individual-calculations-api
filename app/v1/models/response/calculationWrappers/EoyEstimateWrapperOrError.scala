@@ -30,7 +30,7 @@ object EoyEstimateWrapperOrError {
 
   // Note: the implicit Reads[A] must correctly locate the embedded calculation object
   // from within the JSON as it is received from the backend microservice.
-  implicit def reads[A]: Reads[EoyEstimateWrapperOrError] = {
+  implicit def reads: Reads[EoyEstimateWrapperOrError] = {
     for {
       errCount <- (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault[Int](0)
       calcType <- (JsPath \ "metadata" \ "calculationType").readWithDefault[CalculationType](CalculationType.inYear)
@@ -38,7 +38,7 @@ object EoyEstimateWrapperOrError {
     } yield result
   }
 
-  def readsErrorChecker[A](errCount: Int, calcType: CalculationType)(implicit rds: Reads[A]): Reads[EoyEstimateWrapperOrError] = {
+  def readsErrorChecker(errCount: Int, calcType: CalculationType): Reads[EoyEstimateWrapperOrError] = {
     if (errCount > 0) {
       Reads.pure[EoyEstimateWrapperOrError](EoyErrorMessages)
     }

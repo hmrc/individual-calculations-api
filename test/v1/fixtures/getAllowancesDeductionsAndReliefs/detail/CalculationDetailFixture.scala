@@ -16,7 +16,7 @@
 
 package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeductionsFixture._
 import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail

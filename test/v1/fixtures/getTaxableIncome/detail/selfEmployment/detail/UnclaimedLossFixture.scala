@@ -25,13 +25,11 @@ object UnclaimedLossFixture {
   val taxYearLossIncurred: String = "2051-52"
   val typeOfLoss: LossType = LossType.INCOME
   val currentLossValue: BigInt = 71438847594L
-  val expires: String = "2079-80"
 
   val unclaimedLossModel: UnclaimedLoss =
     UnclaimedLoss(
       taxYearLossIncurred = taxYearLossIncurred,
       currentLossValue = currentLossValue,
-      expires = expires,
       lossType = LossType.INCOME
     )
 
@@ -40,7 +38,6 @@ object UnclaimedLossFixture {
        |{
        |   "taxYearLossIncurred": "$taxYearLossIncurred",
        |   "currentLossValue": $currentLossValue,
-       |   "expires": "$expires",
        |   "lossType": ${Json.toJson(typeOfLoss)}
        |}
     """.stripMargin
