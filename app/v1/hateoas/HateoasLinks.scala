@@ -25,9 +25,6 @@ trait HateoasLinks {
   private def baseUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
-  private def bsasUri(appConfig: AppConfig, nino: String): String =
-    s"/${appConfig.apiGatewayContext}/$nino"
-
   // API resource links
   def trigger(appConfig: AppConfig, nino: String): Link =
     Link(href = baseUri(appConfig, nino), method = POST, rel = TRIGGER)
@@ -52,8 +49,4 @@ trait HateoasLinks {
 
   def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
     Link(href = baseUri(appConfig, nino) + s"/$calcId/messages", method = GET, rel = if (isSelf) SELF else MESSAGES)
-
-  def selfEmploymentAdjustmentUri(appConfig: AppConfig, nino: String, bsasId: String): Link =
-    Link(href= bsasUri(appConfig, nino) + s"/self-employment/$bsasId/adjust", method = POST, rel = SUBMIT_ADJUSTMENTS)
-
 }

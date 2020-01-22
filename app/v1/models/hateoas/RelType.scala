@@ -26,7 +26,5 @@ object RelType {
   val EOY_ESTIMATE = "end-of-year-estimate"
   val MESSAGES = "messages"
 
-  val SUBMIT_ADJUSTMENTS = "retrieve-self-employment-accounting-adjustments"
-
   val SELF = "self"
 }
