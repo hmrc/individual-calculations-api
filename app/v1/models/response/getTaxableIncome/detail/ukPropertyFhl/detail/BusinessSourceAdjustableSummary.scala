@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail
 
-import play.api.libs.json.{Json, Reads, Writes}
+import play.api.libs.json.{Json, Format}
 
 case class BusinessSourceAdjustableSummary(bsasId: String, applied: Boolean)
 
 object BusinessSourceAdjustableSummary {
-  implicit val writes: Writes[BusinessSourceAdjustableSummary] = Json.writes[BusinessSourceAdjustableSummary]
-  implicit val reads: Reads[BusinessSourceAdjustableSummary] = Json.reads[BusinessSourceAdjustableSummary]
+  implicit val format: Format[BusinessSourceAdjustableSummary] = Json.format[BusinessSourceAdjustableSummary]
 }

@@ -16,14 +16,10 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
-import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, Format}
 
-class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
+case class BusinessSourceAdjustableSummary(bsasId: String, applied: Boolean)
 
-  testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
-    mandatoryProperties = Seq("bsasId", "applied"),
-    optionalProperties = Seq()
-  )
+object BusinessSourceAdjustableSummary {
+  implicit val format: Format[BusinessSourceAdjustableSummary] = Json.format[BusinessSourceAdjustableSummary]
 }
