@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetailFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimSummaryFixture._
 import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
+import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.BusinessSourceAdjustableSummary
 
 
 object UkPropertyFhlFixture {
@@ -34,6 +35,7 @@ object UkPropertyFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = None
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
+  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true)
 
   val ukPropertyFhlModel: UkPropertyFhl =
     UkPropertyFhl(
@@ -48,8 +50,18 @@ object UkPropertyFhlFixture {
       taxableProfit = taxableProfit,
       taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
       lossClaimsSummary = Some(lossClaimsSummaryModel),
-      lossClaimsDetail = Some(lossClaimsDetailModel)
+      lossClaimsDetail = Some(lossClaimsDetailModel),
+      bsas = Some(bsas)
     )
+
+  val bsasJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+       |   "applied": true
+       |}
+    """.stripMargin
+  )
 
   val ukPropertyFhlJson: JsValue = Json.parse(
     s"""
@@ -63,7 +75,8 @@ object UkPropertyFhlFixture {
        |   "accountingAdjustments": ${accountingAdjustments.get},
        |   "taxableProfit": ${taxableProfit.get},
        |	 "lossClaimsSummary": $lossClaimSummaryJson,
-       |   "lossClaimsDetail": $lossClaimsDetailJson
+       |   "lossClaimsDetail": $lossClaimsDetailJson,
+       |   "bsas": $bsasJson
        |}
     """.stripMargin)
 }

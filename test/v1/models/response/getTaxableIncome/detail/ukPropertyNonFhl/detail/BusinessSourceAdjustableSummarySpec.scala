@@ -14,30 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl
+package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail
 
 import support.UnitSpec
 import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixture._
 import v1.models.utils.JsonErrorValidators
 
-class UkPropertyNonFhlSpec extends UnitSpec with JsonErrorValidators {
+class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[UkPropertyNonFhl](ukPropertyNonFhlJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "totalIncome",
-      "totalExpenses",
-      "netProfit",
-      "netLoss",
-      "totalAdditions",
-      "totalDeductions",
-      "accountingAdjustments",
-      "adjustedIncomeTaxLoss",
-      "taxableProfit",
-      "taxableProfitAfterIncomeTaxLossesDeduction",
-      "lossClaimsSummary",
-      "lossClaimsDetail",
-      "bsas"
-    )
+  testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
+    mandatoryProperties = Seq("bsasId", "applied"),
+    optionalProperties = Seq()
   )
 }
