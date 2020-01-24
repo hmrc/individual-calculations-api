@@ -26,17 +26,6 @@
             "adjustedIncomeTaxLoss": 1000,
             "class4Loss": 1000,
             "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
-            "bsas": {
-              "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca7",
-              "applied": true,
-              "links": [
-                {
-                  "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
-                  "rel": "self",
-                  "method": "GET"
-                }
-              ]
-            },
             "lossClaimsSummary": {
               "totalBroughtForwardIncomeTaxLosses": 1000,
               "broughtForwardIncomeTaxLossesUsed": 1000,
@@ -92,6 +81,17 @@
                   "claimType": "carry-forward"
                 }
               ]
+            },
+            "bsas": {
+              "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca7",
+              "applied": true,
+              "links": [
+                {
+                  "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
+                  "rel": "self",
+                  "method": "GET"
+                }
+              ]
             }
           }
         ],
@@ -106,17 +106,6 @@
           "taxableProfit": 1000,
           "adjustedIncomeTaxLoss": 1000,
           "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
-          "bsas": {
-            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca8",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
-                "rel": "self",
-                "method": "GET"
-              }
-            ]
-          },
           "lossClaimsSummary": {
             "lossForCSFHL": 1000,
             "totalBroughtForwardIncomeTaxLosses": 1000,
@@ -149,6 +138,17 @@
                 "currentLossValue": 1000
               }
             ]
+          },
+          "bsas": {
+            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca8",
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
+                "rel": "self",
+                "method": "GET"
+              }
+            ]
           }
         },
         "ukPropertyNonFhl": {
@@ -162,17 +162,6 @@
           "taxableProfit": 1000,
           "adjustedIncomeTaxLoss": 1000,
           "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
-          "bsas": {
-            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
-                "rel": "self",
-                "method": "GET"
-              }
-            ]
-          },
           "lossClaimsSummary": {
             "totalBroughtForwardIncomeTaxLosses": 1000,
             "broughtForwardIncomeTaxLossesUsed": 1000,
@@ -210,6 +199,17 @@
                 "claimId": "XGIS00000001319",
                 "taxYearClaimMade": "2018-19",
                 "claimType": "carry-sideways"
+              }
+            ]
+          },
+          "bsas": {
+            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A",
+                "rel": "self",
+                "method": "GET"
               }
             ]
           }
