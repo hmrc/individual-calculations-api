@@ -23,6 +23,8 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName = "individual-calculations-api"
 
+lazy val ItTest = config("it") extend Test
+
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory)
   .settings(
@@ -39,14 +41,16 @@ lazy val microservice = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(defaultSettings(): _*)
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
+  .configs(ItTest)
+  .settings(inConfig(ItTest)(Defaults.itSettings): _*)
   .settings(
-    Keys.fork in IntegrationTest := true,
-    unmanagedSourceDirectories in IntegrationTest := (baseDirectory in IntegrationTest) (base => Seq(base / "it", base / "test")).value,
-    javaOptions in IntegrationTest += "-Dlogger.resource=logback-test.xml",
-    parallelExecution in IntegrationTest := true,
-    addTestReportOption(IntegrationTest, "int-test-reports")
+    fork in ItTest := true,
+    unmanagedSourceDirectories in ItTest := Seq((baseDirectory in ItTest).value / "it"),
+    unmanagedClasspath in ItTest += baseDirectory.value / "resources",
+    unmanagedClasspath in Runtime += baseDirectory.value / "resources",
+    javaOptions in ItTest += "-Dlogger.resource=logback-test.xml",
+    parallelExecution in ItTest := false,
+    addTestReportOption(ItTest, "int-test-reports")
   )
   .settings(
     resolvers += Resolver.jcenterRepo
