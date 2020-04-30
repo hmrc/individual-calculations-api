@@ -21,7 +21,8 @@ import play.api.libs.json.{Json, OFormat}
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
                              carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
-                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt],
+                             broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt])
 
 object LossClaimsSummary {
   implicit val format: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
