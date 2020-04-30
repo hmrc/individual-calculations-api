@@ -25,13 +25,15 @@ object LossClaimsSummaryFixture {
   val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1001)
   val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1002)
   val carrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
+  val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
     LossClaimsSummary(
       totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
       broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
       carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
-      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward
+      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+      broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed
     )
 
   val lossClaimSummaryJson: JsValue = Json.parse(
@@ -40,7 +42,8 @@ object LossClaimsSummaryFixture {
       |   "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |   "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
       |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
-      |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get}
+      |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
+      |   "broughtForwardCarrySidewaysIncomeTaxLossesUsed": ${broughtForwardCarrySidewaysIncomeTaxLossesUsed.get}
       |}
     """.stripMargin
   )
