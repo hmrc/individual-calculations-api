@@ -18,7 +18,7 @@ package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal], savings: Option[BigDecimal])
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal], savings: Option[BigDecimal], cis: Option[BigDecimal])
 
 object TaxDeductedAtSource {
   implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
