@@ -1050,7 +1050,7 @@
                         },
                         "broughtForwardIncomeTaxLossesUsed": {
                           "title": "broughtForwardIncomeTaxLossesUsed",
-                          "description": "This is the total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -1074,6 +1074,15 @@
                           "minimum": 0,
                           "maximum": 99999999999,
                           "example": "2000"
+                        },
+                        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
+                          "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
+                          "description": "The total sum of the carry sideways losses for UK Property Non-FHL brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
                         }
                       }
                     },
