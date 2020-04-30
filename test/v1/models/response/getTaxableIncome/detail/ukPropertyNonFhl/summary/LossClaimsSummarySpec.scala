@@ -27,7 +27,9 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
     optionalProperties = Seq(
       "totalBroughtForwardIncomeTaxLosses",
       "broughtForwardIncomeTaxLossesUsed",
-      "totalIncomeTaxLossesCarriedForward"
+      "totalIncomeTaxLossesCarriedForward",
+      "carrySidewaysIncomeTaxLossesUsed",
+      "broughtForwardCarrySidewaysIncomeTaxLossesUsed"
     )
   )
 }
