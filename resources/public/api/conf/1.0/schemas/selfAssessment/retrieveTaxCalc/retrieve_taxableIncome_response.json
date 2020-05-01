@@ -569,39 +569,6 @@
                             "title": "Applied",
                             "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
                             "example": "false"
-                          },
-                          "links": {
-                            "type": "array",
-                            "title": "Links",
-                            "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
-                            "items": {
-                              "type": "object",
-                              "description": "A list of endpoint links that indicate possible actions related to the current resource.",
-                              "properties": {
-                                "href": {
-                                  "description": "The relative url of the endpoint.",
-                                  "type": "string",
-                                  "example": "/sample-context/AA123456A"
-                                },
-                                "rel": {
-                                  "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
-                                  "type": "string",
-                                  "example": "self"
-                                },
-                                "method": {
-                                  "description": "The HTTP method type for the endpoint.",
-                                  "type": "string",
-                                  "enum": [
-                                    "GET"
-                                  ]
-                                }
-                              },
-                              "required": [
-                                "href",
-                                "rel",
-                                "method"
-                              ]
-                            }
                           }
                         },
                         "required": ["bsasId", "applied"]
@@ -902,39 +869,6 @@
                           "title": "Applied",
                           "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
                           "example": "false"
-                        },
-                        "links": {
-                          "type": "array",
-                          "title": "Links",
-                          "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
-                          "items": {
-                            "type": "object",
-                            "description": "A list of endpoint links that indicate possible actions related to the current resource.",
-                            "properties": {
-                              "href": {
-                                "description": "The relative url of the endpoint.",
-                                "type": "string",
-                                "example": "/sample-context/AA123456A"
-                              },
-                              "rel": {
-                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
-                                "type": "string",
-                                "example": "self"
-                              },
-                              "method": {
-                                "description": "The HTTP method type for the endpoint.",
-                                "type": "string",
-                                "enum": [
-                                  "GET"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "href",
-                              "rel",
-                              "method"
-                            ]
-                          }
                         }
                       },
                       "required": ["bsasId", "applied"]
@@ -1287,39 +1221,6 @@
                           "title": "Applied",
                           "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
                           "example": "false"
-                        },
-                        "links": {
-                          "type": "array",
-                          "title": "Links",
-                          "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
-                          "items": {
-                            "type": "object",
-                            "description": "A list of endpoint links that indicate possible actions related to the current resource.",
-                            "properties": {
-                              "href": {
-                                "description": "The relative url of the endpoint.",
-                                "type": "string",
-                                "example": "/sample-context/AA123456A"
-                              },
-                              "rel": {
-                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
-                                "type": "string",
-                                "example": "self"
-                              },
-                              "method": {
-                                "description": "The HTTP method type for the endpoint.",
-                                "type": "string",
-                                "enum": [
-                                  "GET"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "href",
-                              "rel",
-                              "method"
-                            ]
-                          }
                         }
                       },
                       "required": ["bsasId", "applied"]
