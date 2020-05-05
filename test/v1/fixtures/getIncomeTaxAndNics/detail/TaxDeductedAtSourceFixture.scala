@@ -23,18 +23,21 @@ object TaxDeductedAtSourceFixture {
 
   val ukLandAndProperty: Option[BigDecimal] = Some(100.25)
   val savings: Option[BigDecimal] = Some(200.25)
+  val cis: Option[BigDecimal] = Some(130.45)
 
   val taxDeductedAtSourceModel: TaxDeductedAtSource =
     TaxDeductedAtSource(
       ukLandAndProperty = ukLandAndProperty,
-      savings = savings
+      savings = savings,
+      cis = cis
     )
 
   val taxDeductedAtSourceJson: JsValue = Json.parse(
     s"""
        |{
        |   "ukLandAndProperty" : ${ukLandAndProperty.get},
-       |   "savings" : ${savings.get}
+       |   "savings" : ${savings.get},
+       |   "cis" : ${cis.get}
        |}
   """.stripMargin
   )
