@@ -96,7 +96,8 @@
     },
     "taxDeductedAtSource": {
       "savings": 1000,
-      "ukLandAndProperty": 1000
+      "ukLandAndProperty": 1000,
+      "cis": 1000.12
     }
   },
   "links": [
