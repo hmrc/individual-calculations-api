@@ -9,7 +9,21 @@
       "reducedPersonalAllowance": 1000,
       "giftOfInvestmentsAndPropertyToCharity": 1000,
       "blindPersonsAllowance": 1000,
-      "lossesAppliedToGeneralIncome": 1000
+      "lossesAppliedToGeneralIncome": 1000,
+      "qualifyingLoanInterestFromInvestments": 2000.58,
+      "postCessationTradeReceipts": 2000.58,
+      "paymentsToTradeUnionsForDeathBenefits": 2000.58,
+      "annualPayments": {
+        "grossAnnualPayments": 2000.58,
+        "reliefClaimed": 2000.58,
+        "rate": 10.25
+      },
+      "pensionContributionsDetail": {
+        "pensionContributions": 2000.58,
+        "retirementAnnuityPayments": 2000.58,
+        "paymentToEmployersSchemeNoTaxRelief": 2000.58,
+        "overseasPensionSchemeContributions": 2000.58
+      }
     },
     "reliefs": {
       "residentialFinanceCosts": {
@@ -17,7 +31,31 @@
         "allowableAmount": 1000.25,
         "rate": 10.25,
         "propertyFinanceRelief": 1000.25
-      }
+      },
+      "foreignTaxCreditRelief": [
+        {
+          "incomeSourceType": "fhlPropertyEea",
+          "incomeSourceId": "ABC647261934212",
+          "countryCode": "FRA",
+          "allowableAmount": 2000.58,
+          "rate": 20,
+          "amountUsed": 2000.58
+        }
+      ],
+      "pensionContributionReliefs": {
+        "totalPensionContributionReliefs": 2000.58,
+        "regularPensionContributions": 2000.58,
+        "oneOffPensionContributionsPaid": 2000.58
+      },
+      "reliefsClaimed": [
+        {
+          "type": "vctSubscriptions",
+          "amountClaimed": 2000.58,
+          "allowableAmount": 2000.58,
+          "amountUsed": 2000.58,
+          "rate": 20
+        }
+      ]
     }
   },
   "links": [

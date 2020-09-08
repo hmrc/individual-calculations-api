@@ -83,6 +83,110 @@
               "minimum": 0,
               "maximum": 99999999999,
               "example": "1000"
+            },
+            "qualifyingLoanInterestFromInvestments": {
+              "title": "qualifyingLoanInterestFromInvestments",
+              "description": "Qualifying loan interest payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999.99,
+              "example": "2000.58"
+            },
+            "postCessationTradeReceipts": {
+              "title": "postCessationTradeReceipts",
+              "description": "Trade reliefs and other losses post cessation of a business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999.99,
+              "example": "2000.58"
+            },
+            "paymentsToTradeUnionsForDeathBenefits": {
+              "title": "paymentsToTradeUnionsForDeathBenefits",
+              "description": "Payments made to a Trade union or friendly society for death benefits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999.99,
+              "example": "2000.58"
+            },
+            "annualPayments": {
+              "title": "annualPayments",
+              "type": "object",
+              "description": "Details of any annual payments made.",
+              "properties": {
+                "grossAnnualPayments": {
+                  "title": "grossAnnualPayments",
+                  "description": "The gross value of annual payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "reliefClaimed": {
+                  "title": "reliefClaimed",
+                  "description": "The value of annual payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "rate": {
+                  "title": "rate",
+                  "description": "The tax rate used in the calculation. This value must be between 0 and 99.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "10.25"
+                }
+              }
+            },
+            "pensionContributionsDetail": {
+              "title": "pensionContributionsDetail",
+              "type": "object",
+              "description": "Details of any pension contributions made.",
+              "properties": {
+                "pensionContributions": {
+                  "title": "pensionContributions",
+                  "description": "The value of pension contributions made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "retirementAnnuityPayments": {
+                  "title": "retirementAnnuityPayments",
+                  "description": "The value of retirement annuity payments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "paymentToEmployersSchemeNoTaxRelief": {
+                  "title": "paymentToEmployersSchemeNoTaxRelief",
+                  "description": "Payments to employers pension scheme with no tax relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "overseasPensionSchemeContributions": {
+                  "title": "overseasPensionSchemeContributions",
+                  "description": "The value of contributions to an overseas pension scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                }
+              }
             }
           }
         },
@@ -133,7 +237,197 @@
                   "example": "1000.25"
                 }
               },
-              "required": ["amountClaimed", "rate", "propertyFinanceRelief"]
+              "required": [
+                "amountClaimed",
+                "rate",
+                "propertyFinanceRelief"
+              ]
+            },
+            "foreignTaxCreditRelief": {
+              "title": "foreignTaxCreditRelief",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "Details the foreign tax credit relief (FTCR) used in calculation.",
+                "properties": {
+                  "incomeSourceType": {
+                    "title": "incomeSourceType",
+                    "type": "string",
+                    "description": "The income source type related to the FTCR.",
+                    "oneOf": [
+                      {
+                        "enum": ["fhlPropertyEea"]
+                      },
+                      {
+                        "enum": ["foreignIncome"]
+                      },
+                      {
+                        "enum": ["dividendsFromForeignCompanies"]
+                      },
+                      {
+                        "enum": ["foreignProperty"]
+                      },
+                      {
+                        "enum": ["foreignInterest"]
+                      }
+                    ]
+                  },
+                  "incomeSourceId": {
+                    "title": "incomeSourceId",
+                    "type": "string",
+                    "description": "Unique identifier for the income source.",
+                    "example": "ABC647261934212",
+                    "pattern": "^[A-Za-z0-9]{15}$"
+                  },
+                  "countryCode": {
+                    "title": "countryCode",
+                    "type": "string",
+                    "description": "A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3",
+                    "example": "FRA"
+                  },
+                  "allowableAmount": {
+                    "title": "allowableAmount",
+                    "description": "The allowable amount of FTCR. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.58"
+                  },
+                  "rate": {
+                    "title": "rate",
+                    "description": "The rate associated with the FTCR. This value must be between 0 and 99.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum:": 99999999999.99,
+                    "example": "20"
+                  },
+                  "amountUsed": {
+                    "title": "amountUsed",
+                    "description": "The amount of FTCR used. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.58"
+                  }
+                },
+                "required": ["incomeSourceType", "countryCode"]
+              }
+            },
+            "pensionContributionReliefs": {
+              "title": "pensionContributionReliefs",
+              "type": "object",
+              "description": "Details the pension contribution reliefs used in the calculation.",
+              "properties": {
+                "totalPensionContributionReliefs": {
+                  "title": "totalPensionContributionReliefs",
+                  "description": "The total value of pension contribution reliefs made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "regularPensionContributions": {
+                  "title": "regularPensionContributions",
+                  "description": "The total value of regular pension contributions made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                },
+                "oneOffPensionContributionsPaid": {
+                  "title": "oneOffPensionContributionsPaid",
+                  "description": "The total value of one-off pension contributions made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum:": 99999999999.99,
+                  "example": "2000.58"
+                }
+              },
+              "required": ["totalPensionContributionReliefs"]
+            },
+            "reliefsClaimed": {
+              "title": "reliefsClaimed",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "Details of investment and other reliefs used in the calculation.",
+                "properties": {
+                  "type": {
+                    "title": "type",
+                    "type": "string",
+                    "description": "The type of relief claimed.",
+                    "oneOf": [
+                      {
+                        "enum": ["vctSubscriptions"]
+                      },
+                      {
+                        "enum": ["eisSubscriptions"]
+                      },
+                      {
+                        "enum": ["communityInvestment"]
+                      },
+                      {
+                        "enum": ["seedEnterpriseInvestment"]
+                      },
+                      {
+                        "enum": ["socialEnterpriseInvestment"]
+                      },
+                      {
+                        "enum": ["maintenancePayments"]
+                      },
+                      {
+                        "enum": ["deficiencyRelief"]
+                      },
+                      {
+                        "enum": ["nonDeductibleLoanInterest"]
+                      }
+                    ]
+                  },
+                  "amountClaimed": {
+                    "title": "amountClaimed",
+                    "description": "The amount of relief claimed. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.58"
+                  },
+                  "allowableAmount": {
+                    "title": "allowableAmount",
+                    "description": "The amount of allowable relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.58"
+                  },
+                  "amountUsed": {
+                    "title": "amountUsed",
+                    "description": "The amount of relief used. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.58"
+                  },
+                  "rate": {
+                    "title": "rate",
+                    "description": "The rate associated with the relief claimed. This value must be between 0 and 99.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum:": 99999999999.99,
+                    "example": "20"
+                  }
+                },
+                "required": ["type"]
+              }
             }
           }
         }
