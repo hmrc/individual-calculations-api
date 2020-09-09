@@ -1,8 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Retrieve Self Assessment Tax Calculation Income Tax and NICs Calculated",
-  "description": "Retrieve Self Assessment Tax Calculation Income Tax and NICs Calculated",
   "type": "object",
+  "description": "Retrieve Self Assessment Tax Calculation Income Tax and NICs Calculated",
   "properties": {
     "summary": {
       "type": "object",
@@ -196,38 +195,34 @@
           "description": "Details the breakdown of Income Tax due.",
           "properties": {
             "payPensionsProfit": {
-              "title": "payPensionsProfit",
               "type": "object",
               "description": "Details the breakdown of Income Tax due for pay, pensions and profit income",
               "properties": {
                 "allowancesAllocated": {
-                  "title": "allowancesAllocated",
-                  "description": "The allowances allocated to the pay, pensions and profit Income Tax calculation. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "The allowances allocated to the pay, pensions and profit Income Tax calculation. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "1000"
                 },
                 "incomeTaxAmount": {
-                  "title": "incomeTaxAmount",
-                  "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "type": "number",
+                  "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
                 },
                 "taxBands": {
-                  "description": "Details the relevant tax bands for the taxable income",
                   "type": "array",
+                  "description": "Details the relevant tax bands for the taxable income",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "title": "name",
-                        "description": "The name of the tax band threshold.",
                         "type": "string",
+                        "description": "The name of the tax band threshold.",
                         "oneOf": [
                           {
                             "enum": [
@@ -262,45 +257,40 @@
                         ]
                       },
                       "rate": {
-                        "title": "rate",
-                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "example": "10.12",
                         "minimum": 0,
                         "maximum": 99.99,
                         "multipleOf": 0.01
                       },
                       "bandLimit": {
-                        "title": "bandLimit",
-                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "apportionedBandLimit": {
-                        "title": "apportionedBandLimit",
-                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "income": {
-                        "title": "income",
-                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "taxAmount": {
-                        "title": "taxAmount",
-                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "example": "1000.12",
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -325,7 +315,6 @@
             },
             "savingsAndGains": {
               "type": "object",
-              "title": "savingsAndGains",
               "description": "Details the breakdown of Income Tax due for savings and gains.",
               "properties": {
                 "allowancesAllocated": {
@@ -347,15 +336,14 @@
                   "example": "1000.12"
                 },
                 "taxBands": {
-                  "description": "Details the relevant tax bands for the taxable income",
                   "type": "array",
+                  "description": "Details the relevant tax bands for the taxable income",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "title": "name",
-                        "description": "The name of the tax band.",
                         "type": "string",
+                        "description": "The name of the tax band.",
                         "oneOf": [
                           {
                             "enum": [
@@ -396,45 +384,40 @@
                         ]
                       },
                       "rate": {
-                        "title": "rate",
-                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "example": "10.12",
                         "minimum": 0,
                         "maximum": 99.99,
                         "multipleOf": 0.01
                       },
                       "bandLimit": {
-                        "title": "bandLimit",
-                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "apportionedBandLimit": {
-                        "title": "apportionedBandLimit",
-                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "income": {
-                        "title": "income",
-                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "taxAmount": {
-                        "title": "taxAmount",
-                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "example": "1000.12",
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -462,31 +445,30 @@
               "description": "Details the breakdown of Income Tax due for dividends income.",
               "properties": {
                 "allowancesAllocated": {
-                  "description": "The allowances allocated to the dividends Income Tax calculation. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "The allowances allocated to the dividends Income Tax calculation. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "1000"
                 },
                 "incomeTaxAmount": {
-                  "description": "The total amount of Income Tax associated with dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "type": "number",
+                  "description": "The total amount of Income Tax associated with dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
                 },
                 "taxBands": {
-                  "description": "Details the relevant tax bands for the taxable income",
                   "type": "array",
+                  "description": "Details the relevant tax bands for the taxable income",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "title": "name",
-                        "description": "The name of the tax band.",
                         "type": "string",
+                        "description": "The name of the tax band.",
                         "oneOf": [
                           {
                             "enum": [
@@ -527,45 +509,40 @@
                         ]
                       },
                       "rate": {
-                        "title": "rate",
-                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "example": "10.12",
                         "minimum": 0,
                         "maximum": 99.99,
                         "multipleOf": 0.01
                       },
                       "bandLimit": {
-                        "title": "bandLimit",
-                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The upper threshold for the tax band excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "apportionedBandLimit": {
-                        "title": "apportionedBandLimit",
-                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The apportioned threshold for the tax band, excluding personal allowance. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "income": {
-                        "title": "income",
-                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The amount of taxable income for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "taxAmount": {
-                        "title": "taxAmount",
-                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "example": "1000.12",
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -593,24 +570,24 @@
               "description": "Details the breakdown of Income Tax due for Gift Aid donations. Only visible if Income Tax is owed on Gift Aid donations.",
               "properties": {
                 "grossGiftAidPayments": {
-                  "description": "The total amount of Gift Aid payments made for the tax year. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "The total amount of Gift Aid payments made for the tax year. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "1000"
                 },
                 "rate": {
-                  "description": "The basic rate of tax that applies to Gift Aid payments made. This value must be between 0 and 99.99 up to 2 decimal places.",
                   "type": "number",
+                  "description": "The basic rate of tax that applies to Gift Aid payments made. This value must be between 0 and 99.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99.99,
                   "example": "10.12"
                 },
                 "giftAidTax": {
-                  "description": "The amount of Gift Aid tax charged when insufficient Income Tax has been paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "type": "number",
+                  "description": "The amount of Gift Aid tax charged when insufficient Income Tax has been paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
@@ -627,60 +604,52 @@
         },
         "nics": {
           "type": "object",
-          "title": "nics",
           "description": "Details the breakdown of National Insurance Contributions.",
           "properties": {
             "class2Nics": {
               "type": "object",
-              "title": "class2Nics",
               "description": "Details the breakdown of Class 2 National Insurance Contributions charged.",
               "properties": {
                 "weeklyRate": {
-                  "title": "weeklyRate",
-                  "description": "The weekly rate used to estimate the Class 2 National Insurance contributions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "type": "number",
+                  "description": "The weekly rate used to estimate the Class 2 National Insurance contributions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "110.99"
                 },
                 "weeks": {
-                  "title": "weeks",
-                  "description": "The number of weeks used to calculate the estimated Class 2 National Insurance contributions. This value is a whole number in the range 0 to 52.",
                   "type": "number",
+                  "description": "The number of weeks used to calculate the estimated Class 2 National Insurance contributions. This value is a whole number in the range 0 to 52.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 52,
                   "example": "10"
                 },
                 "limit": {
-                  "title": "limit",
-                  "description": "The annual small profits threshold limit for Class 2 National Insurance contributions. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "The annual small profits threshold limit for Class 2 National Insurance contributions. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "1000"
                 },
                 "apportionedLimit": {
-                  "title": "apportionedLimit",
-                  "description": "The apportioned small profits threshold limit for Class 2 National Insurance contributions. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "The apportioned small profits threshold limit for Class 2 National Insurance contributions. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "10000"
                 },
                 "underSmallProfitThreshold": {
-                  "title": "underSmallProfitThreshold",
-                  "description": "Boolean showing whether the self employment profits are under the Class 2 NIC small profits threshold.",
                   "type": "boolean",
+                  "description": "Boolean showing whether the self employment profits are under the Class 2 NIC small profits threshold.",
                   "example": "true"
                 },
                 "actualClass2Nic": {
-                  "title": "actualClass2Nic",
-                  "description": "Boolean showing whether the Class 2 NIC charge is an actual charge or estimate in this calculation.",
                   "type": "boolean",
+                  "description": "Boolean showing whether the Class 2 NIC charge is an actual charge or estimate in this calculation.",
                   "example": "true"
                 }
               },
@@ -690,13 +659,11 @@
             },
             "class4Nics": {
               "type": "object",
-              "title": "class4Nics",
               "description": "Details the breakdown of Class 4 National Insurance Contributions charged.",
               "properties": {
                 "totalIncomeLiableToClass4Charge": {
-                  "title": "totalIncomeLiableToClass4Charge",
-                  "description": "Total income that is liable to Class 4 National Insurance Contributions before Class 4 National Insurance Contributions losses have been applied. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "Total income that is liable to Class 4 National Insurance Contributions before Class 4 National Insurance Contributions losses have been applied. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
@@ -704,31 +671,27 @@
                 },
                 "class4Losses": {
                   "type": "object",
-                  "title": "class4Losses",
                   "description": "Details the Class 4 National Insurance Contribution losses in relation to the Class 4 National Insurance Contributions.",
                   "properties": {
                     "totalClass4LossesAvailable": {
-                      "title": "totalClass4LossesAvailable",
-                      "description": "Total Class 4 National Insurance Contributions losses that are available to the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
+                      "description": "Total Class 4 National Insurance Contributions losses that are available to the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "multipleOf": 1,
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "1000"
                     },
                     "totalClass4LossesUsed": {
-                      "title": "totalClass4LossesUsed",
-                      "description": "Total Class 4 National Insurance Contributions losses that have been used in the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
+                      "description": "Total Class 4 National Insurance Contributions losses that have been used in the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "multipleOf": 1,
                       "minimum": 0,
                       "maximum": 99999999999,
                       "example": "1000"
                     },
                     "totalClass4LossesCarriedForward": {
-                      "title": "totalClass4LossesCarriedForward",
-                      "description": "Total Class 4 National Insurance Contributions losses that have not been used in the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "type": "number",
+                      "description": "Total Class 4 National Insurance Contributions losses that have not been used in the Class 4 National Insurance Contributions calculation. This value must be between 0 and 99999999999. No decimals.",
                       "multipleOf": 1,
                       "minimum": 0,
                       "maximum": 99999999999,
@@ -737,25 +700,22 @@
                   }
                 },
                 "totalIncomeChargeableToClass4": {
-                  "title": "totalIncomeChargeableToClass4",
-                  "description": "Total income that is chargeable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
                   "type": "number",
+                  "description": "Total income that is chargeable to Class 4 National Insurance Contributions. This value must be between 0 and 99999999999. No decimals.",
                   "multipleOf": 1,
                   "minimum": 0,
                   "maximum": 99999999999,
                   "example": "1000"
                 },
                 "class4NicBands": {
-                  "description": "Details the relevant Class 4 National Insurance bands ",
                   "type": "array",
-                  "title": "class4NicBands",
+                  "description": "Details the relevant Class 4 National Insurance bands ",
                   "items": {
                     "type": "object",
                     "properties": {
                       "name": {
-                        "title": "name",
-                        "description": "The name of the tax band threshold.",
                         "type": "string",
+                        "description": "The name of the tax band threshold.",
                         "oneOf": [
                           {
                             "enum": [
@@ -778,45 +738,40 @@
                         ]
                       },
                       "rate": {
-                        "title": "rate",
-                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to 2 decimal places.",
                         "example": "10.12",
                         "minimum": 0,
                         "maximum": 99.99,
                         "multipleOf": 0.01
                       },
                       "threshold": {
-                        "title": "threshold",
-                        "description": "The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The upper threshold for the tax band. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "apportionedThreshold": {
-                        "title": "apportionedThreshold",
-                        "description": "The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
                         "type": "number",
+                        "description": "The amount of the upper threshold that has been apportioned. This value must be between 0 and 99999999999.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "income": {
-                        "title": "income",
-                        "description": "The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
                         "type": "number",
+                        "description": "The income within the Class 4 National Insurance Contribution band threshold applicable for contributions. This value must be between 0 and 99999999999. No decimals.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999,
                         "multipleOf": 1
                       },
                       "amount": {
-                        "title": "amount",
-                        "description": "The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
+                        "description": "The amount of Class 4 National Insurance Contributions due on the income within the band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "example": "1000",
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -836,32 +791,28 @@
           }
         },
         "taxDeductedAtSource": {
-          "title": "taxDeductedAtSource",
           "type": "object",
           "description": "Details all types of income that have had tax deducted at source.",
           "properties": {
             "savings": {
-              "title": "savings",
-              "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
+              "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999. No decimals.",
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
               "example": "1000"
             },
             "ukLandAndProperty": {
-              "title": "ukLandAndProperty",
-              "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
+              "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999. No decimals.",
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
               "example": "1000"
             },
             "cis": {
-              "title": "cis",
-              "description": "Tax that has been deducted at source under CIS. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
               "type": "number",
+              "description": "Tax that has been deducted at source under CIS. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum": 99999999999.99,
