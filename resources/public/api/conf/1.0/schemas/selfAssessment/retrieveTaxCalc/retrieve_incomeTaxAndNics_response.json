@@ -78,7 +78,6 @@
           }
         },
         "totalStudentLoansRepaymentAmount": {
-          "title": "totalStudentLoansRepaymentAmount",
           "description": "The total amount of student loan repayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -87,7 +86,6 @@
           "example": "2435.12"
         },
         "totalAnnualPaymentsTaxCharged": {
-          "title": "totalAnnualPaymentsTaxCharged",
           "description": "The total amount of tax charged on annual payments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -96,7 +94,6 @@
           "example": "7824.39"
         },
         "totalRoyaltyPaymentsTaxCharged": {
-          "title": "totalRoyaltyPaymentsTaxCharged",
           "description": "The total amount of tax charged on royalty payments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -105,7 +102,6 @@
           "example": "1000.12"
         },
         "totalIncomeTaxNicsCharged": {
-          "title": "totalIncomeTaxNicsCharged",
           "description": "The total amount of Income Tax and National Insurance contributions charged. This field is returned if totalTaxDeducted is present. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -114,7 +110,6 @@
           "example": "1000.12"
         },
         "totalTaxDeducted": {
-          "title": "totalTaxDeducted",
           "description": "Total amount of tax deducted from all income that has had tax deducted at source (reducing your Income Tax and National Insurance contributions charged). This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -123,7 +118,6 @@
           "example": "250.32"
         },
         "totalIncomeTaxAndNicsDue": {
-          "title": "totalIncomeTaxAndNicsDue",
           "description": "The total amount of Income Tax and National Insurance Contributions due. If the totalTaxDeducted field is present then the totalIncomeTaxNicsDue figure is totalIncomeTaxNicsCharged minus totalTaxDeducted. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
@@ -132,7 +126,6 @@
           "example": "1000.12"
         },
         "taxRegime": {
-          "title": "taxRegime",
           "description": "The national tax rates and rules that apply to the calculation.",
           "type": "string",
           "oneOf": [
