@@ -453,7 +453,7 @@
                 "incomeTaxAmount": {
                   "type": "number",
                   "description": "The total amount of Income Tax associated with lump sums. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
@@ -697,7 +697,7 @@
                 "incomeTaxAmount": {
                   "type": "number",
                   "description": "The total amount of Income Tax associated with gains on life policies. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
@@ -851,7 +851,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "plainType": {
+              "planType": {
                 "type": "string",
                 "description": "The type of student loan plan.",
                 "example": "01",
@@ -920,7 +920,7 @@
               }
             },
             "required": [
-              "plainType",
+              "planType",
               "studentLoanTotalIncomeAmount",
               "studentLoanChargeableIncomeAmount",
               "studentLoanRepaymentAmount",
@@ -1380,8 +1380,8 @@
                           "rate",
                           "bandLimit",
                           "apportionedBandLimit",
-                          "contributionAmount",
-                          "pensionCharge"
+                          "shortServiceRefundAmount",
+                          "shortServiceRefundCharge"
                         ]
                       }
                     }

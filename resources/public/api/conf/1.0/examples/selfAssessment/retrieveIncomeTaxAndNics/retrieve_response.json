@@ -30,10 +30,10 @@
         "incomeTaxAmount": 5000,
         "taxBands": [
           {
-            "name": "SSR",
-            "rate": "20",
+            "name": "IRT",
+            "rate": 20,
             "bandLimit": 12500,
-            "apportionedbandLimit": 12500,
+            "apportionedBandLimit": 12500,
             "income": 12500,
             "taxAmount": 5000
           }
@@ -45,9 +45,9 @@
         "taxBands": [
           {
             "name": "SSR",
-            "rate": "20",
+            "rate": 20,
             "bandLimit": 12500,
-            "apportionedbandLimit": 12500,
+            "apportionedBandLimit": 12500,
             "income": 12500,
             "taxAmount": 5000
           }
@@ -58,7 +58,7 @@
         "incomeTaxAmount": 5000.99,
         "taxBands": [
           {
-            "name": "SSR",
+            "name": "HRT",
             "rate": 20,
             "bandLimit": 12500,
             "apportionedBandLimit": 12500,
@@ -72,7 +72,7 @@
         "incomeTaxAmount": 5000.99,
         "taxBands": [
           {
-            "name": "SSR",
+            "name": "ART",
             "rate": 20,
             "bandLimit": 12500,
             "apportionedBandLimit": 12500,
@@ -86,10 +86,10 @@
         "incomeTaxAmount": 5000,
         "taxBands": [
           {
-            "name": "SSR",
-            "rate": "20",
+            "name": "BRT",
+            "rate": 20,
             "bandLimit": 12500,
-            "apportionedbandLimit": 12500,
+            "apportionedBandLimit": 12500,
             "income": 12500,
             "taxAmount": 5000
           }
@@ -97,7 +97,7 @@
       },
       "giftAid": {
         "grossGiftAidPayments": 12500,
-        "rate": "20",
+        "rate": 20,
         "giftAidTax": 5000
       }
     },
@@ -202,7 +202,7 @@
         "class4NicBands": [
           {
             "name": "ZRT",
-            "rate": "20",
+            "rate": 20,
             "threshold": 12500,
             "apportionedThreshold": 12500,
             "income": 5000,
