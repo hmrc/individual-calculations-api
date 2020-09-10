@@ -844,6 +844,92 @@
             }
           }
         },
+        "studentLoans": {
+          "type": "array",
+          "description": "Details the breakdown of student loan charges.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "plainType": {
+                "type": "string",
+                "description": "The type of student loan plan.",
+                "example": "01",
+                "enum": [
+                  "01",
+                  "02",
+                  "03",
+                  "04"
+                ]
+              },
+              "studentLoanTotalIncomeAmount": {
+                "type": "number",
+                "description": "The total income used in the student loan calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "example": "2439.43",
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "multipleOf": 0.01
+              },
+              "studentLoanChargeableIncomeAmount": {
+                "type": "number",
+                "description": "The total student loan income less the threshold. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "example": "3543.63",
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "multipleOf": 0.01
+              },
+              "studentLoanRepaymentAmount": {
+                "type": "number",
+                "description": "The student loan deduction collected by the employer. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "example": "6334.54",
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "multipleOf": 0.01
+              },
+              "studentLoanDeductionsFromEmployment": {
+                "type": "number",
+                "description": "The student loan repayment after deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "example": "3474.98",
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "multipleOf": 0.01
+              },
+              "studentLoanRepaymentAmountNetOfDeductions": {
+                "type": "number",
+                "description": "The student loan repayment before deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "example": "5866.34",
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "multipleOf": 0.01
+              },
+              "studentLoanApportionedIncomeThreshold": {
+                "type": "number",
+                "description": "The student loan threshold. This value must be between 0 and 99999999999. No decimals.",
+                "example": "4757",
+                "minimum": 0,
+                "maximum": 99999999999,
+                "multipleOf": 1
+              },
+              "studentLoanRate": {
+                "type": "number",
+                "description": "The rate income is charged at. This value must be between 0 and 99.99 up to 2 decimal places.",
+                "example": "42.32",
+                "minimum": 0,
+                "maximum": 99.99,
+                "multipleOf": 0.01
+              }
+            },
+            "required": [
+              "plainType",
+              "studentLoanTotalIncomeAmount",
+              "studentLoanChargeableIncomeAmount",
+              "studentLoanRepaymentAmount",
+              "studentLoanRepaymentAmountNetOfDeductions",
+              "studentLoanApportionedIncomeThreshold",
+              "studentLoanRate"
+            ]
+          }
+        },
         "nics": {
           "type": "object",
           "description": "Details the breakdown of National Insurance Contributions.",
