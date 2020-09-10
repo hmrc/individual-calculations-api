@@ -24,6 +24,10 @@ case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               nic2: Option[BigDecimal],
                               nic4: Option[BigDecimal],
                               totalNicAmount: Option[BigDecimal],
+                              totalStudentLoansRepaymentAmount: Option[BigDecimal],
+                              totalAnnualPaymentsTaxCharged: Option[BigDecimal],
+                              totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
+                              totalTaxDeducted: Option[BigDecimal],
                               incomeTaxNicAmount: Option[BigDecimal])
 
 object EoyEstimateSummary {

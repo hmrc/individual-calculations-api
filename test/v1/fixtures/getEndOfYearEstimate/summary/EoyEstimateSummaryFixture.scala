@@ -27,6 +27,10 @@ object EoyEstimateSummaryFixture {
   val nic2: Option[BigDecimal] = Some(4000.98)
   val nic4: Option[BigDecimal] = Some(5000.98)
   val totalNicAmount: Option[BigDecimal] = Some(6000.98)
+  val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(3000.98)
+  val totalAnnualPaymentsTaxCharged: Option[BigDecimal] = Some(5000.98)
+  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(7000.98)
+  val totalTaxDeducted: Option[BigDecimal] = Some(9000.98)
   val incomeTaxNicAmount: Option[BigDecimal] = Some(7000.98)
 
   val eoyEstimateSummaryModel: EoyEstimateSummary =
@@ -37,6 +41,10 @@ object EoyEstimateSummaryFixture {
       nic2 = nic2,
       nic4 = nic4,
       totalNicAmount = totalNicAmount,
+      totalStudentLoansRepaymentAmount = totalStudentLoansRepaymentAmount,
+      totalAnnualPaymentsTaxCharged = totalAnnualPaymentsTaxCharged,
+      totalRoyaltyPaymentsTaxCharged = totalRoyaltyPaymentsTaxCharged,
+      totalTaxDeducted = totalTaxDeducted,
       incomeTaxNicAmount = incomeTaxNicAmount
     )
 
@@ -49,6 +57,10 @@ object EoyEstimateSummaryFixture {
       |   "nic2" : ${nic2.get},
       |   "nic4" : ${nic4.get},
       |   "totalNicAmount" : ${totalNicAmount.get},
+      |   "totalStudentLoansRepaymentAmount" : ${totalStudentLoansRepaymentAmount.get},
+      |   "totalAnnualPaymentsTaxCharged" : ${totalAnnualPaymentsTaxCharged.get},
+      |   "totalRoyaltyPaymentsTaxCharged" : ${totalRoyaltyPaymentsTaxCharged.get},
+      |   "totalTaxDeducted" : ${totalTaxDeducted.get},
       |   "incomeTaxNicAmount" : ${incomeTaxNicAmount.get}
       |}
     """.stripMargin
