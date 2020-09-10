@@ -1156,15 +1156,241 @@
                   "type": "object",
                   "description": "Details of pension contributions in excess of the annual allowance.",
                   "properties": {
-
-                  }
+                    "totalContributions": {
+                      "type": "number",
+                      "description": "The total amount of pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "9678.56",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalPensionCharge": {
+                      "type": "number",
+                      "description": "The total amount of pension charges on contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "8756.67",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "annualAllowanceTaxPaid": {
+                      "type": "number",
+                      "description": "The amount of annual allowance tax paid on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "7546.76",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalPensionChargeDue": {
+                      "type": "number",
+                      "description": "The amount chargeable on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "3450.64",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "pensionBands": {
+                      "type": "array",
+                      "description": "Details the relevant tax bands for the pension charges.",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the tax band.",
+                            "oneOf": [
+                              {
+                                "enum": [
+                                  "BRT"
+                                ],
+                                "description": "basic rate threshold"
+                              },
+                              {
+                                "enum": [
+                                  "IRT"
+                                ],
+                                "description": "intermediary rate threshold (Scottish only)"
+                              },
+                              {
+                                "enum": [
+                                  "HRT"
+                                ],
+                                "description": "higher rate threshold"
+                              },
+                              {
+                                "enum": [
+                                  "ART"
+                                ],
+                                "description": "additional rate threshold"
+                              }
+                            ]
+                          },
+                          "rate": {
+                            "type": "number",
+                            "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                            "example": "34.44",
+                            "minimum": 0,
+                            "maximum": 99.99,
+                            "multipleOf": 0.01
+                          },
+                          "bandLimit": {
+                            "type": "number",
+                            "description": "The tax band limit. This value must be between 0 and 99999999999. No decimals.",
+                            "example": "5426",
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "multipleOf": 1
+                          },
+                          "apportionedBandLimit": {
+                            "type": "number",
+                            "description": "The apportioned tax band limit. This value must be between 0 and 99999999999. No decimals.",
+                            "example": "4563",
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "multipleOf": 1
+                          },
+                          "contributionAmount": {
+                            "type": "number",
+                            "description": "The amount of pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "example": "3393.44",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01
+                          },
+                          "pensionCharge": {
+                            "type": "number",
+                            "description": "The amount chargeable on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "example": "3456.45",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "rate",
+                          "bandLimit",
+                          "apportionedBandLimit",
+                          "contributionAmount",
+                          "pensionCharge"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "totalContributions",
+                    "totalPensionCharge",
+                    "totalPensionChargeDue"
+                  ]
                 },
                 "overseasPensionContributions" : {
                   "type": "object",
                   "description": "Details of overseas pensions contributions",
                   "properties": {
-
-                  }
+                    "totalShortServiceRefund": {
+                      "type": "number",
+                      "description": "The total amount of short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "3465.34",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalShortServiceRefundCharge": {
+                      "type": "number",
+                      "description": "The total amount of charges due on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "5343.45",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "shortServiceTaxPaid": {
+                      "type": "number",
+                      "description": "The amount of tax paid on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "8565.34",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalShortServiceRefundChargeDue": {
+                      "type": "number",
+                      "description": "The amount chargeable on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "8756.45",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "shortServiceRefundBands": {
+                      "type": "array",
+                      "description": "Details the relevant refund bands for overseas pension contributions.",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "The name of the tax band.",
+                            "enum": [
+                              "lowerBand",
+                              "upperBand"
+                            ]
+                          },
+                          "rate": {
+                            "type": "number",
+                            "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                            "example": "43.23",
+                            "minimum": 0,
+                            "maximum": 99.99,
+                            "multipleOf": 0.01
+                          },
+                          "bandLimit": {
+                            "type": "number",
+                            "description": "The total band limit. This value must be between 0 and 99999999999. No decimals.",
+                            "example": "4382",
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "multipleOf": 1
+                          },
+                          "apportionedBandLimit": {
+                            "type": "number",
+                            "description": "The apportioned band limit. This value must be between 0 and 99999999999. No decimals.",
+                            "example": "6343",
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "multipleOf": 1
+                          },
+                          "shortServiceRefundAmount": {
+                            "type": "number",
+                            "description": "The amount of short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "example": "8556.23",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01
+                          },
+                          "shortServiceRefundCharge": {
+                            "type": "number",
+                            "description": "The amount chargeable. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "example": "7547.45",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "rate",
+                          "bandLimit",
+                          "apportionedBandLimit",
+                          "contributionAmount",
+                          "pensionCharge"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "totalShortServiceRefund",
+                    "totalShortServiceRefundCharge",
+                    "totalShortServiceRefundChargeDue"
+                  ]
                 }
               }
             }
