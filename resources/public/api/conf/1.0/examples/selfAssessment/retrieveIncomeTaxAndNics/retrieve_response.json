@@ -1,103 +1,225 @@
 {
   "summary": {
     "incomeTax": {
-      "incomeTaxCharged": 1000.12,
-      "incomeTaxDueAfterReliefs": 1000.12,
-      "incomeTaxDueAfterGiftAid": 1000.12
+      "incomeTaxCharged": 5000,
+      "incomeTaxDueAfterReliefs": -99999999999.99,
+      "incomeTaxDueAfterGiftAid": 5000,
+      "totalNotionalTax": 5000.99,
+      "incomeTaxDueAfterTaxReductions": 5000.99,
+      "totalPensionSavingsTaxCharges": 5000.99,
+      "statePensionLumpSumCharges": 5000.99,
+      "totalIncomeTaxDue": 5000.99
     },
     "nics": {
-      "class2NicsAmount": 1000.12,
-      "class4NicsAmount": 1000.12,
-      "totalNic": 1000.12
+      "class2NicsAmount": 5000,
+      "class4NicsAmount": 5000,
+      "totalNic": 5000
     },
-    "totalIncomeTaxNicsCharged": 1000.12,
-    "totalTaxDeducted": 1000,
-    "totalIncomeTaxAndNicsDue": 1000.12,
+    "totalStudentLoansRepaymentAmount": 5000.99,
+    "totalAnnualPaymentsTaxCharged": 12500,
+    "totalRoyaltyPaymentsTaxCharged": 5000.99,
+    "totalIncomeTaxNicsCharged": 5000,
+    "totalTaxDeducted": 12500,
+    "totalIncomeTaxAndNicsDue": -99999999999.99,
     "taxRegime": "UK"
   },
   "detail": {
     "incomeTax": {
       "payPensionsProfit": {
-        "allowancesAllocated": 1000,
-        "incomeTaxAmount": 1000,
+        "allowancesAllocated": 12500,
+        "incomeTaxAmount": 5000,
         "taxBands": [
           {
-            "name": "SRT",
-            "rate": 10.12,
-            "bandLimit": 1000,
-            "apportionedBandLimit": 1000,
-            "income": 1000,
-            "taxAmount": 1000.12
+            "name": "SSR",
+            "rate": "20",
+            "bandLimit": 12500,
+            "apportionedbandLimit": 12500,
+            "income": 12500,
+            "taxAmount": 5000
           }
         ]
       },
       "savingsAndGains": {
-        "allowancesAllocated": 1000,
-        "incomeTaxAmount": 1000,
+        "allowancesAllocated": 12500,
+        "incomeTaxAmount": 5000,
         "taxBands": [
           {
             "name": "SSR",
-            "rate": 10.12,
-            "bandLimit": 1000,
-            "apportionedBandLimit": 1000,
-            "income": 1000,
-            "taxAmount": 1000.12
+            "rate": "20",
+            "bandLimit": 12500,
+            "apportionedbandLimit": 12500,
+            "income": 12500,
+            "taxAmount": 5000
+          }
+        ]
+      },
+      "lumpSums": {
+        "allowancesAllocated": 12500,
+        "incomeTaxAmount": 5000.99,
+        "taxBands": [
+          {
+            "name": "SSR",
+            "rate": 20,
+            "bandLimit": 12500,
+            "apportionedBandLimit": 12500,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "gainsOnLifePolicies": {
+        "allowancesAllocated": 12500,
+        "incomeTaxAmount": 5000.99,
+        "taxBands": [
+          {
+            "name": "SSR",
+            "rate": 20,
+            "bandLimit": 12500,
+            "apportionedBandLimit": 12500,
+            "income": 12500,
+            "taxAmount": 5000.99
           }
         ]
       },
       "dividends": {
-        "allowancesAllocated": 1000,
-        "incomeTaxAmount": 1000,
+        "allowancesAllocated": 12500,
+        "incomeTaxAmount": 5000,
         "taxBands": [
           {
-            "name": "BRT",
-            "rate": 10.12,
-            "bandLimit": 1000,
-            "apportionedBandLimit": 1000,
-            "income": 1000,
-            "taxAmount": 1000.12
+            "name": "SSR",
+            "rate": "20",
+            "bandLimit": 12500,
+            "apportionedbandLimit": 12500,
+            "income": 12500,
+            "taxAmount": 5000
           }
         ]
       },
       "giftAid": {
-        "grossGiftAidPayments": 1000,
-        "rate": 10.12,
-        "giftAidTax": 1000.12
+        "grossGiftAidPayments": 12500,
+        "rate": "20",
+        "giftAidTax": 5000
+      }
+    },
+    "studentLoans": [
+      {
+        "planType": "01",
+        "studentLoanTotalIncomeAmount": 5000.99,
+        "studentLoanChargeableIncomeAmount": 5000.99,
+        "studentLoanRepaymentAmount": 5000.99,
+        "studentLoanDeductionsFromEmployment": 5000.99,
+        "studentLoanRepaymentAmountNetOfDeductions": 5000.99,
+        "studentLoanApportionedIncomeThreshold": 12500,
+        "studentLoanRate": 20
+      }
+    ],
+    "pensionSavingsTaxCharges": {
+      "totalPensionCharges": 5000.99,
+      "totalTaxPaid": 5000.99,
+      "totalPensionChargesDue": 5000.99,
+      "pensionSavingsTaxChargesDetail": {
+        "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+          "amount": 5000.99,
+          "taxPaid": 5000.99,
+          "rate": 20,
+          "chargeableAmount": 5000.99
+        },
+        "benefitInExcessOfLifetimeAllowance": {
+          "amount": 5000.99,
+          "taxPaid": 5000.99,
+          "rate": 20,
+          "chargeableAmount": 5000.99
+        },
+        "pensionSchemeUnauthorisedPaymentsSurcharge": {
+          "amount": 5000.99,
+          "taxPaid": 5000.99,
+          "rate": 20,
+          "chargeableAmount": 5000.99
+        },
+        "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+          "amount": 5000.99,
+          "taxPaid": 5000.99,
+          "rate": 20,
+          "chargeableAmount": 5000.99
+        },
+        "pensionSchemeOverseasTransfers": {
+          "transferCharge": 5000.99,
+          "transferChargeTaxPaid": 5000.99,
+          "rate": 20,
+          "chargeableAmount": 5000.99
+        },
+        "pensionContributionsInExcessOfTheAnnualAllowance": {
+          "totalContributions": 5000.99,
+          "totalPensionCharge": 5000.99,
+          "annualAllowanceTaxPaid": 5000.99,
+          "totalPensionChargeDue": 5000.99,
+          "pensionBands": [
+            {
+              "name": "BRT",
+              "rate": 20,
+              "bandLimit": 12500,
+              "apportionedBandLimit": 12500,
+              "contributionAmount": 5000.99,
+              "pensionCharge": 5000.99
+            }
+          ]
+        },
+        "overseasPensionContributions": {
+          "totalShortServiceRefund": 5000.99,
+          "totalShortServiceRefundCharge": 5000.99,
+          "shortServiceRefundTaxPaid": 5000.99,
+          "totalShortServiceRefundChargeDue": 5000.99,
+          "shortServiceRefundBands": [
+            {
+              "name": "lowerBand",
+              "rate": 20,
+              "bandLimit": 12500,
+              "apportionedBandLimit": 12500,
+              "shortServiceRefundAmount": 5000.99,
+              "shortServiceRefundCharge": 5000.99
+            }
+          ]
+        }
       }
     },
     "nics": {
       "class2Nics": {
-        "weeklyRate": 1000.12,
-        "weeks": 10,
-        "limit": 1000,
-        "apportionedLimit": 1000,
+        "weeklyRate": 5000,
+        "weeks": 0,
+        "limit": 12500,
+        "apportionedLimit": 12500,
         "underSmallProfitThreshold": true,
         "actualClass2Nic": true
       },
-      "class4Nics": {
-        "totalIncomeChargeableToClass4": 1000,
+      "class4Nic": {
+        "totalIncomeLiableToClass4Charge": 200,
         "class4Losses": {
-          "totalClass4LossesAvailable": 1000,
+          "totalClass4LossesAvailable": 2000,
           "totalClass4LossesUsed": 1000,
-          "totalClass4LossesCarriedForward": 1000
+          "totalClass4LossesCarriedForward": 2000
         },
-        "totalIncomeLiableToClass4Charge": 1000,
+        "totalIncomeChargeableToClass4": 200,
         "class4NicBands": [
           {
             "name": "ZRT",
-            "rate": 10.12,
-            "threshold": 1000,
-            "apportionedThreshold": 1000,
-            "income": 1000,
-            "amount": 1000.12
+            "rate": "20",
+            "threshold": 12500,
+            "apportionedThreshold": 12500,
+            "income": 5000,
+            "amount": 5000
           }
         ]
       }
     },
     "taxDeductedAtSource": {
-      "savings": 1000,
-      "ukLandAndProperty": 1000,
-      "cis": 1000.12
+      "savings": 12500,
+      "ukLandAndProperty": 12500,
+      "cis": 12500,
+      "securities": 5000.99,
+      "voidedIsa": 5000.99,
+      "payeEmployments": 5000.99,
+      "occupationalPensions": 5000.99,
+      "stateBenefits": -99999999999.99
     }
   },
   "links": [
