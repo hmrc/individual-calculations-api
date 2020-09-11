@@ -209,7 +209,7 @@
                 "incomeTaxAmount": {
                   "type": "number",
                   "description": "The calculated amount of Income Tax for the tax band. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
@@ -714,6 +714,12 @@
                         "oneOf": [
                           {
                             "enum": [
+                              "SSR"
+                            ],
+                            "description": "savings starter rate threshold"
+                          },
+                          {
+                            "enum": [
                               "BRT"
                             ],
                             "description": "basic rate threshold"
@@ -854,7 +860,6 @@
               "planType": {
                 "type": "string",
                 "description": "The type of student loan plan.",
-                "example": "01",
                 "enum": [
                   "01",
                   "02",
@@ -880,7 +885,7 @@
               },
               "studentLoanRepaymentAmount": {
                 "type": "number",
-                "description": "The student loan deduction collected by the employer. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "description": "The student loan repayment before deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                 "example": "6334.54",
                 "minimum": 0,
                 "maximum": 99999999999.99,
@@ -888,7 +893,7 @@
               },
               "studentLoanDeductionsFromEmployment": {
                 "type": "number",
-                "description": "The student loan repayment after deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "description": "The student loan deduction collected by the employer. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                 "example": "3474.98",
                 "minimum": 0,
                 "maximum": 99999999999.99,
@@ -896,7 +901,7 @@
               },
               "studentLoanRepaymentAmountNetOfDeductions": {
                 "type": "number",
-                "description": "The student loan repayment before deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "description": "The student loan repayment after deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                 "example": "5866.34",
                 "minimum": 0,
                 "maximum": 99999999999.99,
