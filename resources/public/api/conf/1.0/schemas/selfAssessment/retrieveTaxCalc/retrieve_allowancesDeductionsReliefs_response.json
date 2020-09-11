@@ -254,22 +254,12 @@
                     "title": "incomeSourceType",
                     "type": "string",
                     "description": "The income source type related to the FTCR.",
-                    "oneOf": [
-                      {
-                        "enum": ["fhlPropertyEea"]
-                      },
-                      {
-                        "enum": ["foreignIncome"]
-                      },
-                      {
-                        "enum": ["dividendsFromForeignCompanies"]
-                      },
-                      {
-                        "enum": ["foreignProperty"]
-                      },
-                      {
-                        "enum": ["foreignInterest"]
-                      }
+                    "enum": [
+                      "fhlPropertyEea",
+                      "foreignIncome",
+                      "dividendsFromForeignCompanies",
+                      "foreignProperty",
+                      "foreignInterest"
                     ]
                   },
                   "incomeSourceId": {
@@ -362,31 +352,15 @@
                     "title": "type",
                     "type": "string",
                     "description": "The type of relief claimed.",
-                    "oneOf": [
-                      {
-                        "enum": ["vctSubscriptions"]
-                      },
-                      {
-                        "enum": ["eisSubscriptions"]
-                      },
-                      {
-                        "enum": ["communityInvestment"]
-                      },
-                      {
-                        "enum": ["seedEnterpriseInvestment"]
-                      },
-                      {
-                        "enum": ["socialEnterpriseInvestment"]
-                      },
-                      {
-                        "enum": ["maintenancePayments"]
-                      },
-                      {
-                        "enum": ["deficiencyRelief"]
-                      },
-                      {
-                        "enum": ["nonDeductibleLoanInterest"]
-                      }
+                    "enum": [
+                      "vctSubscriptions",
+                      "eisSubscriptions",
+                      "communityInvestment",
+                      "seedEnterpriseInvestment",
+                      "socialEnterpriseInvestment",
+                      "maintenancePayments",
+                      "deficiencyRelief",
+                      "nonDeductibleLoanInterest"
                     ]
                   },
                   "amountClaimed": {
