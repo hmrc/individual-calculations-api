@@ -328,7 +328,7 @@
                 "incomeTaxAmount": {
                   "type": "number",
                   "description": "The total amount of Income Tax associated with savings and gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
@@ -572,7 +572,7 @@
                 "incomeTaxAmount": {
                   "type": "number",
                   "description": "The total amount of Income Tax associated with dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "multipleOf": 1,
+                  "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": "1000.12"
