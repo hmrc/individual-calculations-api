@@ -17,11 +17,11 @@
 package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{ReliefsClaimType, ReliefsClaimed}
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.ReliefsClaimed
 
 object ReliefsClaimedFixture {
 
-  val `type`: ReliefsClaimType = ReliefsClaimType.nonDeductibleLoanInterest
+  val `type`: String = "nonDeductibleLoanInterest"
   val amountClaimed: Option[BigDecimal] = Some(12503.03)
   val allowableAmount: Option[BigDecimal] = Some(12503.99)
   val amountUsed: Option[BigDecimal] = Some(12503.99)

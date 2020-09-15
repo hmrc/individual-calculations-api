@@ -18,7 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ForeignTaxCreditRelief(incomeSourceType: IncomeSourceType,
+case class ForeignTaxCreditRelief(incomeSourceType: String,
                                   incomeSourceId: Option[String],
                                   countryCode: String,
                                   allowableAmount: Option[BigDecimal],

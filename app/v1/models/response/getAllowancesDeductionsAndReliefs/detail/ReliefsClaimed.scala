@@ -18,7 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ReliefsClaimed(`type`: ReliefsClaimType,
+case class ReliefsClaimed(`type`: String,
                           amountClaimed: Option[BigDecimal],
                           allowableAmount: Option[BigDecimal],
                           amountUsed: Option[BigDecimal],

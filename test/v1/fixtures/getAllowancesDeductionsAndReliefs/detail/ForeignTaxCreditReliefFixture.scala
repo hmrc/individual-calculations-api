@@ -17,11 +17,11 @@
 package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getAllowancesDeductionsAndReliefs.detail.{ForeignTaxCreditRelief, IncomeSourceType}
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCreditRelief
 
 object ForeignTaxCreditReliefFixture {
 
-  val incomeSourceType: IncomeSourceType = IncomeSourceType.fhlPropertyEea
+  val incomeSourceType: String = "fhlPropertyEea"
   val incomeSourceId: Option[String] = Some("FTR647261934212")
   val countryCode: String = "FRA"
   val allowableAmount: Option[BigDecimal] = Some(12503.99)
