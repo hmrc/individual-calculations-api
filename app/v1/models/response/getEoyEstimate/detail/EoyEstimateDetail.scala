@@ -22,7 +22,12 @@ case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployme
                              ukPropertyFhl: Option[EoyEstimateUkPropertyFhl],
                              ukPropertyNonFhl: Option[EoyEstimateUkPropertyNonFhl],
                              ukSavings: Option[Seq[EoyEstimateUkSavings]],
-                             ukDividends: Option[EoyEstimateUkDividends])
+                             ukDividends: Option[EoyEstimateUkDividends],
+                             otherDividends: Option[EoyEstimateOtherDividends],
+                             stateBenefits: Option[EoyEstimateStateBenefits],
+                             ukSecurities: Option[EoyEstimateUkSecurities],
+                             foreignProperty: Option[EoyEstimateForeignProperty],
+                             foreignInterest: Option[EoyEstimateForeignInterest])
 
 object EoyEstimateDetail {
   implicit val format: OFormat[EoyEstimateDetail] = Json.format[EoyEstimateDetail]

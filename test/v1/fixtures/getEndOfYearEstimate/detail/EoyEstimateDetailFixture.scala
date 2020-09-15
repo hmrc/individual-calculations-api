@@ -17,11 +17,16 @@
 package v1.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateForeignInterestFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateForeignPropertyFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateOtherDividendsFixture._
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateStateBenefitsFixture._
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkDividendsFixture._
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixture._
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixture._
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSavingsFixture._
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSecuritiesFixture._
 import v1.models.response.getEoyEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixture {
@@ -32,7 +37,12 @@ object EoyEstimateDetailFixture {
       ukPropertyFhl = Some(eoyEstimateUkPropertyFhlModel),
       ukPropertyNonFhl = Some(eoyEstimateUkPropertyNonFhlModel),
       ukSavings = Some(Seq(eoyEstimateUkSavingsModel)),
-      ukDividends = Some(eoyEstimateUkDividendsModel)
+      ukDividends = Some(eoyEstimateUkDividendsModel),
+      otherDividends = Some(eoyEstimateOtherDividendsModel),
+      stateBenefits = Some(eoyEstimateStateBenefitsModel),
+      ukSecurities = Some(eoyEstimateUkSecuritiesModel),
+      foreignProperty = Some(eoyEstimateForeignPropertyModel),
+      foreignInterest = Some(eoyEstimateForeignInterestModel)
     )
 
   val eoyEstimateDetailJson: JsValue = Json.parse(
@@ -46,7 +56,12 @@ object EoyEstimateDetailFixture {
        | "ukSavings" : [
        |   $eoyEstimateUkSavingsJson
        | ],
-       | "ukDividends" : $eoyEstimateUkDividendsJson
+       | "ukDividends" : $eoyEstimateUkDividendsJson,
+       | "otherDividends" : $eoyEstimateOtherDividendsJson,
+       | "stateBenefits" : $eoyEstimateStateBenefitsJson,
+       | "ukSecurities" : $eoyEstimateUkSecuritiesJson,
+       | "foreignProperty" : $eoyEstimateForeignPropertyJson,
+       | "foreignInterest" : $eoyEstimateForeignInterestJson
        |}
     """.stripMargin
   )

@@ -16,25 +16,10 @@
 
 package v1.models.response.getEoyEstimate.detail
 
-import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, OFormat}
 
-class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
+case class EoyEstimateUkSecurities(taxableIncome: BigInt)
 
-  testJsonProperties[EoyEstimateDetail](eoyEstimateDetailJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "selfEmployments",
-      "ukPropertyFhl",
-      "ukPropertyNonFhl",
-      "ukSavings",
-      "ukDividends",
-      "otherDividends",
-      "stateBenefits",
-      "ukSecurities",
-      "foreignProperty",
-      "foreignInterest"
-    )
-  )
+object EoyEstimateUkSecurities {
+  implicit val format: OFormat[EoyEstimateUkSecurities] = Json.format[EoyEstimateUkSecurities]
 }
