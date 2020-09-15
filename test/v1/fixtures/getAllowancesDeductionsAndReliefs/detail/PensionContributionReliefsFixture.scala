@@ -35,7 +35,7 @@ object PensionContributionReliefsFixture {
   val pensionContributionReliefsJson: JsValue = Json.parse(
     s"""
       |{
-      |  "totalPensionContributionReliefs": ${totalPensionContributionReliefs},
+      |  "totalPensionContributionReliefs": $totalPensionContributionReliefs,
       |  "regularPensionContributions": ${regularPensionContributions.get},
       |  "oneOffPensionContributionsPaid": ${oneOffPensionContributionsPaid.get}
       |}
