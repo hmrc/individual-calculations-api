@@ -22,7 +22,12 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    reducedPersonalAllowance: Option[BigInt],
                                    giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
                                    blindPersonsAllowance: Option[BigInt],
-                                   lossesAppliedToGeneralIncome: Option[BigInt])
+                                   lossesAppliedToGeneralIncome: Option[BigInt],
+                                   qualifyingLoanInterestFromInvestments: Option[BigDecimal],
+                                   postCessationTradeReceipts: Option[BigDecimal],
+                                   paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
+                                   annualPayments: Option[AnnualPayments],
+                                   pensionContributions: Option[PensionContributions])
 
 object AllowancesAndDeductions {
   implicit val format: OFormat[AllowancesAndDeductions] = Json.format[AllowancesAndDeductions]

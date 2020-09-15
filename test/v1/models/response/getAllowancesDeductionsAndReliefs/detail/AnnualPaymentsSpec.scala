@@ -17,18 +17,17 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.AnnualPaymentsFixture._
 import v1.models.utils.JsonErrorValidators
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+class AnnualPaymentsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[Reliefs](reliefsJson)(
+  testJsonProperties[AnnualPayments](annualPaymentsJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed"
+      "grossAnnualPayments",
+      "reliefClaimed",
+      "rate"
     )
   )
 }

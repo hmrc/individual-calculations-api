@@ -16,19 +16,18 @@
 
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import support.UnitSpec
-import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+sealed trait IncomeSourceType
 
-  testJsonProperties[Reliefs](reliefsJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed"
-    )
-  )
+object IncomeSourceType {
+
+  case object fhlPropertyEea extends IncomeSourceType
+  case object foreignIncome extends IncomeSourceType
+  case object dividendsFromForeignCompanies extends IncomeSourceType
+  case object foreignProperty extends IncomeSourceType
+  case object foreignInterest extends IncomeSourceType
+
+  implicit val formats: Format[IncomeSourceType] = Enums.format[IncomeSourceType]
 }

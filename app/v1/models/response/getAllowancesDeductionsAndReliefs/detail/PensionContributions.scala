@@ -16,19 +16,13 @@
 
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import support.UnitSpec
-import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, OFormat}
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+case class PensionContributions(totalPensionContributions: Option[BigDecimal],
+                                retirementAnnuityPayments: Option[BigDecimal],
+                                paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
+                                overseasPensionSchemeContributions: Option[BigDecimal])
 
-  testJsonProperties[Reliefs](reliefsJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed"
-    )
-  )
+object PensionContributions {
+  implicit val format: OFormat[PensionContributions] = Json.format[PensionContributions]
 }
