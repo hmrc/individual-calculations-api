@@ -20,9 +20,9 @@ import play.api.libs.json.{Json, OFormat}
 
 case class TaxBand(name: String,
                    rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
+                   bandLimit: BigInt,
+                   apportionedBandLimit: BigInt,
+                   income: BigInt,
                    taxAmount: BigDecimal)
 
 object TaxBand {

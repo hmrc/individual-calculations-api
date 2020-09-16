@@ -22,7 +22,7 @@ import v1.models.response.getIncomeTaxAndNics.detail.IncomeTypeBreakdown
 
 object IncomeTypeBreakdownFixture {
 
-  val allowancesAllocated: BigDecimal = 100.25
+  val allowancesAllocated: BigInt = 1000
   val incomeTaxAmount: BigDecimal = 100.50
 
   val incomeTypeBreakdownModel: IncomeTypeBreakdown =
@@ -44,7 +44,7 @@ object IncomeTypeBreakdownFixture {
 
   def incomeTypeBreakdownModel(input: BigDecimal): IncomeTypeBreakdown =
     IncomeTypeBreakdown(
-      allowancesAllocated = input + 0.25,
+      allowancesAllocated = allowancesAllocated,
       incomeTaxAmount = input + 0.5,
       taxBands = Some(Seq(taxBandModel(2 * input)))
     )
@@ -52,7 +52,7 @@ object IncomeTypeBreakdownFixture {
   def incomeTypeBreakdownJson(input: BigDecimal): JsValue = Json.parse(
     s"""
        |{
-       |   "allowancesAllocated" : ${input + 0.25},
+       |   "allowancesAllocated" : $allowancesAllocated,
        |   "incomeTaxAmount" : ${input + 0.5},
        |   "taxBands" : [${taxBandJson(input * 2).toString()}]
        |}
