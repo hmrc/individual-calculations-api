@@ -18,7 +18,7 @@ package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTypeBreakdown(allowancesAllocated: BigDecimal,
+case class IncomeTypeBreakdown(allowancesAllocated: BigInt,
                                incomeTaxAmount: BigDecimal,
                                taxBands: Option[Seq[TaxBand]])
 

@@ -23,9 +23,9 @@ object TaxBandFixture {
 
   val name: String = "name"
   val rate: BigDecimal = 100.25
-  val bandLimit: BigDecimal = 400.25
-  val apportionedBandLimit: BigDecimal= 500.25
-  val income: BigDecimal = 600.25
+  val bandLimit: BigInt = 4000
+  val apportionedBandLimit: BigInt = 5000
+  val income: BigInt = 6000
   val taxAmount: BigDecimal = 700.25
 
   val taxBandModel: TaxBand =
@@ -40,14 +40,14 @@ object TaxBandFixture {
 
   val taxBandJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "name": "$name",
-      |   "rate": $rate,
-      |   "bandLimit" : $bandLimit,
-      |   "apportionedBandLimit" : $apportionedBandLimit,
-      |   "income" : $income,
-      |   "taxAmount" : $taxAmount
-      |}
+       |{
+       |   "name": "$name",
+       |   "rate": $rate,
+       |   "bandLimit" : $bandLimit,
+       |   "apportionedBandLimit" : $apportionedBandLimit,
+       |   "income" : $income,
+       |   "taxAmount" : $taxAmount
+       |}
     """.stripMargin
   )
 
@@ -55,23 +55,23 @@ object TaxBandFixture {
     TaxBand(
       name = name,
       rate = input + 0.17,
-      bandLimit = input + 0.34,
-      apportionedBandLimit = input + 0.51,
-      income = input + 0.68,
+      bandLimit = bandLimit,
+      apportionedBandLimit = apportionedBandLimit,
+      income = income,
       taxAmount = input + 0.85
     )
   }
 
   def taxBandJson(input: BigDecimal): JsValue = Json.parse(
     s"""
-      |{
-      |   "name": "$name",
-      |   "rate": ${input + 0.17},
-      |   "bandLimit" : ${input + 0.34},
-      |   "apportionedBandLimit" : ${input + 0.51},
-      |   "income" : ${input + 0.68},
-      |   "taxAmount" : ${input + 0.85}
-      |}
+       |{
+       |   "name": "$name",
+       |   "rate": ${input + 0.17},
+       |   "bandLimit" : $bandLimit,
+       |   "apportionedBandLimit" : $apportionedBandLimit,
+       |   "income" : $income,
+       |   "taxAmount" : ${input + 0.85}
+       |}
     """.stripMargin
   )
 }
