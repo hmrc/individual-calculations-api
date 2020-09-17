@@ -1044,7 +1044,7 @@
                       "properties": {
                         "totalBroughtForwardIncomeTaxLosses": {
                           "title": "totalBroughtForwardIncomeTaxLosses",
-                          "description": "description\": \"The total sum of Income Tax losses brought forward from earlier years for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
                           "type": "number",
                           "multipleOf": 1,
                           "minimum": 0,
@@ -1417,8 +1417,6 @@
                                 "type": "string",
                                 "enum": [
                                   "self",
-                                  "retrieve-self-employment-accounting-adjustments",
-                                  "retrieve-uk-property-accounting-adjustments",
                                   "retrieve-foreign-property-accounting-adjustments"
                                 ]
                               },
@@ -1516,13 +1514,13 @@
                                 "type": "boolean",
                                 "example": "false"
                               }
-                            }
-                          },
-                          "required": [
-                            "taxYearLossIncurred",
-                            "currentLossValue",
-                            "mtdLoss"
-                          ]
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue",
+                              "mtdLoss"
+                            ]
+                          }
                         },
                         "resultOfClaimsApplied": {
                           "type": "array",
@@ -1532,14 +1530,14 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The Claim ID of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                                "description": "The Claim ID of the loss",
                                 "type": "string",
                                 "example": "EzluDU2ObK02SdA ",
                                 "pattern": "^[A-Za-z0-9]{15}$"
                               },
                               "taxYearClaimMade": {
                                 "title": "taxYearClaimMade",
-                                "description": "The tax year in which the claim was made.",
+                                "description": "The tax year in which the claim was made. Format: YYYY-YY",
                                 "type": "string",
                                 "example": "2019-20"
                               },
@@ -1581,16 +1579,16 @@
                                 "maximum": 99999999999,
                                 "example": "2000"
                               }
-                            }
-                          },
-                          "required": [
-                            "taxYearClaimMade",
-                            "claimType",
-                            "mtdLoss",
-                            "taxYearLossIncurred",
-                            "lossAmountUsed",
-                            "remainingLossValue"
-                          ]
+                            },
+                            "required": [
+                              "taxYearClaimMade",
+                              "claimType",
+                              "mtdLoss",
+                              "taxYearLossIncurred",
+                              "lossAmountUsed",
+                              "remainingLossValue"
+                            ]
+                          }
                         },
                         "defaultCarriedForwardLosses": {
                           "type": "array",
@@ -1613,12 +1611,12 @@
                                 "maximum": 99999999999,
                                 "example": "2000"
                               }
-                            }
-                          },
-                          "required": [
-                            "taxYearLossIncurred",
-                            "currentLossValue"
-                          ]
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
                         }
                       }
                     }
@@ -1751,8 +1749,6 @@
                                 "type": "string",
                                 "enum": [
                                   "self",
-                                  "retrieve-self-employment-accounting-adjustments",
-                                  "retrieve-uk-property-accounting-adjustments",
                                   "retrieve-foreign-property-accounting-adjustments"
                                 ]
                               },

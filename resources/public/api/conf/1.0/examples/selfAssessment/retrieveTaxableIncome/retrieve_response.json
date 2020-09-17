@@ -46,6 +46,7 @@
               ]
             },
             "lossClaimsSummary": {
+              "carrySidewaysIncomeTaxLossesUsed": 1000,
               "totalBroughtForwardIncomeTaxLosses": 12500,
               "broughtForwardIncomeTaxLossesUsed": 12500,
               "totalIncomeTaxLossesCarriedForward": 12000,
@@ -227,7 +228,6 @@
           "netLoss": 5000.25,
           "totalAdditions": 5000.25,
           "totalDeductions": 5000.25,
-          "accountingAdjustments": -99999999999.99,
           "taxableProfit": 12500,
           "adjustedIncomeTaxLoss": 12500,
           "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
@@ -355,8 +355,8 @@
       ],
       "ukSecurites": [
         {
-          "incomeSourceId": "000000000000210",
-          "incomeSourceName": "My Savings Account 1",
+          "ukSecuritiesAccountId": "000000000000210",
+          "ukSecuritiesAccountName": "ukSecuritiesAccountName",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99
