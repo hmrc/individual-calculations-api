@@ -1416,7 +1416,6 @@
                                 "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
                                 "type": "string",
                                 "enum": [
-                                  "self",
                                   "retrieve-foreign-property-accounting-adjustments"
                                 ]
                               },
@@ -1530,7 +1529,7 @@
                             "properties": {
                               "claimId": {
                                 "title": "claimId",
-                                "description": "The Claim ID of the loss",
+                                "description": "The Claim ID of the loss.",
                                 "type": "string",
                                 "example": "EzluDU2ObK02SdA ",
                                 "pattern": "^[A-Za-z0-9]{15}$"
@@ -1543,7 +1542,7 @@
                               },
                               "claimType": {
                                 "title": "claimType",
-                                "description": "The type of claim made. Limited to the following possible values:",
+                                "description": "The type of claim made.",
                                 "type": "string",
                                 "enum": [
                                   "carry-forward"
@@ -1748,7 +1747,6 @@
                                 "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
                                 "type": "string",
                                 "enum": [
-                                  "self",
                                   "retrieve-foreign-property-accounting-adjustments"
                                 ]
                               },
@@ -1873,7 +1871,7 @@
                         "properties": {
                           "claimId": {
                             "title": "claimId",
-                            "description": "The Claim ID of the loss. Must conform to the regular expression ^[A-Za-z0-9]{15}$",
+                            "description": "The Claim ID of the loss.",
                             "type": "string",
                             "example": "EzluDU2ObK02SdA ",
                             "pattern": "^[A-Za-z0-9]{15}$"
