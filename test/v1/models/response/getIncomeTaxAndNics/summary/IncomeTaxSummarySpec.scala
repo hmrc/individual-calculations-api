@@ -28,7 +28,12 @@ class IncomeTaxSummarySpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq(
       "incomeTaxDueAfterReliefs",
-      "incomeTaxDueAfterGiftAid"
+      "incomeTaxDueAfterGiftAid",
+      "totalNotionalTax",
+      "totalPensionSavingsTaxCharges",
+      "statePensionLumpSumCharges",
+      "incomeTaxDueAfterTaxReductions",
+      "totalIncomeTaxDue"
     )
   )
 }

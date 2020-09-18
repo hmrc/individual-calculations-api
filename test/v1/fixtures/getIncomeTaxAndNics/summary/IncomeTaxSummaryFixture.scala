@@ -24,12 +24,22 @@ object IncomeTaxSummaryFixture {
   val incomeTaxCharged: BigDecimal = 2000.00
   val incomeTaxDueAfterReliefs: Option[BigDecimal] = Some(1525.22)
   val incomeTaxDueAfterGiftAid: Option[BigDecimal] = Some(120.10)
+  val totalNotionalTax: Option[BigDecimal] = Some(130.10)
+  val totalPensionSavingsTaxCharges: Option[BigDecimal] = Some(140.10)
+  val statePensionLumpSumCharges: Option[BigDecimal] = Some(150.10)
+  val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
+  val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
 
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
-      incomeTaxCharged = 2000.00,
-      incomeTaxDueAfterReliefs = Some(1525.22),
-      incomeTaxDueAfterGiftAid = Some(120.10)
+      incomeTaxCharged = incomeTaxCharged,
+      incomeTaxDueAfterReliefs = incomeTaxDueAfterReliefs,
+      incomeTaxDueAfterGiftAid = incomeTaxDueAfterGiftAid,
+      totalNotionalTax = totalNotionalTax,
+      totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
+      statePensionLumpSumCharges = statePensionLumpSumCharges,
+      incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
+      totalIncomeTaxDue = totalIncomeTaxDue
     )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
@@ -37,7 +47,12 @@ object IncomeTaxSummaryFixture {
       |{
       |   "incomeTaxCharged" : $incomeTaxCharged,
       |   "incomeTaxDueAfterReliefs" : ${incomeTaxDueAfterReliefs.get},
-      |   "incomeTaxDueAfterGiftAid" : ${incomeTaxDueAfterGiftAid.get}
+      |   "incomeTaxDueAfterGiftAid" : ${incomeTaxDueAfterGiftAid.get},
+      |   "totalNotionalTax" : ${totalNotionalTax.get},
+      |   "totalPensionSavingsTaxCharges" : ${totalPensionSavingsTaxCharges.get},
+      |   "statePensionLumpSumCharges" : ${statePensionLumpSumCharges.get},
+      |   "incomeTaxDueAfterTaxReductions" : ${incomeTaxDueAfterTaxReductions.get},
+      |   "totalIncomeTaxDue" : ${totalIncomeTaxDue.get}
       |}
     """.stripMargin
   )

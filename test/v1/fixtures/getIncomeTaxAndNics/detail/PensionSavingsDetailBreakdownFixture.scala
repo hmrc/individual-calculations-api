@@ -17,27 +17,30 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.GiftAid
+import v1.models.response.getIncomeTaxAndNics.detail.PensionSavingsDetailBreakdown
 
-object GiftAidFixture {
+object PensionSavingsDetailBreakdownFixture {
 
-  val grossGiftAidPayments: BigInt = 100
-  val rate: BigDecimal = 200.25
-  val giftAidTax: BigDecimal = 300.25
+  val amount: Option[BigDecimal] = Some(2000.99)
+  val taxPaid: Option[BigDecimal] = Some(3000.99)
+  val rate: Option[BigDecimal] = Some(20.25)
+  val chargeableAmount: Option[BigDecimal] = Some(4000.99)
 
-  val giftAidModel: GiftAid =
-    GiftAid(
-      grossGiftAidPayments = grossGiftAidPayments,
+  val pensionSavingsDetailBreakdownModel: PensionSavingsDetailBreakdown =
+    PensionSavingsDetailBreakdown(
+      amount = amount,
+      taxPaid = taxPaid,
       rate = rate,
-      giftAidTax = giftAidTax
+      chargeableAmount = chargeableAmount
     )
 
-  val giftAidJson: JsValue = Json.parse(
+  val pensionSavingsDetailBreakdownJson: JsValue = Json.parse(
     s"""
        |{
-       |   "grossGiftAidPayments": $grossGiftAidPayments,
-       |   "rate": $rate,
-       |   "giftAidTax": $giftAidTax
+       |   "amount": ${amount.get},
+       |   "taxPaid": ${taxPaid.get},
+       |   "rate": ${rate.get},
+       |   "chargeableAmount": ${chargeableAmount.get}
        |}
     """.stripMargin
   )

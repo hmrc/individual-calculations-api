@@ -20,7 +20,12 @@ import play.api.libs.json._
 
 case class IncomeTaxSummary(incomeTaxCharged: BigDecimal,
                             incomeTaxDueAfterReliefs: Option[BigDecimal],
-                            incomeTaxDueAfterGiftAid: Option[BigDecimal])
+                            incomeTaxDueAfterGiftAid: Option[BigDecimal],
+                            totalNotionalTax: Option[BigDecimal],
+                            totalPensionSavingsTaxCharges: Option[BigDecimal],
+                            statePensionLumpSumCharges: Option[BigDecimal],
+                            incomeTaxDueAfterTaxReductions: Option[BigDecimal],
+                            totalIncomeTaxDue: Option[BigDecimal])
 
 object IncomeTaxSummary {
   implicit val format: OFormat[IncomeTaxSummary] = Json.format[IncomeTaxSummary]

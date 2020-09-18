@@ -20,7 +20,9 @@ import play.api.libs.json._
 
 case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
                            savingsAndGains: Option[IncomeTypeBreakdown],
+                           lumpSums: Option[IncomeTypeBreakdown],
                            dividends: Option[IncomeTypeBreakdown],
+                           gainsOnLifePolicies: Option[IncomeTypeBreakdown],
                            giftAid: Option[GiftAid])
 
 object IncomeTaxDetail {

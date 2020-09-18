@@ -16,21 +16,13 @@
 
 package v1.models.response.getIncomeTaxAndNics.detail
 
-import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, OFormat}
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+case class PensionSavingsTaxCharges(totalPensionCharges: Option[BigDecimal],
+                                    totalTaxPaid: Option[BigDecimal],
+                                    totalPensionChargesDue: Option[BigDecimal],
+                                    pensionSavingsTaxChargesDetail: Option[PensionSavingsTaxChargesDetail])
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
-    mandatoryProperties = Seq(
-      "incomeTax"
-    ),
-    optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource"
-    )
-  )
+object PensionSavingsTaxCharges {
+  implicit val format: OFormat[PensionSavingsTaxCharges] = Json.format[PensionSavingsTaxCharges]
 }

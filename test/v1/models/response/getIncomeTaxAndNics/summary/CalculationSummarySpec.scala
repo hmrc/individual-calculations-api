@@ -30,6 +30,9 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq(
       "nics",
+      "totalStudentLoansRepaymentAmount",
+      "totalAnnualPaymentsTaxCharged",
+      "totalRoyaltyPaymentsTaxCharged",
       "totalIncomeTaxNicsCharged",
       "totalTaxDeducted"
     )

@@ -17,20 +17,23 @@
 package v1.models.response.getIncomeTaxAndNics.detail
 
 import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.StudentLoansFixture._
 import v1.models.utils.JsonErrorValidators
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+class StudentLoansSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
+  testJsonProperties[StudentLoans](studentLoansJson)(
     mandatoryProperties = Seq(
-      "incomeTax"
+      "planType",
+      "studentLoanTotalIncomeAmount",
+      "studentLoanChargeableIncomeAmount",
+      "studentLoanRepaymentAmount",
+      "studentLoanRepaymentAmountNetOfDeductions",
+      "studentLoanApportionedIncomeThreshold",
+      "studentLoanRate"
     ),
     optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource"
+      "studentLoanDeductionsFromEmployment"
     )
   )
 }
