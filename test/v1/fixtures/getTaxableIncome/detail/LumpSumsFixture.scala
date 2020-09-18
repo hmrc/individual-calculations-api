@@ -14,16 +14,28 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.fixtures.getTaxableIncome.detail
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getTaxableIncome.detail.LumpSums
 
-case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
-                             savingsAndGains: Option[SavingsAndGains],
-                             dividends: Option[Dividends],
-                             lumpSums: Option[LumpSums],
-                             gainsOnLifePolicies: Option[GainsOnLifePolicies])
+object LumpSumsFixture {
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  val incomeReceived: BigInt = 100
+  val taxableIncome: BigInt = 200
+
+  val lumpSumsModel: LumpSums =
+    LumpSums(
+      incomeReceived = incomeReceived,
+      taxableIncome = taxableIncome
+    )
+
+  val lumpSumsJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "incomeReceived":$incomeReceived,
+       |   "taxableIncome":$taxableIncome
+       |}
+    """.stripMargin
+  )
 }

@@ -18,6 +18,8 @@ package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.DividendsFixture._
+import v1.fixtures.getTaxableIncome.detail.GainsOnLifePoliciesFixture._
+import v1.fixtures.getTaxableIncome.detail.LumpSumsFixture._
 import v1.fixtures.getTaxableIncome.detail.PayPensionsProfitFixture._
 import v1.fixtures.getTaxableIncome.detail.SavingsAndGainsFixture._
 import v1.models.response.getTaxableIncome.detail.CalculationDetail
@@ -28,7 +30,9 @@ object CalculationDetailFixture {
     CalculationDetail(
       payPensionsProfit = Some(payPensionsProfitModel),
       savingsAndGains = Some(savingsAndGainsModel),
-      dividends = Some(dividendsModel)
+      dividends = Some(dividendsModel),
+      lumpSums = Some(lumpSumsModel),
+      gainsOnLifePolicies = Some(gainsOnLifePoliciesModel)
     )
 
   val calculationDetailJson: JsValue = Json.parse(
@@ -36,7 +40,9 @@ object CalculationDetailFixture {
        |{
        |   "payPensionsProfit" : $payPensionsProfitJson,
        |   "savingsAndGains" : $savingsAndGainsJson,
-       |   "dividends" : $dividendsJson
+       |   "dividends" : $dividendsJson,
+       |   "lumpSums" : $lumpSumsJson,
+       |   "gainsOnLifePolicies" : $gainsOnLifePoliciesJson
        |}
     """.stripMargin
   )

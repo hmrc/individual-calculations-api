@@ -32,6 +32,14 @@ class PayPensionsProfitSpec extends UnitSpec with JsonErrorValidators {
       "totalPropertyProfit",
       "totalFHLPropertyProfit",
       "totalUKOtherPropertyProfit",
+      "totalForeignPropertyProfit",
+      "totalEeaFhlProfit",
+      "totalOccupationalPensionIncome",
+      "totalStateBenefitsIncome",
+      "totalBenefitsInKind",
+      "totalPayeEmploymentAndLumpSumIncome",
+      "totalEmploymentExpenses",
+      "totalEmploymentIncome",
       "businessProfitAndLoss"
     )
   )

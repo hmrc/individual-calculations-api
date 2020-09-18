@@ -25,6 +25,14 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalPropertyProfit: Option[BigInt],
                              totalFHLPropertyProfit: Option[BigInt],
                              totalUKOtherPropertyProfit: Option[BigInt],
+                             totalForeignPropertyProfit: Option[BigInt],
+                             totalEeaFhlProfit: Option[BigInt],
+                             totalOccupationalPensionIncome: Option[BigDecimal],
+                             totalStateBenefitsIncome: Option[BigDecimal],
+                             totalBenefitsInKind: Option[BigDecimal],
+                             totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
+                             totalEmploymentExpenses: Option[BigDecimal],
+                             totalEmploymentIncome: Option[BigInt],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit extends NestedJsonReads{

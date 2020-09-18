@@ -18,8 +18,8 @@ package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
 
-case class Savings(savingsAccountId: String,
-                   savingsAccountName: String,
+case class Savings(savingsAccountId: Option[String],
+                   savingsAccountName: Option[String],
                    grossIncome: BigDecimal,
                    netIncome: Option[BigDecimal],
                    taxDeducted: Option[BigDecimal])

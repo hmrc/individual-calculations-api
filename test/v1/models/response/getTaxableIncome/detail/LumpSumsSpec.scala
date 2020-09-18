@@ -16,14 +16,17 @@
 
 package v1.models.response.getTaxableIncome.detail
 
-import play.api.libs.json._
+import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.LumpSumsFixture._
+import v1.models.utils.JsonErrorValidators
 
-case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
-                             savingsAndGains: Option[SavingsAndGains],
-                             dividends: Option[Dividends],
-                             lumpSums: Option[LumpSums],
-                             gainsOnLifePolicies: Option[GainsOnLifePolicies])
+class LumpSumsSpec extends UnitSpec with JsonErrorValidators {
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+  testJsonProperties[LumpSums](lumpSumsJson)(
+    mandatoryProperties = Seq(
+      "incomeReceived",
+      "taxableIncome"
+    ),
+    optionalProperties = Seq()
+  )
 }

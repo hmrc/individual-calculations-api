@@ -16,14 +16,11 @@
 
 package v1.models.response.getTaxableIncome.detail
 
-import play.api.libs.json._
+import play.api.libs.json.{Json, OFormat}
 
-case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
-                             savingsAndGains: Option[SavingsAndGains],
-                             dividends: Option[Dividends],
-                             lumpSums: Option[LumpSums],
-                             gainsOnLifePolicies: Option[GainsOnLifePolicies])
+case class LumpSums(incomeReceived: BigInt,
+                    taxableIncome: BigInt)
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+object LumpSums {
+  implicit val format: OFormat[LumpSums] = Json.format[LumpSums]
 }

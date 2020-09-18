@@ -18,6 +18,7 @@ package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.SavingsFixture._
+import v1.fixtures.getTaxableIncome.detail.UkSecuritiesFixture._
 import v1.models.response.getTaxableIncome.detail.SavingsAndGains
 
 object SavingsAndGainsFixture {
@@ -29,14 +30,16 @@ object SavingsAndGainsFixture {
     SavingsAndGains(
       incomeReceived = incomeReceivedSAG,
       taxableIncome = taxableIncomeSAG,
-      ukSavings = Some(Seq(savingsModel))
+      ukSavings = Some(Seq(savingsModel)),
+      ukSecurities = Some(Seq(securitiesModel))
     )
 
   val savingsAndGainsJson: JsValue = Json.parse(
     s"""{
        |   "incomeReceived" : $incomeReceivedSAG,
        |   "taxableIncome" : $taxableIncomeSAG,
-       |   "ukSavings" : [$savingsJson]
+       |   "ukSavings" : [$savingsJson],
+       |   "ukSecurities" : [$securitiesJson]
        |}
     """.stripMargin
   )

@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.fixtures.getTaxableIncome.detail
 
-import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.SavingsFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getTaxableIncome.detail.GainsOnLifePolicies
 
-class SavingsSpec extends UnitSpec with JsonErrorValidators {
+object GainsOnLifePoliciesFixture {
 
-  testJsonProperties[Savings](savingsJson)(
-    mandatoryProperties = Seq(
-      "grossIncome"
-    ),
-    optionalProperties = Seq(
-      "savingsAccountId",
-      "savingsAccountName",
-      "netIncome",
-      "taxDeducted"
+  val incomeReceived: BigInt = 100
+  val taxableIncome: BigInt = 200
+
+  val gainsOnLifePoliciesModel: GainsOnLifePolicies =
+    GainsOnLifePolicies(
+      incomeReceived = incomeReceived,
+      taxableIncome = taxableIncome
     )
+
+  val gainsOnLifePoliciesJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "incomeReceived":$incomeReceived,
+       |   "taxableIncome":$taxableIncome
+       |}
+    """.stripMargin
   )
 }
