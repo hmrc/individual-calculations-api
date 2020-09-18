@@ -1,227 +1,390 @@
 {
   "summary": {
-    "totalIncomeReceivedFromAllSources": 1000,
-    "totalTaxableIncome": 1000
+    "totalIncomeReceivedFromAllSources": 12500,
+    "totalTaxableIncome": 12500
   },
   "detail": {
     "payPensionsProfit": {
-      "incomeReceived": 1000,
-      "taxableIncome": 1000,
-      "totalSelfEmploymentProfit": 1000,
-      "totalPropertyProfit": 1000,
-      "totalFHLPropertyProfit": 1000,
-      "totalUKOtherPropertyProfit": 1000,
+      "incomeReceived": 12500,
+      "taxableIncome": 12500,
+      "totalSelfEmploymentProfit": 2000,
+      "totalPropertyProfit": 2000,
+      "totalFHLPropertyProfit": 2000,
+      "totalUKOtherPropertyProfit": 2000,
+      "totalForeignPropertyProfit": 12500,
+      "totalEeaFhlProfit": 12500,
+      "totalOccupationalPensionIncome": 200.99,
+      "totalStateBenefitsIncome": 5000.99,
+      "totalBenefitsInKind": 500.5,
+      "totalPayeEmploymentAndLumpSumIncome": 5000.99,
+      "totalEmploymentExpenses": 1000.99,
+      "totalEmploymentIncome": 12500,
       "businessProfitAndLoss": {
         "selfEmployments": [
           {
-            "selfEmploymentId": "XGIS00000001319",
-            "totalIncome": 1000.12,
-            "totalExpenses": 1000.12,
-            "netProfit": 1000.12,
-            "netLoss": 1000.12,
-            "totalAdditions": 1000.12,
-            "totalDeductions": 1000.12,
-            "accountingAdjustments": 1000.12,
-            "taxableProfit": 1000,
-            "adjustedIncomeTaxLoss": 1000,
-            "class4Loss": 1000,
-            "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+            "selfEmploymentId": "XAIS59366683016",
+            "totalIncome": 5000,
+            "totalExpenses": 5000,
+            "netProfit": 5000,
+            "netLoss": 5000,
+            "totalAdditions": 5000,
+            "totalDeductions": 5000,
+            "accountingAdjustments": -99999999999.99,
+            "taxableProfit": 12500,
+            "adjustedIncomeTaxLoss": 12500,
+            "class4Loss": 5000,
+            "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
+            "bsas": {
+              "bsasId": "717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4",
+              "applied": true,
+              "links": [
+                {
+                  "href": "/individuals/self-assessment/adjustable-summary/AA123456A/self-employment/717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4/adjust",
+                  "rel": "retrieve-self-employment-accounting-adjustments",
+                  "method": "GET"
+                }
+              ]
+            },
             "lossClaimsSummary": {
-              "totalBroughtForwardIncomeTaxLosses": 1000,
-              "broughtForwardIncomeTaxLossesUsed": 1000,
               "carrySidewaysIncomeTaxLossesUsed": 1000,
-              "totalIncomeTaxLossesCarriedForward": 1000,
-              "totalBroughtForwardClass4Losses": 1000,
-              "broughtForwardClass4LossesUsed": 1000,
-              "carrySidewaysClass4LossesUsed": 1000,
-              "totalClass4LossesCarriedForward": 1000
+              "totalBroughtForwardIncomeTaxLosses": 12500,
+              "broughtForwardIncomeTaxLossesUsed": 12500,
+              "totalIncomeTaxLossesCarriedForward": 12000,
+              "totalBroughtForwardClass4Losses": 2000,
+              "broughtForwardClass4LossesUsed": 2000,
+              "carrySidewaysClass4LossesUsed": 2000,
+              "totalClass4LossesCarriedForward": 2000
             },
             "lossClaimsDetail": {
               "lossesBroughtForward": [
                 {
                   "lossType": "income",
-                  "taxYearLossIncurred": "2018-19",
-                  "currentLossValue": 1000,
-                  "mtdLoss": false
+                  "taxYearLossIncurred": "2019-20",
+                  "currentLossValue": 12500,
+                  "mtdLoss": true
                 }
               ],
               "resultOfClaimsApplied": [
                 {
-                  "claimId": "XGIS00000001319",
-                  "taxYearClaimMade": "2018-19",
+                  "claimId": "EzluDU2ObK02SdA",
+                  "taxYearClaimMade": "2019-20",
                   "claimType": "carry-forward",
-                  "mtdLoss": false,
-                  "taxYearLossIncurred": "2018-19",
-                  "lossAmountUsed": 1000,
-                  "remainingLossValue": 1000,
-                  "lossType": "class4-nics"
+                  "mtdLoss": true,
+                  "taxYearLossIncurred": "2019-20",
+                  "lossAmountUsed": 12500,
+                  "remainingLossValue": 12500,
+                  "lossType": "income"
                 }
               ],
               "unclaimedLosses": [
                 {
-                  "taxYearLossIncurred": "2018-19",
-                  "currentLossValue": 1000,
-                  "lossType": "class4-nics"
+                  "taxYearLossIncurred": "2019-20",
+                  "currentLossValue": 5000,
+                  "lossType": "income"
                 }
               ],
               "carriedForwardLosses": [
                 {
-                  "claimId": "XGIS00000001319",
+                  "claimId": "EzluDU2ObK02SdA",
                   "claimType": "carry-forward",
                   "taxYearClaimMade": "2018-19",
-                  "taxYearLossIncurred": "2018-19",
-                  "currentLossValue": 1000,
-                  "lossType": "class4-nics"
+                  "taxYearLossIncurred": "2019-20",
+                  "currentLossValue": 12500,
+                  "lossType": "income"
                 }
               ],
               "claimsNotApplied": [
                 {
-                  "claimId": "XGIS00000001319",
-                  "taxYearClaimMade": "2018-19",
-                  "claimType": "carry-forward"
+                  "claimId": "EzluDU2ObK02SdA",
+                  "taxYearClaimMade": "2019-20",
+                  "claimType": "carry-sideways"
                 }
               ]
-            },
-            "bsas": {
-              "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca7",
-              "applied": true
             }
           }
         ],
         "ukPropertyFhl": {
-          "totalIncome": 1000.12,
-          "totalExpenses": 1000.12,
-          "netProfit": 1000.12,
-          "netLoss": 1000.12,
-          "totalAdditions": 1000.12,
-          "totalDeductions": 1000.12,
-          "accountingAdjustments": 1000.12,
-          "taxableProfit": 1000,
-          "adjustedIncomeTaxLoss": 1000,
-          "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+          "totalIncome": 5000.25,
+          "totalExpenses": 5000.25,
+          "netProfit": 5000.25,
+          "netLoss": 5000.25,
+          "totalAdditions": 5000.25,
+          "totalDeductions": 5000.25,
+          "taxableProfit": 12500,
+          "adjustedIncomeTaxLoss": 12500,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
+          "bsas": {
+            "bsasId": "818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4",
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/property/818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4/adjust",
+                "rel": "retrieve-uk-property-accounting-adjustments",
+                "method": "GET"
+              }
+            ]
+          },
           "lossClaimsSummary": {
-            "lossForCSFHL": 1000,
-            "totalBroughtForwardIncomeTaxLosses": 1000,
-            "broughtForwardIncomeTaxLossesUsed": 1000,
-            "carrySidewaysIncomeTaxLossesUsed": 1000,
-            "totalIncomeTaxLossesCarriedForward": 1000
+            "lossForCSFHL": 12500,
+            "totalBroughtForwardIncomeTaxLosses": 12500,
+            "broughtForwardIncomeTaxLossesUsed": 12500,
+            "totalIncomeTaxLossesCarriedForward": 12000
           },
           "lossClaimsDetail": {
             "lossesBroughtForward": [
               {
-                "taxYearLossIncurred": "2018-19",
-                "currentLossValue": 1000,
-                "mtdLoss": false
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500,
+                "mtdLoss": true
               }
             ],
             "resultOfClaimsApplied": [
               {
                 "claimId": "EzluDU2ObK02SdA",
-                "taxYearClaimMade": "2018-19",
+                "taxYearClaimMade": "2019-20",
                 "claimType": "carry-forward",
-                "mtdLoss": false,
-                "taxYearLossIncurred": "2018-19",
-                "lossAmountUsed": 1000,
-                "remainingLossValue": 1000
+                "mtdLoss": true,
+                "taxYearLossIncurred": "2019-20",
+                "lossAmountUsed": 12500,
+                "remainingLossValue": 12500
               }
             ],
             "defaultCarriedForwardLosses": [
               {
-                "taxYearLossIncurred": "2018-19",
-                "currentLossValue": 1000
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500
               }
             ]
-          },
-          "bsas": {
-            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca8",
-            "applied": true
           }
         },
         "ukPropertyNonFhl": {
-          "totalIncome": 1000.12,
-          "totalExpenses": 1000.12,
-          "netProfit": 1000.12,
-          "netLoss": 1000.12,
-          "totalAdditions": 1000.12,
-          "totalDeductions": 1000.12,
-          "accountingAdjustments": -1000.12,
-          "taxableProfit": 1000,
-          "adjustedIncomeTaxLoss": 1000,
-          "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
+          "totalIncome": 5000.25,
+          "totalExpenses": 5000.25,
+          "netProfit": 5000.25,
+          "netLoss": 5000.25,
+          "totalAdditions": 5000.25,
+          "totalDeductions": 5000.25,
+          "accountingAdjustments": -99999999999.99,
+          "taxableProfit": 12500,
+          "adjustedIncomeTaxLoss": 12500,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
+          "bsas": {
+            "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust",
+                "rel": "retrieve-uk-property-accounting-adjustments",
+                "method": "GET"
+              }
+            ]
+          },
           "lossClaimsSummary": {
-            "totalBroughtForwardIncomeTaxLosses": 1000,
-            "broughtForwardIncomeTaxLossesUsed": 1000,
-            "carrySidewaysIncomeTaxLossesUsed": 1000,
-            "totalIncomeTaxLossesCarriedForward": 1000
+            "totalBroughtForwardIncomeTaxLosses": 12500,
+            "broughtForwardIncomeTaxLossesUsed": 12500,
+            "carrySidewaysIncomeTaxLossesUsed": 12500,
+            "totalIncomeTaxLossesCarriedForward": 12000,
+            "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 12500
           },
           "lossClaimsDetail": {
             "lossesBroughtForward": [
               {
-                "taxYearLossIncurred": "2018-19",
-                "currentLossValue": 1000,
-                "mtdLoss": false
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500,
+                "mtdLoss": true
               }
             ],
             "resultOfClaimsApplied": [
               {
-                "claimId": "XGIS00000001319",
-                "originatingClaimId": "XGIS00000001319",
-                "taxYearClaimMade": "2018-19",
-                "claimType": "carry-forward",
-                "mtdLoss": false,
-                "taxYearLossIncurred": "2018-19",
-                "lossAmountUsed": 1000,
-                "remainingLossValue": 1000
+                "claimId": "EzluDU2ObK02SdA",
+                "originatingClaimId": "EzluDU2ObK02SdA",
+                "taxYearClaimMade": "2019-20",
+                "claimType": "carry-forward-to-carry-sideways",
+                "mtdLoss": true,
+                "taxYearLossIncurred": "2019-20",
+                "lossAmountUsed": 12500,
+                "remainingLossValue": 12500
               }
             ],
             "defaultCarriedForwardLosses": [
               {
-                "taxYearLossIncurred": "2018-19",
-                "currentLossValue": 1000
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500
               }
             ],
             "claimsNotApplied": [
               {
-                "claimId": "XGIS00000001319",
-                "taxYearClaimMade": "2018-19",
-                "claimType": "carry-sideways"
+                "claimId": "0vayS9JrW2jTa6n",
+                "taxYearClaimMade": "2019-20",
+                "claimType": "carry-sideways-fhl"
+              }
+            ]
+          }
+        },
+        "eeaPropertyFhl": {
+          "totalIncome": 5000.25,
+          "totalExpenses": 5000.25,
+          "netProfit": 5000.25,
+          "netLoss": 5000.25,
+          "totalAdditions": 5000.25,
+          "totalDeductions": 5000.25,
+          "taxableProfit": 12500,
+          "adjustedIncomeTaxLoss": 12500,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
+          "bsas": {
+            "bsasId": "818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4",
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4/adjust",
+                "rel": "retrieve-foreign-property-accounting-adjustments",
+                "method": "GET"
               }
             ]
           },
+          "lossClaimsSummary": {
+            "lossForCSFHL": 12500,
+            "totalBroughtForwardIncomeTaxLosses": 12500,
+            "broughtForwardIncomeTaxLossesUsed": 12500,
+            "totalIncomeTaxLossesCarriedForward": 12000
+          },
+          "lossClaimsDetail": {
+            "lossesBroughtForward": [
+              {
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500,
+                "mtdLoss": true
+              }
+            ],
+            "resultOfClaimsApplied": [
+              {
+                "claimId": "EzluDU2ObK02SdA",
+                "taxYearClaimMade": "2019-20",
+                "claimType": "carry-forward",
+                "mtdLoss": true,
+                "taxYearLossIncurred": "2019-20",
+                "lossAmountUsed": 12500,
+                "remainingLossValue": 12500
+              }
+            ],
+            "defaultCarriedForwardLosses": [
+              {
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500
+              }
+            ]
+          }
+        },
+        "foreignProperty": {
+          "totalIncome": 5000.25,
+          "totalExpenses": 5000.25,
+          "netProfit": 5000.25,
+          "netLoss": 5000.25,
+          "totalAdditions": 5000.25,
+          "totalDeductions": 5000.25,
+          "accountingAdjustments": -99999999999.99,
+          "taxableProfit": 12500,
+          "adjustedIncomeTaxLoss": 12500,
+          "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
           "bsas": {
             "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-            "applied": true
+            "applied": true,
+            "links": [
+              {
+                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust",
+                "rel": "retrieve-foreign-property-accounting-adjustments",
+                "method": "GET"
+              }
+            ]
+          },
+          "lossClaimsSummary": {
+            "totalBroughtForwardIncomeTaxLosses": 12500,
+            "broughtForwardIncomeTaxLossesUsed": 12500,
+            "carrySidewaysIncomeTaxLossesUsed": 12500,
+            "totalIncomeTaxLossesCarriedForward": 12000,
+            "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 12500
+          },
+          "lossClaimsDetail": {
+            "lossesBroughtForward": [
+              {
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500,
+                "mtdLoss": true
+              }
+            ],
+            "resultOfClaimsApplied": [
+              {
+                "claimId": "EzluDU2ObK02SdA",
+                "originatingClaimId": "EzluDU2ObK02SdA",
+                "taxYearClaimMade": "2019-20",
+                "claimType": "carry-forward",
+                "mtdLoss": true,
+                "taxYearLossIncurred": "2019-20",
+                "lossAmountUsed": 12500,
+                "remainingLossValue": 12500
+              }
+            ],
+            "defaultCarriedForwardLosses": [
+              {
+                "taxYearLossIncurred": "2019-20",
+                "currentLossValue": 12500
+              }
+            ],
+            "claimsNotApplied": [
+              {
+                "claimId": "0vayS9JrW2jTa6n",
+                "taxYearClaimMade": "2019-20",
+                "claimType": "carry-forward"
+              }
+            ]
           }
         }
       }
     },
     "savingsAndGains": {
-      "incomeReceived": 1000,
-      "taxableIncome": 1000,
+      "incomeReceived": 12500,
+      "taxableIncome": 12500,
       "ukSavings": [
         {
           "savingsAccountId": "SAVKB2UVwUTBQGJ",
-          "savingsAccountName": "friendly name",
-          "grossIncome": 1000.12,
-          "netIncome": 1000.12,
-          "taxDeducted": 1000.12
+          "savingsAccountName": "Santander",
+          "grossIncome": 5000,
+          "netIncome": 5000.99,
+          "taxDeducted": 5000.99
+        }
+      ],
+      "ukSecurites": [
+        {
+          "ukSecuritiesAccountId": "000000000000210",
+          "ukSecuritiesAccountName": "ukSecuritiesAccountName",
+          "grossIncome": 5000.99,
+          "netIncome": 5000.99,
+          "taxDeducted": 5000.99
         }
       ]
     },
     "dividends": {
-      "incomeReceived": 1000,
-      "taxableIncome": 1000
+      "incomeReceived": 12500,
+      "taxableIncome": 12500
+    },
+    "lumpSums": {
+      "incomeReceived": 12500,
+      "taxableIncome": 5000
+    },
+    "gainsOnLifePolicies": {
+      "incomeReceived": 12500,
+      "taxableIncome": 5000
     }
   },
   "links": [
     {
-      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/taxable-income",
-      "rel": "self",
+      "href": "/individuals/calculations/AA123456A/self-assessment/a54ba782-5ef4-47f4-ab72-495406665ca9",
+      "rel": "metadata",
       "method": "GET"
     },
     {
-      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      "rel": "metadata",
+      "href": "/individuals/calculations/AA123456A/self-assessment/a54ba782-5ef4-47f4-ab72-495406665ca9/taxable-income",
+      "rel": "self",
       "method": "GET"
     }
   ]
