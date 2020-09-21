@@ -17,18 +17,21 @@
 package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCreditReliefFixture._
 import v1.models.utils.JsonErrorValidators
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[Reliefs](reliefsJson)(
-    mandatoryProperties = Seq(),
+  testJsonProperties[ForeignTaxCreditRelief](foreignTaxCreditReliefJson)(
+    mandatoryProperties = Seq(
+      "incomeSourceType",
+      "countryCode"
+    ),
     optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed"
+      "incomeSourceId",
+      "allowableAmount",
+      "rate",
+      "amountUsed"
     )
   )
 }

@@ -17,6 +17,8 @@
 package v1.fixtures.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.AnnualPaymentsFixture._
+import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.PensionContributionsFixture._
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeductions
 
 object AllowancesAndDeductionsFixture {
@@ -26,6 +28,9 @@ object AllowancesAndDeductionsFixture {
   val giftOfInvestmentsAndPropertyToCharity: Option[BigInt] = Some(12502)
   val blindPersonsAllowance: Option[BigInt] = Some(12503)
   val lossesAppliedToGeneralIncome: Option[BigInt] = Some(12504)
+  val qualifyingLoanInterestFromInvestments: Option[BigDecimal] = Some(12503.99)
+  val postCessationTradeReceipts: Option[BigDecimal] = Some(12503.99)
+  val paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal] = Some(12503.99)
 
   val allowancesAndDeductionsModel: AllowancesAndDeductions =
     AllowancesAndDeductions(
@@ -33,7 +38,12 @@ object AllowancesAndDeductionsFixture {
       reducedPersonalAllowance = reducedPersonalAllowance,
       giftOfInvestmentsAndPropertyToCharity = giftOfInvestmentsAndPropertyToCharity,
       blindPersonsAllowance = blindPersonsAllowance,
-      lossesAppliedToGeneralIncome = lossesAppliedToGeneralIncome
+      lossesAppliedToGeneralIncome = lossesAppliedToGeneralIncome,
+      qualifyingLoanInterestFromInvestments = qualifyingLoanInterestFromInvestments,
+      postCessationTradeReceipts = postCessationTradeReceipts,
+      paymentsToTradeUnionsForDeathBenefits = paymentsToTradeUnionsForDeathBenefits,
+      annualPayments = Some(annualPaymentsModel),
+      pensionContributions = Some(pensionContributionsModel)
     )
 
   val allowancesAndDeductionsJson: JsValue = Json.parse(
@@ -43,7 +53,12 @@ object AllowancesAndDeductionsFixture {
       |  "reducedPersonalAllowance": ${reducedPersonalAllowance.get},
       |  "giftOfInvestmentsAndPropertyToCharity": ${giftOfInvestmentsAndPropertyToCharity.get},
       |  "blindPersonsAllowance": ${blindPersonsAllowance.get},
-      |  "lossesAppliedToGeneralIncome": ${lossesAppliedToGeneralIncome.get}
+      |  "lossesAppliedToGeneralIncome": ${lossesAppliedToGeneralIncome.get},
+      |  "qualifyingLoanInterestFromInvestments": ${qualifyingLoanInterestFromInvestments.get},
+      |  "postCessationTradeReceipts": ${postCessationTradeReceipts.get},
+      |  "paymentsToTradeUnionsForDeathBenefits": ${paymentsToTradeUnionsForDeathBenefits.get},
+      |  "annualPayments": $annualPaymentsJson,
+      |  "pensionContributions": $pensionContributionsJson
       |}
     """.stripMargin
   )

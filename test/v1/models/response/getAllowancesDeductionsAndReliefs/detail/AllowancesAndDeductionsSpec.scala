@@ -29,7 +29,12 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
       "reducedPersonalAllowance",
       "giftOfInvestmentsAndPropertyToCharity",
       "blindPersonsAllowance",
-      "lossesAppliedToGeneralIncome"
+      "lossesAppliedToGeneralIncome",
+      "qualifyingLoanInterestFromInvestments",
+      "postCessationTradeReceipts",
+      "paymentsToTradeUnionsForDeathBenefits",
+      "annualPayments",
+      "pensionContributions"
     )
   )
 }
