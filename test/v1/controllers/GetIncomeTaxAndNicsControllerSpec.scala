@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture
 import v1.handler.RequestDefn
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
@@ -66,10 +66,10 @@ class GetIncomeTaxAndNicsControllerSpec
   private val nino          = "AA123456A"
   private val correlationId = "X-123"
 
-  private val rawData     = GetCalculationRawData(nino, fixtureCalculationId)
-  private val requestData = GetCalculationRequest(Nino(nino), fixtureCalculationId)
+  private val rawData     = GetCalculationRawData(nino, IncomeTaxAndNicsResponseFixture.calculationId)
+  private val requestData = GetCalculationRequest(Nino(nino), IncomeTaxAndNicsResponseFixture.calculationId)
 
-  private def uri = s"/$nino/self-assessment/$fixtureCalculationId"
+  private def uri = s"/$nino/self-assessment/${IncomeTaxAndNicsResponseFixture.calculationId}"
   private def queryUri = "/input/uri"
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
@@ -96,22 +96,22 @@ class GetIncomeTaxAndNicsControllerSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, wrappedIncomeTaxAndNicsResponseModel))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJsonFromBackend))))
 
         MockHateoasFactory
-            .wrap(incomeTaxAndNicsResponseModel, IncomeTaxAndNicsHateoasData(nino, fixtureCalculationId))
-          .returns(HateoasWrapper(incomeTaxAndNicsResponseModel, Seq(testHateoasLink)))
+            .wrap(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, IncomeTaxAndNicsHateoasData(nino, IncomeTaxAndNicsResponseFixture.calculationId))
+          .returns(HateoasWrapper(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, Seq(testHateoasLink)))
 
 
-        val result: Future[Result] = controller.getIncomeTaxAndNics(nino, fixtureCalculationId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getIncomeTaxAndNics(nino, IncomeTaxAndNicsResponseFixture.calculationId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
-        val responseBody: JsObject = incomeTaxNicsResponseJson.as[JsObject].deepMerge(linksJson)
+        val responseBody: JsObject = IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson.as[JsObject].deepMerge(linksJson)
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> fixtureCalculationId), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> IncomeTaxAndNicsResponseFixture.calculationId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
@@ -129,14 +129,14 @@ class GetIncomeTaxAndNicsControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
-        val result: Future[Result] = controller.getIncomeTaxAndNics(nino, fixtureCalculationId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getIncomeTaxAndNics(nino, IncomeTaxAndNicsResponseFixture.calculationId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> fixtureCalculationId), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> IncomeTaxAndNicsResponseFixture.calculationId), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)

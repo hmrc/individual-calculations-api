@@ -16,30 +16,16 @@
 
 package v1.models.response.getMetadata
 
-import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getMetadata.MetadataResponseFixture._
+import v1.fixtures.getMetadata.MetadataResponseFixture
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.response.getMetadata.MetadataResponse.LinksFactory
 import v1.models.utils.JsonErrorValidators
 
 class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
-
-  "MetadataResponse" when {
-    "read from valid JSON" should {
-      "produce the expected MetadataResponseObject" in {
-        metadataResponseTopLevelJsonWithoutErrors.as[MetadataResponse] shouldBe metadataResponseModel
-      }
-    }
-
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson[MetadataResponse](metadataResponseModel) shouldBe metadataResponseJson
-      }
-    }
-  }
 
   "LinksFactory" when {
     class Test extends MockAppConfig {
@@ -51,9 +37,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
 
     "wrapping a MetadataResponse object" should {
       "expose the correct hateoas links when errors are not present" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None)) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None)) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
@@ -66,9 +52,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are present" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, Some(1))) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(1), MetadataHateoasData(nino, calcId, Some(1))) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(1),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/messages", GET, "messages")

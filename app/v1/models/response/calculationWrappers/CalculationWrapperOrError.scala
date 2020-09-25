@@ -35,7 +35,7 @@ object CalculationWrapperOrError {
   // from within the JSON as it is received from the backend microservice.
   implicit def reads[A: Reads]: Reads[CalculationWrapperOrError[A]] = {
 
-     (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault(0).flatMap { errCount =>
+     (JsPath \ "data" \ "metadata" \ "calculationErrorCount").readWithDefault(0).flatMap { errCount =>
       if (errCount > 0) {
         Reads.pure[CalculationWrapperOrError[A]](ErrorsInCalculation)
       } else {

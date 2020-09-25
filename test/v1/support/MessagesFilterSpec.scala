@@ -16,86 +16,86 @@
 
 package v1.support
 
+import play.api.libs.json.JsObject
 import support.UnitSpec
 import v1.models.domain.MessageType
-import v1.models.response.getMessages.{MessagesResponse, Message}
+import v1.fixtures.getMessages.MessagesResponseFixture
 
 class MessagesFilterSpec extends UnitSpec {
   val filter: MessagesFilter = new MessagesFilter {}
   val calcId = "someCalcId"
-
-  val messages = MessagesResponse(
-    Some(Seq(Message("infoId", "infoMessage"))),
-    Some(Seq(Message("warningId", "warningMessage"))),
-    Some(Seq(Message("errorId", "errorMessage"))),
-    calcId
-  )
 
   "Calling filter" should {
 
     "return only error messages" when {
 
       "provided with an error filter" in {
-        filter.filter(messages, Seq(MessageType.error)) shouldBe MessagesResponse(None, None, Some(Seq(Message("errorId", "errorMessage"))), calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.error)) shouldBe MessagesResponseFixture.messagesResponseFromBackendErrors
       }
     }
 
     "return only warning messages" when {
 
       "provided with a warning filter" in {
-        filter.filter(messages, Seq(MessageType.warning)) shouldBe MessagesResponse(None, Some(Seq(Message("warningId", "warningMessage"))), None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.warning)) shouldBe MessagesResponseFixture.messagesResponseFromBackendWarnings
       }
     }
 
     "return only info messages" when {
 
       "provided with an info filter" in {
-        filter.filter(messages, Seq(MessageType.info)) shouldBe MessagesResponse(Some(Seq(Message("infoId", "infoMessage"))), None, None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info)) shouldBe MessagesResponseFixture.messagesResponseFromBackendInfo
       }
     }
 
     "return multiple message types" when {
 
       "provided with info and warning filters" in {
-        filter.filter(messages, Seq(MessageType.info, MessageType.warning)) shouldBe messages.copy(errors = None)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.warning)) shouldBe MessagesResponseFixture.backendJson(
+          MessagesResponseFixture.messagesResponseFromBackendInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendWarnings.as[JsObject])
+        )
       }
 
       "provided with info and error filters" in {
-        filter.filter(messages, Seq(MessageType.info, MessageType.error)) shouldBe messages.copy(warnings = None)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.error)) shouldBe MessagesResponseFixture.backendJson(
+          MessagesResponseFixture.messagesResponseFromBackendInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject])
+        )
       }
 
       "provided with error and warning filters" in {
-        filter.filter(messages, Seq(MessageType.error, MessageType.warning)) shouldBe messages.copy(info = None)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.error, MessageType.warning)) shouldBe MessagesResponseFixture.backendJson(
+          MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendWarnings.as[JsObject])
+        )
       }
     }
 
     "return the original messages object" when {
 
       "provided with no filter" in {
-        filter.filter(messages, Seq()) shouldBe messages
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq()) shouldBe MessagesResponseFixture.messagesResponseFromBackendAllFields
       }
 
       "provided with filters for every type" in {
-        filter.filter(messages, Seq(MessageType.info, MessageType.warning, MessageType.error)) shouldBe messages
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.warning, MessageType.error)) shouldBe MessagesResponseFixture.messagesResponseFromBackendAllFields
       }
     }
 
     "return an empty message set" when {
 
       "provided with an error filter and no error messages" in {
-        filter.filter(messages.copy(errors = None), Seq(MessageType.error)) shouldBe MessagesResponse(None, None, None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendInfo.as[JsObject], Seq(MessageType.error)) shouldBe MessagesResponseFixture.messagesResponseFromBackendNoMessages.as[JsObject]
       }
 
       "provided with a warning filter and no warning messages" in {
-        filter.filter(messages.copy(warnings = None), Seq(MessageType.warning)) shouldBe MessagesResponse(None, None, None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject], Seq(MessageType.warning)) shouldBe MessagesResponseFixture.messagesResponseFromBackendNoMessages.as[JsObject]
       }
 
       "provided with an info filter and no info messages" in {
-        filter.filter(messages.copy(info = None), Seq(MessageType.info)) shouldBe MessagesResponse(None, None, None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject], Seq(MessageType.info)) shouldBe MessagesResponseFixture.messagesResponseFromBackendNoMessages.as[JsObject]
       }
 
       "provided with only an invalid filter" in {
-        filter.filter(messages, Seq(MessageType.none)) shouldBe MessagesResponse(None, None, None, calcId)
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.none)) shouldBe MessagesResponseFixture.messagesResponseFromBackendNoMessages.as[JsObject]
       }
     }
   }

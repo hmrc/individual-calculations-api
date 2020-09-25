@@ -18,11 +18,11 @@ package v1.connectors
 
 import config.AppConfig
 import play.api.Logger
-import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpReads }
+import play.api.libs.json.{JsObject, Writes}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 trait BaseConnector {
   val http: HttpClient
@@ -36,6 +36,17 @@ trait BaseConnector {
     if (uri.startsWith("/")) s"${appConfig.backendBaseUrl}$uri" else s"${appConfig.backendBaseUrl}/$uri"
 
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
+                                                     hc: HeaderCarrier,
+                                                     httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+
+    def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
+      http.POST(urlFrom(uri), body)
+    }
+
+    doPost(headerCarrier(hc))
+  }
+
+  def sendGQLRequest[T](uri: String, body: JsObject)(implicit ec: ExecutionContext,
                                                      hc: HeaderCarrier,
                                                      httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
 

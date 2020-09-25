@@ -17,6 +17,7 @@
 package v1.controllers
 
 import javax.inject.Inject
+import play.api.libs.json.{JsDefined, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -27,7 +28,8 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getTaxableIncome.{TaxableIncomeHateoasData, TaxableIncomeResponse}
+import v1.models.response.getTaxableIncome.TaxableIncomeHateoasData
+import v1.models.response.getTaxableIncome.TaxableIncomeResponse.LinksFactory
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -44,9 +46,9 @@ class GetTaxableIncomeController @Inject()(
                                           )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    CalculationWrapperOrError[TaxableIncomeResponse],
-    HateoasWrapper[TaxableIncomeResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) {
+    CalculationWrapperOrError[JsValue],
+    HateoasWrapper[JsValue],
+    AnyContent](authService, lookupService, parser, service, auditService, cc) with GraphQLQuery {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -58,23 +60,29 @@ class GetTaxableIncomeController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
-    RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse]](
-      RequestDefn.Get(req.backendCalculationUri))
+                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[JsValue], HateoasWrapper[JsValue]] =
+    RequestHandler[CalculationWrapperOrError[JsValue]](
+      RequestDefn.GraphQl(req.backendCalculationUri, query))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
         NotFoundError
       )
       .mapSuccess { responseWrapper =>
-        responseWrapper.mapToEither[TaxableIncomeResponse] {
+        responseWrapper.mapToEither[JsValue] {
           case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, rawResponse.id))
-      )
+      .mapSuccessSimple {
+        rawResponse =>
+          rawResponse \ "data" match {
+            case JsDefined(value) => value \ "metadata" \ "id" match {
+              case JsDefined(id: JsString) =>
+                hateoasFactory.wrap((value \ "taxableIncome").get, TaxableIncomeHateoasData(req.nino.nino, id.value))
+            }
+          }
+      }
 
   def getTaxableIncome(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -88,4 +96,6 @@ class GetTaxableIncomeController @Inject()(
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
+  override val query: String = TAXABLE_INCOME_QUERY
 }

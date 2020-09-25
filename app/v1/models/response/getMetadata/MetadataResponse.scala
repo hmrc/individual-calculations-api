@@ -17,29 +17,13 @@
 package v1.models.response.getMetadata
 
 import config.AppConfig
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.JsValue
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
-import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-
-case class MetadataResponse(id: String,
-                            taxYear: String,
-                            requestedBy: CalculationRequestor,
-                            calculationReason: CalculationReason,
-                            calculationTimestamp: Option[String],
-                            calculationType: CalculationType,
-                            intentToCrystallise: Boolean,
-                            crystallised: Boolean,
-                            totalIncomeTaxAndNicsDue: Option[BigDecimal],
-                            calculationErrorCount: Option[Int])
 
 object MetadataResponse extends HateoasLinks {
 
-  implicit val writes: OWrites[MetadataResponse] = Json.writes[MetadataResponse]
-  implicit val reads: Reads[MetadataResponse] =
-    (JsPath \ "metadata").read[MetadataResponse](Json.reads[MetadataResponse])
-
-  implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, MetadataHateoasData] {
+  implicit object LinksFactory extends HateoasLinksFactory[JsValue, MetadataHateoasData] {
     override def links(appConfig: AppConfig, data: MetadataHateoasData): Seq[Link] = {
       import data.{calculationId, errorCount, nino}
       if (errorCount.isEmpty) {

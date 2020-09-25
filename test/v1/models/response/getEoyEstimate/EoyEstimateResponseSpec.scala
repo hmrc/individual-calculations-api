@@ -16,29 +16,15 @@
 
 package v1.models.response.getEoyEstimate
 
-import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture._
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.response.getEoyEstimate.EoyEstimateResponse.LinksFactory
 
 class EoyEstimateResponseSpec extends UnitSpec {
-
-  "EoyEstimateResponse" when {
-    "read from valid JSON" should {
-      "produce the expected EoyEstimateResponse object" in {
-        eoyEstimateResponseTopLevelJson.as[EoyEstimateResponse] shouldBe eoyEstimateResponseModel
-      }
-    }
-
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson(eoyEstimateResponseModel) shouldBe eoyEstimateResponseJson
-      }
-    }
-  }
 
   "LinksFactory" when {
     class Test extends MockAppConfig {
@@ -50,9 +36,9 @@ class EoyEstimateResponseSpec extends UnitSpec {
 
     "wrapping an EoyEstimateResponse object" should {
       "return the correct hateoas links" in new Test {
-        hateoasFactory.wrap(eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId)) shouldBe
+        hateoasFactory.wrap(EoyEstimateResponseFixture.eoyEstimateResponseJson, EoyEstimateHateoasData(nino, calcId)) shouldBe
           HateoasWrapper(
-            eoyEstimateResponseModel,
+            EoyEstimateResponseFixture.eoyEstimateResponseJson,
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "metadata"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/end-of-year-estimate", GET, "self")

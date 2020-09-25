@@ -17,13 +17,13 @@
 package v1.fixtures.calculationWrappers
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture.{eoyEstimateResponseJson, eoyEstimateResponseModel}
+import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture.eoyEstimateResponseJson
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 
 object EoyEstimateWrapperOrErrorFixture {
   
-  val wrappedEoyEstimateModel: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseModel)
+  val wrappedEoyEstimateModel: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseJson)
 
   val eoyEstimateWrapperJsonWithErrors: JsValue = Json.parse(
     s"""

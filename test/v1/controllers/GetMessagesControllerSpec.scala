@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.fixtures.getMessages.MessagesResponseFixture._
+import v1.fixtures.getMessages.MessagesResponseFixture
 import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
@@ -33,14 +33,14 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.{MessagesResponse, MessagesHateoasData}
+import v1.models.response.getMessages.MessagesHateoasData
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetMessagesControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationQueryParser
@@ -65,15 +65,11 @@ class GetMessagesControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
   }
 
-  private val nino          = "AA123456A"
+  private val nino = "AA123456A"
   private val correlationId = "X-123"
 
-  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): MessagesResponse =
-    MessagesResponse(if (info) Some(Seq(info1, info2)) else None,
-                        if (warn) Some(Seq(warn1, warn2)) else None,
-                        if (error) Some(Seq(err1, err2)) else None, calcId)
-
-  val hateoasLinks: JsValue = Json.parse("""{
+  val hateoasLinks: JsValue = Json.parse(
+    """{
       |      "links":[
       |        {
       |          "href":"/foo/bar",
@@ -83,14 +79,15 @@ class GetMessagesControllerSpec
       |      ]
       |}""".stripMargin)
 
-  val responseBody: JsValue         = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+  val responseBody: JsValue = MessagesResponseFixture.messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
-  private val rawData     = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
+  private val rawData = GetMessagesRawData(nino, MessagesResponseFixture.calculationId, Seq("info", "warning", "error"))
   private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
-  private val requestData = GetMessagesRequest(Nino(nino), calcId, typeQueries)
-  val testHateoasLink     = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+  private val requestData = GetMessagesRequest(Nino(nino), MessagesResponseFixture.calculationId, typeQueries)
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
-  private def uri      = s"/$nino/self-assessment/$calcId"
+  private def uri = s"/$nino/self-assessment/${MessagesResponseFixture.calculationId}"
+
   private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {
@@ -100,24 +97,22 @@ class GetMessagesControllerSpec
           .parse(rawData)
           .returns(Right(requestData))
 
-        val response: MessagesResponse = messagesResponse(info = true, warn = true, error = true)
-
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, MessagesResponseFixture.messagesResponseFromBackendAllFields))))
 
         MockHateoasFactory
-          .wrap(response, MessagesHateoasData(nino, calcId))
-          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
+          .wrap(MessagesResponseFixture.messagesResponseJson, MessagesHateoasData(nino, MessagesResponseFixture.calculationId))
+          .returns(HateoasWrapper(MessagesResponseFixture.messagesResponseJson, Seq(testHateoasLink)))
 
-        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getMessages(nino, MessagesResponseFixture.calculationId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> MessagesResponseFixture.calculationId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -130,20 +125,20 @@ class GetMessagesControllerSpec
           .parse(rawData)
           .returns(Right(requestData))
 
-        val response: MessagesResponse = messagesResponse(info = false, warn = false, error = false)
+        val response = MessagesResponseFixture.messagesResponseFromBackendNoMessages
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
+        val result: Future[Result] = controller.getMessages(nino, MessagesResponseFixture.calculationId)(fakeGetRequest(queryUri))
 
         status(result) shouldBe NOT_FOUND
         contentAsJson(result) shouldBe Json.toJson(NoMessagesExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> MessagesResponseFixture.calculationId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoMessagesExistError.code))), None))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -157,24 +152,24 @@ class GetMessagesControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandler[MessagesResponse, MessagesResponse] => Unit = allChecks[MessagesResponse, MessagesResponse](
+      val mappingChecks: RequestHandler[JsValue, JsValue] => Unit = allChecks[JsValue, JsValue](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
         ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
       )
 
-      val response: MessagesResponse = messagesResponse(info = true, warn = true, error = true)
+      val response = MessagesResponseFixture.messagesResponseFromBackendAllFields
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)
-        .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, MessagesResponseFixture.messagesResponseFromBackendAllFields))))
 
       MockHateoasFactory
-        .wrap(response, MessagesHateoasData(nino, calcId))
+        .wrap(MessagesResponseFixture.messagesResponseJson, MessagesHateoasData(nino, MessagesResponseFixture.calculationId))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
-      val result: Future[Result] = controller.getMessages(nino, calcId)(fakeGetRequest(queryUri))
+      val result: Future[Result] = controller.getMessages(nino, MessagesResponseFixture.calculationId)(fakeGetRequest(queryUri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

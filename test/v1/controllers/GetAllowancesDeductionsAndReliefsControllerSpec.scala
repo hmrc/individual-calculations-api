@@ -44,7 +44,10 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     with MockGetCalculationParser
     with MockStandardService
     with MockHateoasFactory
-    with MockAuditService {
+    with MockAuditService
+    with GraphQLQuery {
+
+  override val query: String = ALLOWANCES_AND_DEDUCTIONS_QUERY
 
   trait Test {
     val hc = HeaderCarrier()
@@ -97,19 +100,19 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsJsonFromBackend)))))
 
         MockHateoasFactory
-          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
-          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, Seq(testHateoasLink)))
+          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty, AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
+          .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
-        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
+        val responseBody: JsObject = AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty.as[JsObject].deepMerge(linksJson)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -131,7 +134,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
@@ -156,12 +159,12 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(
             Future.successful(
               Right(ResponseWrapper(
                 correlationId,
-                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModelEmpty)))))
+                CalculationWrapperOrError.CalculationWrapper(AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)))))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
 

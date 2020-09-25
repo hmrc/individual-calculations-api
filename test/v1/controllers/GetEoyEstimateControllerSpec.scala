@@ -96,15 +96,15 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
 
         MockStandardService
           .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseJsonFromBackend)))))
 
         MockHateoasFactory
-          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId))
-          .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel, Seq(testHateoasLink)))
+          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseJson, EoyEstimateHateoasData(nino, calcId))
+          .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseJson, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
 
-        val responseBody: JsObject = EoyEstimateResponseFixture.eoyEstimateResponseJson.deepMerge(linksJson)
+        val responseBody: JsObject = EoyEstimateResponseFixture.eoyEstimateResponseJson.as[JsObject].deepMerge(linksJson)
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
