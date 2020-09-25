@@ -36,7 +36,7 @@ object SelfEmploymentFixture {
   val taxableProfit: Option[BigInt] = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigDecimal] = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true)
+  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
 
   val selfEmploymentModel: SelfEmployment =
     SelfEmployment(

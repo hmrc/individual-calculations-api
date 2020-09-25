@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
+package v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail
 
-import play.api.libs.json.{Format, Json}
-import v1.models.hateoas.Link
+import play.api.libs.json._
 
-case class BusinessSourceAdjustableSummary(bsasId: String,
-                                           applied: Boolean,
-                                           links: Option[Seq[Link]])
+case class LossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
 
-object BusinessSourceAdjustableSummary {
-
-  implicit val format: Format[BusinessSourceAdjustableSummary] = Json.format[BusinessSourceAdjustableSummary]
+object LossBroughtForward {
+  implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail.selfEmployment.detail
+package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
 import play.api.libs.json.{Format, Json}
 import v1.models.hateoas.Link
 
-case class BusinessSourceAdjustableSummary(bsasId: String,
-                                           applied: Boolean,
-                                           links: Option[Seq[Link]])
+case class BusinessSourceAdjustableSummary(bsasId: String, applied: Boolean, links: Option[Seq[Link]])
 
 object BusinessSourceAdjustableSummary {
-
   implicit val format: Format[BusinessSourceAdjustableSummary] = Json.format[BusinessSourceAdjustableSummary]
 }

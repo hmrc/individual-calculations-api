@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl
+package v1.fixtures.getTaxableIncome.detail.foreignProperty
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetailFixture._
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixture._
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.BusinessSourceAdjustableSummary
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.LossClaimsDetailFixture._
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.summary.LossClaimSummaryFixture._
+import v1.models.response.getTaxableIncome.detail.foreignProperty.ForeignProperty
+import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.BusinessSourceAdjustableSummary
 
-object UkPropertyNonFhlFixture {
+object ForeignPropertyFixture {
 
   val totalIncome: Option[BigDecimal] = Some(2000.98)
   val totalExpenses: Option[BigDecimal] = Some(2000.98)
@@ -36,8 +36,8 @@ object UkPropertyNonFhlFixture {
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2000)
   val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
 
-  val ukPropertyNonFhlModel: UkPropertyNonFhl =
-    UkPropertyNonFhl(
+  val foreignPropertyModel: ForeignProperty =
+    ForeignProperty(
       totalIncome = totalIncome,
       totalExpenses = totalExpenses,
       netProfit = netProfit,
@@ -62,7 +62,7 @@ object UkPropertyNonFhlFixture {
     """.stripMargin
   )
 
-  val ukPropertyNonFhlJson: JsValue = Json.parse(
+  val foreignPropertyJson: JsValue = Json.parse(
     s"""
        |{
        |   "totalIncome" : 2000.98,
@@ -76,7 +76,7 @@ object UkPropertyNonFhlFixture {
        |   "adjustedIncomeTaxLoss" : 2000,
        |   "taxableProfitAfterIncomeTaxLossesDeduction" : 2000,
        |   "lossClaimsSummary" : $lossClaimSummaryJson,
-       |   "lossClaimsDetail" : $lossClaimsDetailMtdJson,
+       |   "lossClaimsDetail" : $lossClaimsDetailJson,
        |   "bsas": $bsasJson
        |}
     """.stripMargin

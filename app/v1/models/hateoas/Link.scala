@@ -16,10 +16,11 @@
 
 package v1.models.hateoas
 
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{Json, Reads, Writes}
 
 case class Link(href: String, method: Method, rel: String)
 
 object Link {
   implicit val writes: Writes[Link] = Json.writes[Link]
+  implicit val reads: Reads[Link] = Json.reads[Link]
 }

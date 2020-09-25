@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v1.fixtures.getTaxableIncome.detail.ukPropertyFhl
+package v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetailFixture._
-import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimSummaryFixture._
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.BusinessSourceAdjustableSummary
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{lossClaimsDetailJson, lossClaimsDetailModel}
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{lossClaimSummaryJson, lossClaimsSummaryModel}
+import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhl
+import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.BusinessSourceAdjustableSummary
 
-
-object UkPropertyFhlFixture {
+object EeaPropertyFhlFixture {
 
   val totalIncome: Option[BigDecimal] = Some(1000.01)
   val totalExpenses: Option[BigDecimal] = Some(1000.02)
@@ -31,21 +30,19 @@ object UkPropertyFhlFixture {
   val netLoss: Option[BigDecimal] = Some(1000.04)
   val totalAdditions: Option[BigDecimal] = Some(1000.05)
   val totalDeductions: Option[BigDecimal] = Some(1000.06)
-  val accountingAdjustments: Option[BigDecimal] = Some(1000.07)
-  val adjustedIncomeTaxLoss: Option[BigInt] = None
+  val adjustedIncomeTaxLoss: Option[BigInt] = Some(1000)
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
+  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
 
-  val ukPropertyFhlModel: UkPropertyFhl =
-    UkPropertyFhl(
+  val eeaPropertyFhlModel: EeaPropertyFhl =
+    EeaPropertyFhl(
       totalIncome = totalIncome,
       totalExpenses = totalExpenses,
       netProfit = netProfit,
       netLoss = netLoss,
       totalAdditions = totalAdditions,
       totalDeductions = totalDeductions,
-      accountingAdjustments = accountingAdjustments,
       adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
       taxableProfit = taxableProfit,
       taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
@@ -63,7 +60,7 @@ object UkPropertyFhlFixture {
     """.stripMargin
   )
 
-  val ukPropertyFhlJson: JsValue = Json.parse(
+  val eeaPropertyFhlJson: JsValue = Json.parse(
     s"""
        |{
        |   "totalIncome": ${totalIncome.get},
@@ -72,7 +69,7 @@ object UkPropertyFhlFixture {
        |	 "netLoss": ${netLoss.get},
        |   "totalAdditions": ${totalAdditions.get},
        |   "totalDeductions": ${totalDeductions.get},
-       |   "accountingAdjustments": ${accountingAdjustments.get},
+       |   "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
        |   "taxableProfit": ${taxableProfit.get},
        |	 "lossClaimsSummary": $lossClaimSummaryJson,
        |   "lossClaimsDetail": $lossClaimsDetailJson,
