@@ -33,7 +33,7 @@ trait MessagesFilter {
       }
     }
 
-    def add(filteredMessages: JsObject, path: String): JsObject = calculationMessages \ path match {
+    def add(filteredMessages: JsObject, path: String): JsObject = calculationMessages \ "data" \ "messages" \ path match {
       case JsDefined(value) => filteredMessages.deepMerge(Json.obj("data" -> Json.obj("messages" -> Json.obj(path -> value))))
       case _: JsUndefined   => filteredMessages
     }
@@ -47,8 +47,9 @@ trait MessagesFilter {
       }
     }
 
-    calculationMessages \ "data" \ "metadata" \ "id" match {
-      case JsDefined(id: JsString) => filterLoop(Json.obj("data" -> Json.obj("metadata" -> Json.obj("id" -> id.value))), typeQueries)
+    calculationMessages \ "data" \ "metadata" match {
+      case JsDefined(metadata: JsObject) =>
+        filterLoop(Json.obj("data" -> Json.obj("metadata" -> metadata, "messages" -> Json.obj())), typeQueries)
     }
   }
 }

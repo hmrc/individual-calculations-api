@@ -44,7 +44,10 @@ class GetIncomeTaxAndNicsControllerSpec
     with MockGetCalculationParser
     with MockStandardService
     with MockHateoasFactory
-    with MockAuditService {
+    with MockAuditService
+    with GraphQLQuery {
+
+  override val query: String = INCOME_TAX_AND_NICS_QUERY
 
   trait Test {
     val hc = HeaderCarrier()
@@ -95,7 +98,7 @@ class GetIncomeTaxAndNicsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJsonFromBackend))))
 
         MockHateoasFactory
@@ -126,7 +129,7 @@ class GetIncomeTaxAndNicsControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
         val result: Future[Result] = controller.getIncomeTaxAndNics(nino, IncomeTaxAndNicsResponseFixture.calculationId)(fakeGetRequest(queryUri))

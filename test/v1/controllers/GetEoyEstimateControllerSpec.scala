@@ -44,7 +44,10 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   with MockGetCalculationParser
   with MockStandardService
   with MockHateoasFactory
-  with MockAuditService {
+  with MockAuditService
+  with GraphQLQuery {
+
+  override val query: String = EOY_ESTIMATE_QUERY
 
   trait Test {
     val hc = HeaderCarrier()
@@ -95,7 +98,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseJsonFromBackend)))))
 
         MockHateoasFactory
@@ -124,7 +127,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyErrorMessages))))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
@@ -148,7 +151,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyCrystallisedError))))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))

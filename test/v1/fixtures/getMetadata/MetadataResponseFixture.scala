@@ -20,6 +20,8 @@ import play.api.libs.json.{JsValue, Json}
 
 object MetadataResponseFixture {
 
+  val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+
   def backendJson(metadata: JsValue): JsValue = Json.obj(
     "data" -> Json.obj(
       "metadata" -> metadata

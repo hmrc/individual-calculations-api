@@ -46,7 +46,10 @@ class GetMessagesControllerSpec
     with MockGetCalculationQueryParser
     with MockStandardService
     with MockHateoasFactory
-    with MockAuditService {
+    with MockAuditService
+    with GraphQLQuery {
+
+  override val query: String = MESSAGES_QUERY
 
   trait Test {
     val hc = HeaderCarrier()
@@ -98,7 +101,7 @@ class GetMessagesControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, MessagesResponseFixture.messagesResponseFromBackendAllFields))))
 
         MockHateoasFactory
@@ -128,7 +131,7 @@ class GetMessagesControllerSpec
         val response = MessagesResponseFixture.messagesResponseFromBackendNoMessages
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         val result: Future[Result] = controller.getMessages(nino, MessagesResponseFixture.calculationId)(fakeGetRequest(queryUri))

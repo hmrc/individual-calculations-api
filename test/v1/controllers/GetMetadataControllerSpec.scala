@@ -104,7 +104,7 @@ class GetMetadataControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
 
         MockHateoasFactory
-          .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None))
+          .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0)))
           .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
@@ -166,7 +166,7 @@ class GetMetadataControllerSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
 
       MockHateoasFactory
-        .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None))
+        .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0)))
         .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))

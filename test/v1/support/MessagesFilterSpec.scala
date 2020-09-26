@@ -51,21 +51,27 @@ class MessagesFilterSpec extends UnitSpec {
     "return multiple message types" when {
 
       "provided with info and warning filters" in {
-        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.warning)) shouldBe MessagesResponseFixture.backendJson(
-          MessagesResponseFixture.messagesResponseFromBackendInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendWarnings.as[JsObject])
-        )
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.warning)) shouldBe {
+          MessagesResponseFixture.backendJson(
+            MessagesResponseFixture.messagesResponseJsonInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseJsonWarnings.as[JsObject])
+          )
+        }
       }
 
       "provided with info and error filters" in {
-        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.error)) shouldBe MessagesResponseFixture.backendJson(
-          MessagesResponseFixture.messagesResponseFromBackendInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject])
-        )
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.info, MessageType.error)) shouldBe {
+          MessagesResponseFixture.backendJson(
+            MessagesResponseFixture.messagesResponseJsonInfo.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseJsonErrors.as[JsObject])
+          )
+        }
       }
 
       "provided with error and warning filters" in {
-        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.error, MessageType.warning)) shouldBe MessagesResponseFixture.backendJson(
-          MessagesResponseFixture.messagesResponseFromBackendErrors.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseFromBackendWarnings.as[JsObject])
-        )
+        filter.filter(MessagesResponseFixture.messagesResponseFromBackendAllFields.as[JsObject], Seq(MessageType.error, MessageType.warning)) shouldBe {
+          MessagesResponseFixture.backendJson(
+            MessagesResponseFixture.messagesResponseJsonErrors.as[JsObject].deepMerge(MessagesResponseFixture.messagesResponseJsonWarnings.as[JsObject])
+          )
+        }
       }
     }
 

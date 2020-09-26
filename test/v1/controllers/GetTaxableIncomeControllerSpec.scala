@@ -43,7 +43,10 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   with MockGetCalculationParser
   with MockStandardService
   with MockHateoasFactory
-  with MockAuditService {
+  with MockAuditService
+  with GraphQLQuery {
+
+  override val query: String = TAXABLE_INCOME_QUERY
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
@@ -95,7 +98,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.CalculationWrapper(TaxableIncomeResponseFixture.taxableIncomeResponseFromBackend)))))
 
         MockHateoasFactory
@@ -124,7 +127,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.ErrorsInCalculation))))
 
         val result: Future[Result] = controller.getTaxableIncome(nino, calcId)(fakeGetRequest(queryUri))
@@ -141,5 +144,4 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
       }
     }
   }
-
 }

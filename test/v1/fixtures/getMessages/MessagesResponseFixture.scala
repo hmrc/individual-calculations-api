@@ -74,8 +74,8 @@ object MessagesResponseFixture {
     """
       |{
       |  "warnings":[
-      |    {"id":"err1", "text":"text1"},
-      |    {"id":"err2", "text":"text2"}
+      |    {"id":"warn1", "text":"text1"},
+      |    {"id":"warn2", "text":"text2"}
       |  ]
       |}
     """.stripMargin
@@ -93,7 +93,7 @@ object MessagesResponseFixture {
   )
 
   val messagesResponseFromBackendAllFields: JsValue = backendJson(messagesResponseJson)
-  val messagesResponseFromBackendErrors: JsValue = backendJson(messagesResponseJsonErrors, errorCount = 2)
+  val messagesResponseFromBackendErrors: JsValue = backendJson(messagesResponseJsonErrors)
   val messagesResponseFromBackendWarnings: JsValue = backendJson(messagesResponseJsonWarnings)
   val messagesResponseFromBackendInfo: JsValue = backendJson(messagesResponseJsonInfo)
   val messagesResponseFromBackendNoMessages: JsValue = backendJson(Json.obj())
