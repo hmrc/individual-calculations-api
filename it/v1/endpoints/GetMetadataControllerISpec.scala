@@ -272,7 +272,14 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |    "calculationType": "crystallisation",
             |    "intentToCrystallise": true,
             |    "crystallised": false,
-            |    "calculationErrorCount" : 1
+            |    "calculationErrorCount" : 1,
+            |     "metadataExistence": {
+            |       "incomeTaxAndNicsCalculated": false,
+            |       "messages": false,
+            |       "taxableIncome": false,
+            |       "endOfYearEstimate": false,
+            |       "allowancesDeductionsAndReliefs": false
+            |    }
             |  }
             |}""".stripMargin).as[JsObject]
 
@@ -304,6 +311,70 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successOutput.deepMerge(hateoasErrors)
       }
+
+      "valid request is made and error messages are returned, and messages metadata is returned" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val successBody: JsObject = Json.parse(s"""|{
+                                                  |  "metadata": {
+                                                  |    "id": "$calcId",
+                                                  |    "taxYear": "2018-19",
+                                                  |    "requestedBy": "customer",
+                                                  |    "calculationReason": "customerRequest",
+                                                  |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                                  |    "calculationType": "crystallisation",
+                                                  |    "intentToCrystallise": true,
+                                                  |    "crystallised": false,
+                                                  |    "calculationErrorCount" : 1,
+                                                  |     "metadataExistence": {
+                                                  |       "incomeTaxAndNicsCalculated": false,
+                                                  |       "messages": true,
+                                                  |       "taxableIncome": false,
+                                                  |       "endOfYearEstimate": false,
+                                                  |       "allowancesDeductionsAndReliefs": false
+                                                  |    }
+                                                  |  }
+                                                  |}""".stripMargin).as[JsObject]
+
+        val successOutput: JsObject = Json.parse(s"""{
+                                                  |    "id": "$calcId",
+                                                  |    "taxYear": "2018-19",
+                                                  |    "requestedBy": "customer",
+                                                  |    "calculationReason": "customerRequest",
+                                                  |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                                  |    "calculationType": "crystallisation",
+                                                  |    "intentToCrystallise": true,
+                                                  |    "crystallised": false,
+                                                  |    "calculationErrorCount" : 1
+                                                  |}""".stripMargin).as[JsObject]
+
+        val hateoasErrors: JsObject = Json.parse(s"""{
+                                                   |    "links": [
+                                                   |      {
+                                                   |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+                                                   |       "method": "GET",
+                                                   |       "rel": "self"
+                                                   |      },
+                                                   |      {
+                                                   |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
+                                                   |       "method": "GET",
+                                                   |       "rel": "messages"
+                                                   |      }
+                                                   |    ]
+                                                   |}""".stripMargin).as[JsObject]
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successOutput.deepMerge(hateoasErrors)
+      }
+
     }
 
     "return error according to spec" when {
