@@ -24,7 +24,6 @@ case class ResponseWrapper[+A](correlationId: String, responseData: A) {
   def map[B](f: A => B): ResponseWrapper[B] = ResponseWrapper(correlationId, f(responseData))
 
   def mapToEither[B](f: A => Either[MtdErrors, B]): Either[ErrorWrapper, ResponseWrapper[B]] = {
-    println(scala.Console.YELLOW + responseData + scala.Console.RESET)
     f(responseData) match {
       case Right(b) => ResponseWrapper(correlationId, b).asRight
       case Left(errs) => ErrorWrapper(Some(correlationId), errs).asLeft

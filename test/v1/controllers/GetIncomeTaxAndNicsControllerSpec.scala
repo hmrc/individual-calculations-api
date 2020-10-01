@@ -99,7 +99,7 @@ class GetIncomeTaxAndNicsControllerSpec
 
         MockStandardService
           .doService(RequestDefn.GraphQl(uri, query), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJsonFromBackend))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.CalculationWrapper(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJsonFromBackend)))))
 
         MockHateoasFactory
             .wrap(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, IncomeTaxAndNicsHateoasData(nino, IncomeTaxAndNicsResponseFixture.calculationId))

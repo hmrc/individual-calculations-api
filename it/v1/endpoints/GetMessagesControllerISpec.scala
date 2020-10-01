@@ -22,9 +22,7 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.fixtures.getMessages.MessagesResponseFixture
 import v1.fixtures.getMessages.MessagesResponseFixture._
-import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
@@ -52,9 +50,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.obj(
-        "metadata" -> metadataResponseJson,
-        "messages" -> MessagesResponseFixture.messagesResponseJson)
+      val successBody = messagesResponseFromBackendAllFields
 
       val hateoasLinks: JsValue = Json.parse("""{
           |    "links":[
@@ -78,7 +74,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, successBody)
         }
         val response: WSResponse = await(request.get)
 
@@ -92,7 +88,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, successBody)
         }
 
         val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
@@ -107,7 +103,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, successBody)
         }
 
         val response: WSResponse = await(request
@@ -125,7 +121,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonEmpty)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, messagesResponseFromBackendNoMessages)
         }
 
         val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
@@ -140,7 +136,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonInfo)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, messagesResponseFromBackendInfo)
         }
 
         val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
@@ -203,7 +199,7 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)

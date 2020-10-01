@@ -22,90 +22,80 @@ import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 
 object EoyEstimateWrapperOrErrorFixture {
-  
-  val wrappedEoyEstimateModel: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseJson)
+
+  def backendJson(endOfYearEstimateResponse: JsValue, calculationType: Option[String], calculationErrorCount: Option[Int]): JsValue = Json.obj(
+    "data" -> Json.obj("endOfYearEstimate" -> endOfYearEstimateResponse,
+    "metadata" -> Seq(("calculationType" -> calculationType), ("calculationErrorCount" -> calculationErrorCount))
+      .filter(_._2.isDefined)
+      .foldLeft(Json.obj())((acc, curr) => {
+        curr match {
+          case (k, Some(v: String)) => acc ++ Json.obj(k -> v)
+          case (k, Some(v: Int))    => acc ++ Json.obj(k -> v)
+          case _                    => acc
+        }
+      })
+    )
+  )
+
+  def wrappedEoyEstimateModel(calculationType: Option[String] = None, calculationErrorCount: Option[Int] = None): EoyEstimateWrapperOrError =
+    EoyEstimateWrapper(backendJson(eoyEstimateResponseJson, calculationType, calculationErrorCount))
 
   val eoyEstimateWrapperJsonWithErrors: JsValue = Json.parse(
     s"""
-      |{
-      |  "endOfYearEstimate": $eoyEstimateResponseJson,
-      |  "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "inYear",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 1
-      |  }
-      |}
+       |{
+       |  "data": {
+       |    "endOfYearEstimate": $eoyEstimateResponseJson,
+       |    "metadata": {
+       |      "calculationType": "inYear",
+       |      "calculationErrorCount": 1
+       |    }
+       |  }
+       |}
     """.stripMargin
   )
 
   val eoyEstimateWrapperJsonWithoutErrorCount: JsValue = Json.parse(
     s"""
        |{
-       |  "endOfYearEstimate": $eoyEstimateResponseJson,
-       |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "inYear",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false
+       |  "data": {
+       |    "endOfYearEstimate": $eoyEstimateResponseJson,
+       |    "metadata": {
+       |      "calculationType": "inYear"
+       |    }
        |  }
        |}
      """.stripMargin)
 
   val eoyEstimateWrapperJsonWithoutErrors: JsValue = Json.parse(
     s"""{
-       |  "endOfYearEstimate": $eoyEstimateResponseJson,
-       |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "inYear",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 0
+       |  "data": {
+       |    "endOfYearEstimate": $eoyEstimateResponseJson,
+       |    "metadata": {
+       |      "calculationType": "inYear",
+       |      "calculationErrorCount": 0
+       |    }
        |  }
        |}
     """.stripMargin)
 
   val eoyEstimateWrapperJsonWithoutCalculationType: JsValue = Json.parse(
     s"""{
-       |  "endOfYearEstimate": $eoyEstimateResponseJson,
-       |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false
+       |  "data": {
+       |    "endOfYearEstimate": $eoyEstimateResponseJson,
+       |    "metadata": {
+       |    }
        |  }
        |}
     """.stripMargin)
 
   val edyEstimateWrapperJsonCrystallised: JsValue = Json.parse(
     s"""{
-       |  "endOfYearEstimate": $eoyEstimateResponseJson,
-       |  "metadata": {
-       |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 0
+       |  "data": {
+       |    "endOfYearEstimate": $eoyEstimateResponseJson,
+       |    "metadata": {
+       |      "calculationType": "crystallisation",
+       |      "calculationErrorCount": 0
+       |    }
        |  }
        |}
     """.stripMargin)

@@ -28,7 +28,7 @@ object CalculationWrapperOrErrorFixture {
 
   object TestCalculation {
     implicit val reads: Reads[TestCalculation] =
-      (JsPath \ "calculation").read[TestCalculation](Json.reads[TestCalculation])
+      (JsPath \ "data" \ "calculation").read[TestCalculation](Json.reads[TestCalculation])
   }
 
   val wrappedCalculation: WrappedCalculation = CalculationWrapper(TestCalculation("someValue"))
@@ -36,19 +36,21 @@ object CalculationWrapperOrErrorFixture {
   val calculationWrapperJsonWithErrors: JsValue = Json.parse(
     """
       |{
-      |  "calculation": {
-      |      "value": "someValue"
-      |  },
-      |  "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 1
+      |  "data": {
+      |    "calculation": {
+      |        "value": "someValue"
+      |    },
+      |    "metadata": {
+      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |      "taxYear": "2018-19",
+      |      "requestedBy": "customer",
+      |      "calculationReason": "customerRequest",
+      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |      "calculationType": "crystallisation",
+      |      "intentToCrystallise": true,
+      |      "crystallised": false,
+      |      "calculationErrorCount": 1
+      |    }
       |  }
       |}
     """.stripMargin
@@ -57,19 +59,21 @@ object CalculationWrapperOrErrorFixture {
   val calculationWrapperJsonWithoutErrors: JsValue = Json.parse(
     """
       |{
-      |  "calculation": {
-      |      "value": "someValue"
-      |  },
-      |  "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "calculationErrorCount": 0
+      |  "data": {
+      |    "calculation": {
+      |        "value": "someValue"
+      |    },
+      |    "metadata": {
+      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |      "taxYear": "2018-19",
+      |      "requestedBy": "customer",
+      |      "calculationReason": "customerRequest",
+      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |      "calculationType": "crystallisation",
+      |      "intentToCrystallise": true,
+      |      "crystallised": false,
+      |      "calculationErrorCount": 0
+      |    }
       |  }
       |}
     """.stripMargin
@@ -78,18 +82,20 @@ object CalculationWrapperOrErrorFixture {
   val calculationWrapperJsonWithoutErrorCount: JsValue = Json.parse(
     """
       |{
-      |  "calculation": {
-      |      "value": "someValue"
-      |  },
-      |  "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false
+      |  "data": {
+      |    "calculation": {
+      |        "value": "someValue"
+      |    },
+      |    "metadata": {
+      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |      "taxYear": "2018-19",
+      |      "requestedBy": "customer",
+      |      "calculationReason": "customerRequest",
+      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |      "calculationType": "crystallisation",
+      |      "intentToCrystallise": true,
+      |      "crystallised": false
+      |    }
       |  }
       |}
     """.stripMargin

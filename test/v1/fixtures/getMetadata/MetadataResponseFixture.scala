@@ -28,11 +28,16 @@ object MetadataResponseFixture {
     )
   )
 
-  def metadataJson(errorCount: Int = 0): JsValue = Json.obj(
+  def metadataJson(errorCount: Int = 0, crystallised: Boolean = false): JsValue = Json.obj(
     "id" -> "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    "calculationErrorCount" -> errorCount
+    "calculationErrorCount" -> errorCount,
+    "crystallised" -> crystallised,
+    "calculationType" -> {
+      if(crystallised) "crystallisation" else "inYear"
+    }
   )
 
   val metadataJsonFromBackend: JsValue = backendJson(metadataJson())
   val metadataJsonFromBackendWithErrors: JsValue = backendJson(metadataJson(1))
+  val metadataJsonFromBackendCrystallised: JsValue = backendJson(metadataJson(crystallised = true))
 }

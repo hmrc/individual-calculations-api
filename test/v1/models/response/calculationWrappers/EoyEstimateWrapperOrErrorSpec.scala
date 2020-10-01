@@ -32,19 +32,21 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
 
     "read from valid JSON with no error count" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutErrorCount.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
+        eoyEstimateWrapperJsonWithoutErrorCount.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel(calculationType = Some("inYear"))
       }
     }
 
     "read from valid JSON with an error count of zero" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutErrors.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
+        eoyEstimateWrapperJsonWithoutErrors.as[EoyEstimateWrapperOrError] shouldBe {
+          wrappedEoyEstimateModel(calculationType = Some("inYear"), calculationErrorCount = Some(0))
+        }
       }
     }
 
     "read from valid JSON with no calculation type" should {
       "produce the expected EoyEstimateWrapper object" in {
-        eoyEstimateWrapperJsonWithoutCalculationType.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel
+        eoyEstimateWrapperJsonWithoutCalculationType.as[EoyEstimateWrapperOrError] shouldBe wrappedEoyEstimateModel()
       }
     }
 

@@ -71,7 +71,7 @@ class GetIncomeTaxAndNicsController @Inject()(
         NotFoundError
       )
       .mapSuccess { responseWrapper =>
-        responseWrapper.mapToEither {
+        responseWrapper.mapToEither[JsValue] {
           case CalculationWrapperOrError.ErrorsInCalculation      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }

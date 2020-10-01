@@ -23,6 +23,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetMetadataControllerISpec extends IntegrationBaseSpec {
@@ -54,32 +55,8 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, metadataJsonFromBackend)
         }
-
-        val successBody: JsObject = Json.parse(s"""|{
-            |  "metadata": {
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false
-            |  }
-            |}""".stripMargin).as[JsObject]
-
-        val successOutput: JsObject = Json.parse(s"""{
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false
-            |}""".stripMargin).as[JsObject]
 
         val hateoas: JsObject = Json.parse(s"""{
             |    "links": [
@@ -120,7 +97,7 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successOutput.deepMerge(hateoas)
+        response.json shouldBe metadataJson().as[JsObject].deepMerge(hateoas)
       }
 
       "valid request is made and error messages are returned" in new Test {
@@ -128,34 +105,8 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, metadataJsonFromBackendWithErrors)
         }
-
-        val successBody: JsObject = Json.parse(s"""|{
-            |  "metadata": {
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false,
-            |    "calculationErrorCount" : 1
-            |  }
-            |}""".stripMargin).as[JsObject]
-
-        val successOutput: JsObject = Json.parse(s"""{
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false,
-            |    "calculationErrorCount" : 1
-            |}""".stripMargin).as[JsObject]
 
         val hateoasErrors: JsObject = Json.parse(s"""{
             |    "links": [
@@ -176,7 +127,7 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successOutput.deepMerge(hateoasErrors)
+        response.json shouldBe metadataJson(1).as[JsObject].deepMerge(hateoasErrors)
       }
     }
 
@@ -224,7 +175,7 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)
