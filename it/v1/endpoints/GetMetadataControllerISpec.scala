@@ -49,7 +49,150 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
   "Calling the get calculation metadata endpoint" should {
     "return a 200 status code" when {
 
-      "valid request is made and no error messages are returned" in new Test {
+      "valid request is made and no error messages and no metadata is returned" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val successBody: JsObject = Json.parse(
+          s"""|{
+              |  "metadata": {
+              |    "id": "$calcId",
+              |    "taxYear": "2018-19",
+              |    "requestedBy": "customer",
+              |    "calculationReason": "customerRequest",
+              |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+              |    "calculationType": "crystallisation",
+              |    "intentToCrystallise": true,
+              |    "crystallised": false,
+              |    "metadataExistence": {
+              |     "incomeTaxAndNicsCalculated": false,
+              |     "messages": false,
+              |     "taxableIncome": false,
+              |     "endOfYearEstimate": false,
+              |     "allowancesDeductionsAndReliefs": false
+              |    }
+              |  }
+              |}""".stripMargin).as[JsObject]
+
+        val successOutput: JsObject = Json.parse(
+          s"""{
+             |    "id": "$calcId",
+             |    "taxYear": "2018-19",
+             |    "requestedBy": "customer",
+             |    "calculationReason": "customerRequest",
+             |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+             |    "calculationType": "crystallisation",
+             |    "intentToCrystallise": true,
+             |    "crystallised": false
+             |}""".stripMargin).as[JsObject]
+
+        val hateoas: JsObject = Json.parse(
+          s"""{
+             |    "links": [
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+             |       "method": "GET",
+             |       "rel": "self"
+             |      }
+             |    ]
+             |}""".stripMargin).as[JsObject]
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successOutput.deepMerge(hateoas)
+      }
+
+      "valid request is made and no error messages and all metadata is returned" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
+        }
+
+        val successBody: JsObject = Json.parse(
+          s"""|{
+              |  "metadata": {
+              |    "id": "$calcId",
+              |    "taxYear": "2018-19",
+              |    "requestedBy": "customer",
+              |    "calculationReason": "customerRequest",
+              |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+              |    "calculationType": "crystallisation",
+              |    "intentToCrystallise": true,
+              |    "crystallised": false,
+              |    "metadataExistence": {
+              |     "incomeTaxAndNicsCalculated": true,
+              |     "messages": true,
+              |     "taxableIncome": true,
+              |     "endOfYearEstimate": true,
+              |     "allowancesDeductionsAndReliefs": true
+              |    }
+              |  }
+              |}""".stripMargin).as[JsObject]
+
+        val successOutput: JsObject = Json.parse(
+          s"""{
+             |    "id": "$calcId",
+             |    "taxYear": "2018-19",
+             |    "requestedBy": "customer",
+             |    "calculationReason": "customerRequest",
+             |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+             |    "calculationType": "crystallisation",
+             |    "intentToCrystallise": true,
+             |    "crystallised": false
+             |}""".stripMargin).as[JsObject]
+
+        val hateoas: JsObject = Json.parse(
+          s"""{
+             |    "links": [
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+             |       "method": "GET",
+             |       "rel": "self"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
+             |       "method": "GET",
+             |       "rel": "income-tax-and-nics-calculated"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/taxable-income",
+             |       "method": "GET",
+             |       "rel": "taxable-income"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/allowances-deductions-reliefs",
+             |       "method": "GET",
+             |       "rel": "allowances-deductions-reliefs"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
+             |       "method": "GET",
+             |       "rel": "end-of-year-estimate"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
+             |       "method": "GET",
+             |       "rel": "messages"
+             |      }
+             |    ]
+             |}""".stripMargin).as[JsObject]
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successOutput.deepMerge(hateoas)
+      }
+
+      "valid request is made and no error messages and one metadata returned" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -58,28 +201,36 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
         }
 
         val successBody: JsObject = Json.parse(s"""|{
-            |  "metadata": {
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false
-            |  }
-            |}""".stripMargin).as[JsObject]
+          |  "metadata": {
+          |    "id": "$calcId",
+          |    "taxYear": "2018-19",
+          |    "requestedBy": "customer",
+          |    "calculationReason": "customerRequest",
+          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+          |    "calculationType": "crystallisation",
+          |    "intentToCrystallise": true,
+          |    "crystallised": false,
+          |    "metadataExistence": {
+          |     "incomeTaxAndNicsCalculated": true,
+          |     "messages": false,
+          |     "taxableIncome": false,
+          |     "endOfYearEstimate": false,
+          |     "allowancesDeductionsAndReliefs": false
+          |    }
+          |  }
+          |}""".stripMargin).as[JsObject]
+
 
         val successOutput: JsObject = Json.parse(s"""{
-            |    "id": "$calcId",
-            |    "taxYear": "2018-19",
-            |    "requestedBy": "customer",
-            |    "calculationReason": "customerRequest",
-            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-            |    "calculationType": "crystallisation",
-            |    "intentToCrystallise": true,
-            |    "crystallised": false
-            |}""".stripMargin).as[JsObject]
+          |    "id": "$calcId",
+          |    "taxYear": "2018-19",
+          |    "requestedBy": "customer",
+          |    "calculationReason": "customerRequest",
+          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+          |    "calculationType": "crystallisation",
+          |    "intentToCrystallise": true,
+          |    "crystallised": false
+          |}""".stripMargin).as[JsObject]
 
         val hateoas: JsObject = Json.parse(s"""{
             |    "links": [
@@ -92,26 +243,6 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
             |       "method": "GET",
             |       "rel": "income-tax-and-nics-calculated"
-            |      },
-            |      {
-            |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/taxable-income",
-            |       "method": "GET",
-            |       "rel": "taxable-income"
-            |      },
-            |      {
-            |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/allowances-deductions-reliefs",
-            |       "method": "GET",
-            |       "rel": "allowances-deductions-reliefs"
-            |      },
-            |      {
-            |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/end-of-year-estimate",
-            |       "method": "GET",
-            |       "rel": "end-of-year-estimate"
-            |      },
-            |      {
-            |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
-            |       "method": "GET",
-            |       "rel": "messages"
             |      }
             |    ]
             |}""".stripMargin).as[JsObject]
@@ -163,11 +294,6 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
             |       "method": "GET",
             |       "rel": "self"
-            |      },
-            |      {
-            |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
-            |       "method": "GET",
-            |       "rel": "messages"
             |      }
             |    ]
             |}""".stripMargin).as[JsObject]
