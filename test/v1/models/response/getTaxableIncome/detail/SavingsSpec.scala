@@ -24,11 +24,11 @@ class SavingsSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[Savings](savingsJson)(
     mandatoryProperties = Seq(
-      "savingsAccountId",
-      "savingsAccountName",
       "grossIncome"
     ),
     optionalProperties = Seq(
+      "savingsAccountId",
+      "savingsAccountName",
       "netIncome",
       "taxDeducted"
     )

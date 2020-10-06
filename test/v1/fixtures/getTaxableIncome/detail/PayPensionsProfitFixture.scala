@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
 import v1.models.response.getTaxableIncome.detail.PayPensionsProfit
 
+//noinspection ScalaStyle
 object PayPensionsProfitFixture {
 
   val incomeReceivedPPP: BigInt = 1
@@ -29,6 +30,16 @@ object PayPensionsProfitFixture {
   val totalFHLPropertyProfit: Option[BigInt] = Some(2)
   val totalUKOtherPropertyProfit: Option[BigInt] = Some(3)
 
+  val totalForeignPropertyProfit: Option[BigInt] = Some(1)
+  val totalEeaFhlProfit: Option[BigInt] = Some(4)
+  val totalOccupationalPensionIncome: Option[BigDecimal] = Some(2)
+  val totalStateBenefitsIncome: Option[BigDecimal] = Some(5)
+  val totalBenefitsInKind: Option[BigDecimal] = Some(9)
+  val totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal] = Some(1)
+  val totalEmploymentExpenses: Option[BigDecimal] = Some(4)
+  val totalEmploymentIncome: Option[BigInt] = Some(2)
+
+
   val payPensionsProfitModel: PayPensionsProfit =
     PayPensionsProfit(
       incomeReceived = incomeReceivedPPP,
@@ -37,6 +48,14 @@ object PayPensionsProfitFixture {
       totalPropertyProfit = totalPropertyProfit,
       totalFHLPropertyProfit = totalFHLPropertyProfit,
       totalUKOtherPropertyProfit = totalUKOtherPropertyProfit,
+      totalForeignPropertyProfit = totalForeignPropertyProfit,
+      totalEeaFhlProfit = totalEeaFhlProfit,
+      totalOccupationalPensionIncome = totalOccupationalPensionIncome,
+      totalStateBenefitsIncome = totalStateBenefitsIncome,
+      totalBenefitsInKind = totalBenefitsInKind,
+      totalPayeEmploymentAndLumpSumIncome = totalPayeEmploymentAndLumpSumIncome,
+      totalEmploymentExpenses = totalEmploymentExpenses,
+      totalEmploymentIncome = totalEmploymentIncome,
       businessProfitAndLoss = Some(businessProfitAndLossModel)
     )
 
@@ -49,6 +68,14 @@ object PayPensionsProfitFixture {
        |    "totalPropertyProfit" : ${totalPropertyProfit.get},
        |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
        |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get},
+       |    "totalForeignPropertyProfit" : ${totalForeignPropertyProfit.get},
+       |    "totalEeaFhlProfit" : ${totalEeaFhlProfit.get},
+       |    "totalOccupationalPensionIncome" : ${totalOccupationalPensionIncome.get},
+       |    "totalStateBenefitsIncome" : ${totalStateBenefitsIncome.get},
+       |    "totalBenefitsInKind" : ${totalBenefitsInKind.get},
+       |    "totalPayeEmploymentAndLumpSumIncome" : ${totalPayeEmploymentAndLumpSumIncome.get},
+       |    "totalEmploymentExpenses" : ${totalEmploymentExpenses.get},
+       |    "totalEmploymentIncome" : ${totalEmploymentIncome.get},
        |    "businessProfitAndLoss" : $businessProfitAndLossJson
        |}
     """.stripMargin

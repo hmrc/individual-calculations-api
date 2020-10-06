@@ -17,7 +17,6 @@
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl
 
 import play.api.libs.json._
-import utils.NestedJsonReads
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummary
 
@@ -35,6 +34,6 @@ case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             lossClaimsDetail: Option[LossClaimsDetail],
                             bsas: Option[BusinessSourceAdjustableSummary])
 
-object UkPropertyNonFhl extends NestedJsonReads {
+object UkPropertyNonFhl {
   implicit val format: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
 }

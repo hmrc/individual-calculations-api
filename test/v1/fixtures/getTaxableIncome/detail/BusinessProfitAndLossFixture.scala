@@ -21,6 +21,8 @@ import v1.models.response.getTaxableIncome.detail.BusinessProfitAndLoss
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.SelfEmploymentFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixture._
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhlFixture._
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.ForeignPropertyFixture._
 
 object BusinessProfitAndLossFixture {
 
@@ -28,7 +30,9 @@ object BusinessProfitAndLossFixture {
     BusinessProfitAndLoss(
       Some(Seq(selfEmploymentModel)),
       Some(ukPropertyFhlModel),
-      Some(ukPropertyNonFhlModel)
+      Some(ukPropertyNonFhlModel),
+      Some(eeaPropertyFhlModel),
+      Some(foreignPropertyModel)
     )
 
   val businessProfitAndLossJson: JsValue = Json.parse(
@@ -36,7 +40,9 @@ object BusinessProfitAndLossFixture {
       |{
       |   "selfEmployments" : [$selfEmploymentJson],
       |   "ukPropertyFhl" : $ukPropertyFhlJson,
-      |   "ukPropertyNonFhl": $ukPropertyNonFhlJson
+      |   "ukPropertyNonFhl": $ukPropertyNonFhlJson,
+      |   "eeaPropertyFhl": $eeaPropertyFhlJson,
+      |   "foreignProperty": $foreignPropertyJson
       |}
     """.stripMargin
   )

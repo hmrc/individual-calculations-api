@@ -29,8 +29,8 @@ object SavingsFixture {
 
   val savingsModel: Savings =
     Savings(
-      savingsAccountId = incomeSourceId,
-      savingsAccountName = incomeSourceName,
+      savingsAccountId = Some(incomeSourceId),
+      savingsAccountName = Some(incomeSourceName),
       grossIncome = grossIncome,
       netIncome = netIncome,
       taxDeducted = taxDeducted

@@ -17,7 +17,6 @@
 package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
-import utils.NestedJsonReads
 
 case class PayPensionsProfit(incomeReceived: BigInt,
                              taxableIncome: BigInt,
@@ -25,8 +24,16 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalPropertyProfit: Option[BigInt],
                              totalFHLPropertyProfit: Option[BigInt],
                              totalUKOtherPropertyProfit: Option[BigInt],
+                             totalForeignPropertyProfit: Option[BigInt],
+                             totalEeaFhlProfit: Option[BigInt],
+                             totalOccupationalPensionIncome: Option[BigDecimal],
+                             totalStateBenefitsIncome: Option[BigDecimal],
+                             totalBenefitsInKind: Option[BigDecimal],
+                             totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
+                             totalEmploymentExpenses: Option[BigDecimal],
+                             totalEmploymentIncome: Option[BigInt],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
-object PayPensionsProfit extends NestedJsonReads{
+object PayPensionsProfit {
   implicit val format: OFormat[PayPensionsProfit] = Json.format[PayPensionsProfit]
 }

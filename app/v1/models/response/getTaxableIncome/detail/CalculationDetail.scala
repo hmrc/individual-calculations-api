@@ -20,7 +20,9 @@ import play.api.libs.json._
 
 case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit],
                              savingsAndGains: Option[SavingsAndGains],
-                             dividends: Option[Dividends])
+                             dividends: Option[Dividends],
+                             lumpSums: Option[LumpSums],
+                             gainsOnLifePolicies: Option[GainsOnLifePolicies])
 
 object CalculationDetail {
   implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]

@@ -34,7 +34,7 @@ object UkPropertyNonFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = Some(2000)
   val taxableProfit: Option[BigInt] = Some(2000)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2000)
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true)
+  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
 
   val ukPropertyNonFhlModel: UkPropertyNonFhl =
     UkPropertyNonFhl(

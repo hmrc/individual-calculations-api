@@ -27,7 +27,9 @@ class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
     optionalProperties = Seq(
       "selfEmployments",
       "ukPropertyFhl",
-      "ukPropertyNonFhl"
+      "ukPropertyNonFhl",
+      "eeaPropertyFhlModel",
+      "foreignPropertyModel"
     )
   )
 }
