@@ -24,6 +24,6 @@ class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidat
 
   testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
     mandatoryProperties = Seq("bsasId", "applied"),
-    optionalProperties = Seq()
+    optionalProperties = Seq("links")
   )
 }
