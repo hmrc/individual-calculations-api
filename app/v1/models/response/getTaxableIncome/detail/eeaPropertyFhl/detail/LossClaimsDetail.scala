@@ -17,12 +17,11 @@
 package v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail
 
 import play.api.libs.json._
-import utils.NestedJsonReads
 
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]])
 
-object LossClaimsDetail extends NestedJsonReads {
+object LossClaimsDetail {
   implicit val format: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
 }

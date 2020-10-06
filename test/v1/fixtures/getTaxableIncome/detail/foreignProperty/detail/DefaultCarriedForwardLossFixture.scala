@@ -21,7 +21,6 @@ import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.Default
 
 object DefaultCarriedForwardLossFixture {
 
-  val incomeSourceId: String = "AAIS12345678904"
   val taxYearLossIncurred: String = "2044-45"
   val currentLossValue: BigInt = 49177
 

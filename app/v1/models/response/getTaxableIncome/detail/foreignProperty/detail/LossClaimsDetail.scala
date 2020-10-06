@@ -17,13 +17,12 @@
 package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
 import play.api.libs.json._
-import utils.NestedJsonReads
 
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimsApplied]],
                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
                             claimsNotApplied: Option[Seq[ClaimsNotApplied]])
 
-object LossClaimsDetail extends NestedJsonReads {
+object LossClaimsDetail {
   implicit val format: OFormat[LossClaimsDetail] = Json.format[LossClaimsDetail]
 }
