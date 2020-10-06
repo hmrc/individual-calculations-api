@@ -19,6 +19,8 @@ package v1.models.response.getIncomeTaxAndNics.detail
 import play.api.libs.json.{Json, OFormat}
 
 case class CalculationDetail(incomeTax: IncomeTaxDetail,
+                             studentLoans: Option[Seq[StudentLoans]],
+                             pensionSavingsTaxCharges: Option[PensionSavingsTaxCharges],
                              nics: Option[NicDetail],
                              taxDeductedAtSource: Option[TaxDeductedAtSource])
 

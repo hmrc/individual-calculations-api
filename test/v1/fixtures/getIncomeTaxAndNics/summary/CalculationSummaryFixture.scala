@@ -23,15 +23,21 @@ import v1.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 
 object CalculationSummaryFixture {
 
-  val totalIncomeTaxNicsCharged: Option[BigDecimal] = Some(300.25)
-  val totalTaxDeducted: Option[BigDecimal] = Some(400.25)
-  val totalIncomeTaxAndNicsDue: BigDecimal = 500.25
+  val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(100.25)
+  val totalAnnualPaymentsTaxCharged: Option[BigDecimal] = Some(200.25)
+  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(300.25)
+  val totalIncomeTaxNicsCharged: Option[BigDecimal] = Some(400.25)
+  val totalTaxDeducted: Option[BigDecimal] = Some(500.25)
+  val totalIncomeTaxAndNicsDue: BigDecimal = 600.25
   val taxRegime: String = "UK"
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
       incomeTax = incomeTaxSummaryModel,
       nics = Some(nicSummaryModel),
+      totalStudentLoansRepaymentAmount = totalStudentLoansRepaymentAmount,
+      totalAnnualPaymentsTaxCharged = totalAnnualPaymentsTaxCharged,
+      totalRoyaltyPaymentsTaxCharged = totalRoyaltyPaymentsTaxCharged,
       totalIncomeTaxNicsCharged = totalIncomeTaxNicsCharged,
       totalTaxDeducted = totalTaxDeducted,
       totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
@@ -43,6 +49,9 @@ object CalculationSummaryFixture {
        |{
        |   "incomeTax" : $incomeTaxSummaryJson,
        |   "nics" : $nicSummaryJson,
+       |   "totalStudentLoansRepaymentAmount" : ${totalStudentLoansRepaymentAmount.get},
+       |   "totalAnnualPaymentsTaxCharged" : ${totalAnnualPaymentsTaxCharged.get},
+       |   "totalRoyaltyPaymentsTaxCharged" : ${totalRoyaltyPaymentsTaxCharged.get},
        |   "totalIncomeTaxNicsCharged" : ${totalIncomeTaxNicsCharged.get},
        |   "totalTaxDeducted" : ${totalTaxDeducted.get},
        |   "totalIncomeTaxAndNicsDue" : $totalIncomeTaxAndNicsDue,

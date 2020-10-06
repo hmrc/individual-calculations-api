@@ -18,15 +18,15 @@ package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
-                               savings: Option[BigInt],
-                               cis: Option[BigDecimal],
-                               securities: Option[BigDecimal],
-                               voidedIsa: Option[BigDecimal],
-                               payeEmployments: Option[BigDecimal],
-                               occupationalPensions: Option[BigDecimal],
-                               stateBenefits: Option[BigDecimal])
+case class StudentLoans(planType: String,
+                        studentLoanTotalIncomeAmount: BigDecimal,
+                        studentLoanChargeableIncomeAmount: BigDecimal,
+                        studentLoanRepaymentAmount: BigDecimal,
+                        studentLoanDeductionsFromEmployment: Option[BigDecimal],
+                        studentLoanRepaymentAmountNetOfDeductions: BigDecimal,
+                        studentLoanApportionedIncomeThreshold: BigInt,
+                        studentLoanRate: BigDecimal)
 
-object TaxDeductedAtSource {
-  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
+object StudentLoans {
+  implicit val format: OFormat[StudentLoans] = Json.format[StudentLoans]
 }

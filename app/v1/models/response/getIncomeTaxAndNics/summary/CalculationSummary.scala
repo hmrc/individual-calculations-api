@@ -20,6 +20,9 @@ import play.api.libs.json.{Json, OFormat}
 
 case class CalculationSummary(incomeTax: IncomeTaxSummary,
                               nics: Option[NicSummary],
+                              totalStudentLoansRepaymentAmount: Option[BigDecimal],
+                              totalAnnualPaymentsTaxCharged: Option[BigDecimal],
+                              totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
                               totalIncomeTaxNicsCharged: Option[BigDecimal],
                               totalTaxDeducted: Option[BigDecimal],
                               totalIncomeTaxAndNicsDue: BigDecimal,

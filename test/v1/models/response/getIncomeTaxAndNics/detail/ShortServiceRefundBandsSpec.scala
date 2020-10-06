@@ -17,20 +17,20 @@
 package v1.models.response.getIncomeTaxAndNics.detail
 
 import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.ShortServiceRefundBandsFixture._
 import v1.models.utils.JsonErrorValidators
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+class ShortServiceRefundBandsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
+  testJsonProperties[ShortServiceRefundBands](shortServiceRefundBandsJson)(
     mandatoryProperties = Seq(
-      "incomeTax"
+      "name",
+      "rate",
+      "bandLimit",
+      "apportionedBandLimit",
+      "shortServiceRefundAmount",
+      "shortServiceRefundCharge"
     ),
-    optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource"
-    )
+    optionalProperties = Seq()
   )
 }

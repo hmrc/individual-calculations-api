@@ -18,15 +18,12 @@ package v1.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
-                               savings: Option[BigInt],
-                               cis: Option[BigDecimal],
-                               securities: Option[BigDecimal],
-                               voidedIsa: Option[BigDecimal],
-                               payeEmployments: Option[BigDecimal],
-                               occupationalPensions: Option[BigDecimal],
-                               stateBenefits: Option[BigDecimal])
+case class PensionContributionsInExcessOfTheAnnualAllowance(totalContributions: BigDecimal,
+                                                            totalPensionCharge: BigDecimal,
+                                                            annualAllowanceTaxPaid: Option[BigDecimal],
+                                                            totalPensionChargeDue: BigDecimal,
+                                                            pensionBands: Option[Seq[PensionBands]])
 
-object TaxDeductedAtSource {
-  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
+object PensionContributionsInExcessOfTheAnnualAllowance {
+  implicit val format: OFormat[PensionContributionsInExcessOfTheAnnualAllowance] = Json.format[PensionContributionsInExcessOfTheAnnualAllowance]
 }

@@ -27,7 +27,9 @@ object IncomeTaxDetailFixture {
     IncomeTaxDetail(
       payPensionsProfit = Some(incomeTypeBreakdownModel(100)),
       savingsAndGains = Some(incomeTypeBreakdownModel(200)),
-      dividends = Some(incomeTypeBreakdownModel(300)),
+      lumpSums = Some(incomeTypeBreakdownModel(300)),
+      dividends = Some(incomeTypeBreakdownModel(400)),
+      gainsOnLifePolicies = Some(incomeTypeBreakdownModel(500)),
       giftAid = Some(giftAidModel)
     )
 
@@ -36,7 +38,9 @@ object IncomeTaxDetailFixture {
        |{
        |   "payPensionsProfit" : ${incomeTypeBreakdownJson(100)},
        |   "savingsAndGains" : ${incomeTypeBreakdownJson(200)},
-       |   "dividends" : ${incomeTypeBreakdownJson(300)},
+       |   "lumpSums" : ${incomeTypeBreakdownJson(300)},
+       |   "dividends" : ${incomeTypeBreakdownJson(400)},
+       |   "gainsOnLifePolicies" : ${incomeTypeBreakdownJson(500)},
        |   "giftAid" : $giftAidJson
        |}
     """.stripMargin

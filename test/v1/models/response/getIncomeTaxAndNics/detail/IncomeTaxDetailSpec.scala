@@ -27,7 +27,9 @@ class IncomeTaxDetailSpec extends UnitSpec with JsonErrorValidators {
     optionalProperties = Seq(
       "payPensionsProfit",
       "savingsAndGains",
+      "lumpSums",
       "dividends",
+      "gainsOnLifePolicies",
       "giftAid"
     )
   )

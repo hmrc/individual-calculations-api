@@ -27,7 +27,12 @@ class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
     optionalProperties = Seq(
       "ukLandAndProperty",
       "savings",
-      "cis"
+      "cis",
+      "securities",
+      "voidedIsa",
+      "payeEmployments",
+      "occupationalPensions",
+      "stateBenefits"
     )
   )
 }

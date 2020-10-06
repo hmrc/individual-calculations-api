@@ -17,20 +17,21 @@
 package v1.models.response.getIncomeTaxAndNics.detail
 
 import support.UnitSpec
-import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
+import v1.fixtures.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesDetailFixture._
 import v1.models.utils.JsonErrorValidators
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+class PensionSavingsTaxChargesDetailSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
-    mandatoryProperties = Seq(
-      "incomeTax"
-    ),
+  testJsonProperties[PensionSavingsTaxChargesDetail](pensionSavingsTaxChargesDetailJson)(
+    mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource"
+      "lumpSumBenefitTakenInExcessOfLifetimeAllowance",
+      "benefitInExcessOfLifetimeAllowance",
+      "pensionSchemeUnauthorisedPaymentsSurcharge",
+      "pensionSchemeUnauthorisedPaymentsNonSurcharge",
+      "pensionSchemeOverseasTransfers",
+      "pensionContributionsInExcessOfTheAnnualAllowance",
+      "overseasPensionContributions"
     )
   )
 }
