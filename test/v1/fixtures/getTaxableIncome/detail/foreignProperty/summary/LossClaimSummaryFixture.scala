@@ -21,26 +21,29 @@ import v1.models.response.getTaxableIncome.detail.foreignProperty.summary.LossCl
 
 object LossClaimSummaryFixture {
 
-  val lossForCSFHL: Option[BigInt] = Some(1000)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
   val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
   val broughtForwardIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
   val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1000)
+  val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
     LossClaimsSummary(
-      lossForCSFHL = lossForCSFHL,
       totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
       broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
-      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward
+      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
+      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+      broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed
     )
 
   val lossClaimSummaryJson: JsValue = Json.parse(
     s"""
        |{
-       |   "lossForCSFHL": ${lossForCSFHL.get},
        |   "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
        |   "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
-       |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get}
+       |   "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
+       |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
+       |   "broughtForwardCarrySidewaysIncomeTaxLossesUsed": ${broughtForwardCarrySidewaysIncomeTaxLossesUsed.get}
        |}
     """.stripMargin
   )

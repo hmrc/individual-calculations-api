@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
 import v1.models.utils.JsonErrorValidators
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.LossBroughtForwardFixture._
 
-class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
+class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[BusinessProfitAndLoss](businessProfitAndLossJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "selfEmployments",
-      "ukPropertyFhl",
-      "ukPropertyNonFhl",
-      "eeaPropertyFhlModel",
-      "foreignPropertyModel"
-    )
+  testJsonProperties[LossBroughtForward](lossBroughtForwardJson)(
+    mandatoryProperties = Seq(
+      "taxYearLossIncurred",
+      "currentLossValue",
+      "mtdLoss"
+    ),
+    optionalProperties = Seq()
   )
 }

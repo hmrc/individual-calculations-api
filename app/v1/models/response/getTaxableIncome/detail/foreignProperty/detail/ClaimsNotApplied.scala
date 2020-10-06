@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
-import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
-import v1.models.utils.JsonErrorValidators
+import play.api.libs.json._
+import v1.models.response.common.TypeOfClaim
 
-class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
+case class ClaimsNotApplied(claimId: String,
+                            taxYearClaimMade: String,
+                            claimType: TypeOfClaim)
 
-  testJsonProperties[BusinessProfitAndLoss](businessProfitAndLossJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "selfEmployments",
-      "ukPropertyFhl",
-      "ukPropertyNonFhl",
-      "eeaPropertyFhlModel",
-      "foreignPropertyModel"
-    )
-  )
+object ClaimsNotApplied {
+  implicit val format: OFormat[ClaimsNotApplied] = Json.format[ClaimsNotApplied]
 }

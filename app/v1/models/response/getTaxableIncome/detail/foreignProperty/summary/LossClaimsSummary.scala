@@ -18,10 +18,11 @@ package v1.models.response.getTaxableIncome.detail.foreignProperty.summary
 
 import play.api.libs.json._
 
-case class LossClaimsSummary(lossForCSFHL: Option[BigInt],
-                             totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
-                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
+                             carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt],
+                             broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt])
 
 object LossClaimsSummary {
   implicit val format: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]

@@ -18,11 +18,12 @@ package v1.fixtures.getTaxableIncome.detail.foreignProperty.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.TypeOfClaim
-import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.ResultOfClaimApplied
+import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.ResultOfClaimsApplied
 
 object ResultOfClaimAppliedFixture {
 
   val claimId: Option[String] = Some("CCIS12345678901")
+  val originatingClaimId: Option[String] = Some("CCIS12345678901")
   val taxYearClaimMade: String = "2019-20"
   val claimType: TypeOfClaim = TypeOfClaim.`carry-forward`
   val mtdLoss: Boolean = true
@@ -30,9 +31,10 @@ object ResultOfClaimAppliedFixture {
   val lossAmountUsed: BigInt = 1000
   val remainingLossValue: BigInt = 4000
 
-  val resultOfClaimAppliedModel: ResultOfClaimApplied =
-    ResultOfClaimApplied(
+  val resultOfClaimAppliedModel: ResultOfClaimsApplied =
+    ResultOfClaimsApplied(
       claimId = claimId,
+      originatingClaimId = originatingClaimId,
       taxYearClaimMade = taxYearClaimMade,
       claimType = claimType,
       mtdLoss = mtdLoss,
@@ -45,6 +47,7 @@ object ResultOfClaimAppliedFixture {
     f"""
       |{
       |  "claimId": "${claimId.get}",
+      |  "originatingClaimId": "${originatingClaimId.get}",
       |   "taxYearLossIncurred": "$taxYearLossIncurred",
       |   "taxYearClaimMade": "$taxYearClaimMade",
       |   "claimType": ${Json.toJson(claimType)},

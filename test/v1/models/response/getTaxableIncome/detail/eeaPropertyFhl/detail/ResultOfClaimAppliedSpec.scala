@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package v1.models.response.getTaxableIncome.detail
+package v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail
 
 import support.UnitSpec
-import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
 import v1.models.utils.JsonErrorValidators
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.ResultOfClaimAppliedFixture._
 
-class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
+class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[BusinessProfitAndLoss](businessProfitAndLossJson)(
-    mandatoryProperties = Seq(),
+  testJsonProperties[ResultOfClaimApplied](resultOfClaimAppliedJson)(
+    mandatoryProperties = Seq(
+      "taxYearClaimMade",
+      "claimType",
+      "mtdLoss",
+      "taxYearLossIncurred",
+      "lossAmountUsed",
+      "remainingLossValue"
+    ),
     optionalProperties = Seq(
-      "selfEmployments",
-      "ukPropertyFhl",
-      "ukPropertyNonFhl",
-      "eeaPropertyFhlModel",
-      "foreignPropertyModel"
+      "claimId"
     )
   )
 }

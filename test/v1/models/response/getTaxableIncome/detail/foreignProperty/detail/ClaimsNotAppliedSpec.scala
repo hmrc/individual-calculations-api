@@ -16,17 +16,18 @@
 
 package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
-import play.api.libs.json._
-import v1.models.response.common.TypeOfClaim
+import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.ClaimsNotAppliedFixture._
+import v1.models.utils.JsonErrorValidators
 
-case class ResultOfClaimApplied(claimId: Option[String],
-                                taxYearClaimMade: String,
-                                claimType: TypeOfClaim,
-                                mtdLoss: Boolean,
-                                taxYearLossIncurred: String,
-                                lossAmountUsed: BigInt,
-                                remainingLossValue: BigInt)
+class ClaimsNotAppliedSpec extends UnitSpec with JsonErrorValidators {
 
-object ResultOfClaimApplied {
-  implicit val format: OFormat[ResultOfClaimApplied] = Json.format[ResultOfClaimApplied]
+  testJsonProperties[ClaimsNotApplied](claimsNotAppliedJson)(
+    mandatoryProperties = Seq(
+      "taxYearClaimMade",
+      "claimType",
+      "claimId"
+    ),
+    optionalProperties = Seq()
+  )
 }
