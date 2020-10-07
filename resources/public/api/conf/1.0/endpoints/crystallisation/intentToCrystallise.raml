@@ -1,0 +1,30 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatTaxYear
+  - errors.ruleTaxYearNotSupported
+  - errors.ruleTaxYearRangeInvalid
+  - errors.clientOrAgentNotAuthorised
+  - errors.ruleNoSubmissionsExists
+  - errors.ruleFinalDeclarationReceived
+  - errors.notFoundCrystallisation
+displayName: Intent to Crystallise
+description: This endpoint allows the developer to trigger a final calculation; to be used when you Crystallise.
+(annotations.sandboxData): !include ../../scenarios/crystallisation/intentToCrystallise.md
+(annotations.scope): "write:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+body:
+ application/json:
+  example: "N/A"
+responses:
+ 200:
+   body:
+     application/json:
+       type: !include ../../schemas/crystallisation/intentToCrystallise_response.json
+       example: !include ../../examples/crystallisation/intentToCrystallise_response.json
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.
