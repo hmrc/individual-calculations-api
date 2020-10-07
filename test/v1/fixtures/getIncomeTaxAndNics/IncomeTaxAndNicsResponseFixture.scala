@@ -40,7 +40,8 @@ object IncomeTaxAndNicsResponseFixture {
       |  },
       |  "details": {
       |    "foo": "bar"
-      |  }
+      |  },
+      |  "id":"f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       |}
       |""".stripMargin
   )

@@ -22,16 +22,19 @@ import v1.fixtures.hateoas.HateoasWrapperFixture._
 
 class HateoasWrapperSpec extends UnitSpec {
 
-  "HateoasWrapper" when {
-    "written to JSON with links" should {
-      "produce the expected JsObject" in {
+  "HateoasWrapper" should {
+    "produce the expected JsObject" when {
+      "passed a model with links" in {
         Json.toJson(hateoasWrapperModelWithLinks) shouldBe hateoasWrapperJsonWithLinks
       }
-    }
-
-    "written to JSON without links" should {
-      "produce the expected JsObject" in {
+      "passed a model without links" in {
         Json.toJson(hateoasWrapperModelWithoutLinks) shouldBe hateoasWrapperJsonWithoutLinks
+      }
+      "passed a JsValue with links" in {
+        Json.toJson(hateoasWrapperModelWithLinks.copy(payload = Json.toJson(exampleModel))) shouldBe hateoasWrapperJsonWithLinks
+      }
+      "passed a JsValue without links" in {
+        Json.toJson(hateoasWrapperModelWithoutLinks.copy(payload = Json.toJson(exampleModel))) shouldBe hateoasWrapperJsonWithoutLinks
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package v1.fixtures.getMetadata
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 
 object MetadataResponseFixture {
 
@@ -37,7 +37,16 @@ object MetadataResponseFixture {
     }
   )
 
+  def metadataJsonWithoutErrorCount(crystallised: Boolean = false): JsValue = Json.obj(
+    "id" -> "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+    "crystallised" -> crystallised,
+    "calculationType" -> {
+      if(crystallised) "crystallisation" else "inYear"
+    }
+  )
+
   val metadataJsonFromBackend: JsValue = backendJson(metadataJson())
+  val metadataJsonFromBackendWithoutErrorCount: JsValue = backendJson(metadataJson().as[JsObject] - "calculationErrorCount")
   val metadataJsonFromBackendWithErrors: JsValue = backendJson(metadataJson(1))
   val metadataJsonFromBackendCrystallised: JsValue = backendJson(metadataJson(crystallised = true))
 }

@@ -121,6 +121,33 @@ class GetMetadataControllerSpec
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
+      "happy path with no error count" in new Test {
+        MockGetCalculationParser
+          .parse(rawData)
+          .returns(Right(requestData))
+
+        MockStandardService
+          .doService(RequestDefn.GraphQl(uri, query), OK)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackendWithoutErrorCount))))
+
+        MockHateoasFactory
+          .wrap(MetadataResponseFixture.metadataJsonWithoutErrorCount(), MetadataHateoasData(nino, calcId, None))
+          .returns(HateoasWrapper(MetadataResponseFixture.metadataJsonWithoutErrorCount(), Seq(testHateoasLink)))
+
+        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
+
+        val responseBody = MetadataResponseFixture.metadataJsonWithoutErrorCount().as[JsObject].deepMerge(links)
+
+        status(result) shouldBe OK
+        contentAsJson(result) shouldBe responseBody
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val detail = GenericAuditDetail(
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
+        MockedAuditService.verifyAuditEvent(event).once
+      }
     }
 
     "return NOT_FOUND with the correct error message" when {

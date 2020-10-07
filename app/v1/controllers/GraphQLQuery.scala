@@ -87,6 +87,10 @@ trait GraphQLQuery {
       |      nic2
       |      nic4
       |      totalNicAmount
+      |      totalStudentLoansRepaymentAmount
+      |      totalAnnualPaymentsTaxCharged
+      |      totalRoyaltyPaymentsTaxCharged
+      |      totalTaxDeducted
       |      incomeTaxNicAmount
       |    }
       |    detail {

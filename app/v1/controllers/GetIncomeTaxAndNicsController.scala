@@ -17,7 +17,7 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{JsDefined, JsString, JsValue}
+import play.api.libs.json.{JsDefined, JsObject, JsString, JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -81,7 +81,8 @@ class GetIncomeTaxAndNicsController @Inject()(
           rawResponse \ "data" match {
             case JsDefined(value) => value \ "metadata" \ "id" match {
               case JsDefined(id: JsString) =>
-                hateoasFactory.wrap((value \ "incomeTaxAndNicsCalculated").get, IncomeTaxAndNicsHateoasData(req.nino.nino, id.value))
+                val json = (value \ "incomeTaxAndNicsCalculated").get.as[JsObject].deepMerge(Json.obj("id" -> id))
+                hateoasFactory.wrap(json, IncomeTaxAndNicsHateoasData(req.nino.nino, id.value))
             }
           }
 
