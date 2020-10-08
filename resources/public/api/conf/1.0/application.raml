@@ -32,30 +32,41 @@ documentation:
 '/individuals/calculations':
   /{nino}:
     uriParameters:
-      nino:
-        description: National Insurance number, in the format AA999999A.
-        type: string
-        example: TC663795B
+      nino: !include pathParameters/nino.raml
     /self-assessment:
       (annotations.group):
         name: Self Assessment
         description: !include docs/group_selfAssessment.md
-      get: !include selfAssessment_list.raml
-      post: !include selfAssessment_trigger.raml
+      get: !include endpoints/selfAssessment/list.raml
+      post: !include endpoints/selfAssessment/trigger.raml
       /{calculationId}:
         uriParameters:
           calculationId:
             description: "The unique identifier of the calculation. Must conform the regular expression: `^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`"
             type: string
             example: "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-        get: !include selfAssessment_retrieveMetadata.raml
+        get: !include endpoints/selfAssessment/retrieveMetadata.raml
         /income-tax-nics-calculated:
-          get: !include selfAssessment_retrieveIncomeTaxAndNics.raml
+          get: !include endpoints/selfAssessment/retrieveIncomeTaxAndNics.raml
         /taxable-income:
-          get: !include selfAssessment_retrieveTaxableIncome.raml
+          get: !include endpoints/selfAssessment/retrieveTaxableIncome.raml
         /allowances-deductions-reliefs:
-          get: !include selfAssessment_retrieveAllowancesDeductionsReliefs.raml
+          get: !include endpoints/selfAssessment/retrieveAllowancesDeductionsReliefs.raml
         /end-of-year-estimate:
-          get: !include selfAssessment_retrieveEndOfYearEstimate.raml
+          get: !include endpoints/selfAssessment/retrieveEndOfYearEstimate.raml
         /messages:
-          get: !include selfAssessment_retrieveMessages.raml
+          get: !include endpoints/selfAssessment/retrieveMessages.raml
+  /crystallisation:
+    (annotations.group):
+      name: Crystallisation
+      description: !include docs/group_crystallisation.md
+    /{nino}:
+      uriParameters:
+        nino: !include pathParameters/nino.raml
+      /{taxYear}:
+        uriParameters:
+          taxYear: !include pathParameters/taxYearMinimum2018.raml
+        /intent-to-crystallise:
+          post: !include endpoints/crystallisation/intentToCrystallise.raml
+        /crystallise:
+          post: !include endpoints/crystallisation/crystallise.raml

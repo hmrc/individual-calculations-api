@@ -1,0 +1,15 @@
+{
+  "calculationId": "041f7e4d-87d9-4d4a-a296-3cfbdf92f7e2",
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/041f7e4d-87d9-4d4a-a296-3cfbdf92f7e2",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/crystallisation/RW399019B/2019-20",
+      "rel": "crystallise",
+      "method": "POST"
+    }
+  ]
+}
