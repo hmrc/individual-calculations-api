@@ -16,15 +16,20 @@
 
 package v1.models.domain
 
-import support.UnitSpec
+/**
+ * Represents a tax year for DES
+ *
+ * @param value the tax year string (where 2018 represents 2017-18)
+ */
+case class DesTaxYear(value: String) extends AnyVal {
+  override def toString: String = value
+}
 
-class TaxYearSpec extends UnitSpec {
+object DesTaxYear {
 
-  "TaxYear" when {
-    "toYearEnding" should {
-      "convert a tax year from MTD format to DES format" in {
-        TaxYear.toYearEnding(taxYear = "2018-19") shouldBe "2019"
-      }
-    }
-  }
+  /**
+   * @param taxYear tax year in MTD format (e.g. 2017-18)
+   */
+  def fromMtd(taxYear: String): DesTaxYear =
+    DesTaxYear(taxYear.take(2) + taxYear.drop(5))
 }
