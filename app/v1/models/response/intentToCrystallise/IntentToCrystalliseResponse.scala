@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.request.IntentToCrystallise
+package v1.models.response.intentToCrystallise
 
-case class IntentToCrystalliseRawData(nino: String, taxYear: String)
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+
+case class IntentToCrystalliseResponse(calculationId: String)
+
+object IntentToCrystalliseResponse {
+  implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
+  implicit val writes: OWrites[IntentToCrystalliseResponse] = Json.writes[IntentToCrystalliseResponse]
+}

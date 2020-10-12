@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.request.IntentToCrystallise
+package v1.models.request.intentToCrystallise
 
 import uk.gov.hmrc.domain.Nino
 import v1.models.domain.DesTaxYear
