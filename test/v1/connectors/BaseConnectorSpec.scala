@@ -16,7 +16,9 @@
 
 package v1.connectors
 
+import config.AppConfig
 import uk.gov.hmrc.http.HttpReads
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.outcomes.ResponseWrapper
 
@@ -39,8 +41,8 @@ class BaseConnectorSpec extends ConnectorSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector: BaseConnector = new BaseConnector {
-      val http = mockHttpClient
-      val appConfig = mockAppConfig
+      val http: HttpClient = mockHttpClient
+      val appConfig: AppConfig = mockAppConfig
     }
     MockedAppConfig.backendBaseUrl returns baseUrl
   }

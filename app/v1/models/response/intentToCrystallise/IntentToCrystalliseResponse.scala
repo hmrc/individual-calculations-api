@@ -17,8 +17,9 @@
 package v1.models.response.intentToCrystallise
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v1.models.response.common.DesResponse
 
-case class IntentToCrystalliseResponse(calculationId: String)
+case class IntentToCrystalliseResponse(calculationId: String) extends DesResponse
 
 object IntentToCrystalliseResponse {
   implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)

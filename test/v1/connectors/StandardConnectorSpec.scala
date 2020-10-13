@@ -38,12 +38,12 @@ class StandardConnectorSpec extends ConnectorSpec {
     implicit val reads: Reads[Response] = Json.reads[Response]
   }
 
-  val queryParams = Seq("n" -> "v")
+  val queryParams: Seq[(String, String)] = Seq("n" -> "v")
   val requestDefn = RequestDefn.Get("/some/uri", queryParams)
 
   implicit val successCode: SuccessCode = SuccessCode(200)
 
-  val test = Seq("test1", "test2")
+  val test: Seq[String] = Seq("test1", "test2")
 
   "StandardConnector" should {
 

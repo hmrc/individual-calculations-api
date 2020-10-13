@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-package v1.connectors
+package v1.models.response.common
 
-import play.api.http.{ HeaderNames, MimeTypes, Status }
-import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
-import uk.gov.hmrc.http.HeaderCarrier
-
-import scala.concurrent.ExecutionContext
-
-trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
-
-  lazy val baseUrl  = "test-BaseUrl"
-  val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
-
-  implicit val hc: HeaderCarrier    = HeaderCarrier().withExtraHeaders("Authorization" -> "Bearer user-token")
-  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
-}
+trait DesResponse

@@ -23,7 +23,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.http.HttpResponse
 import v1.models.errors._
 
-import scala.util.{ Success, Try }
+import scala.util.{Success, Try}
 
 trait HttpParser {
 
@@ -49,11 +49,13 @@ trait HttpParser {
 
   def retrieveCorrelationId(response: HttpResponse): String = response.header("X-CorrelationId").getOrElse("")
 
+  def retrieveDesCorrelationId(response: HttpResponse): String = response.header("CorrelationId").getOrElse("")
+
   def parseErrors(response: HttpResponse): BackendError = {
 
     implicit val reads: Reads[BackendError] =
       (
-        (__).read[BackendErrorCode] and
+        __.read[BackendErrorCode] and
         (__ \ "errors").readNullable[List[BackendErrorCode]]
       ) { (singleError, errors) =>
         BackendErrors(response.status, singleError :: errors.getOrElse(Nil))
@@ -67,4 +69,22 @@ trait HttpParser {
       }
   }
 
+  private val multipleErrorReads: Reads[List[BackendErrorCode]] = (__ \ "failures").read[List[BackendErrorCode]]
+
+  private val bvrErrorReads: Reads[Seq[BackendErrorCode]] = {
+    implicit val errorIdReads: Reads[BackendErrorCode] = (__ \ "id").read[String].map(BackendErrorCode(_))
+    (__ \ "bvrfailureResponseElement" \ "validationRuleFailures").read[Seq[BackendErrorCode]]
+  }
+
+  def parseDesErrors(response: HttpResponse): BackendError = {
+    val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(response.status, List(err)))
+    lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(response.status, errs))
+    lazy val bvrErrors      = response.validateJson(bvrErrorReads).map(errs => OutboundError(response.status, BVRError, Some(errs.map(_.fromDes))))
+    lazy val unableToParseJsonError = {
+      Logger.warn(s"unable to parse errors from response: ${response.body}")
+      OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)
+    }
+
+    singleError orElse multipleErrors orElse bvrErrors getOrElse unableToParseJsonError
+  }
 }
