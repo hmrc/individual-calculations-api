@@ -26,7 +26,7 @@ import v1.models.outcomes.ResponseWrapper
 class BackendResponseMappingSupportSpec extends UnitSpec {
 
   implicit val logContext: EndpointLogContext = EndpointLogContext("ctrl", "ep")
-  val mapping                                 = new BackendResponseMappingSupport with Logging {}
+  val mapping: BackendResponseMappingSupport = new BackendResponseMappingSupport with Logging {}
 
   val correlationId = "someCorrelationId"
 
@@ -58,7 +58,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "use the mapping and wrap" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("ERR1")))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(mtdStatus, Error1))
+            ErrorWrapper(Some(correlationId), Error1, None, mtdStatus)
         }
       }
 
@@ -66,7 +66,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "pass it through" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("PASS_THROUGH")))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorPassthrough))
+            ErrorWrapper(Some(correlationId), ErrorPassthrough, None, backendStatus)
         }
       }
 
@@ -74,7 +74,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "default to DownstreamError and wrap" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("UNKNOWN")))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
+            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -84,7 +84,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "use the mapping and wrap with main error type of BadRequest" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(Error1, Error2))))
+            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(Error1, Error2)), BAD_REQUEST)
         }
       }
 
@@ -92,7 +92,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "pass it through (but as bad request)" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("PASS_THROUGH"), BackendErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(ErrorPassthrough, Error2))))
+            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(ErrorPassthrough, Error2)), BAD_REQUEST)
         }
       }
 
@@ -102,7 +102,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
             ResponseWrapper(correlationId,
                             BackendErrors(backendStatus,
                                           List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
+            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
 
@@ -112,7 +112,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
             ResponseWrapper(
               correlationId,
               BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("DS"))))) shouldBe
-            ErrorWrapper(Some(correlationId), MtdErrors(INTERNAL_SERVER_ERROR, DownstreamError))
+            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -120,7 +120,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     "the error code is an OutboundError" must {
       "return the error as is (in an ErrorWrapper) with a 400" in {
         mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain))) shouldBe
-          ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorBvrMain))
+          ErrorWrapper(Some(correlationId), ErrorBvrMain, None, backendStatus)
       }
     }
 
@@ -128,7 +128,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
           ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
-          ErrorWrapper(Some(correlationId), MtdErrors(backendStatus, ErrorBvrMain, Some(Seq(ErrorBvr))))
+          ErrorWrapper(Some(correlationId), ErrorBvrMain, Some(Seq(ErrorBvr)), backendStatus)
       }
     }
   }

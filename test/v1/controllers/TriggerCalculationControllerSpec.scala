@@ -90,7 +90,7 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
-  val error = ErrorWrapper(Some(correlationId), MtdErrors(FORBIDDEN, RuleNoIncomeSubmissionsExistError))
+  val error = ErrorWrapper(Some(correlationId), RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 

@@ -20,7 +20,7 @@ import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.Validator
-import v1.models.errors.{BadRequestError, ErrorWrapper, MtdErrors, NinoFormatError, RuleIncorrectOrEmptyBodyError}
+import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
 import v1.models.request.RawData
 
 class RequestParserSpec extends UnitSpec {
@@ -34,8 +34,8 @@ class RequestParserSpec extends UnitSpec {
 
     val validator: Validator[Raw]
 
-    val parser = new RequestParser[Raw, Request] {
-      val validator = test.validator
+    val parser: RequestParser[Raw, Request] = new RequestParser[Raw, Request] {
+      val validator: Validator[Raw] = test.validator
 
       protected def requestFor(data: Raw) = Request(Nino(data.nino))
     }
@@ -44,9 +44,7 @@ class RequestParserSpec extends UnitSpec {
   "parse" should {
     "return a Request" when {
       "the validator returns no errors" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = Nil
-        }
+        lazy val validator: Validator[Raw] = (_: Raw) => Nil
 
         parser.parseRequest(Raw(nino)) shouldBe Right(Request(Nino(nino)))
       }
@@ -54,22 +52,15 @@ class RequestParserSpec extends UnitSpec {
 
     "return a single error" when {
       "the validator returns a single error" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = List(NinoFormatError)
-        }
-
-        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+        lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError)
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
     "return multiple errors" when {
       "the validator returns multiple errors" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
-        }
-
-        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None,
-          MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError)))))
+        lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError)), BAD_REQUEST))
       }
     }
   }

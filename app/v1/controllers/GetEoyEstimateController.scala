@@ -67,8 +67,8 @@ class GetEoyEstimateController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
-          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(MtdErrors(NOT_FOUND, EndOfYearEstimateNotPresentError))
+          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(ErrorWrapper(Some(responseWrapper.correlationId), EndOfYearEstimateNotPresentError, None, NOT_FOUND))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }

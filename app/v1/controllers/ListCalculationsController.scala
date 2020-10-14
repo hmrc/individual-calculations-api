@@ -85,8 +85,9 @@ class ListCalculationsController @Inject()(
       doHandleRequest(rawData)
     }
 
-  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]) =
+  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]):
+  Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[CalculationListItem]]] =
     responseWrapper.toErrorWhen {
-      case response if response.calculations.isEmpty => MtdErrors(NOT_FOUND, NotFoundError)
+      case response if response.calculations.isEmpty => ErrorWrapper(Some(responseWrapper.correlationId), NotFoundError, None, NOT_FOUND)
     }
 }

@@ -68,7 +68,7 @@ class GetTaxableIncomeController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither[TaxableIncomeResponse] {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }

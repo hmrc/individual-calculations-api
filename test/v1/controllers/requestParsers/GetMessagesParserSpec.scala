@@ -48,7 +48,7 @@ class GetMessagesParserSpec extends UnitSpec {
       val data = GetMessagesRawData(nino, calculationId, Seq("errors"))
       MockValidator.validate(data).returns(List(NinoFormatError))
 
-      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
     }
   }
 
@@ -58,7 +58,7 @@ class GetMessagesParserSpec extends UnitSpec {
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError, TypeFormatError))
 
       parser.parseRequest(data) shouldBe Left(
-        ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError, TypeFormatError)))))
+        ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError, TypeFormatError)), BAD_REQUEST))
 
     }
   }

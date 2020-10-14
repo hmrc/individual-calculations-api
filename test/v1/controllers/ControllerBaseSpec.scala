@@ -55,7 +55,7 @@ class ControllerBaseSpec
     (requestHandling: RequestHandler[BackendResp, APIResp]) => {
 
       val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
-      val requiredError = ErrorWrapper(Some("ignoredCorrelationId"), MtdErrors(status, mtdError))
+      val requiredError = ErrorWrapper(Some("ignoredCorrelationId"), mtdError, None, status)
 
       mapBackendErrors(requestHandling.passThroughErrors, requestHandling.customErrorMapping)(inputResponse) shouldBe
         requiredError

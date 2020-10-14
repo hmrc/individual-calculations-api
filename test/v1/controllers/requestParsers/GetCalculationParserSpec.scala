@@ -47,7 +47,7 @@ class GetCalculationParserSpec extends UnitSpec {
       val data = GetCalculationRawData(nino, calculationId)
       MockValidator.validate(data).returns(List(NinoFormatError))
 
-      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
     }
   }
 
@@ -56,8 +56,7 @@ class GetCalculationParserSpec extends UnitSpec {
       val data = GetCalculationRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError))
 
-      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError,CalculationIdFormatError)))))
-
+      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError,CalculationIdFormatError)), BAD_REQUEST))
     }
   }
 
