@@ -57,7 +57,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
         requestHandler = requestHandlerFor(request, parsedRequest)
-        backendResponse <- EitherT(service.doService(requestHandler))
+        backendResponse <- {EitherT(service.doService(requestHandler))}
         response        <- EitherT.fromEither[Future](requestHandler.successMapping(backendResponse))
       } yield {
         logger.info(
@@ -83,7 +83,6 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
     result.leftMap { errorWrapper =>
       val correlationId = getCorrelationId(errorWrapper)
-      val errorBody     = errorWrapper.errors
       val status        = errorWrapper.statusCode
 
       auditHandler.foreach { auditHandler =>
@@ -94,7 +93,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         doAudit(auditHandler)
       }
 
-      Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
+      Status(status)(Json.toJson(errorWrapper)).withApiHeaders(correlationId)
     }.merge
   }
 }
