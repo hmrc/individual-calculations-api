@@ -20,6 +20,7 @@ import support.UnitSpec
 import v1.models.errors.CalculationIdFormatError
 
 class CalculationIdValidationSpec extends UnitSpec {
+
   "validate" should {
     "return no errors" when{
       "when a valid calculationId is provided" in{

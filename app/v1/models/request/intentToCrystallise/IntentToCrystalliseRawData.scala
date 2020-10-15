@@ -16,4 +16,7 @@
 
 package v1.models.request.intentToCrystallise
 
-case class IntentToCrystalliseRawData(nino: String, taxYear: String)
+import v1.models.request.RawData
+
+case class IntentToCrystalliseRawData(nino: String, taxYear: String) extends RawData
+

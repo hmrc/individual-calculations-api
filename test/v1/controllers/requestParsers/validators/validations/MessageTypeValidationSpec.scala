@@ -18,9 +18,8 @@ package v1.controllers.requestParsers.validators.validations
 
 import support.UnitSpec
 import v1.models.errors.TypeFormatError
-import v1.models.utils.JsonErrorValidators
 
-class MessageTypeValidationSpec extends UnitSpec with JsonErrorValidators {
+class MessageTypeValidationSpec extends UnitSpec {
 
   "validate" should {
     "return no errors" when {

@@ -18,9 +18,8 @@ package v1.controllers.requestParsers.validators.validations
 
 import support.UnitSpec
 import v1.models.errors.NinoFormatError
-import v1.models.utils.JsonErrorValidators
 
-class NinoValidationSpec extends UnitSpec with JsonErrorValidators {
+class NinoValidationSpec extends UnitSpec {
 
   "validate" should {
     "return no errors" when {
