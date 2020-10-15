@@ -16,12 +16,28 @@
 
 package v1.models.response.intentToCrystallise
 
+import config.AppConfig
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.common.DesResponse
 
 case class IntentToCrystalliseResponse(calculationId: String) extends DesResponse
 
-object IntentToCrystalliseResponse {
+object IntentToCrystalliseResponse extends HateoasLinks {
   implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
   implicit val writes: OWrites[IntentToCrystalliseResponse] = Json.writes[IntentToCrystalliseResponse]
+
+  implicit object RetrieveCustomEmploymentLinksFactory extends HateoasLinksFactory[IntentToCrystalliseResponse, IntentToCrystalliseHateaosData] {
+    override def links(appConfig: AppConfig, data: IntentToCrystalliseHateaosData): Seq[Link] = {
+      import data._
+
+      Seq(
+        getMetadata(appConfig, nino, taxYear, isSelf = true),
+        crystallise(appConfig, nino, taxYear)
+      )
+    }
+  }
 }
+
+case class IntentToCrystalliseHateaosData(nino: String, taxYear: String, calculationId: String) extends HateoasData

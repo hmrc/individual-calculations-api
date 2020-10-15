@@ -18,7 +18,6 @@ package v1.connectors
 
 import play.api.http.{ HeaderNames, MimeTypes, Status }
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext

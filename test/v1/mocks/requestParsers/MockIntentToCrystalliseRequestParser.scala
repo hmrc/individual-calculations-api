@@ -26,7 +26,7 @@ trait MockIntentToCrystalliseRequestParser extends MockFactory {
 
   val mockIntentToCrystalliseRequestParser: IntentToCrystalliseRequestParser = mock[IntentToCrystalliseRequestParser]
 
-  object MockListCalculationsParser {
+  object MockIntentToCrystalliseRequestParser {
 
     def parse(data: IntentToCrystalliseRawData): CallHandler[Either[ErrorWrapper, IntentToCrystalliseRequest]] = {
       (mockIntentToCrystalliseRequestParser

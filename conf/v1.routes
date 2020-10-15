@@ -7,3 +7,4 @@ GET       /:nino/self-assessment/:calcId/end-of-year-estimate            v1.cont
 GET       /:nino/self-assessment/:calcId/messages                        v1.controllers.GetMessagesController.getMessages(nino: String, calcId: String)
 
 POST      /:nino/self-assessment                                         v1.controllers.TriggerCalculationController.triggerCalculation(nino: String)
+POST      /crystallisation/:nino/:taxYear/intent-to-crystallise          v1.controllers.IntentToCrystalliseController.submitIntent(nino: String, taxYear: String)
