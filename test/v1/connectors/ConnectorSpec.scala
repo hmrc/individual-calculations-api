@@ -23,7 +23,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext
 
 trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
-
   lazy val baseUrl  = "test-BaseUrl"
   val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
