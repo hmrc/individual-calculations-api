@@ -36,7 +36,9 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
     val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
     def uri: String = s"/crystallisation/$nino/$mtdTaxYear/intent-to-crystallise"
-    def desUri: String = s"/income-tax/nino/$nino/mtdTaxYear/$desTaxYear/tax-calculation?crystallise=true"
+    def desUri: String = s"/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation"
+
+    val desQueryParams: Map[String, String] = Map("crystallise" -> "true")
 
     val mtdResponseJson: JsValue = Json.parse(
       s"""
@@ -83,7 +85,7 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.POST, desUri, OK, desResponseJson)
+          DesStub.onSuccess(DesStub.POST, desUri, desQueryParams, OK, desResponseJson)
         }
 
         val response: WSResponse = await(request().post(EmptyBody))
@@ -141,7 +143,7 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.onError(DesStub.POST, desUri, desStatus, errorBody(desCode))
+              DesStub.onError(DesStub.POST, desUri, desQueryParams, desStatus, errorBody(desCode))
             }
 
             val response: WSResponse = await(request().post(EmptyBody))
@@ -152,15 +154,15 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
-          (BAD_REQUEST, "FORMAT_NINO", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "INVALID_TAX_CRYSTALLISE", INTERNAL_SERVER_ERROR, DownstreamError),
           (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError),
           (FORBIDDEN, "NO_SUBMISSION_EXIST", FORBIDDEN, RuleNoSubmissionsExistError),
           (CONFLICT, "CONFLICT", FORBIDDEN, RuleFinalDeclarationReceivedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
-          (NOT_FOUND, "MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError)
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))

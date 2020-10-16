@@ -18,7 +18,6 @@ package v1.controllers
 
 import cats.data.EitherT
 import cats.implicits._
-import config.AppConfig
 import javax.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
@@ -35,7 +34,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthService,
                                               val lookupService: MtdIdLookupService,
-                                              appConfig: AppConfig,
                                               requestParser: IntentToCrystalliseRequestParser,
                                               service: IntentToCrystalliseService,
                                               hateoasFactory: HateoasFactory,

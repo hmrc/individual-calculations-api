@@ -33,7 +33,7 @@ object IntentToCrystalliseResponse extends HateoasLinks {
       import data._
 
       Seq(
-        getMetadata(appConfig, nino, taxYear, isSelf = true),
+        getMetadata(appConfig, nino, calculationId, isSelf = true),
         crystallise(appConfig, nino, taxYear)
       )
     }

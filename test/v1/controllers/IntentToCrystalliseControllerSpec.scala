@@ -51,7 +51,6 @@ class IntentToCrystalliseControllerSpec
     val controller = new IntentToCrystalliseController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      appConfig = mockAppConfig,
       requestParser = mockIntentToCrystalliseRequestParser,
       service = mockIntentToCrystalliseService,
       hateoasFactory = mockHateoasFactory,
