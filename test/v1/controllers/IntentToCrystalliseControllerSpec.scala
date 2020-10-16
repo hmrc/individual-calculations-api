@@ -24,7 +24,8 @@ import v1.hateoas.HateoasLinks
 import v1.mocks.MockAppConfig
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockIntentToCrystalliseRequestParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
+import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
+import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.domain.DesTaxYear
 import v1.models.errors._
 import v1.models.hateoas.{HateoasWrapper, Link}
@@ -41,6 +42,7 @@ class IntentToCrystalliseControllerSpec
     with MockMtdIdLookupService
     with MockAppConfig
     with MockIntentToCrystalliseService
+    with MockAuditService
     with MockIntentToCrystalliseRequestParser
     with MockHateoasFactory
     with HateoasLinks {
@@ -53,6 +55,7 @@ class IntentToCrystalliseControllerSpec
       lookupService = mockMtdIdLookupService,
       requestParser = mockIntentToCrystalliseRequestParser,
       service = mockIntentToCrystalliseService,
+      auditService = mockAuditService,
       hateoasFactory = mockHateoasFactory,
       cc = cc
     )
@@ -106,6 +109,20 @@ class IntentToCrystalliseControllerSpec
     """.stripMargin
   )
 
+  def event(auditResponse: AuditResponse): AuditEvent[GenericAuditDetail] =
+    AuditEvent(
+      auditType = "submitIntentToCrystallise",
+      transactionName = "intent-to-crystallise",
+      detail = GenericAuditDetail(
+        userType = "Individual",
+        agentReferenceNumber = None,
+        pathParams = Map("nino" -> nino, "taxYear" -> taxYear),
+        requestBody = None,
+        `X-CorrelationId` = correlationId,
+        auditResponse = auditResponse
+      )
+    )
+
   "IntentToCrystalliseController" should {
     "return OK" when {
       "happy path" in new Test {
@@ -127,6 +144,9 @@ class IntentToCrystalliseControllerSpec
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseJson
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val auditResponse: AuditResponse = AuditResponse(OK, None, Some(responseJson))
+        MockedAuditService.verifyAuditEvent(event(auditResponse)).once
       }
     }
 
@@ -144,6 +164,9 @@ class IntentToCrystalliseControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+            val auditResponse: AuditResponse = AuditResponse(expectedStatus, Some(Seq(AuditError(error.code))), None)
+            MockedAuditService.verifyAuditEvent(event(auditResponse)).once
           }
         }
 
@@ -175,6 +198,9 @@ class IntentToCrystalliseControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+            val auditResponse: AuditResponse = AuditResponse(expectedStatus, Some(Seq(AuditError(mtdError.code))), None)
+            MockedAuditService.verifyAuditEvent(event(auditResponse)).once
           }
         }
 
