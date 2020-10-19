@@ -34,7 +34,7 @@ class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
     implicit hc: HeaderCarrier,
     ec: ExecutionContext): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
 
-    import v1.connectors.httpparsers.StandardHttpParser.desReads
+    import v1.connectors.httpparsers.StandardHttpParser._
 
     val nino: String = request.nino.nino
     val taxYear: String = request.taxYear.value

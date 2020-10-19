@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.errors
+package v1.models.domain
 
-import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
-class BackendErrorCodeSpec extends UnitSpec {
+class DesTaxYearSpec extends UnitSpec {
 
-  val backendErrorCodeJson: JsValue = Json.parse(
-    """
-      |{
-      |   "code": "CODE",
-      |   "reason": "ignored"
-      |}
-    """.stripMargin
-  )
-
-  "BackendErrorCode" when {
-    "read from valid JSON" should {
-      "produce the expected BackendErrorCode object" in {
-        backendErrorCodeJson.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
+  "DesTaxYear" when {
+    "toString" should {
+      "produce the correct String" in {
+        DesTaxYear("2019").toString shouldBe "2019"
       }
     }
 
-    "fromDes" should {
-      "create an MtdError from a DES error" in {
-        BackendErrorCode("CODE").fromDes shouldBe MtdError("CODE", "")
+    "fromMtd" should {
+      "produce the correct String" in {
+        DesTaxYear.fromMtd("2019-20") shouldBe DesTaxYear("2020")
       }
     }
   }

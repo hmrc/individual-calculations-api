@@ -57,7 +57,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
         requestHandler = requestHandlerFor(request, parsedRequest)
-        backendResponse <- {EitherT(service.doService(requestHandler))}
+        backendResponse <- EitherT(service.doService(requestHandler))
         response        <- EitherT.fromEither[Future](requestHandler.successMapping(backendResponse))
       } yield {
         logger.info(

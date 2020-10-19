@@ -22,6 +22,7 @@ import play.api.libs.json.Writes
 import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import v1.models.response.common.DesResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -51,9 +52,9 @@ trait BaseConnector {
     doPost(headerCarrier(hc))
   }
 
-  def desPost[Body: Writes, Resp](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
-                                                              hc: HeaderCarrier,
-                                                              httpReads: HttpReads[BackendOutcome[Resp]]): Future[BackendOutcome[Resp]] = {
+  def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
+                                                                             hc: HeaderCarrier,
+                                                                             httpReads: HttpReads[BackendOutcome[Resp]]): Future[BackendOutcome[Resp]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
       http.POST(s"${appConfig.desBaseUrl}/${uri.value}", body)

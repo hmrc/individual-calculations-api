@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import v1.connectors.BackendOutcome
 import v1.models.errors.{DownstreamError, OutboundError}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.response.common.DesResponse
+import v1.models.response.common.{DesResponse, DesUnit}
 
 object StandardHttpParser extends HttpParser {
 
@@ -35,6 +35,11 @@ object StandardHttpParser extends HttpParser {
   implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[Unit]] =
     (_: String, url: String, response: HttpResponse) => doRead(url, response) { correlationId =>
       Right(ResponseWrapper(correlationId, ()))
+    }
+
+  implicit def desReadsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[DesUnit]] =
+    (_: String, url: String, response: HttpResponse) => doDesRead(url, response) { correlationId =>
+      Right(ResponseWrapper(correlationId, DesUnit))
     }
 
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[BackendOutcome[A]] =

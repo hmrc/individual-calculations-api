@@ -21,6 +21,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.outcomes.ResponseWrapper
+import v1.models.response.common.DesResponse
 
 import scala.concurrent.Future
 
@@ -33,7 +34,6 @@ class BaseConnectorSpec extends ConnectorSpec {
     val body: String = "body"
     val outcome: Either[Nothing, ResponseWrapper[Any]] = Right(ResponseWrapper(correlationId, Result(2)))
     val url: String = "some/url?param=value"
-    val desUrl: Uri[Result] = Uri[Result](url)
     val absoluteUrl: String = s"$baseUrl/$url"
 
     val connector: BaseConnector = new BaseConnector {
@@ -64,6 +64,11 @@ class BaseConnectorSpec extends ConnectorSpec {
         "Authorization" -> s"Bearer des-token",
         "Environment" -> "des-env"
       )
+
+      class DesResult(override val value: Int) extends Result(value) with DesResponse
+      val desUrl: Uri[DesResult] = Uri[DesResult](url)
+
+      implicit val desHttpReads: HttpReads[BackendOutcome[DesResult]] = mock[HttpReads[BackendOutcome[DesResult]]]
 
       MockedAppConfig.desToken returns "des-token"
       MockedAppConfig.desEnvironment returns "des-env"

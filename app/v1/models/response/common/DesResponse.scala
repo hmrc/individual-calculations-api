@@ -17,3 +17,5 @@
 package v1.models.response.common
 
 trait DesResponse
+class DesUnit
+object DesUnit extends DesUnit
