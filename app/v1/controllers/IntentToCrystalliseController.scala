@@ -50,7 +50,7 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
       endpointName = "intentToCrystallise"
     )
 
-  def submitIntent(nino: String, taxYear: String): Action[AnyContent] =
+  def submitIntentToCrystallise(nino: String, taxYear: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
 
       val rawData: IntentToCrystalliseRawData = IntentToCrystalliseRawData(
@@ -61,7 +61,7 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
       val result =
         for {
           parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
-          serviceResponse <- EitherT(service.submitIntent(parsedRequest))
+          serviceResponse <- EitherT(service.submitIntentToCrystallise(parsedRequest))
           hateoasResponse <- EitherT.fromEither[Future](
             hateoasFactory.wrap(
               serviceResponse.responseData,

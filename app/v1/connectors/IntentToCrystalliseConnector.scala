@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
                                              val appConfig: AppConfig) extends BaseConnector {
 
-  def submitIntent(request: IntentToCrystalliseRequest)(
+  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
 

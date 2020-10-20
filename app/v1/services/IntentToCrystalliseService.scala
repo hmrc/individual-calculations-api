@@ -33,13 +33,13 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnector) extends BackendResponseMappingSupport with Logging {
 
-  def submitIntent(request: IntentToCrystalliseRequest)(
+  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
     logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(connector.submitIntent(request)).leftMap(mapDesErrors(desErrorMap))
+      desResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDesErrors(desErrorMap))
     } yield desResponseWrapper
 
     result.value

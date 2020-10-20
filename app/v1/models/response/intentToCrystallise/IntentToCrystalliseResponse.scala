@@ -28,7 +28,7 @@ object IntentToCrystalliseResponse extends HateoasLinks {
   implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
   implicit val writes: OWrites[IntentToCrystalliseResponse] = Json.writes[IntentToCrystalliseResponse]
 
-  implicit object RetrieveCustomEmploymentLinksFactory extends HateoasLinksFactory[IntentToCrystalliseResponse, IntentToCrystalliseHateaosData] {
+  implicit object LinksFactory extends HateoasLinksFactory[IntentToCrystalliseResponse, IntentToCrystalliseHateaosData] {
     override def links(appConfig: AppConfig, data: IntentToCrystalliseHateaosData): Seq[Link] = {
       import data._
 

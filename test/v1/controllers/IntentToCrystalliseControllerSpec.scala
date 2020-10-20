@@ -139,7 +139,7 @@ class IntentToCrystalliseControllerSpec
           .wrap(responseData, IntentToCrystalliseHateaosData(nino, taxYear, calculationId))
           .returns(HateoasWrapper(responseData, links))
 
-        val result: Future[Result] = controller.submitIntent(nino, taxYear)(fakeRequest)
+        val result: Future[Result] = controller.submitIntentToCrystallise(nino, taxYear)(fakeRequest)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseJson
@@ -159,7 +159,7 @@ class IntentToCrystalliseControllerSpec
               .parse(rawData)
               .returns(Left(ErrorWrapper(Some(correlationId), error, None, expectedStatus)))
 
-            val result: Future[Result] = controller.submitIntent(nino, taxYear)(fakeRequest)
+            val result: Future[Result] = controller.submitIntentToCrystallise(nino, taxYear)(fakeRequest)
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
@@ -193,7 +193,7 @@ class IntentToCrystalliseControllerSpec
               .submitIntent(requestData)
               .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError, None, expectedStatus))))
 
-            val result: Future[Result] = controller.submitIntent(nino, taxYear)(fakeRequest)
+            val result: Future[Result] = controller.submitIntentToCrystallise(nino, taxYear)(fakeRequest)
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)

@@ -55,7 +55,7 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
         MockIntentToCrystalliseConnector.submitIntent(request)
           .returns(Future.successful(outcome))
 
-        await(service.submitIntent(request)) shouldBe outcome
+        await(service.submitIntentToCrystallise(request)) shouldBe outcome
       }
 
       "map errors according to spec" when {
@@ -66,7 +66,7 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
             MockIntentToCrystalliseConnector.submitIntent(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(desErrorStatus, BackendErrorCode(desErrorCode))))))
 
-            await(service.submitIntent(request)) shouldBe Left(ErrorWrapper(Some(correlationId), error, None, desErrorStatus))
+            await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(Some(correlationId), error, None, desErrorStatus))
           }
 
         val input = Seq(

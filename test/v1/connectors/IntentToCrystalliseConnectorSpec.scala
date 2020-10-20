@@ -62,7 +62,7 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
             requiredHeaders = "Environment" -> "des-environment", "Authorization" -> s"Bearer des-token"
           ).returns(Future.successful(outcome))
 
-        await(connector.submitIntent(request)) shouldBe outcome
+        await(connector.submitIntentToCrystallise(request)) shouldBe outcome
       }
     }
   }
