@@ -17,8 +17,9 @@
 package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations._
+import v1.models.domain.CrystallisationRequestBody
 import v1.models.errors.MtdError
-import v1.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequestBody}
+import v1.models.request.crystallisation.CrystallisationRawData
 
 class CrystallisationValidator extends Validator[CrystallisationRawData] {
 

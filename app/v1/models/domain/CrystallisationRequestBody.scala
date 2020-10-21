@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.request.crystallisation
+package v1.models.domain
 
 import play.api.libs.json.{Json, OFormat}
 

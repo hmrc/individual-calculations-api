@@ -22,7 +22,7 @@ import v1.controllers.requestParsers.validators.IntentToCrystalliseValidator
 import v1.models.errors.MtdError
 import v1.models.request.intentToCrystallise.IntentToCrystalliseRawData
 
-class MockIntentToCrystalliseValidator extends MockFactory {
+trait MockIntentToCrystalliseValidator extends MockFactory {
 
   val mockIntentToCrystalliseValidator: IntentToCrystalliseValidator = mock[IntentToCrystalliseValidator]
 

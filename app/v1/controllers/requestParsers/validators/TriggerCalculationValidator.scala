@@ -30,7 +30,7 @@ class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {
   }
 
   private def jsonFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    List(JsonFormatValidation.validate[TriggerCalculationRequestBody](data.body.json, RuleIncorrectOrEmptyBodyError))
+    List(JsonFormatValidation.validate[TriggerCalculationRequestBody](data.body.json))
   }
 
   private def bodyFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>

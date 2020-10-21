@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.mocks.validators
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
+import org.scalamock.handlers.CallHandler1
+import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.validators.CrystallisationValidator
-import v1.models.domain.{CrystallisationRequestBody, DesTaxYear}
-import v1.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
+import v1.models.errors.MtdError
+import v1.models.request.crystallisation.CrystallisationRawData
 
-class CrystallisationRequestParser @Inject()(val validator: CrystallisationValidator)
-  extends RequestParser[CrystallisationRawData, CrystallisationRequest] {
+trait MockCrystallisationValidator extends MockFactory {
 
-  override protected def requestFor(data: CrystallisationRawData): CrystallisationRequest =
-    CrystallisationRequest(Nino(data.nino), DesTaxYear.fromMtd(data.taxYear), data.body.as[CrystallisationRequestBody].calculationId)
+  val mockCrystallisationValidator: CrystallisationValidator = mock[CrystallisationValidator]
+
+  object MockValidator {
+
+    def validate(data: CrystallisationRawData): CallHandler1[CrystallisationRawData, List[MtdError]] = {
+      (mockCrystallisationValidator
+        .validate(_: CrystallisationRawData))
+        .expects(data)
+    }
+  }
 }
