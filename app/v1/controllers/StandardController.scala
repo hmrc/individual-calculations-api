@@ -21,6 +21,7 @@ import cats.implicits._
 import play.api.http.MimeTypes
 import play.api.libs.json.{Json, Reads, Writes}
 import play.api.mvc.{ControllerComponents, Request, Result}
+import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.Logging
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
@@ -68,7 +69,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
         val responseBody = Json.toJson(response.responseData)
 
         auditHandler.foreach { auditHandler =>
-          def doAudit[D](auditHandler: AuditHandler[D]) = {
+          def doAudit[D](auditHandler: AuditHandler[D]): Future[AuditResult] = {
             implicit val writes: Writes[D] = auditHandler.writes
             auditService.auditEvent(auditHandler.event(response.correlationId, AuditResponse(successCode.status, Right(Some(responseBody)))))
           }
@@ -82,18 +83,17 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
     result.leftMap { errorWrapper =>
       val correlationId = getCorrelationId(errorWrapper)
-      val errorBody     = errorWrapper.errors
-      val status        = errorWrapper.errors.statusCode
+      val status        = errorWrapper.statusCode
 
       auditHandler.foreach { auditHandler =>
-        def doAudit[D](auditHandler: AuditHandler[D]) = {
+        def doAudit[D](auditHandler: AuditHandler[D]): Future[AuditResult] = {
           implicit val writes: Writes[D] = auditHandler.writes
-          auditService.auditEvent(auditHandler.event(correlationId, AuditResponse(status, Left(errorBody.auditErrors))))
+          auditService.auditEvent(auditHandler.event(correlationId, AuditResponse(status, Left(errorWrapper.auditErrors))))
         }
         doAudit(auditHandler)
       }
 
-      Status(status)(Json.toJson(errorBody)).withApiHeaders(correlationId)
+      Status(status)(Json.toJson(errorWrapper)).withApiHeaders(correlationId)
     }.merge
   }
 }

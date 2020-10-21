@@ -25,6 +25,7 @@ object RelType {
   val ALLOWANCES = "allowances-deductions-reliefs"
   val EOY_ESTIMATE = "end-of-year-estimate"
   val MESSAGES = "messages"
+  val CRYSTALLISE = "crystallise"
 
   val SELF = "self"
 }

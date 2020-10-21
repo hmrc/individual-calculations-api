@@ -72,7 +72,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
@@ -81,7 +81,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val data = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }

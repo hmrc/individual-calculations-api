@@ -36,5 +36,11 @@ class BackendErrorCodeSpec extends UnitSpec {
         backendErrorCodeJson.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
       }
     }
+
+    "fromDes" should {
+      "create an MtdError from a DES error" in {
+        BackendErrorCode("CODE").fromDes shouldBe MtdError("CODE", "")
+      }
+    }
   }
 }

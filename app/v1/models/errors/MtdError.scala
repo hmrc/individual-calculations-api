@@ -88,6 +88,16 @@ object NoAllowancesDeductionsAndReliefsExist extends MtdError(
   message = "No allowances, deductions and reliefs data exists"
 )
 
+object RuleNoSubmissionsExistError extends MtdError(
+  code = "RULE_NO_SUBMISSIONS_EXIST",
+  message = "No periodic or annual income data has been submitted"
+)
+
+object RuleFinalDeclarationReceivedError extends MtdError(
+  code = "RULE_FINAL_DECLARATION_RECEIVED",
+  message = "Crystallisation declaration has already been received"
+)
+
 // Standard Errors
 object NotFoundError extends MtdError(
   code = "MATCHING_RESOURCE_NOT_FOUND",

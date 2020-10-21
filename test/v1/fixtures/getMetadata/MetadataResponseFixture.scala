@@ -19,7 +19,7 @@ package v1.fixtures.getMetadata
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.getMetadata.{MetadataExistence, MetadataResponse}
+import v1.models.response.getMetadata.MetadataResponse
 
 object MetadataResponseFixture {
 

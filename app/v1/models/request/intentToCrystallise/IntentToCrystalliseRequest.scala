@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.domain
+package v1.models.request.intentToCrystallise
 
-object TaxYear {
+import uk.gov.hmrc.domain.Nino
+import v1.models.domain.DesTaxYear
 
-  /**
-    * @param taxYear tax year in MTD format (e.g. 2017-18)
-    * @return in the form of the year ending, format used by DES (e.g. 2018)
-    */
-  def toYearEnding(taxYear: String): String =
-    taxYear.take(2) + taxYear.takeRight(2)
-}
+case class IntentToCrystalliseRequest(nino: Nino, taxYear: DesTaxYear)

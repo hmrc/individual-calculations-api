@@ -49,7 +49,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
@@ -58,8 +58,8 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(
-          ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))))
+        parser.parseRequest(data) shouldBe
+          Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }

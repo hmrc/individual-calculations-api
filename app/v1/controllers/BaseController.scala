@@ -32,7 +32,8 @@ trait BaseController {
 
       val newHeaders: Seq[(String, String)] = responseHeaders ++ Seq(
         "X-CorrelationId" -> correlationId,
-        "X-Content-Type-Options" -> "nosniff"
+        "X-Content-Type-Options" -> "nosniff",
+        "Content-Type" -> "application/json"
       )
 
       result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
@@ -44,7 +45,7 @@ trait BaseController {
       case Some(correlationId) =>
         logger.info(
           s"[${endpointLogContext.controllerName}][getCorrelationId] - " +
-            s"Error received from backend ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
+            s"Error received: ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
         correlationId
       case None =>
         val correlationId = UUID.randomUUID().toString

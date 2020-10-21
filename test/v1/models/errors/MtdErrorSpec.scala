@@ -16,16 +16,25 @@
 
 package v1.models.errors
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.errors.MtdErrorsFixture._
 
 class MtdErrorSpec extends UnitSpec {
 
   "MtdError" when {
+
+    val json: JsValue = Json.parse(
+      """
+        |{
+        |   "code": "FORMAT_NINO",
+        |   "message": "The provided NINO is invalid"
+        |}
+      """.stripMargin
+    )
+
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson(NinoFormatError) shouldBe mtdErrorsJsonSingle
+        Json.toJson(NinoFormatError) shouldBe json
       }
     }
   }

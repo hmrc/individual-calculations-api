@@ -101,7 +101,7 @@ class GetMetadataControllerSpec
     metadataExistence = None
   )
 
-  val error: ErrorWrapper = ErrorWrapper(Some(correlationId), MtdErrors(NOT_FOUND, NotFoundError))
+  val error: ErrorWrapper = ErrorWrapper(Some(correlationId), NotFoundError, None, NOT_FOUND)
 
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)

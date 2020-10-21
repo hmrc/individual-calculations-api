@@ -77,7 +77,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)
     } else {
-      Left(ErrorWrapper(Some(filteredResponse.correlationId), MtdErrors(NOT_FOUND, NoMessagesExistError)))
+      Left(ErrorWrapper(Some(filteredResponse.correlationId), NoMessagesExistError, None, NOT_FOUND))
     }
   }
 
