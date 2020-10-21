@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.models.domain.EmptyJsonBody
 import v1.models.request.crystallisation.CrystallisationRequest
-import v1.models.response.intentToCrystallise.IntentToCrystalliseResponse
+import v1.models.response.common.DesUnit
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,17 +30,15 @@ import scala.concurrent.{ExecutionContext, Future}
 class CrystallisationConnector @Inject()(val http: HttpClient,
                                          val appConfig: AppConfig) extends BaseConnector {
 
-  def submitIntentToCrystallise(request: CrystallisationRequest)(
+  def declareCrystallisation(request: CrystallisationRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
+    ec: ExecutionContext): Future[BackendOutcome[DesUnit]] = {
 
     import v1.connectors.httpparsers.StandardHttpParser._
-
-    val nino: String = request.nino.nino
-    val taxYear: String = request.taxYear.value
+    import request._
 
     desPost(
-      uri = Uri[IntentToCrystalliseResponse](s"income-tax/nino/$nino/taxYear/$taxYear/tax-calculation?crystallise=true"),
+      uri = Uri[DesUnit](s"/income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),
       body = EmptyJsonBody
     )
   }

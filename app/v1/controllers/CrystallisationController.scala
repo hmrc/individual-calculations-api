@@ -46,11 +46,11 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
-      controllerName = "IntentToCrystalliseController",
-      endpointName = "intentToCrystallise"
+      controllerName = "CrystallisationController",
+      endpointName = "declareCrystallisation"
     )
 
-  def submitIntentToCrystallise(nino: String, taxYear: String): Action[JsValue] =
+  def declareCrystallisation(nino: String, taxYear: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
 
       val rawData: CrystallisationRawData = CrystallisationRawData(
@@ -62,12 +62,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
       val result =
         for {
           parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
-          serviceResponse <- EitherT(service.submitIntentToCrystallise(parsedRequest))
-          hateoasResponse <- EitherT.fromEither[Future](
-            hateoasFactory.wrap(
-              serviceResponse.responseData,
-              IntentToCrystalliseHateaosData(nino, taxYear, serviceResponse.responseData.calculationId)
-            ).asRight[ErrorWrapper])
+          serviceResponse <- EitherT(service.declareCrystallisation(parsedRequest))
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -75,12 +70,12 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
           )
 
           auditSubmission(
-            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
-              serviceResponse.correlationId, AuditResponse(httpStatus = OK, response = Right(Some(Json.toJson(hateoasResponse))))
+            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
+              serviceResponse.correlationId, AuditResponse(httpStatus = NO_CONTENT, response = Right(None))
             )
           )
 
-          Ok(Json.toJson(hateoasResponse))
+          NoContent
             .withApiHeaders(serviceResponse.correlationId)
             .as(MimeTypes.JSON)
         }
@@ -90,7 +85,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
         val result = errorResult(errorWrapper).withApiHeaders(correlationId)
 
         auditSubmission(
-          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
+          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
             correlationId, AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
           )
         )
@@ -103,9 +98,11 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
     (errorWrapper.error: @unchecked) match {
       case BadRequestError | NinoFormatError | TaxYearFormatError |
            RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-           CustomMtdError(RuleIncorrectOrEmptyBodyError.code)
+           CalculationIdFormatError | CustomMtdError(RuleIncorrectOrEmptyBodyError.code)
       => BadRequest(Json.toJson(errorWrapper))
-      case RuleNoSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
+      case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError |
+        RuleResidencyChangedError | RuleFinalDeclarationReceivedError
+      => Forbidden(Json.toJson(errorWrapper))
       case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
@@ -114,7 +111,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
   private def auditSubmission(details: GenericAuditDetail)
                              (implicit hc: HeaderCarrier,
                               ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("submitIntentToCrystallise", "intent-to-crystallise", details)
+    val event = AuditEvent("submitCrystallisation", "crystallisation", details)
     auditService.auditEvent(event)
   }
 }

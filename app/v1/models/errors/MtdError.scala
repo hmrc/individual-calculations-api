@@ -102,6 +102,21 @@ object RuleFinalDeclarationReceivedError extends MtdError(
   message = "Crystallisation declaration has already been received"
 )
 
+object RuleIncomeSourcesChangedError extends MtdError(
+  code = "RULE_INCOME_SOURCES_CHANGED",
+  message = "Income sources data has changed. Perform intent to crystallise"
+)
+
+object RuleRecentSubmissionsExistError extends MtdError(
+  code = "RULE_RECENT_SUBMISSIONS_EXIST",
+  message = "More recent submissions exist. Perform intent to crystallise"
+)
+
+object RuleResidencyChangedError extends MtdError(
+  code = "RULE_RESIDENCY_CHANGED",
+  message = "More recent submissions exist. Perform intent to crystallise"
+)
+
 // Standard Errors
 object NotFoundError extends MtdError(
   code = "MATCHING_RESOURCE_NOT_FOUND",
