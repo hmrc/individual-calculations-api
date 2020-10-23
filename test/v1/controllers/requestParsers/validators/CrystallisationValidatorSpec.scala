@@ -19,7 +19,7 @@ package v1.controllers.requestParsers.validators
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
-import v1.models.errors.{CalculationIdFormatError, NinoFormatError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import v1.models.errors.{CalculationIdFormatError, NinoFormatError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import v1.models.request.crystallisation.CrystallisationRawData
 
 class CrystallisationValidatorSpec extends UnitSpec {
@@ -62,7 +62,7 @@ class CrystallisationValidatorSpec extends UnitSpec {
       "tax year range is too large" in {
         validator.validate(
           CrystallisationRawData(validNino, "2018-20", AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe
-          List(RuleTaxYearNotSupportedError)
+          List(RuleTaxYearRangeInvalidError)
       }
     }
 

@@ -44,7 +44,7 @@ object JsonFormatValidation {
 
     val logger: Logger = Logger(this.getClass)
     logger.warn(s"[JsonFormatValidation][validate] - Request body failed validation with errors - $logString")
-    List(RuleIncorrectOrEmptyBodyError.copy(paths = Some(failures.map(_.fromJsPath))))
+    List(RuleIncorrectOrEmptyBodyError)
   }
 
   private class JsonFormatValidationFailure(path: JsPath, failure: String) {
