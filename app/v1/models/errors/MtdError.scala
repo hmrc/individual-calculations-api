@@ -114,7 +114,7 @@ object RuleRecentSubmissionsExistError extends MtdError(
 
 object RuleResidencyChangedError extends MtdError(
   code = "RULE_RESIDENCY_CHANGED",
-  message = "More recent submissions exist. Perform intent to crystallise"
+  message = "Residency has changed. Perform intent to crystallise"
 )
 
 // Standard Errors
