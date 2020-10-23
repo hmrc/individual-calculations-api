@@ -54,8 +54,7 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
       "NO_SUBMISSION_EXIST" -> RuleNoSubmissionsExistError,
       "CONFLICT" -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR" -> DownstreamError,
-      "SERVICE_UNAVAILABLE" -> DownstreamError,
-      "NOT_FOUND" -> NotFoundError
+      "SERVICE_UNAVAILABLE" -> DownstreamError
     )
 }
 

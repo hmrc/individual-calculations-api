@@ -38,7 +38,7 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
     import request._
 
     desPost(
-      uri = Uri[DesUnit](s"/income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),
+      uri = Uri[DesUnit](s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),
       body = EmptyJsonBody
     )
   }

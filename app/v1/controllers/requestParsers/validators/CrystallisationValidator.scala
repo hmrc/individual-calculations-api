@@ -44,12 +44,12 @@ class CrystallisationValidator extends Validator[CrystallisationRawData] {
 
   private def bodyFormatValidation: CrystallisationRawData => List[List[MtdError]] = (data: CrystallisationRawData) => {
     List(
-      JsonFormatValidation.validate[CrystallisationRequestBody](data.body)
+      JsonFormatValidation.validate[CrystallisationRequestBody](data.body.json)
     )
   }
 
   private def bodyValueValidation: CrystallisationRawData => List[List[MtdError]] = (data: CrystallisationRawData) => {
-    val requestBodyData: CrystallisationRequestBody = data.body.as[CrystallisationRequestBody]
+    val requestBodyData: CrystallisationRequestBody = data.body.json.as[CrystallisationRequestBody]
 
     List(
       CalculationIdValidation.validate(requestBodyData.calculationId)

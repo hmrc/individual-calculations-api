@@ -16,9 +16,9 @@
 
 package v1.controllers.requestParsers.validators
 
-import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, TaxYearNotSupportedValidation, NinoValidation, TaxYearValidation}
+import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import v1.models.domain.TriggerCalculationRequestBody
-import v1.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
+import v1.models.errors.MtdError
 import v1.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {

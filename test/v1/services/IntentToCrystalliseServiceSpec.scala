@@ -72,13 +72,12 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
         val input = Seq(
           ("INVALID_NINO", NinoFormatError, BAD_REQUEST),
           ("INVALID_TAX_YEAR", TaxYearFormatError, BAD_REQUEST),
-          ("INVALID_TAX_CRYSTALLISE", DownstreamError, INTERNAL_SERVER_ERROR),
-          ("INVALID_REQUEST", DownstreamError, INTERNAL_SERVER_ERROR),
+          ("INVALID_TAX_CRYSTALLISE", DownstreamError, BAD_REQUEST),
+          ("INVALID_REQUEST", DownstreamError, BAD_REQUEST),
           ("NO_SUBMISSION_EXIST", RuleNoSubmissionsExistError, FORBIDDEN),
-          ("CONFLICT", RuleFinalDeclarationReceivedError, FORBIDDEN),
+          ("CONFLICT", RuleFinalDeclarationReceivedError, CONFLICT),
           ("SERVER_ERROR", DownstreamError, INTERNAL_SERVER_ERROR),
-          ("SERVICE_UNAVAILABLE", DownstreamError, INTERNAL_SERVER_ERROR),
-          ("NOT_FOUND", NotFoundError, NOT_FOUND)
+          ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE)
         )
 
         input.foreach(args => (serviceError _).tupled(args))

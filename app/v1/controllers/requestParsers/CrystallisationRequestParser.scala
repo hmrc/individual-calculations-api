@@ -26,5 +26,5 @@ class CrystallisationRequestParser @Inject()(val validator: CrystallisationValid
   extends RequestParser[CrystallisationRawData, CrystallisationRequest] {
 
   override protected def requestFor(data: CrystallisationRawData): CrystallisationRequest =
-    CrystallisationRequest(Nino(data.nino), DesTaxYear.fromMtd(data.taxYear), data.body.as[CrystallisationRequestBody].calculationId)
+    CrystallisationRequest(Nino(data.nino), DesTaxYear.fromMtd(data.taxYear), data.body.json.as[CrystallisationRequestBody].calculationId)
 }

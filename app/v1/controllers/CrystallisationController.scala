@@ -20,17 +20,15 @@ import cats.data.EitherT
 import cats.implicits._
 import javax.inject.Inject
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import play.mvc.Http.MimeTypes
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.Logging
 import v1.controllers.requestParsers.CrystallisationRequestParser
-import v1.hateoas.HateoasFactory
 import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
 import v1.models.request.crystallisation.CrystallisationRawData
-import v1.models.response.intentToCrystallise.IntentToCrystalliseHateaosData
 import v1.services.{AuditService, CrystallisationService, EnrolmentsAuthService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +38,6 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
                                           requestParser: CrystallisationRequestParser,
                                           service: CrystallisationService,
                                           auditService: AuditService,
-                                          hateoasFactory: HateoasFactory,
                                           cc: ControllerComponents)(implicit ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
@@ -56,7 +53,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
       val rawData: CrystallisationRawData = CrystallisationRawData(
         nino = nino,
         taxYear = taxYear,
-        body = request.body
+        body = AnyContentAsJson(request.body)
       )
 
       val result =

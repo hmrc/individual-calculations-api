@@ -104,7 +104,6 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
            RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError
       => BadRequest(Json.toJson(errorWrapper))
       case RuleNoSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
-      case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
   }

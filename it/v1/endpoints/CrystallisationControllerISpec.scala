@@ -19,13 +19,13 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
-import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
+import play.api.libs.json.{JsObject, Json}
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.stubs._
 
-class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
+class CrystallisationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -33,40 +33,11 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
     val mtdTaxYear: String = "2019-20"
     val desTaxYear: String = "2020"
     val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+    val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
     val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-    def uri: String = s"/crystallisation/$nino/$mtdTaxYear/intent-to-crystallise"
-    def desUri: String = s"/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation"
-
-    val desQueryParams: Map[String, String] = Map("crystallise" -> "true")
-
-    val mtdResponseJson: JsValue = Json.parse(
-      s"""
-         |{
-         |   "calculationId": "$calculationId",
-         |   "links":[
-         |      {
-         |         "href": "/individuals/calculations/$nino/self-assessment/$calculationId",
-         |         "method": "GET",
-         |         "rel": "self"
-         |      },
-         |      {
-         |         "href": "/individuals/calculations/crystallisation/$nino/$mtdTaxYear/crystallise",
-         |         "method": "POST",
-         |         "rel": "crystallise"
-         |      }
-         |   ]
-         |}
-    """.stripMargin
-    )
-
-    val desResponseJson: JsValue = Json.parse(
-      s"""
-         |{
-         |   "id": "$calculationId"
-         |}
-    """.stripMargin
-    )
+    def uri: String = s"/crystallisation/$nino/$mtdTaxYear/crystallise"
+    def desUri: String = s"/income-tax/calculation/nino/$nino/$desTaxYear/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
@@ -77,32 +48,33 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-  "submitting an intent to crystallise" should {
-    "return a 200 status code" when {
+  "declaring crystallisation for a tax year" should {
+    "return a 204 status code" when {
       "valid request is made" in new Test {
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.POST, desUri, desQueryParams, OK, desResponseJson)
+          DesStub.onSuccess(DesStub.POST, desUri, NO_CONTENT)
         }
 
-        val response: WSResponse = await(request().post(EmptyBody))
+        val response: WSResponse = await(request().post(requestBody))
 
-        response.status shouldBe OK
+        response.status shouldBe NO_CONTENT
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe mtdResponseJson
+        response.body shouldBe ""
       }
     }
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String, requestTaxYear: String, testRequestBody: JsObject, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
             override val nino: String = requestNino
             override val mtdTaxYear: String = requestTaxYear
+            override val requestBody: JsObject = testRequestBody
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -110,18 +82,23 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request().post(EmptyBody))
+            val response: WSResponse = await(request().post(requestBody))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
+        val validRequestBody: JsObject = Json.obj("calculationId" -> "4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
+        val invalidRequestBody: JsObject = Json.obj("calculationId" -> "notValidId")
+
         val input = Seq(
-          ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+          ("AA1123A", "2017-18", validRequestBody, BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "20177", validRequestBody, BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", "2015-16", validRequestBody, BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("AA123456A", "2020-22", validRequestBody,  BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("AA123456A", "2017-18", JsObject.empty,  BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
+          ("AA123456A", "2017-18", invalidRequestBody,  BAD_REQUEST, CalculationIdFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
@@ -143,10 +120,10 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.onError(DesStub.POST, desUri, desQueryParams, desStatus, errorBody(desCode))
+              DesStub.onError(DesStub.POST, desUri, desStatus, errorBody(desCode))
             }
 
-            val response: WSResponse = await(request().post(EmptyBody))
+            val response: WSResponse = await(request().post(requestBody))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -154,12 +131,15 @@ class IntentToCrystalliseControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
-          (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
-          (BAD_REQUEST, "INVALID_TAX_CRYSTALLISE", INTERNAL_SERVER_ERROR, DownstreamError),
-          (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError),
-          (FORBIDDEN, "NO_SUBMISSION_EXIST", FORBIDDEN, RuleNoSubmissionsExistError),
-          (CONFLICT, "CONFLICT", FORBIDDEN, RuleFinalDeclarationReceivedError),
+          (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CALCID", BAD_REQUEST, CalculationIdFormatError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (CONFLICT, "INCOME_SOURCES_CHANGED", FORBIDDEN, RuleIncomeSourcesChangedError),
+          (CONFLICT, "RECENT_SUBMISSIONS_EXIST", FORBIDDEN, RuleRecentSubmissionsExistError),
+          (CONFLICT, "RESIDENCY_CHANGED", FORBIDDEN, RuleResidencyChangedError),
+          (CONFLICT, "FINAL_DECLARATION_RECEIVED", FORBIDDEN, RuleFinalDeclarationReceivedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)
         )

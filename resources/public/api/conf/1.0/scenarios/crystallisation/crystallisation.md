@@ -24,8 +24,12 @@
             <td><p>Simulates the scenario where residency has changed.</p></td>
         </tr>   
         <tr>
-            <td><p>DECLARATION_RECEIVED</p></td>
+            <td><p>FINAL_DECLARATION_RECEIVED</p></td>
             <td><p>Simulates the scenario where a crystallisation declaration has already been received.</p></td>
-        </tr>    
+        </tr>
+        <tr>
+            <td><p>NOT_FOUND</p></td>
+            <td><p>Simulates the scenario where the supplied income source could not be found.</p></td>
+        </tr>   
     </tbody>
 </table>
