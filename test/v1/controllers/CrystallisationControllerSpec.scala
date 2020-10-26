@@ -90,7 +90,7 @@ class CrystallisationControllerSpec
     )
 
   "CrystallisationController" should {
-    "return OK" when {
+    "return NO_CONTENT" when {
       "happy path" in new Test {
 
         MockCrystallisationRequestParser
