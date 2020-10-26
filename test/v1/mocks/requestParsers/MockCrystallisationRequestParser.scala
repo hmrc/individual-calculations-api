@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package v1.mocks.validators
+package v1.mocks.requestParsers
 
-import org.scalamock.handlers.CallHandler1
+import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.validators.IntentToCrystalliseValidator
-import v1.models.errors.MtdError
-import v1.models.request.intentToCrystallise.IntentToCrystalliseRawData
+import v1.controllers.requestParsers.CrystallisationRequestParser
+import v1.models.errors.ErrorWrapper
+import v1.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
 
-trait MockIntentToCrystalliseValidator extends MockFactory {
+trait MockCrystallisationRequestParser extends MockFactory {
 
-  val mockIntentToCrystalliseValidator: IntentToCrystalliseValidator = mock[IntentToCrystalliseValidator]
+  val mockCrystallisationRequestParser: CrystallisationRequestParser = mock[CrystallisationRequestParser]
 
-  object MockValidator {
+  object MockCrystallisationRequestParser {
 
-    def validate(data: IntentToCrystalliseRawData): CallHandler1[IntentToCrystalliseRawData, List[MtdError]] = {
-      (mockIntentToCrystalliseValidator
-        .validate(_: IntentToCrystalliseRawData))
+    def parse(data: CrystallisationRawData): CallHandler[Either[ErrorWrapper, CrystallisationRequest]] = {
+      (mockCrystallisationRequestParser
+        .parseRequest(_: CrystallisationRawData))
         .expects(data)
     }
   }

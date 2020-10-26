@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.request.crystallisation
 
-trait DesResponse
-class DesUnit extends DesResponse
-object DesUnit extends DesUnit
+import uk.gov.hmrc.domain.Nino
+import v1.models.domain.DesTaxYear
+
+case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)

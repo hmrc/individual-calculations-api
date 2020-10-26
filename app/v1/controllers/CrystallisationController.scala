@@ -19,54 +19,47 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import javax.inject.Inject
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import play.mvc.Http.MimeTypes
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.Logging
-import v1.controllers.requestParsers.IntentToCrystalliseRequestParser
-import v1.hateoas.HateoasFactory
+import v1.controllers.requestParsers.CrystallisationRequestParser
 import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
-import v1.models.request.intentToCrystallise.IntentToCrystalliseRawData
-import v1.models.response.intentToCrystallise.IntentToCrystalliseHateaosData
-import v1.services.{AuditService, EnrolmentsAuthService, IntentToCrystalliseService, MtdIdLookupService}
+import v1.models.request.crystallisation.CrystallisationRawData
+import v1.services.{AuditService, CrystallisationService, EnrolmentsAuthService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthService,
-                                              val lookupService: MtdIdLookupService,
-                                              requestParser: IntentToCrystalliseRequestParser,
-                                              service: IntentToCrystalliseService,
-                                              auditService: AuditService,
-                                              hateoasFactory: HateoasFactory,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext)
+class CrystallisationController @Inject()(val authService: EnrolmentsAuthService,
+                                          val lookupService: MtdIdLookupService,
+                                          requestParser: CrystallisationRequestParser,
+                                          service: CrystallisationService,
+                                          auditService: AuditService,
+                                          cc: ControllerComponents)(implicit ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
-      controllerName = "IntentToCrystalliseController",
-      endpointName = "intentToCrystallise"
+      controllerName = "CrystallisationController",
+      endpointName = "declareCrystallisation"
     )
 
-  def submitIntentToCrystallise(nino: String, taxYear: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
+  def declareCrystallisation(nino: String, taxYear: String): Action[JsValue] =
+    authorisedAction(nino).async(parse.json) { implicit request =>
 
-      val rawData: IntentToCrystalliseRawData = IntentToCrystalliseRawData(
+      val rawData: CrystallisationRawData = CrystallisationRawData(
         nino = nino,
-        taxYear = taxYear
+        taxYear = taxYear,
+        body = AnyContentAsJson(request.body)
       )
 
       val result =
         for {
           parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
-          serviceResponse <- EitherT(service.submitIntentToCrystallise(parsedRequest))
-          hateoasResponse <- EitherT.fromEither[Future](
-            hateoasFactory.wrap(
-              serviceResponse.responseData,
-              IntentToCrystalliseHateaosData(nino, taxYear, serviceResponse.responseData.calculationId)
-            ).asRight[ErrorWrapper])
+          serviceResponse <- EitherT(service.declareCrystallisation(parsedRequest))
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -74,12 +67,12 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
           )
 
           auditSubmission(
-            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
-              serviceResponse.correlationId, AuditResponse(httpStatus = OK, response = Right(Some(Json.toJson(hateoasResponse))))
+            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
+              serviceResponse.correlationId, AuditResponse(httpStatus = NO_CONTENT, response = Right(None))
             )
           )
 
-          Ok(Json.toJson(hateoasResponse))
+          NoContent
             .withApiHeaders(serviceResponse.correlationId)
             .as(MimeTypes.JSON)
         }
@@ -89,7 +82,7 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
         val result = errorResult(errorWrapper).withApiHeaders(correlationId)
 
         auditSubmission(
-          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
+          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
             correlationId, AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
           )
         )
@@ -101,9 +94,13 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
   private def errorResult(errorWrapper: ErrorWrapper) = {
     (errorWrapper.error: @unchecked) match {
       case BadRequestError | NinoFormatError | TaxYearFormatError |
-           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError
+           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
+           CalculationIdFormatError | CustomMtdError(RuleIncorrectOrEmptyBodyError.code)
       => BadRequest(Json.toJson(errorWrapper))
-      case RuleNoSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
+      case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError |
+        RuleResidencyChangedError | RuleFinalDeclarationReceivedError
+      => Forbidden(Json.toJson(errorWrapper))
+      case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
   }
@@ -111,7 +108,7 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
   private def auditSubmission(details: GenericAuditDetail)
                              (implicit hc: HeaderCarrier,
                               ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("submitIntentToCrystallise", "intent-to-crystallise", details)
+    val event = AuditEvent("submitCrystallisation", "crystallisation", details)
     auditService.auditEvent(event)
   }
 }

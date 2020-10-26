@@ -18,10 +18,14 @@ package v1.models.errors
 
 import play.api.libs.json.{Json, Writes}
 
-case class MtdError(code: String, message: String)
+case class MtdError(code: String, message: String, paths: Option[Seq[String]] = None)
 
 object MtdError {
   implicit val writes: Writes[MtdError] = Json.writes[MtdError]
+}
+
+object CustomMtdError {
+  def unapply(arg: MtdError): Option[String] = Some(arg.code)
 }
 
 // Format Errors
@@ -96,6 +100,21 @@ object RuleNoSubmissionsExistError extends MtdError(
 object RuleFinalDeclarationReceivedError extends MtdError(
   code = "RULE_FINAL_DECLARATION_RECEIVED",
   message = "Crystallisation declaration has already been received"
+)
+
+object RuleIncomeSourcesChangedError extends MtdError(
+  code = "RULE_INCOME_SOURCES_CHANGED",
+  message = "Income sources data has changed. Perform intent to crystallise"
+)
+
+object RuleRecentSubmissionsExistError extends MtdError(
+  code = "RULE_RECENT_SUBMISSIONS_EXIST",
+  message = "More recent submissions exist. Perform intent to crystallise"
+)
+
+object RuleResidencyChangedError extends MtdError(
+  code = "RULE_RESIDENCY_CHANGED",
+  message = "Residency has changed. Perform intent to crystallise"
 )
 
 // Standard Errors

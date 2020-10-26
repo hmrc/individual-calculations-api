@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.domain
 
-trait DesResponse
-class DesUnit extends DesResponse
-object DesUnit extends DesUnit
+import play.api.libs.json.{Json, OFormat}
+
+case class CrystallisationRequestBody(calculationId: String)
+
+object CrystallisationRequestBody {
+  implicit val format: OFormat[CrystallisationRequestBody] = Json.format[CrystallisationRequestBody]
+}

@@ -8,3 +8,4 @@ GET       /:nino/self-assessment/:calcId/messages                        v1.cont
 
 POST      /:nino/self-assessment                                         v1.controllers.TriggerCalculationController.triggerCalculation(nino: String)
 POST      /crystallisation/:nino/:taxYear/intent-to-crystallise          v1.controllers.IntentToCrystalliseController.submitIntentToCrystallise(nino: String, taxYear: String)
+POST      /crystallisation/:nino/:taxYear/crystallise                    v1.controllers.CrystallisationController.declareCrystallisation(nino: String, taxYear: String)

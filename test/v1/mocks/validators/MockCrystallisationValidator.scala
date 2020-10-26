@@ -18,19 +18,19 @@ package v1.mocks.validators
 
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.validators.IntentToCrystalliseValidator
+import v1.controllers.requestParsers.validators.CrystallisationValidator
 import v1.models.errors.MtdError
-import v1.models.request.intentToCrystallise.IntentToCrystalliseRawData
+import v1.models.request.crystallisation.CrystallisationRawData
 
-trait MockIntentToCrystalliseValidator extends MockFactory {
+trait MockCrystallisationValidator extends MockFactory {
 
-  val mockIntentToCrystalliseValidator: IntentToCrystalliseValidator = mock[IntentToCrystalliseValidator]
+  val mockCrystallisationValidator: CrystallisationValidator = mock[CrystallisationValidator]
 
   object MockValidator {
 
-    def validate(data: IntentToCrystalliseRawData): CallHandler1[IntentToCrystalliseRawData, List[MtdError]] = {
-      (mockIntentToCrystalliseValidator
-        .validate(_: IntentToCrystalliseRawData))
+    def validate(data: CrystallisationRawData): CallHandler1[CrystallisationRawData, List[MtdError]] = {
+      (mockCrystallisationValidator
+        .validate(_: CrystallisationRawData))
         .expects(data)
     }
   }

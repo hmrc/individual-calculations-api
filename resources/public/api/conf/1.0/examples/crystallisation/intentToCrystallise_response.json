@@ -7,7 +7,7 @@
       "method": "GET"
     },
     {
-      "href": "/individuals/calculations/crystallisation/RW399019B/2019-20",
+      "href": "/individuals/calculations/crystallisation/RW399019B/2019-20/crystallise",
       "rel": "crystallise",
       "method": "POST"
     }

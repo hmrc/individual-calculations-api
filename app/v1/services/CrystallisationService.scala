@@ -20,26 +20,26 @@ import cats.data.EitherT
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.connectors.IntentToCrystalliseConnector
+import v1.connectors.CrystallisationConnector
 import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.intentToCrystallise.IntentToCrystalliseRequest
-import v1.models.response.intentToCrystallise.IntentToCrystalliseResponse
+import v1.models.request.crystallisation.CrystallisationRequest
+import v1.models.response.common.DesUnit
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnector) extends BackendResponseMappingSupport with Logging {
+class CrystallisationService @Inject()(connector: CrystallisationConnector) extends BackendResponseMappingSupport with Logging {
 
-  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
+  def declareCrystallisation(request: CrystallisationRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
-    logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
+    logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDesErrors(desErrorMap))
+      desResponseWrapper <- EitherT(connector.declareCrystallisation(request)).leftMap(mapDesErrors(desErrorMap))
     } yield desResponseWrapper
 
     result.value
@@ -47,12 +47,15 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
 
   private def desErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_NINO" -> NinoFormatError,
-      "INVALID_TAX_YEAR" -> TaxYearFormatError,
-      "INVALID_TAX_CRYSTALLISE" -> DownstreamError,
-      "INVALID_REQUEST" -> DownstreamError,
-      "NO_SUBMISSION_EXIST" -> RuleNoSubmissionsExistError,
-      "CONFLICT" -> RuleFinalDeclarationReceivedError,
+      "INVALID_IDTYPE" -> DownstreamError,
+      "INVALID_IDVALUE" -> NinoFormatError,
+      "INVALID_TAXYEAR" -> TaxYearFormatError,
+      "INVALID_CALCID" -> CalculationIdFormatError,
+      "NOT_FOUND" -> NotFoundError,
+      "INCOME_SOURCES_CHANGED" -> RuleIncomeSourcesChangedError,
+      "RECENT_SUBMISSIONS_EXIST" -> RuleRecentSubmissionsExistError,
+      "RESIDENCY_CHANGED" -> RuleResidencyChangedError,
+      "FINAL_DECLARATION_RECEIVED" -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR" -> DownstreamError,
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )
