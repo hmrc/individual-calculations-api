@@ -17,6 +17,7 @@
 package v1.services
 
 import cats.data.EitherT
+import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
@@ -36,7 +37,8 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
   def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
-    logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
+    logContext: EndpointLogContext,
+    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
 
     val result = for {
       desResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDesErrors(desErrorMap))

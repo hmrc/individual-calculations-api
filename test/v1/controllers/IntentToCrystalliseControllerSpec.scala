@@ -21,7 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.hateoas.HateoasLinks
-import v1.mocks.MockAppConfig
+import v1.mocks.{MockAppConfig, MockIdGenerator}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockIntentToCrystalliseRequestParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
@@ -45,7 +45,8 @@ class IntentToCrystalliseControllerSpec
     with MockAuditService
     with MockIntentToCrystalliseRequestParser
     with MockHateoasFactory
-    with HateoasLinks {
+    with HateoasLinks
+    with MockIdGenerator {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -57,12 +58,14 @@ class IntentToCrystalliseControllerSpec
       service = mockIntentToCrystalliseService,
       auditService = mockAuditService,
       hateoasFactory = mockHateoasFactory,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
     MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
 
     val links: List[Link] = List(
       getMetadata(mockAppConfig, nino, calculationId, isSelf = true),
@@ -157,7 +160,7 @@ class IntentToCrystalliseControllerSpec
 
             MockIntentToCrystalliseRequestParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None, expectedStatus)))
+              .returns(Left(ErrorWrapper(correlationId, error, None, expectedStatus)))
 
             val result: Future[Result] = controller.submitIntentToCrystallise(nino, taxYear)(fakeRequest)
 
@@ -191,7 +194,7 @@ class IntentToCrystalliseControllerSpec
 
             MockIntentToCrystalliseService
               .submitIntent(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError, None, expectedStatus))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError, None, expectedStatus))))
 
             val result: Future[Result] = controller.submitIntentToCrystallise(nino, taxYear)(fakeRequest)
 

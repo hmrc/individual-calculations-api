@@ -18,6 +18,7 @@ package v1.controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -27,7 +28,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getEoyEstimate.{EoyEstimateResponse, EoyEstimateHateoasData}
+import v1.models.response.getEoyEstimate.{EoyEstimateHateoasData, EoyEstimateResponse}
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -40,13 +41,14 @@ class GetEoyEstimateController @Inject()(
                                           service: StandardService,
                                           hateoasFactory: HateoasFactory,
                                           auditService: AuditService,
-                                          cc: ControllerComponents
+                                          cc: ControllerComponents,
+                                          idGenerator: IdGenerator,
                                         )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     EoyEstimateWrapperOrError,
     HateoasWrapper[EoyEstimateResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   override implicit val endpointLogContext: EndpointLogContext =
@@ -67,8 +69,8 @@ class GetEoyEstimateController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
-          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(ErrorWrapper(Some(responseWrapper.correlationId), EndOfYearEstimateNotPresentError, None, NOT_FOUND))
+          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(ErrorWrapper(responseWrapper.correlationId, EndOfYearEstimateNotPresentError, None, NOT_FOUND))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }

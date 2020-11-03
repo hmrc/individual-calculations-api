@@ -42,8 +42,8 @@ class StandardServiceSpec extends ServiceSpec {
     val mockConnector: StandardConnector = mock[StandardConnector]
 
     (mockConnector
-      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode))
-      .expects(requestDefn, *, *, *, *)
+      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode, _: String))
+      .expects(requestDefn, *, *, *, *, *)
       .returns(response)
 
     val service = new StandardService(mockConnector)
@@ -72,12 +72,12 @@ class StandardServiceSpec extends ServiceSpec {
 
     "map the errors according to the passthrough" in
       new Test(Future.successful(Left(ResponseWrapper("correlationId", BackendErrors.single(BAD_REQUEST, BackendErrorCode("PASSED_THROUGH")))))) {
-        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper(Some("correlationId"), PassedThroughError, None, BAD_REQUEST))
+        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper("correlationId", PassedThroughError, None, BAD_REQUEST))
       }
 
     "map the errors according to the mappings" in {
       new Test(Future.successful(Left(ResponseWrapper("correlationId", BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND_MAPPED")))))) {
-        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper(Some("correlationId"), MappedError, None, BAD_REQUEST))
+        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper("correlationId", MappedError, None, BAD_REQUEST))
       }
     }
   }

@@ -18,6 +18,7 @@ package v1.controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetMessagesParser
@@ -41,13 +42,14 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
                                       service: StandardService,
                                       hateoasFactory: HateoasFactory,
                                       auditService: AuditService,
-                                      cc: ControllerComponents
+                                      cc: ControllerComponents,
+                                      idGenerator: IdGenerator,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetMessagesRawData,
     GetMessagesRequest,
     MessagesResponse,
     HateoasWrapper[MessagesResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc)
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator)
     with MessagesFilter {
   controller =>
 
@@ -77,7 +79,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)
     } else {
-      Left(ErrorWrapper(Some(filteredResponse.correlationId), NoMessagesExistError, None, NOT_FOUND))
+      Left(ErrorWrapper(filteredResponse.correlationId, NoMessagesExistError, None, NOT_FOUND))
     }
   }
 

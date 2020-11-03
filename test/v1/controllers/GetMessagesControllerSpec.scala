@@ -23,6 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.handler.{RequestDefn, RequestHandler}
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationQueryParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -33,7 +34,7 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.{MessagesResponse, MessagesHateoasData}
+import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -41,15 +42,16 @@ import scala.concurrent.Future
 
 class GetMessagesControllerSpec
     extends ControllerBaseSpec
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockGetCalculationQueryParser
-    with MockStandardService
-    with MockHateoasFactory
-    with MockAuditService {
+      with MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockGetCalculationQueryParser
+      with MockStandardService
+      with MockHateoasFactory
+      with MockAuditService
+      with MockIdGenerator {
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new GetMessagesController(
       authService = mockEnrolmentsAuthService,
@@ -58,11 +60,13 @@ class GetMessagesControllerSpec
       service = mockStandardService,
       cc = cc,
       auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory
+      hateoasFactory = mockHateoasFactory,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"

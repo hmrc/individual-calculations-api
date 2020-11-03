@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.RequestDefn
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -39,12 +40,13 @@ import scala.concurrent.Future
 
 class ListCalculationsControllerSpec
     extends ControllerBaseSpec
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockListCalculationsParser
-    with MockHateoasFactory
-    with MockStandardService
-    with MockAuditService{
+      with MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockListCalculationsParser
+      with MockHateoasFactory
+      with MockStandardService
+      with MockAuditService
+      with MockIdGenerator {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -56,11 +58,13 @@ class ListCalculationsControllerSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"

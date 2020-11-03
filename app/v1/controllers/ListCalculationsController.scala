@@ -18,6 +18,7 @@ package v1.controllers
 
 import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.handler.{RequestDefn, RequestHandler}
@@ -39,13 +40,14 @@ class ListCalculationsController @Inject()(
                                             service: StandardService,
                                             hateoasFactory: HateoasFactory,
                                             auditService: AuditService,
-                                            cc: ControllerComponents
+                                            cc: ControllerComponents,
+                                            idGenerator: IdGenerator,
                                           )(implicit ec: ExecutionContext)
   extends StandardController[ListCalculationsRawData,
     ListCalculationsRequest,
     ListCalculationsResponse[CalculationListItem],
     HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]],
-    AnyContent](authService, lookupService, listCalculationsParser, service, auditService, cc) {
+    AnyContent](authService, lookupService, listCalculationsParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -88,6 +90,6 @@ class ListCalculationsController @Inject()(
   private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]):
   Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[CalculationListItem]]] =
     responseWrapper.toErrorWhen {
-      case response if response.calculations.isEmpty => ErrorWrapper(Some(responseWrapper.correlationId), NotFoundError, None, NOT_FOUND)
+      case response if response.calculations.isEmpty => ErrorWrapper(responseWrapper.correlationId, NotFoundError, None, NOT_FOUND)
     }
 }

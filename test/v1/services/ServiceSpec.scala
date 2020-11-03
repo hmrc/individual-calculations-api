@@ -32,6 +32,7 @@ trait ServiceSpec extends UnitSpec
   implicit val hc: HeaderCarrier = HeaderCarrier()
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
   implicit val lc: EndpointLogContext = EndpointLogContext("testController", "testEndpoint")
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   val nino = Nino("AA123456A")
 }

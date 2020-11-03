@@ -32,7 +32,8 @@ class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
 
   def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
+    ec: ExecutionContext,
+    correlationId: String): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
 
     import v1.connectors.httpparsers.StandardHttpParser._
 

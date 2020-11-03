@@ -43,15 +43,15 @@ trait MockStandardService extends MockFactory {
       }
 
       (mockStandardService
-        .doService(_: RequestHandler[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(correctRequestHandler, *, *, *)
+        .doService(_: RequestHandler[Resp, _])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier, _: String))
+        .expects(correctRequestHandler, *, *, *, *)
     }
 
     def doServiceWithMappings[BackendResp, APIResp](
         mappingAssertion: RequestHandler[BackendResp, APIResp] => Unit): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
       (mockStandardService
-        .doService(_: RequestHandler[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier))
-        .expects(argAssert(mappingAssertion), *, *, *)
+        .doService(_: RequestHandler[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier, _: String))
+        .expects(argAssert(mappingAssertion), *, *, *, *)
     }
   }
 }
