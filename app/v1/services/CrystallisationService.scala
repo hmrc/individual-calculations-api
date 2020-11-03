@@ -36,7 +36,8 @@ class CrystallisationService @Inject()(connector: CrystallisationConnector) exte
   def declareCrystallisation(request: CrystallisationRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
-    logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]] = {
+    logContext: EndpointLogContext,
+    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]] = {
 
     val result = for {
       desResponseWrapper <- EitherT(connector.declareCrystallisation(request)).leftMap(mapDesErrors(desErrorMap))

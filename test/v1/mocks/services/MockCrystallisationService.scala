@@ -36,8 +36,8 @@ trait MockCrystallisationService extends MockFactory {
 
     def submitIntent(requestData: CrystallisationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]]] = {
       (mockCrystallisationService
-        .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
-        .expects(requestData, *, *, *)
+        .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
+        .expects(requestData, *, *, *, *)
     }
   }
 
