@@ -37,6 +37,7 @@ class ControllerBaseSpec
     with Logging {
 
   implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   lazy val cc: ControllerComponents = stubControllerComponents()
 
@@ -55,7 +56,7 @@ class ControllerBaseSpec
     (requestHandling: RequestHandler[BackendResp, APIResp]) => {
 
       val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
-      val requiredError = ErrorWrapper(Some("ignoredCorrelationId"), mtdError, None, status)
+      val requiredError = ErrorWrapper("ignoredCorrelationId", mtdError, None, status)
 
       mapBackendErrors(requestHandling.passThroughErrors, requestHandling.customErrorMapping)(inputResponse) shouldBe
         requiredError

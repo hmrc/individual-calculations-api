@@ -22,7 +22,7 @@ import play.api.http.MimeTypes
 import play.api.libs.json.{Json, Reads, Writes}
 import play.api.mvc.{ControllerComponents, Request, Result}
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
-import utils.Logging
+import utils.{IdGenerator, Logging}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
 import v1.handler.{AuditHandler, RequestHandler}
@@ -39,7 +39,8 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     parser: RequestParser[Raw, Req],
     service: StandardService,
     auditService: AuditService,
-    cc: ControllerComponents
+    cc: ControllerComponents,
+    idGenerator: IdGenerator
 )(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
@@ -53,6 +54,11 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
   val successCode: SuccessCode
 
   def doHandleRequest(rawData: Raw, auditHandler: Option[AuditHandler[_]] = None)(implicit request: Request[A]): Future[Result] = {
+
+    implicit val correlationId: String = idGenerator.getCorrelationId
+    logger.info(message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
+      s"with correlationId : $correlationId")
+
     val result =
       for {
         parsedRequest <- EitherT.fromEither[Future](parser.parseRequest(rawData))
@@ -82,8 +88,9 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
       }
 
     result.leftMap { errorWrapper =>
-      val correlationId = getCorrelationId(errorWrapper)
-      val status        = errorWrapper.statusCode
+      val correlationId = errorWrapper.correlationId
+      val errorBody     = errorWrapper.errors
+      val status        = errorWrapper.errors.statusCode
 
       auditHandler.foreach { auditHandler =>
         def doAudit[D](auditHandler: AuditHandler[D]): Future[AuditResult] = {

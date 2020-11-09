@@ -23,12 +23,11 @@ import v1.models.errors.ErrorWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 trait MockTriggerCalculationParser extends MockFactory {
-
   val mockTriggerCalculationParser: TriggerCalculationParser = mock[TriggerCalculationParser]
 
   object MockTriggerCalculationParser {
     def parse(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequest]] = {
-      (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)).expects(data)
+      (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)(_: String)).expects(data, *)
     }
   }
 }

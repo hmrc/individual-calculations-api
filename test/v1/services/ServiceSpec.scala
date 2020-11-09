@@ -34,4 +34,5 @@ trait ServiceSpec extends UnitSpec
   implicit val lc: EndpointLogContext = EndpointLogContext("testController", "testEndpoint")
 
   val nino = Nino("AA123456A")
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 }

@@ -28,6 +28,8 @@ class GetMessagesParserSpec extends UnitSpec {
   val nino          = "AA111111A"
   val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
   trait Test extends MockGetMessagesValidator {
     lazy val parser = new GetMessagesParser(mockValidator)
   }
@@ -48,7 +50,8 @@ class GetMessagesParserSpec extends UnitSpec {
       val data = GetMessagesRawData(nino, calculationId, Seq("errors"))
       MockValidator.validate(data).returns(List(NinoFormatError))
 
-      parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
+      parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
+
     }
   }
 
@@ -58,8 +61,7 @@ class GetMessagesParserSpec extends UnitSpec {
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError, TypeFormatError))
 
       parser.parseRequest(data) shouldBe Left(
-        ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError, TypeFormatError)), BAD_REQUEST))
-
+        ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError, TypeFormatError)), BAD_REQUEST))
     }
   }
 

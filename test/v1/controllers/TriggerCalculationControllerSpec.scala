@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.{RequestDefn, RequestHandler}
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockTriggerCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -45,7 +46,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
   with MockTriggerCalculationParser
   with MockHateoasFactory
   with MockStandardService
-  with MockAuditService{
+  with MockAuditService
+  with MockIdGenerator {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -57,16 +59,17 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
       service = mockStandardService,
       cc = cc,
       auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory
+      hateoasFactory = mockHateoasFactory,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"
   private val taxYear       = "2017-18"
-  private val correlationId = "X-123"
 
   private case class TaxYearWrapper(taxYear: String)
    private object TaxYearWrapper {
@@ -90,7 +93,8 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
   val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
-  val error = ErrorWrapper(Some(correlationId), RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
+  val error = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
+
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 

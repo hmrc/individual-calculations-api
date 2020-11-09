@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.{RequestDefn, RequestHandler}
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -32,7 +33,11 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+<<<<<<< HEAD
 import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
+=======
+import v1.models.response.getMetadata.{MetadataHateoasData, MetadataResponse}
+>>>>>>> MTDSA-7540 Correlation ID Generation
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,7 +50,9 @@ class GetMetadataControllerSpec
     with MockGetCalculationParser
     with MockStandardService
     with MockHateoasFactory
-    with MockAuditService{
+    with MockAuditService
+    with MockIdGenerator {
+
 
   trait Test {
     val hc = HeaderCarrier()
@@ -57,16 +64,17 @@ class GetMetadataControllerSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"
   private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "X-123"
 
   val responseBody: JsValue = Json.parse("""
       |{
@@ -101,7 +109,7 @@ class GetMetadataControllerSpec
     metadataExistence = None
   )
 
-  val error: ErrorWrapper = ErrorWrapper(Some(correlationId), NotFoundError, None, NOT_FOUND)
+  val error: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError, None, NOT_FOUND)
 
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)

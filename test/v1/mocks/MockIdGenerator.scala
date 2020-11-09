@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package v1.mocks.requestParsers
+package v1.mocks
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v1.controllers.requestParsers.GetCalculationParser
-import v1.models.errors.ErrorWrapper
-import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import utils.IdGenerator
 
-trait MockGetCalculationParser extends MockFactory {
+trait MockIdGenerator extends MockFactory {
+  val mockIdGenerator: IdGenerator = mock[IdGenerator]
 
-  val mockGetCalculationParser: GetCalculationParser = mock[GetCalculationParser]
-
-  object MockGetCalculationParser {
-    def parse(data: GetCalculationRawData): CallHandler[Either[ErrorWrapper, GetCalculationRequest]] = {
-      (mockGetCalculationParser.parseRequest(_: GetCalculationRawData)(_: String)).expects(data, *)
-    }
+  object MockIdGenerator {
+    def generateCorrelationId: CallHandler[String] = (mockIdGenerator.getCorrelationId _).expects()
   }
 }

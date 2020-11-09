@@ -32,7 +32,8 @@ class StandardService @Inject()(connector: StandardConnector) extends BackendRes
 
   def doService[Req, Resp](requestHandler: RequestHandler[Resp, _])(implicit logContext: EndpointLogContext,
                                                                      ec: ExecutionContext,
-                                                                     hc: HeaderCarrier): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
+                                                                     hc: HeaderCarrier,
+                                                                     correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
 
     import requestHandler._
 

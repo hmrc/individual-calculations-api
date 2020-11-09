@@ -18,6 +18,7 @@ package v1.controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -38,13 +39,14 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
                                       service: StandardService,
                                       hateoasFactory: HateoasFactory,
                                       auditService: AuditService,
-                                      cc: ControllerComponents
+                                      cc: ControllerComponents,
+                                      val idGenerator: IdGenerator
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     MetadataResponse,
     HateoasWrapper[MetadataResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =

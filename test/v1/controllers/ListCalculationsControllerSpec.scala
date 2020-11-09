@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.RequestDefn
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -44,7 +45,8 @@ class ListCalculationsControllerSpec
     with MockListCalculationsParser
     with MockHateoasFactory
     with MockStandardService
-    with MockAuditService{
+    with MockAuditService
+    with MockIdGenerator {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -56,16 +58,17 @@ class ListCalculationsControllerSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"
   private val taxYear       = "2017-18"
-  private val correlationId = "X-123"
 
   val responseBody: JsValue = Json.parse("""{
       |  "calculations": [

@@ -30,9 +30,9 @@ trait BaseConnector {
   val http: HttpClient
   val appConfig: AppConfig
 
-  val logger = Logger(this.getClass)
+  val logger: Logger = Logger(this.getClass)
 
-  private[connectors] def headerCarrier(implicit hc: HeaderCarrier): HeaderCarrier = hc
+  private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
 
   private[connectors] def desHeaderCarrier(implicit hc: HeaderCarrier): HeaderCarrier =
     hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
@@ -43,13 +43,14 @@ trait BaseConnector {
 
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
                                                      hc: HeaderCarrier,
-                                                     httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+                                                     httpReads: HttpReads[BackendOutcome[T]],
+                                                     correlationId: String): Future[BackendOutcome[T]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
       http.POST(urlFrom(uri), body)
     }
 
-    doPost(headerCarrier(hc))
+    doPost(headerCarrier(hc, correlationId))
   }
 
   def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
@@ -65,11 +66,12 @@ trait BaseConnector {
 
   def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,
                                                                         hc: HeaderCarrier,
-                                                                        httpReads: HttpReads[BackendOutcome[T]]): Future[BackendOutcome[T]] = {
+                                                                        httpReads: HttpReads[BackendOutcome[T]],
+                                                                        correlationId: String): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
       http.GET(urlFrom(uri), queryParameters)
 
-    doGet(headerCarrier(hc))
+    doGet(headerCarrier(hc, correlationId))
   }
 }

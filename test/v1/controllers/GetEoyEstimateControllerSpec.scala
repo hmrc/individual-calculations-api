@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture
 import v1.handler.RequestDefn
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -44,10 +45,16 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   with MockGetCalculationParser
   with MockStandardService
   with MockHateoasFactory
-  with MockAuditService {
+  with MockAuditService
+  with MockIdGenerator {
+
+  private val nino = "AA123456A"
+  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val rawData = GetCalculationRawData(nino, calcId)
+  private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new GetEoyEstimateController(
       authService = mockEnrolmentsAuthService,
@@ -56,21 +63,16 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
-  private val nino = "AA123456A"
-  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "X-123"
-
-  private val rawData = GetCalculationRawData(nino, calcId)
-  private val requestData = GetCalculationRequest(Nino(nino), calcId)
-
-  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel="test-relationship")
+  val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel="test-relationship")
 
   val linksJson: JsObject = Json.parse(
     """{
@@ -109,10 +111,11 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -133,10 +136,11 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -157,10 +161,11 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(EndOfYearEstimateNotPresentError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(EndOfYearEstimateNotPresentError.code))), None))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
