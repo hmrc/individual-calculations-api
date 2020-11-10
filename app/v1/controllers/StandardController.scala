@@ -56,6 +56,9 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
   def doHandleRequest(rawData: Raw, auditHandler: Option[AuditHandler[_]] = None)(implicit request: Request[A]): Future[Result] = {
 
     implicit val correlationId: String = idGenerator.getCorrelationId
+    logger.info(
+      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
+        s"with CorrelationId: $correlationId")
 
     val result =
       for {
