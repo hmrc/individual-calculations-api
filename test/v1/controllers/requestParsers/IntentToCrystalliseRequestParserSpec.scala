@@ -28,6 +28,8 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
   val nino    = "AA123456B"
   val taxYear = "2017-18"
 
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
   trait Test extends MockIntentToCrystalliseValidator {
     lazy val parser = new IntentToCrystalliseRequestParser(mockIntentToCrystalliseValidator)
   }
@@ -47,7 +49,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
         val data = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
@@ -56,7 +58,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
         val data = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }

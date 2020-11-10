@@ -33,11 +33,8 @@ import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
-<<<<<<< HEAD
 import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
-=======
-import v1.models.response.getMetadata.{MetadataHateoasData, MetadataResponse}
->>>>>>> MTDSA-7540 Correlation ID Generation
+
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global

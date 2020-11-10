@@ -90,6 +90,6 @@ class ListCalculationsController @Inject()(
   private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]):
   Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[CalculationListItem]]] =
     responseWrapper.toErrorWhen {
-      case response if response.calculations.isEmpty => ErrorWrapper(Some(responseWrapper.correlationId), NotFoundError, None, NOT_FOUND)
+      case response if response.calculations.isEmpty => ErrorWrapper(responseWrapper.correlationId, NotFoundError, None, NOT_FOUND)
     }
 }

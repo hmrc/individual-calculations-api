@@ -24,7 +24,6 @@ import scala.concurrent.Future
 
 class MtdIdLookupConnectorSpec extends ConnectorSpec {
 
-  private val nino = Nino("AA123456A")
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector = new MtdIdLookupConnector(

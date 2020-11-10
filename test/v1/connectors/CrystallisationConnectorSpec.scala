@@ -27,12 +27,11 @@ import scala.concurrent.Future
 
 class CrystallisationConnectorSpec extends ConnectorSpec {
 
-  val nino: String = "AA111111A"
   val taxYear: DesTaxYear = DesTaxYear.fromMtd("2021-22")
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: CrystallisationRequest = CrystallisationRequest(
-    Nino(nino),
+    nino,
     taxYear,
     calculationId
   )

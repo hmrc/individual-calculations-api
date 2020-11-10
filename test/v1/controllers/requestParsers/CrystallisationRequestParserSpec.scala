@@ -31,6 +31,8 @@ class CrystallisationRequestParserSpec extends UnitSpec {
   private val taxYear = "2017-18"
   private val calculationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
   trait Test extends MockCrystallisationValidator {
     lazy val parser = new CrystallisationRequestParser(mockCrystallisationValidator)
   }
@@ -50,7 +52,7 @@ class CrystallisationRequestParserSpec extends UnitSpec {
         val data = CrystallisationRawData("invalidNino", taxYear, AnyContentAsJson(Json.obj("calculationId" -> calculationId)))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError, None, BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
@@ -60,7 +62,7 @@ class CrystallisationRequestParserSpec extends UnitSpec {
         MockValidator.validate(data).returns(List(NinoFormatError, RuleTaxYearRangeInvalidError))
 
         parser.parseRequest(data) shouldBe
-          Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, RuleTaxYearRangeInvalidError)), BAD_REQUEST))
+          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleTaxYearRangeInvalidError)), BAD_REQUEST))
       }
     }
   }

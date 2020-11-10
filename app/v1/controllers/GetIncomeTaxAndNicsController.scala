@@ -72,7 +72,8 @@ class GetIncomeTaxAndNicsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.ErrorsInCalculation =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }

@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockCrystallisationRequestParser
 import v1.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
@@ -39,6 +40,7 @@ class CrystallisationControllerSpec
     with MockCrystallisationService
     with MockAuditService
     with MockCrystallisationRequestParser
+    with MockIdGenerator
 {
 
   trait Test {
@@ -50,18 +52,19 @@ class CrystallisationControllerSpec
       requestParser = mockCrystallisationRequestParser,
       service = mockCrystallisationService,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
   val nino: String = "AA123456A"
   val taxYear: String = "2019-20"
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
   val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
-  val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   val rawData: CrystallisationRawData = CrystallisationRawData(
     nino = nino,
@@ -119,7 +122,7 @@ class CrystallisationControllerSpec
 
             MockCrystallisationRequestParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None, expectedStatus)))
+              .returns(Left(ErrorWrapper(correlationId, error, None, expectedStatus)))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
@@ -155,7 +158,7 @@ class CrystallisationControllerSpec
 
             MockCrystallisationService
               .submitIntent(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError, None, expectedStatus))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError, None, expectedStatus))))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 

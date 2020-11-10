@@ -89,8 +89,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
 
     result.leftMap { errorWrapper =>
       val correlationId = errorWrapper.correlationId
-      val errorBody     = errorWrapper.errors
-      val status        = errorWrapper.errors.statusCode
+      val status        = errorWrapper.statusCode
 
       auditHandler.foreach { auditHandler =>
         def doAudit[D](auditHandler: AuditHandler[D]): Future[AuditResult] = {

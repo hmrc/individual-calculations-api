@@ -37,7 +37,6 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
   "IntentToCrystalliseService" when {
     val nino = "AA112233A"
     val taxYear = "2019-20"
-    val correlationId = "X-corr"
 
     val request: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
       nino = Nino(nino),
@@ -66,7 +65,7 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
             MockIntentToCrystalliseConnector.submitIntent(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(desErrorStatus, BackendErrorCode(desErrorCode))))))
 
-            await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(Some(correlationId), error, None, desErrorStatus))
+            await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, desErrorStatus))
           }
 
         val input = Seq(

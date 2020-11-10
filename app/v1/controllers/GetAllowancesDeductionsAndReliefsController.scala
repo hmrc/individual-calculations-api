@@ -70,8 +70,10 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
-          case CalculationWrapperOrError.CalculationWrapper(calc) => if (calc.isEmpty) Left(ErrorWrapper(Some(responseWrapper.correlationId), NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND)) else Right(calc)
+          case CalculationWrapperOrError.ErrorsInCalculation =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.CalculationWrapper(calc) =>
+            if (calc.isEmpty) Left(ErrorWrapper(responseWrapper.correlationId, NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND)) else Right(calc)
         }
       }
       .mapSuccessSimple(rawResponse =>
