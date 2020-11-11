@@ -25,7 +25,6 @@ import scala.concurrent.ExecutionContext
 trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
   lazy val baseUrl  = "test-BaseUrl"
 
-
   implicit val hc: HeaderCarrier    = HeaderCarrier().withExtraHeaders("Authorization" -> "Bearer user-token")
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
