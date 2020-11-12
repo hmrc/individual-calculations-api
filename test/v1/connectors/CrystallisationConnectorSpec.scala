@@ -58,7 +58,7 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
           .post(
             url = s"$baseUrl/income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise",
             body = EmptyJsonBody,
-            requiredHeaders = "Environment" -> "des-environment", "Authorization" -> s"Bearer des-token"
+            requiredHeaders = requiredHeaders :_*
           ).returns(Future.successful(outcome))
 
         await(connector.declareCrystallisation(request)) shouldBe outcome

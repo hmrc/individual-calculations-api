@@ -18,6 +18,7 @@ package v1.controllers
 
 import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -27,7 +28,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getIncomeTaxAndNics.{IncomeTaxAndNicsResponse, IncomeTaxAndNicsHateoasData}
+import v1.models.response.getIncomeTaxAndNics.{IncomeTaxAndNicsHateoasData, IncomeTaxAndNicsResponse}
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
@@ -40,13 +41,14 @@ class GetIncomeTaxAndNicsController @Inject()(
                                                service: StandardService,
                                                hateoasFactory: HateoasFactory,
                                                auditService: AuditService,
-                                               cc: ControllerComponents
+                                               cc: ControllerComponents,
+                                               idGenerator: IdGenerator,
                                              )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     CalculationWrapperOrError[IncomeTaxAndNicsResponse],
     HateoasWrapper[IncomeTaxAndNicsResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -70,7 +72,7 @@ class GetIncomeTaxAndNicsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(Some(responseWrapper.correlationId), RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }

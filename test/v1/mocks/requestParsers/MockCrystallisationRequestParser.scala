@@ -30,8 +30,8 @@ trait MockCrystallisationRequestParser extends MockFactory {
 
     def parse(data: CrystallisationRawData): CallHandler[Either[ErrorWrapper, CrystallisationRequest]] = {
       (mockCrystallisationRequestParser
-        .parseRequest(_: CrystallisationRawData))
-        .expects(data)
+        .parseRequest(_: CrystallisationRawData)(_: String))
+        .expects(data, *)
     }
   }
 }

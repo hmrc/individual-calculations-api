@@ -64,7 +64,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "use the mapping and wrap" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("ERR1")))) shouldBe
-            ErrorWrapper(Some(correlationId), Error1, None, mtdStatus)
+            ErrorWrapper(correlationId, Error1, None, mtdStatus)
         }
       }
 
@@ -72,7 +72,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "pass it through" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("PASS_THROUGH")))) shouldBe
-            ErrorWrapper(Some(correlationId), ErrorPassthrough, None, backendStatus)
+            ErrorWrapper(correlationId, ErrorPassthrough, None, backendStatus)
         }
       }
 
@@ -80,7 +80,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "default to DownstreamError and wrap" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors.single(backendStatus, BackendErrorCode("UNKNOWN")))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -90,7 +90,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "use the mapping and wrap with main error type of BadRequest" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(Error1, Error2)), BAD_REQUEST)
+            ErrorWrapper(correlationId, BadRequestError, Some(Seq(Error1, Error2)), BAD_REQUEST)
         }
       }
 
@@ -98,7 +98,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "pass it through (but as bad request)" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("PASS_THROUGH"), BackendErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(ErrorPassthrough, Error2)), BAD_REQUEST)
+            ErrorWrapper(correlationId, BadRequestError, Some(Seq(ErrorPassthrough, Error2)), BAD_REQUEST)
         }
       }
 
@@ -108,7 +108,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
             ResponseWrapper(correlationId,
                             BackendErrors(backendStatus,
                                           List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
 
@@ -118,7 +118,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
             ResponseWrapper(
               correlationId,
               BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("DS"))))) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -126,7 +126,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     "the error code is an OutboundError" must {
       "return the error as is (in an ErrorWrapper) with a 400" in {
         mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain, None, backendStatus)
+          ErrorWrapper(correlationId, ErrorBvrMain, None, backendStatus)
       }
     }
 
@@ -134,7 +134,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
           ResponseWrapper(correlationId, OutboundError(backendStatus, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain, Some(Seq(ErrorBvr)), backendStatus)
+          ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)), backendStatus)
       }
     }
   }
@@ -146,7 +146,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
           val error: BackendErrors = BackendErrors.single(BAD_REQUEST, BackendErrorCode("ERR1"))
 
           mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, error)) shouldBe
-            ErrorWrapper(Some(correlationId), Error1, None, BAD_REQUEST)
+            ErrorWrapper(correlationId, Error1, None, BAD_REQUEST)
         }
       }
 
@@ -155,7 +155,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
           val error: BackendError = BackendErrors.single(INTERNAL_SERVER_ERROR, BackendErrorCode("UNKNOWN"))
 
           mapping.mapDesErrors (desErrorCodeMap)(ResponseWrapper(correlationId, error)) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -166,7 +166,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
           val errors: BackendErrors = BackendErrors(BAD_REQUEST, List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2")))
 
           mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, errors)) shouldBe
-            ErrorWrapper(Some(correlationId), BadRequestError, Some(Seq(Error1, Error2)), BAD_REQUEST)
+            ErrorWrapper(correlationId, BadRequestError, Some(Seq(Error1, Error2)), BAD_REQUEST)
         }
       }
 
@@ -175,7 +175,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
           val errors: BackendErrors = BackendErrors(INTERNAL_SERVER_ERROR, List(BackendErrorCode("ERR1"), BackendErrorCode("UNKNOWN")))
 
           mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, errors)) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
 
@@ -184,7 +184,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
           val errors: BackendErrors = BackendErrors(INTERNAL_SERVER_ERROR, List(BackendErrorCode("ERR1"), BackendErrorCode("DS")))
 
           mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, errors)) shouldBe
-            ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+            ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
     }
@@ -192,14 +192,14 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     "the error code is an OutboundError" must {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain, None, BAD_REQUEST)
+          ErrorWrapper(correlationId, ErrorBvrMain, None, BAD_REQUEST)
       }
     }
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapDesErrors(desErrorCodeMap)(ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
-          ErrorWrapper(Some(correlationId), ErrorBvrMain, Some(Seq(ErrorBvr)), BAD_REQUEST)
+          ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)), BAD_REQUEST)
       }
     }
   }

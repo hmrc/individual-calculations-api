@@ -29,7 +29,7 @@ trait MockGetCalculationQueryParser extends MockFactory {
 
   object MockGetCalculationQueryParser {
     def parse(data: GetMessagesRawData): CallHandler[Either[ErrorWrapper, GetMessagesRequest]] = {
-      (mockGetCalculationQueryParser.parseRequest(_: GetMessagesRawData)).expects(data)
+      (mockGetCalculationQueryParser.parseRequest(_: GetMessagesRawData)(_: String)).expects(data, *)
     }
   }
 }

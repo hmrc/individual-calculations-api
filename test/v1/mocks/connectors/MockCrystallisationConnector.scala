@@ -33,8 +33,8 @@ trait MockCrystallisationConnector extends MockFactory {
 
     def submitIntent(request: CrystallisationRequest): CallHandler[Future[BackendOutcome[DesUnit]]] = {
       (mockCrystallisationConnector
-        .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(request, *, *)
+        .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(request, *, *, *)
     }
   }
 }

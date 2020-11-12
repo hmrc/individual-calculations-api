@@ -87,7 +87,7 @@ class BaseConnectorSpec extends ConnectorSpec {
       MockedAppConfig.backendBaseUrl returns baseUrl
 
       MockedHttpClient
-        .get(absoluteUrl, Seq(("key", "value")), "Authorization" -> s"Bearer user-token")
+        .get(absoluteUrl, Seq(("key", "value")), requiredHeaders :_*)
         .returns(Future.successful(outcome))
 
       await(connector.get(url, Seq(("key", "value")))) shouldBe outcome

@@ -46,7 +46,7 @@ trait BackendResponseMappingSupport {
     backendResponseWrapper match {
       case ResponseWrapper(correlationId, BackendErrors(backendStatusCode, backendErrorCode :: Nil)) =>
         val (statusCode, mtdError) = map(backendStatusCode, backendErrorCode)
-        ErrorWrapper(Some(correlationId), mtdError, None, statusCode)
+        ErrorWrapper(correlationId, mtdError, None, statusCode)
 
       case ResponseWrapper(correlationId, BackendErrors(backendStatusCode, backendErrorCodes)) =>
         val mtdErrors = backendErrorCodes.map(errorCode => map(backendStatusCode, errorCode)).map(_._2)
@@ -55,13 +55,13 @@ trait BackendResponseMappingSupport {
           logger.info(
             s"[${logContext.controllerName}] [${logContext.endpointName}] [CorrelationId - $correlationId]" +
               s" - downstream returned ${backendErrorCodes.map(_.code).mkString(",")}. Revert to ISE")
-          ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+          ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         } else {
-          ErrorWrapper(Some(correlationId), BadRequestError, Some(mtdErrors), BAD_REQUEST)
+          ErrorWrapper(correlationId, BadRequestError, Some(mtdErrors), BAD_REQUEST)
         }
 
       case ResponseWrapper(correlationId, OutboundError(statusCode, error, errors)) =>
-        ErrorWrapper(Some(correlationId), error, errors, statusCode)
+        ErrorWrapper(correlationId, error, errors, statusCode)
     }
   }
 
@@ -75,7 +75,7 @@ trait BackendResponseMappingSupport {
 
     desResponseWrapper match {
       case ResponseWrapper(correlationId, BackendErrors(statusCode, error :: Nil)) =>
-        ErrorWrapper(Some(correlationId), errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None, statusCode)
+        ErrorWrapper(correlationId, errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None, statusCode)
 
       case ResponseWrapper(correlationId, BackendErrors(_, errorCodes)) =>
         val mtdErrors = errorCodes.map(error => errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping))
@@ -84,13 +84,13 @@ trait BackendResponseMappingSupport {
           logger.info(
             s"[${logContext.controllerName}] [${logContext.endpointName}] [CorrelationId - $correlationId]" +
               s" - downstream returned ${errorCodes.map(_.code).mkString(",")}. Revert to ISE")
-          ErrorWrapper(Some(correlationId), DownstreamError, None, INTERNAL_SERVER_ERROR)
+          ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         } else {
-          ErrorWrapper(Some(correlationId), BadRequestError, Some(mtdErrors), BAD_REQUEST)
+          ErrorWrapper(correlationId, BadRequestError, Some(mtdErrors), BAD_REQUEST)
         }
 
       case ResponseWrapper(correlationId, OutboundError(statusCode, error, errors)) =>
-        ErrorWrapper(Some(correlationId), error, errors, statusCode)
+        ErrorWrapper(correlationId, error, errors, statusCode)
     }
   }
 

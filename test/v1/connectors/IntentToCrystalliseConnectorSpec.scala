@@ -59,7 +59,7 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
           .post(
             url = s"$baseUrl/income-tax/nino/$nino/taxYear/${taxYear.value}/tax-calculation?crystallise=true",
             body = EmptyJsonBody,
-            requiredHeaders = "Environment" -> "des-environment", "Authorization" -> s"Bearer des-token"
+            requiredHeaders = requiredHeaders :_*
           ).returns(Future.successful(outcome))
 
         await(connector.submitIntentToCrystallise(request)) shouldBe outcome

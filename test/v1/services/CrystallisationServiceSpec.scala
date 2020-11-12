@@ -38,7 +38,6 @@ class CrystallisationServiceSpec extends ServiceSpec {
     val nino = "AA112233A"
     val taxYear = "2019-20"
     val calculationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
-    val correlationId = "X-corr"
 
     val request: CrystallisationRequest = CrystallisationRequest(
       nino = Nino(nino),
@@ -64,7 +63,7 @@ class CrystallisationServiceSpec extends ServiceSpec {
             MockCrystallisationConnector.submitIntent(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(desErrorStatus, BackendErrorCode(desErrorCode))))))
 
-            await(service.declareCrystallisation(request)) shouldBe Left(ErrorWrapper(Some(correlationId), error, None, desErrorStatus))
+            await(service.declareCrystallisation(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, desErrorStatus))
           }
 
         val input = Seq(

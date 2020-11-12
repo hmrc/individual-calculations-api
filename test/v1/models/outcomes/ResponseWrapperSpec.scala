@@ -40,14 +40,14 @@ class ResponseWrapperSpec extends UnitSpec {
       }
 
       "wrap an error response correctly" in {
-        val err = ErrorWrapper(Some("id"), DownstreamError, None, IM_A_TEAPOT)
+        val err = ErrorWrapper("id", DownstreamError, None, IM_A_TEAPOT)
         val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
         mappedResponse shouldBe Left(err)
       }
     }
 
     "toErrorWhen" should {
-      val err = ErrorWrapper(Some("id"), MtdError("anErrorCode", "aMessage"), None, BAD_REQUEST)
+      val err = ErrorWrapper("id", MtdError("anErrorCode", "aMessage"), None, BAD_REQUEST)
 
       "return a success when the error condition is not met" in {
         wrappedResponse.toErrorWhen { case "" => err } shouldBe Right(wrappedResponse)

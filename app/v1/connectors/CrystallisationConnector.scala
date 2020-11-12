@@ -32,7 +32,8 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
 
   def declareCrystallisation(request: CrystallisationRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[BackendOutcome[DesUnit]] = {
+    ec: ExecutionContext,
+    correlationId: String): Future[BackendOutcome[DesUnit]] = {
 
     import v1.connectors.httpparsers.StandardHttpParser._
     import request._

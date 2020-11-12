@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package v1.controllers
+package utils
 
-import play.api.mvc.Result
-import utils.Logging
+import support.UnitSpec
 
-trait BaseController {
-  self: Logging =>
+class IdGeneratorSpec extends UnitSpec {
 
-  implicit class Response(result: Result) {
+  val generator = new IdGenerator
+  val correlationRegex = "^[A-Za-z0-9\\-]{36}$"
 
-    def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
-
-      val newHeaders: Seq[(String, String)] = responseHeaders ++ Seq(
-        "X-CorrelationId" -> correlationId,
-        "X-Content-Type-Options" -> "nosniff",
-        "Content-Type" -> "application/json"
-      )
-
-      result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
+  "IdGenerator" should {
+    "generate a correlation id" when {
+      "getCorrelationId is called" in {
+        generator.getCorrelationId.matches(correlationRegex) shouldBe true
+      }
     }
   }
-
 }
-
-

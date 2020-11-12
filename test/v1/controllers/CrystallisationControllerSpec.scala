@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockCrystallisationRequestParser
 import v1.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
@@ -39,6 +40,7 @@ class CrystallisationControllerSpec
     with MockCrystallisationService
     with MockAuditService
     with MockCrystallisationRequestParser
+    with MockIdGenerator
 {
 
   trait Test {
@@ -50,11 +52,13 @@ class CrystallisationControllerSpec
       requestParser = mockCrystallisationRequestParser,
       service = mockCrystallisationService,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
   val nino: String = "AA123456A"
@@ -119,7 +123,7 @@ class CrystallisationControllerSpec
 
             MockCrystallisationRequestParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None, expectedStatus)))
+              .returns(Left(ErrorWrapper(correlationId, error, None, expectedStatus)))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
@@ -155,7 +159,7 @@ class CrystallisationControllerSpec
 
             MockCrystallisationService
               .submitIntent(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError, None, expectedStatus))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError, None, expectedStatus))))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
