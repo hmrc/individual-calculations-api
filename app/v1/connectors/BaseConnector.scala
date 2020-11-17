@@ -33,6 +33,7 @@ trait BaseConnector {
   val logger: Logger = Logger(this.getClass)
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
+    .withExtraHeaders("CorrelationId" -> correlationId)
 
   private[connectors] def desHeaderCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier =
     hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
@@ -73,9 +74,6 @@ trait BaseConnector {
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
       http.GET(urlFrom(uri), queryParameters)
 
-    doGet(headerCarrier(hc, correlationId).withExtraHeaders(
-      "Environment" -> "des-environment",
-      "Authorization" -> s"Bearer des-token",
-      "CorrelationId" -> correlationId))
+    doGet(headerCarrier(hc, correlationId))
   }
 }

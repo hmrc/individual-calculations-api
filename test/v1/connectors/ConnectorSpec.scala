@@ -30,8 +30,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   val requiredHeaders: Seq[(String, String)] = Seq(
-    "Environment" -> "des-environment",
-    "Authorization" -> s"Bearer des-token",
+    "Authorization" -> s"Bearer user-token",
     "CorrelationId" -> s"$correlationId"
   )
 }
