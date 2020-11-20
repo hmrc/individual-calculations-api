@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class StandardConnector @Inject()(val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
 
   def doRequest[Resp: Reads](
-      request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext, successCode: SuccessCode): Future[BackendOutcome[Resp]] = {
+      request: RequestDefn)(implicit hc: HeaderCarrier, ec: ExecutionContext, successCode: SuccessCode, correlationId: String): Future[BackendOutcome[Resp]] = {
     request match {
       case Get(uri, params) => get(uri, params)
       case Post(uri, body)  => post(body, uri)

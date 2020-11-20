@@ -34,6 +34,13 @@ trait GraphQLQuery {
       |    crystallised
       |    totalIncomeTaxAndNicsDue
       |    calculationErrorCount
+      |    metadataExistence {
+      |      incomeTaxAndNicsCalculated
+      |      messages
+      |      taxableIncome
+      |      endOfYearEstimate
+      |      allowancesDeductionsAndReliefs
+      |    }
       |  }
       |}
       |""".stripMargin
@@ -57,6 +64,20 @@ trait GraphQLQuery {
       |        giftOfInvestmentsAndPropertyToCharity
       |        blindPersonsAllowance
       |        lossesAppliedToGeneralIncome
+      |        qualifyingLoanInterestFromInvestments
+      |        postCessationTradeReceipts
+      |        paymentsToTradeUnionsForDeathBenefits
+      |        annualPayments {
+      |          grossAnnualPayments
+      |          reliefClaimed
+      |          rate
+      |        }
+      |        pensionContributions {
+      |          totalPensionContributions
+      |          retirementAnnuityPayments
+      |          paymentToEmployersSchemeNoTaxRelief
+      |          overseasPensionSchemeContributions
+      |        }
       |      }
       |      reliefs {
       |        residentialFinanceCosts {
@@ -64,6 +85,26 @@ trait GraphQLQuery {
       |          allowableAmount
       |          rate
       |          propertyFinanceRelief
+      |        }
+      |        foreignTaxCreditRelief {
+      |          incomeSourceType
+      |          incomeSourceId
+      |          countryCode
+      |          allowableAmount
+      |          rate
+      |          amountUsed
+      |        }
+      |        pensionContributionReliefs {
+      |          totalPensionContributionReliefs
+      |          regularPensionContributions
+      |          oneOffPensionContributionsPaid
+      |        }
+      |        reliefsClaimed {
+      |          type
+      |          amountClaimed
+      |          allowableAmount
+      |          amountUsed
+      |          rate
       |        }
       |      }
       |    }
@@ -115,6 +156,22 @@ trait GraphQLQuery {
       |      ukDividends {
       |        taxableIncome
       |      }
+      |      otherDividends {
+      |        taxableIncome
+      |      }
+      |      stateBenefits {
+      |        taxableIncome
+      |      }
+      |      ukSecurities {
+      |        taxableIncome
+      |      }
+      |      foreignProperty {
+      |        taxableIncome
+      |        finalised
+      |      }
+      |      foreignInterest {
+      |        taxableIncome
+      |      }
       |    }
       |  }
       |}
@@ -122,6 +179,26 @@ trait GraphQLQuery {
 
   val INCOME_TAX_AND_NICS_QUERY: String =
     """
+      |fragment incomeTypeBreakdown on IncomeTypeBreakdown {
+      |  allowancesAllocated
+      |  incomeTaxAmount
+      |  taxBands {
+      |    name
+      |    rate
+      |    bandLimit
+      |    apportionedBandLimit
+      |    income
+      |    taxAmount
+      |  }
+      |}
+      |
+      |fragment pensionTypeBreakdown on PensionTypeBreakdown {
+      |  amount
+      |  taxPaid
+      |  rate
+      |  chargeableAmount
+      |}
+      |
       |{
       |  metadata {
       |    id
@@ -133,12 +210,20 @@ trait GraphQLQuery {
       |        incomeTaxCharged
       |        incomeTaxDueAfterReliefs
       |        incomeTaxDueAfterGiftAid
+      |        totalNotionalTax
+      |        totalPensionSavingsTaxCharges
+      |        statePensionLumpSumCharges
+      |        incomeTaxDueAfterTaxReductions
+      |        totalIncomeTaxDue
       |      }
       |      nics {
       |        class2NicsAmount
       |        class4NicsAmount
       |        totalNic
       |      }
+      |      totalStudentLoansRepaymentAmount
+      |      totalAnnualPaymentsTaxCharged
+      |      totalRoyaltyPaymentsTaxCharged
       |      totalIncomeTaxNicsCharged
       |      totalTaxDeducted
       |      totalIncomeTaxAndNicsDue
@@ -147,45 +232,87 @@ trait GraphQLQuery {
       |    detail {
       |      incomeTax {
       |        payPensionsProfit {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
       |        }
       |        savingsAndGains {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
+      |        }
+      |        lumpSums {
+      |          ...incomeTypeBreakdown
       |        }
       |        dividends {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
+      |        }
+      |        gainsOnLifePolicies {
+      |          ...incomeTypeBreakdown
       |        }
       |        giftAid {
       |          grossGiftAidPayments
       |          rate
       |          giftAidTax
+      |        }
+      |      }
+      |      studentLoans {
+      |        planType
+      |        studentLoanTotalIncomeAmount
+      |        studentLoanChargeableIncomeAmount
+      |        studentLoanRepaymentAmount
+      |        studentLoanDeductionsFromEmployment
+      |        studentLoanRepaymentAmountNetOfDeductions
+      |        studentLoanApportionedIncomeThreshold
+      |        studentLoanRate
+      |      }
+      |      pensionSavingsTaxCharges {
+      |        totalPensionCharges
+      |        totalTaxPaid
+      |        totalPensionChargesDue
+      |        pensionSavingsTaxChargesDetail {
+      |          lumpSumBenefitTakenInExcessOfLifetimeAllowance {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          benefitInExcessOfLifetimeAllowance {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeUnauthorisedPaymentsSurcharge {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeUnauthorisedPaymentsNonSurcharge {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeOverseasTransfers {
+      |            transferCharge
+      |            transferChargeTaxPaid
+      |            rate
+      |            chargeableAmount
+      |          }
+      |          pensionContributionsInExcessOfTheAnnualAllowance {
+      |            totalContributions
+      |            totalPensionCharge
+      |            annualAllowanceTaxPaid
+      |            totalPensionChargeDue
+      |            pensionBands {
+      |              name
+      |              rate
+      |              bandLimit
+      |              apportionedBandLimit
+      |              contributionAmount
+      |              pensionCharge
+      |            }
+      |          }
+      |          overseasPensionContributions {
+      |            totalShortServiceRefund
+      |            totalShortServiceRefundCharge
+      |            shortServiceRefundTaxPaid
+      |            totalShortServiceRefundChargeDue
+      |            shortServiceRefundBands {
+      |              name
+      |              rate
+      |              bandLimit
+      |              apportionedBandLimit
+      |              shortServiceRefundAmount
+      |              shortServiceRefundCharge
+      |            }
+      |          }
       |        }
       |      }
       |      nics {
@@ -219,6 +346,11 @@ trait GraphQLQuery {
       |        ukLandAndProperty
       |        savings
       |        cis
+      |        securities
+      |        voidedIsa
+      |        payeEmployments
+      |        occupationalPensions
+      |        stateBenefits
       |      }
       |    }
       |  }
@@ -268,6 +400,14 @@ trait GraphQLQuery {
       |        totalPropertyProfit
       |        totalFHLPropertyProfit
       |        totalUKOtherPropertyProfit
+      |        totalForeignPropertyProfit
+      |        totalEeaFhlProfit
+      |        totalOccupationalPensionIncome
+      |        totalStateBenefitsIncome
+      |        totalBenefitsInKind
+      |        totalPayeEmploymentAndLumpSumIncome
+      |        totalEmploymentExpenses
+      |        totalEmploymentIncome
       |        businessProfitAndLoss {
       |          selfEmployments {
       |            selfEmploymentId
@@ -340,7 +480,6 @@ trait GraphQLQuery {
       |            netLoss
       |            totalAdditions
       |            totalDeductions
-      |            accountingAdjustments
       |            adjustedIncomeTaxLoss
       |            taxableProfit
       |            taxableProfitAfterIncomeTaxLossesDeduction
@@ -424,6 +563,96 @@ trait GraphQLQuery {
       |              applied
       |            }
       |          }
+      |          eeaPropertyFhl {
+      |            totalIncome
+      |            totalExpenses
+      |            netProfit
+      |            netLoss
+      |            totalAdditions
+      |            totalDeductions
+      |            adjustedIncomeTaxLoss
+      |            taxableProfit
+      |            taxableProfitAfterIncomeTaxLossesDeduction
+      |            lossClaimsSummary {
+      |              lossForCSFHL
+      |              totalBroughtForwardIncomeTaxLosses
+      |              broughtForwardIncomeTaxLossesUsed
+      |              totalIncomeTaxLossesCarriedForward
+      |            }
+      |            lossClaimsDetail {
+      |              lossesBroughtForward {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |                mtdLoss
+      |              }
+      |              resultOfClaimsApplied {
+      |                claimId
+      |                taxYearClaimMade
+      |                claimType
+      |                mtdLoss
+      |                taxYearLossIncurred
+      |                lossAmountUsed
+      |                remainingLossValue
+      |              }
+      |              defaultCarriedForwardLosses {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |              }
+      |            }
+      |            bsas {
+      |              bsasId
+      |              applied
+      |            }
+      |          }
+      |          foreignProperty {
+      |            totalIncome
+      |            totalExpenses
+      |            netProfit
+      |            netLoss
+      |            totalAdditions
+      |            totalDeductions
+      |            accountingAdjustments
+      |            adjustedIncomeTaxLoss
+      |            taxableProfit
+      |            taxableProfitAfterIncomeTaxLossesDeduction
+      |            lossClaimsSummary {
+      |              totalBroughtForwardIncomeTaxLosses
+      |              broughtForwardIncomeTaxLossesUsed
+      |              carrySidewaysIncomeTaxLossesUsed
+      |              totalIncomeTaxLossesCarriedForward
+      |              broughtForwardCarrySidewaysIncomeTaxLossesUsed
+      |            }
+      |            lossClaimsDetail {
+      |              lossesBroughtForward {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |                mtdLoss
+      |              }
+      |              resultOfClaimsApplied {
+      |                claimId
+      |                originatingClaimId
+      |                taxYearClaimMade
+      |                claimType
+      |                mtdLoss
+      |                taxYearLossIncurred
+      |                lossAmountUsed
+      |                remainingLossValue
+      |              }
+      |              defaultCarriedForwardLosses {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |              }
+      |              claimsNotApplied {
+      |                claimId
+      |                taxYearClaimMade
+      |                claimType
+      |              }
+      |            }
+      |            bsas {
+      |              bsasId
+      |              applied
+      |            }
+      |          }
       |        }
       |      }
       |      savingsAndGains {
@@ -436,8 +665,23 @@ trait GraphQLQuery {
       |          netIncome
       |          taxDeducted
       |        }
+      |        ukSecurities {
+      |          ukSecuritiesAccountId
+      |          ukSecuritiesAccountName
+      |          grossIncome
+      |          netIncome
+      |          taxDeducted
+      |        }
       |      }
       |      dividends {
+      |        incomeReceived
+      |        taxableIncome
+      |      }
+      |      lumpSums {
+      |        incomeReceived
+      |        taxableIncome
+      |      }
+      |      gainsOnLifePolicies {
       |        incomeReceived
       |        taxableIncome
       |      }

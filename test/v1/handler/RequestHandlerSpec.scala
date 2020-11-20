@@ -22,7 +22,7 @@ import play.api.http.Status._
 import support.UnitSpec
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.handler.RequestHandler.ErrorMapping
-import v1.models.errors.{ErrorWrapper, MtdError, MtdErrors}
+import v1.models.errors.{ErrorWrapper, MtdError}
 import v1.models.outcomes.ResponseWrapper
 
 class RequestHandlerSpec extends UnitSpec with Inside {
@@ -87,15 +87,15 @@ class RequestHandlerSpec extends UnitSpec with Inside {
             }
             .mapSuccess {
               case ResponseWrapper(_, _) =>
-                ErrorWrapper(Some("corrId1"), MtdErrors(BAD_REQUEST, MtdError("code1", "error1"))).asLeft[ResponseWrapper[Int]]
+                ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST).asLeft[ResponseWrapper[Int]]
             }
             .mapSuccess {
               case ResponseWrapper(_, _) =>
-                ErrorWrapper(Some("corrId2"), MtdErrors(NOT_FOUND, MtdError("code2", "error2"))).asLeft[ResponseWrapper[Int]]
+                ErrorWrapper("corrId2", MtdError("code2", "error2"), None, NOT_FOUND).asLeft[ResponseWrapper[Int]]
             }
 
         handling.successMapping(ResponseWrapper("corrId", "foo")).left.value shouldBe
-          ErrorWrapper(Some("corrId1"), MtdErrors(BAD_REQUEST, MtdError("code1", "error1")))
+          ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST)
       }
     }
 

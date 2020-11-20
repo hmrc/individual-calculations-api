@@ -26,24 +26,27 @@ object MetadataResponse extends HateoasLinks {
   implicit object LinksFactory extends HateoasLinksFactory[JsValue, MetadataHateoasData] {
     override def links(appConfig: AppConfig, data: MetadataHateoasData): Seq[Link] = {
       import data._
-      if (errorCount.isEmpty || errorCount.getOrElse(0) == 0) {
-        Seq(
-          getMetadata(appConfig, nino, calculationId, isSelf = true),
-          getIncomeTax(appConfig, nino, calculationId, isSelf = false),
-          getTaxableIncome(appConfig, nino, calculationId, isSelf = false),
-          getAllowances(appConfig, nino, calculationId, isSelf = false),
-          getEoyEstimate(appConfig, nino, calculationId, isSelf = false),
-          getMessages(appConfig, nino, calculationId, isSelf = false)
-        )
+      val hateoasLinks = LinkExists(getMetadata(appConfig, nino, calculationId, isSelf = true),dataIsPresent = true)
+      val incomeTaxLink = LinkExists(getIncomeTax(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.incomeTaxAndNicsCalculated)
+      val taxableIncomeLink = LinkExists(getTaxableIncome(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.taxableIncome)
+      val allowancesLink = LinkExists(getAllowances(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.allowancesDeductionsAndReliefs)
+      val eoyLink = LinkExists(getEoyEstimate(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.endOfYearEstimate)
+      val messagesLink = LinkExists(getMessages(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.messages)
+
+      if (errorCount.isEmpty) {
+        addHateoasLinksIfNonEmpty(hateoasLinks, incomeTaxLink, taxableIncomeLink, allowancesLink, eoyLink, messagesLink)
       } else {
-        Seq(
-          getMetadata(appConfig, nino, calculationId, isSelf = true),
-          getMessages(appConfig, nino, calculationId, isSelf = false)
-        )
+        addHateoasLinksIfNonEmpty(hateoasLinks, messagesLink)
       }
     }
   }
 
+  private def addHateoasLinksIfNonEmpty(links: LinkExists*): Seq[Link] = {
+    links.filter(_.dataIsPresent).map(_.hateoasLink)
+  }
 }
 
-case class MetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int]) extends HateoasData
+case class LinkExists(hateoasLink: Link, dataIsPresent: Boolean)
+
+case class MetadataHateoasData(nino: String, calculationId: String, errorCount: Option[Int],
+                               metadataExistence: MetadataExistence) extends HateoasData

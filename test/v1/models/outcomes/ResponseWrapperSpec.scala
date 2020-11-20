@@ -18,7 +18,7 @@ package v1.models.outcomes
 
 import play.api.http.Status._
 import support.UnitSpec
-import v1.models.errors.{DownstreamError, ErrorWrapper, MtdError, MtdErrors}
+import v1.models.errors.{DownstreamError, ErrorWrapper, MtdError}
 
 class ResponseWrapperSpec extends UnitSpec {
 
@@ -40,21 +40,21 @@ class ResponseWrapperSpec extends UnitSpec {
       }
 
       "wrap an error response correctly" in {
-        val err = MtdErrors(IM_A_TEAPOT, DownstreamError, None)
+        val err = ErrorWrapper("id", DownstreamError, None, IM_A_TEAPOT)
         val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
-        mappedResponse shouldBe Left(ErrorWrapper(Some("id"), err))
+        mappedResponse shouldBe Left(err)
       }
     }
 
     "toErrorWhen" should {
-      val errors = MtdErrors(statusCode = BAD_REQUEST, error = MtdError("CODE", "message"))
+      val err = ErrorWrapper("id", MtdError("anErrorCode", "aMessage"), None, BAD_REQUEST)
 
       "return a success when the error condition is not met" in {
-        wrappedResponse.toErrorWhen { case "" => errors } shouldBe Right(wrappedResponse)
+        wrappedResponse.toErrorWhen { case "" => err } shouldBe Right(wrappedResponse)
       }
 
       "return errors when the error condition is met" in {
-        wrapResponse(responseData = "").toErrorWhen { case "" => errors } shouldBe Left(ErrorWrapper(Some("id"), errors))
+        wrapResponse(responseData = "").toErrorWhen { case "" => err } shouldBe Left(err)
       }
     }
   }

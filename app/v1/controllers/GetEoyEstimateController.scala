@@ -19,6 +19,7 @@ package v1.controllers
 import javax.inject.Inject
 import play.api.libs.json.{JsDefined, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -28,6 +29,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.response.getEoyEstimate.{EoyEstimateHateoasData, EoyEstimateResponse}
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
 import v1.models.response.getEoyEstimate.EoyEstimateResponse.LinksFactory
@@ -42,13 +44,14 @@ class GetEoyEstimateController @Inject()(
                                           service: StandardService,
                                           hateoasFactory: HateoasFactory,
                                           auditService: AuditService,
-                                          cc: ControllerComponents
+                                          cc: ControllerComponents,
+                                          idGenerator: IdGenerator,
                                         )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     EoyEstimateWrapperOrError,
     HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) with GraphQLQuery {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
   controller =>
 
   override implicit val endpointLogContext: EndpointLogContext =
@@ -69,8 +72,8 @@ class GetEoyEstimateController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
-          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(MtdErrors(NOT_FOUND, EndOfYearEstimateNotPresentError))
+          case EoyEstimateWrapperOrError.EoyErrorMessages         => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case EoyEstimateWrapperOrError.EoyCrystallisedError     => Left(ErrorWrapper(responseWrapper.correlationId, EndOfYearEstimateNotPresentError, None, NOT_FOUND))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }

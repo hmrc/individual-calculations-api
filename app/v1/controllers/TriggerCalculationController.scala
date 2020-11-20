@@ -19,6 +19,7 @@ package v1.controllers
 import javax.inject.Inject
 import play.api.libs.json.JsValue
 import play.api.mvc._
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.TriggerCalculationParser
 import v1.handler.{AuditHandler, RequestDefn, RequestHandler}
@@ -38,13 +39,14 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
                                              service: StandardService,
                                              hateoasFactory: HateoasFactory,
                                              auditService: AuditService,
-                                             cc: ControllerComponents
+                                             cc: ControllerComponents,
+                                             idGenerator: IdGenerator,
                                             )(implicit val ec: ExecutionContext)
   extends StandardController[TriggerCalculationRawData,
     TriggerCalculationRequest,
     TriggerCalculationResponse,
     HateoasWrapper[TriggerCalculationResponse],
-    JsValue](authService, lookupService, triggerCalculationParser, service, auditService, cc) {
+    JsValue](authService, lookupService, triggerCalculationParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =

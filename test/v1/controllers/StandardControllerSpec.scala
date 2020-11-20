@@ -26,6 +26,7 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
 import v1.handler.RequestDefn.Get
 import v1.handler.{AuditHandler, RequestHandler}
+import v1.mocks.MockIdGenerator
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
@@ -37,10 +38,11 @@ import scala.concurrent.Future
 
 class StandardControllerSpec
     extends ControllerBaseSpec
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockStandardService
-    with MockAuditService {
+      with MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockStandardService
+      with MockAuditService
+      with MockIdGenerator {
 
   case class Raw(data: String) extends RawData
   case class RequestData(data: String)
@@ -59,9 +61,8 @@ class StandardControllerSpec
   val mockParser: RequestParser[Raw, RequestData] = mock[RequestParser[Raw, RequestData]]
 
   object MockParser {
-
     def parse(data: Raw): CallHandler[Either[ErrorWrapper, RequestData]] = {
-      (mockParser.parseRequest(_: Raw)).expects(data)
+      (mockParser.parseRequest(_: Raw)(_: String)).expects(data, *)
     }
   }
 
@@ -84,6 +85,8 @@ class StandardControllerSpec
 
     MockedEnrolmentsAuthService.authoriseUser()
 
+    MockIdGenerator.getCorrelationId.returns(correlationId)
+
     class TestController
         extends StandardController[Raw, RequestData, BackendResp, APIResp, AnyContent](
           authService = mockEnrolmentsAuthService,
@@ -91,7 +94,8 @@ class StandardControllerSpec
           parser = mockParser,
           service = mockStandardService,
           auditService = mockAuditService,
-          cc = cc
+          cc = cc,
+          idGenerator = mockIdGenerator
         ) {
       override implicit val endpointLogContext: EndpointLogContext = EndpointLogContext("standard", "standard")
 
@@ -177,7 +181,7 @@ class StandardControllerSpec
 
         MockParser
           .parse(Raw(nino))
-          .returns(Left(ErrorWrapper(Some(correlationId), MtdErrors(statusCode, error))))
+          .returns(Left(ErrorWrapper(correlationId, error, None, statusCode)))
 
         val result: Future[Result] = controller.handleRequest(nino)(fakeGetRequest(uri))
 
@@ -191,7 +195,6 @@ class StandardControllerSpec
       "return the errors" in new Test {
         // WLOG
         val statusCode: Int = NOT_FOUND
-        val errors: MtdErrors = MtdErrors(statusCode, NotFoundError)
 
         MockParser
           .parse(Raw(nino))
@@ -199,19 +202,18 @@ class StandardControllerSpec
 
         MockStandardService
           .doService(requestDefn, OK)
-          .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), errors))))
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, NotFoundError, None, statusCode))))
 
         val result: Future[Result] = controller.handleRequest(nino)(fakeGetRequest(uri))
 
         status(result) shouldBe statusCode
-        contentAsJson(result) shouldBe Json.toJson(errors)
+        contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
 
       "perform auditing if required" in new Test {
         // WLOG
         val statusCode: Int = NOT_FOUND
-        val errors: MtdErrors     = MtdErrors(statusCode, NotFoundError)
 
         MockParser
           .parse(Raw(nino))
@@ -219,12 +221,12 @@ class StandardControllerSpec
 
         MockStandardService
           .doService(requestDefn, OK)
-          .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), errors))))
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, NotFoundError, None, statusCode))))
 
         val result: Future[Result] = controllerWithAudit.handleRequest(nino)(fakeGetRequest(uri))
 
         status(result) shouldBe statusCode
-        contentAsJson(result) shouldBe Json.toJson(errors)
+        contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail("Individual",None,Map(),None,"X-123",

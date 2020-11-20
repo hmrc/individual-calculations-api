@@ -22,7 +22,11 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.{RequestDefn, RequestHandler}
+<<<<<<< HEAD
 import v1.fixtures.getMetadata.MetadataResponseFixture
+=======
+import v1.mocks.MockIdGenerator
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -32,7 +36,12 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+<<<<<<< HEAD
 import v1.models.response.getMetadata.MetadataHateoasData
+=======
+import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,6 +49,7 @@ import scala.concurrent.Future
 
 class GetMetadataControllerSpec
     extends ControllerBaseSpec
+<<<<<<< HEAD
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
@@ -49,9 +59,18 @@ class GetMetadataControllerSpec
     with GraphQLQuery {
 
   override val query: String = METADATA_QUERY
+=======
+      with MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockGetCalculationParser
+      with MockStandardService
+      with MockHateoasFactory
+      with MockAuditService
+      with MockIdGenerator{
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new GetMetadataController(
       authService = mockEnrolmentsAuthService,
@@ -60,11 +79,13 @@ class GetMetadataControllerSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
   private val nino          = "AA123456A"
@@ -80,9 +101,27 @@ class GetMetadataControllerSpec
       |       "rel": "test-relationship"
       |      }
       |    ]
+<<<<<<< HEAD
       |}""".stripMargin).as[JsObject]
+=======
+      |}""".stripMargin)
 
-  val error: ErrorWrapper = ErrorWrapper(Some(correlationId), MtdErrors(NOT_FOUND, NotFoundError))
+  val response = MetadataResponse(
+    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+    taxYear = "2018-19",
+    requestedBy = CalculationRequestor.customer,
+    calculationReason = CalculationReason.customerRequest,
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
+    calculationType = CalculationType.crystallisation,
+    intentToCrystallise = true,
+    crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
+    calculationErrorCount = None,
+    metadataExistence = None
+  )
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
+
+  val error: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError, None, NOT_FOUND)
 
   private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
@@ -104,8 +143,13 @@ class GetMetadataControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
 
         MockHateoasFactory
+<<<<<<< HEAD
           .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0)))
           .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
+=======
+          .wrap(response, MetadataHateoasData(nino, calcId, None, MetadataExistence()))
+          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 
@@ -193,8 +237,13 @@ class GetMetadataControllerSpec
         .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
 
       MockHateoasFactory
+<<<<<<< HEAD
         .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0)))
         .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
+=======
+        .wrap(response, MetadataHateoasData(nino, calcId, None, MetadataExistence()))
+        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
       val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 

@@ -17,8 +17,9 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{JsDefined, JsNumber, JsString, JsUndefined, JsValue}
+import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -28,8 +29,8 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getMetadata.MetadataHateoasData
 import v1.models.response.getMetadata.MetadataResponse.LinksFactory
+import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -40,13 +41,14 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
                                       service: StandardService,
                                       hateoasFactory: HateoasFactory,
                                       auditService: AuditService,
-                                      cc: ControllerComponents
+                                      cc: ControllerComponents,
+                                      idGenerator: IdGenerator,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     JsValue,
     HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) with GraphQLQuery {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -68,13 +70,16 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
       .mapSuccessSimple {
         rawResponse =>
           rawResponse \ "data" \ "metadata" match {
-            case JsDefined(value)       => val idSearch = value \ "id"
+            case JsDefined(value: JsObject) =>
+              val idSearch = value \ "id"
               val calculationErrorCountSearch = value \ "calculationErrorCount"
+              val jsonToWrap = value - "metadataExistence"
+              val metadataExistence = (value \ "metadataExistence").validate[MetadataExistence].asOpt.getOrElse(MetadataExistence())
               (idSearch, calculationErrorCountSearch) match {
                 case (JsDefined(id: JsString), JsDefined(calculationErrorCount: JsNumber)) =>
-                  hateoasFactory.wrap(value, MetadataHateoasData(req.nino.nino, id.value, Some(calculationErrorCount.value.toInt)))
-                case (JsDefined(id: JsString), JsUndefined()) =>
-                  hateoasFactory.wrap(value, MetadataHateoasData(req.nino.nino, id.value, None))
+                  hateoasFactory.wrap(jsonToWrap, MetadataHateoasData(req.nino.nino, id.value, Some(calculationErrorCount.value.toInt), metadataExistence))
+                case (JsDefined(id: JsString), JsUndefined())                              =>
+                  hateoasFactory.wrap(jsonToWrap, MetadataHateoasData(req.nino.nino, id.value, None, metadataExistence))
               }
           }
       }

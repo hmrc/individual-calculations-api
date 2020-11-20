@@ -22,9 +22,25 @@ object MetadataResponseFixture {
 
   val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
+<<<<<<< HEAD
   def backendJson(metadata: JsValue): JsValue = Json.obj(
     "data" -> Json.obj(
       "metadata" -> metadata
+=======
+  val metadataResponseModel: MetadataResponse =
+    MetadataResponse(
+      id = id,
+      taxYear = taxYear,
+      requestedBy = requestedBy,
+      calculationReason = calculationReason,
+      calculationTimestamp = calculationTimestamp,
+      calculationType = calculationType,
+      intentToCrystallise = intentToCrystallise,
+      crystallised = crystallised,
+      totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
+      calculationErrorCount = calculationErrorCount,
+      metadataExistence = None
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
     )
   )
 

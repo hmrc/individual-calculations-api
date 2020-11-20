@@ -1308,7 +1308,7 @@
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
                     },
-                    "shortServiceTaxPaid": {
+                    "shortServiceRefundTaxPaid": {
                       "type": "number",
                       "description": "The amount of tax paid on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "example": "8565.34",

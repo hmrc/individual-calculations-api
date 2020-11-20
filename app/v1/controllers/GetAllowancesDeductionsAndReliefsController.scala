@@ -19,6 +19,7 @@ package v1.controllers
 import javax.inject.Inject
 import play.api.libs.json.{JsDefined, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -42,13 +43,15 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
                                                              service: StandardService,
                                                              hateoasFactory: HateoasFactory,
                                                              auditService: AuditService,
-                                                             cc: ControllerComponents
+                                                             cc: ControllerComponents,
+                                                             idGenerator: IdGenerator,
                                                            )(implicit ec: ExecutionContext)
+
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     CalculationWrapperOrError[JsValue],
     HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) with GraphQLQuery {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -70,16 +73,21 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation      => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation      =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) =>
-            if (AllowancesDeductionsAndReliefsResponse.isEmpty(calc)) Left(MtdErrors(NOT_FOUND, NoAllowancesDeductionsAndReliefsExist)) else Right(calc)
+            if (AllowancesDeductionsAndReliefsResponse.isEmpty(calc)) {
+              Left(ErrorWrapper(responseWrapper.correlationId, NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND))
+            }
+            else Right(calc)
         }
       }
       .mapSuccessSimple {
         rawResponse =>
           rawResponse \ "data" match {
             case JsDefined(value) => value \ "metadata" \ "id" match {
-              case JsDefined(id: JsString) => hateoasFactory.wrap((value \ "allowancesDeductionsAndReliefs").get, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, id.value))
+              case JsDefined(id: JsString) =>
+                hateoasFactory.wrap((value \ "allowancesDeductionsAndReliefs").get, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, id.value))
             }
           }
       }

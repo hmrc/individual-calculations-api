@@ -19,6 +19,7 @@ package v1.controllers
 import javax.inject.Inject
 import play.api.libs.json.{JsDefined, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetCalculationParser
@@ -28,9 +29,9 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.models.response.getTaxableIncome.TaxableIncomeHateoasData
 import v1.models.response.getTaxableIncome.TaxableIncomeResponse.LinksFactory
-import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -42,13 +43,14 @@ class GetTaxableIncomeController @Inject()(
                                             service: StandardService,
                                             hateoasFactory: HateoasFactory,
                                             auditService: AuditService,
-                                            cc: ControllerComponents
+                                            cc: ControllerComponents,
+                                            idGenerator: IdGenerator,
                                           )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     CalculationWrapperOrError[JsValue],
     HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc) with GraphQLQuery {
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -70,7 +72,7 @@ class GetTaxableIncomeController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither[JsValue] {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(MtdErrors(FORBIDDEN, RuleCalculationErrorMessagesExist))
+          case CalculationWrapperOrError.ErrorsInCalculation      => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }

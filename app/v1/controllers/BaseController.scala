@@ -16,12 +16,8 @@
 
 package v1.controllers
 
-import java.util.UUID
-
-import play.api.libs.json.Json
 import play.api.mvc.Result
 import utils.Logging
-import v1.models.errors.ErrorWrapper
 
 trait BaseController {
   self: Logging =>
@@ -32,28 +28,14 @@ trait BaseController {
 
       val newHeaders: Seq[(String, String)] = responseHeaders ++ Seq(
         "X-CorrelationId" -> correlationId,
-        "X-Content-Type-Options" -> "nosniff"
+        "X-Content-Type-Options" -> "nosniff",
+        "Content-Type" -> "application/json"
       )
 
       result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
     }
   }
 
-  protected def getCorrelationId(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): String = {
-    errorWrapper.correlationId match {
-      case Some(correlationId) =>
-        logger.info(
-          s"[${endpointLogContext.controllerName}][getCorrelationId] - " +
-            s"Error received from backend ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
-        correlationId
-      case None =>
-        val correlationId = UUID.randomUUID().toString
-        logger.info(
-          s"[${endpointLogContext.controllerName}][getCorrelationId] - " +
-            s"Validation error: ${Json.toJson(errorWrapper.errors)} with CorrelationId: $correlationId")
-        correlationId
-    }
-  }
 }
 
 

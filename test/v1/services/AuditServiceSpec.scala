@@ -52,7 +52,7 @@ class AuditServiceSpec extends ServiceSpec {
           .expects(*, *, *)
           .returns(expected)
 
-        val event = AuditEvent(auditType, transactionName, eventDetails)
+        val event: AuditEvent[String] = AuditEvent(auditType, transactionName, eventDetails)
         target.auditEvent(event) shouldBe expected
       }
 
@@ -68,7 +68,7 @@ class AuditServiceSpec extends ServiceSpec {
           )
           .returns(expected)
 
-        val event = AuditEvent(auditType, transactionName, eventDetails)
+        val event: AuditEvent[String] = AuditEvent(auditType, transactionName, eventDetails)
 
         target.auditEvent(event)
       }
@@ -83,7 +83,7 @@ class AuditServiceSpec extends ServiceSpec {
           )
           .returns(expected)
 
-        val event = AuditEvent(auditType, transactionName, eventDetails)
+        val event: AuditEvent[String] = AuditEvent(auditType, transactionName, eventDetails)
 
         target.auditEvent(event)
       }
@@ -98,7 +98,7 @@ class AuditServiceSpec extends ServiceSpec {
           )
           .returns(expected)
 
-        val event = AuditEvent(auditType, transactionName, eventDetails)
+        val event: AuditEvent[String] = AuditEvent(auditType, transactionName, eventDetails)
 
         target.auditEvent(event)
       }
@@ -113,7 +113,7 @@ class AuditServiceSpec extends ServiceSpec {
           )
           .returns(expected)
 
-        val event = AuditEvent(auditType, transactionName, eventDetails)
+        val event: AuditEvent[String] = AuditEvent(auditType, transactionName, eventDetails)
 
         target.auditEvent(event)
       }

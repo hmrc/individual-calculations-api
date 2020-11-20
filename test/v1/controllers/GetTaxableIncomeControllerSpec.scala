@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture
 import v1.handler.RequestDefn
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -44,9 +45,13 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   with MockStandardService
   with MockHateoasFactory
   with MockAuditService
+<<<<<<< HEAD
   with GraphQLQuery {
 
   override val query: String = TAXABLE_INCOME_QUERY
+=======
+  with MockIdGenerator {
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
@@ -74,7 +79,7 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   private def queryUri = "/input/uri"
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new GetTaxableIncomeController(
       authService = mockEnrolmentsAuthService,
@@ -83,11 +88,13 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
   "handleRequest" should {

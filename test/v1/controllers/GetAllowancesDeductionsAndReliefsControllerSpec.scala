@@ -22,6 +22,7 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
 import v1.handler.RequestDefn
+import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
@@ -45,12 +46,16 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     with MockStandardService
     with MockHateoasFactory
     with MockAuditService
+<<<<<<< HEAD
     with GraphQLQuery {
 
   override val query: String = ALLOWANCES_AND_DEDUCTIONS_QUERY
+=======
+    with MockIdGenerator {
+>>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new GetAllowancesDeductionsAndReliefsController(
       authService = mockEnrolmentsAuthService,
@@ -59,11 +64,14 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
       service = mockStandardService,
       hateoasFactory = mockHateoasFactory,
       auditService = mockAuditService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
+
   }
 
   private val nino = "AA123456A"

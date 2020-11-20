@@ -19,6 +19,7 @@ package v1.controllers
 import javax.inject.Inject
 import play.api.libs.json.{JsDefined, JsObject, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.GetMessagesParser
@@ -30,8 +31,8 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.models.response.getMessages.MessagesResponse.LinksFactory
+import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
 
@@ -43,13 +44,14 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
                                       service: StandardService,
                                       hateoasFactory: HateoasFactory,
                                       auditService: AuditService,
-                                      cc: ControllerComponents
+                                      cc: ControllerComponents,
+                                      idGenerator: IdGenerator,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetMessagesRawData,
     GetMessagesRequest,
     JsValue,
     HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc)
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator)
     with MessagesFilter with GraphQLQuery {
   controller =>
 
@@ -87,7 +89,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
     if (MessagesResponse.hasMessages(filteredResponse.responseData)) {
       Right(filteredResponse)
     } else {
-      Left(ErrorWrapper(Some(filteredResponse.correlationId), MtdErrors(NOT_FOUND, NoMessagesExistError)))
+      Left(ErrorWrapper(filteredResponse.correlationId, NoMessagesExistError, None, NOT_FOUND))
     }
   }
 

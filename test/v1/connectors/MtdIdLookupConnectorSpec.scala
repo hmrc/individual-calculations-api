@@ -16,12 +16,15 @@
 
 package v1.connectors
 
+import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.DownstreamError
 
 import scala.concurrent.Future
 
 class MtdIdLookupConnectorSpec extends ConnectorSpec {
+
+  private val nino = Nino("AA123456A")
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector = new MtdIdLookupConnector(

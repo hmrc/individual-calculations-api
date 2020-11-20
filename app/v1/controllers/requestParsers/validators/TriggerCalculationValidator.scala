@@ -16,13 +16,12 @@
 
 package v1.controllers.requestParsers.validators
 
-import config.FixedConfig
-import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, MinTaxYearValidation, NinoValidation, TaxYearValidation}
+import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import v1.models.domain.TriggerCalculationRequestBody
-import v1.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
+import v1.models.errors.MtdError
 import v1.models.request.TriggerCalculationRawData
 
-class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] with FixedConfig {
+class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {
 
   private val validationSet = List(parserValidation, jsonFormatValidation, bodyFormatValidation, bodyRuleValidation)
 
@@ -31,7 +30,7 @@ class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] w
   }
 
   private def jsonFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    List(JsonFormatValidation.validate[TriggerCalculationRequestBody](data.body.json, RuleIncorrectOrEmptyBodyError))
+    List(JsonFormatValidation.validate[TriggerCalculationRequestBody](data.body.json))
   }
 
   private def bodyFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
@@ -41,7 +40,7 @@ class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] w
 
   private def bodyRuleValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
     val req = data.body.json.as[TriggerCalculationRequestBody]
-    List(MinTaxYearValidation.validate(req.taxYear, minimumTaxYear))
+    List(TaxYearNotSupportedValidation.validate(req.taxYear))
   }
 
   override def validate(data: TriggerCalculationRawData): List[MtdError] = run(validationSet, data).distinct

@@ -21,6 +21,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.connectors.{BackendOutcome, StandardConnector}
+import v1.handler.RequestHandler.SuccessMapping
 import v1.handler.{RequestDefn, RequestHandler}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
@@ -41,8 +42,8 @@ class StandardServiceSpec extends ServiceSpec {
     val mockConnector: StandardConnector = mock[StandardConnector]
 
     (mockConnector
-      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode))
-      .expects(requestDefn, *, *, *, *)
+      .doRequest[Response](_: RequestDefn)(_: Reads[Response], _: HeaderCarrier, _: ExecutionContext, _: SuccessCode, _: String))
+      .expects(requestDefn, *, *, *, *, *)
       .returns(response)
 
     val service = new StandardService(mockConnector)
@@ -54,7 +55,7 @@ class StandardServiceSpec extends ServiceSpec {
       Right(ResponseWrapper("correlationId", Response("someData")))
 
     val requestHandling: RequestHandler[Response, Response] = new RequestHandler[Response, Response] {
-      override def requestDefn = test.requestDefn
+      override def requestDefn: RequestDefn.Get = test.requestDefn
 
       override def passThroughErrors = List(PassedThroughError)
 
@@ -62,7 +63,7 @@ class StandardServiceSpec extends ServiceSpec {
 
       override implicit val reads: Reads[Response]                      = implicitly
       override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
-      override def successMapping                                       = RequestHandler.noMapping
+      override def successMapping: SuccessMapping[Response, Response] = RequestHandler.noMapping
     }
 
     "use the connector with the RequestDefn" in new Test(Future.successful(expected)) {
@@ -71,12 +72,12 @@ class StandardServiceSpec extends ServiceSpec {
 
     "map the errors according to the passthrough" in
       new Test(Future.successful(Left(ResponseWrapper("correlationId", BackendErrors.single(BAD_REQUEST, BackendErrorCode("PASSED_THROUGH")))))) {
-        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper(Some("correlationId"), MtdErrors(BAD_REQUEST, PassedThroughError)))
+        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper("correlationId", PassedThroughError, None, BAD_REQUEST))
       }
 
     "map the errors according to the mappings" in {
       new Test(Future.successful(Left(ResponseWrapper("correlationId", BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND_MAPPED")))))) {
-        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper(Some("correlationId"), MtdErrors(BAD_REQUEST, MappedError)))
+        await(service.doService(requestHandling)) shouldBe Left(ErrorWrapper("correlationId", MappedError, None, BAD_REQUEST))
       }
     }
   }

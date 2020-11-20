@@ -29,6 +29,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
 
   val nino    = "AA123456B"
   val taxYear = "2017-18"
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockTriggerCalculationValidator {
     lazy val parser = new TriggerCalculationParser(mockValidator)
@@ -49,7 +50,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, MtdErrors(BAD_REQUEST, NinoFormatError)))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
       }
     }
 
@@ -58,8 +59,8 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data = TriggerCalculationRawData(nino, AnyContentAsJson(Json.obj("taxYear" -> taxYear)))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(
-          ErrorWrapper(None, MtdErrors(BAD_REQUEST, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))))
+        parser.parseRequest(data) shouldBe
+          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }
