@@ -29,7 +29,7 @@ class OverseasPensionContributionsSpec extends UnitSpec with JsonErrorValidators
       "totalShortServiceRefundChargeDue"
     ),
     optionalProperties = Seq(
-      "shortServiceTaxPaid",
+      "shortServiceRefundTaxPaid",
       "shortServiceRefundBands"
     )
   )

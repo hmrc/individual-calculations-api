@@ -24,14 +24,14 @@ object OverseasPensionContributionsFixture {
 
   val totalShortServiceRefund: BigDecimal = 2000.99
   val totalShortServiceRefundCharge: BigDecimal = 3000.99
-  val shortServiceTaxPaid: Option[BigDecimal] = Some(4000.99)
+  val shortServiceRefundTaxPaid: Option[BigDecimal] = Some(4000.99)
   val totalShortServiceRefundChargeDue: BigDecimal = 5000.99
 
   val overseasPensionContributionsModel: OverseasPensionContributions =
     OverseasPensionContributions(
       totalShortServiceRefund = totalShortServiceRefund,
       totalShortServiceRefundCharge = totalShortServiceRefundCharge,
-      shortServiceTaxPaid = shortServiceTaxPaid,
+      shortServiceRefundTaxPaid = shortServiceRefundTaxPaid,
       totalShortServiceRefundChargeDue = totalShortServiceRefundChargeDue,
       shortServiceRefundBands = Some(Seq(shortServiceRefundBandsModel))
     )
@@ -41,7 +41,7 @@ object OverseasPensionContributionsFixture {
        |{
        |   "totalShortServiceRefund": $totalShortServiceRefund,
        |   "totalShortServiceRefundCharge": $totalShortServiceRefundCharge,
-       |   "shortServiceTaxPaid": ${shortServiceTaxPaid.get},
+       |   "shortServiceRefundTaxPaid": ${shortServiceRefundTaxPaid.get},
        |   "totalShortServiceRefundChargeDue": $totalShortServiceRefundChargeDue,
        |   "shortServiceRefundBands": [$shortServiceRefundBandsJson]
        |}
