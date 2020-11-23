@@ -45,13 +45,10 @@ class GetTaxableIncomeControllerSpec extends ControllerBaseSpec
   with MockStandardService
   with MockHateoasFactory
   with MockAuditService
-<<<<<<< HEAD
-  with GraphQLQuery {
+  with GraphQLQuery
+  with MockIdGenerator {
 
   override val query: String = TAXABLE_INCOME_QUERY
-=======
-  with MockIdGenerator {
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 

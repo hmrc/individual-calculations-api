@@ -37,11 +37,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
 
     "wrapping a MetadataResponse object" should {
       "expose the correct hateoas links when errors are not present" in new Test {
-<<<<<<< HEAD
-        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None)) shouldBe
-=======
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,true,true,true))) shouldBe
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,true,true,true))) shouldBe
           HateoasWrapper(
             MetadataResponseFixture.metadataJson(),
             Seq(
@@ -56,9 +52,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are not present and some data is missing (taxable-income)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,taxableIncome = false,true,true))) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,taxableIncome = false,true,true))) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
@@ -70,9 +66,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are not present and some data is missing (income-tax)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence(incomeTaxAndNicsCalculated = false,true,true,true,true))) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence(incomeTaxAndNicsCalculated = false,true,true,true,true))) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/taxable-income", GET, "taxable-income"),
@@ -84,9 +80,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are not present and some data is missing (allowances)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,true,true,allowancesDeductionsAndReliefs = false))) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence(true,true,true,true,allowancesDeductionsAndReliefs = false))) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
@@ -98,9 +94,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are not present and some data is missing (messages)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence(true,messages = false,true,true,true))) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence(true,messages = false,true,true,true))) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self"),
               Link("/individuals/calculations/someNino/self-assessment/someCalcId/income-tax-nics-calculated", GET, "income-tax-and-nics-calculated"),
@@ -112,9 +108,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are not present (all data missing)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, None, MetadataExistence())) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence())) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self")
             )
@@ -122,11 +118,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are present" in new Test {
-<<<<<<< HEAD
-        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(1), MetadataHateoasData(nino, calcId, Some(1))) shouldBe
-=======
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, Some(1), MetadataExistence(messages = true))) shouldBe
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(1), MetadataHateoasData(nino, calcId, Some(1), MetadataExistence(messages = true))) shouldBe
           HateoasWrapper(
             MetadataResponseFixture.metadataJson(1),
             Seq(
@@ -137,9 +129,9 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "expose the correct hateoas links when errors are present and data is missing (messages)" in new Test {
-        hateoasFactory.wrap(metadataResponseModel, MetadataHateoasData(nino, calcId, Some(1), MetadataExistence())) shouldBe
+        hateoasFactory.wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, None, MetadataExistence())) shouldBe
           HateoasWrapper(
-            metadataResponseModel,
+            MetadataResponseFixture.metadataJson(),
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/someCalcId", GET, "self")
             )

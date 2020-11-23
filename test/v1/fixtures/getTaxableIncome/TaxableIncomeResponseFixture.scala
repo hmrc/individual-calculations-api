@@ -17,6 +17,8 @@
 package v1.fixtures.getTaxableIncome
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getTaxableIncome.detail.CalculationDetailFixture.calculationDetailJson
+import v1.fixtures.getTaxableIncome.summary.CalculationSummaryFixture.calculationSummaryJson
 
 object TaxableIncomeResponseFixture {
 
@@ -33,12 +35,8 @@ object TaxableIncomeResponseFixture {
   val taxableIncomeResponseJson: JsValue = Json.parse(
     s"""
        |{
-       |   "summary" : {
-       |     "foo": "bar"
-       |   },
-       |   "detail" : {
-       |     "foo": "bar"
-       |   }
+       |   "summary" : $calculationSummaryJson,
+       |   "detail" : $calculationDetailJson
        |}
     """.stripMargin
   )

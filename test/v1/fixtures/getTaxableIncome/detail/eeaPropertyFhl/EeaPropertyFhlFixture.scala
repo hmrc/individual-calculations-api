@@ -17,10 +17,8 @@
 package v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{lossClaimsDetailJson, lossClaimsDetailModel}
-import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{lossClaimSummaryJson, lossClaimsSummaryModel}
-import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhl
-import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.BusinessSourceAdjustableSummary
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.lossClaimsDetailJson
+import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.lossClaimSummaryJson
 
 object EeaPropertyFhlFixture {
 
@@ -33,23 +31,6 @@ object EeaPropertyFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = Some(1000)
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
-  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
-
-  val eeaPropertyFhlModel: EeaPropertyFhl =
-    EeaPropertyFhl(
-      totalIncome = totalIncome,
-      totalExpenses = totalExpenses,
-      netProfit = netProfit,
-      netLoss = netLoss,
-      totalAdditions = totalAdditions,
-      totalDeductions = totalDeductions,
-      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
-      taxableProfit = taxableProfit,
-      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
-      lossClaimsSummary = Some(lossClaimsSummaryModel),
-      lossClaimsDetail = Some(lossClaimsDetailModel),
-      bsas = Some(bsas)
-    )
 
   val bsasJson: JsValue = Json.parse(
     s"""

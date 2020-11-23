@@ -17,7 +17,6 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.UkSecurities
 
 object UkSecuritiesFixture {
 
@@ -26,15 +25,6 @@ object UkSecuritiesFixture {
   val grossIncome: BigDecimal = 300.1
   val netIncome: Option[BigDecimal] = Some(12.3)
   val taxDeducted: Option[BigDecimal] = Some(456.3)
-
-  val securitiesModel: UkSecurities =
-    UkSecurities(
-      ukSecuritiesAccountId = Some(ukSecuritiesAccountId),
-      ukSecuritiesAccountName = Some(ukSecuritiesAccountName),
-      grossIncome = grossIncome,
-      netIncome = netIncome,
-      taxDeducted = taxDeducted
-    )
 
   val securitiesJson: JsValue = Json.parse(
     s"""

@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.TaxDeductedAtSource
 
 object TaxDeductedAtSourceFixture {
 
@@ -29,18 +28,6 @@ object TaxDeductedAtSourceFixture {
   val payeEmployments: Option[BigDecimal] = Some(400.45)
   val occupationalPensions: Option[BigDecimal] = Some(500.45)
   val stateBenefits: Option[BigDecimal] = Some(600.45)
-
-  val taxDeductedAtSourceModel: TaxDeductedAtSource =
-    TaxDeductedAtSource(
-      ukLandAndProperty = ukLandAndProperty,
-      savings = savings,
-      cis = cis,
-      securities = securities,
-      voidedIsa = voidedIsa,
-      payeEmployments = payeEmployments,
-      occupationalPensions = occupationalPensions,
-      stateBenefits = stateBenefits
-    )
 
   val taxDeductedAtSourceJson: JsValue = Json.parse(
     s"""

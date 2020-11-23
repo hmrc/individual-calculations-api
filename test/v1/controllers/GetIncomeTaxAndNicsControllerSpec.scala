@@ -28,37 +28,28 @@ import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
-import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsHateoasData
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
+import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsHateoasData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetIncomeTaxAndNicsControllerSpec
-    extends ControllerBaseSpec
-<<<<<<< HEAD
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
     with MockStandardService
     with MockHateoasFactory
     with MockAuditService
-    with GraphQLQuery {
+    with GraphQLQuery
+    with MockIdGenerator {
 
   override val query: String = INCOME_TAX_AND_NICS_QUERY
-=======
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockGetCalculationParser
-      with MockStandardService
-      with MockHateoasFactory
-      with MockAuditService
-      with MockIdGenerator {
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -79,13 +70,14 @@ class GetIncomeTaxAndNicsControllerSpec
     MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
-  private val nino          = "AA123456A"
+  private val nino = "AA123456A"
   private val correlationId = "X-123"
 
-  private val rawData     = GetCalculationRawData(nino, IncomeTaxAndNicsResponseFixture.calculationId)
+  private val rawData = GetCalculationRawData(nino, IncomeTaxAndNicsResponseFixture.calculationId)
   private val requestData = GetCalculationRequest(Nino(nino), IncomeTaxAndNicsResponseFixture.calculationId)
 
   private def uri = s"/$nino/self-assessment/${IncomeTaxAndNicsResponseFixture.calculationId}"
+
   private def queryUri = "/input/uri"
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
@@ -115,7 +107,7 @@ class GetIncomeTaxAndNicsControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationWrapperOrError.CalculationWrapper(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJsonFromBackend)))))
 
         MockHateoasFactory
-            .wrap(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, IncomeTaxAndNicsHateoasData(nino, IncomeTaxAndNicsResponseFixture.calculationId))
+          .wrap(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, IncomeTaxAndNicsHateoasData(nino, IncomeTaxAndNicsResponseFixture.calculationId))
           .returns(HateoasWrapper(IncomeTaxAndNicsResponseFixture.incomeTaxAndNicsResponseJson, Seq(testHateoasLink)))
 
 

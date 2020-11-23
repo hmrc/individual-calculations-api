@@ -32,9 +32,9 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
-import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -46,13 +46,10 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   with MockStandardService
   with MockHateoasFactory
   with MockAuditService
-<<<<<<< HEAD
-  with GraphQLQuery {
+  with GraphQLQuery
+  with MockIdGenerator {
 
   override val query: String = EOY_ESTIMATE_QUERY
-=======
-  with MockIdGenerator {
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -80,7 +77,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   private val rawData = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
-  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel="test-relationship")
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   val linksJson: JsObject = Json.parse(
     """{

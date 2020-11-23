@@ -26,12 +26,12 @@ object MetadataResponse extends HateoasLinks {
   implicit object LinksFactory extends HateoasLinksFactory[JsValue, MetadataHateoasData] {
     override def links(appConfig: AppConfig, data: MetadataHateoasData): Seq[Link] = {
       import data._
-      val hateoasLinks = LinkExists(getMetadata(appConfig, nino, calculationId, isSelf = true),dataIsPresent = true)
-      val incomeTaxLink = LinkExists(getIncomeTax(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.incomeTaxAndNicsCalculated)
-      val taxableIncomeLink = LinkExists(getTaxableIncome(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.taxableIncome)
-      val allowancesLink = LinkExists(getAllowances(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.allowancesDeductionsAndReliefs)
-      val eoyLink = LinkExists(getEoyEstimate(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.endOfYearEstimate)
-      val messagesLink = LinkExists(getMessages(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.messages)
+      val hateoasLinks = LinkExists(getMetadata(appConfig, nino, calculationId, isSelf = true), dataIsPresent = true)
+      val incomeTaxLink = LinkExists(getIncomeTax(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.incomeTaxAndNicsCalculated)
+      val taxableIncomeLink = LinkExists(getTaxableIncome(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.taxableIncome)
+      val allowancesLink = LinkExists(getAllowances(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.allowancesDeductionsAndReliefs)
+      val eoyLink = LinkExists(getEoyEstimate(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.endOfYearEstimate)
+      val messagesLink = LinkExists(getMessages(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.messages)
 
       if (errorCount.isEmpty) {
         addHateoasLinksIfNonEmpty(hateoasLinks, incomeTaxLink, taxableIncomeLink, allowancesLink, eoyLink, messagesLink)

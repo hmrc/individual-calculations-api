@@ -19,8 +19,6 @@ package v1.fixtures.getTaxableIncome.detail.ukPropertyFhl
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetailFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimSummaryFixture._
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.BusinessSourceAdjustableSummary
 
 
 object UkPropertyFhlFixture {
@@ -35,24 +33,6 @@ object UkPropertyFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = None
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
-
-  val ukPropertyFhlModel: UkPropertyFhl =
-    UkPropertyFhl(
-      totalIncome = totalIncome,
-      totalExpenses = totalExpenses,
-      netProfit = netProfit,
-      netLoss = netLoss,
-      totalAdditions = totalAdditions,
-      totalDeductions = totalDeductions,
-      accountingAdjustments = accountingAdjustments,
-      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
-      taxableProfit = taxableProfit,
-      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
-      lossClaimsSummary = Some(lossClaimsSummaryModel),
-      lossClaimsDetail = Some(lossClaimsDetailModel),
-      bsas = Some(bsas)
-    )
 
   val bsasJson: JsValue = Json.parse(
     s"""

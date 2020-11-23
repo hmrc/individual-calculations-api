@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.PensionBands
 
 object PensionBandsFixture {
 
@@ -27,16 +26,6 @@ object PensionBandsFixture {
   val apportionedBandLimit: BigInt = 3000
   val contributionAmount: BigDecimal = 400.23
   val pensionCharge: BigDecimal = 500.25
-
-  val pensionBandsModel: PensionBands =
-    PensionBands(
-      name = name,
-      rate = rate,
-      bandLimit = bandLimit,
-      apportionedBandLimit = apportionedBandLimit,
-      contributionAmount = contributionAmount,
-      pensionCharge = pensionCharge
-    )
 
   val pensionBandsJson: JsValue = Json.parse(
     s"""

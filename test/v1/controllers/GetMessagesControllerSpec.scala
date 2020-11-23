@@ -34,18 +34,13 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-<<<<<<< HEAD
 import v1.models.response.getMessages.MessagesHateoasData
-=======
-import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetMessagesControllerSpec
-<<<<<<< HEAD
   extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -53,19 +48,10 @@ class GetMessagesControllerSpec
     with MockStandardService
     with MockHateoasFactory
     with MockAuditService
-    with GraphQLQuery {
+    with GraphQLQuery
+    with MockIdGenerator {
 
   override val query: String = MESSAGES_QUERY
-=======
-    extends ControllerBaseSpec
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockGetCalculationQueryParser
-      with MockStandardService
-      with MockHateoasFactory
-      with MockAuditService
-      with MockIdGenerator {
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()

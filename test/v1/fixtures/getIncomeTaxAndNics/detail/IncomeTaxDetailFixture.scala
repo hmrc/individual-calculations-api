@@ -19,19 +19,8 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.GiftAidFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.IncomeTypeBreakdownFixture._
-import v1.models.response.getIncomeTaxAndNics.detail.IncomeTaxDetail
 
 object IncomeTaxDetailFixture {
-
-  def incomeTaxDetailModel: IncomeTaxDetail =
-    IncomeTaxDetail(
-      payPensionsProfit = Some(incomeTypeBreakdownModel(100)),
-      savingsAndGains = Some(incomeTypeBreakdownModel(200)),
-      lumpSums = Some(incomeTypeBreakdownModel(300)),
-      dividends = Some(incomeTypeBreakdownModel(400)),
-      gainsOnLifePolicies = Some(incomeTypeBreakdownModel(500)),
-      giftAid = Some(giftAidModel)
-    )
 
   def incomeTaxDetailJson: JsValue = Json.parse(
     s"""

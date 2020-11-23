@@ -29,7 +29,6 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getEoyEstimate.{EoyEstimateHateoasData, EoyEstimateResponse}
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
 import v1.models.response.getEoyEstimate.EoyEstimateResponse.LinksFactory

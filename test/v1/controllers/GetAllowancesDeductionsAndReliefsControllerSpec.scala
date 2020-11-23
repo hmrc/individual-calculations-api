@@ -46,13 +46,10 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
     with MockStandardService
     with MockHateoasFactory
     with MockAuditService
-<<<<<<< HEAD
-    with GraphQLQuery {
+    with GraphQLQuery
+    with MockIdGenerator {
 
   override val query: String = ALLOWANCES_AND_DEDUCTIONS_QUERY
-=======
-    with MockIdGenerator {
->>>>>>> 1cfe0a3f2a02146d80c23d4b6db3af2f2dfbc8d9
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -127,7 +124,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None,  correlationId,
+          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
         val event = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs", detail)

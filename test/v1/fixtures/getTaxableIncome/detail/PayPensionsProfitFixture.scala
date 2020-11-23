@@ -18,7 +18,6 @@ package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
-import v1.models.response.getTaxableIncome.detail.PayPensionsProfit
 
 //noinspection ScalaStyle
 object PayPensionsProfitFixture {
@@ -38,26 +37,6 @@ object PayPensionsProfitFixture {
   val totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal] = Some(1)
   val totalEmploymentExpenses: Option[BigDecimal] = Some(4)
   val totalEmploymentIncome: Option[BigInt] = Some(2)
-
-
-  val payPensionsProfitModel: PayPensionsProfit =
-    PayPensionsProfit(
-      incomeReceived = incomeReceivedPPP,
-      taxableIncome = taxableIncomePPP,
-      totalSelfEmploymentProfit = totalSelfEmploymentProfit,
-      totalPropertyProfit = totalPropertyProfit,
-      totalFHLPropertyProfit = totalFHLPropertyProfit,
-      totalUKOtherPropertyProfit = totalUKOtherPropertyProfit,
-      totalForeignPropertyProfit = totalForeignPropertyProfit,
-      totalEeaFhlProfit = totalEeaFhlProfit,
-      totalOccupationalPensionIncome = totalOccupationalPensionIncome,
-      totalStateBenefitsIncome = totalStateBenefitsIncome,
-      totalBenefitsInKind = totalBenefitsInKind,
-      totalPayeEmploymentAndLumpSumIncome = totalPayeEmploymentAndLumpSumIncome,
-      totalEmploymentExpenses = totalEmploymentExpenses,
-      totalEmploymentIncome = totalEmploymentIncome,
-      businessProfitAndLoss = Some(businessProfitAndLossModel)
-    )
 
   val payPensionsProfitJson: JsValue = Json.parse(
     s"""
