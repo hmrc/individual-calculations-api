@@ -145,13 +145,13 @@
                 }
               }
             },
-            "pensionContributionsDetail": {
-              "title": "pensionContributionsDetail",
+            "pensionContributions": {
+              "title": "pensionContributions",
               "type": "object",
               "description": "Details of any pension contributions made.",
               "properties": {
-                "pensionContributions": {
-                  "title": "pensionContributions",
+                "totalPensionContributions": {
+                  "title": "totalPensionContributions",
                   "description": "The value of pension contributions made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "type": "number",
                   "multipleOf": 0.01,

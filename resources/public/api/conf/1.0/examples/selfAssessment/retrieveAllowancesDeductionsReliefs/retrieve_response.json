@@ -18,8 +18,8 @@
         "reliefClaimed": 2000.58,
         "rate": 10.25
       },
-      "pensionContributionsDetail": {
-        "pensionContributions": 2000.58,
+      "pensionContributions": {
+        "totalPensionContributions": 2000.58,
         "retirementAnnuityPayments": 2000.58,
         "paymentToEmployersSchemeNoTaxRelief": 2000.58,
         "overseasPensionSchemeContributions": 2000.58
