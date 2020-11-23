@@ -31,7 +31,6 @@ object UkPropertyFhlFixture {
   val netLoss: Option[BigDecimal] = Some(1000.04)
   val totalAdditions: Option[BigDecimal] = Some(1000.05)
   val totalDeductions: Option[BigDecimal] = Some(1000.06)
-  val accountingAdjustments: Option[BigDecimal] = Some(1000.07)
   val adjustedIncomeTaxLoss: Option[BigInt] = None
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
@@ -45,7 +44,6 @@ object UkPropertyFhlFixture {
       netLoss = netLoss,
       totalAdditions = totalAdditions,
       totalDeductions = totalDeductions,
-      accountingAdjustments = accountingAdjustments,
       adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
       taxableProfit = taxableProfit,
       taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
@@ -72,7 +70,6 @@ object UkPropertyFhlFixture {
        |	 "netLoss": ${netLoss.get},
        |   "totalAdditions": ${totalAdditions.get},
        |   "totalDeductions": ${totalDeductions.get},
-       |   "accountingAdjustments": ${accountingAdjustments.get},
        |   "taxableProfit": ${taxableProfit.get},
        |	 "lossClaimsSummary": $lossClaimSummaryJson,
        |   "lossClaimsDetail": $lossClaimsDetailJson,
