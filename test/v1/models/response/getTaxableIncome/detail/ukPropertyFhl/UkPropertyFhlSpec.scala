@@ -31,7 +31,6 @@ class UkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
       "netLoss",
       "totalAdditions",
       "totalDeductions",
-      "accountingAdjustments",
       "adjustedIncomeTaxLoss",
       "taxableProfit",
       "taxableProfitAfterIncomeTaxLossesDeduction",
