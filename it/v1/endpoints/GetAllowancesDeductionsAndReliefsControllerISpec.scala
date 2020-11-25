@@ -70,16 +70,14 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsJsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe {
-          AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty.as[JsObject].deepMerge(linksJson)
-        }
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
       }
     }
 
@@ -89,7 +87,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, incomeTaxAndNicsResponseJsonFromBackendWithErrors)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -106,7 +104,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST,
+          BackendStub.onSuccess(BackendStub.GET,
             backendUrl,
             OK,
             AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
@@ -163,7 +161,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)

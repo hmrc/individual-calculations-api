@@ -17,11 +17,18 @@
 package v1.fixtures.getTaxableIncome.summary
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getTaxableIncome.summary.CalculationSummary
 
 object CalculationSummaryFixture {
 
   val totalIncomeReceivedFromAllSources: BigInt = 100
   val totalTaxableIncome: BigInt = 200
+
+  val calculationSummaryModel: CalculationSummary =
+    CalculationSummary(
+      totalIncomeReceivedFromAllSources = totalIncomeReceivedFromAllSources,
+      totalTaxableIncome = totalTaxableIncome
+    )
 
   val calculationSummaryJson: JsValue = Json.parse(
     s"""

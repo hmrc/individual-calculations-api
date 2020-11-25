@@ -17,6 +17,7 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.ShortServiceRefundBands
 
 object ShortServiceRefundBandsFixture {
 
@@ -26,6 +27,16 @@ object ShortServiceRefundBandsFixture {
   val apportionedBandLimit: BigInt = 2000
   val shortServiceRefundAmount: BigDecimal = 200.23
   val shortServiceRefundCharge: BigDecimal = 300.25
+
+  val shortServiceRefundBandsModel: ShortServiceRefundBands =
+    ShortServiceRefundBands(
+      name = name,
+      rate = rate,
+      bandLimit = bandLimit,
+      apportionedBandLimit = apportionedBandLimit,
+      shortServiceRefundAmount = shortServiceRefundAmount,
+      shortServiceRefundCharge = shortServiceRefundCharge
+    )
 
   val shortServiceRefundBandsJson: JsValue = Json.parse(
     s"""

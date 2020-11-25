@@ -17,7 +17,6 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{JsDefined, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
@@ -29,9 +28,8 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.calculationWrappers.CalculationWrapperOrError
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse.LinksFactory
 import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse}
+import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -45,13 +43,13 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
                                                              auditService: AuditService,
                                                              cc: ControllerComponents,
                                                              idGenerator: IdGenerator,
-                                                           )(implicit ec: ExecutionContext)
+                                                             )(implicit ec: ExecutionContext)
 
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    CalculationWrapperOrError[JsValue],
-    HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
+    CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],
+    HateoasWrapper[AllowancesDeductionsAndReliefsResponse],
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -63,9 +61,9 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[JsValue], HateoasWrapper[JsValue]] =
-    RequestHandler[CalculationWrapperOrError[JsValue]](
-      RequestDefn.GraphQl(req.backendCalculationUri, query))
+                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
+    RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse]](
+      RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -73,24 +71,12 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation      =>
-            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
-          case CalculationWrapperOrError.CalculationWrapper(calc) =>
-            if (AllowancesDeductionsAndReliefsResponse.isEmpty(calc)) {
-              Left(ErrorWrapper(responseWrapper.correlationId, NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND))
-            }
-            else Right(calc)
+          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.CalculationWrapper(calc) => if (calc.isEmpty) Left(ErrorWrapper(responseWrapper.correlationId, NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND)) else Right(calc)
         }
       }
-      .mapSuccessSimple {
-        rawResponse =>
-          rawResponse \ "data" match {
-            case JsDefined(value) => value \ "metadata" \ "id" match {
-              case JsDefined(id: JsString) =>
-                hateoasFactory.wrap((value \ "allowancesDeductionsAndReliefs").get, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, id.value))
-            }
-          }
-      }
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, rawResponse.id)))
 
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -104,6 +90,4 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(
 
       doHandleRequest(rawData, Some(auditHandler))
     }
-
-  override val query: String = ALLOWANCES_AND_DEDUCTIONS_QUERY
 }

@@ -18,6 +18,7 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.ShortServiceRefundBandsFixture._
+import v1.models.response.getIncomeTaxAndNics.detail.OverseasPensionContributions
 
 object OverseasPensionContributionsFixture {
 
@@ -25,6 +26,15 @@ object OverseasPensionContributionsFixture {
   val totalShortServiceRefundCharge: BigDecimal = 3000.99
   val shortServiceRefundTaxPaid: Option[BigDecimal] = Some(4000.99)
   val totalShortServiceRefundChargeDue: BigDecimal = 5000.99
+
+  val overseasPensionContributionsModel: OverseasPensionContributions =
+    OverseasPensionContributions(
+      totalShortServiceRefund = totalShortServiceRefund,
+      totalShortServiceRefundCharge = totalShortServiceRefundCharge,
+      shortServiceRefundTaxPaid = shortServiceRefundTaxPaid,
+      totalShortServiceRefundChargeDue = totalShortServiceRefundChargeDue,
+      shortServiceRefundBands = Some(Seq(shortServiceRefundBandsModel))
+    )
 
   val overseasPensionContributionsJson: JsValue = Json.parse(
     s"""

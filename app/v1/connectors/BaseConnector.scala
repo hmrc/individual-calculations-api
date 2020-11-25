@@ -18,7 +18,7 @@ package v1.connectors
 
 import config.AppConfig
 import play.api.Logger
-import play.api.libs.json.{JsObject, Writes}
+import play.api.libs.json.Writes
 import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -64,18 +64,6 @@ trait BaseConnector {
     }
 
     doPost(desHeaderCarrier(hc, correlationId))
-  }
-
-  def sendGQLRequest[T](uri: String, body: JsObject)(implicit ec: ExecutionContext,
-                                                     hc: HeaderCarrier,
-                                                     httpReads: HttpReads[BackendOutcome[T]],
-                                                     correlationId: String): Future[BackendOutcome[T]] = {
-
-    def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
-      http.POST(urlFrom(uri), body)
-    }
-
-    doPost(headerCarrier(hc, correlationId))
   }
 
   def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,

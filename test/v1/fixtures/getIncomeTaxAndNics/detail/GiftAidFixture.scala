@@ -17,12 +17,20 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.GiftAid
 
 object GiftAidFixture {
 
   val grossGiftAidPayments: BigInt = 100
   val rate: BigDecimal = 200.25
   val giftAidTax: BigDecimal = 300.25
+
+  val giftAidModel: GiftAid =
+    GiftAid(
+      grossGiftAidPayments = grossGiftAidPayments,
+      rate = rate,
+      giftAidTax = giftAidTax
+    )
 
   val giftAidJson: JsValue = Json.parse(
     s"""

@@ -31,7 +31,8 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
   private trait Test {
 
     val nino           = "AA123456A"
-    val calcId: String = calculationId
+    val correlationId  = "X-123"
+    val calcId: String = fixtureCalculationId
 
     val linksJson: JsObject = Json.parse(s"""{
          |    "links": [{
@@ -67,14 +68,14 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, incomeTaxAndNicsResponseJsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, incomeTaxAndNicsResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe incomeTaxAndNicsResponseJson.as[JsObject].deepMerge(linksJson)
+        response.json shouldBe incomeTaxNicsResponseJson.as[JsObject].deepMerge(linksJson)
       }
     }
 
@@ -84,7 +85,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, incomeTaxAndNicsResponseJsonFromBackendWithErrors)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -139,7 +140,7 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)

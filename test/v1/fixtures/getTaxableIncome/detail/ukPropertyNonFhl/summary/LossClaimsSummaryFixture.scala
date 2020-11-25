@@ -17,6 +17,7 @@
 package v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummary
 
 object LossClaimsSummaryFixture {
 
@@ -25,6 +26,15 @@ object LossClaimsSummaryFixture {
   val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1002)
   val carrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
   val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
+
+  val lossClaimsSummaryModel: LossClaimsSummary =
+    LossClaimsSummary(
+      totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
+      broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
+      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+      broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed
+    )
 
   val lossClaimSummaryJson: JsValue = Json.parse(
     s"""

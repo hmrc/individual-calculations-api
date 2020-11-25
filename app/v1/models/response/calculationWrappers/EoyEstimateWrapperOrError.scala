@@ -16,25 +16,24 @@
 
 package v1.models.response.calculationWrappers
 
-import play.api.libs.json.{JsPath, JsValue, Reads}
+import play.api.libs.json.{JsPath, Reads}
 import v1.models.response.common.CalculationType
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 sealed trait EoyEstimateWrapperOrError
 
 object EoyEstimateWrapperOrError {
 
-  case class EoyEstimateWrapper(eoyEstimate: JsValue) extends EoyEstimateWrapperOrError
-
-  case object EoyErrorMessages extends EoyEstimateWrapperOrError
-
-  case object EoyCrystallisedError extends EoyEstimateWrapperOrError
+  case class EoyEstimateWrapper(eoyEstimate: EoyEstimateResponse) extends EoyEstimateWrapperOrError
+  case object EoyErrorMessages        extends EoyEstimateWrapperOrError
+  case object EoyCrystallisedError    extends EoyEstimateWrapperOrError
 
   // Note: the implicit Reads[A] must correctly locate the embedded calculation object
   // from within the JSON as it is received from the backend microservice.
   implicit def reads: Reads[EoyEstimateWrapperOrError] = {
     for {
-      errCount <- (JsPath \ "data" \ "metadata" \ "calculationErrorCount").readWithDefault[Int](0)
-      calcType <- (JsPath \ "data" \ "metadata" \ "calculationType").readWithDefault[CalculationType](CalculationType.inYear)
+      errCount <- (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault[Int](0)
+      calcType <- (JsPath \ "metadata" \ "calculationType").readWithDefault[CalculationType](CalculationType.inYear)
       result <- readsErrorChecker(errCount, calcType)
     } yield result
   }
@@ -47,7 +46,7 @@ object EoyEstimateWrapperOrError {
       Reads.pure[EoyEstimateWrapperOrError](EoyCrystallisedError)
     }
     else {
-      JsPath.read[JsValue].map(EoyEstimateWrapper)
+      JsPath.read[EoyEstimateResponse].map(EoyEstimateWrapper)
     }
   }
 }

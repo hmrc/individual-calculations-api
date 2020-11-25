@@ -17,7 +17,6 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json.{JsDefined, JsObject, JsString, JsValue}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
@@ -31,7 +30,6 @@ import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
-import v1.models.response.getMessages.MessagesResponse.LinksFactory
 import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v1.support.MessagesFilter
@@ -49,10 +47,10 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetMessagesRawData,
     GetMessagesRequest,
-    JsValue,
-    HateoasWrapper[JsValue],
+    MessagesResponse,
+    HateoasWrapper[MessagesResponse],
     AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator)
-    with MessagesFilter with GraphQLQuery {
+    with MessagesFilter {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -64,8 +62,8 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetMessagesRequest): RequestHandler[JsValue, HateoasWrapper[JsValue]] =
-    RequestHandler[JsValue](RequestDefn.GraphQl(req.backendCalculationUri, query))
+                                 req: GetMessagesRequest): RequestHandler[MessagesResponse, HateoasWrapper[MessagesResponse]] =
+    RequestHandler[MessagesResponse](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -73,20 +71,12 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccess(filterMessages(req.queryData))
-      .mapSuccessSimple {
-        rawResponse =>
-          rawResponse \ "data" match {
-            case JsDefined(value) => value \ "metadata" \ "id" match {
-              case JsDefined(id: JsString) =>
-                hateoasFactory.wrap((value \ "messages").get, MessagesHateoasData(req.nino.nino, id.value))
-            }
-          }
-      }
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, rawResponse.id)))
 
   def filterMessages(queries: Seq[MessageType])(
-    messagesResponse: ResponseWrapper[JsValue]): Either[ErrorWrapper, ResponseWrapper[JsValue]] = {
-    val filteredResponse = messagesResponse.map(messages => filter(messages.as[JsObject], queries))
-    if (MessagesResponse.hasMessages(filteredResponse.responseData)) {
+    messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {
+    val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
+    if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)
     } else {
       Left(ErrorWrapper(filteredResponse.correlationId, NoMessagesExistError, None, NOT_FOUND))
@@ -105,6 +95,4 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
 
       doHandleRequest(rawData, Some(auditHandler))
     }
-
-  override val query: String = MESSAGES_QUERY
 }

@@ -18,6 +18,7 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionBandsFixture._
+import v1.models.response.getIncomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowance
 
 object PensionContributionsInExcessOfTheAnnualAllowanceFixture {
 
@@ -25,6 +26,15 @@ object PensionContributionsInExcessOfTheAnnualAllowanceFixture {
   val totalPensionCharge: BigDecimal = 3000.99
   val annualAllowanceTaxPaid: Option[BigDecimal] = Some(4000.99)
   val totalPensionChargeDue: BigDecimal = 5000.99
+
+  val pensionContributionsInExcessOfTheAnnualAllowanceModel: PensionContributionsInExcessOfTheAnnualAllowance =
+    PensionContributionsInExcessOfTheAnnualAllowance(
+      totalContributions = totalContributions,
+      totalPensionCharge = totalPensionCharge,
+      annualAllowanceTaxPaid = annualAllowanceTaxPaid,
+      totalPensionChargeDue = totalPensionChargeDue,
+      pensionBands = Some(Seq(pensionBandsModel))
+    )
 
   val pensionContributionsInExcessOfTheAnnualAllowanceJson: JsValue = Json.parse(
     s"""

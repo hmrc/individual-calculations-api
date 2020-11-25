@@ -17,7 +17,6 @@
 package v1.controllers
 
 import javax.inject.Inject
-import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v1.connectors.httpparsers.StandardHttpParser
@@ -29,8 +28,7 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getMetadata.MetadataResponse.LinksFactory
-import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData}
+import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
@@ -46,9 +44,9 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
                                      )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
-    JsValue,
-    HateoasWrapper[JsValue],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) with GraphQLQuery {
+    MetadataResponse,
+    HateoasWrapper[MetadataResponse],
+    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -60,29 +58,16 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
   override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[JsValue, HateoasWrapper[JsValue]] =
-    RequestHandler[JsValue](RequestDefn.GraphQl(req.backendCalculationUri, query))
+                                 req: GetCalculationRequest): RequestHandler[MetadataResponse, HateoasWrapper[MetadataResponse]] =
+    RequestHandler[MetadataResponse](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
         NotFoundError
       )
-      .mapSuccessSimple {
-        rawResponse =>
-          rawResponse \ "data" \ "metadata" match {
-            case JsDefined(value: JsObject) =>
-              val idSearch = value \ "id"
-              val calculationErrorCountSearch = value \ "calculationErrorCount"
-              val jsonToWrap = value - "metadataExistence"
-              val metadataExistence = (value \ "metadataExistence").validate[MetadataExistence].asOpt.getOrElse(MetadataExistence())
-              (idSearch, calculationErrorCountSearch) match {
-                case (JsDefined(id: JsString), JsDefined(calculationErrorCount: JsNumber)) =>
-                  hateoasFactory.wrap(jsonToWrap, MetadataHateoasData(req.nino.nino, id.value, Some(calculationErrorCount.value.toInt), metadataExistence))
-                case (JsDefined(id: JsString), JsUndefined())                              =>
-                  hateoasFactory.wrap(jsonToWrap, MetadataHateoasData(req.nino.nino, id.value, None, metadataExistence))
-              }
-          }
-      }
+      .mapSuccessSimple(rawResponse =>
+        hateoasFactory.wrap(rawResponse.copy(metadataExistence = None), MetadataHateoasData(req.nino.nino, rawResponse.id,
+          rawResponse.calculationErrorCount, rawResponse.metadataExistence.getOrElse(MetadataExistence()))))
 
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -96,6 +81,4 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
 
       doHandleRequest(rawData, Some(auditHandler))
     }
-
-  override val query: String = METADATA_QUERY
 }

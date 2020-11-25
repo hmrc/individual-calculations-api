@@ -18,6 +18,7 @@ package v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.TypeOfClaim
+import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.ResultOfClaimApplied
 
 object ResultOfClaimAppliedFixture {
 
@@ -29,17 +30,28 @@ object ResultOfClaimAppliedFixture {
   val lossAmountUsed: BigInt = 1000
   val remainingLossValue: BigInt = 4000
 
+  val resultOfClaimAppliedModel: ResultOfClaimApplied =
+    ResultOfClaimApplied(
+      claimId = claimId,
+      taxYearClaimMade = taxYearClaimMade,
+      claimType = claimType,
+      mtdLoss = mtdLoss,
+      taxYearLossIncurred = taxYearLossIncurred,
+      lossAmountUsed = lossAmountUsed,
+      remainingLossValue = remainingLossValue
+    )
+
   val resultOfClaimAppliedJson: JsValue = Json.parse(
     f"""
-       |{
-       |  "claimId": "${claimId.get}",
-       |   "taxYearLossIncurred": "$taxYearLossIncurred",
-       |   "taxYearClaimMade": "$taxYearClaimMade",
-       |   "claimType": ${Json.toJson(claimType)},
-       |   "mtdLoss": $mtdLoss,
-       |   "lossAmountUsed": $lossAmountUsed,
-       |   "remainingLossValue": $remainingLossValue
-       |}
+      |{
+      |  "claimId": "${claimId.get}",
+      |   "taxYearLossIncurred": "$taxYearLossIncurred",
+      |   "taxYearClaimMade": "$taxYearClaimMade",
+      |   "claimType": ${Json.toJson(claimType)},
+      |   "mtdLoss": $mtdLoss,
+      |   "lossAmountUsed": $lossAmountUsed,
+      |   "remainingLossValue": $remainingLossValue
+      |}
     """.stripMargin
   )
 }

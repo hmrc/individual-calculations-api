@@ -17,21 +17,38 @@
 package v1.models.response.getMetadata
 
 import config.AppConfig
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
+import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+
+case class MetadataResponse(id: String,
+                            taxYear: String,
+                            requestedBy: CalculationRequestor,
+                            calculationReason: CalculationReason,
+                            calculationTimestamp: Option[String],
+                            calculationType: CalculationType,
+                            intentToCrystallise: Boolean,
+                            crystallised: Boolean,
+                            totalIncomeTaxAndNicsDue: Option[BigDecimal],
+                            calculationErrorCount: Option[Int],
+                            metadataExistence: Option[MetadataExistence])
 
 object MetadataResponse extends HateoasLinks {
 
-  implicit object LinksFactory extends HateoasLinksFactory[JsValue, MetadataHateoasData] {
+  implicit val writes: OWrites[MetadataResponse] = Json.writes[MetadataResponse]
+  implicit val reads: Reads[MetadataResponse] =
+    (JsPath \ "metadata").read[MetadataResponse](Json.reads[MetadataResponse])
+
+  implicit object LinksFactory extends HateoasLinksFactory[MetadataResponse, MetadataHateoasData] {
     override def links(appConfig: AppConfig, data: MetadataHateoasData): Seq[Link] = {
-      import data._
-      val hateoasLinks = LinkExists(getMetadata(appConfig, nino, calculationId, isSelf = true), dataIsPresent = true)
-      val incomeTaxLink = LinkExists(getIncomeTax(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.incomeTaxAndNicsCalculated)
-      val taxableIncomeLink = LinkExists(getTaxableIncome(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.taxableIncome)
-      val allowancesLink = LinkExists(getAllowances(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.allowancesDeductionsAndReliefs)
-      val eoyLink = LinkExists(getEoyEstimate(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.endOfYearEstimate)
-      val messagesLink = LinkExists(getMessages(appConfig, nino, calculationId, isSelf = false), data.metadataExistence.messages)
+      import data.{calculationId, errorCount, nino}
+      val hateoasLinks = LinkExists(getMetadata(appConfig, nino, calculationId, isSelf = true),dataIsPresent = true)
+      val incomeTaxLink = LinkExists(getIncomeTax(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.incomeTaxAndNicsCalculated)
+      val taxableIncomeLink = LinkExists(getTaxableIncome(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.taxableIncome)
+      val allowancesLink = LinkExists(getAllowances(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.allowancesDeductionsAndReliefs)
+      val eoyLink = LinkExists(getEoyEstimate(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.endOfYearEstimate)
+      val messagesLink = LinkExists(getMessages(appConfig, nino, calculationId, isSelf = false),data.metadataExistence.messages)
 
       if (errorCount.isEmpty) {
         addHateoasLinksIfNonEmpty(hateoasLinks, incomeTaxLink, taxableIncomeLink, allowancesLink, eoyLink, messagesLink)

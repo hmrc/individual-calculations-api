@@ -18,12 +18,20 @@ package v1.fixtures.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.LossType
+import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.UnclaimedLoss
 
 object UnclaimedLossFixture {
 
   val taxYearLossIncurred: String = "2051-52"
   val typeOfLoss: LossType = LossType.INCOME
   val currentLossValue: BigInt = 71438847594L
+
+  val unclaimedLossModel: UnclaimedLoss =
+    UnclaimedLoss(
+      taxYearLossIncurred = taxYearLossIncurred,
+      currentLossValue = currentLossValue,
+      lossType = LossType.INCOME
+    )
 
   val unclaimedLossJson: JsValue = Json.parse(
     f"""

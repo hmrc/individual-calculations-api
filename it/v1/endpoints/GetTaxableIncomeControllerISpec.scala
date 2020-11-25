@@ -22,6 +22,7 @@ import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
+import v1.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
@@ -69,7 +70,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, taxableIncomeResponseFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, taxableIncomeResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -86,7 +87,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, taxableIncomeResponseFromBackendWithErrors)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -141,7 +142,7 @@ class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)

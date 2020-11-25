@@ -16,11 +16,11 @@
 
 package v1.handler
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Reads}
+import play.api.libs.json.{ JsValue, Reads }
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handler.RequestDefn.{Get, GraphQl, Post}
-import v1.handler.RequestHandler.{ErrorMapping, SuccessMapping}
-import v1.models.errors.{ErrorWrapper, MtdError}
+import v1.handler.RequestDefn.{ Get, Post }
+import v1.handler.RequestHandler.{ ErrorMapping, SuccessMapping }
+import v1.models.errors.{ ErrorWrapper, MtdError }
 import v1.models.outcomes.ResponseWrapper
 
 trait RequestHandler[BackendResp, APIResp] {
@@ -78,9 +78,8 @@ object RequestHandler {
 
   def apply[Resp: Reads](requestDefn: RequestDefn): Impl[Resp, Resp] = {
     val successCode: SuccessCode = requestDefn match {
-      case _: Get     => SuccessCode(OK)
-      case _: GraphQl => SuccessCode(OK)
-      case _: Post    => SuccessCode(NO_CONTENT)
+      case _: Get  => SuccessCode(OK)
+      case _: Post => SuccessCode(NO_CONTENT)
     }
 
     Impl(requestDefn, successCode, successMapping = noMapping)
@@ -103,7 +102,5 @@ object RequestDefn {
   }
 
   case class Post(uri: String, body: JsValue) extends RequestDefn
-
-  case class GraphQl(uri: String, query: String) extends RequestDefn
 
 }

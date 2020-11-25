@@ -22,8 +22,18 @@ import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.ClaimNotApplied
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.LossBroughtForwardFixture._
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.ResultOfClaimAppliedFixture._
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.UnclaimedLossFixture._
+import v1.models.response.getTaxableIncome.detail.selfEmployment.detail._
 
 object LossClaimsDetailFixture {
+
+  val lossClaimsDetailDefaultResponse: LossClaimsDetail =
+    LossClaimsDetail(
+      Some(Seq(lossBroughtForwardResponse)),
+      Some(Seq(resultOfClaimAppliedModel)),
+      Some(Seq(unclaimedLossModel)),
+      Some(Seq(carriedForwardLossModel)),
+      Some(Seq(claimNotAppliedModel))
+    )
 
   val lossClaimsDetailJson: JsValue = Json.parse(
     s"""

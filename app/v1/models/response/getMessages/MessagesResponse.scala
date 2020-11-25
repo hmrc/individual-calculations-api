@@ -17,13 +17,47 @@
 package v1.models.response.getMessages
 
 import config.AppConfig
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import utils.NestedJsonReads._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 
+case class Message(id: String, text: String)
+
+object Message {
+  implicit val format: OFormat[Message] = Json.format[Message]
+}
+
+case class MessagesResponse(info: Option[Seq[Message]],
+                            warnings: Option[Seq[Message]],
+                            errors: Option[Seq[Message]],
+                            id: String) {
+
+  val hasMessages: Boolean = this match {
+    case MessagesResponse(None, None, None, _) => false
+    case _ => true
+  }
+}
+
 object MessagesResponse extends HateoasLinks {
 
-  implicit object LinksFactory extends HateoasLinksFactory[JsValue, MessagesHateoasData] {
+  implicit val writes: OWrites[MessagesResponse] = new OWrites[MessagesResponse] {
+    def writes(response: MessagesResponse) : JsObject =
+
+      response.info.fold(Json.obj())(a => Json.obj("info" -> a)) ++
+      response.warnings.fold(Json.obj())(a => Json.obj("warnings" -> a)) ++
+      response.errors.fold(Json.obj())(a => Json.obj("errors" -> a))
+  }
+
+  implicit val reads: Reads[MessagesResponse] = (
+    (__ \ "messages" \ "info").readNestedNullable[Seq[Message]] and
+      (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]] and
+      (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]] and
+      (__ \ "metadata" \ "id").read[String]
+    ) (MessagesResponse.apply _)
+
+  implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, MessagesHateoasData] {
     override def links(appConfig: AppConfig, data: MessagesHateoasData): Seq[Link] = {
       import data.{id, nino}
       Seq(
@@ -31,14 +65,6 @@ object MessagesResponse extends HateoasLinks {
         getMessages(appConfig, nino, id, isSelf = true)
       )
     }
-  }
-
-  def hasMessages(json: JsValue): Boolean = {
-    val info = json \ "data" \ "messages" \ "info"
-    val warnings = json \ "data" \ "messages" \ "warnings"
-    val errors = json \ "data" \ "messages" \ "errors"
-
-    !(info.isEmpty && warnings.isEmpty && errors.isEmpty)
   }
 
 }

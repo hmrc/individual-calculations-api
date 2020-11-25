@@ -28,11 +28,9 @@ object HateoasWrapperFixture {
     implicit val writes: OWrites[TestMtdResponse] = Json.writes[TestMtdResponse]
   }
 
-  val exampleModel: TestMtdResponse = TestMtdResponse(field1 = "value1", field2 = 1)
-
   val hateoasWrapperModelWithLinks: HateoasWrapper[TestMtdResponse] =
     HateoasWrapper(
-      payload = exampleModel,
+      payload = TestMtdResponse(field1 = "value1", field2 = 1),
       links = Seq(
         Link(
           href = "/some/resource",
