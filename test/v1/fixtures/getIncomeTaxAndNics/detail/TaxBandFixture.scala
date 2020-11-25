@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.TaxBand
 
 object TaxBandFixture {
 
@@ -27,16 +26,6 @@ object TaxBandFixture {
   val apportionedBandLimit: BigInt = 5000
   val income: BigInt = 6000
   val taxAmount: BigDecimal = 700.25
-
-  val taxBandModel: TaxBand =
-    TaxBand(
-      name = name,
-      rate = rate,
-      bandLimit = bandLimit,
-      apportionedBandLimit = apportionedBandLimit,
-      income = income,
-      taxAmount = taxAmount
-    )
 
   val taxBandJson: JsValue = Json.parse(
     s"""
@@ -50,17 +39,6 @@ object TaxBandFixture {
        |}
     """.stripMargin
   )
-
-  def taxBandModel(input: BigDecimal): TaxBand = {
-    TaxBand(
-      name = name,
-      rate = input + 0.17,
-      bandLimit = bandLimit,
-      apportionedBandLimit = apportionedBandLimit,
-      income = income,
-      taxAmount = input + 0.85
-    )
-  }
 
   def taxBandJson(input: BigDecimal): JsValue = Json.parse(
     s"""

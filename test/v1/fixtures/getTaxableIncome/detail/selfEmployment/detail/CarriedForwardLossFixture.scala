@@ -17,8 +17,7 @@
 package v1.fixtures.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.common.{LossType, TypeOfClaim}
-import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.CarriedForwardLoss
+import v1.models.response.common.LossType
 
 object CarriedForwardLossFixture {
 
@@ -27,16 +26,6 @@ object CarriedForwardLossFixture {
   val taxYearLossIncurred: String = "2045-46"
   val currentLossValue: BigInt = 49177438626L
   val lossType: LossType = LossType.INCOME
-
-  val carriedForwardLossModel: CarriedForwardLoss =
-    CarriedForwardLoss(
-      claimId = claimId,
-      claimType = TypeOfClaim.`carry-forward`,
-      taxYearClaimMade = taxYearClaimMade,
-      taxYearLossIncurred = taxYearLossIncurred,
-      currentLossValue = currentLossValue,
-      lossType = lossType
-    )
 
   val carriedForwardLossJson: JsValue = Json.parse(
     s"""

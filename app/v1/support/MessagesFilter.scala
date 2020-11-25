@@ -16,32 +16,40 @@
 
 package v1.support
 
+import play.api.libs.json._
 import v1.models.domain.MessageType
-import v1.models.response.getMessages.MessagesResponse
 
 import scala.annotation.tailrec
 
 trait MessagesFilter {
-  def filter(calculationMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
+  def filter(calculationMessages: JsObject, typeQueries: Seq[MessageType]): JsValue = {
 
-    def filterMessages(filteredMessages: MessagesResponse, typeQuery: MessageType): MessagesResponse = {
+    def filterMessages(filteredMessages: JsObject, typeQuery: MessageType): JsObject = {
       typeQuery match {
-        case MessageType.error => filteredMessages.copy(errors = calculationMessages.errors)
-        case MessageType.warning => filteredMessages.copy(warnings = calculationMessages.warnings)
-        case MessageType.info => filteredMessages.copy(info = calculationMessages.info)
-        case _ => filteredMessages
+        case MessageType.error   => add(filteredMessages, "errors")
+        case MessageType.warning => add(filteredMessages, "warnings")
+        case MessageType.info    => add(filteredMessages, "info")
+        case _                   => filteredMessages
       }
     }
 
+    def add(filteredMessages: JsObject, path: String): JsObject = calculationMessages \ "data" \ "messages" \ path match {
+      case JsDefined(value) => filteredMessages.deepMerge(Json.obj("data" -> Json.obj("messages" -> Json.obj(path -> value))))
+      case _: JsUndefined   => filteredMessages
+    }
+
     @tailrec
-    def filterLoop(filteredMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
+    def filterLoop(filteredMessages: JsObject, typeQueries: Seq[MessageType]): JsObject = {
       typeQueries.toList match {
-        case Nil => calculationMessages
-        case query :: Nil => filterMessages(filteredMessages, query)
+        case Nil           => calculationMessages
+        case query :: Nil  => filterMessages(filteredMessages, query)
         case query :: tail => filterLoop(filterMessages(filteredMessages, query), tail)
       }
     }
 
-    filterLoop(MessagesResponse(None, None, None, calculationMessages.id), typeQueries)
+    calculationMessages \ "data" \ "metadata" match {
+      case JsDefined(metadata: JsObject) =>
+        filterLoop(Json.obj("data" -> Json.obj("metadata" -> metadata, "messages" -> Json.obj())), typeQueries)
+    }
   }
 }

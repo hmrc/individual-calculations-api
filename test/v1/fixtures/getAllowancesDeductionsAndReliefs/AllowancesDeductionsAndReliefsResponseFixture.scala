@@ -16,58 +16,46 @@
 
 package v1.fixtures.getAllowancesDeductionsAndReliefs
 
-import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.getAllowancesDeductionsAndReliefs.detail.CalculationDetailFixture._
-import v1.fixtures.getAllowancesDeductionsAndReliefs.summary.CalculationSummaryFixture._
-import v1.fixtures.getMetadata.MetadataResponseFixture._
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse
-import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
-import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
+import play.api.libs.json.{JsValue, Json}
 
 object AllowancesDeductionsAndReliefsResponseFixture {
 
-  val allowancesDeductionsAndReliefsResponseModel: AllowancesDeductionsAndReliefsResponse =
-    AllowancesDeductionsAndReliefsResponse(
-      summary = calculationSummaryModel,
-      detail = calculationDetailModel,
-      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-    )
-
-  val allowancesDeductionsAndReliefsResponseModelEmpty: AllowancesDeductionsAndReliefsResponse =
-    AllowancesDeductionsAndReliefsResponse(
-      summary = CalculationSummary(
-        totalAllowancesAndDeductions = None,
-        totalReliefs = None
+  def backendJson(allowancesDeductionsAndReliefsResponse: JsValue, errorCount: Int = 0): JsValue = Json.obj(
+    "data" -> Json.obj(
+      "metadata" -> Json.obj(
+        "id" -> "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        "calculationErrorCount" -> errorCount
       ),
-      detail = CalculationDetail(
-        allowancesAndDeductions = None,
-        reliefs = None
-      ),
-      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      "allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsResponse
     )
+  )
 
-  val allowancesDeductionsAndReliefsResponseJson: JsObject =
-    Json.obj("summary" -> calculationSummaryJson) ++
-    Json.obj("detail" -> calculationDetailJson)
-
-  val allowancesDeductionsAndReliefsResponseJsonEmpty: JsObject = Json.parse(
+  val allowancesDeductionsAndReliefsResponseJsonNonEmpty: JsValue = Json.parse(
     """
       |{
-      |  "allowancesDeductionsAndReliefs": {
-      |    "summary": {
-      |    },
-      |    "detail":{
-      |    }
+      |  "summary": {
+      |    "totalAllowancesAndDeductions": 1,
+      |    "totalReliefs": 1
+      |  },
+      |  "detail":{
+      |    "foo": "bar"
       |  }
       |}
+      |""".stripMargin
+  )
+
+  val allowancesDeductionsAndReliefsResponseJsonEmpty: JsValue = Json.parse(
+    """
+      |{
+      |  "summary": {},
+      |  "detail":{}
+      |}
     """.stripMargin
-  ).as[JsObject]
+  )
 
-  val allowancesDeductionsAndReliefsTopLevelJson: JsValue =
-    metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
-    Json.obj("allowancesDeductionsAndReliefs" -> allowancesDeductionsAndReliefsResponseJson)
+  val allowancesDeductionsAndReliefsJsonFromBackend: JsValue = backendJson(allowancesDeductionsAndReliefsResponseJsonNonEmpty)
 
-  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue =
-    metadataResponseTopLevelJsonWithoutErrors.as[JsObject] ++
-    allowancesDeductionsAndReliefsResponseJsonEmpty
+  val allowancesDeductionsAndReliefsJsonWithErrorsFromBackend: JsValue = backendJson(allowancesDeductionsAndReliefsResponseJsonNonEmpty, errorCount = 1)
+
+  val noAllowancesDeductionsAndReliefsExistJsonFromBackend: JsValue = backendJson(allowancesDeductionsAndReliefsResponseJsonEmpty)
 }

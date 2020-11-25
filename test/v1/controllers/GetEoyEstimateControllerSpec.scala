@@ -32,9 +32,9 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 import v1.models.response.getEoyEstimate.EoyEstimateHateoasData
-import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -46,7 +46,10 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   with MockStandardService
   with MockHateoasFactory
   with MockAuditService
+  with GraphQLQuery
   with MockIdGenerator {
+
+  override val query: String = EOY_ESTIMATE_QUERY
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -74,7 +77,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
   private val rawData = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
-  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel="test-relationship")
+  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   val linksJson: JsObject = Json.parse(
     """{
@@ -99,16 +102,16 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel)))))
+          .doService(RequestDefn.GraphQl(uri, query), OK)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapper(EoyEstimateResponseFixture.eoyEstimateResponseJsonFromBackend)))))
 
         MockHateoasFactory
-          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseModel, EoyEstimateHateoasData(nino, calcId))
-          .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseModel, Seq(testHateoasLink)))
+          .wrap(EoyEstimateResponseFixture.eoyEstimateResponseJson, EoyEstimateHateoasData(nino, calcId))
+          .returns(HateoasWrapper(EoyEstimateResponseFixture.eoyEstimateResponseJson, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
 
-        val responseBody: JsObject = EoyEstimateResponseFixture.eoyEstimateResponseJson.deepMerge(linksJson)
+        val responseBody: JsObject = EoyEstimateResponseFixture.eoyEstimateResponseJson.as[JsObject].deepMerge(linksJson)
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
@@ -128,7 +131,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyErrorMessages))))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))
@@ -152,7 +155,7 @@ class GetEoyEstimateControllerSpec extends ControllerBaseSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+          .doService(RequestDefn.GraphQl(uri, query), OK)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, EoyEstimateWrapperOrError.EoyCrystallisedError))))
 
         val result: Future[Result] = controller.getEoyEstimate(nino, calcId)(fakeGetRequest(queryUri))

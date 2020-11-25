@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.NicBand
 
 object NicBandFixture {
 
@@ -27,16 +26,6 @@ object NicBandFixture {
   val apportionedThreshold: Option[BigInt] = Some(300)
   val income: BigInt = 400
   val amount: BigDecimal = 500.25
-
-  val nicBandModel: NicBand =
-    NicBand(
-      name = name,
-      rate = rate,
-      threshold = threshold,
-      apportionedThreshold = apportionedThreshold,
-      income = income,
-      amount = amount
-    )
 
   val nicBandJson: JsValue = Json.parse(
     s"""

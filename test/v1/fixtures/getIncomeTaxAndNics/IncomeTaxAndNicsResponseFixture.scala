@@ -17,66 +17,38 @@
 package v1.fixtures.getIncomeTaxAndNics
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
-import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
-import v1.fixtures.getMetadata.MetadataResponseFixture._
-import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsResponse
-import v1.models.response.calculationWrappers.CalculationWrapperOrError
-import v1.models.response.calculationWrappers.CalculationWrapperOrError._
 
 object IncomeTaxAndNicsResponseFixture {
 
-  val fixtureCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  val incomeTaxAndNicsResponseModel: IncomeTaxAndNicsResponse =
-    IncomeTaxAndNicsResponse(
-      summary = calculationSummaryModel,
-      detail = calculationDetailModel,
-      id = fixtureCalculationId
+  def backendJson(incomeTaxAndNicsResponse: JsValue, errorCount: Int = 0): JsValue = Json.obj(
+    "data" -> Json.obj(
+      "metadata" -> Json.obj(
+        "id" -> calculationId,
+        "calculationErrorCount" -> errorCount
+      ),
+      "incomeTaxAndNicsCalculated" -> incomeTaxAndNicsResponse
     )
-
-  val wrappedIncomeTaxAndNicsResponseModel: CalculationWrapperOrError[IncomeTaxAndNicsResponse] =
-    CalculationWrapper(incomeTaxAndNicsResponseModel)
-
-  val incomeTaxNicsResponseJson: JsValue = Json.parse(
-    s"""
-       |{
-       |   "summary": $calculationSummaryJson,
-       |   "detail": $calculationDetailJson,
-       |   "id": "$fixtureCalculationId"
-       |}
-    """.stripMargin
   )
 
-  val incomeTaxAndNicsResponseTopLevelJson: JsValue = Json.parse(
-    s"""
-       |{
-       |  "metadata": $metadataResponseJson,
-       |  "incomeTaxAndNicsCalculated": {
-       |      "summary": $calculationSummaryJson,
-       |      "detail": $calculationDetailJson
-       |   }
-       |}""".stripMargin)
+  val incomeTaxAndNicsResponseJson: JsValue = Json.parse(
+    """
+      |{
+      |  "summary": {
+      |    "foo": "bar"
+      |  },
+      |  "details": {
+      |    "foo": "bar"
+      |  },
+      |  "id":"f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      |}
+      |""".stripMargin
+  )
 
-  val errorResponseTopLevelJson: JsValue = Json.parse(
-    s"""
-       |{
-       |  "metadata": {
-       |    "id": "$fixtureCalculationId",
-       |    "taxYear": "2018-19",
-       |    "requestedBy": "customer",
-       |    "calculationReason": "customerRequest",
-       |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-       |    "calculationType": "crystallisation",
-       |    "intentToCrystallise": true,
-       |    "crystallised": false,
-       |    "calculationErrorCount": 2
-       |  },
-       |  "messages" :{
-       |     "errors":[
-       |        {"id":"err1", "text":"text1"},
-       |        {"id":"err2", "text":"text2"}
-       |     ]
-       |  }
-       |}""".stripMargin)
+  val incomeTaxAndNicsResponseJsonFromBackend: JsValue =
+    backendJson(incomeTaxAndNicsResponseJson)
+
+  val incomeTaxAndNicsResponseJsonFromBackendWithErrors: JsValue =
+    backendJson(incomeTaxAndNicsResponseJson, errorCount = 1)
 }

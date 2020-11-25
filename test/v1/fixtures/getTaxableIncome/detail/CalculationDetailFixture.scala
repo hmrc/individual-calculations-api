@@ -22,18 +22,8 @@ import v1.fixtures.getTaxableIncome.detail.GainsOnLifePoliciesFixture._
 import v1.fixtures.getTaxableIncome.detail.LumpSumsFixture._
 import v1.fixtures.getTaxableIncome.detail.PayPensionsProfitFixture._
 import v1.fixtures.getTaxableIncome.detail.SavingsAndGainsFixture._
-import v1.models.response.getTaxableIncome.detail.CalculationDetail
 
 object CalculationDetailFixture {
-
-  val calculationDetailModel: CalculationDetail =
-    CalculationDetail(
-      payPensionsProfit = Some(payPensionsProfitModel),
-      savingsAndGains = Some(savingsAndGainsModel),
-      dividends = Some(dividendsModel),
-      lumpSums = Some(lumpSumsModel),
-      gainsOnLifePolicies = Some(gainsOnLifePoliciesModel)
-    )
 
   val calculationDetailJson: JsValue = Json.parse(
     s"""

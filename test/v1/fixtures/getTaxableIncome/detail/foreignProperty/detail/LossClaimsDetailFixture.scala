@@ -17,21 +17,12 @@
 package v1.fixtures.getTaxableIncome.detail.foreignProperty.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.ClaimsNotAppliedFixture._
 import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.DefaultCarriedForwardLossFixture._
 import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.LossBroughtForwardFixture._
 import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.ResultOfClaimAppliedFixture._
-import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.ClaimsNotAppliedFixture._
-import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.LossClaimsDetail
 
 object LossClaimsDetailFixture {
-
-  val lossClaimsDetailModel: LossClaimsDetail =
-    LossClaimsDetail(
-      lossesBroughtForward = Some(Seq(lossBroughtForwardModel)),
-      resultOfClaimsApplied = Some(Seq(resultOfClaimAppliedModel)),
-      defaultCarriedForwardLosses = Some(Seq(defaultCarriedForwardLossModel)),
-      claimsNotApplied = Some(Seq(claimsNotAppliedModel))
-    )
 
   val lossClaimsDetailJson: JsValue = Json.parse(
     s"""

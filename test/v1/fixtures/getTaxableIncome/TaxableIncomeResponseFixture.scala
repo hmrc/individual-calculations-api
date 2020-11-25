@@ -16,20 +16,21 @@
 
 package v1.fixtures.getTaxableIncome
 
-import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.getMetadata.MetadataResponseFixture._
-import v1.fixtures.getTaxableIncome.detail.CalculationDetailFixture._
-import v1.fixtures.getTaxableIncome.summary.CalculationSummaryFixture._
-import v1.models.response.getTaxableIncome.TaxableIncomeResponse
+import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.getTaxableIncome.detail.CalculationDetailFixture.calculationDetailJson
+import v1.fixtures.getTaxableIncome.summary.CalculationSummaryFixture.calculationSummaryJson
 
 object TaxableIncomeResponseFixture {
 
-  val taxableIncomeResponseModel: TaxableIncomeResponse =
-    TaxableIncomeResponse(
-      summary = calculationSummaryModel,
-      detail = calculationDetailModel,
-      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  def backendJson(taxableIncomeResponse: JsValue, errorCount: Int = 0): JsValue = Json.obj(
+    "data" -> Json.obj(
+      "metadata" -> Json.obj(
+        "id" -> "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        "calculationErrorCount" -> errorCount
+      ),
+      "taxableIncome" -> taxableIncomeResponse
     )
+  )
 
   val taxableIncomeResponseJson: JsValue = Json.parse(
     s"""
@@ -40,7 +41,6 @@ object TaxableIncomeResponseFixture {
     """.stripMargin
   )
 
-  val taxableIncomeResponseTopLevelJson: JsValue =
-    Json.obj("taxableIncome" -> taxableIncomeResponseJson) ++
-      metadataResponseTopLevelJsonWithoutErrors.as[JsObject]
+  val taxableIncomeResponseFromBackend: JsValue = backendJson(taxableIncomeResponseJson)
+  val taxableIncomeResponseFromBackendWithErrors: JsValue = backendJson(taxableIncomeResponseJson, 1)
 }

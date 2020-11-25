@@ -18,19 +18,11 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.TaxBandFixture._
-import v1.models.response.getIncomeTaxAndNics.detail.IncomeTypeBreakdown
 
 object IncomeTypeBreakdownFixture {
 
   val allowancesAllocated: BigInt = 1000
   val incomeTaxAmount: BigDecimal = 100.50
-
-  val incomeTypeBreakdownModel: IncomeTypeBreakdown =
-    IncomeTypeBreakdown(
-      allowancesAllocated = allowancesAllocated,
-      incomeTaxAmount = incomeTaxAmount,
-      taxBands = Some(Seq(taxBandModel))
-    )
 
   val incomeTypeBreakdownJson: JsValue = Json.parse(
     s"""
@@ -41,13 +33,6 @@ object IncomeTypeBreakdownFixture {
        |}
     """.stripMargin
   )
-
-  def incomeTypeBreakdownModel(input: BigDecimal): IncomeTypeBreakdown =
-    IncomeTypeBreakdown(
-      allowancesAllocated = allowancesAllocated,
-      incomeTaxAmount = input + 0.5,
-      taxBands = Some(Seq(taxBandModel(2 * input)))
-    )
 
   def incomeTypeBreakdownJson(input: BigDecimal): JsValue = Json.parse(
     s"""

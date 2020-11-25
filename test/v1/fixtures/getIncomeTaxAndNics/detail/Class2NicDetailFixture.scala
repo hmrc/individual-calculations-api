@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.Class2NicDetail
 
 object Class2NicDetailFixture {
 
@@ -27,16 +26,6 @@ object Class2NicDetailFixture {
   val apportionedLimit: Option[BigDecimal] = Some(400.25)
   val underSmallProfitThreshold: Boolean = true
   val actualClass2Nic: Option[Boolean] = Some(false)
-
-  val class2NicDetailModel: Class2NicDetail =
-    Class2NicDetail(
-      weeklyRate = Some(100.25),
-      weeks = Some(200.25),
-      limit = Some(300.25),
-      apportionedLimit = Some(400.25),
-      underSmallProfitThreshold = true,
-      actualClass2Nic = Some(false)
-    )
 
   val class2NicDetailJson: JsValue = Json.parse(
     s"""

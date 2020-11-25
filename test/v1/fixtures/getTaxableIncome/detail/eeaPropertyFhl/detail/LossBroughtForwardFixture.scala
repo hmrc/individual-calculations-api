@@ -17,20 +17,12 @@
 package v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.LossBroughtForward
 
 object LossBroughtForwardFixture {
 
   val taxYearLossIncurred: String = "2054-55"
   val currentLossValue: BigInt = 673350334
   val mtdLoss: Boolean = false
-
-  val lossBroughtForwardModel: LossBroughtForward =
-    LossBroughtForward(
-      taxYearLossIncurred = taxYearLossIncurred,
-      currentLossValue = currentLossValue,
-      mtdLoss = mtdLoss
-    )
 
   val lossBroughtForwardJson: JsValue = Json.parse(
     f"""

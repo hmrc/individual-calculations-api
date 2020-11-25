@@ -22,17 +22,8 @@ import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotAppli
 import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.DefaultCarriedForwardLossFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForwardFixture._
 import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.detail.ResultOfClaimAppliedFixture._
-import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetail
 
 object LossClaimsDetailFixture extends UnitSpec {
-
-  val lossClaimsDetailModel: LossClaimsDetail =
-    LossClaimsDetail(
-      lossesBroughtForward = Some(Seq(lossBroughtForwardModel)),
-      resultOfClaimsApplied = Some(Seq(resultOfClaimAppliedModel)),
-      defaultCarriedForwardLosses = Some(Seq(defaultCarriedForwardLossModel)),
-      claimsNotApplied = Some(Seq(claimNotAppliedModel))
-    )
 
   val lossClaimsDetailMtdJson: JsValue = Json.parse(
     s"""

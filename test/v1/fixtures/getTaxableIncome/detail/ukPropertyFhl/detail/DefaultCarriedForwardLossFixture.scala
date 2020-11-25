@@ -17,19 +17,12 @@
 package v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.DefaultCarriedForwardLoss
 
 object DefaultCarriedForwardLossFixture {
 
   val incomeSourceId: String = "AAIS12345678904"
   val taxYearLossIncurred: String = "2044-45"
   val currentLossValue: BigInt = 49177
-
-  val defaultCarriedForwardLossModel: DefaultCarriedForwardLoss =
-    DefaultCarriedForwardLoss(
-      taxYearLossIncurred = taxYearLossIncurred,
-      currentLossValue = currentLossValue
-    )
 
   val defaultCarriedForwardLossJson: JsValue = Json.parse(
     f"""

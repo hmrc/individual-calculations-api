@@ -17,7 +17,6 @@
 package v1.fixtures.getTaxableIncome.detail.selfEmployment.summary
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 object LossClaimSummaryFixture {
 
@@ -29,18 +28,6 @@ object LossClaimSummaryFixture {
   val carrySidewaysClass4LossesUsed: Option[BigDecimal] = Some(2)
   val totalClass4LossesCarriedForward: Option[BigDecimal] = Some(3)
   val carrySidewaysIncomeTaxLossesUsed: Option[BigDecimal] = Some(2)
-
-  val lossClaimsSummaryModel: LossClaimsSummary =
-    LossClaimsSummary(
-      totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
-      broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
-      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
-      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
-      totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
-      broughtForwardClass4LossesUsed = broughtForwardClass4LossesUsed,
-      carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
-      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
-    )
 
   val lossClaimSummaryJson: JsValue = Json.parse(
     s"""{

@@ -17,7 +17,6 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.Savings
 
 object SavingsFixture {
 
@@ -26,15 +25,6 @@ object SavingsFixture {
   val grossIncome: BigDecimal = 300.1
   val netIncome: Option[BigDecimal] = Some(12.3)
   val taxDeducted: Option[BigDecimal] = Some(456.3)
-
-  val savingsModel: Savings =
-    Savings(
-      savingsAccountId = Some(incomeSourceId),
-      savingsAccountName = Some(incomeSourceName),
-      grossIncome = grossIncome,
-      netIncome = netIncome,
-      taxDeducted = taxDeducted
-    )
 
   val savingsJson: JsValue = Json.parse(
     s"""

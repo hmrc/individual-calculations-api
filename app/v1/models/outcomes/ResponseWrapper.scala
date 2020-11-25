@@ -23,11 +23,12 @@ case class ResponseWrapper[+A](correlationId: String, responseData: A) {
 
   def map[B](f: A => B): ResponseWrapper[B] = ResponseWrapper(correlationId, f(responseData))
 
-  def mapToEither[B](f: A => Either[ErrorWrapper, B]): Either[ErrorWrapper, ResponseWrapper[B]] =
+  def mapToEither[B](f: A => Either[ErrorWrapper, B]): Either[ErrorWrapper, ResponseWrapper[B]] = {
     f(responseData) match {
       case Right(b) => ResponseWrapper(correlationId, b).asRight
       case Left(errorWrapper) => errorWrapper.asLeft
     }
+  }
 
   def toErrorWhen(f: PartialFunction[A, ErrorWrapper]): Either[ErrorWrapper, ResponseWrapper[A]] =
     f.lift(responseData) match {

@@ -17,18 +17,11 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.GainsOnLifePolicies
 
 object GainsOnLifePoliciesFixture {
 
   val incomeReceived: BigInt = 100
   val taxableIncome: BigInt = 200
-
-  val gainsOnLifePoliciesModel: GainsOnLifePolicies =
-    GainsOnLifePolicies(
-      incomeReceived = incomeReceived,
-      taxableIncome = taxableIncome
-    )
 
   val gainsOnLifePoliciesJson: JsValue = Json.parse(
     s"""

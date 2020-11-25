@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getIncomeTaxAndNics.detail.PensionSchemeOverseasTransfers
 
 object PensionSchemeOverseasTransfersFixture {
 
@@ -25,14 +24,6 @@ object PensionSchemeOverseasTransfersFixture {
   val transferChargeTaxPaid: Option[BigDecimal] = Some(3000.99)
   val rate: Option[BigDecimal] = Some(20.25)
   val chargeableAmount: Option[BigDecimal] = Some(4000.99)
-
-  val pensionSchemeOverseasTransfersModel: PensionSchemeOverseasTransfers =
-    PensionSchemeOverseasTransfers(
-      transferCharge = transferCharge,
-      transferChargeTaxPaid = transferChargeTaxPaid,
-      rate = rate,
-      chargeableAmount = chargeableAmount
-    )
 
   val pensionSchemeOverseasTransfersJson: JsValue = Json.parse(
     s"""

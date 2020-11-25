@@ -16,29 +16,15 @@
 
 package v1.models.response.getTaxableIncome
 
-import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
-import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.hateoas.Method.GET
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.response.getTaxableIncome.TaxableIncomeResponse.LinksFactory
 
 class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
-
-  "TaxableIncomeResponse" when {
-    "read from valid JSON" should {
-      "produce the expected TaxableIncomeResponse Object" in {
-        taxableIncomeResponseTopLevelJson.as[TaxableIncomeResponse] shouldBe taxableIncomeResponseModel
-      }
-    }
-
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson(taxableIncomeResponseModel) shouldBe taxableIncomeResponseJson
-      }
-    }
-  }
 
   "LinksFactory" when {
     class Test extends MockAppConfig {
@@ -50,9 +36,9 @@ class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
 
     "wrapping a TaxableIncomeResponse object" should {
       "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(taxableIncomeResponseModel, TaxableIncomeHateoasData(nino, calcId)) shouldBe
+        hateoasFactory.wrap(TaxableIncomeResponseFixture.taxableIncomeResponseJson, TaxableIncomeHateoasData(nino, calcId)) shouldBe
         HateoasWrapper(
-          taxableIncomeResponseModel,
+          TaxableIncomeResponseFixture.taxableIncomeResponseJson,
           Seq(
             Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "metadata"),
             Link(s"/individuals/calculations/$nino/self-assessment/$calcId/taxable-income", GET, "self")

@@ -17,18 +17,11 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getTaxableIncome.detail.LumpSums
 
 object LumpSumsFixture {
 
   val incomeReceived: BigInt = 100
   val taxableIncome: BigInt = 200
-
-  val lumpSumsModel: LumpSums =
-    LumpSums(
-      incomeReceived = incomeReceived,
-      taxableIncome = taxableIncome
-    )
 
   val lumpSumsJson: JsValue = Json.parse(
     s"""

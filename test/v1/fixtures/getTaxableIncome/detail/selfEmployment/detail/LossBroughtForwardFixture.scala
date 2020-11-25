@@ -18,31 +18,22 @@ package v1.fixtures.getTaxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.LossType
-import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.LossBroughtForward
 
 object LossBroughtForwardFixture {
 
   val lossType: LossType = LossType.INCOME
-  val taxYearLossIncurred: String   = "2055-56"
-  val currentLossValue: BigDecimal    = 673350334
-  val mtdLoss: Boolean            = false
-
-  val lossBroughtForwardResponse: LossBroughtForward =
-    LossBroughtForward(
-      lossType = LossType.INCOME,
-      taxYearLossIncurred = taxYearLossIncurred,
-      currentLossValue = currentLossValue,
-      mtdLoss = mtdLoss
-    )
+  val taxYearLossIncurred: String = "2055-56"
+  val currentLossValue: BigDecimal = 673350334
+  val mtdLoss: Boolean = false
 
   val lossBroughtForwardJson: JsValue = Json.parse(
     f"""
-      |{
-      |    "lossType": ${Json.toJson(lossType)},
-      |    "taxYearLossIncurred": "$taxYearLossIncurred",
-      |    "currentLossValue": $currentLossValue,
-      |    "mtdLoss": $mtdLoss
-      |}
+       |{
+       |    "lossType": ${Json.toJson(lossType)},
+       |    "taxYearLossIncurred": "$taxYearLossIncurred",
+       |    "currentLossValue": $currentLossValue,
+       |    "mtdLoss": $mtdLoss
+       |}
     """.stripMargin
   )
 }
