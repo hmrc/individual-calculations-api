@@ -16,12 +16,11 @@
 
 package v1.controllers
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.fixtures.getMetadata.MetadataResponseFixture
 import v1.handler.{RequestDefn, RequestHandler}
 import v1.mocks.MockIdGenerator
 import v1.mocks.hateoas.MockHateoasFactory
@@ -33,24 +32,22 @@ import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData}
+import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
 import v1.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetMetadataControllerSpec
-  extends ControllerBaseSpec
-    with MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockGetCalculationParser
-    with MockStandardService
-    with MockHateoasFactory
-    with MockAuditService
-    with GraphQLQuery
-    with MockIdGenerator {
-
-  override val query: String = METADATA_QUERY
+    extends ControllerBaseSpec
+      with MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockGetCalculationParser
+      with MockStandardService
+      with MockHateoasFactory
+      with MockAuditService
+      with MockIdGenerator{
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -71,13 +68,20 @@ class GetMetadataControllerSpec
     MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
-  private val nino = "AA123456A"
-  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val nino          = "AA123456A"
+  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId = "X-123"
 
-  val links: JsObject = Json.parse(
-    """
+  val responseBody: JsValue = Json.parse("""
       |{
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "crystallisation",
+      |    "intentToCrystallise": true,
+      |    "crystallised": false,
       |    "links": [
       |      {
       |       "href": "/foo/bar",
@@ -85,16 +89,28 @@ class GetMetadataControllerSpec
       |       "rel": "test-relationship"
       |      }
       |    ]
-      |}""".stripMargin).as[JsObject]
+      |}""".stripMargin)
 
+  val response = MetadataResponse(
+    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+    taxYear = "2018-19",
+    requestedBy = CalculationRequestor.customer,
+    calculationReason = CalculationReason.customerRequest,
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
+    calculationType = CalculationType.crystallisation,
+    intentToCrystallise = true,
+    crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
+    calculationErrorCount = None,
+    metadataExistence = None
+  )
 
   val error: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError, None, NOT_FOUND)
 
-  private val rawData = GetCalculationRawData(nino, calcId)
+  private val rawData     = GetCalculationRawData(nino, calcId)
   private val requestData = GetCalculationRequest(Nino(nino), calcId)
 
   private def uri = s"/$nino/self-assessment/$calcId"
-
   private def queryUri = "/input/uri"
 
   val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
@@ -107,43 +123,14 @@ class GetMetadataControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.GraphQl(uri, query), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
+          .doService(RequestDefn.Get(uri), OK)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0), MetadataExistence()))
-          .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
+          .wrap(response, MetadataHateoasData(nino, calcId, None, MetadataExistence()))
+          .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
-
-        val responseBody = MetadataResponseFixture.metadataJson().as[JsObject].deepMerge(links)
-
-        status(result) shouldBe OK
-        contentAsJson(result) shouldBe responseBody
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-        val detail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
-          AuditResponse(OK, None, Some(responseBody)))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
-        MockedAuditService.verifyAuditEvent(event).once
-      }
-      "happy path with no error count" in new Test {
-        MockGetCalculationParser
-          .parse(rawData)
-          .returns(Right(requestData))
-
-        MockStandardService
-          .doService(RequestDefn.GraphQl(uri, query), OK)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackendWithoutErrorCount))))
-
-        MockHateoasFactory
-          .wrap(MetadataResponseFixture.metadataJsonWithoutErrorCount(), MetadataHateoasData(nino, calcId, None, MetadataExistence()))
-          .returns(HateoasWrapper(MetadataResponseFixture.metadataJsonWithoutErrorCount(), Seq(testHateoasLink)))
-
-        val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
-
-        val responseBody = MetadataResponseFixture.metadataJsonWithoutErrorCount().as[JsObject].deepMerge(links)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -164,7 +151,7 @@ class GetMetadataControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.GraphQl(uri, query), OK)
+          .doService(RequestDefn.Get(uri), OK)
           .returns(Future.successful(Left(error)))
 
         val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
@@ -188,7 +175,7 @@ class GetMetadataControllerSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandler[JsValue, JsValue] => Unit = allChecks[JsValue, JsValue](
+      val mappingChecks: RequestHandler[MetadataResponse, MetadataResponse] => Unit = allChecks[MetadataResponse, MetadataResponse](
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
@@ -197,11 +184,11 @@ class GetMetadataControllerSpec
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)
-        .returns(Future.successful(Right(ResponseWrapper(correlationId, MetadataResponseFixture.metadataJsonFromBackend))))
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
       MockHateoasFactory
-        .wrap(MetadataResponseFixture.metadataJson(), MetadataHateoasData(nino, calcId, Some(0), MetadataExistence()))
-        .returns(HateoasWrapper(MetadataResponseFixture.metadataJson(), Seq(testHateoasLink)))
+        .wrap(response, MetadataHateoasData(nino, calcId, None, MetadataExistence()))
+        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
       val result: Future[Result] = controller.getMetadata(nino, calcId)(fakeGetRequest(queryUri))
 

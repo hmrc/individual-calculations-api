@@ -19,6 +19,8 @@ package v1.fixtures.getTaxableIncome.detail.selfEmployment
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.detail.LossClaimsDetailFixture._
 import v1.fixtures.getTaxableIncome.detail.selfEmployment.summary.LossClaimSummaryFixture._
+import v1.models.response.getTaxableIncome.detail.selfEmployment.SelfEmployment
+import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.BusinessSourceAdjustableSummary
 
 object SelfEmploymentFixture {
 
@@ -34,6 +36,26 @@ object SelfEmploymentFixture {
   val taxableProfit: Option[BigInt] = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigDecimal] = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
+  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
+
+  val selfEmploymentModel: SelfEmployment =
+    SelfEmployment(
+      selfEmploymentId = selfEmploymentId,
+      totalIncome = totalIncome,
+      totalExpenses = totalExpenses,
+      netProfit = netProfit,
+      netLoss = netLoss,
+      class4Loss = class4Loss,
+      totalAdditions = totalAdditions,
+      totalDeductions = totalDeductions,
+      accountingAdjustments = accountingAdjustments,
+      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
+      taxableProfit = taxableProfit,
+      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
+      lossClaimsSummary = Some(lossClaimsSummaryModel),
+      lossClaimsDetail = Some(lossClaimsDetailDefaultResponse),
+      bsas = Some(bsas)
+    )
 
   val bsasJson: JsValue = Json.parse(
     s"""

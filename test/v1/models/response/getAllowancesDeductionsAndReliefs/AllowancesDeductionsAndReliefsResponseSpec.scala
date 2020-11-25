@@ -16,55 +16,60 @@
 
 package v1.models.response.getAllowancesDeductionsAndReliefs
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
+import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture._
 import v1.hateoas.HateoasFactory
 import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponse.LinksFactory
+import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
+import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 import v1.models.utils.JsonErrorValidators
 
 class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppConfig with JsonErrorValidators {
 
   "AllowancesDeductionsAndReliefsResponse" when {
+    "read from valid JSON" should {
+      "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
+        allowancesDeductionsAndReliefsTopLevelJson.as[AllowancesDeductionsAndReliefsResponse] shouldBe
+          allowancesDeductionsAndReliefsResponseModel
+      }
+    }
+
+    "written to JSON" must {
+      "produce the expected AllowancesDeductionsAndReliefsResponse object" in {
+        Json.toJson(allowancesDeductionsAndReliefsResponseModel) shouldBe allowancesDeductionsAndReliefsResponseJson
+      }
+    }
 
     "isEmpty" should {
-      def responseWithSummary(summary: JsObject): JsObject =
-        Json.obj("data" -> Json.obj("allowancesDeductionsAndReliefs" -> Json.obj("summary" -> summary)))
-
+      def responseWithSummary(summary: CalculationSummary): AllowancesDeductionsAndReliefsResponse =
+        AllowancesDeductionsAndReliefsResponse(summary = summary, detail = CalculationDetail(None, None), id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
       "return true" when {
         "summary totalAllowancesAndDeductions AND totalReliefs are not present" in {
-          val json = responseWithSummary(Json.obj())
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json) shouldBe true
+          responseWithSummary(CalculationSummary(None, None)).isEmpty shouldBe true
         }
 
         "summary totalAllowancesAndDeductions AND totalReliefs are present and both less than 1" in {
-          val json = responseWithSummary(Json.obj("totalAllowancesAndDeductions" -> 0, "totalReliefs" -> 0))
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json) shouldBe true
+          responseWithSummary(CalculationSummary(Some(0), Some(0))).isEmpty shouldBe true
         }
 
         "either of summary totalAllowancesAndDeductions OR totalReliefs is present but less than 1" in {
-          val json1 = responseWithSummary(Json.obj("totalAllowancesAndDeductions" -> 0))
-          val json2 = responseWithSummary(Json.obj("totalReliefs" -> 0))
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json1) shouldBe true
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json2) shouldBe true
+          responseWithSummary(CalculationSummary(Some(0), None)).isEmpty shouldBe true
+          responseWithSummary(CalculationSummary(None, Some(0))).isEmpty shouldBe true
         }
       }
 
       "return false" when {
         "either of summary totalAllowancesAndDeductions AND totalReliefs is present and at least 1" in {
-          val json1 = responseWithSummary(Json.obj("totalAllowancesAndDeductions" -> 1))
-          val json2 = responseWithSummary(Json.obj("totalReliefs" -> 1))
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json1) shouldBe false
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json2) shouldBe false
+          responseWithSummary(CalculationSummary(Some(1), None)).isEmpty shouldBe false
+          responseWithSummary(CalculationSummary(None, Some(1))).isEmpty shouldBe false
         }
 
         "summary totalAllowancesAndDeductions AND totalReliefs are present both are at least one" in {
-          val json = responseWithSummary(Json.obj("totalAllowancesAndDeductions" -> 1, "totalReliefs" -> 1))
-          AllowancesDeductionsAndReliefsResponse.isEmpty(json) shouldBe false
+          responseWithSummary(CalculationSummary(Some(1), Some(1))).isEmpty shouldBe false
         }
       }
     }
@@ -80,9 +85,9 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
 
     "wrapping a AllowancesDeductionsAndReliefsResponse object" should {
       "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty, AllowancesDeductionsAndReliefsHateoasData(nino, calcId)) shouldBe
+        hateoasFactory.wrap(allowancesDeductionsAndReliefsResponseModel, AllowancesDeductionsAndReliefsHateoasData(nino, calcId)) shouldBe
           HateoasWrapper(
-            AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseJsonNonEmpty,
+            allowancesDeductionsAndReliefsResponseModel,
             Seq(
               Link("/individuals/calculations/someNino/self-assessment/calcId", GET, "metadata"),
               Link("/individuals/calculations/someNino/self-assessment/calcId/allowances-deductions-reliefs", GET, "self")

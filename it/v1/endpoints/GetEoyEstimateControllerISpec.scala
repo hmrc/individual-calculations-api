@@ -73,7 +73,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, eoyEstimateResponseJsonFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, eoyEstimateResponseTopLevelJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -81,7 +81,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
 
-        response.json shouldBe eoyEstimateResponseJson.as[JsObject].deepMerge(linksJson)
+        response.json shouldBe eoyEstimateResponseJson.deepMerge(linksJson)
       }
     }
 
@@ -91,7 +91,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, eoyEstimateResponseJsonWithErrorFromBackend)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, metadataResponseTopLevelJsonWithErrors)
         }
 
         val response: WSResponse = await(request.get)
@@ -108,7 +108,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, OK, metadataJsonFromBackendCrystallised)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, metadataResponseTopLevelJsonCrystallised)
         }
 
         val response: WSResponse = await(request.get)
@@ -163,7 +163,7 @@ class GetEoyEstimateControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.get)

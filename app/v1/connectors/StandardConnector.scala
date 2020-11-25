@@ -18,12 +18,12 @@ package v1.connectors
 
 import config.AppConfig
 import javax.inject.Inject
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.Reads
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardHttpParser._
 import v1.handler.RequestDefn
-import v1.handler.RequestDefn.{Get, GraphQl, Post}
+import v1.handler.RequestDefn.{Get, Post}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,7 +34,6 @@ class StandardConnector @Inject()(val appConfig: AppConfig, val http: HttpClient
     request match {
       case Get(uri, params) => get(uri, params)
       case Post(uri, body)  => post(body, uri)
-      case GraphQl(uri, query) => sendGQLRequest(uri, Json.obj("query" -> query))
     }
   }
 }

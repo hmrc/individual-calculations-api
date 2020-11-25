@@ -19,8 +19,15 @@ package v1.fixtures.getIncomeTaxAndNics.detail
 import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.Class2NicDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.Class4NicDetailFixture._
+import v1.models.response.getIncomeTaxAndNics.detail._
 
 object NicDetailFixture {
+
+  val nicDetailModel: NicDetail =
+    NicDetail(
+      class2Nics = Some(class2NicDetailModel),
+      class4Nics = Some(class4NicDetailModel)
+    )
 
   val nicDetailJson: JsValue = Json.parse(
     s"""

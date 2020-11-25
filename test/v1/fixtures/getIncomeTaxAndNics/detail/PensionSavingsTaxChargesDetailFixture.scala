@@ -17,12 +17,25 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+
 import v1.fixtures.getIncomeTaxAndNics.detail.OverseasPensionContributionsFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionSavingsDetailBreakdownFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionSchemeOverseasTransfersFixture._
+import v1.models.response.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesDetail
 
 object PensionSavingsTaxChargesDetailFixture {
+
+  val pensionSavingsTaxChargesDetailModel: PensionSavingsTaxChargesDetail =
+    PensionSavingsTaxChargesDetail(
+      lumpSumBenefitTakenInExcessOfLifetimeAllowance = Some(pensionSavingsDetailBreakdownModel),
+      benefitInExcessOfLifetimeAllowance = Some(pensionSavingsDetailBreakdownModel),
+      pensionSchemeUnauthorisedPaymentsSurcharge = Some(pensionSavingsDetailBreakdownModel),
+      pensionSchemeUnauthorisedPaymentsNonSurcharge = Some(pensionSavingsDetailBreakdownModel),
+      pensionSchemeOverseasTransfers = Some(pensionSchemeOverseasTransfersModel),
+      pensionContributionsInExcessOfTheAnnualAllowance = Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
+      overseasPensionContributions = Some(overseasPensionContributionsModel)
+    )
 
   val pensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
     s"""

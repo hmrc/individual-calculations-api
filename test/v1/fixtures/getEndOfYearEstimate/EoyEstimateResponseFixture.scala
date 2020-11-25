@@ -16,35 +16,39 @@
 
 package v1.fixtures.getEndOfYearEstimate
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
+import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture._
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
+import v1.fixtures.getMetadata.MetadataResponseFixture._
 
 object EoyEstimateResponseFixture {
 
-  def backendJson(endOfYearEstimateResponse: JsValue, errorCount: Int = 0, calculationType: String = "inYear"): JsValue = Json.obj(
-    "data" -> Json.obj(
-      "metadata" -> Json.obj(
-        "id" -> "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        "calculationErrorCount" -> errorCount,
-        "calculationType" -> calculationType
-      ),
-      "endOfYearEstimate" -> endOfYearEstimateResponse
+  val eoyEstimateResponseModel: EoyEstimateResponse =
+    EoyEstimateResponse(
+      summary = eoyEstimateSummaryModel,
+      detail = eoyEstimateDetailModel,
+      id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     )
+
+  val eoyEstimateResponseJson: JsObject = Json.parse(
+    s"""
+       |{
+       |  "summary" : $eoyEstimateSummaryJson,
+       |  "detail" : $eoyEstimateDetailJson
+       |}
+    """.stripMargin
+  ).as[JsObject]
+
+  val eoyEstimateResponseTopLevelJson: JsValue = Json.parse(
+    s"""
+       |{
+       | "metadata": $metadataResponseJson,
+       | "endOfYearEstimate" : {
+       |   "summary" : $eoyEstimateSummaryJson,
+       |   "detail" : $eoyEstimateDetailJson
+       | }
+       |}
+    """.stripMargin
   )
-
-  val eoyEstimateResponseJson: JsValue = Json.parse(
-    """
-      |{
-      |  "summary": {
-      |    "foo": "bar"
-      |  },
-      |  "details": {
-      |    "foo": "bar"
-      |  }
-      |}
-      |""".stripMargin
-  )
-
-  val eoyEstimateResponseJsonFromBackend: JsValue = backendJson(eoyEstimateResponseJson)
-
-  val eoyEstimateResponseJsonWithErrorFromBackend: JsValue = backendJson(eoyEstimateResponseJson, errorCount = 1)
 }

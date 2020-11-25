@@ -17,12 +17,20 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.Class4Losses
 
 object Class4LossesFixture {
 
   val totalClass4LossesAvailable: Option[BigInt] = Some(3001)
   val totalClass4LossesUsed: Option[BigInt] = Some(3002)
   val totalClass4LossesCarriedForward: Option[BigInt] = Some(3003)
+
+  val class4LossesModel: Class4Losses =
+    Class4Losses(
+      totalClass4LossesAvailable = totalClass4LossesAvailable,
+      totalClass4LossesUsed = totalClass4LossesUsed,
+      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
+    )
 
   val class4LossesJson: JsValue = Json.parse(
     s"""

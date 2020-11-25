@@ -22,8 +22,18 @@ import v1.fixtures.getIncomeTaxAndNics.detail.NicDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.StudentLoansFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v1.models.response.getIncomeTaxAndNics.detail._
 
 object CalculationDetailFixture {
+
+  val calculationDetailModel: CalculationDetail =
+    CalculationDetail(
+      incomeTax = incomeTaxDetailModel,
+      studentLoans = Some(Seq(studentLoansModel)),
+      pensionSavingsTaxCharges = Some(pensionSavingsTaxChargesModel),
+      nics = Some(nicDetailModel),
+      taxDeductedAtSource = Some(taxDeductedAtSourceModel)
+    )
 
   val calculationDetailJson: JsValue = Json.parse(
     s"""

@@ -17,11 +17,18 @@
 package v1.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getTaxableIncome.detail.Dividends
 
 object DividendsFixture {
 
   val incomeReceived: BigInt = 100
   val taxableIncome: BigInt = 200
+
+  val dividendsModel: Dividends =
+    Dividends(
+      incomeReceived = incomeReceived,
+      taxableIncome = taxableIncome
+    )
 
   val dividendsJson: JsValue = Json.parse(
     s"""

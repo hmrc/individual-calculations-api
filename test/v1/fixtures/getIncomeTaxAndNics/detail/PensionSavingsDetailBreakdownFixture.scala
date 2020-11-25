@@ -17,6 +17,7 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.PensionSavingsDetailBreakdown
 
 object PensionSavingsDetailBreakdownFixture {
 
@@ -24,6 +25,14 @@ object PensionSavingsDetailBreakdownFixture {
   val taxPaid: Option[BigDecimal] = Some(3000.99)
   val rate: Option[BigDecimal] = Some(20.25)
   val chargeableAmount: Option[BigDecimal] = Some(4000.99)
+
+  val pensionSavingsDetailBreakdownModel: PensionSavingsDetailBreakdown =
+    PensionSavingsDetailBreakdown(
+      amount = amount,
+      taxPaid = taxPaid,
+      rate = rate,
+      chargeableAmount = chargeableAmount
+    )
 
   val pensionSavingsDetailBreakdownJson: JsValue = Json.parse(
     s"""

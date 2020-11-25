@@ -17,6 +17,7 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.detail.StudentLoans
 
 object StudentLoansFixture {
 
@@ -28,6 +29,18 @@ object StudentLoansFixture {
   val studentLoanRepaymentAmountNetOfDeductions: BigDecimal = 6000.99
   val studentLoanApportionedIncomeThreshold: BigInt = 7000
   val studentLoanRate: BigDecimal = 50.99
+
+  val studentLoansModel: StudentLoans =
+    StudentLoans(
+      planType = planType,
+      studentLoanTotalIncomeAmount = studentLoanTotalIncomeAmount,
+      studentLoanChargeableIncomeAmount = studentLoanChargeableIncomeAmount,
+      studentLoanRepaymentAmount = studentLoanRepaymentAmount,
+      studentLoanDeductionsFromEmployment = studentLoanDeductionsFromEmployment,
+      studentLoanRepaymentAmountNetOfDeductions = studentLoanRepaymentAmountNetOfDeductions,
+      studentLoanApportionedIncomeThreshold = studentLoanApportionedIncomeThreshold,
+      studentLoanRate = studentLoanRate
+    )
 
   val studentLoansJson: JsValue = Json.parse(
     s"""

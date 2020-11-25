@@ -20,8 +20,16 @@ import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.DefaultCarriedForwardLossFixture._
 import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossBroughtForwardFixture._
 import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.ResultOfClaimAppliedFixture._
+import v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetail
 
 object LossClaimsDetailFixture {
+
+  val lossClaimsDetailModel: LossClaimsDetail =
+    LossClaimsDetail(
+      lossesBroughtForward = Some(Seq(lossBroughtForwardModel)),
+      resultOfClaimsApplied = Some(Seq(resultOfClaimAppliedModel)),
+      defaultCarriedForwardLosses = Some(Seq(defaultCarriedForwardLossModel))
+    )
 
   val lossClaimsDetailJson: JsValue = Json.parse(
     s"""

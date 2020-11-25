@@ -20,18 +20,15 @@ sealed trait MessageType
 
 object MessageType {
 
-  case object info extends MessageType
-
+  case object info     extends MessageType
   case object warning extends MessageType
-
-  case object error extends MessageType
-
-  case object none extends MessageType
+  case object error   extends MessageType
+  case object none     extends MessageType
 
   def toTypeClass(`type`: String): MessageType = `type`.toLowerCase() match {
-    case "info"    => info
-    case "warning" => warning
-    case "error"   => error
-    case _         => none
+    case "info"     => info
+    case "warning"  => warning
+    case "error"    => error
+    case _          => none
   }
 }

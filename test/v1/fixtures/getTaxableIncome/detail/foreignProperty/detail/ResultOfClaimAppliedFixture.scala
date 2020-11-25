@@ -18,6 +18,7 @@ package v1.fixtures.getTaxableIncome.detail.foreignProperty.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.common.TypeOfClaim
+import v1.models.response.getTaxableIncome.detail.foreignProperty.detail.ResultOfClaimsApplied
 
 object ResultOfClaimAppliedFixture {
 
@@ -29,6 +30,18 @@ object ResultOfClaimAppliedFixture {
   val taxYearLossIncurred: String = "2018-19"
   val lossAmountUsed: BigInt = 1000
   val remainingLossValue: BigInt = 4000
+
+  val resultOfClaimAppliedModel: ResultOfClaimsApplied =
+    ResultOfClaimsApplied(
+      claimId = claimId,
+      originatingClaimId = originatingClaimId,
+      taxYearClaimMade = taxYearClaimMade,
+      claimType = claimType,
+      mtdLoss = mtdLoss,
+      taxYearLossIncurred = taxYearLossIncurred,
+      lossAmountUsed = lossAmountUsed,
+      remainingLossValue = remainingLossValue
+    )
 
   val resultOfClaimAppliedJson: JsValue = Json.parse(
     f"""

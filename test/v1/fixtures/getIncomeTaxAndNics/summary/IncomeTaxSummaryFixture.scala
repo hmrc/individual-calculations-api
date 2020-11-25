@@ -17,6 +17,7 @@
 package v1.fixtures.getIncomeTaxAndNics.summary
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
 object IncomeTaxSummaryFixture {
 
@@ -28,6 +29,18 @@ object IncomeTaxSummaryFixture {
   val statePensionLumpSumCharges: Option[BigDecimal] = Some(150.10)
   val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
   val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
+
+  val incomeTaxSummaryModel: IncomeTaxSummary =
+    IncomeTaxSummary(
+      incomeTaxCharged = incomeTaxCharged,
+      incomeTaxDueAfterReliefs = incomeTaxDueAfterReliefs,
+      incomeTaxDueAfterGiftAid = incomeTaxDueAfterGiftAid,
+      totalNotionalTax = totalNotionalTax,
+      totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
+      statePensionLumpSumCharges = statePensionLumpSumCharges,
+      incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
+      totalIncomeTaxDue = totalIncomeTaxDue
+    )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
     s"""
