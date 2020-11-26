@@ -64,7 +64,7 @@ object StandardHttpParser extends HttpParser {
     val correlationId = retrieveCorrelationId(response)
 
     if (response.status != successCode.status) {
-      logger.info(
+      logger.warn(
         "[StandardHttpParser][read] - " +
           s"Error response received from backend with status: ${response.status} and body\n" +
           s"${response.body} and correlationId: $correlationId when calling $url")
@@ -87,7 +87,7 @@ object StandardHttpParser extends HttpParser {
     val correlationId = retrieveDesCorrelationId(response)
 
     if (response.status != successCode.status) {
-      logger.info(
+      logger.warn(
         "[StandardHttpParser][read] - " +
           s"Error response received from backend with status: ${response.status} and body\n" +
           s"${response.body} and correlationId: $correlationId when calling $url")

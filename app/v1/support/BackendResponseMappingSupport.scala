@@ -31,7 +31,7 @@ trait BackendResponseMappingSupport {
       backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     val defaultErrorCodeMapping: String => (Int, MtdError) = { code =>
-      logger.info(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
+      logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
       (INTERNAL_SERVER_ERROR, DownstreamError)
     }
 
@@ -52,7 +52,7 @@ trait BackendResponseMappingSupport {
         val mtdErrors = backendErrorCodes.map(errorCode => map(backendStatusCode, errorCode)).map(_._2)
 
         if (mtdErrors.contains(DownstreamError)) {
-          logger.info(
+          logger.warn(
             s"[${logContext.controllerName}] [${logContext.endpointName}] [CorrelationId - $correlationId]" +
               s" - downstream returned ${backendErrorCodes.map(_.code).mkString(",")}. Revert to ISE")
           ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
@@ -69,7 +69,7 @@ trait BackendResponseMappingSupport {
     implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
-      logger.info(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
+      logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
       DownstreamError
     }
 
@@ -81,7 +81,7 @@ trait BackendResponseMappingSupport {
         val mtdErrors = errorCodes.map(error => errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping))
 
         if (mtdErrors.contains(DownstreamError)) {
-          logger.info(
+          logger.warn(
             s"[${logContext.controllerName}] [${logContext.endpointName}] [CorrelationId - $correlationId]" +
               s" - downstream returned ${errorCodes.map(_.code).mkString(",")}. Revert to ISE")
           ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
