@@ -35,7 +35,7 @@ object AppDependencies {
     "org.scalatest"          %% "scalatest"          % "3.2.3"             % scope,
     "com.vladsch.flexmark"   % "flexmark-all"        % "0.35.10"           % scope,
     "org.scalacheck"         %% "scalacheck"         % "1.15.1"            % scope,
-    "org.scalamock"          %% "scalamock"          % "5.0.0"             % scope,
+    "org.scalamock"          %% "scalamock"          % "5.1.0"             % scope,
     "org.pegdown"            % "pegdown"             % "1.6.0"             % scope,
     "com.typesafe.play"      %% "play-test"          % PlayVersion.current % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2"             % scope,
