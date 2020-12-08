@@ -59,7 +59,7 @@ class RequestHandlerSpec extends UnitSpec with Inside {
               case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
             }
 
-        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId1", 3)
+        handling.successMapping(ResponseWrapper("corrId", "foo")).value shouldBe ResponseWrapper("corrId1", 3)
       }
     }
 
@@ -74,7 +74,7 @@ class RequestHandlerSpec extends UnitSpec with Inside {
               case ResponseWrapper(_, i) => Right(ResponseWrapper("corrId2", String.valueOf(i)))
             }
 
-        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId2", "3")
+        handling.successMapping(ResponseWrapper("corrId", "foo")).value shouldBe ResponseWrapper("corrId2", "3")
       }
     }
 
@@ -106,7 +106,7 @@ class RequestHandlerSpec extends UnitSpec with Inside {
             .mapSuccessSimple(_.length)
             .mapSuccessSimple(String.valueOf)
 
-        handling.successMapping(ResponseWrapper("corrId", "foo")).right.value shouldBe ResponseWrapper("corrId", "3")
+        handling.successMapping(ResponseWrapper("corrId", "foo")).value shouldBe ResponseWrapper("corrId", "3")
       }
     }
   }
