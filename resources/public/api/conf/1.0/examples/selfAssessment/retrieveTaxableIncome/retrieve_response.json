@@ -353,7 +353,7 @@
           "taxDeducted": 5000.99
         }
       ],
-      "ukSecurites": [
+      "ukSecurities": [
         {
           "ukSecuritiesAccountId": "000000000000210",
           "ukSecuritiesAccountName": "ukSecuritiesAccountName",
