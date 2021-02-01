@@ -91,7 +91,7 @@ abstract class StandardController[Raw <: RawData, Req, BackendResp: Reads, APIRe
     result.leftMap { errorWrapper =>
       val resCorrelationId = errorWrapper.correlationId
       val status        = errorWrapper.statusCode
-      logger.info(
+      logger.warn(
         s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
           s"Error response received with CorrelationId: $resCorrelationId")
 

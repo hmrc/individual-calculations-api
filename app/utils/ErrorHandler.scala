@@ -91,8 +91,8 @@ class ErrorHandler @Inject()(
       case _: AuthorisationException => (UNAUTHORIZED, UnauthorisedError, "ClientError")
       case e: JsValidationException => (BAD_REQUEST, MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(e.getMessage())), "ServerValidationError")
       case e: HttpException => (e.responseCode, BadRequestError, "ServerValidationError")
-      case e: Upstream4xxResponse => (e.reportAs, BadRequestError, "ServerValidationError")
-      case e: Upstream5xxResponse => (e.reportAs, DownstreamError, "ServerInternalError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined => (e.reportAs, BadRequestError, "ServerValidationError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined => (e.reportAs, DownstreamError, "ServerInternalError")
       case _ => (INTERNAL_SERVER_ERROR, DownstreamError, "ServerInternalError")
     }
 
