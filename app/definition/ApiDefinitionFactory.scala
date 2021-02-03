@@ -51,13 +51,13 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) {
             version = VERSION_1,
             access = buildWhiteListingAccess(),
             status = buildAPIStatus(VERSION_1),
-            endpointsEnabled = appConfig.endpointsEnabled(VERSION_1)
+            endpointsEnabled = appConfig.endpointsEnabled(version = "1")
           ),
           APIVersion(
             version = VERSION_2,
             access = buildWhiteListingAccess(),
             status = buildAPIStatus(VERSION_2),
-            endpointsEnabled = appConfig.endpointsEnabled(VERSION_2)
+            endpointsEnabled = appConfig.endpointsEnabled(version = "2")
           )
         ),
         requiresTrust = None

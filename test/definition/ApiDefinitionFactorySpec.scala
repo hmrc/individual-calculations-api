@@ -36,8 +36,8 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockedAppConfig.featureSwitch returns None anyNumberOfTimes()
         MockedAppConfig.apiStatus("1.0") returns "BETA"
         MockedAppConfig.apiStatus("2.0") returns "ALPHA"
-        MockedAppConfig.endpointsEnabled("1.0") returns true anyNumberOfTimes()
-        MockedAppConfig.endpointsEnabled("2.0") returns true anyNumberOfTimes()
+        MockedAppConfig.endpointsEnabled("1") returns true anyNumberOfTimes()
+        MockedAppConfig.endpointsEnabled("2") returns true anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(
