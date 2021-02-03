@@ -16,8 +16,8 @@
 
 package v1.connectors
 
+import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.domain.Nino
-import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.domain.{DesTaxYear, EmptyJsonBody}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.crystallisation.CrystallisationRequest

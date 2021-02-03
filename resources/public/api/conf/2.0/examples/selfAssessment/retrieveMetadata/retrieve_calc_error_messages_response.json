@@ -1,0 +1,23 @@
+{
+  "id": "17d6876e-620e-4059-96ef-50adf5422d27",
+  "taxYear": "2018-19",
+  "requestedBy": "hmrc",
+  "calculationReason": "newClaimEvent",
+  "calculationTimestamp": "2019-07-04T13:37:35.094Z",
+  "calculationType": "inYear",
+  "intentToCrystallise": false,
+  "crystallised": false,
+  "calculationErrorCount": 8,
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/messages",
+      "rel": "messages",
+      "method": "GET"
+    }
+  ]
+}

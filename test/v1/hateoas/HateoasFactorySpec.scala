@@ -18,8 +18,8 @@ package v1.hateoas
 
 import cats.Functor
 import config.AppConfig
+import mocks.MockAppConfig
 import support.UnitSpec
-import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
