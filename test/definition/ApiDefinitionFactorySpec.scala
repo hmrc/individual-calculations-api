@@ -34,9 +34,10 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "called" should {
       "return a valid Definition case class" in new Test {
         MockedAppConfig.featureSwitch returns None anyNumberOfTimes()
-        MockedAppConfig.apiStatus("1.0") returns "1.0"
-        MockedAppConfig.apiStatus("2.0") returns "2.0"
-        MockedAppConfig.endpointsEnabled returns true anyNumberOfTimes()
+        MockedAppConfig.apiStatus("1.0") returns "BETA"
+        MockedAppConfig.apiStatus("2.0") returns "ALPHA"
+        MockedAppConfig.endpointsEnabled("1.0") returns true anyNumberOfTimes()
+        MockedAppConfig.endpointsEnabled("2.0") returns true anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(
@@ -58,7 +59,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
-                version = VERSION_1, access = None, status = APIStatus.ALPHA, endpointsEnabled = true),
+                version = VERSION_1, access = None, status = APIStatus.BETA, endpointsEnabled = true),
               APIVersion(
                 version = VERSION_2, access = None, status = APIStatus.ALPHA, endpointsEnabled = true)
             ),
