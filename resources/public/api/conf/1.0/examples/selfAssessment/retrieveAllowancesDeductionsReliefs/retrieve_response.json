@@ -26,22 +26,6 @@
       }
     },
     "reliefs": {
-      "residentialFinanceCosts": {
-        "amountClaimed": 1000.25,
-        "allowableAmount": 1000.25,
-        "rate": 10.25,
-        "propertyFinanceRelief": 1000.25
-      },
-      "foreignTaxCreditRelief": [
-        {
-          "incomeSourceType": "fhlPropertyEea",
-          "incomeSourceId": "ABC647261934212",
-          "countryCode": "FRA",
-          "allowableAmount": 2000.58,
-          "rate": 20,
-          "amountUsed": 2000.58
-        }
-      ],
       "pensionContributionReliefs": {
         "totalPensionContributionReliefs": 2000.58,
         "regularPensionContributions": 2000.58,
