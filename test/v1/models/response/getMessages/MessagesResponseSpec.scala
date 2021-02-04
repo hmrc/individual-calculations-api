@@ -16,12 +16,12 @@
 
 package v1.models.response.getMessages
 
+import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getMessages.MessagesResponseFixture._
 import v1.fixtures.getMessages.MessageFixture._
 import v1.hateoas.HateoasFactory
-import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.utils.JsonErrorValidators

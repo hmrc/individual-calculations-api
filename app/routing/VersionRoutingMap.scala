@@ -18,42 +18,45 @@ package routing
 
 import com.google.inject.ImplementedBy
 import config.{AppConfig, FeatureSwitch}
-import definition.Versions.VERSION_1
+import definition.Versions.{VERSION_1, VERSION_2}
 import javax.inject.Inject
-import play.api.Logger
 import play.api.routing.Router
+import utils.Logging
 
 // So that we can have API-independent implementations of
 // VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec
 // implement this for the specific API...
 @ImplementedBy(classOf[VersionRoutingMapImpl])
-trait VersionRoutingMap {
+trait VersionRoutingMap extends Logging {
   val defaultRouter: Router
 
   val map: Map[String, Router]
 
-  final def versionRouter(version: String): Option[Router] = map.get(version)
+  final def versionRouter(version: String): Option[Router] = map.get(version).map {
+    case v1Router: v1.Routes => logger.info(message = "[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
+      v1Router
+    case v2Router: v2.Routes => logger.info(message = "[VersionRoutingMap][map] using v2Router to use v2 routes")
+      v2Router
+    case liveRouter: live.Routes => logger.info(message = "[VersionRoutingMap][map] using liveRouter to use live routes only")
+      liveRouter
+    case router => logger.info("[VersionRoutingMap][versionRouter] - Using default router")
+      router
+  }
 }
 
 // Add routes corresponding to available versions...
 case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
                                            defaultRouter: Router,
                                            v1Router: v1.Routes,
+                                           v2Router: v2.Routes,
                                            liveRouter: live.Routes) extends VersionRoutingMap {
 
   val featureSwitch: FeatureSwitch = FeatureSwitch(appConfig.featureSwitch)
-  protected val logger: Logger = Logger(this.getClass)
 
   val map: Map[String, Router] = Map(
     VERSION_1 -> {
-      if (featureSwitch.isFullRoutingEnabled) {
-        logger.info("[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
-        v1Router
-      }
-      else {
-        logger.info("[VersionRoutingMap][map] using liveRouter to use live routes only")
-        liveRouter
-      }
-    }
+      if (featureSwitch.isFullRoutingEnabled) v1Router else liveRouter
+    },
+    VERSION_2 -> v2Router
   )
 }

@@ -16,10 +16,10 @@
 
 package v1.models.response.intentToCrystallise
 
+import mocks.MockAppConfig
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.hateoas.HateoasFactory
-import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.{GET, POST}
 import v1.models.hateoas.{HateoasWrapper, Link}
 

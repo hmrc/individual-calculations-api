@@ -16,11 +16,11 @@
 
 package v1.models.response.getMetadata
 
+import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getMetadata.MetadataResponseFixture._
 import v1.hateoas.HateoasFactory
-import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
 import v1.models.utils.JsonErrorValidators

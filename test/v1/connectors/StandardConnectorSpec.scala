@@ -16,10 +16,10 @@
 
 package v1.connectors
 
+import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.{JsString, Json, Reads}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.handler.RequestDefn
-import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.errors.{BackendErrorCode, BackendErrors}
 
 import scala.concurrent.Future

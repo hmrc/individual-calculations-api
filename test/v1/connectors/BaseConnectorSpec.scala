@@ -17,9 +17,9 @@
 package v1.connectors
 
 import config.AppConfig
+import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.response.common.DesResponse
 
