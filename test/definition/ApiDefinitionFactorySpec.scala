@@ -18,9 +18,10 @@ package definition
 
 import com.typesafe.config.ConfigFactory
 import definition.APIStatus.{ALPHA, BETA}
+import definition.Versions.{VERSION_1, VERSION_2}
+import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import support.UnitSpec
-import v1.mocks.{MockAppConfig, MockHttpClient}
 
 class ApiDefinitionFactorySpec extends UnitSpec {
 
@@ -29,17 +30,57 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     MockedAppConfig.apiGatewayContext returns "api.gateway.context"
   }
 
+  "definition" when {
+    "called" should {
+      "return a valid Definition case class" in new Test {
+        MockedAppConfig.featureSwitch returns None anyNumberOfTimes()
+        MockedAppConfig.apiStatus("1.0") returns "BETA"
+        MockedAppConfig.apiStatus("2.0") returns "ALPHA"
+        MockedAppConfig.endpointsEnabled("1") returns true anyNumberOfTimes()
+        MockedAppConfig.endpointsEnabled("2") returns true anyNumberOfTimes()
+
+        apiDefinitionFactory.definition shouldBe Definition(
+          scopes = Seq(
+            Scope(
+              key = "read:self-assessment",
+              name = "View your Self Assessment information",
+              description = "Allow read access to self assessment data"
+            ),
+            Scope(
+              key = "write:self-assessment",
+              name = "Change your Self Assessment information",
+              description = "Allow write access to self assessment data"
+            )
+          ),
+          api = APIDefinition(
+            name = "Individual Calculations (MTD)",
+            description = "An API for providing individual calculations data",
+            context = "api.gateway.context",
+            categories = Seq("INCOME_TAX_MTD"),
+            versions = Seq(
+              APIVersion(
+                version = VERSION_1, access = None, status = APIStatus.BETA, endpointsEnabled = true),
+              APIVersion(
+                version = VERSION_2, access = None, status = APIStatus.ALPHA, endpointsEnabled = true)
+            ),
+            requiresTrust = None
+          )
+        )
+      }
+    }
+  }
+
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockedAppConfig.apiStatus returns "BETA"
+        MockedAppConfig.apiStatus("1.0") returns "BETA"
         apiDefinitionFactory.buildAPIStatus("1.0") shouldBe BETA
       }
     }
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockedAppConfig.apiStatus returns "ALPHO"
+        MockedAppConfig.apiStatus("1.0") returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus("1.0") shouldBe ALPHA
       }
     }

@@ -1,0 +1,20 @@
+{
+  "errors": [
+    {
+      "id": "C11103",
+      "text": "Gift aid payments made this year treated as paid in the previous year cannot exceed the total gift aid payments. Please check."
+    }
+  ],
+  "links": [
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/messages",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "/individuals/calculations/RW399019B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "rel": "metadata",
+      "method": "GET"
+    }
+  ]
+}

@@ -17,6 +17,7 @@
 package v1.controllers
 
 import cats.implicits._
+import mocks.MockIdGenerator
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, Request, Result}
@@ -26,7 +27,6 @@ import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
 import v1.handler.RequestDefn.Get
 import v1.handler.{AuditHandler, RequestHandler}
-import v1.mocks.MockIdGenerator
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._

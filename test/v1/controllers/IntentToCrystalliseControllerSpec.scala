@@ -16,12 +16,12 @@
 
 package v1.controllers
 
+import mocks.{MockAppConfig, MockIdGenerator}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.hateoas.HateoasLinks
-import v1.mocks.{MockAppConfig, MockIdGenerator}
 import v1.mocks.hateoas.MockHateoasFactory
 import v1.mocks.requestParsers.MockIntentToCrystalliseRequestParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}

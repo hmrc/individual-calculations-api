@@ -16,12 +16,12 @@
 
 package v1.models.response.listCalculations
 
+import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.listCalculations.CalculationListItemFixture.{calculationListItemJson, calculationListItemModel}
 import v1.fixtures.listCalculations.ListCalculationsFixture._
 import v1.hateoas.HateoasFactory
-import v1.mocks.MockAppConfig
 import v1.models.hateoas.Method.{GET, POST}
 import v1.models.hateoas.{HateoasWrapper, Link}
 
