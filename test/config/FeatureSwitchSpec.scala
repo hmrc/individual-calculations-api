@@ -64,12 +64,12 @@ class FeatureSwitchSpec extends UnitSpec {
     }
   }
 
-  "isR2RoutingEnabled" when {
+  "isV1R2RoutingEnabled" when {
     "no config" must {
       val featureSwitch = FeatureSwitch(None)
 
       "return false" in {
-        featureSwitch.isR2RoutingEnabled shouldBe false
+        featureSwitch.isV1R2RoutingEnabled shouldBe false
       }
     }
 
@@ -77,7 +77,7 @@ class FeatureSwitchSpec extends UnitSpec {
       val featureSwitch = createFeatureSwitch("")
 
       "return false" in {
-        featureSwitch.isR2RoutingEnabled shouldBe false
+        featureSwitch.isV1R2RoutingEnabled shouldBe false
       }
     }
 
@@ -86,8 +86,8 @@ class FeatureSwitchSpec extends UnitSpec {
                                                 |v1r2.enabled = true
         """.stripMargin)
 
-      "return false for disabled versions" in {
-        featureSwitch.isR2RoutingEnabled shouldBe true
+      "return true for disabled versions" in {
+        featureSwitch.isV1R2RoutingEnabled shouldBe true
       }
     }
   }

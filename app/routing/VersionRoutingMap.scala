@@ -32,16 +32,7 @@ trait VersionRoutingMap extends Logging {
 
   val map: Map[String, Router]
 
-  final def versionRouter(version: String): Option[Router] = map.get(version).map {
-    case v1Router: v1.Routes => logger.info(message = "[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
-      v1Router
-    case v2Router: v2.Routes => logger.info(message = "[VersionRoutingMap][map] using v2Router to use v2 routes")
-      v2Router
-    case liveRouter: live.Routes => logger.info(message = "[VersionRoutingMap][map] using liveRouter to use live routes only")
-      liveRouter
-    case router => logger.info("[VersionRoutingMap][versionRouter] - Using default router")
-      router
-  }
+  final def versionRouter(version: String): Option[Router] = map.get(version)
 }
 
 // Add routes corresponding to available versions...
@@ -56,16 +47,13 @@ case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
 
   val map: Map[String, Router] = Map(
     VERSION_1 -> {
-      if (featureSwitch.isR2RoutingEnabled) {
-        logger.info("[VersionRoutingMap][map] using v1R2Router to use version1 and release 2 routes")
+      if (featureSwitch.isV1R2RoutingEnabled) {
         v1r2Router
       }
       else if (featureSwitch.isFullRoutingEnabled) {
-        logger.info("[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
         v1Router
       }
       else {
-        logger.info("[VersionRoutingMap][map] using liveRouter to use live routes only")
         liveRouter
       }
     },
