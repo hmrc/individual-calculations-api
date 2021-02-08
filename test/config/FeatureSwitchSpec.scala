@@ -86,7 +86,7 @@ class FeatureSwitchSpec extends UnitSpec {
                                                 |v1r2.enabled = true
         """.stripMargin)
 
-      "return true for disabled versions" in {
+      "return true for enabled versions" in {
         featureSwitch.isV1R2RoutingEnabled shouldBe true
       }
     }
