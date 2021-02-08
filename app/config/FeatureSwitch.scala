@@ -59,4 +59,9 @@ case class FeatureSwitch(value: Option[Configuration]) {
     case Some(config) => config.getOptional[Boolean] ("all-endpoints.enabled").getOrElse(true)
     case None => true
   }
+
+  def isV1R2RoutingEnabled: Boolean = value match {
+    case Some(config) => config.getOptional[Boolean] ("v1r2.enabled").getOrElse(false)
+    case None => false
+  }
 }

@@ -36,7 +36,8 @@ class LiveRoutesISpec extends IntegrationBaseSpec {
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
     "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.all-endpoints.enabled" -> "false"
+    "feature-switch.all-endpoints.enabled" -> "false",
+    "feature-switch.v1r2.enabled" -> "false"
   )
 
   private trait Test {
