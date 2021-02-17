@@ -18,8 +18,16 @@ package v2.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class EoyEstimateForeignProperty(taxableIncome: BigInt, finalised: Option[Boolean])
+object EoyEstimateIncomeSourceSummary {
+  case class IncomeSourceSummary(taxableIncome: BigInt)
 
-object EoyEstimateForeignProperty {
-  implicit val format: OFormat[EoyEstimateForeignProperty] = Json.format[EoyEstimateForeignProperty]
+  object IncomeSourceSummary {
+    implicit val format: OFormat[IncomeSourceSummary] = Json.format[IncomeSourceSummary]
+  }
+
+  case class IncomeSourceSummaryWithFinalised(taxableIncome: BigInt, finalised: Option[Boolean])
+
+  object IncomeSourceSummaryWithFinalised {
+    implicit val format: OFormat[IncomeSourceSummaryWithFinalised] = Json.format[IncomeSourceSummaryWithFinalised]
+  }
 }

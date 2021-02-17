@@ -17,16 +17,9 @@
 package v2.fixtures.getEndOfYearEstimate.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateForeignInterestFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateForeignPropertyFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateOtherDividendsFixture._
+import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateIncomeSourceSummaryFixture._
 import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateStateBenefitsFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkDividendsFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixture._
 import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSavingsFixture._
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateUkSecuritiesFixture._
 import v2.models.response.getEoyEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixture {
@@ -34,15 +27,19 @@ object EoyEstimateDetailFixture {
   val eoyEstimateDetailModel: EoyEstimateDetail =
     EoyEstimateDetail(
       selfEmployments = Some(Seq(eoyEstimateSelfEmploymentsModel)),
-      ukPropertyFhl = Some(eoyEstimateUkPropertyFhlModel),
-      ukPropertyNonFhl = Some(eoyEstimateUkPropertyNonFhlModel),
+      ukPropertyFhl = Some(incomeSourceSummaryWithFinalisedModel),
+      ukPropertyNonFhl = Some(incomeSourceSummaryWithFinalisedModel),
       ukSavings = Some(Seq(eoyEstimateUkSavingsModel)),
-      ukDividends = Some(eoyEstimateUkDividendsModel),
-      otherDividends = Some(eoyEstimateOtherDividendsModel),
-      stateBenefits = Some(eoyEstimateStateBenefitsModel),
-      ukSecurities = Some(eoyEstimateUkSecuritiesModel),
-      foreignProperty = Some(eoyEstimateForeignPropertyModel),
-      foreignInterest = Some(eoyEstimateForeignInterestModel)
+      ukDividends = Some(incomeSourceSummaryModel),
+      otherDividends = Some(incomeSourceSummaryModel),
+      foreignCompanyDividends = Some(incomeSourceSummaryModel),
+      stateBenefits = Some(incomeSourceSummaryModel),
+      ukSecurities = Some(incomeSourceSummaryModel),
+      foreignProperty = Some(incomeSourceSummaryWithFinalisedModel),
+      eeaPropertyFhl = Some(incomeSourceSummaryModel),
+      foreignInterest = Some(incomeSourceSummaryModel),
+      otherIncome = Some(incomeSourceSummaryModel),
+      foreignPension = Some(incomeSourceSummaryModel)
     )
 
   val eoyEstimateDetailJson: JsValue = Json.parse(
@@ -51,17 +48,21 @@ object EoyEstimateDetailFixture {
        | "selfEmployments": [
        |   $eoyEstimateSelfEmploymentsJson
        | ],
-       | "ukPropertyFhl": $eoyEstimateUkPropertyFhlJson,
-       | "ukPropertyNonFhl": $eoyEstimateUkPropertyNonFhlJson,
+       | "ukPropertyFhl": $incomeSourceSummaryWithFinalisedJson,
+       | "ukPropertyNonFhl": $incomeSourceSummaryWithFinalisedJson,
        | "ukSavings": [
        |   $eoyEstimateUkSavingsJson
        | ],
-       | "ukDividends": $eoyEstimateUkDividendsJson,
-       | "otherDividends": $eoyEstimateOtherDividendsJson,
-       | "stateBenefits": $eoyEstimateStateBenefitsJson,
-       | "ukSecurities": $eoyEstimateUkSecuritiesJson,
-       | "foreignProperty": $eoyEstimateForeignPropertyJson,
-       | "foreignInterest": $eoyEstimateForeignInterestJson
+       | "ukDividends": $incomeSourceSummaryJson,
+       | "otherDividends": $incomeSourceSummaryJson,
+       | "foreignCompanyDividends": $incomeSourceSummaryJson,
+       | "stateBenefits": $incomeSourceSummaryJson,
+       | "ukSecurities": $incomeSourceSummaryJson,
+       | "foreignProperty": $incomeSourceSummaryWithFinalisedJson,
+       | "eeaPropertyFhl": $incomeSourceSummaryJson,
+       | "foreignInterest": $incomeSourceSummaryJson,
+       | "otherIncome": $incomeSourceSummaryJson,
+       | "foreignPension": $incomeSourceSummaryJson
        |}
      """.stripMargin
   )
