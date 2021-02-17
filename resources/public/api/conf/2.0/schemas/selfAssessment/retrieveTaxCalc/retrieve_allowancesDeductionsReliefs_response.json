@@ -339,7 +339,9 @@
                           }
                         },
                         "required": [
-                          "countryCode"
+                          "countryCode",
+                          "amountClaimed",
+                          "allowableAmount"
                         ]
                       }
                     }
