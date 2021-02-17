@@ -361,74 +361,74 @@
           "minimum": 0,
           "maximum:": 99999999999,
           "example": "2000"
-          }
-        },
-        "required": [
-          "taxableIncome"
-          ]
         }
       },
-      "foreignInterest": {
-        "type": "object",
-        "description": "Details the taxable income estimate for Foreign Interest",
-        "properties": {
-          "taxableIncome": {
-            "title": "taxableIncome",
-            "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
-            "multipleOf": 1,
-            "minimum": 0,
-            "maximum": 99999999999,
-            "example": "2000"
-          }
-        },
-        "required": [
-          "taxableIncome"
-        ]
-     },
-     "otherIncome": {
+      "required": [
+        "taxableIncome"
+      ]
+    }
+  },
+  "foreignInterest": {
+    "type": "object",
+    "description": "Details the taxable income estimate for Foreign Interest",
+    "properties": {
+      "taxableIncome": {
+        "title": "taxableIncome",
+        "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+        "type": "number",
+        "multipleOf": 1,
+        "minimum": 0,
+        "maximum": 99999999999,
+        "example": "2000"
+      }
+    },
+    "required": [
+      "taxableIncome"
+    ]
+  },
+  "otherIncome": {
+    "type": "object",
+    "description": "Details the taxable income estimate for Other Income.",
+    "properties": {
+      "taxableIncome": {
+        "title": "taxableIncome",
+        "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum:": 99999999999,
+        "example": "2000"
+      }
+    },
+    "required": [
+      "taxableIncome"
+    ]
+  },
+  "foreignPension": {
+    "type": "object",
+    "description": "Details the taxable income estimate for Foreign Pension.",
+    "properties": {
+      "taxableIncome": {
+        "title": "taxableIncome",
+        "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum:": 99999999999,
+        "example": "2000"
+      }
+    },
+    "required": [
+      "taxableIncome"
+    ]
+  },
+  "links": {
+    "type": "array",
+    "items": {
       "type": "object",
-      "description": "Details the taxable income estimate for Other Income.",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "properties": {
-        "taxableIncome": {
-          "title": "taxableIncome",
-          "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
-          "multipleOf": 0.01,
-          "minimum": 0,
-          "maximum:": 99999999999,
-          "example": "2000"
-          }
-        },
-        "required": [
-          "taxableIncome"
-        ]
-      },
-      "foreignPension": {
-        "type": "object",
-        "description": "Details the taxable income estimate for Foreign Pension.",
-        "properties": {
-          "taxableIncome": {
-            "title": "taxableIncome",
-            "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
-            "multipleOf": 0.01,
-            "minimum": 0,
-            "maximum:": 99999999999,
-            "example": "2000"
-            }
-          },
-          "required": [
-            "taxableIncome"
-          ]
-      },
-      "links": {
-        "type": "array",
-        "items": {
-        "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
-        "properties": {
-          "href": {
+        "href": {
           "description": "The relative url of the endpoint",
           "type": "string",
           "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
@@ -456,3 +456,4 @@
       ]
     }
   }
+}
