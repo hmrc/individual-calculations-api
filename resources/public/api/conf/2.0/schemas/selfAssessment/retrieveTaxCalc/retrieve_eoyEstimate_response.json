@@ -271,7 +271,6 @@
         }
       },
       "foreignCompanyDividends": {
-        "title": "foreignCompanyDividends",
         "type": "object",
         "description": "Details the taxable income estimate for foreign company dividends.",
         "properties": {
@@ -351,22 +350,21 @@
       ]
     },
     "eeaPropertyFhl": {
-          "title": "eeaPropertyFhl",
-          "type": "object",
-          "description": "Details the taxable income estimate for EEA Property FHL.",
-          "properties": {
-            "taxableIncome": {
-              "title": "taxableIncome",
-              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum:": 99999999999,
-              "example": "2000"
-            }
-          },
-          "required": [
-            "taxableIncome"
+      "type": "object",
+      "description": "Details the taxable income estimate for EEA Property FHL.",
+      "properties": {
+        "taxableIncome": {
+          "title": "taxableIncome",
+          "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum:": 99999999999,
+          "example": "2000"
+          }
+        },
+        "required": [
+          "taxableIncome"
           ]
         }
       },
@@ -387,57 +385,50 @@
         "required": [
           "taxableIncome"
         ]
-    },
-    "otherIncome": {
-          "title": "otherIncome",
-          "type": "object",
-          "description": "Details the taxable income estimate for Other Income.",
-          "properties": {
-            "taxableIncome": {
-              "title": "taxableIncome",
-              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum:": 99999999999,
-              "example": "2000"
+     },
+     "otherIncome": {
+      "type": "object",
+      "description": "Details the taxable income estimate for Other Income.",
+      "properties": {
+        "taxableIncome": {
+          "title": "taxableIncome",
+          "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum:": 99999999999,
+          "example": "2000"
+          }
+        },
+        "required": [
+          "taxableIncome"
+        ]
+      },
+      "foreignPension": {
+        "type": "object",
+        "description": "Details the taxable income estimate for Foreign Pension.",
+        "properties": {
+          "taxableIncome": {
+            "title": "taxableIncome",
+            "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+            "type": "number",
+            "multipleOf": 0.01,
+            "minimum": 0,
+            "maximum:": 99999999999,
+            "example": "2000"
             }
           },
           "required": [
             "taxableIncome"
           ]
-        },
-         "foreignPension": {
-              "title": "foreignPension",
-              "type": "object",
-              "description": "Details the taxable income estimate for Foreign Pension.",
-              "properties": {
-                "taxableIncome": {
-                  "title": "taxableIncome",
-                  "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
-                  "type": "number",
-                  "multipleOf": 0.01,
-                  "minimum": 0,
-                  "maximum:": 99999999999,
-                  "example": "2000"
-                }
-              },
-              "required": [
-                "taxableIncome"
-              ]
-            }
-          }
-        }
-      }
-    }
-  },
-  "links": {
-    "type": "array",
-    "items": {
-      "type": "object",
-      "description": "A list of endpoint links that indicate possible actions related to the current resource",
-      "properties": {
-        "href": {
+      },
+      "links": {
+        "type": "array",
+        "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
           "description": "The relative url of the endpoint",
           "type": "string",
           "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
@@ -465,6 +456,3 @@
       ]
     }
   }
-}
-}
-}
