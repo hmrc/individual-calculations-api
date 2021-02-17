@@ -49,7 +49,7 @@
           ]
         },
         "allOtherIncomeReceivedWhilstAbroad": {
-          "totalForeignPropertyAllowableAmount": 49831.34,
+          "totalOtherIncomeAllowableAmount": 49831.34,
           "otherIncomeRfcDetail": [
             {
               "broughtFwdResidentialFinancialCostAmount": 49832.34,
