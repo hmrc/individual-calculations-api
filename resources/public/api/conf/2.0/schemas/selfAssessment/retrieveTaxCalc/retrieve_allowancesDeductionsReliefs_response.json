@@ -195,6 +195,284 @@
           "type": "object",
           "description": "Details the reliefs used in the calculation.",
           "properties": {
+            "residentialFinanceCosts": {
+              "title": "residentialFinanceCosts",
+              "type": "object",
+              "description": "Details the total residential finance cost reliefs used in the calculation.",
+              "properties": {
+                "adjustedTotalIncome": {
+                  "title": "adjustedTotalIncome",
+                  "type": "number",
+                  "description": "The income (after losses and reliefs, and excluding savings and dividends income) that exceeds your personal allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "101.11"
+                },
+                "totalAllowableAmount": {
+                  "title": "totalAllowableAmount",
+                  "type": "number",
+                  "description": "The total allowable amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "202.22"
+                },
+                "relievableAmount": {
+                  "title": "relievableAmount",
+                  "type": "number",
+                  "description": "The lower of either Adjusted Total Income or Total Allowable Amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "303.33"
+                },
+                "rate": {
+                  "title": "rate",
+                  "type": "number",
+                  "description": "The tax rate used in the calculation. This value must be between 0 and 99.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99.99,
+                  "multipleOf": 0.01,
+                  "example": "40.44"
+                },
+                "totalResidentialFinanceCostsRelief": {
+                  "title": "totalResidentialFinanceCostsRelief",
+                  "type": "number",
+                  "description": "The total value of residential finance costs relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "505.55"
+                },
+                "ukProperty": {
+                  "title": "ukProperty",
+                  "type": "object",
+                  "description": "Details the residential finance costs for UK property.",
+                  "properties": {
+                    "amountClaimed": {
+                      "title": "amountClaimed",
+                      "type": "number",
+                      "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01,
+                      "example": "1505.55"
+                    },
+                    "allowableAmount": {
+                      "title": "allowableAmount",
+                      "type": "number",
+                      "description": "The total amount allowable for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01,
+                      "example": "2505.55"
+                    },
+                    "carryForwardAmount": {
+                      "title": "carryForwardAmount",
+                      "type": "number",
+                      "description": "The amount of residential finance costs that can be carried forward to future tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01,
+                      "example": "3505.55"
+                    }
+                  },
+                  "required": [
+                    "amountClaimed",
+                    "allowableAmount"
+                  ]
+                },
+                "foreignProperty": {
+                  "title": "foreignProperty",
+                  "type": "object",
+                  "description": "Details the residential finance costs for foreign property.",
+                  "properties": {
+                    "totalForeignPropertyAllowableAmount": {
+                      "title": "totalForeignPropertyAllowableAmount",
+                      "type": "number",
+                      "description": "The total amount allowable for all foreign property residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01,
+                      "example": "6505.55"
+                    },
+                    "foreignPropertyRfcDetail": {
+                      "title": "foreignPropertyRfcDetail",
+                      "type": "array",
+                      "description": "Details residential finance costs for foreign property broken down by country.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "countryCode": {
+                            "title": "countryCode",
+                            "type": "string",
+                            "description": "A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3",
+                            "example": "FRA"
+                          },
+                          "amountClaimed": {
+                            "title": "amountClaimed",
+                            "type": "number",
+                            "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01,
+                            "example": "453.22"
+                          },
+                          "allowableAmount": {
+                            "title": "allowableAmount",
+                            "type": "number",
+                            "description": "The total amount allowable for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01,
+                            "example": "54302.23"
+                          },
+                          "carryForwardAmount": {
+                            "title": "carryForwardAmount",
+                            "type": "number",
+                            "description": "The amount of residential finance costs that can be carried forward to future tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01,
+                            "example": "54302.23"
+                          }
+                        },
+                        "required": [
+                          "countryCode"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "totalForeignPropertyAllowableAmount",
+                    "foreignPropertyRfcDetail"
+                  ]
+                },
+                "allOtherIncomeReceivedWhilstAbroad": {
+                  "title": "allOtherIncomeReceivedWhilstAbroad",
+                  "type": "object",
+                  "description": "Details the residential finance costs for other income received whilst abroad.",
+                  "properties": {
+                    "totalOtherIncomeAllowableAmount": {
+                      "title": "totalOtherIncomeAllowableAmount",
+                      "type": "number",
+                      "description": "TThe total amount allowable for all other income received whilst abroad for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01,
+                      "example": "6505.55"
+                    },
+                    "otherIncomeRfcDetail": {
+                      "title": "otherIncomeRfcDetail",
+                      "type": "array",
+                      "description": "Details residential finance costs for other income broken down by country.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "countryCode": {
+                            "title": "countryCode",
+                            "type": "string",
+                            "description": "A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3",
+                            "example": "FRA"
+                          },
+                          "residentialFinancialCostAmount": {
+                            "title": "residentialFinancialCostAmount",
+                            "type": "number",
+                            "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01,
+                            "example": "453.22"
+                          },
+                          "broughtFwdResidentialFinancialCostAmount": {
+                            "title": "broughtFwdResidentialFinancialCostAmount",
+                            "type": "number",
+                            "description": "The amount of residential financial costs brought forward from previous tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "minimum": 0,
+                            "maximum": 99999999999.99,
+                            "multipleOf": 0.01,
+                            "example": "54302.23"
+                          }
+                        },
+                        "required": [
+                          "countryCode"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "totalOtherIncomeAllowableAmount",
+                    "otherIncomeRfcDetail"
+                  ]
+                }
+              },
+              "required": [
+                "adjustedTotalIncome",
+                "relievableAmount",
+                "rate",
+                "totalResidentialFinanceCostsRelief"
+              ]
+            },
+            "foreignTaxCreditRelief": {
+              "title": "foreignTaxCreditRelief",
+              "type": "object",
+              "description": "Details the foreign tax credit relief (FTCR) used in the calculation.",
+              "properties": {
+                "customerCalculatedRelief": {
+                  "title": "customerCalculatedRelief",
+                  "type": "boolean",
+                  "description": "When this field is true, it means the customer has calculated their own relief. When it is false it means HMRC determined the relief.",
+                  "example": "false"
+                },
+                "totalForeignTaxCreditRelief": {
+                  "title": "totalForeignTaxCreditRelief",
+                  "type": "number",
+                  "description": "The total value of foreign tax credit relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "3100.21"
+                },
+                "foreignTaxCreditReliefOnProperty": {
+                  "title": "foreignTaxCreditReliefOnProperty",
+                  "type": "number",
+                  "description": "The value of foreign tax credit relief on property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "3200.22"
+                },
+                "foreignTaxCreditReliefOnDividends": {
+                  "title": "foreignTaxCreditReliefOnDividends",
+                  "type": "number",
+                  "description": "The value of foreign tax credit relief on dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "3300.23"
+                },
+                "foreignTaxCreditReliefOnSavings": {
+                  "title": "foreignTaxCreditReliefOnSavings",
+                  "type": "number",
+                  "description": "The value of foreign tax credit relief on savings. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "3400.24"
+                },
+                "foreignTaxCreditReliefOnForeignIncome": {
+                  "title": "foreignTaxCreditReliefOnForeignIncome",
+                  "type": "number",
+                  "description": "The value of foreign tax credit relief on foreign income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "multipleOf": 0.01,
+                  "example": "3500.25"
+                }
+              },
+              "required": ["totalForeignTaxCreditRelief"]
+            },
             "pensionContributionReliefs": {
               "title": "pensionContributionReliefs",
               "type": "object",

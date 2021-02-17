@@ -26,6 +26,47 @@
       }
     },
     "reliefs": {
+      "residentialFinanceCosts": {
+        "adjustedTotalIncome": 49820.34,
+        "totalAllowableAmount": 49821.34,
+        "relievableAmount": 49822.34,
+        "rate": 45.34,
+        "totalResidentialFinanceCostsRelief": 49823.34,
+        "ukProperty": {
+          "amountClaimed": 49824.34,
+          "allowableAmount": 49825.34,
+          "carryForwardAmount": 49826.34
+        },
+        "foreignProperty": {
+          "totalForeignPropertyAllowableAmount": 49827.34,
+          "foreignPropertyRfcDetail": [
+            {
+              "allowableAmount": 49828.34,
+              "amountClaimed": 49829.34,
+              "carryForwardAmount": 49830.34,
+              "countryCode": "ASM"
+            }
+          ]
+        },
+        "allOtherIncomeReceivedWhilstAbroad": {
+          "totalForeignPropertyAllowableAmount": 49831.34,
+          "otherIncomeRfcDetail": [
+            {
+              "broughtFwdResidentialFinancialCostAmount": 49832.34,
+              "residentialFinancialCostAmount": 49833.34,
+              "countryCode": "ASM"
+            }
+          ]
+        }
+      },
+      "foreignTaxCreditRelief": {
+        "customerCalculatedRelief": true,
+        "totalForeignTaxCreditRelief": 8019.25,
+        "foreignTaxCreditReliefOnProperty": 8020.25,
+        "foreignTaxCreditReliefOnDividends": 8021.25,
+        "foreignTaxCreditReliefOnSavings": 8022.25,
+        "foreignTaxCreditReliefOnForeignIncome": 8023.25
+      },
       "pensionContributionReliefs": {
         "totalPensionContributionReliefs": 2000.58,
         "regularPensionContributions": 2000.58,
