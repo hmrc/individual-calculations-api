@@ -269,6 +269,24 @@
             "taxableIncome"
           ]
         },
+        "foreignCompanyDividends": {
+          "type": "object",
+          "description": "Details the taxable income estimate for foreign company dividends.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
         "stateBenefits": {
           "type": "object",
           "description": "Details the taxable income estimate for state benefits",
@@ -329,6 +347,24 @@
             "taxableIncome"
           ]
         },
+        "eeaPropertyFhl": {
+          "type": "object",
+          "description": "Details the taxable income estimate for EEA Property FHL.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
         "foreignInterest": {
           "type": "object",
           "description": "Details the taxable income estimate for Foreign Interest",
@@ -340,6 +376,42 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "otherIncome": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Other Income.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "foreignPension": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Foreign Pension.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum:": 99999999999,
               "example": "2000"
             }
           },
