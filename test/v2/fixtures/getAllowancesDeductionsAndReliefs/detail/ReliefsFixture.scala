@@ -17,13 +17,17 @@
 package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCreditReliefFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.PensionContributionReliefsFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsClaimedFixture._
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ResidentialFinanceCostsFixture._
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.Reliefs
 
 object ReliefsFixture {
 
   val reliefsModel: Reliefs = Reliefs(
+    residentialFinanceCosts = Some(residentialFinanceCostsModel),
+    foreignTaxCreditRelief = Some(foreignTaxCreditReliefModel),
     pensionContributionReliefs = Some(pensionContributionReliefsModel),
     reliefsClaimed = Some(Seq(reliefsClaimedModel))
   )
@@ -31,6 +35,8 @@ object ReliefsFixture {
   val reliefsJson: JsValue = Json.parse(
     s"""
        |{
+       |  "residentialFinanceCosts": $residentialFinanceCostsJson,
+       |  "foreignTaxCreditRelief": $foreignTaxCreditReliefJson,
        |  "pensionContributionReliefs": $pensionContributionReliefsJson,
        |  "reliefsClaimed": [$reliefsClaimedJson]
        |}

@@ -18,11 +18,10 @@ package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   pensionContributionReliefs: Option[PensionContributionReliefs],
-                   reliefsClaimed: Option[Seq[ReliefsClaimed]])
+case class OtherIncomeRfcDetail(countryCode: String,
+                                residentialFinancialCostAmount: Option[BigDecimal],
+                                broughtFwdResidentialFinancialCostAmount: Option[BigDecimal])
 
-object Reliefs {
-  implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
+object OtherIncomeRfcDetail {
+  implicit val format: OFormat[OtherIncomeRfcDetail] = Json.format[OtherIncomeRfcDetail]
 }
