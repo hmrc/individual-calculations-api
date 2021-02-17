@@ -38,6 +38,9 @@
     "otherDividends": {
       "taxableIncome": 2000
     },
+    "foreignCompanyDividends": {
+      "taxableIncome": 2000
+    },
     "stateBenefits": {
       "taxableIncome": 2000
     },
@@ -48,7 +51,16 @@
       "taxableIncome": 2000,
       "finalised": false
     },
+    "eeaPropertyFhl": {
+      "taxableIncome": 2000
+    },
     "foreignInterest": {
+      "taxableIncome": 2000
+    },
+    "otherIncome": {
+      "taxableIncome": 2000
+    },
+    "foreignPension": {
       "taxableIncome": 2000
     }
   },
