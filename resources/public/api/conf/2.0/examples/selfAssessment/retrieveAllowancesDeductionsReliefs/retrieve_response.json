@@ -41,10 +41,10 @@
           "totalForeignPropertyAllowableAmount": 49827.34,
           "foreignPropertyRfcDetail": [
             {
-              "allowableAmount": 49828.34,
+              "countryCode": "ASM",
               "amountClaimed": 49829.34,
-              "carryForwardAmount": 49830.34,
-              "countryCode": "ASM"
+              "allowableAmount": 49828.34,
+              "carryForwardAmount": 49830.34
             }
           ]
         },
@@ -52,9 +52,9 @@
           "totalOtherIncomeAllowableAmount": 49831.34,
           "otherIncomeRfcDetail": [
             {
-              "broughtFwdResidentialFinancialCostAmount": 49832.34,
+              "countryCode": "ASM",
               "residentialFinancialCostAmount": 49833.34,
-              "countryCode": "ASM"
+              "broughtFwdResidentialFinancialCostAmount": 49832.34
             }
           ]
         }
