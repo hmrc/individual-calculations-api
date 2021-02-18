@@ -17,23 +17,18 @@
 package v2.models.response.getIncomeTaxAndNics.detail
 
 import support.UnitSpec
-import v2.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.ExcessOfLifetimeAllowanceFixture._
 import v2.models.utils.JsonErrorValidators
 
-class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
+class ExcessOfLifetimeAllowanceSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[TaxDeductedAtSource](taxDeductedAtSourceJson)(
+  testJsonProperties[ExcessOfLifetimeAllowance](excessOfLifetimeAllowanceJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "ukLandAndProperty",
-      "savings",
-      "cis",
-      "securities",
-      "voidedIsa",
-      "payeEmployments",
-      "occupationalPensions",
-      "stateBenefits",
-      "specialWithholdingTaxOrUkTaxPaid"
+      "totalChargeableAmount",
+      "totalTaxPaid",
+      "lumpSumBenefitTakenInExcessOfLifetimeAllowance",
+      "benefitInExcessOfLifetimeAllowance"
     )
   )
 }

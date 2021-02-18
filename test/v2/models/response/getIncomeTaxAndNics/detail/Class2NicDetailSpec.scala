@@ -31,7 +31,8 @@ class Class2NicDetailSpec extends UnitSpec with JsonErrorValidators {
       "weeks",
       "limit",
       "apportionedLimit",
-      "actualClass2Nic"
+      "actualClass2Nic",
+      "class2VoluntaryContributions"
     )
   )
 }
