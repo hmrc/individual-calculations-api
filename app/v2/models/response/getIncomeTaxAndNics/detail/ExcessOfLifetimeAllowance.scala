@@ -16,24 +16,13 @@
 
 package v2.models.response.getIncomeTaxAndNics.detail
 
-import support.UnitSpec
-import v2.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
-import v2.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, OFormat}
 
-class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
+case class ExcessOfLifetimeAllowance(totalChargeableAmount: Option[BigDecimal],
+                                     totalTaxPaid: Option[BigDecimal],
+                                     lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown],
+                                     benefitInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown])
 
-  testJsonProperties[TaxDeductedAtSource](taxDeductedAtSourceJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "ukLandAndProperty",
-      "savings",
-      "cis",
-      "securities",
-      "voidedIsa",
-      "payeEmployments",
-      "occupationalPensions",
-      "stateBenefits",
-      "specialWithholdingTaxOrUkTaxPaid"
-    )
-  )
+object ExcessOfLifetimeAllowance {
+  implicit val format: OFormat[ExcessOfLifetimeAllowance] = Json.format[ExcessOfLifetimeAllowance]
 }
