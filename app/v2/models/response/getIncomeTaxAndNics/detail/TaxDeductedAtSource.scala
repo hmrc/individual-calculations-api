@@ -25,8 +25,7 @@ case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
                                voidedIsa: Option[BigDecimal],
                                payeEmployments: Option[BigDecimal],
                                occupationalPensions: Option[BigDecimal],
-                               stateBenefits: Option[BigDecimal],
-                               specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal])
+                               stateBenefits: Option[BigDecimal])
 
 object TaxDeductedAtSource {
   implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]

@@ -28,10 +28,6 @@ class GiftAidSpec extends UnitSpec with JsonErrorValidators {
       "rate",
       "giftAidTax"
     ),
-    optionalProperties = Seq(
-      "giftAidTaxReductions",
-      "incomeTaxChargedAfterGiftAidTaxReductions",
-      "giftAidCharge"
-    )
+    optionalProperties = Seq()
   )
 }
