@@ -835,11 +835,35 @@
                 },
                 "giftAidTax": {
                   "type": "number",
-                  "description": "The amount of Gift Aid tax charged when insufficient Income Tax has been paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "description": "The amount of Gift Aid tax charged if no reliefs or deductions apply. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
-                  "example": "1000.12"
+                  "example": "200.99"
+                },
+                "giftAidTaxReductions": {
+                  "type": "number",
+                  "description": "The amount of Gift Aid tax reductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "120.99"
+                },
+                "incomeTaxChargedAfterGiftAidTaxReductions": {
+                  "type": "number",
+                  "description": "The income tax charged after Gift Aid tax reductions have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "500.99"
+                },
+                "giftAidCharge": {
+                  "type": "number",
+                  "description": "The amount of Gift Aid tax charged after appropriate reliefs and deductions have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "200.99"
                 }
               },
               "required": [
@@ -967,6 +991,28 @@
               "type": "object",
               "description": "Breakdown of pension savings tax charges.",
               "properties": {
+                "excessOfLifetimeAllowance": {
+                  "type": "object",
+                  "description": "Details of chargeable amounts in excess of lifetime allowance",
+                  "properties": {
+                    "totalChargeableAmount": {
+                      "type": "number",
+                      "description": "Total chargeable amount for Lump Sum Benefit Taken In Excess Of Lifetime Allowance and Benefit In Excess Of Lifetime Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "5089.78",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalTaxPaid": {
+                      "type": "number",
+                      "description": "Total tax paid for Lump Sum Benefit Taken In Excess Of Lifetime Allowance and Benefit In Excess Of Lifetime Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "200.99",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    }
+                  }
+                },
                 "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
                   "type": "object",
                   "description": "Details of lump sum benefit taken in excess of lifetime allowance.",
@@ -1037,6 +1083,28 @@
                       "type": "number",
                       "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "example": "5765.45",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    }
+                  }
+                },
+                "pensionSchemeUnauthorisedPayments": {
+                  "type": "object",
+                  "description": "Details of pension scheme unauthorised payments",
+                  "properties": {
+                    "totalChargeableAmount": {
+                      "type": "number",
+                      "description": "Total chargeable amount for Pension Scheme Unauthorised Payments Surcharge and Pension Scheme Unauthorised Payments Non Surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "500.99",
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "multipleOf": 0.01
+                    },
+                    "totalTaxPaid": {
+                      "type": "number",
+                      "description": "Total tax paid for Pension Scheme Unauthorised Payments Surcharge and Pension Scheme Unauthorised Payments Non Surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "example": "500.99",
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
@@ -1450,6 +1518,11 @@
                   "type": "boolean",
                   "description": "Boolean showing whether the Class 2 NIC charge is an actual charge or estimate in this calculation.",
                   "example": "true"
+                },
+                "class2VoluntaryContributions": {
+                  "type": "boolean",
+                  "description": "Boolean showing the customer has requested to make voluntary Class 2 NICs contributions.",
+                  "example": "true"
                 }
               },
               "required": [
@@ -1656,6 +1729,14 @@
               "minimum": -99999999999.99,
               "maximum": 99999999999.99,
               "example": "2389.23"
+            },
+            "specialWithholdingTaxOrUkTaxPaid": {
+              "type": "number",
+              "description": "Tax that has been deducted at source on foreign income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.58"
             }
           }
         }
