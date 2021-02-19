@@ -16,13 +16,22 @@
 
 package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCreditReliefFixture._
+import v2.models.utils.JsonErrorValidators
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   pensionContributionReliefs: Option[PensionContributionReliefs],
-                   reliefsClaimed: Option[Seq[ReliefsClaimed]])
+class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
-object Reliefs {
-  implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
+  testJsonProperties[ForeignTaxCreditRelief](foreignTaxCreditReliefJson)(
+    mandatoryProperties = Seq(
+      "totalForeignTaxCreditRelief"
+    ),
+    optionalProperties = Seq(
+      "customerCalculatedRelief",
+      "foreignTaxCreditReliefOnProperty",
+      "foreignTaxCreditReliefOnDividends",
+      "foreignTaxCreditReliefOnSavings",
+      "foreignTaxCreditReliefOnForeignIncome"
+    )
+  )
 }
