@@ -92,9 +92,13 @@ trait JsonErrorValidators {
     }
   }
 
-  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String], optionalProperties: Seq[String])(implicit rds: Reads[A]): Unit = {
-    mandatoryProperties.foreach(property => testMandatoryProperty(json)(property))
-    optionalProperties.foreach(property => testOptionalProperty(json)(property))
+  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String],
+                                           optionalProperties: Seq[String],
+                                           modelName: Option[String] = None)(implicit rds: Reads[A]): Unit = {
+    s"For data model ${modelName.fold("")(modelName => s"- $modelName")}" when {
+      mandatoryProperties.foreach(property => testMandatoryProperty(json)(property))
+      optionalProperties.foreach(property => testOptionalProperty(json)(property))
+    }
   }
 
   def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)

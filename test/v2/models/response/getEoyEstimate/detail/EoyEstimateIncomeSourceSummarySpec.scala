@@ -17,17 +17,28 @@
 package v2.models.response.getEoyEstimate.detail
 
 import support.UnitSpec
-import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateForeignPropertyFixture._
+import v2.fixtures.getEndOfYearEstimate.detail.EoyEstimateIncomeSourceSummaryFixture.{incomeSourceSummaryJson, incomeSourceSummaryWithFinalisedJson}
 import v2.models.utils.JsonErrorValidators
 
-class EoyEstimateForeignPropertySpec extends UnitSpec with JsonErrorValidators {
+class EoyEstimateIncomeSourceSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[EoyEstimateForeignProperty](eoyEstimateForeignPropertyJson)(
+  import EoyEstimateIncomeSourceSummary._
+
+  testJsonProperties[IncomeSourceSummary](incomeSourceSummaryJson)(
+    mandatoryProperties = Seq(
+      "taxableIncome"
+    ),
+    optionalProperties = Seq(),
+    modelName = Some("IncomeSourceSummary")
+  )
+
+  testJsonProperties[IncomeSourceSummaryWithFinalised](incomeSourceSummaryWithFinalisedJson)(
     mandatoryProperties = Seq(
       "taxableIncome"
     ),
     optionalProperties = Seq(
       "finalised"
-    )
+    ),
+    modelName = Some("IncomeSourceSummaryWithFinalised")
   )
 }

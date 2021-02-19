@@ -17,17 +17,22 @@
 package v2.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
+import EoyEstimateIncomeSourceSummary._
 
 case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
-                             ukPropertyFhl: Option[EoyEstimateUkPropertyFhl],
-                             ukPropertyNonFhl: Option[EoyEstimateUkPropertyNonFhl],
+                             ukPropertyFhl: Option[IncomeSourceSummaryWithFinalised],
+                             ukPropertyNonFhl: Option[IncomeSourceSummaryWithFinalised],
                              ukSavings: Option[Seq[EoyEstimateUkSavings]],
-                             ukDividends: Option[EoyEstimateUkDividends],
-                             otherDividends: Option[EoyEstimateOtherDividends],
-                             stateBenefits: Option[EoyEstimateStateBenefits],
-                             ukSecurities: Option[EoyEstimateUkSecurities],
-                             foreignProperty: Option[EoyEstimateForeignProperty],
-                             foreignInterest: Option[EoyEstimateForeignInterest])
+                             ukDividends: Option[IncomeSourceSummary],
+                             otherDividends: Option[IncomeSourceSummary],
+                             foreignCompanyDividends: Option[IncomeSourceSummary],
+                             stateBenefits: Option[IncomeSourceSummary],
+                             ukSecurities: Option[IncomeSourceSummary],
+                             foreignProperty: Option[IncomeSourceSummaryWithFinalised],
+                             eeaPropertyFhl: Option[IncomeSourceSummary],
+                             foreignInterest: Option[IncomeSourceSummary],
+                             otherIncome: Option[IncomeSourceSummary],
+                             foreignPension: Option[IncomeSourceSummary])
 
 object EoyEstimateDetail {
   implicit val format: OFormat[EoyEstimateDetail] = Json.format[EoyEstimateDetail]

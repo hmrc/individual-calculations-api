@@ -31,10 +31,14 @@ class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
       "ukSavings",
       "ukDividends",
       "otherDividends",
+      "foreignCompanyDividends",
       "stateBenefits",
       "ukSecurities",
       "foreignProperty",
-      "foreignInterest"
+      "eeaPropertyFhl",
+      "foreignInterest",
+      "otherIncome",
+      "foreignPension"
     )
   )
 }
