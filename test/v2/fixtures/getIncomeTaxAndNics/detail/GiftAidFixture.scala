@@ -24,18 +24,12 @@ object GiftAidFixture {
   val grossGiftAidPayments: BigInt = 100
   val rate: BigDecimal = 200.25
   val giftAidTax: BigDecimal = 300.25
-  val giftAidTaxReductions: Option[BigDecimal] = Some(400.25)
-  val incomeTaxChargedAfterGiftAidTaxReductions: Option[BigDecimal] = Some(500.25)
-  val giftAidCharge: Option[BigDecimal] = Some(600.25)
 
   val giftAidModel: GiftAid =
     GiftAid(
       grossGiftAidPayments = grossGiftAidPayments,
       rate = rate,
-      giftAidTax = giftAidTax,
-      giftAidTaxReductions = giftAidTaxReductions,
-      incomeTaxChargedAfterGiftAidTaxReductions = incomeTaxChargedAfterGiftAidTaxReductions,
-      giftAidCharge = giftAidCharge
+      giftAidTax = giftAidTax
     )
 
   val giftAidJson: JsValue = Json.parse(
@@ -43,10 +37,7 @@ object GiftAidFixture {
        |{
        |   "grossGiftAidPayments": $grossGiftAidPayments,
        |   "rate": $rate,
-       |   "giftAidTax": $giftAidTax,
-       |   "giftAidTaxReductions": ${giftAidTaxReductions.get},
-       |   "incomeTaxChargedAfterGiftAidTaxReductions": ${incomeTaxChargedAfterGiftAidTaxReductions.get},
-       |   "giftAidCharge": ${giftAidCharge.get}
+       |   "giftAidTax": $giftAidTax
        |}
      """.stripMargin
   )

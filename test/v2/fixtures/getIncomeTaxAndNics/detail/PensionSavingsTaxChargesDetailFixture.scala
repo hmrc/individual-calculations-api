@@ -17,19 +17,20 @@
 package v2.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getIncomeTaxAndNics.detail.ExcessOfLifetimeAllowanceFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.OverseasPensionContributionsFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.PensionSavingsDetailBreakdownFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.PensionSchemeOverseasTransfersFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixture._
 import v2.models.response.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesDetail
 
 object PensionSavingsTaxChargesDetailFixture {
 
   val pensionSavingsTaxChargesDetailModel: PensionSavingsTaxChargesDetail =
     PensionSavingsTaxChargesDetail(
-      excessOfLifetimeAllowance = Some(excessOfLifetimeAllowanceModel),
-      pensionSchemeUnauthorisedPayments = Some(pensionSchemeUnauthorisedPaymentsModel),
+      lumpSumBenefitTakenInExcessOfLifetimeAllowance = Some(pensionSavingsDetailBreakdownModel),
+      benefitInExcessOfLifetimeAllowance = Some(pensionSavingsDetailBreakdownModel),
+      pensionSchemeUnauthorisedPaymentsSurcharge = Some(pensionSavingsDetailBreakdownModel),
+      pensionSchemeUnauthorisedPaymentsNonSurcharge = Some(pensionSavingsDetailBreakdownModel),
       pensionSchemeOverseasTransfers = Some(pensionSchemeOverseasTransfersModel),
       pensionContributionsInExcessOfTheAnnualAllowance = Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
       overseasPensionContributions = Some(overseasPensionContributionsModel)
@@ -38,8 +39,10 @@ object PensionSavingsTaxChargesDetailFixture {
   val pensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
     s"""
        |{
-       |   "excessOfLifetimeAllowance": $excessOfLifetimeAllowanceJson,
-       |   "pensionSchemeUnauthorisedPayments": $pensionSchemeUnauthorisedPaymentsJson,
+       |   "lumpSumBenefitTakenInExcessOfLifetimeAllowance": $pensionSavingsDetailBreakdownJson,
+       |   "benefitInExcessOfLifetimeAllowance": $pensionSavingsDetailBreakdownJson,
+       |   "pensionSchemeUnauthorisedPaymentsSurcharge": $pensionSavingsDetailBreakdownJson,
+       |   "pensionSchemeUnauthorisedPaymentsNonSurcharge": $pensionSavingsDetailBreakdownJson,
        |   "pensionSchemeOverseasTransfers": $pensionSchemeOverseasTransfersJson,
        |   "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,
        |   "overseasPensionContributions": $overseasPensionContributionsJson

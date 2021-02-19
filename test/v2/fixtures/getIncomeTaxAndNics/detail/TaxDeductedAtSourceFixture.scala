@@ -29,7 +29,6 @@ object TaxDeductedAtSourceFixture {
   val payeEmployments: Option[BigDecimal] = Some(400.45)
   val occupationalPensions: Option[BigDecimal] = Some(500.45)
   val stateBenefits: Option[BigDecimal] = Some(600.45)
-  val specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal] = Some(700.45)
 
   val taxDeductedAtSourceModel: TaxDeductedAtSource =
     TaxDeductedAtSource(
@@ -40,8 +39,7 @@ object TaxDeductedAtSourceFixture {
       voidedIsa = voidedIsa,
       payeEmployments = payeEmployments,
       occupationalPensions = occupationalPensions,
-      stateBenefits = stateBenefits,
-      specialWithholdingTaxOrUkTaxPaid = specialWithholdingTaxOrUkTaxPaid
+      stateBenefits = stateBenefits
     )
 
   val taxDeductedAtSourceJson: JsValue = Json.parse(
@@ -54,8 +52,7 @@ object TaxDeductedAtSourceFixture {
        |   "voidedIsa": ${voidedIsa.get},
        |   "payeEmployments": ${payeEmployments.get},
        |   "occupationalPensions": ${occupationalPensions.get},
-       |   "stateBenefits": ${stateBenefits.get},
-       |   "specialWithholdingTaxOrUkTaxPaid": ${specialWithholdingTaxOrUkTaxPaid.get}
+       |   "stateBenefits": ${stateBenefits.get}
        |}
      """.stripMargin
   )
