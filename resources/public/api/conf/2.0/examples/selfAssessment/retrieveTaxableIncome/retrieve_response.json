@@ -18,7 +18,14 @@
       "totalBenefitsInKind": 500.5,
       "totalPayeEmploymentAndLumpSumIncome": 5000.99,
       "totalEmploymentExpenses": 1000.99,
+      "totalSeafarersDeduction": 2000.99,
+      "totalForeignTaxOnForeignEmployment": 2000.99
       "totalEmploymentIncome": 12500,
+      "totalShareSchemesIncome": 2000.99,
+      "totalOverseasPensionsStateBenefitsRoyalties": 2000.99,
+      "totalAllOtherIncomeReceivedWhilstAbroad": 2000.99,
+      "totalOverseasIncomeAndGains": 2000.99,
+      "totalForeignBenefitsAndGifts": 2000.99,
       "businessProfitAndLoss": {
         "selfEmployments": [
           {
@@ -344,6 +351,8 @@
     "savingsAndGains": {
       "incomeReceived": 12500,
       "taxableIncome": 12500,
+      "totalOfAllGains": 2000,
+      "totalUkSavingsAndSecurities": 5000,
       "ukSavings": [
         {
           "savingsAccountId": "SAVKB2UVwUTBQGJ",
@@ -359,13 +368,18 @@
           "ukSecuritiesAccountName": "ukSecuritiesAccountName",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
-          "taxDeducted": 5000.99
+          "taxDeducted": 5000.99,
+          "totalGainsWithNoTaxPaidAndVoidedIsa": 5000,
+          "foreignGainsOnLifePoliciesNoTaxPaid": 5000,
+          "totalForeignSavingsAndGainsIncome": 5000
         }
       ]
     },
     "dividends": {
       "incomeReceived": 12500,
-      "taxableIncome": 12500
+      "taxableIncome": 12500,
+      "totalUkDividends": 2500,
+      "totalForeignDividends": 2500
     },
     "lumpSums": {
       "incomeReceived": 12500,
@@ -373,7 +387,9 @@
     },
     "gainsOnLifePolicies": {
       "incomeReceived": 12500,
-      "taxableIncome": 5000
+      "taxableIncome": 5000,
+      "totalUkGainsWithTaxPaid": 5000,
+      "totalForeignGainsOnLifePoliciesTaxPaid": 5000
     }
   },
   "links": [
