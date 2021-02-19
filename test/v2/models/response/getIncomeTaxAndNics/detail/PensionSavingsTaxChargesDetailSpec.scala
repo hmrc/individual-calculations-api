@@ -25,10 +25,8 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec with JsonErrorValidato
   testJsonProperties[PensionSavingsTaxChargesDetail](pensionSavingsTaxChargesDetailJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "lumpSumBenefitTakenInExcessOfLifetimeAllowance",
-      "benefitInExcessOfLifetimeAllowance",
-      "pensionSchemeUnauthorisedPaymentsSurcharge",
-      "pensionSchemeUnauthorisedPaymentsNonSurcharge",
+      "excessOfLifetimeAllowance",
+      "pensionSchemeUnauthorisedPayments",
       "pensionSchemeOverseasTransfers",
       "pensionContributionsInExcessOfTheAnnualAllowance",
       "overseasPensionContributions"

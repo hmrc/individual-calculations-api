@@ -27,15 +27,17 @@ object Class2NicDetailFixture {
   val apportionedLimit: Option[BigDecimal] = Some(400.25)
   val underSmallProfitThreshold: Boolean = true
   val actualClass2Nic: Option[Boolean] = Some(false)
+  val class2VoluntaryContributions: Option[Boolean] = Some(true)
 
   val class2NicDetailModel: Class2NicDetail =
     Class2NicDetail(
-      weeklyRate = Some(100.25),
-      weeks = Some(200.25),
-      limit = Some(300.25),
-      apportionedLimit = Some(400.25),
-      underSmallProfitThreshold = true,
-      actualClass2Nic = Some(false)
+      weeklyRate = weeklyRate,
+      weeks = weeks,
+      limit = limit,
+      apportionedLimit = apportionedLimit,
+      underSmallProfitThreshold = underSmallProfitThreshold,
+      actualClass2Nic = actualClass2Nic,
+      class2VoluntaryContributions = class2VoluntaryContributions
     )
 
   val class2NicDetailJson: JsValue = Json.parse(
@@ -46,7 +48,8 @@ object Class2NicDetailFixture {
        |   "limit": ${limit.get},
        |   "apportionedLimit": ${apportionedLimit.get},
        |   "underSmallProfitThreshold": $underSmallProfitThreshold,
-       |   "actualClass2Nic": ${actualClass2Nic.get}
+       |   "actualClass2Nic": ${actualClass2Nic.get},
+       |   "class2VoluntaryContributions": ${class2VoluntaryContributions.get}
        |}
      """.stripMargin
   )
