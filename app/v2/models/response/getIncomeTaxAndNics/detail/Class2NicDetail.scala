@@ -23,8 +23,7 @@ case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            limit: Option[BigDecimal],
                            apportionedLimit: Option[BigDecimal],
                            underSmallProfitThreshold: Boolean,
-                           actualClass2Nic: Option[Boolean],
-                           class2VoluntaryContributions: Option[Boolean])
+                           actualClass2Nic: Option[Boolean])
 
 object Class2NicDetail {
   implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]

@@ -32,8 +32,7 @@ class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
       "voidedIsa",
       "payeEmployments",
       "occupationalPensions",
-      "stateBenefits",
-      "specialWithholdingTaxOrUkTaxPaid"
+      "stateBenefits"
     )
   )
 }
