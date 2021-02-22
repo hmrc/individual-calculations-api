@@ -389,7 +389,7 @@
       "incomeReceived": 12500,
       "taxableIncome": 5000,
       "totalUkGainsWithTaxPaid": 5000,
-      "totalForeignGainsOnLifePoliciesTaxPaid": 5000
+      "totalForeignGainsOnLifePoliciesWithTaxPaid": 5000
     }
   },
   "links": [
