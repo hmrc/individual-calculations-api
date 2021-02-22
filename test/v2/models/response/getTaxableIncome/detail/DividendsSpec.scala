@@ -27,6 +27,9 @@ class DividendsSpec extends UnitSpec with JsonErrorValidators {
       "incomeReceived",
       "taxableIncome"
     ),
-    optionalProperties = Seq()
+    optionalProperties = Seq(
+      "totalUkDividends",
+      "totalForeignDividends"
+    )
   )
 }

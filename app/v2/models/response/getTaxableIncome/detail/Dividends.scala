@@ -18,7 +18,10 @@ package v2.models.response.getTaxableIncome.detail
 
 import play.api.libs.json._
 
-case class Dividends(incomeReceived: BigInt, taxableIncome: BigInt)
+case class Dividends(incomeReceived: BigInt,
+                     taxableIncome: BigInt,
+                     totalUkDividends: Option[BigInt],
+                     totalForeignDividends: Option[BigInt])
 
 object Dividends {
   implicit val format: OFormat[Dividends] = Json.format[Dividends]

@@ -31,7 +31,14 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalBenefitsInKind: Option[BigDecimal],
                              totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
                              totalEmploymentExpenses: Option[BigDecimal],
+                             totalSeafarersDeduction: Option[BigDecimal],
+                             totalForeignTaxOnForeignEmployment: Option[BigDecimal],
                              totalEmploymentIncome: Option[BigInt],
+                             totalShareSchemesIncome: Option[BigDecimal],
+                             totalOverseasPensionsStateBenefitsRoyalties: Option[BigDecimal],
+                             totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal],
+                             totalOverseasIncomeAndGains: Option[BigDecimal],
+                             totalForeignBenefitsAndGifts: Option[BigDecimal],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit {

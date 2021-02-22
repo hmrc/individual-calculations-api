@@ -28,7 +28,6 @@ object PayPensionsProfitFixture {
   val totalPropertyProfit: Option[BigInt] = Some(1)
   val totalFHLPropertyProfit: Option[BigInt] = Some(2)
   val totalUKOtherPropertyProfit: Option[BigInt] = Some(3)
-
   val totalForeignPropertyProfit: Option[BigInt] = Some(1)
   val totalEeaFhlProfit: Option[BigInt] = Some(4)
   val totalOccupationalPensionIncome: Option[BigDecimal] = Some(2)
@@ -36,8 +35,14 @@ object PayPensionsProfitFixture {
   val totalBenefitsInKind: Option[BigDecimal] = Some(9)
   val totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal] = Some(1)
   val totalEmploymentExpenses: Option[BigDecimal] = Some(4)
+  val totalSeafarersDeduction: Option[BigDecimal] = Some(10)
+  val totalForeignTaxOnForeignEmployment: Option[BigDecimal] = Some(11)
   val totalEmploymentIncome: Option[BigInt] = Some(2)
-
+  val totalShareSchemesIncome: Option[BigDecimal] = Some(12)
+  val totalOverseasPensionsStateBenefitsRoyalties: Option[BigDecimal] = Some(13)
+  val totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal] = Some(14)
+  val totalOverseasIncomeAndGains: Option[BigDecimal] = Some(15)
+  val totalForeignBenefitsAndGifts: Option[BigDecimal] = Some(16)
 
   val payPensionsProfitModel: PayPensionsProfit =
     PayPensionsProfit(
@@ -54,7 +59,14 @@ object PayPensionsProfitFixture {
       totalBenefitsInKind = totalBenefitsInKind,
       totalPayeEmploymentAndLumpSumIncome = totalPayeEmploymentAndLumpSumIncome,
       totalEmploymentExpenses = totalEmploymentExpenses,
+      totalSeafarersDeduction = totalSeafarersDeduction,
+      totalForeignTaxOnForeignEmployment = totalForeignTaxOnForeignEmployment,
       totalEmploymentIncome = totalEmploymentIncome,
+      totalShareSchemesIncome = totalShareSchemesIncome,
+      totalOverseasPensionsStateBenefitsRoyalties = totalOverseasPensionsStateBenefitsRoyalties,
+      totalAllOtherIncomeReceivedWhilstAbroad = totalAllOtherIncomeReceivedWhilstAbroad,
+      totalOverseasIncomeAndGains = totalOverseasIncomeAndGains,
+      totalForeignBenefitsAndGifts = totalForeignBenefitsAndGifts,
       businessProfitAndLoss = Some(businessProfitAndLossModel)
     )
 
@@ -74,7 +86,14 @@ object PayPensionsProfitFixture {
        |    "totalBenefitsInKind": ${totalBenefitsInKind.get},
        |    "totalPayeEmploymentAndLumpSumIncome": ${totalPayeEmploymentAndLumpSumIncome.get},
        |    "totalEmploymentExpenses": ${totalEmploymentExpenses.get},
+       |    "totalSeafarersDeduction": ${totalSeafarersDeduction.get},
+       |    "totalForeignTaxOnForeignEmployment": ${totalForeignTaxOnForeignEmployment.get},
        |    "totalEmploymentIncome": ${totalEmploymentIncome.get},
+       |    "totalShareSchemesIncome": ${totalShareSchemesIncome.get},
+       |    "totalOverseasPensionsStateBenefitsRoyalties": ${totalOverseasPensionsStateBenefitsRoyalties.get},
+       |    "totalAllOtherIncomeReceivedWhilstAbroad": ${totalAllOtherIncomeReceivedWhilstAbroad.get},
+       |    "totalOverseasIncomeAndGains": ${totalOverseasIncomeAndGains.get},
+       |    "totalForeignBenefitsAndGifts": ${totalForeignBenefitsAndGifts.get},
        |    "businessProfitAndLoss": $businessProfitAndLossJson
        |}
      """.stripMargin

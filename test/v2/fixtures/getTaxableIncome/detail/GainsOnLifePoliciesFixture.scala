@@ -23,18 +23,24 @@ object GainsOnLifePoliciesFixture {
 
   val incomeReceived: BigInt = 100
   val taxableIncome: BigInt = 200
+  val totalUkGainsWithTaxPaid: Option[BigInt] = Some(300)
+  val totalForeignGainsOnLifePoliciesWithTaxPaid: Option[BigInt] = Some(400)
 
   val gainsOnLifePoliciesModel: GainsOnLifePolicies =
     GainsOnLifePolicies(
       incomeReceived = incomeReceived,
-      taxableIncome = taxableIncome
+      taxableIncome = taxableIncome,
+      totalUkGainsWithTaxPaid = totalUkGainsWithTaxPaid,
+      totalForeignGainsOnLifePoliciesWithTaxPaid = totalForeignGainsOnLifePoliciesWithTaxPaid
     )
 
   val gainsOnLifePoliciesJson: JsValue = Json.parse(
     s"""
        |{
        |   "incomeReceived": $incomeReceived,
-       |   "taxableIncome": $taxableIncome
+       |   "taxableIncome": $taxableIncome,
+       |   "totalUkGainsWithTaxPaid": ${totalUkGainsWithTaxPaid.get},
+       |   "totalForeignGainsOnLifePoliciesWithTaxPaid": ${totalForeignGainsOnLifePoliciesWithTaxPaid.get}
        |}
      """.stripMargin
   )

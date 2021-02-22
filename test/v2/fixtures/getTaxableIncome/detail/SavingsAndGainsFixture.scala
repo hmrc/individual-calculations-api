@@ -25,13 +25,23 @@ object SavingsAndGainsFixture {
 
   val incomeReceivedSAG: BigInt = 392
   val taxableIncomeSAG: BigInt = 3920
+  val totalOfAllGains: BigInt = 4000
+  val totalUkSavingsAndSecurities: Option[BigInt] = Some(4500)
+  val totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt] = Some(5000)
+  val totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt] = Some(5500)
+  val totalForeignSavingsAndGainsIncome: Option[BigInt] = Some(6000)
 
   val savingsAndGainsModel: SavingsAndGains =
     SavingsAndGains(
       incomeReceived = incomeReceivedSAG,
       taxableIncome = taxableIncomeSAG,
+      totalOfAllGains = totalOfAllGains,
+      totalUkSavingsAndSecurities = totalUkSavingsAndSecurities,
       ukSavings = Some(Seq(savingsModel)),
-      ukSecurities = Some(Seq(securitiesModel))
+      ukSecurities = Some(Seq(securitiesModel)),
+      totalGainsWithNoTaxPaidAndVoidedIsa = totalGainsWithNoTaxPaidAndVoidedIsa,
+      totalForeignGainsOnLifePoliciesNoTaxPaid = totalForeignGainsOnLifePoliciesNoTaxPaid,
+      totalForeignSavingsAndGainsIncome = totalForeignSavingsAndGainsIncome
     )
 
   val savingsAndGainsJson: JsValue = Json.parse(
@@ -39,8 +49,13 @@ object SavingsAndGainsFixture {
        |{
        |   "incomeReceived": $incomeReceivedSAG,
        |   "taxableIncome": $taxableIncomeSAG,
+       |   "totalOfAllGains": $totalOfAllGains,
+       |   "totalUkSavingsAndSecurities": ${totalUkSavingsAndSecurities.get},
        |   "ukSavings": [$savingsJson],
-       |   "ukSecurities": [$securitiesJson]
+       |   "ukSecurities": [$securitiesJson],
+       |   "totalGainsWithNoTaxPaidAndVoidedIsa": ${totalGainsWithNoTaxPaidAndVoidedIsa.get},
+       |   "totalForeignGainsOnLifePoliciesNoTaxPaid": ${totalForeignGainsOnLifePoliciesNoTaxPaid.get},
+       |   "totalForeignSavingsAndGainsIncome": ${totalForeignSavingsAndGainsIncome.get}
        |}
      """.stripMargin
   )

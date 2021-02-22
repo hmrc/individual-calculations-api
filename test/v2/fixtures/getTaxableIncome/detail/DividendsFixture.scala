@@ -23,18 +23,24 @@ object DividendsFixture {
 
   val incomeReceived: BigInt = 100
   val taxableIncome: BigInt = 200
+  val totalUkDividends: Option[BigInt] = Some(300)
+  val totalForeignDividends: Option[BigInt] = Some(400)
 
   val dividendsModel: Dividends =
     Dividends(
       incomeReceived = incomeReceived,
-      taxableIncome = taxableIncome
+      taxableIncome = taxableIncome,
+      totalUkDividends = totalUkDividends,
+      totalForeignDividends = totalForeignDividends
     )
 
   val dividendsJson: JsValue = Json.parse(
     s"""
        |{
        |   "incomeReceived": $incomeReceived,
-       |   "taxableIncome": $taxableIncome
+       |   "taxableIncome": $taxableIncome,
+       |   "totalUkDividends": ${totalUkDividends.get},
+       |   "totalForeignDividends": ${totalForeignDividends.get}
        |}
      """.stripMargin
   )
