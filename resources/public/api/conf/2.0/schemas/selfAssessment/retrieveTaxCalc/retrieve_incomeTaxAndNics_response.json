@@ -993,7 +993,7 @@
               "properties": {
                 "excessOfLifetimeAllowance": {
                   "type": "object",
-                  "description": "Details of chargeable amounts in excess of lifetime allowance",
+                  "description": "Details of chargeable amounts in excess of lifetime allowance.",
                   "properties": {
                     "totalChargeableAmount": {
                       "type": "number",
@@ -1091,7 +1091,7 @@
                 },
                 "pensionSchemeUnauthorisedPayments": {
                   "type": "object",
-                  "description": "Details of pension scheme unauthorised payments",
+                  "description": "Details of pension scheme unauthorised payments.",
                   "properties": {
                     "totalChargeableAmount": {
                       "type": "number",
