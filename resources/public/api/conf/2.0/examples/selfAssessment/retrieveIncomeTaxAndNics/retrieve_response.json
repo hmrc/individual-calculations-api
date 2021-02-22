@@ -97,8 +97,11 @@
       },
       "giftAid": {
         "grossGiftAidPayments": 12500,
-        "rate": 20,
-        "giftAidTax": 5000
+        "rate": 20.99,
+        "giftAidTax": 2000.99,
+        "giftAidTaxReductions": 5000.99,
+        "incomeTaxChargedAfterGiftAidTaxReductions": 5000.99,
+        "giftAidCharge": 5000.99
       }
     },
     "studentLoans": [
@@ -118,6 +121,10 @@
       "totalTaxPaid": 5000.99,
       "totalPensionChargesDue": 5000.99,
       "pensionSavingsTaxChargesDetail": {
+        "excessOfLifetimeAllowance": {
+          "totalChargeableAmount": 5000.99,
+          "totalTaxPaid": 5000.99
+        },
         "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
           "amount": 5000.99,
           "taxPaid": 5000.99,
@@ -127,25 +134,29 @@
         "benefitInExcessOfLifetimeAllowance": {
           "amount": 5000.99,
           "taxPaid": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "chargeableAmount": 5000.99
+        },
+        "pensionSchemeUnauthorisedPayments": {
+          "totalChargeableAmount": 5000.99,
+          "totalTaxPaid": 5000.99
         },
         "pensionSchemeUnauthorisedPaymentsSurcharge": {
           "amount": 5000.99,
           "taxPaid": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "chargeableAmount": 5000.99
         },
         "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
           "amount": 5000.99,
           "taxPaid": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "chargeableAmount": 5000.99
         },
         "pensionSchemeOverseasTransfers": {
           "transferCharge": 5000.99,
           "transferChargeTaxPaid": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "chargeableAmount": 5000.99
         },
         "pensionContributionsInExcessOfTheAnnualAllowance": {
@@ -189,7 +200,8 @@
         "limit": 12500,
         "apportionedLimit": 12500,
         "underSmallProfitThreshold": true,
-        "actualClass2Nic": true
+        "actualClass2Nic": true,
+        "class2VoluntaryContributions": true
       },
       "class4Nic": {
         "totalIncomeLiableToClass4Charge": 200,
@@ -219,7 +231,8 @@
       "voidedIsa": 5000.99,
       "payeEmployments": 5000.99,
       "occupationalPensions": 5000.99,
-      "stateBenefits": -99999999999.99
+      "stateBenefits": -99999999999.99,
+      "specialWithholdingTaxOrUkTaxPaid": 5000.99
     }
   },
   "links": [
