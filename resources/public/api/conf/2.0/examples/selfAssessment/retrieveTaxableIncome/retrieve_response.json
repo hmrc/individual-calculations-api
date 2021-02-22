@@ -370,7 +370,7 @@
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
           "totalGainsWithNoTaxPaidAndVoidedIsa": 5000,
-          "foreignGainsOnLifePoliciesNoTaxPaid": 5000,
+          "totalForeignGainsOnLifePoliciesNoTaxPaid": 5000,
           "totalForeignSavingsAndGainsIncome": 5000
         }
       ]
