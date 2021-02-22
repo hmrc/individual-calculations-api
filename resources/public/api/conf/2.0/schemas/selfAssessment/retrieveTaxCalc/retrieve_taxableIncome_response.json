@@ -2373,8 +2373,8 @@
               "maximum": 99999999999,
               "example": "5000"
             },
-            "totalForeignGainsOnLifePoliciesTaxPaid": {
-              "title": "totalForeignGainsOnLifePoliciesTaxPaid",
+            "totalForeignGainsOnLifePoliciesWithTaxPaid": {
+              "title": "totalForeignGainsOnLifePoliciesWithTaxPaid",
               "description": "The total value of foreign gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,
