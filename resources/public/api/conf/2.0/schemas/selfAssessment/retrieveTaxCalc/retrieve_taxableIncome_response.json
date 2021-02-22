@@ -260,7 +260,7 @@
                         "description": "The total expenses for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
-                        "minimum": 0,
+                        "minimum": -99999999999.99,
                         "maximum": 99999999999.99,
                         "example": "2000.99"
                       },
@@ -287,7 +287,7 @@
                         "description": "The total additions to the net profit (or deductions from the net loss) for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "type": "number",
                         "multipleOf": 0.01,
-                        "minimum": 0,
+                        "minimum": -99999999999.99,
                         "maximum": 99999999999.99,
                         "example": "2000.99"
                       },
@@ -735,7 +735,7 @@
                       "description": "The total expenses for UK Property FHL. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 999999999999.99,
                       "example": "2000.98"
                     },
@@ -762,7 +762,7 @@
                       "description": "The total additions to the net profit (or deductions from the net loss) for UK Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 999999999999.99,
                       "example": "2000.98"
                     },
@@ -1025,7 +1025,7 @@
                       "description": "The total expenses for UK property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 999999999999.99,
                       "example": "2000.98"
                     },
@@ -1052,7 +1052,7 @@
                       "description": "The total additions to the net profit (or deductions from the net loss) for UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 999999999999.99,
                       "example": "2000.98"
                     },
@@ -1380,7 +1380,7 @@
                       "description": "The total expenses for EEA Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 99999999999.99,
                       "example": "2000.98"
                     },
@@ -1407,7 +1407,7 @@
                       "description": "The total additions to the net profit (or deductions from the net loss) for EEA Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 99999999999.99,
                       "example": "2000.98"
                     },
@@ -1702,7 +1702,7 @@
                       "description": "The total expenses for Foreign Property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 99999999999.99,
                       "example": "2000.99"
                     },
@@ -1729,7 +1729,7 @@
                       "description": "The total additions to the net profit (or deductions from the net loss) for Foreign Property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "type": "number",
                       "multipleOf": 0.01,
-                      "minimum": 0,
+                      "minimum": -99999999999.99,
                       "maximum": 99999999999.99,
                       "example": "2000.98"
                     },
@@ -2175,33 +2175,6 @@
                     "minimum": 0,
                     "maximum": 999999999999.99,
                     "example": "2000.98"
-                  },
-                  "totalGainsWithNoTaxPaidAndVoidedIsa": {
-                    "title": "totalGainsWithNoTaxPaidAndVoidedIsa",
-                    "description": "The total gains on life policies where no tax has been paid and voided ISAs. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
-                  },
-                  "totalForeignGainsOnLifePoliciesNoTaxPaid": {
-                    "title": "totalForeignGainsOnLifePoliciesNoTaxPaid",
-                    "description": "The total gains on foreign life policies where no tax has been paid. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
-                  },
-                  "totalForeignSavingsAndGainsIncome": {
-                    "title": "totalForeignSavingsAndGainsIncome",
-                    "description": "The total value of Foreign Savings and Gains Income. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
                   }
                 },
                 "required": [
@@ -2255,6 +2228,33 @@
                     "minimum": 0,
                     "maximum": 99999999999.99,
                     "example": "2000.98"
+                  },
+                  "totalGainsWithNoTaxPaidAndVoidedIsa": {
+                    "title": "totalGainsWithNoTaxPaidAndVoidedIsa",
+                    "description": "The total gains on life policies where no tax has been paid and voided ISAs. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
+                  },
+                  "totalForeignGainsOnLifePoliciesNoTaxPaid": {
+                    "title": "totalForeignGainsOnLifePoliciesNoTaxPaid",
+                    "description": "The total gains on foreign life policies where no tax has been paid. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
+                  },
+                  "totalForeignSavingsAndGainsIncome": {
+                    "title": "totalForeignSavingsAndGainsIncome",
+                    "description": "The total value of Foreign Savings and Gains Income. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
                   }
                 },
                 "required": [
