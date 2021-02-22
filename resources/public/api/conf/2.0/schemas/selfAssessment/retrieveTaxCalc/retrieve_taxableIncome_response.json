@@ -2175,6 +2175,33 @@
                     "minimum": 0,
                     "maximum": 999999999999.99,
                     "example": "2000.98"
+                  },
+                  "totalGainsWithNoTaxPaidAndVoidedIsa": {
+                    "title": "totalGainsWithNoTaxPaidAndVoidedIsa",
+                    "description": "The total gains on life policies where no tax has been paid and voided ISAs. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
+                  },
+                  "totalForeignGainsOnLifePoliciesNoTaxPaid": {
+                    "title": "totalForeignGainsOnLifePoliciesNoTaxPaid",
+                    "description": "The total gains on foreign life policies where no tax has been paid. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
+                  },
+                  "totalForeignSavingsAndGainsIncome": {
+                    "title": "totalForeignSavingsAndGainsIncome",
+                    "description": "The total value of Foreign Savings and Gains Income. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "number",
+                    "multipleOf": 1,
+                    "minimum": 0,
+                    "maximum": 99999999999,
+                    "example": "5000"
                   }
                 },
                 "required": [
@@ -2228,33 +2255,6 @@
                     "minimum": 0,
                     "maximum": 99999999999.99,
                     "example": "2000.98"
-                  },
-                  "totalGainsWithNoTaxPaidAndVoidedIsa": {
-                    "title": "totalGainsWithNoTaxPaidAndVoidedIsa",
-                    "description": "The total gains on life policies where no tax has been paid and voided ISAs. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
-                  },
-                  "totalForeignGainsOnLifePoliciesNoTaxPaid": {
-                    "title": "totalForeignGainsOnLifePoliciesNoTaxPaid",
-                    "description": "The total gains on foreign life policies where no tax has been paid. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
-                  },
-                  "totalForeignSavingsAndGainsIncome": {
-                    "title": "totalForeignSavingsAndGainsIncome",
-                    "description": "The total value of Foreign Savings and Gains Income. This value must be between 0 and 99999999999. No decimals.",
-                    "type": "number",
-                    "multipleOf": 1,
-                    "minimum": 0,
-                    "maximum": 99999999999,
-                    "example": "5000"
                   }
                 },
                 "required": [
