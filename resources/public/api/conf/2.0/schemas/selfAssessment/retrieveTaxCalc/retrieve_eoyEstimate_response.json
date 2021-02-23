@@ -277,7 +277,7 @@
               "title": "taxableIncome",
               "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
-              "multipleOf": 0.01,
+              "multipleOf": 1,
               "minimum": 0,
               "maximum:": 99999999999,
               "example": "2000"
@@ -355,7 +355,7 @@
               "title": "taxableIncome",
               "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
-              "multipleOf": 0.01,
+              "multipleOf": 1,
               "minimum": 0,
               "maximum:": 99999999999,
               "example": "2000"
@@ -391,7 +391,7 @@
               "title": "taxableIncome",
               "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
-              "multipleOf": 0.01,
+              "multipleOf": 1,
               "minimum": 0,
               "maximum:": 99999999999,
               "example": "2000"
@@ -409,7 +409,7 @@
               "title": "taxableIncome",
               "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
-              "multipleOf": 0.01,
+              "multipleOf": 1,
               "minimum": 0,
               "maximum:": 99999999999,
               "example": "2000"
