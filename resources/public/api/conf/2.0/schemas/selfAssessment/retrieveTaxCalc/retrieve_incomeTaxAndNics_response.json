@@ -1010,82 +1010,82 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
-                    }
-                  }
-                },
-                "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-                  "type": "object",
-                  "description": "Details of lump sum benefit taken in excess of lifetime allowance.",
-                  "properties": {
-                    "amount" : {
-                      "type": "number",
-                      "description": "The amount of lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "2532.35",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
                     },
-                    "taxPaid" : {
-                      "type": "number",
-                      "description": "Tax paid on lump sum benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "3643.34",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
+                    "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+                      "type": "object",
+                      "description": "Details of lump sum benefit taken in excess of lifetime allowance.",
+                      "properties": {
+                        "amount" : {
+                          "type": "number",
+                          "description": "The amount of lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "2532.35",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "taxPaid" : {
+                          "type": "number",
+                          "description": "Tax paid on lump sum benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "3643.34",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "rate" : {
+                          "type": "number",
+                          "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                          "example": "65.87",
+                          "minimum": 0,
+                          "maximum": 99.99,
+                          "multipleOf": 0.01
+                        },
+                        "chargeableAmount" : {
+                          "type": "number",
+                          "description": "The amount chargeable on the lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "3456.87",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        }
+                      }
                     },
-                    "rate" : {
-                      "type": "number",
-                      "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-                      "example": "65.87",
-                      "minimum": 0,
-                      "maximum": 99.99,
-                      "multipleOf": 0.01
-                    },
-                    "chargeableAmount" : {
-                      "type": "number",
-                      "description": "The amount chargeable on the lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "3456.87",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    }
-                  }
-                },
-                "benefitInExcessOfLifetimeAllowance": {
-                  "type": "object",
-                  "description": "Details of benefits taken in excess of lifetime allowance.",
-                  "properties": {
-                    "amount" : {
-                      "type": "number",
-                      "description": "The amount of benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "6343.45",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    },
-                    "taxPaid" : {
-                      "type": "number",
-                      "description": "Tax paid on benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "5445.75",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    },
-                    "rate" : {
-                      "type": "number",
-                      "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-                      "example": "55.34",
-                      "minimum": 0,
-                      "maximum": 99.99,
-                      "multipleOf": 0.01
-                    },
-                    "chargeableAmount" : {
-                      "type": "number",
-                      "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "5765.45",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
+                    "benefitInExcessOfLifetimeAllowance": {
+                      "type": "object",
+                      "description": "Details of benefits taken in excess of lifetime allowance.",
+                      "properties": {
+                        "amount" : {
+                          "type": "number",
+                          "description": "The amount of benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "6343.45",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "taxPaid" : {
+                          "type": "number",
+                          "description": "Tax paid on benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "5445.75",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "rate" : {
+                          "type": "number",
+                          "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                          "example": "55.34",
+                          "minimum": 0,
+                          "maximum": 99.99,
+                          "multipleOf": 0.01
+                        },
+                        "chargeableAmount" : {
+                          "type": "number",
+                          "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "5765.45",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        }
+                      }
                     }
                   }
                 },
@@ -1108,82 +1108,82 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
-                    }
-                  }
-                },
-                "pensionSchemeUnauthorisedPaymentsSurcharge": {
-                  "type": "object",
-                  "description": "Details of pension scheme unauthorised payments surcharge.",
-                  "properties": {
-                    "amount" : {
-                      "type": "number",
-                      "description": "The amount of unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "3453.43",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
                     },
-                    "taxPaid" : {
-                      "type": "number",
-                      "description": "Tax paid on unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "4564.76",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
+                    "pensionSchemeUnauthorisedPaymentsSurcharge": {
+                      "type": "object",
+                      "description": "Details of pension scheme unauthorised payments surcharge.",
+                      "properties": {
+                        "amount" : {
+                          "type": "number",
+                          "description": "The amount of unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "3453.43",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "taxPaid" : {
+                          "type": "number",
+                          "description": "Tax paid on unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "4564.76",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "rate" : {
+                          "type": "number",
+                          "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                          "example": "76.44",
+                          "minimum": 0,
+                          "maximum": 99.99,
+                          "multipleOf": 0.01
+                        },
+                        "chargeableAmount" : {
+                          "type": "number",
+                          "description": "The amount chargeable on unauthorised payments surcharges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "7655.45",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        }
+                      }
                     },
-                    "rate" : {
-                      "type": "number",
-                      "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-                      "example": "76.44",
-                      "minimum": 0,
-                      "maximum": 99.99,
-                      "multipleOf": 0.01
-                    },
-                    "chargeableAmount" : {
-                      "type": "number",
-                      "description": "The amount chargeable on unauthorised payments surcharges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "7655.45",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    }
-                  }
-                },
-                "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
-                  "type": "object",
-                  "description": "Details of pension scheme unauthorised payments non surcharge.",
-                  "properties": {
-                    "amount" : {
-                      "type": "number",
-                      "description": "The amount of unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "7866.34",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    },
-                    "taxPaid" : {
-                      "type": "number",
-                      "description": "Tax paid on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "4574.78",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
-                    },
-                    "rate" : {
-                      "type": "number",
-                      "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-                      "example": "45.36",
-                      "minimum": 0,
-                      "maximum": 99.99,
-                      "multipleOf": 0.01
-                    },
-                    "chargeableAmount" : {
-                      "type": "number",
-                      "description": "The amount chargeable on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                      "example": "4353.64",
-                      "minimum": 0,
-                      "maximum": 99999999999.99,
-                      "multipleOf": 0.01
+                    "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+                      "type": "object",
+                      "description": "Details of pension scheme unauthorised payments non surcharge.",
+                      "properties": {
+                        "amount" : {
+                          "type": "number",
+                          "description": "The amount of unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "7866.34",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "taxPaid" : {
+                          "type": "number",
+                          "description": "Tax paid on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "4574.78",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        },
+                        "rate" : {
+                          "type": "number",
+                          "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
+                          "example": "45.36",
+                          "minimum": 0,
+                          "maximum": 99.99,
+                          "multipleOf": 0.01
+                        },
+                        "chargeableAmount" : {
+                          "type": "number",
+                          "description": "The amount chargeable on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                          "example": "4353.64",
+                          "minimum": 0,
+                          "maximum": 99999999999.99,
+                          "multipleOf": 0.01
+                        }
+                      }
                     }
                   }
                 },

@@ -123,35 +123,35 @@
       "pensionSavingsTaxChargesDetail": {
         "excessOfLifetimeAllowance": {
           "totalChargeableAmount": 5000.99,
-          "totalTaxPaid": 5000.99
-        },
-        "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-          "amount": 5000.99,
-          "taxPaid": 5000.99,
-          "rate": 20,
-          "chargeableAmount": 5000.99
-        },
-        "benefitInExcessOfLifetimeAllowance": {
-          "amount": 5000.99,
-          "taxPaid": 5000.99,
-          "rate": 20.99,
-          "chargeableAmount": 5000.99
+          "totalTaxPaid": 5000.99,
+          "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+            "amount": 5000.99,
+            "taxPaid": 5000.99,
+            "rate": 20,
+            "chargeableAmount": 5000.99
+          },
+          "benefitInExcessOfLifetimeAllowance": {
+            "amount": 5000.99,
+            "taxPaid": 5000.99,
+            "rate": 20.99,
+            "chargeableAmount": 5000.99
+          }
         },
         "pensionSchemeUnauthorisedPayments": {
           "totalChargeableAmount": 5000.99,
-          "totalTaxPaid": 5000.99
-        },
-        "pensionSchemeUnauthorisedPaymentsSurcharge": {
-          "amount": 5000.99,
-          "taxPaid": 5000.99,
-          "rate": 20.99,
-          "chargeableAmount": 5000.99
-        },
-        "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
-          "amount": 5000.99,
-          "taxPaid": 5000.99,
-          "rate": 20.99,
-          "chargeableAmount": 5000.99
+          "totalTaxPaid": 5000.99,
+          "pensionSchemeUnauthorisedPaymentsSurcharge": {
+            "amount": 5000.99,
+            "taxPaid": 5000.99,
+            "rate": 20.99,
+            "chargeableAmount": 5000.99
+          },
+          "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+            "amount": 5000.99,
+            "taxPaid": 5000.99,
+            "rate": 20.99,
+            "chargeableAmount": 5000.99
+          }
         },
         "pensionSchemeOverseasTransfers": {
           "transferCharge": 5000.99,
