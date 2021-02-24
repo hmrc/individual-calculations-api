@@ -16,7 +16,7 @@
           "multipleOf": 1,
           "minimum": 0,
           "maximum": 99999999999,
-          "example": "1000"
+          "example": "500"
         },
         "totalReliefs": {
           "title": "totalReliefs",
@@ -46,7 +46,7 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
-              "example": "1000"
+              "example": "500"
             },
             "reducedPersonalAllowance": {
               "title": "reducedPersonalAllowance",
@@ -55,7 +55,7 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
-              "example": "1000"
+              "example": "500"
             },
             "giftOfInvestmentsAndPropertyToCharity": {
               "title": "giftOfInvestmentsAndPropertyToCharity",
@@ -64,7 +64,7 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
-              "example": "1000"
+              "example": "500"
             },
             "blindPersonsAllowance": {
               "title": "blindPersonsAllowance",
@@ -73,7 +73,7 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
-              "example": "1000"
+              "example": "500"
             },
             "lossesAppliedToGeneralIncome": {
               "title": "lossesAppliedToGeneralIncome",
@@ -82,7 +82,7 @@
               "multipleOf": 1,
               "minimum": 0,
               "maximum": 99999999999,
-              "example": "1000"
+              "example": "500"
             },
             "qualifyingLoanInterestFromInvestments": {
               "title": "qualifyingLoanInterestFromInvestments",
@@ -91,7 +91,7 @@
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum:": 99999999999.99,
-              "example": "2000.58"
+              "example": "500.55"
             },
             "postCessationTradeReceipts": {
               "title": "postCessationTradeReceipts",
@@ -100,7 +100,7 @@
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum:": 99999999999.99,
-              "example": "2000.58"
+              "example": "500.55"
             },
             "paymentsToTradeUnionsForDeathBenefits": {
               "title": "paymentsToTradeUnionsForDeathBenefits",
@@ -109,7 +109,7 @@
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum:": 99999999999.99,
-              "example": "2000.58"
+              "example": "500.55"
             },
             "annualPayments": {
               "title": "annualPayments",
@@ -123,7 +123,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "reliefClaimed": {
                   "title": "reliefClaimed",
@@ -132,7 +132,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "rate": {
                   "title": "rate",
@@ -157,7 +157,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "retirementAnnuityPayments": {
                   "title": "retirementAnnuityPayments",
@@ -166,7 +166,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "paymentToEmployersSchemeNoTaxRelief": {
                   "title": "paymentToEmployersSchemeNoTaxRelief",
@@ -175,7 +175,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "overseasPensionSchemeContributions": {
                   "title": "overseasPensionSchemeContributions",
@@ -184,7 +184,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 }
               }
             }
@@ -207,7 +207,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "101.11"
+                  "example": "500.55"
                 },
                 "totalAllowableAmount": {
                   "title": "totalAllowableAmount",
@@ -216,7 +216,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "202.22"
+                  "example": "500.55"
                 },
                 "relievableAmount": {
                   "title": "relievableAmount",
@@ -225,7 +225,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "303.33"
+                  "example": "500.55"
                 },
                 "rate": {
                   "title": "rate",
@@ -234,7 +234,7 @@
                   "minimum": 0,
                   "maximum": 99.99,
                   "multipleOf": 0.01,
-                  "example": "40.44"
+                  "example": "10.55"
                 },
                 "totalResidentialFinanceCostsRelief": {
                   "title": "totalResidentialFinanceCostsRelief",
@@ -243,7 +243,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "505.55"
+                  "example": "500.55"
                 },
                 "ukProperty": {
                   "title": "ukProperty",
@@ -257,7 +257,7 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01,
-                      "example": "1505.55"
+                      "example": "500.55"
                     },
                     "allowableAmount": {
                       "title": "allowableAmount",
@@ -266,7 +266,7 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01,
-                      "example": "2505.55"
+                      "example": "500.55"
                     },
                     "carryForwardAmount": {
                       "title": "carryForwardAmount",
@@ -275,7 +275,7 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01,
-                      "example": "3505.55"
+                      "example": "500.55"
                     }
                   },
                   "required": [
@@ -295,7 +295,7 @@
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01,
-                      "example": "6505.55"
+                      "example": "500.55"
                     },
                     "foreignPropertyRfcDetail": {
                       "title": "foreignPropertyRfcDetail",
@@ -317,7 +317,7 @@
                             "minimum": 0,
                             "maximum": 99999999999.99,
                             "multipleOf": 0.01,
-                            "example": "453.22"
+                            "example": "500.55"
                           },
                           "allowableAmount": {
                             "title": "allowableAmount",
@@ -326,7 +326,7 @@
                             "minimum": 0,
                             "maximum": 99999999999.99,
                             "multipleOf": 0.01,
-                            "example": "54302.23"
+                            "example": "500.55"
                           },
                           "carryForwardAmount": {
                             "title": "carryForwardAmount",
@@ -335,7 +335,7 @@
                             "minimum": 0,
                             "maximum": 99999999999.99,
                             "multipleOf": 0.01,
-                            "example": "54302.23"
+                            "example": "500.55"
                           }
                         },
                         "required": [
@@ -359,11 +359,11 @@
                     "totalOtherIncomeAllowableAmount": {
                       "title": "totalOtherIncomeAllowableAmount",
                       "type": "number",
-                      "description": "TThe total amount allowable for all other income received whilst abroad for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "description": "The total amount allowable for all other income received whilst abroad for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "minimum": 0,
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01,
-                      "example": "6505.55"
+                      "example": "500.55"
                     },
                     "otherIncomeRfcDetail": {
                       "title": "otherIncomeRfcDetail",
@@ -385,7 +385,7 @@
                             "minimum": 0,
                             "maximum": 99999999999.99,
                             "multipleOf": 0.01,
-                            "example": "453.22"
+                            "example": "500.55"
                           },
                           "broughtFwdResidentialFinancialCostAmount": {
                             "title": "broughtFwdResidentialFinancialCostAmount",
@@ -394,7 +394,7 @@
                             "minimum": 0,
                             "maximum": 99999999999.99,
                             "multipleOf": 0.01,
-                            "example": "54302.23"
+                            "example": "500.55"
                           }
                         },
                         "required": [
@@ -434,7 +434,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "3100.21"
+                  "example": "500.55"
                 },
                 "foreignTaxCreditReliefOnProperty": {
                   "title": "foreignTaxCreditReliefOnProperty",
@@ -443,7 +443,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "3200.22"
+                  "example": "500.55"
                 },
                 "foreignTaxCreditReliefOnDividends": {
                   "title": "foreignTaxCreditReliefOnDividends",
@@ -452,7 +452,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "3300.23"
+                  "example": "500.55"
                 },
                 "foreignTaxCreditReliefOnSavings": {
                   "title": "foreignTaxCreditReliefOnSavings",
@@ -461,7 +461,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "3400.24"
+                  "example": "500.55"
                 },
                 "foreignTaxCreditReliefOnForeignIncome": {
                   "title": "foreignTaxCreditReliefOnForeignIncome",
@@ -470,7 +470,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "multipleOf": 0.01,
-                  "example": "3500.25"
+                  "example": "500.55"
                 }
               },
               "required": ["totalForeignTaxCreditRelief"]
@@ -487,7 +487,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "regularPensionContributions": {
                   "title": "regularPensionContributions",
@@ -496,7 +496,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 },
                 "oneOffPensionContributionsPaid": {
                   "title": "oneOffPensionContributionsPaid",
@@ -505,7 +505,7 @@
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum:": 99999999999.99,
-                  "example": "2000.58"
+                  "example": "500.55"
                 }
               },
               "required": ["totalPensionContributionReliefs"]
@@ -529,7 +529,8 @@
                       "socialEnterpriseInvestment",
                       "maintenancePayments",
                       "deficiencyRelief",
-                      "nonDeductibleLoanInterest"
+                      "nonDeductibleLoanInterest",
+                      "qualifyingDistributionRedemptionOfSharesAndSecurities"
                     ]
                   },
                   "amountClaimed": {
@@ -539,7 +540,7 @@
                     "multipleOf": 0.01,
                     "minimum": 0,
                     "maximum": 99999999999.99,
-                    "example": "2000.58"
+                    "example": "500.55"
                   },
                   "allowableAmount": {
                     "title": "allowableAmount",
@@ -548,7 +549,7 @@
                     "multipleOf": 0.01,
                     "minimum": 0,
                     "maximum": 99999999999.99,
-                    "example": "2000.58"
+                    "example": "500.55"
                   },
                   "amountUsed": {
                     "title": "amountUsed",
@@ -557,7 +558,7 @@
                     "multipleOf": 0.01,
                     "minimum": 0,
                     "maximum": 99999999999.99,
-                    "example": "2000.58"
+                    "example": "500.55"
                   },
                   "rate": {
                     "title": "rate",
@@ -566,7 +567,7 @@
                     "multipleOf": 0.01,
                     "minimum": 0,
                     "maximum:": 99.99,
-                    "example": "20"
+                    "example": "10.55"
                   }
                 },
                 "required": ["type"]
