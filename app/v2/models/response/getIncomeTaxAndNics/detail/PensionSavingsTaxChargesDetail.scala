@@ -18,10 +18,8 @@ package v2.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PensionSavingsTaxChargesDetail(lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown],
-                                          benefitInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown],
-                                          pensionSchemeUnauthorisedPaymentsSurcharge: Option[PensionSavingsDetailBreakdown],
-                                          pensionSchemeUnauthorisedPaymentsNonSurcharge: Option[PensionSavingsDetailBreakdown],
+case class PensionSavingsTaxChargesDetail(excessOfLifetimeAllowance: Option[ExcessOfLifetimeAllowance],
+                                          pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
                                           pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
                                           pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
                                           overseasPensionContributions: Option[OverseasPensionContributions])

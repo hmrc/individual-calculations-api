@@ -17,23 +17,18 @@
 package v2.models.response.getIncomeTaxAndNics.detail
 
 import support.UnitSpec
-import v2.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixture._
 import v2.models.utils.JsonErrorValidators
 
-class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
+class PensionSchemeUnauthorisedPaymentsSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[TaxDeductedAtSource](taxDeductedAtSourceJson)(
+  testJsonProperties[PensionSchemeUnauthorisedPayments](pensionSchemeUnauthorisedPaymentsJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "ukLandAndProperty",
-      "savings",
-      "cis",
-      "securities",
-      "voidedIsa",
-      "payeEmployments",
-      "occupationalPensions",
-      "stateBenefits",
-      "specialWithholdingTaxOrUkTaxPaid"
+      "totalChargeableAmount",
+      "totalTaxPaid",
+      "pensionSchemeUnauthorisedPaymentsSurcharge",
+      "pensionSchemeUnauthorisedPaymentsNonSurcharge"
     )
   )
 }
