@@ -39,7 +39,14 @@ class PayPensionsProfitSpec extends UnitSpec with JsonErrorValidators {
       "totalBenefitsInKind",
       "totalPayeEmploymentAndLumpSumIncome",
       "totalEmploymentExpenses",
+      "totalSeafarersDeduction",
+      "totalForeignTaxOnForeignEmployment",
       "totalEmploymentIncome",
+      "totalShareSchemesIncome",
+      "totalOverseasPensionsStateBenefitsRoyalties",
+      "totalAllOtherIncomeReceivedWhilstAbroad",
+      "totalOverseasIncomeAndGains",
+      "totalForeignBenefitsAndGifts",
       "businessProfitAndLoss"
     )
   )

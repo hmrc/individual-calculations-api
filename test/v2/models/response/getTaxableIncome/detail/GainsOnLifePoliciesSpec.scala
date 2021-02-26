@@ -27,6 +27,9 @@ class GainsOnLifePoliciesSpec extends UnitSpec with JsonErrorValidators {
       "incomeReceived",
       "taxableIncome"
     ),
-    optionalProperties = Seq()
+    optionalProperties = Seq(
+      "totalUkGainsWithTaxPaid",
+      "totalForeignGainsOnLifePoliciesWithTaxPaid"
+    )
   )
 }

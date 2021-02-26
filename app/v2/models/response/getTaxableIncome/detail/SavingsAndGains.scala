@@ -20,8 +20,13 @@ import play.api.libs.json._
 
 case class SavingsAndGains(incomeReceived: BigInt,
                            taxableIncome: BigInt,
+                           totalOfAllGains: BigInt,
+                           totalUkSavingsAndSecurities: Option[BigInt],
                            ukSavings: Option[Seq[Savings]],
-                           ukSecurities: Option[Seq[UkSecurities]])
+                           ukSecurities: Option[Seq[UkSecurities]],
+                           totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt],
+                           totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt],
+                           totalForeignSavingsAndGainsIncome: Option[BigInt])
 
 object SavingsAndGains {
   implicit val format: OFormat[SavingsAndGains] = Json.format[SavingsAndGains]
