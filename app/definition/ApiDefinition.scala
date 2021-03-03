@@ -17,6 +17,7 @@
 package definition
 
 import play.api.libs.json.{Format, Json, OFormat}
+import uk.gov.hmrc.auth.core.ConfidenceLevel
 import utils.enums.Enums
 
 case class Access(`type`: String, whitelistedApplicationIds: Seq[String])
@@ -77,7 +78,7 @@ object APIDefinition {
   implicit val formatAPIDefinition: OFormat[APIDefinition] = Json.format[APIDefinition]
 }
 
-case class Scope(key: String, name: String, description: String)
+case class Scope(key: String, name: String, description: String, confidenceLevel: ConfidenceLevel)
 
 object Scope {
   implicit val formatScope: OFormat[Scope] = Json.format[Scope]
