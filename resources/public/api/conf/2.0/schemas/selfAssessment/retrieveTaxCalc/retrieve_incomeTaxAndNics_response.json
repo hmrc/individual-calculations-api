@@ -1668,18 +1668,18 @@
           "properties": {
             "savings": {
               "type": "number",
-              "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999. No decimals.",
-              "multipleOf": 1,
+              "description": "Tax deducted at source from interest received from UK banks and building societies. This value must be between 0 and 99999999999 up to 2 decimal places.",
+              "multipleOf": 0.01,
               "minimum": 0,
-              "maximum": 99999999999,
+              "maximum": 99999999999.99,
               "example": "1000"
             },
             "ukLandAndProperty": {
               "type": "number",
-              "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999. No decimals.",
-              "multipleOf": 1,
+              "description": "Tax that has been deducted at source for UK land and property. This value must be between 0 and 99999999999 up to 2 decimal places.",
+              "multipleOf": 0.01,
               "minimum": 0,
-              "maximum": 99999999999,
+              "maximum": 99999999999.99,
               "example": "1000"
             },
             "cis": {
