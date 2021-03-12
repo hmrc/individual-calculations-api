@@ -212,8 +212,8 @@
       }
     },
     "taxDeductedAtSource": {
-      "savings": 12500,
-      "ukLandAndProperty": 12500,
+      "savings": 1250.99,
+      "ukLandAndProperty": 1250.99,
       "cis": 12500,
       "securities": 5000.99,
       "voidedIsa": 5000.99,

@@ -18,8 +18,8 @@ package v1r2.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
-                               savings: Option[BigInt],
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
+                               savings: Option[BigDecimal],
                                cis: Option[BigDecimal],
                                securities: Option[BigDecimal],
                                voidedIsa: Option[BigDecimal],
