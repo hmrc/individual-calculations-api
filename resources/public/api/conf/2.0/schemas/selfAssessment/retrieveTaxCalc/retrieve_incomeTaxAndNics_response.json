@@ -1672,7 +1672,7 @@
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum": 99999999999.99,
-              "example": "1000"
+              "example": "1000.99"
             },
             "ukLandAndProperty": {
               "type": "number",
@@ -1680,7 +1680,7 @@
               "multipleOf": 0.01,
               "minimum": 0,
               "maximum": 99999999999.99,
-              "example": "1000"
+              "example": "1000.99"
             },
             "cis": {
               "type": "number",
