@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v2.connectors
+package v1.connectors
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import v2.models.domain.CrystallisationRequestBody
+import v1.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -28,9 +28,9 @@ import scala.concurrent.{ExecutionContext, Future}
 class NrsProxyConnector @Inject()(http: HttpClient,
                                   appConfig: AppConfig) {
 
-  def submit[T](nino: String, taxYear:String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
+  def submit[T](nino: String, taxYear:String, crystallisation: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
     implicit val readsEmpty: HttpReads[Unit] = (_: String, _: String, _: HttpResponse) => ()
 
-    http.POST[CrystallisationRequestBody, Unit](s"${appConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/individual-calculations-api", body)
+    http.POST[CrystallisationRequestBody, Unit](s"${appConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/individual-calculations-api", crystallisation)
   }
 }

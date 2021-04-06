@@ -44,6 +44,8 @@ trait MockAppConfig extends MockFactory {
     def endpointsEnabled(version: String): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled: String => Boolean).expects(version)
 
     def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] = (mockAppConfig.confidenceLevelConfig _: () => ConfidenceLevelConfig).expects()
+
+    def mtdNrsProxyBaseUrl: CallHandler[String] = (mockAppConfig.mtdNrsProxyBaseUrl _).expects()
   }
 
 }

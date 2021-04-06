@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package v2.services
+package v2.mocks.connectors
 
-import javax.inject.{Inject, Singleton}
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.NrsProxyConnector
 import v2.models.domain.CrystallisationRequestBody
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+trait MockNrsProxyConnector extends MockFactory {
 
-  def submit(nino: String, taxYear: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
+  val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
 
-    connector.submit(nino, taxYear, body)
+  object MockNrsProxyConnector {
+    def submit(nino: String, taxYear: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
+      (mockNrsProxyConnector.submit(_: String, _:String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
+        .expects(nino, *, *, *, *)
+    }
   }
 
 }

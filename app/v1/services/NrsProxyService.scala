@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package v1.services
 
-import akka.actor.Scheduler
+import javax.inject.{Inject, Singleton}
+import uk.gov.hmrc.http.HeaderCarrier
+import v1.connectors.NrsProxyConnector
+import v1.models.domain.CrystallisationRequestBody
 
-import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.ExecutionContext
 
-trait Delayer {
+@Singleton
+class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
-  implicit val scheduler: Scheduler
-  implicit val ec: ExecutionContext
+  def submit(nino: String, taxYear: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
 
-  def delay(delay: FiniteDuration): Future[Unit] = {
-    val promise = Promise[Unit]
-
-    scheduler.scheduleOnce(delay)(promise.success(()))
-
-    promise.future
+    connector.submit(nino, taxYear, body)
   }
+
 }

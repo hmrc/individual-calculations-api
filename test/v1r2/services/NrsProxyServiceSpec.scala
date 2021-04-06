@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v2.services
+package v1r2.services
 
-import v2.mocks.connectors.MockNrsProxyConnector
-import v2.models.domain.CrystallisationRequestBody
+import v1r2.mocks.connectors.MockNrsProxyConnector
+import v1r2.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.Future
 

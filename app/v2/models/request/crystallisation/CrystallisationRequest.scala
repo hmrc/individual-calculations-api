@@ -16,15 +16,7 @@
 
 package v2.models.request.crystallisation
 
-import play.api.libs.json.{Json, Reads, Writes}
 import uk.gov.hmrc.domain.Nino
 import v2.models.domain.DesTaxYear
 
 case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)
-
-object CrystallisationRequest {
-
-  implicit val reads: Reads[CrystallisationRequest] = Json.reads[CrystallisationRequest]
-  implicit val writes: Writes[CrystallisationRequest] = Json.writes[CrystallisationRequest]
-
-}
