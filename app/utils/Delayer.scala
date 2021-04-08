@@ -14,9 +14,23 @@
  * limitations under the License.
  */
 
-package v2.models.request.crystallisation
+package utils
 
-import uk.gov.hmrc.domain.Nino
-import v2.models.domain.DesTaxYear
+import akka.actor.Scheduler
 
-case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)
+import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.concurrent.duration.FiniteDuration
+
+trait Delayer {
+
+  implicit val scheduler: Scheduler
+  implicit val ec: ExecutionContext
+
+  def delay(delay: FiniteDuration): Future[Unit] = {
+    val promise = Promise[Unit]
+
+    scheduler.scheduleOnce(delay)(promise.success(()))
+
+    promise.future
+  }
+}

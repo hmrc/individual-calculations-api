@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-package v2.models.request.crystallisation
+package v1r2.services
 
-import uk.gov.hmrc.domain.Nino
-import v2.models.domain.DesTaxYear
+import javax.inject.{Inject, Singleton}
+import uk.gov.hmrc.http.HeaderCarrier
+import v1r2.models.domain.CrystallisationRequestBody
+import v1r2.connectors.NrsProxyConnector
 
-case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)
+import scala.concurrent.ExecutionContext
+
+@Singleton
+class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+
+  def submit(nino: String, taxYear: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
+
+    connector.submit(nino, taxYear, body)
+  }
+
+}
