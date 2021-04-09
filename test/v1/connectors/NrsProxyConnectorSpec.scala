@@ -45,7 +45,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
 
         MockedHttpClient
           .post(
-            url = s"$baseUrl/mtd-api-nrs-proxy/$nino/individual-calculations-api",
+            url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
             body = request
           ).returns(Future.successful((): Unit))
 
