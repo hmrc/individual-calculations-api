@@ -26,9 +26,9 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
-  def submit(nino: String, taxYear: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
+  def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
 
-    connector.submit(nino, taxYear, body)
+    connector.submit(nino, body)
   }
 
 }

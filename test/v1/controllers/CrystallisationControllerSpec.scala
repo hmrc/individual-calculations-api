@@ -112,7 +112,7 @@ class CrystallisationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, DesUnit))))
 
         MockNrsProxyService
-          .submit(nino, taxYear, crystallisationRequestBody)
+          .submit(nino, crystallisationRequestBody)
           .returns((): Unit)
 
         val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
@@ -172,7 +172,7 @@ class CrystallisationControllerSpec
               .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError, None, expectedStatus))))
 
             MockNrsProxyService
-              .submit(nino, taxYear, crystallisationRequestBody)
+              .submit(nino, crystallisationRequestBody)
               .returns((): Unit)
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))

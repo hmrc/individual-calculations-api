@@ -68,7 +68,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
         for {
           parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
           serviceResponse <- {
-            nrsProxyService.submit(nino, taxYear, CrystallisationRequestBody(calculationId = parsedRequest.calculationId))
+            nrsProxyService.submit(nino, CrystallisationRequestBody(calculationId = parsedRequest.calculationId))
             EitherT(service.declareCrystallisation(parsedRequest))
           }
         } yield {

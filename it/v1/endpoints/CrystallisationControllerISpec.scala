@@ -75,13 +75,14 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
              |  "cadesTSignature":"30820b4f06092a864886f70111111111c0445c464",
              |  "timestamp":""
              |}
-         """.stripMargin)
+         """.stripMargin
+        )
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          NrsStub.onSuccess(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/individual-calculations-api", Status.ACCEPTED, nrsSuccess)
+          NrsStub.onSuccess(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/itsa-crystallisation", Status.ACCEPTED, nrsSuccess)
           DesStub.onSuccess(DesStub.POST, desUri, NO_CONTENT)
         }
 

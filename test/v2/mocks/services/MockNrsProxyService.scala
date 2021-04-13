@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package v2.mocks.connectors
+package v2.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.connectors.NrsProxyConnector
 import v2.models.domain.CrystallisationRequestBody
+import v2.services.NrsProxyService
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
-trait MockNrsProxyConnector extends MockFactory {
+trait MockNrsProxyService extends MockFactory {
 
-  val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
+  val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
 
-  object MockNrsProxyConnector {
-    def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
-      (mockNrsProxyConnector.submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
+  object MockNrsProxyService {
+    def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Unit] = {
+      (mockNrsProxyService.submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
         .expects(nino, *, *, *)
     }
   }
