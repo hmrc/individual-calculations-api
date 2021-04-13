@@ -18,8 +18,9 @@ package v1.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
+import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
@@ -36,6 +37,8 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
     "microservice.services.mtd-id-lookup.port" -> mockPort,
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
+    "microservice.services.mtd-api-nrs-proxy.host" -> mockHost,
+    "microservice.services.mtd-api-nrs-proxy.port" -> mockPort,
     "auditing.consumer.baseUri.port" -> mockPort,
     "feature-switch.v1r2.enabled" -> false
   )
@@ -65,10 +68,20 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
     "return a 204 status code" when {
       "valid request is made" in new Test {
 
+        val nrsSuccess: JsValue = Json.parse(
+          s"""
+             |{
+             |  "nrSubmissionId":"2dd537bc-4244-4ebf-bac9-96321be13cdc",
+             |  "cadesTSignature":"30820b4f06092a864886f70111111111c0445c464",
+             |  "timestamp":""
+             |}
+         """.stripMargin)
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
+          NrsStub.onSuccess(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/individual-calculations-api", Status.ACCEPTED, nrsSuccess)
           DesStub.onSuccess(DesStub.POST, desUri, NO_CONTENT)
         }
 

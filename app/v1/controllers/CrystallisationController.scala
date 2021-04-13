@@ -27,9 +27,10 @@ import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.{IdGenerator, Logging}
 import v1.controllers.requestParsers.CrystallisationRequestParser
 import v1.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import v1.models.domain.CrystallisationRequestBody
 import v1.models.errors._
 import v1.models.request.crystallisation.CrystallisationRawData
-import v1.services.{AuditService, CrystallisationService, EnrolmentsAuthService, MtdIdLookupService}
+import v1.services.{AuditService, CrystallisationService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,6 +38,7 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
                                           val lookupService: MtdIdLookupService,
                                           requestParser: CrystallisationRequestParser,
                                           service: CrystallisationService,
+                                          nrsProxyService: NrsProxyService,
                                           auditService: AuditService,
                                           cc: ControllerComponents,
                                           val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
@@ -65,7 +67,10 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
       val result =
         for {
           parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
-          serviceResponse <- EitherT(service.declareCrystallisation(parsedRequest))
+          serviceResponse <- {
+            nrsProxyService.submit(nino, taxYear, CrystallisationRequestBody(calculationId = parsedRequest.calculationId))
+            EitherT(service.declareCrystallisation(parsedRequest))
+          }
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +

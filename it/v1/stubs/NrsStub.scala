@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package utils
+package v1.stubs
 
-import akka.actor.Scheduler
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.libs.json.JsValue
+import support.WireMockMethods
 
-import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.concurrent.duration.FiniteDuration
+object NrsStub extends WireMockMethods {
 
-trait Delayer {
-
-  implicit val scheduler: Scheduler
-  implicit val ec: ExecutionContext
-
-  def delay(delay: FiniteDuration): Future[Unit] = {
-    val promise = Promise[Unit]
-
-    scheduler.scheduleOnce(delay)(promise.success(()))
-
-    promise.future
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = status, body)
   }
 }
