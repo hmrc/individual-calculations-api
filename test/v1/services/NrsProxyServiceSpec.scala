@@ -34,7 +34,7 @@ class NrsProxyServiceSpec extends ServiceSpec {
         MockNrsProxyConnector.submit(nino.toString(), CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
           .returns(Future.successful((): Unit))
 
-        service.submit(nino.toString(), CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
+        await(service.submit(nino.toString(), CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))) shouldBe ((): Unit)
 
       }
     }

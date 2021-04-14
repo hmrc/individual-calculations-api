@@ -65,7 +65,7 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
 
   "declaring crystallisation for a tax year" should {
     "return a 204 status code" when {
-      "valid request is made" in new Test {
+      "valid request is made with a successful NRS call" in new Test {
 
         val nrsSuccess: JsValue = Json.parse(
           s"""
@@ -83,6 +83,22 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
           MtdIdLookupStub.ninoFound(nino)
           NrsStub.onSuccess(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/itsa-crystallisation", ACCEPTED, nrsSuccess)
           DesStub.onSuccess(DesStub.POST, desUri, NO_CONTENT)
+        }
+
+        val response: WSResponse = await(request().post(requestBody))
+
+        response.status shouldBe NO_CONTENT
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.body shouldBe ""
+      }
+
+      "any valid request is made with a failed NRS call" in new Test {
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          NrsStub.onError(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/itsa-crystallisation", INTERNAL_SERVER_ERROR, "An internal server error occurred")
         }
 
         val response: WSResponse = await(request().post(requestBody))

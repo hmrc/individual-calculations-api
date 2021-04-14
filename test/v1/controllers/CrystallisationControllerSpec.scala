@@ -113,7 +113,7 @@ class CrystallisationControllerSpec
 
         MockNrsProxyService
           .submit(nino, crystallisationRequestBody)
-          .returns((): Unit)
+          .returns(Future.successful((): Unit))
 
         val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
@@ -173,7 +173,7 @@ class CrystallisationControllerSpec
 
             MockNrsProxyService
               .submit(nino, crystallisationRequestBody)
-              .returns((): Unit)
+              .returns(Future.successful((): Unit))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 

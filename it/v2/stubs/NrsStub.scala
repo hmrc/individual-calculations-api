@@ -26,4 +26,9 @@ object NrsStub extends WireMockMethods {
     when(method = method, uri = uri)
       .thenReturn(status = status, body)
   }
+
+  def onError(method: HTTPMethod, uri: String, errorStatus: Int, errorBody: String): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = errorStatus, errorBody)
+  }
 }
