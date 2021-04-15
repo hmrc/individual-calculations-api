@@ -24,7 +24,7 @@ import v1r2.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 object CalculationSummaryFixture {
 
   val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(100.25)
-  val totalAnnualPaymentsTaxCharged: Option[BigDecimal] = Some(200.25)
+  val totalAnnualPaymentsTaxCharged: Option[BigInt] = Some(200)
   val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(300.25)
   val totalIncomeTaxNicsCharged: Option[BigDecimal] = Some(400.25)
   val totalTaxDeducted: Option[BigDecimal] = Some(500.25)

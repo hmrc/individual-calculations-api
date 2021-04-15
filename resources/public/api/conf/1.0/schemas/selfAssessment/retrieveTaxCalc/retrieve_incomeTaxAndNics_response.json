@@ -120,11 +120,11 @@
         },
         "totalAnnualPaymentsTaxCharged": {
           "type": "number",
-          "description": "The total amount of tax charged on annual payments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "multipleOf": 0.01,
+          "description": "The total amount of tax charged on annual payments. This value must be between 0 and 99999999999. No decimals",
+          "multipleOf": 1,
           "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "7824.39"
+          "maximum": 99999999999,
+          "example": "7824"
         },
         "totalRoyaltyPaymentsTaxCharged": {
           "type": "number",
