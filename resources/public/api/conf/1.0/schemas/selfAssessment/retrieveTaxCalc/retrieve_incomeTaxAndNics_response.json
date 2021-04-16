@@ -120,7 +120,7 @@
         },
         "totalAnnualPaymentsTaxCharged": {
           "type": "number",
-          "description": "The total amount of tax charged on annual payments. This value must be between 0 and 99999999999. No decimals",
+          "description": "The total amount of tax charged on annual payments. This value must be between 0 and 99999999999. No decimals.",
           "multipleOf": 1,
           "minimum": 0,
           "maximum": 99999999999,
