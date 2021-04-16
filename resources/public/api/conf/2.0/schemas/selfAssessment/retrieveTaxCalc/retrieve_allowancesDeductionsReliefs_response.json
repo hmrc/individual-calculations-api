@@ -313,11 +313,11 @@
                           "amountClaimed": {
                             "title": "amountClaimed",
                             "type": "number",
-                            "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                            "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99. No decimals.",
                             "minimum": 0,
-                            "maximum": 99999999999.99,
-                            "multipleOf": 0.01,
-                            "example": "500.55"
+                            "maximum": 99999999999,
+                            "multipleOf": 1,
+                            "example": "500"
                           },
                           "allowableAmount": {
                             "title": "allowableAmount",
