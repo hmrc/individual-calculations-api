@@ -31,10 +31,10 @@ class NrsProxyServiceSpec extends ServiceSpec {
     "call the Nrs Proxy connector" when {
       "the connector is valid" in new Test {
 
-        MockNrsProxyConnector.submit(nino.toString(), "2021-22", CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
+        MockNrsProxyConnector.submit(nino.toString(), CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
           .returns(Future.successful((): Unit))
 
-        service.submit(nino.toString(), "2021-22", CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
+        await(service.submit(nino.toString(), CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))) shouldBe ((): Unit)
 
       }
     }

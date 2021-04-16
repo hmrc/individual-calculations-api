@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NrsProxyConnector @Inject()(http: HttpClient,
                                   appConfig: AppConfig) {
 
-  def submit[T](nino: String, taxYear:String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
+  def submit[T](nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
     implicit val readsEmpty: HttpReads[Unit] = (_: String, _: String, _: HttpResponse) => ()
 
     http.POST[CrystallisationRequestBody, Unit](s"${appConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/itsa-crystallisation", body)

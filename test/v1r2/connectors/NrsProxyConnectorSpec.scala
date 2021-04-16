@@ -17,14 +17,13 @@
 package v1r2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import v1r2.models.domain.{CrystallisationRequestBody, DesTaxYear}
+import v1r2.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.Future
 
 class NrsProxyConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA111111A"
-  val taxYear: DesTaxYear = DesTaxYear.fromMtd("2021-22")
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: CrystallisationRequestBody = CrystallisationRequestBody(calculationId)
@@ -49,7 +48,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
             body = request
           ).returns(Future.successful((): Unit))
 
-        await(connector.submit(nino, "2021-22", request)) shouldBe (():Unit)
+        await(connector.submit(nino, request)) shouldBe (():Unit)
       }
     }
   }

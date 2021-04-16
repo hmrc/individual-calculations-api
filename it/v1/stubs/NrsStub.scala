@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package utils
+package v1.stubs
 
-import akka.actor.Scheduler
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.libs.json.JsValue
+import support.WireMockMethods
 
-import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.concurrent.duration.FiniteDuration
+object NrsStub extends WireMockMethods {
 
-trait Delayer {
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = status, body)
+  }
 
-  implicit val scheduler: Scheduler
-  implicit val ec: ExecutionContext
-
-  def delay(delay: FiniteDuration): Future[Unit] = {
-    val promise = Promise[Unit]
-
-    scheduler.scheduleOnce(delay)(promise.success(()))
-
-    promise.future
+  def onError(method: HTTPMethod, uri: String, errorStatus: Int, errorBody: String): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = errorStatus, errorBody)
   }
 }

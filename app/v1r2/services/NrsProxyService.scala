@@ -21,14 +21,14 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1r2.models.domain.CrystallisationRequestBody
 import v1r2.connectors.NrsProxyConnector
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
-  def submit(nino: String, taxYear: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
+  def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
 
-    connector.submit(nino, taxYear, body)
+    connector.submit(nino, body)
   }
 
 }

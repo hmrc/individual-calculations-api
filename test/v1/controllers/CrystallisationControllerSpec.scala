@@ -22,9 +22,9 @@ import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.mocks.requestParsers.MockCrystallisationRequestParser
-import v1.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import v1.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockNrsProxyService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v1.models.domain.DesTaxYear
+import v1.models.domain.{CrystallisationRequestBody, DesTaxYear}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
@@ -38,6 +38,7 @@ class CrystallisationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockCrystallisationService
+    with MockNrsProxyService
     with MockAuditService
     with MockCrystallisationRequestParser
     with MockIdGenerator
@@ -51,6 +52,7 @@ class CrystallisationControllerSpec
       lookupService = mockMtdIdLookupService,
       requestParser = mockCrystallisationRequestParser,
       service = mockCrystallisationService,
+      nrsProxyService = mockNrsProxyService,
       auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
@@ -66,6 +68,10 @@ class CrystallisationControllerSpec
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
   val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
   val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
+  val crystallisationRequestBody: CrystallisationRequestBody = CrystallisationRequestBody(
+    calculationId = calculationId
+  )
 
   val rawData: CrystallisationRawData = CrystallisationRawData(
     nino = nino,
@@ -104,6 +110,10 @@ class CrystallisationControllerSpec
         MockCrystallisationService
           .submitIntent(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, DesUnit))))
+
+        MockNrsProxyService
+          .submit(nino, crystallisationRequestBody)
+          .returns(Future.successful((): Unit))
 
         val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
@@ -160,6 +170,10 @@ class CrystallisationControllerSpec
             MockCrystallisationService
               .submitIntent(requestData)
               .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError, None, expectedStatus))))
+
+            MockNrsProxyService
+              .submit(nino, crystallisationRequestBody)
+              .returns(Future.successful((): Unit))
 
             val result: Future[Result] = controller.declareCrystallisation(nino, taxYear)(fakePostRequest(requestBody))
 
