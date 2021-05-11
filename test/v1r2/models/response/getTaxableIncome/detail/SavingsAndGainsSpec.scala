@@ -28,7 +28,8 @@ class SavingsAndGainsSpec extends UnitSpec with JsonErrorValidators {
       "taxableIncome"
     ),
     optionalProperties = Seq(
-      "ukSavings"
+      "ukSavings",
+      "ukSecurities"
     )
   )
 }
