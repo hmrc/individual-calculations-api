@@ -29,8 +29,6 @@ object UkSecuritiesFixture {
 
   val securitiesModel: UkSecurities =
     UkSecurities(
-      ukSecuritiesAccountId = Some(ukSecuritiesAccountId),
-      ukSecuritiesAccountName = Some(ukSecuritiesAccountName),
       grossIncome = grossIncome,
       netIncome = netIncome,
       taxDeducted = taxDeducted
@@ -39,8 +37,6 @@ object UkSecuritiesFixture {
   val securitiesJson: JsValue = Json.parse(
     s"""
        |{
-       |    "ukSecuritiesAccountId": "$ukSecuritiesAccountId",
-       |    "ukSecuritiesAccountName": "$ukSecuritiesAccountName",
        |    "grossIncome": $grossIncome,
        |    "netIncome": ${netIncome.get},
        |    "taxDeducted": ${taxDeducted.get}
