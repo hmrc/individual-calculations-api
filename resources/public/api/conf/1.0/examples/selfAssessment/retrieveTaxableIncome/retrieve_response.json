@@ -355,8 +355,6 @@
       ],
       "ukSecurities": [
         {
-          "ukSecuritiesAccountId": "000000000000210",
-          "ukSecuritiesAccountName": "ukSecuritiesAccountName",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99

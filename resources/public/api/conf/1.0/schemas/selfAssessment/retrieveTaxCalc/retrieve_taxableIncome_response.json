@@ -2098,20 +2098,6 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "ukSecuritiesAccountId": {
-                    "title": "ukSecuritiesAccountId",
-                    "description": "The unique identifier of the UK securities account.",
-                    "type": "string",
-                    "example": "SAVKB2UVwUTBQGJ",
-                    "pattern": "^[A-Za-z0-9]{15}$"
-                  },
-                  "ukSecuritiesAccountName": {
-                    "title": "ukSecuritiesAccountName",
-                    "description": "Friendly account name. Each account name added must be unique for that National Insurance number.\n\nThe account name must be between 1 and 32 characters in length. Valid characters, including spaces are: ; & ' ( ) * , - . / @ £ and mixed case alphanumeric characters.",
-                    "type": "string",
-                    "example": "UK securities account",
-                    "pattern": "^[A-Za-z0-9 &'\\(\\)\\*,\\-\\./@£]{1,32}$"
-                  },
                   "grossIncome": {
                     "title": "grossIncome",
                     "description": "The gross interest received from UK securities account. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
