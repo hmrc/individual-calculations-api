@@ -21,16 +21,12 @@ import v1r2.models.response.getTaxableIncome.detail.UkSecurities
 
 object UkSecuritiesFixture {
 
-  val ukSecuritiesAccountId: String = "anId"
-  val ukSecuritiesAccountName: String = "aName"
   val grossIncome: BigDecimal = 300.1
   val netIncome: Option[BigDecimal] = Some(12.3)
   val taxDeducted: Option[BigDecimal] = Some(456.3)
 
   val securitiesModel: UkSecurities =
     UkSecurities(
-      ukSecuritiesAccountId = Some(ukSecuritiesAccountId),
-      ukSecuritiesAccountName = Some(ukSecuritiesAccountName),
       grossIncome = grossIncome,
       netIncome = netIncome,
       taxDeducted = taxDeducted
@@ -39,8 +35,6 @@ object UkSecuritiesFixture {
   val securitiesJson: JsValue = Json.parse(
     s"""
        |{
-       |    "ukSecuritiesAccountId": "$ukSecuritiesAccountId",
-       |    "ukSecuritiesAccountName": "$ukSecuritiesAccountName",
        |    "grossIncome": $grossIncome,
        |    "netIncome": ${netIncome.get},
        |    "taxDeducted": ${taxDeducted.get}

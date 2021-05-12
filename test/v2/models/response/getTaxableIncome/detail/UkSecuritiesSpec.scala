@@ -27,8 +27,6 @@ class UkSecuritiesSpec extends UnitSpec with JsonErrorValidators {
       "grossIncome"
     ),
     optionalProperties = Seq(
-      "ukSecuritiesAccountId",
-      "ukSecuritiesAccountName",
       "netIncome",
       "taxDeducted"
     )

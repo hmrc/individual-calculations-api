@@ -18,9 +18,7 @@ package v1r2.models.response.getTaxableIncome.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class UkSecurities(ukSecuritiesAccountId: Option[String],
-                        ukSecuritiesAccountName: Option[String],
-                        grossIncome: BigDecimal,
+case class UkSecurities(grossIncome: BigDecimal,
                         netIncome: Option[BigDecimal],
                         taxDeducted: Option[BigDecimal])
 
