@@ -18,7 +18,6 @@ package v2.controllers
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.Inject
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import play.mvc.Http.MimeTypes
@@ -30,8 +29,9 @@ import v2.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.domain.CrystallisationRequestBody
 import v2.models.errors._
 import v2.models.request.crystallisation.CrystallisationRawData
-import v2.services.{AuditService, CrystallisationService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService}
+import v2.services._
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class CrystallisationController @Inject()(val authService: EnrolmentsAuthService,
@@ -122,7 +122,13 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
   private def auditSubmission(details: GenericAuditDetail)
                              (implicit hc: HeaderCarrier,
                               ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("submitCrystallisation", "crystallisation", details)
+
+    val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+      auditType = "SubmitSelfAssessmentCrystallisationDeclaration",
+      transactionName = "crystallisation",
+      detail = details
+    )
+
     auditService.auditEvent(event)
   }
 }
