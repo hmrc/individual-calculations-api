@@ -120,7 +120,13 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
   private def auditSubmission(details: GenericAuditDetail)
                              (implicit hc: HeaderCarrier,
                               ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("submitIntentToCrystallise", "intent-to-crystallise", details)
+
+    val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+      auditType = "TriggerIntentToCrystalliseSelfAssessmentCalculation",
+      transactionName = "intent-to-crystallise",
+      detail = details
+    )
+
     auditService.auditEvent(event)
   }
 }

@@ -67,7 +67,7 @@ class CrystallisationControllerSpec
 
   def event(auditResponse: AuditResponse): AuditEvent[GenericAuditDetail] =
     AuditEvent(
-      auditType = "submitCrystallisation",
+      auditType = "SubmitSelfAssessmentCrystallisationDeclaration",
       transactionName = "crystallisation",
       detail = GenericAuditDetail(
         userType = "Individual",

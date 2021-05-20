@@ -89,7 +89,7 @@ class IntentToCrystalliseControllerSpec
 
   def event(auditResponse: AuditResponse): AuditEvent[GenericAuditDetail] =
     AuditEvent(
-      auditType = "submitIntentToCrystallise",
+      auditType = "TriggerIntentToCrystalliseSelfAssessmentCalculation",
       transactionName = "intent-to-crystallise",
       detail = GenericAuditDetail(
         userType = "Individual",
