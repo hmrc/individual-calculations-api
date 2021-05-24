@@ -23,7 +23,7 @@ import v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.ClaimN
 object ClaimNotAppliedFixture {
 
   val claimId: String = "EzluDU2ObK02SdA"
-  val taxYearClaimMade = "2018-19"
+  val taxYearClaimMade: String = "2018-19"
   val claimType: TypeOfClaim = TypeOfClaim.`carry-sideways`
 
   val claimNotAppliedModel: ClaimNotApplied =
@@ -36,9 +36,9 @@ object ClaimNotAppliedFixture {
   val claimNotAppliedJson: JsValue = Json.parse(
     s"""
       |{
-      |   "claimId" : "$claimId",
-      |   "taxYearClaimMade" : "$taxYearClaimMade",
-      |   "claimType" : ${Json.toJson(claimType)}
+      |   "claimId": "$claimId",
+      |   "taxYearClaimMade": "$taxYearClaimMade",
+      |   "claimType": ${Json.toJson(claimType)}
       |}
     """.stripMargin
   )

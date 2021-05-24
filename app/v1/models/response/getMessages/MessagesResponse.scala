@@ -66,7 +66,6 @@ object MessagesResponse extends HateoasLinks {
       )
     }
   }
-
 }
 
 case class MessagesHateoasData(nino: String, id: String) extends HateoasData

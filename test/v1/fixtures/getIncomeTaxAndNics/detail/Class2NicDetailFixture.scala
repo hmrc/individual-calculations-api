@@ -41,13 +41,13 @@ object Class2NicDetailFixture {
   val class2NicDetailJson: JsValue = Json.parse(
     s"""
        |{
-       |   "weeklyRate" : ${weeklyRate.get},
-       |   "weeks" : ${weeks.get},
-       |   "limit" : ${limit.get},
-       |   "apportionedLimit" : ${apportionedLimit.get},
-       |   "underSmallProfitThreshold" : $underSmallProfitThreshold,
-       |   "actualClass2Nic" : ${actualClass2Nic.get}
+       |   "weeklyRate": ${weeklyRate.get},
+       |   "weeks": ${weeks.get},
+       |   "limit": ${limit.get},
+       |   "apportionedLimit": ${apportionedLimit.get},
+       |   "underSmallProfitThreshold": $underSmallProfitThreshold,
+       |   "actualClass2Nic": ${actualClass2Nic.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

@@ -38,8 +38,7 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
     "microservice.services.auth.port" -> mockPort,
     "microservice.services.mtd-api-nrs-proxy.host" -> mockHost,
     "microservice.services.mtd-api-nrs-proxy.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
+    "auditing.consumer.baseUri.port" -> mockPort
   )
 
   private trait Test {
@@ -65,7 +64,7 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
 
   "declaring crystallisation for a tax year" should {
     "return a 204 status code" when {
-      "valid request is made with a successful NRS call" in new Test {
+      "valid request is made with successful NRS call" in new Test {
 
         val nrsSuccess: JsValue = Json.parse(
           s"""

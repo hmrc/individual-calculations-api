@@ -20,7 +20,6 @@ import support.UnitSpec
 import v1.fixtures.calculationWrappers.EoyEstimateWrapperOrErrorFixture._
 import v1.models.response.calculationWrappers.EoyEstimateWrapperOrError._
 
-
 class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
 
   "EoyEstimateWrapperOrError" when {

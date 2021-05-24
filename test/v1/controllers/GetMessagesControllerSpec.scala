@@ -30,8 +30,8 @@ import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdId
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.domain.MessageType
 import v1.models.errors._
-import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
 import v1.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
@@ -41,14 +41,47 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetMessagesControllerSpec
-    extends ControllerBaseSpec
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockGetCalculationQueryParser
-      with MockStandardService
-      with MockHateoasFactory
-      with MockAuditService
-      with MockIdGenerator {
+  extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockGetCalculationQueryParser
+    with MockStandardService
+    with MockHateoasFactory
+    with MockAuditService
+    with MockIdGenerator {
+
+  private val nino = "AA123456A"
+  private val correlationId = "X-123"
+
+  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): MessagesResponse =
+    MessagesResponse(if (info) Some(Seq(info1, info2)) else None,
+      if (warn) Some(Seq(warn1, warn2)) else None,
+      if (error) Some(Seq(err1, err2)) else None, calcId)
+
+  val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
+  val hateoasLinks: JsValue = Json.parse(
+    """
+      |{
+      |      "links":[
+      |        {
+      |          "href":"/foo/bar",
+      |          "method":"GET",
+      |          "rel":"test-relationship"
+      |         }
+      |      ]
+      |}
+    """.stripMargin
+  )
+
+  val responseBody: JsValue = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
+
+  private val rawData = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
+  private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
+  private val requestData = GetMessagesRequest(Nino(nino), calcId, typeQueries)
+
+  private def uri = s"/$nino/self-assessment/$calcId"
+  private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -68,34 +101,6 @@ class GetMessagesControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
     MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val correlationId = "X-123"
-
-  def messagesResponse(info: Boolean, warn: Boolean, error: Boolean): MessagesResponse =
-    MessagesResponse(if (info) Some(Seq(info1, info2)) else None,
-                        if (warn) Some(Seq(warn1, warn2)) else None,
-                        if (error) Some(Seq(err1, err2)) else None, calcId)
-
-  val hateoasLinks: JsValue = Json.parse("""{
-      |      "links":[
-      |        {
-      |          "href":"/foo/bar",
-      |          "method":"GET",
-      |          "rel":"test-relationship"
-      |         }
-      |      ]
-      |}""".stripMargin)
-
-  val responseBody: JsValue         = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
-
-  private val rawData     = GetMessagesRawData(nino, calcId, Seq("info", "warning", "error"))
-  private val typeQueries = Seq(MessageType.toTypeClass("info"), MessageType.toTypeClass("error"), MessageType.toTypeClass("warning"))
-  private val requestData = GetMessagesRequest(Nino(nino), calcId, typeQueries)
-  val testHateoasLink     = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
-
-  private def uri      = s"/$nino/self-assessment/$calcId"
-  private def queryUri = "/input/uri?type=info&type=warning&type=error"
 
   "handleRequest" should {
     "return OK the calculation messages" when {
@@ -120,10 +125,11 @@ class GetMessagesControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages",
+          "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -146,10 +152,11 @@ class GetMessagesControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NoMessagesExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(Seq(AuditError(NoMessagesExistError.code))), None))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationMessages",
+          "retrieve-self-assessment-tax-calculation-messages", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }

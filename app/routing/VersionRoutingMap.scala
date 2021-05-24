@@ -39,7 +39,6 @@ trait VersionRoutingMap extends Logging {
 case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
                                            defaultRouter: Router,
                                            v1Router: v1.Routes,
-                                           v1r2Router: v1r2.Routes,
                                            v2Router: v2.Routes,
                                            liveRouter: live.Routes) extends VersionRoutingMap {
 
@@ -47,10 +46,7 @@ case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
 
   val map: Map[String, Router] = Map(
     VERSION_1 -> {
-      if (featureSwitch.isV1R2RoutingEnabled) {
-        v1r2Router
-      }
-      else if (featureSwitch.isFullRoutingEnabled) {
+      if (featureSwitch.isFullRoutingEnabled) {
         v1Router
       }
       else {

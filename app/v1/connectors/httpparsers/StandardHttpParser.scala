@@ -29,7 +29,7 @@ object StandardHttpParser extends HttpParser {
 
   case class SuccessCode(status: Int) extends AnyVal
 
-  val logger = Logger(getClass)
+  val logger: Logger = Logger(getClass)
 
   // Return Right[BackendOutcome[Unit]] as success response has no body - no need to assign it a value
   implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[Unit]] =
@@ -59,7 +59,7 @@ object StandardHttpParser extends HttpParser {
     }
 
   private def doRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => BackendOutcome[A])(
-      implicit successCode: SuccessCode): BackendOutcome[A] = {
+    implicit successCode: SuccessCode): BackendOutcome[A] = {
 
     val correlationId = retrieveCorrelationId(response)
 

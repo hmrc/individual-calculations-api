@@ -35,8 +35,8 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
   }
 
   "IntentToCrystalliseService" when {
-    val nino = "AA112233A"
-    val taxYear = "2019-20"
+    val nino: String = "AA112233A"
+    val taxYear: String = "2019-20"
 
 
     val request: IntentToCrystalliseRequest = IntentToCrystalliseRequest(

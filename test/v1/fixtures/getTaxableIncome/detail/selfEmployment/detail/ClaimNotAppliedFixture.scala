@@ -40,6 +40,6 @@ object ClaimNotAppliedFixture {
        |  "taxYearClaimMade": "$taxYearClaimMade",
        |  "claimType": ${Json.toJson(claimType)}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

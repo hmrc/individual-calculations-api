@@ -36,13 +36,13 @@ object IncomeTaxDetailFixture {
   def incomeTaxDetailJson: JsValue = Json.parse(
     s"""
        |{
-       |   "payPensionsProfit" : ${incomeTypeBreakdownJson(100)},
-       |   "savingsAndGains" : ${incomeTypeBreakdownJson(200)},
-       |   "lumpSums" : ${incomeTypeBreakdownJson(300)},
-       |   "dividends" : ${incomeTypeBreakdownJson(400)},
-       |   "gainsOnLifePolicies" : ${incomeTypeBreakdownJson(500)},
-       |   "giftAid" : $giftAidJson
+       |   "payPensionsProfit": ${incomeTypeBreakdownJson(100)},
+       |   "savingsAndGains": ${incomeTypeBreakdownJson(200)},
+       |   "lumpSums": ${incomeTypeBreakdownJson(300)},
+       |   "dividends": ${incomeTypeBreakdownJson(400)},
+       |   "gainsOnLifePolicies": ${incomeTypeBreakdownJson(500)},
+       |   "giftAid": $giftAidJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

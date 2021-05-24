@@ -33,8 +33,7 @@ case class ForeignProperty(totalIncome: Option[BigDecimal],
                            taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                            lossClaimsSummary: Option[LossClaimsSummary],
                            lossClaimsDetail: Option[LossClaimsDetail],
-                           bsas: Option[BusinessSourceAdjustableSummary]
-                          )
+                           bsas: Option[BusinessSourceAdjustableSummary])
 
 object ForeignProperty {
   implicit val formats: OFormat[ForeignProperty] = Json.format[ForeignProperty]

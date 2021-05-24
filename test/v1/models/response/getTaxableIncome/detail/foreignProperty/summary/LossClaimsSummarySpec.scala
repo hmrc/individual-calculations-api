@@ -16,8 +16,8 @@
 
 package v1.models.response.getTaxableIncome.detail.foreignProperty.summary
 
-import v1.fixtures.getTaxableIncome.detail.foreignProperty.summary.LossClaimSummaryFixture._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.summary.LossClaimSummaryFixture._
 import v1.models.utils.JsonErrorValidators
 
 class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {

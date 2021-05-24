@@ -33,9 +33,9 @@ object LumpSumsFixture {
   val lumpSumsJson: JsValue = Json.parse(
     s"""
        |{
-       |   "incomeReceived":$incomeReceived,
-       |   "taxableIncome":$taxableIncome
+       |   "incomeReceived": $incomeReceived,
+       |   "taxableIncome": $taxableIncome
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

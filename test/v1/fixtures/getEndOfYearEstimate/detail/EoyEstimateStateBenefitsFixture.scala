@@ -31,7 +31,7 @@ object EoyEstimateStateBenefitsFixture {
   val eoyEstimateStateBenefitsJson: JsValue = Json.parse(
     s"""
       |{
-      |   "taxableIncome" : $taxableIncome
+      |   "taxableIncome": $taxableIncome
       |}
     """.stripMargin
   )

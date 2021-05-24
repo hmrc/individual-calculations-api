@@ -18,8 +18,7 @@ package v1.models.response.getTaxableIncome.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class LumpSums(incomeReceived: BigInt,
-                    taxableIncome: BigInt)
+case class LumpSums(incomeReceived: BigInt, taxableIncome: BigInt)
 
 object LumpSums {
   implicit val format: OFormat[LumpSums] = Json.format[LumpSums]

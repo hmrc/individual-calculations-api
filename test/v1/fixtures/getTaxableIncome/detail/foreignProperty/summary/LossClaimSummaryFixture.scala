@@ -45,6 +45,6 @@ object LossClaimSummaryFixture {
        |   "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
        |   "broughtForwardCarrySidewaysIncomeTaxLossesUsed": ${broughtForwardCarrySidewaysIncomeTaxLossesUsed.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

@@ -45,6 +45,6 @@ object PensionContributionsInExcessOfTheAnnualAllowanceFixture {
        |   "totalPensionChargeDue": $totalPensionChargeDue,
        |   "pensionBands": [$pensionBandsJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

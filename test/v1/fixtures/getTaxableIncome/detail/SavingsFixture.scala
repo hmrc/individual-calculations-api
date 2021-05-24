@@ -39,9 +39,9 @@ object SavingsFixture {
   val savingsJson: JsValue = Json.parse(
     s"""
       |{
-      |    "savingsAccountId":"$incomeSourceId",
-      |    "savingsAccountName":"$incomeSourceName",
-      |    "grossIncome":$grossIncome,
+      |    "savingsAccountId": "$incomeSourceId",
+      |    "savingsAccountName": "$incomeSourceName",
+      |    "grossIncome": $grossIncome,
       |    "netIncome": ${netIncome.get},
       |    "taxDeducted": ${taxDeducted.get}
       |}

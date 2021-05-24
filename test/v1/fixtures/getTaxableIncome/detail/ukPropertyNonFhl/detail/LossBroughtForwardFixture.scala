@@ -35,10 +35,10 @@ object LossBroughtForwardFixture {
   val lossBroughtForwardJson: JsValue = Json.parse(
     s"""
        |{
-       |   "taxYearLossIncurred" : "$taxYearLossIncurred",
-       |   "currentLossValue" : $currentLossValue,
-       |   "mtdLoss" : $mtdLoss
+       |   "taxYearLossIncurred": "$taxYearLossIncurred",
+       |   "currentLossValue": $currentLossValue,
+       |   "mtdLoss": $mtdLoss
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

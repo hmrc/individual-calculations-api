@@ -17,7 +17,6 @@
 package v1.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-
 import v1.fixtures.getIncomeTaxAndNics.detail.OverseasPensionContributionsFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixture._
 import v1.fixtures.getIncomeTaxAndNics.detail.PensionSavingsDetailBreakdownFixture._
@@ -48,6 +47,6 @@ object PensionSavingsTaxChargesDetailFixture {
        |   "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,
        |   "overseasPensionContributions": $overseasPensionContributionsJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

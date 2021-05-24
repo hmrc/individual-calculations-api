@@ -42,6 +42,6 @@ object PensionSavingsDetailBreakdownFixture {
        |   "rate": ${rate.get},
        |   "chargeableAmount": ${chargeableAmount.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

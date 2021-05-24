@@ -43,12 +43,12 @@ object TaxBandFixture {
        |{
        |   "name": "$name",
        |   "rate": $rate,
-       |   "bandLimit" : $bandLimit,
-       |   "apportionedBandLimit" : $apportionedBandLimit,
-       |   "income" : $income,
-       |   "taxAmount" : $taxAmount
+       |   "bandLimit": $bandLimit,
+       |   "apportionedBandLimit": $apportionedBandLimit,
+       |   "income": $income,
+       |   "taxAmount": $taxAmount
        |}
-    """.stripMargin
+      """.stripMargin
   )
 
   def taxBandModel(input: BigDecimal): TaxBand = {
@@ -67,11 +67,11 @@ object TaxBandFixture {
        |{
        |   "name": "$name",
        |   "rate": ${input + 0.17},
-       |   "bandLimit" : $bandLimit,
-       |   "apportionedBandLimit" : $apportionedBandLimit,
-       |   "income" : $income,
-       |   "taxAmount" : ${input + 0.85}
+       |   "bandLimit": $bandLimit,
+       |   "apportionedBandLimit": $apportionedBandLimit,
+       |   "income": $income,
+       |   "taxAmount": ${input + 0.85}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

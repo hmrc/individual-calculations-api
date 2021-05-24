@@ -42,6 +42,6 @@ object PensionSchemeOverseasTransfersFixture {
        |   "rate": ${rate.get},
        |   "chargeableAmount": ${chargeableAmount.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

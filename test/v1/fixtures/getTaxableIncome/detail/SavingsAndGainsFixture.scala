@@ -35,12 +35,13 @@ object SavingsAndGainsFixture {
     )
 
   val savingsAndGainsJson: JsValue = Json.parse(
-    s"""{
-       |   "incomeReceived" : $incomeReceivedSAG,
-       |   "taxableIncome" : $taxableIncomeSAG,
-       |   "ukSavings" : [$savingsJson],
-       |   "ukSecurities" : [$securitiesJson]
+    s"""
+       |{
+       |   "incomeReceived": $incomeReceivedSAG,
+       |   "taxableIncome": $taxableIncomeSAG,
+       |   "ukSavings": [$savingsJson],
+       |   "ukSecurities": [$securitiesJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

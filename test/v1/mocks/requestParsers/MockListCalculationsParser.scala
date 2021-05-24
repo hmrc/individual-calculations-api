@@ -24,12 +24,11 @@ import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 trait MockListCalculationsParser extends MockFactory {
 
-  val mockListCalculationsParser = mock[ListCalculationsParser]
+  val mockListCalculationsParser: ListCalculationsParser = mock[ListCalculationsParser]
 
   object MockListCalculationsParser {
     def parse(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequest]] = {
       (mockListCalculationsParser.parseRequest(_: ListCalculationsRawData)(_: String)).expects(data, *)
     }
   }
-
 }

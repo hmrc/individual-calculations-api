@@ -39,6 +39,6 @@ object EoyEstimateUkSavingsFixture {
        |   "savingsAccountName" : "${savingsAccountName.get}",
        |   "taxableIncome" : $taxableIncome
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

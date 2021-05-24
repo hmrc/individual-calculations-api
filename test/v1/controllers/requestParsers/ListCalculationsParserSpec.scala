@@ -27,9 +27,10 @@ import v1.models.errors._
 import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
-  val nino = "AA123456B"
-  val taxYear = "2017-18"
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
+  val nino: String = "AA123456B"
+  val taxYear: String = "2017-18"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockListCalculationsValidator with MockCurrentDateProvider{
     lazy val parser = new ListCalculationsParser(mockValidator, mockCurrentDateProvider)
@@ -39,7 +40,7 @@ class ListCalculationsParserSpec extends UnitSpec {
     "valid data is supplied" should {
       "return a valid request object" in new Test {
         MockCurrentDateProvider.getCurrentDate().returns(LocalDate.now())
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data: ListCalculationsRawData = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), taxYear))
@@ -50,7 +51,7 @@ class ListCalculationsParserSpec extends UnitSpec {
       "return a valid request object" in new Test {
 
         MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-06"))
-        val data = ListCalculationsRawData(nino, None)
+        val data: ListCalculationsRawData = ListCalculationsRawData(nino, None)
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), taxYear))
@@ -61,7 +62,7 @@ class ListCalculationsParserSpec extends UnitSpec {
       "return a valid request object" in new Test {
 
         MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-05"))
-        val data = ListCalculationsRawData(nino, None)
+        val data: ListCalculationsRawData = ListCalculationsRawData(nino, None)
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), "2016-17"))
@@ -70,7 +71,7 @@ class ListCalculationsParserSpec extends UnitSpec {
 
     "single validation error" should {
       "return the error" in new Test {
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data: ListCalculationsRawData = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
@@ -79,12 +80,11 @@ class ListCalculationsParserSpec extends UnitSpec {
 
     "multiple validation errors" should {
       "return the errors" in new Test {
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data: ListCalculationsRawData = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }
-
 }

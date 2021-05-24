@@ -17,8 +17,8 @@
 package v1.models.response.getIncomeTaxAndNics
 
 import config.AppConfig
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import v1.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v1.models.hateoas.{HateoasData, Link}
 import v1.models.response.getIncomeTaxAndNics.detail.CalculationDetail

@@ -22,7 +22,6 @@ import v1.fixtures.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimSummar
 import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.BusinessSourceAdjustableSummary
 
-
 object UkPropertyFhlFixture {
 
   val totalIncome: Option[BigDecimal] = Some(1000.01)
@@ -34,7 +33,11 @@ object UkPropertyFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = None
   val taxableProfit: Option[BigInt] = Some(1008)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
+  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(
+    bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9",
+    applied = true,
+    links = None
+  )
 
   val ukPropertyFhlModel: UkPropertyFhl =
     UkPropertyFhl(
@@ -53,11 +56,11 @@ object UkPropertyFhlFixture {
     )
 
   val bsasJson: JsValue = Json.parse(
-    s"""
-       |{
-       |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-       |   "applied": true
-       |}
+    """
+      |{
+      |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+      |   "applied": true
+      |}
     """.stripMargin
   )
 
@@ -75,5 +78,6 @@ object UkPropertyFhlFixture {
        |   "lossClaimsDetail": $lossClaimsDetailJson,
        |   "bsas": $bsasJson
        |}
-    """.stripMargin)
+     """.stripMargin
+  )
 }

@@ -18,9 +18,7 @@ package v1.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   foreignTaxCreditRelief: Option[Seq[ForeignTaxCreditRelief]],
-                   pensionContributionReliefs: Option[PensionContributionReliefs],
+case class Reliefs(pensionContributionReliefs: Option[PensionContributionReliefs],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]])
 
 object Reliefs {

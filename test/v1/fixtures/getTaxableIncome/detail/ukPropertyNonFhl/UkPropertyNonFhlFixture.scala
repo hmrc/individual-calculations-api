@@ -34,7 +34,11 @@ object UkPropertyNonFhlFixture {
   val adjustedIncomeTaxLoss: Option[BigInt] = Some(2000)
   val taxableProfit: Option[BigInt] = Some(2000)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2000)
-  val bsas = BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, None)
+  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(
+    bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9",
+    applied = true,
+    links = None
+  )
 
   val ukPropertyNonFhlModel: UkPropertyNonFhl =
     UkPropertyNonFhl(
@@ -54,31 +58,31 @@ object UkPropertyNonFhlFixture {
     )
 
   val bsasJson: JsValue = Json.parse(
-    s"""
-       |{
-       |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-       |   "applied": true
-       |}
+    """
+      |{
+      |   "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
+      |   "applied": true
+      |}
     """.stripMargin
   )
 
   val ukPropertyNonFhlJson: JsValue = Json.parse(
     s"""
        |{
-       |   "totalIncome" : 2000.98,
-       |   "totalExpenses" : 2000.98,
-       |   "netProfit" : 2000.98,
-       |   "netLoss" : 2000.98,
-       |  "totalAdditions" : 2000.98,
-       |   "totalDeductions" : 2000.98,
-       |   "accountingAdjustments" : -2000.98,
-       |   "taxableProfit" : 2000,
-       |   "adjustedIncomeTaxLoss" : 2000,
-       |   "taxableProfitAfterIncomeTaxLossesDeduction" : 2000,
-       |   "lossClaimsSummary" : $lossClaimSummaryJson,
-       |   "lossClaimsDetail" : $lossClaimsDetailMtdJson,
+       |   "totalIncome": 2000.98,
+       |   "totalExpenses": 2000.98,
+       |   "netProfit": 2000.98,
+       |   "netLoss": 2000.98,
+       |  "totalAdditions": 2000.98,
+       |   "totalDeductions": 2000.98,
+       |   "accountingAdjustments": -2000.98,
+       |   "taxableProfit": 2000,
+       |   "adjustedIncomeTaxLoss": 2000,
+       |   "taxableProfitAfterIncomeTaxLossesDeduction": 2000,
+       |   "lossClaimsSummary": $lossClaimSummaryJson,
+       |   "lossClaimsDetail": $lossClaimsDetailMtdJson,
        |   "bsas": $bsasJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

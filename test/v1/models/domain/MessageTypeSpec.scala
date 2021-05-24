@@ -16,8 +16,8 @@
 
 package v1.models.domain
 
-import support.UnitSpec
 import MessageType._
+import support.UnitSpec
 
 class MessageTypeSpec extends UnitSpec {
 

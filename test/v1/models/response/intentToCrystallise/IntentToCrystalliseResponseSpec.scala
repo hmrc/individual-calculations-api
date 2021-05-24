@@ -20,8 +20,8 @@ import mocks.MockAppConfig
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.hateoas.HateoasFactory
-import v1.models.hateoas.Method.{GET, POST}
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.{GET, POST}
 
 class IntentToCrystalliseResponseSpec extends UnitSpec {
 
@@ -74,9 +74,9 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino = "someNino"
-      val taxYear = "2018-19"
-      val calcId = "someCalcId"
+      val nino: String = "someNino"
+      val taxYear: String = "2018-19"
+      val calcId: String = "someCalcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

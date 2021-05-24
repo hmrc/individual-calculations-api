@@ -22,8 +22,8 @@ import support.UnitSpec
 import v1.fixtures.listCalculations.CalculationListItemFixture.{calculationListItemJson, calculationListItemModel}
 import v1.fixtures.listCalculations.ListCalculationsFixture._
 import v1.hateoas.HateoasFactory
-import v1.models.hateoas.Method.{GET, POST}
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.{GET, POST}
 
 class ListCalculationsResponseSpec extends UnitSpec {
 
@@ -58,8 +58,8 @@ class ListCalculationsResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino = "someNino"
-      val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      val nino: String = "someNino"
+      val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

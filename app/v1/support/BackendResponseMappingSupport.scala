@@ -18,17 +18,17 @@ package v1.support
 
 import cats.implicits._
 import utils.Logging
+import play.api.http.Status._
 import v1.connectors.BackendOutcome
 import v1.controllers.EndpointLogContext
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import play.api.http.Status._
 
 trait BackendResponseMappingSupport {
   self: Logging =>
 
   final def mapBackendErrors[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(
-      backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
+    backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     val defaultErrorCodeMapping: String => (Int, MtdError) = { code =>
       logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")

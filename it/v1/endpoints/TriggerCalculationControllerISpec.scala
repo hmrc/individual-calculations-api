@@ -27,24 +27,11 @@ import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
 
-    val nino = "AA123456A"
+    val nino: String = "AA123456A"
     val taxYear: String = "2018-19"
-    val correlationId = "X-123"
+    val correlationId: String = "X-123"
 
     def uri: String = s"/$nino/self-assessment"
 
@@ -64,7 +51,9 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
     "return a 202 status code" when {
 
-      val successBody = Json.parse("""{
+      val successBody = Json.parse(
+        """
+          |{
           | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           | "links":[
           |   {
@@ -73,7 +62,9 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           |   "rel":"self"
           |     }
           |   ]
-          |}""".stripMargin)
+          |}
+        """.stripMargin
+      )
 
       "a valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
@@ -136,10 +127,12 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       "the backend returns a service error" when {
 
         def errorBody(code: String): String =
-          s"""{
+          s"""
+             |{
              |  "code": "$code",
              |  "message": "backend message"
-             |}""".stripMargin
+             |}
+           """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new Test {

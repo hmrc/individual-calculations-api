@@ -42,7 +42,7 @@ object ResultOfClaimAppliedFixture {
     )
 
   val resultOfClaimAppliedJson: JsValue = Json.parse(
-    f"""
+    s"""
       |{
       |  "claimId": "${claimId.get}",
       |   "taxYearLossIncurred": "$taxYearLossIncurred",

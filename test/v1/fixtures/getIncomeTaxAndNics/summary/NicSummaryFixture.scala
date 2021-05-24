@@ -35,9 +35,9 @@ object NicSummaryFixture {
   val nicSummaryJson: JsValue = Json.parse(
     s"""
       |{
-      |   "class2NicsAmount" : ${class2NicsAmount.get},
-      |   "class4NicsAmount" : ${class4NicsAmount.get},
-      |   "totalNic" : ${totalNic.get}
+      |   "class2NicsAmount": ${class2NicsAmount.get},
+      |   "class4NicsAmount": ${class4NicsAmount.get},
+      |   "totalNic": ${totalNic.get}
       |}
     """.stripMargin
   )

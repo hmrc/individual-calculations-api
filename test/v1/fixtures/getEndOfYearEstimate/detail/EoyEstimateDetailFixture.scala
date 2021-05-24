@@ -48,21 +48,21 @@ object EoyEstimateDetailFixture {
   val eoyEstimateDetailJson: JsValue = Json.parse(
     s"""
        |{
-       | "selfEmployments" : [
+       | "selfEmployments": [
        |   $eoyEstimateSelfEmploymentsJson
        | ],
-       | "ukPropertyFhl" : $eoyEstimateUkPropertyFhlJson,
-       | "ukPropertyNonFhl" : $eoyEstimateUkPropertyNonFhlJson,
-       | "ukSavings" : [
+       | "ukPropertyFhl": $eoyEstimateUkPropertyFhlJson,
+       | "ukPropertyNonFhl": $eoyEstimateUkPropertyNonFhlJson,
+       | "ukSavings": [
        |   $eoyEstimateUkSavingsJson
        | ],
-       | "ukDividends" : $eoyEstimateUkDividendsJson,
-       | "otherDividends" : $eoyEstimateOtherDividendsJson,
-       | "stateBenefits" : $eoyEstimateStateBenefitsJson,
-       | "ukSecurities" : $eoyEstimateUkSecuritiesJson,
-       | "foreignProperty" : $eoyEstimateForeignPropertyJson,
-       | "foreignInterest" : $eoyEstimateForeignInterestJson
+       | "ukDividends": $eoyEstimateUkDividendsJson,
+       | "otherDividends": $eoyEstimateOtherDividendsJson,
+       | "stateBenefits": $eoyEstimateStateBenefitsJson,
+       | "ukSecurities": $eoyEstimateUkSecuritiesJson,
+       | "foreignProperty": $eoyEstimateForeignPropertyJson,
+       | "foreignInterest": $eoyEstimateForeignInterestJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

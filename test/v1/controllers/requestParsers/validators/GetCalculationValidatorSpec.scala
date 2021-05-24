@@ -21,6 +21,7 @@ import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
 import v1.models.request.GetCalculationRawData
 
 class GetCalculationValidatorSpec extends UnitSpec {
+
   private val validNino = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
@@ -32,18 +33,21 @@ class GetCalculationValidatorSpec extends UnitSpec {
         validator.validate(GetCalculationRawData(validNino, validCalculationId)) shouldBe empty
       }
     }
+
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
         validator.validate(GetCalculationRawData("AA111111E", validCalculationId)) shouldBe
           List(NinoFormatError)
       }
     }
+
     "return CalculationIdFormatError error" when {
       "an invalid calculationId is supplied" in {
         validator.validate(GetCalculationRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
           List(CalculationIdFormatError)
       }
     }
+
     "return multiple errors" when {
       "request supplied has multiple errors" in {
         validator.validate(GetCalculationRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c")) shouldBe
@@ -51,6 +55,4 @@ class GetCalculationValidatorSpec extends UnitSpec {
       }
     }
   }
-
-
 }

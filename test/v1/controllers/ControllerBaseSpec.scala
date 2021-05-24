@@ -16,10 +16,10 @@
 
 package v1.controllers
 
-import play.api.http.{ HeaderNames, MimeTypes, Status }
-import play.api.mvc.{ AnyContentAsEmpty, ControllerComponents }
+import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.Helpers.stubControllerComponents
-import play.api.test.{ FakeRequest, ResultExtractors }
+import play.api.test.{FakeRequest, ResultExtractors}
 import support.UnitSpec
 import utils.Logging
 import v1.handler.RequestHandler
@@ -28,7 +28,7 @@ import v1.models.outcomes.ResponseWrapper
 import v1.support.BackendResponseMappingSupport
 
 class ControllerBaseSpec
-    extends UnitSpec
+  extends UnitSpec
     with Status
     with MimeTypes
     with HeaderNames

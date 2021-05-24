@@ -20,7 +20,6 @@ import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getTaxableIncome.detail.BusinessProfitAndLossFixture._
 import v1.models.response.getTaxableIncome.detail.PayPensionsProfit
 
-//noinspection ScalaStyle
 object PayPensionsProfitFixture {
 
   val incomeReceivedPPP: BigInt = 1
@@ -62,22 +61,22 @@ object PayPensionsProfitFixture {
   val payPensionsProfitJson: JsValue = Json.parse(
     s"""
        |{
-       |    "incomeReceived" : $incomeReceivedPPP,
-       |    "taxableIncome" : $taxableIncomePPP,
-       |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
-       |    "totalPropertyProfit" : ${totalPropertyProfit.get},
-       |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
-       |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get},
-       |    "totalForeignPropertyProfit" : ${totalForeignPropertyProfit.get},
-       |    "totalEeaFhlProfit" : ${totalEeaFhlProfit.get},
-       |    "totalOccupationalPensionIncome" : ${totalOccupationalPensionIncome.get},
-       |    "totalStateBenefitsIncome" : ${totalStateBenefitsIncome.get},
-       |    "totalBenefitsInKind" : ${totalBenefitsInKind.get},
-       |    "totalPayeEmploymentAndLumpSumIncome" : ${totalPayeEmploymentAndLumpSumIncome.get},
-       |    "totalEmploymentExpenses" : ${totalEmploymentExpenses.get},
-       |    "totalEmploymentIncome" : ${totalEmploymentIncome.get},
-       |    "businessProfitAndLoss" : $businessProfitAndLossJson
+       |    "incomeReceived": $incomeReceivedPPP,
+       |    "taxableIncome": $taxableIncomePPP,
+       |    "totalSelfEmploymentProfit": ${totalSelfEmploymentProfit.get},
+       |    "totalPropertyProfit": ${totalPropertyProfit.get},
+       |    "totalFHLPropertyProfit": ${totalFHLPropertyProfit.get},
+       |    "totalUKOtherPropertyProfit": ${totalUKOtherPropertyProfit.get},
+       |    "totalForeignPropertyProfit": ${totalForeignPropertyProfit.get},
+       |    "totalEeaFhlProfit": ${totalEeaFhlProfit.get},
+       |    "totalOccupationalPensionIncome": ${totalOccupationalPensionIncome.get},
+       |    "totalStateBenefitsIncome": ${totalStateBenefitsIncome.get},
+       |    "totalBenefitsInKind": ${totalBenefitsInKind.get},
+       |    "totalPayeEmploymentAndLumpSumIncome": ${totalPayeEmploymentAndLumpSumIncome.get},
+       |    "totalEmploymentExpenses": ${totalEmploymentExpenses.get},
+       |    "totalEmploymentIncome": ${totalEmploymentIncome.get},
+       |    "businessProfitAndLoss": $businessProfitAndLossJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

@@ -46,14 +46,15 @@ object ResultOfClaimAppliedFixture {
   val resultOfClaimAppliedJson: JsValue = Json.parse(
     s"""
        |{
-       |   "claimId" : "${claimId.get}",
-       |   "originatingClaimId" : "${originatingClaimId.get}",
-       |   "taxYearClaimMade" : "$taxYearClaimMade",
-       |   "claimType" : ${Json.toJson(claimType)},
-       |   "mtdLoss" : $mtdLoss,
-       |   "taxYearLossIncurred" : "$taxYearLossIncurred",
-       |   "lossAmountUsed" : $lossAmountUsed,
-       |   "remainingLossValue" : $remainingLossValue
+       |   "claimId": "${claimId.get}",
+       |   "originatingClaimId": "${originatingClaimId.get}",
+       |   "taxYearClaimMade": "$taxYearClaimMade",
+       |   "claimType": ${Json.toJson(claimType)},
+       |   "mtdLoss": $mtdLoss,
+       |   "taxYearLossIncurred": "$taxYearLossIncurred",
+       |   "lossAmountUsed": $lossAmountUsed,
+       |   "remainingLossValue": $remainingLossValue
        |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }

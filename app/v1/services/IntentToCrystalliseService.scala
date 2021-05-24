@@ -59,5 +59,3 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )
 }
-
-

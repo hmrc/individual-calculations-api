@@ -26,7 +26,7 @@ import v1.models.request.RawData
 class RequestParserSpec extends UnitSpec {
 
   private val nino = "AA123456A"
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   case class Raw(nino: String) extends RawData
   case class Request(nino: Nino)
@@ -66,5 +66,4 @@ class RequestParserSpec extends UnitSpec {
       }
     }
   }
-
 }

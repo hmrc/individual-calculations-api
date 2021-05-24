@@ -34,10 +34,10 @@ object TaxableIncomeResponseFixture {
   val taxableIncomeResponseJson: JsValue = Json.parse(
     s"""
        |{
-       |   "summary" : $calculationSummaryJson,
-       |   "detail" : $calculationDetailJson
+       |   "summary": $calculationSummaryJson,
+       |   "detail": $calculationDetailJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 
   val taxableIncomeResponseTopLevelJson: JsValue =

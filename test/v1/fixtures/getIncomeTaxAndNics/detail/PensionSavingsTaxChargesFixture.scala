@@ -42,6 +42,6 @@ object PensionSavingsTaxChargesFixture {
        |   "totalPensionChargesDue": ${totalPensionChargesDue.get},
        |   "pensionSavingsTaxChargesDetail": $pensionSavingsTaxChargesDetailJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

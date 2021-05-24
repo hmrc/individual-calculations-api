@@ -20,8 +20,8 @@ import cats.Functor
 import config.AppConfig
 import mocks.MockAppConfig
 import support.UnitSpec
-import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasData, HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 
 class HateoasFactorySpec extends UnitSpec with MockAppConfig {
 
@@ -33,7 +33,7 @@ class HateoasFactorySpec extends UnitSpec with MockAppConfig {
   case class Data1(id: String) extends HateoasData
   case class Data2(id: String) extends HateoasData
 
-  val response = Response("X")
+  val response: Response = Response("X")
 
   class Test {
     MockedAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes

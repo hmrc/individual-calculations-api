@@ -24,9 +24,10 @@ import v1.models.errors._
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationParserSpec extends UnitSpec {
-  val nino = "AA111111A"
-  val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
+  val nino: String = "AA111111A"
+  val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockGetCalculationValidator {
     lazy val parser = new GetCalculationParser(mockValidator)
@@ -35,7 +36,7 @@ class GetCalculationParserSpec extends UnitSpec {
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data = GetCalculationRawData(nino, calculationId)
+        val data: GetCalculationRawData = GetCalculationRawData(nino, calculationId)
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(GetCalculationRequest(Nino(nino), calculationId))
@@ -45,7 +46,7 @@ class GetCalculationParserSpec extends UnitSpec {
 
   "single validation error" should {
     "return the error" in new Test {
-      val data = GetCalculationRawData(nino, calculationId)
+      val data: GetCalculationRawData = GetCalculationRawData(nino, calculationId)
       MockValidator.validate(data).returns(List(NinoFormatError))
 
       parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
@@ -54,11 +55,10 @@ class GetCalculationParserSpec extends UnitSpec {
 
   "multiple validation errors" should{
     "return the errors" in new Test{
-      val data = GetCalculationRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
+      val data: GetCalculationRawData = GetCalculationRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError))
 
       parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError,CalculationIdFormatError)), BAD_REQUEST))
     }
   }
-
 }

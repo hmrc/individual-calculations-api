@@ -41,27 +41,7 @@ class CrystallisationControllerSpec
     with MockNrsProxyService
     with MockAuditService
     with MockCrystallisationRequestParser
-    with MockIdGenerator
-{
-
-  trait Test {
-    val hc = HeaderCarrier()
-
-    val controller = new CrystallisationController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      requestParser = mockCrystallisationRequestParser,
-      service = mockCrystallisationService,
-      nrsProxyService = mockNrsProxyService,
-      auditService = mockAuditService,
-      cc = cc,
-      idGenerator = mockIdGenerator
-    )
-
-    MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
-    MockedEnrolmentsAuthService.authoriseUser()
-    MockIdGenerator.getCorrelationId.returns(correlationId)
-  }
+    with MockIdGenerator {
 
   val nino: String = "AA123456A"
   val taxYear: String = "2019-20"
@@ -98,6 +78,25 @@ class CrystallisationControllerSpec
         auditResponse = auditResponse
       )
     )
+
+  trait Test {
+    val hc: HeaderCarrier = HeaderCarrier()
+
+    val controller = new CrystallisationController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      requestParser = mockCrystallisationRequestParser,
+      service = mockCrystallisationService,
+      nrsProxyService = mockNrsProxyService,
+      auditService = mockAuditService,
+      cc = cc,
+      idGenerator = mockIdGenerator
+    )
+
+    MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
+    MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
+  }
 
   "CrystallisationController" should {
     "return NO_CONTENT" when {

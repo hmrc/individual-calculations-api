@@ -22,20 +22,20 @@ import v1.models.response.getMessages.{Message, MessagesResponse}
 
 object MessageFixture {
 
-  val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val messageJson: JsValue = Json.parse(
     """
       |{
-      |  "id":"info1",
-      |  "text":"text1"
+      |  "id": "info1",
+      |  "text": "text1"
       |}
     """.stripMargin
   )
 }
 
 object MessagesResponseFixture {
-  val calcId = "someCalcId"
+  val calcId : String = "someCalcId"
 
   val err1: Message = Message(id = "err1", text = "text1")
   val err2: Message = Message(id = "err2", text = "text2")
@@ -54,22 +54,22 @@ object MessagesResponseFixture {
     )
 
   val messagesResponseJson: JsValue = Json.parse(
-    s"""
-      |{
-      |  "info": [
-      |    {"id":"info1", "text":"text1"},
-      |    {"id":"info2", "text":"text2"}
-      |  ],
-      |  "warnings":[
-      |    {"id":"warn1", "text":"text1"},
-      |    {"id":"warn2", "text":"text2"}
-      |  ],
-      |  "errors":[
-      |    {"id":"err1", "text":"text1"},
-      |    {"id":"err2", "text":"text2"}
-      |  ]
-      |}
-    """.stripMargin
+    """
+     |{
+     |  "info": [
+     |    {"id":"info1", "text":"text1"},
+     |    {"id":"info2", "text":"text2"}
+     |  ],
+     |  "warnings":[
+     |    {"id":"warn1", "text":"text1"},
+     |    {"id":"warn2", "text":"text2"}
+     |  ],
+     |  "errors":[
+     |    {"id":"err1", "text":"text1"},
+     |    {"id":"err2", "text":"text2"}
+     |  ]
+     |}
+   """.stripMargin
   )
 
   val messagesResponseJsonErrors: JsValue = Json.parse(
@@ -96,33 +96,33 @@ object MessagesResponseFixture {
 
   val messagesResponseTopLevelJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "metadata": {
-      |     "id": "$calcId",
-      |     "taxYear": "2018-19",
-      |     "requestedBy": "${CalculationRequestor.customer}",
-      |     "calculationReason": "${CalculationReason.customerRequest}",
-      |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |     "calculationType": "${CalculationType.inYear}",
-      |     "intentToCrystallise": true,
-      |     "crystallised": false
-      |   },
-      | "messages" : {
-      |  "info": [
-      |    {"id":"info1", "text":"text1"},
-      |    {"id":"info2", "text":"text2"}
-      |  ],
-      |  "warnings":[
-      |    {"id":"warn1", "text":"text1"},
-      |    {"id":"warn2", "text":"text2"}
-      |  ],
-      |  "errors":[
-      |    {"id":"err1", "text":"text1"},
-      |    {"id":"err2", "text":"text2"}
-      |  ]
-      |}
-      |}
-    """.stripMargin
+       |{
+       |   "metadata": {
+       |      "id": "$calcId",
+       |      "taxYear": "2018-19",
+       |      "requestedBy": "${CalculationRequestor.customer}",
+       |      "calculationReason": "${CalculationReason.customerRequest}",
+       |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+       |      "calculationType": "${CalculationType.inYear}",
+       |      "intentToCrystallise": true,
+       |      "crystallised": false
+       |   },
+       |   "messages": {
+       |      "info": [
+       |         {"id": "info1","text": "text1"},
+       |         {"id": "info2","text": "text2"}
+       |      ],
+       |      "warnings": [
+       |         {"id": "warn1","text": "text1"},
+       |         {"id": "warn2","text": "text2"}
+       |      ],
+       |      "errors": [
+       |         {"id": "err1", "text": "text1"},
+       |         {"id": "err2", "text": "text2"}
+       |      ]
+       |   }
+       |}
+     """.stripMargin
   )
 
   val messagesResponseTopLevelJsonEmpty: JsValue = Json.parse(
@@ -138,8 +138,7 @@ object MessagesResponseFixture {
       |     "intentToCrystallise": true,
       |     "crystallised": false
       |   },
-      |  "messages" :{
-      |  }
+      |  "messages": { }
       |}
     """.stripMargin
   )
@@ -147,7 +146,7 @@ object MessagesResponseFixture {
   val messagesResponseTopLevelJsonInfo: JsValue = Json.parse(
     s"""
       |{
-      |   "metadata": {
+      |  "metadata": {
       |     "id": "$calcId",
       |     "taxYear": "2018-19",
       |     "requestedBy": "${CalculationRequestor.customer}",
@@ -156,11 +155,11 @@ object MessagesResponseFixture {
       |     "calculationType": "${CalculationType.inYear}",
       |     "intentToCrystallise": true,
       |     "crystallised": false
-      |   },
-      |  "messages" :{
+      |  },
+      |  "messages": {
       |     "info":[
-      |     {"id":"info1", "text":"text1"},
-      |     {"id":"info2", "text":"text2"}
+      |       {"id":"info1", "text":"text1"},
+      |       {"id":"info2", "text":"text2"}
       |     ]
       |  }
       |}

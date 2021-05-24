@@ -17,8 +17,8 @@
 package v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail
 
 import support.UnitSpec
-import v1.models.utils.JsonErrorValidators
 import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossBroughtForwardFixture._
+import v1.models.utils.JsonErrorValidators
 
 class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {
 

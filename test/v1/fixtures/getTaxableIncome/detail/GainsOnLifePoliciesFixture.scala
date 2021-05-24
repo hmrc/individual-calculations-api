@@ -33,9 +33,9 @@ object GainsOnLifePoliciesFixture {
   val gainsOnLifePoliciesJson: JsValue = Json.parse(
     s"""
        |{
-       |   "incomeReceived":$incomeReceived,
-       |   "taxableIncome":$taxableIncome
+       |   "incomeReceived": $incomeReceived,
+       |   "taxableIncome": $taxableIncome
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

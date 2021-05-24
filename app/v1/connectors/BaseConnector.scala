@@ -19,8 +19,8 @@ package v1.connectors
 import config.AppConfig
 import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
+import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.models.response.common.DesResponse
 

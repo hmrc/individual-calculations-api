@@ -49,7 +49,6 @@ object TaxableIncomeResponse extends HateoasLinks {
         getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true)
       )
     }
-
   }
 
 }

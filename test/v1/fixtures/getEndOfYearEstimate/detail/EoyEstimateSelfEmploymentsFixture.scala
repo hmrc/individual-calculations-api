@@ -35,9 +35,9 @@ object EoyEstimateSelfEmploymentsFixture {
   val eoyEstimateSelfEmploymentsJson: JsValue = Json.parse(
     s"""
       |{
-      |   "selfEmploymentId" : "$selfEmploymentId",
-      |   "taxableIncome" : $taxableIncome,
-      |   "finalised" : ${finalised.get}
+      |   "selfEmploymentId": "$selfEmploymentId",
+      |   "taxableIncome": $taxableIncome,
+      |   "finalised": ${finalised.get}
       |}
     """.stripMargin
   )

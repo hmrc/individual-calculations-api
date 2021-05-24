@@ -39,6 +39,6 @@ object GiftAidFixture {
        |   "rate": $rate,
        |   "giftAidTax": $giftAidTax
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

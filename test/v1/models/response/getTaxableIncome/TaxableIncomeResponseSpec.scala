@@ -19,9 +19,9 @@ package v1.models.response.getTaxableIncome
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.hateoas.HateoasFactory
 import v1.models.hateoas.{HateoasWrapper, Link}
-import v1.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v1.models.hateoas.Method.GET
 
 class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
@@ -43,8 +43,8 @@ class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino = "someNino"
-      val calcId = "someCalcId"
+      val nino: String = "someNino"
+      val calcId: String = "someCalcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

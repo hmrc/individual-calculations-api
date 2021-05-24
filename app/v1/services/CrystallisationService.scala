@@ -61,5 +61,3 @@ class CrystallisationService @Inject()(connector: CrystallisationConnector) exte
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )
 }
-
-

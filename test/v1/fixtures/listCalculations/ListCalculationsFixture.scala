@@ -43,7 +43,7 @@ object CalculationListItemFixture {
        |   "type": ${Json.toJson(`type`)},
        |   "requestedBy": ${Json.toJson(requestedBy.get)}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }
 

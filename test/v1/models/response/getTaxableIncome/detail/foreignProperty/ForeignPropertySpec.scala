@@ -16,8 +16,8 @@
 
 package v1.models.response.getTaxableIncome.detail.foreignProperty
 
-import v1.fixtures.getTaxableIncome.detail.foreignProperty.ForeignPropertyFixture._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.ForeignPropertyFixture._
 import v1.models.utils.JsonErrorValidators
 
 class ForeignPropertySpec extends UnitSpec with JsonErrorValidators {

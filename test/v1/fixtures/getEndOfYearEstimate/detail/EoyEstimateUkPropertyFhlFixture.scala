@@ -33,8 +33,9 @@ object EoyEstimateUkPropertyFhlFixture {
   val eoyEstimateUkPropertyFhlJson: JsValue = Json.parse(
     s"""
       |{
-      |   "taxableIncome" : $taxableIncome,
-      |   "finalised" : ${finalised.get}
+      |   "taxableIncome": $taxableIncome,
+      |   "finalised": ${finalised.get}
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }

@@ -32,8 +32,7 @@ case class EeaPropertyFhl(totalIncome: Option[BigDecimal],
                           taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                           lossClaimsSummary: Option[LossClaimsSummary],
                           lossClaimsDetail: Option[LossClaimsDetail],
-                          bsas: Option[BusinessSourceAdjustableSummary]
-                         )
+                          bsas: Option[BusinessSourceAdjustableSummary])
 
 object EeaPropertyFhl {
   implicit val formats: OFormat[EeaPropertyFhl] = Json.format[EeaPropertyFhl]

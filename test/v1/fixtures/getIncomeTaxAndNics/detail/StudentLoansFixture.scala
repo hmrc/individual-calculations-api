@@ -54,6 +54,6 @@ object StudentLoansFixture {
        |   "studentLoanApportionedIncomeThreshold": $studentLoanApportionedIncomeThreshold,
        |   "studentLoanRate": $studentLoanRate
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

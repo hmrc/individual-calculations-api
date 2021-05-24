@@ -17,8 +17,8 @@
 package v1.models.response.getTaxableIncome.summary
 
 import support.UnitSpec
-import v1.models.utils.JsonErrorValidators
 import v1.fixtures.getTaxableIncome.summary.CalculationSummaryFixture._
+import v1.models.utils.JsonErrorValidators
 
 class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
 
