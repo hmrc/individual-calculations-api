@@ -29,28 +29,65 @@ import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdId
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.domain.TriggerCalculationRequestBody
 import v1.models.errors._
-import v1.models.hateoas.HateoasWrapper
+import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v1.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v1.support.BackendResponseMappingSupport
-import v1.models.hateoas.Link
-import v1.models.hateoas.Method.GET
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class TriggerCalculationControllerSpec extends ControllerBaseSpec
-  with MockEnrolmentsAuthService
-  with MockMtdIdLookupService
-  with MockTriggerCalculationParser
-  with MockHateoasFactory
-  with MockStandardService
-  with MockAuditService
-  with MockIdGenerator{
+class TriggerCalculationControllerSpec
+  extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockTriggerCalculationParser
+    with MockHateoasFactory
+    with MockStandardService
+    with MockAuditService
+    with MockIdGenerator {
+
+  private val nino = "AA123456A"
+  private val taxYear = "2017-18"
+  private val correlationId = "X-123"
+
+  private case class TaxYearWrapper(taxYear: String)
+
+  private object TaxYearWrapper {
+    implicit val format: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
+  }
+
+  val response: TriggerCalculationResponse = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
+
+  val json: JsValue = Json.parse(
+    """
+      |{
+      |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |  "links" : [
+      |      {
+      |      "href":"/foo/bar",
+      |      "method":"GET",
+      |      "rel":"test-relationship"
+      |      }
+      |   ]
+      |}
+    """.stripMargin
+  )
+
+  val triggerCalculation: TriggerCalculationRequestBody = TriggerCalculationRequestBody(taxYear)
+
+  val rawData: TriggerCalculationRawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
+  val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear)
+  val error: ErrorWrapper = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
+
+  val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
+  private def uri = "/"
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new TriggerCalculationController(
       authService = mockEnrolmentsAuthService,
@@ -67,38 +104,6 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
     MockedEnrolmentsAuthService.authoriseUser()
     MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val taxYear       = "2017-18"
-  private val correlationId = "X-123"
-
-  private case class TaxYearWrapper(taxYear: String)
-   private object TaxYearWrapper {
-    implicit val format: Format[TaxYearWrapper] = Json.format[TaxYearWrapper]
-  }
-
-  val response = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
-
-  val json: JsValue = Json.parse("""{
-      |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |  "links" : [
-      |      {
-      |      "href":"/foo/bar",
-      |      "method":"GET",
-      |      "rel":"test-relationship"
-      |      }
-      |   ]
-      |}""".stripMargin)
-
-  val triggerCalculation = TriggerCalculationRequestBody(taxYear)
-
-  val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
-  val requestData = TriggerCalculationRequest(Nino(nino), taxYear)
-  val error = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
-
-  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
-
-  private def uri = "/"
 
   "handleRequest" should {
     "return ACCEPTED with list of calculations" when {
@@ -122,10 +127,10 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(ACCEPTED, None, Some(json)))
-        val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -146,10 +151,10 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
         contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
           AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None))
-        val event = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -161,15 +166,16 @@ class TriggerCalculationControllerSpec extends ControllerBaseSpec
 
       import controller.endpointLogContext
 
-      val mappingChecks: RequestHandler[TriggerCalculationResponse, TriggerCalculationResponse] => Unit = allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
-        ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
-        ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
-        ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
-        ("RULE_TAX_YEAR_RANGE_INVALID", BAD_REQUEST, RuleTaxYearRangeInvalidError, BAD_REQUEST),
-        ("RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", BAD_REQUEST, RuleIncorrectOrEmptyBodyError, BAD_REQUEST),
-        ("RULE_NO_INCOME_SUBMISSIONS_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError, FORBIDDEN),
-        ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
-      )
+      val mappingChecks: RequestHandler[TriggerCalculationResponse, TriggerCalculationResponse] => Unit =
+        allChecks[TriggerCalculationResponse, TriggerCalculationResponse](
+          ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
+          ("FORMAT_TAX_YEAR", BAD_REQUEST, TaxYearFormatError, BAD_REQUEST),
+          ("RULE_TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError, BAD_REQUEST),
+          ("RULE_TAX_YEAR_RANGE_INVALID", BAD_REQUEST, RuleTaxYearRangeInvalidError, BAD_REQUEST),
+          ("RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", BAD_REQUEST, RuleIncorrectOrEmptyBodyError, BAD_REQUEST),
+          ("RULE_NO_INCOME_SUBMISSIONS_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError, FORBIDDEN),
+          ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
+        )
 
       MockStandardService
         .doServiceWithMappings(mappingChecks)

@@ -19,66 +19,57 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
-import play.api.libs.ws.{ WSRequest, WSResponse }
+import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
-import v1.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
+import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
 
-    val nino                    = "AA123456A"
+    val nino: String = "AA123456A"
     val taxYear: Option[String] = None
-    val correlationId           = "X-123"
+    val correlationId: String = "X-123"
 
     def uri: String = s"/$nino/self-assessment"
 
     def backendUrl: String = uri
 
-    val successBody = Json.parse(s"""{
-                                    |  "calculations": [
-                                    |    {
-                                    |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                    |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-                                    |      "type": "inYear",
-                                    |      "requestedBy": "hmrc",
-                                    |      "links" : [
-                                    |       {
-                                    |         "href" : "/individuals/calculations$uri/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                    |         "rel": "self",
-                                    |         "method": "GET"
-                                    |       }
-                                    |      ]
-                                    |    }
-                                    |  ],
-                                    |  "links": [
-                                    |    {
-                                    |      "href": "/individuals/calculations$uri",
-                                    |      "rel": "self",
-                                    |      "method": "GET"
-                                    |    },
-                                    |    {
-                                    |      "href": "/individuals/calculations$uri",
-                                    |      "rel": "trigger",
-                                    |      "method": "POST"
-                                    |    }
-                                    |  ]
-                                    |}""".stripMargin)
+    val successBody: JsValue = Json.parse(
+      s"""
+         |{
+         |  "calculations": [
+         |    {
+         |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+         |      "calculationTimestamp": "2019-03-17T09:22:59Z",
+         |      "type": "inYear",
+         |      "requestedBy": "hmrc",
+         |      "links" : [
+         |       {
+         |         "href" : "/individuals/calculations$uri/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+         |         "rel": "self",
+         |         "method": "GET"
+         |       }
+         |      ]
+         |    }
+         |  ],
+         |  "links": [
+         |    {
+         |      "href": "/individuals/calculations$uri",
+         |      "rel": "self",
+         |      "method": "GET"
+         |    },
+         |    {
+         |      "href": "/individuals/calculations$uri",
+         |      "rel": "trigger",
+         |      "method": "POST"
+         |    }
+         |  ]
+         |}
+       """.stripMargin
+    )
 
     def setupStubs(): StubMapping
 
@@ -97,7 +88,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
   "Calling the list calculations endpoint" should {
     "return a 200 status code" when {
       "valid request is made with a tax year" in new Test {
-        override val taxYear = Some("2018-19")
+        override val taxYear: Option[String] = Some("2018-19")
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -164,10 +155,12 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
       "backend service error" when {
 
         def errorBody(code: String): String =
-          s"""{
+          s"""
+             |{
              |  "code": "$code",
              |  "message": "backend message"
-             |}""".stripMargin
+             |}
+           """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new Test {

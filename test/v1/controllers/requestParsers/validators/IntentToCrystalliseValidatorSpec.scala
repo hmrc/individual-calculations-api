@@ -21,6 +21,7 @@ import v1.models.errors.{NinoFormatError, RuleTaxYearNotSupportedError, TaxYearF
 import v1.models.request.intentToCrystallise.IntentToCrystalliseRawData
 
 class IntentToCrystalliseValidatorSpec extends UnitSpec {
+
   private val validNino = "AA123456A"
   private val validTaxYear = "2017-18"
 

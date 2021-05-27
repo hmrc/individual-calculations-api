@@ -33,8 +33,8 @@ object EoyEstimateForeignPropertyFixture {
   val eoyEstimateForeignPropertyJson: JsValue = Json.parse(
     s"""
       |{
-      |   "taxableIncome" : $taxableIncome,
-      |   "finalised" : ${finalised.get}
+      |   "taxableIncome": $taxableIncome,
+      |   "finalised": ${finalised.get}
       |}
     """.stripMargin
   )

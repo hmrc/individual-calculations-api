@@ -18,13 +18,11 @@ package v1.models.response.getMetadata
 
 import play.api.libs.json.{Json, OFormat}
 
-case class MetadataExistence(
-                              incomeTaxAndNicsCalculated: Boolean = false,
-                              messages: Boolean = false,
-                              taxableIncome: Boolean = false,
-                              endOfYearEstimate: Boolean = false,
-                              allowancesDeductionsAndReliefs: Boolean = false
-                            )
+case class MetadataExistence(incomeTaxAndNicsCalculated: Boolean = false,
+                             messages: Boolean = false,
+                             taxableIncome: Boolean = false,
+                             endOfYearEstimate: Boolean = false,
+                             allowancesDeductionsAndReliefs: Boolean = false)
 
 object MetadataExistence {
   implicit val format: OFormat[MetadataExistence] = Json.format[MetadataExistence]

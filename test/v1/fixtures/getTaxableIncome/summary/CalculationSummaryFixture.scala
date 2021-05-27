@@ -33,8 +33,8 @@ object CalculationSummaryFixture {
   val calculationSummaryJson: JsValue = Json.parse(
     s"""
        |{
-       |   "totalIncomeReceivedFromAllSources":$totalIncomeReceivedFromAllSources,
-       |   "totalTaxableIncome":$totalTaxableIncome
+       |   "totalIncomeReceivedFromAllSources": $totalIncomeReceivedFromAllSources,
+       |   "totalTaxableIncome": $totalTaxableIncome
        |}
     """.stripMargin
   )

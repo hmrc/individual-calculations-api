@@ -35,6 +35,6 @@ object NicDetailFixture {
        |   "class2Nics": $class2NicDetailJson,
        |   "class4Nics": $class4NicDetailJson
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

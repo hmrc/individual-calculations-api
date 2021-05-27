@@ -30,24 +30,11 @@ import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetMessagesControllerISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
 
-    val nino                      = "AA123456A"
-    val correlationId             = "X-123"
-    val calcId                    = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val nino: String = "AA123456A"
+    val correlationId: String = "X-123"
+    val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -69,7 +56,9 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
         "metadata" -> metadataResponseJson,
         "messages" -> MessagesResponseFixture.messagesResponseJson)
 
-      val hateoasLinks: JsValue = Json.parse("""{
+      val hateoasLinks: JsValue = Json.parse(
+        """
+          |{
           |    "links":[
           |      {
           |         "href": "/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -82,7 +71,9 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
           |         "rel": "self"
           |         }
           |      ]
-          |}""".stripMargin)
+          |}
+        """.stripMargin
+      )
 
       val successOutput = messagesResponseJson.as[JsObject].deepMerge(hateoasLinks.as[JsObject])
 
@@ -204,10 +195,12 @@ class GetMessagesControllerISpec extends IntegrationBaseSpec {
       "backend service error" when {
 
         def errorBody(code: String): String =
-          s"""{
+          s"""
+             |{
              |  "code": "$code",
              |  "message": "backend message"
-             |}""".stripMargin
+             |}
+           """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new Test {

@@ -16,8 +16,8 @@
 
 package v1.models.response.getTaxableIncome.detail.foreignProperty.detail
 
-import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.DefaultCarriedForwardLossFixture._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.foreignProperty.detail.DefaultCarriedForwardLossFixture._
 import v1.models.utils.JsonErrorValidators
 
 class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {

@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getEndOfYearEstimate.EoyEstimateResponseFixture._
 import v1.hateoas.HateoasFactory
-import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 
 class EoyEstimateResponseSpec extends UnitSpec {
 
@@ -43,8 +43,8 @@ class EoyEstimateResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino = "someNino"
-      val calcId = "someCalcId"
+      val nino: String = "someNino"
+      val calcId: String = "someCalcId"
       MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 

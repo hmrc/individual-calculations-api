@@ -43,7 +43,8 @@ object LossClaimSummaryFixture {
     )
 
   val lossClaimSummaryJson: JsValue = Json.parse(
-    s"""{
+    s"""
+       |{
        |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
        |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
        |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
@@ -52,5 +53,7 @@ object LossClaimSummaryFixture {
        |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
        |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
        |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
-       |}""".stripMargin)
+       |}
+     """.stripMargin
+  )
 }

@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class StandardServiceSpec extends ServiceSpec {
   test =>
 
-  val requestDefn = RequestDefn.Get("url")
+  val requestDefn: RequestDefn.Get = RequestDefn.Get("url")
   case class Response(data: String)
 
   object PassedThroughError extends MtdError("PASSED_THROUGH", "msg1")

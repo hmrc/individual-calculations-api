@@ -15,12 +15,13 @@
  */
 
 package v1.handler
+
 import play.api.http.Status._
-import play.api.libs.json.{ JsValue, Reads }
+import play.api.libs.json.{JsValue, Reads}
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v1.handler.RequestDefn.{ Get, Post }
-import v1.handler.RequestHandler.{ ErrorMapping, SuccessMapping }
-import v1.models.errors.{ ErrorWrapper, MtdError }
+import v1.handler.RequestDefn.{Get, Post}
+import v1.handler.RequestHandler.{ErrorMapping, SuccessMapping}
+import v1.models.errors.{ErrorWrapper, MtdError}
 import v1.models.outcomes.ResponseWrapper
 
 trait RequestHandler[BackendResp, APIResp] {

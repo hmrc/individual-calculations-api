@@ -21,7 +21,7 @@ import support.UnitSpec
 
 class CrystallisationRequestBodySpec extends UnitSpec {
 
-  val crystallisationRequestBodyModel = CrystallisationRequestBody(calculationId = "2018-19")
+  val crystallisationRequestBodyModel: CrystallisationRequestBody = CrystallisationRequestBody(calculationId = "2018-19")
 
   val crystallisationRequestBodyJson: JsValue = Json.parse(
     """

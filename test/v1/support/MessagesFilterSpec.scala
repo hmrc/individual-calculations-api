@@ -21,10 +21,11 @@ import v1.models.domain.MessageType
 import v1.models.response.getMessages.{MessagesResponse, Message}
 
 class MessagesFilterSpec extends UnitSpec {
-  val filter: MessagesFilter = new MessagesFilter {}
-  val calcId = "someCalcId"
 
-  val messages = MessagesResponse(
+  val filter: MessagesFilter = new MessagesFilter {}
+  val calcId: String = "someCalcId"
+
+  val messages: MessagesResponse = MessagesResponse(
     Some(Seq(Message("infoId", "infoMessage"))),
     Some(Seq(Message("warningId", "warningMessage"))),
     Some(Seq(Message("errorId", "errorMessage"))),

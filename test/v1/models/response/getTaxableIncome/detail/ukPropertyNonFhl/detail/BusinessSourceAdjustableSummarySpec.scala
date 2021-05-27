@@ -23,7 +23,12 @@ import v1.models.utils.JsonErrorValidators
 class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
-    mandatoryProperties = Seq("bsasId", "applied"),
-    optionalProperties = Seq()
+    mandatoryProperties = Seq(
+      "bsasId",
+      "applied"
+    ),
+    optionalProperties = Seq(
+      "links"
+    )
   )
 }

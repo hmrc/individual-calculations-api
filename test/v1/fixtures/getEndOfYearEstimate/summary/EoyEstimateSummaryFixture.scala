@@ -51,17 +51,17 @@ object EoyEstimateSummaryFixture {
   val eoyEstimateSummaryJson: JsValue = Json.parse(
     s"""
       |{
-      |   "totalEstimatedIncome" : ${totalEstimatedIncome.get},
-      |   "totalTaxableIncome" : ${totalTaxableIncome.get},
-      |   "incomeTaxAmount" : ${incomeTaxAmount.get},
-      |   "nic2" : ${nic2.get},
-      |   "nic4" : ${nic4.get},
-      |   "totalNicAmount" : ${totalNicAmount.get},
-      |   "totalStudentLoansRepaymentAmount" : ${totalStudentLoansRepaymentAmount.get},
-      |   "totalAnnualPaymentsTaxCharged" : ${totalAnnualPaymentsTaxCharged.get},
-      |   "totalRoyaltyPaymentsTaxCharged" : ${totalRoyaltyPaymentsTaxCharged.get},
-      |   "totalTaxDeducted" : ${totalTaxDeducted.get},
-      |   "incomeTaxNicAmount" : ${incomeTaxNicAmount.get}
+      |   "totalEstimatedIncome": ${totalEstimatedIncome.get},
+      |   "totalTaxableIncome": ${totalTaxableIncome.get},
+      |   "incomeTaxAmount": ${incomeTaxAmount.get},
+      |   "nic2": ${nic2.get},
+      |   "nic4": ${nic4.get},
+      |   "totalNicAmount": ${totalNicAmount.get},
+      |   "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+      |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+      |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+      |   "totalTaxDeducted": ${totalTaxDeducted.get},
+      |   "incomeTaxNicAmount": ${incomeTaxNicAmount.get}
       |}
     """.stripMargin
   )

@@ -48,8 +48,61 @@ class IntentToCrystalliseControllerSpec
     with HateoasLinks
     with MockIdGenerator {
 
+  val nino: String = "AA123456A"
+  val taxYear: String = "2019-20"
+  val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+  val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
+  val rawData: IntentToCrystalliseRawData = IntentToCrystalliseRawData(
+    nino = nino,
+    taxYear = taxYear
+  )
+
+  val requestData: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
+    nino = Nino(nino),
+    taxYear = DesTaxYear.fromMtd(taxYear)
+  )
+
+  val responseData: IntentToCrystalliseResponse = IntentToCrystalliseResponse(
+    calculationId = calculationId
+  )
+
+  val responseJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "calculationId": "$calculationId",
+       |   "links":[
+       |      {
+       |         "href": "/individuals/calculations/$nino/self-assessment/$calculationId",
+       |         "method": "GET",
+       |         "rel": "self"
+       |      },
+       |      {
+       |         "href": "/individuals/calculations/crystallisation/$nino/$taxYear/crystallise",
+       |         "method": "POST",
+       |         "rel": "crystallise"
+       |      }
+       |   ]
+       |}
+    """.stripMargin
+  )
+
+  def event(auditResponse: AuditResponse): AuditEvent[GenericAuditDetail] =
+    AuditEvent(
+      auditType = "TriggerIntentToCrystalliseSelfAssessmentCalculation",
+      transactionName = "intent-to-crystallise",
+      detail = GenericAuditDetail(
+        userType = "Individual",
+        agentReferenceNumber = None,
+        pathParams = Map("nino" -> nino, "taxYear" -> taxYear),
+        requestBody = None,
+        `X-CorrelationId` = correlationId,
+        auditResponse = auditResponse
+      )
+    )
+
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new IntentToCrystalliseController(
       authService = mockEnrolmentsAuthService,
@@ -72,59 +125,6 @@ class IntentToCrystalliseControllerSpec
       crystallise(mockAppConfig, nino, taxYear)
     )
   }
-
-  val nino: String = "AA123456A"
-  val taxYear: String = "2019-20"
-  val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-  val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
-
-  val rawData: IntentToCrystalliseRawData = IntentToCrystalliseRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
-
-  val requestData: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
-    nino = Nino(nino),
-    taxYear = DesTaxYear.fromMtd(taxYear)
-  )
-
-  val responseData: IntentToCrystalliseResponse = IntentToCrystalliseResponse(
-    calculationId = calculationId
-  )
-
-  val responseJson: JsValue = Json.parse(
-    s"""
-      |{
-      |   "calculationId": "$calculationId",
-      |   "links":[
-      |      {
-      |         "href": "/individuals/calculations/$nino/self-assessment/$calculationId",
-      |         "method": "GET",
-      |         "rel": "self"
-      |      },
-      |      {
-      |         "href": "/individuals/calculations/crystallisation/$nino/$taxYear/crystallise",
-      |         "method": "POST",
-      |         "rel": "crystallise"
-      |      }
-      |   ]
-      |}
-    """.stripMargin
-  )
-
-  def event(auditResponse: AuditResponse): AuditEvent[GenericAuditDetail] =
-    AuditEvent(
-      auditType = "TriggerIntentToCrystalliseSelfAssessmentCalculation",
-      transactionName = "intent-to-crystallise",
-      detail = GenericAuditDetail(
-        userType = "Individual",
-        agentReferenceNumber = None,
-        pathParams = Map("nino" -> nino, "taxYear" -> taxYear),
-        requestBody = None,
-        `X-CorrelationId` = correlationId,
-        auditResponse = auditResponse
-      )
-    )
 
   "IntentToCrystalliseController" should {
     "return OK" when {

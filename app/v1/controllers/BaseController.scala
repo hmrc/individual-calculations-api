@@ -37,5 +37,3 @@ trait BaseController {
   }
 
 }
-
-

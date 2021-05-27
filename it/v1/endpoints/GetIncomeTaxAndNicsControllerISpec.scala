@@ -28,38 +28,30 @@ import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
 
-    val nino           = "AA123456A"
-    val correlationId  = "X-123"
+    val nino: String = "AA123456A"
+    val correlationId: String = "X-123"
     val calcId: String = fixtureCalculationId
 
-    val linksJson: JsObject = Json.parse(s"""{
-         |    "links": [{
-         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId",
-         |      "method": "GET",
-         |      "rel": "metadata"
-         |    },{
-         |      "href": "/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
-         |      "method": "GET",
-         |      "rel": "self"
-         |    }
-         |    ]
+    val linksJson: JsObject = Json.parse(
+      s"""
+         |{
+         |   "links":[
+         |      {
+         |         "href":"/individuals/calculations/$nino/self-assessment/$calcId",
+         |         "method":"GET",
+         |         "rel":"metadata"
+         |      },
+         |      {
+         |         "href":"/individuals/calculations/$nino/self-assessment/$calcId/income-tax-nics-calculated",
+         |         "method":"GET",
+         |         "rel":"self"
+         |      }
+         |   ]
          |}
-         |""".stripMargin).as[JsObject]
+        """.stripMargin
+    ).as[JsObject]
 
     def uri: String = s"/$nino/self-assessment/$calcId/income-tax-nics-calculated"
 
@@ -141,10 +133,12 @@ class GetIncomeTaxAndNicsControllerISpec extends IntegrationBaseSpec {
       "backend service error" when {
 
         def errorBody(code: String): String =
-          s"""{
+          s"""
+             |{
              |  "code": "$code",
              |  "message": "backend message"
-             |}""".stripMargin
+             |}
+           """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new Test {

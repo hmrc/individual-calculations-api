@@ -27,24 +27,11 @@ import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class GetMetadataControllerISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
 
-    val nino          = "AA123456A"
-    val correlationId = "X-123"
-    val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val nino: String = "AA123456A"
+    val correlationId: String = "X-123"
+    val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def uri: String = s"/$nino/self-assessment/$calcId"
 
@@ -71,7 +58,8 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
         }
 
         val successBody: JsObject = Json.parse(
-          s"""|{
+          s"""
+              |{
               |  "metadata": {
               |    "id": "$calcId",
               |    "taxYear": "2018-19",
@@ -89,10 +77,12 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
               |     "allowancesDeductionsAndReliefs": false
               |    }
               |  }
-              |}""".stripMargin).as[JsObject]
+              |}""".stripMargin
+        ).as[JsObject]
 
         val successOutput: JsObject = Json.parse(
-          s"""{
+          s"""
+             |{
              |    "id": "$calcId",
              |    "taxYear": "2018-19",
              |    "requestedBy": "customer",
@@ -101,10 +91,13 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
              |    "calculationType": "crystallisation",
              |    "intentToCrystallise": true,
              |    "crystallised": false
-             |}""".stripMargin).as[JsObject]
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
         val hateoas: JsObject = Json.parse(
-          s"""{
+          s"""
+             |{
              |    "links": [
              |      {
              |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
@@ -112,7 +105,9 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
              |       "rel": "self"
              |      }
              |    ]
-             |}""".stripMargin).as[JsObject]
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -130,7 +125,8 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
         }
 
         val successBody: JsObject = Json.parse(
-          s"""|{
+          s"""
+              |{
               |  "metadata": {
               |    "id": "$calcId",
               |    "taxYear": "2018-19",
@@ -148,10 +144,13 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
               |     "allowancesDeductionsAndReliefs": true
               |    }
               |  }
-              |}""".stripMargin).as[JsObject]
+              |}
+             """.stripMargin
+        ).as[JsObject]
 
         val successOutput: JsObject = Json.parse(
-          s"""{
+          s"""
+             |{
              |    "id": "$calcId",
              |    "taxYear": "2018-19",
              |    "requestedBy": "customer",
@@ -160,10 +159,13 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
              |    "calculationType": "crystallisation",
              |    "intentToCrystallise": true,
              |    "crystallised": false
-             |}""".stripMargin).as[JsObject]
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
         val hateoas: JsObject = Json.parse(
-          s"""{
+          s"""
+             |{
              |    "links": [
              |      {
              |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
@@ -196,7 +198,9 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
              |       "rel": "messages"
              |      }
              |    ]
-             |}""".stripMargin).as[JsObject]
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -213,39 +217,49 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(s"""|{
-          |  "metadata": {
-          |    "id": "$calcId",
-          |    "taxYear": "2018-19",
-          |    "requestedBy": "customer",
-          |    "calculationReason": "customerRequest",
-          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-          |    "calculationType": "crystallisation",
-          |    "intentToCrystallise": true,
-          |    "crystallised": false,
-          |    "metadataExistence": {
-          |     "incomeTaxAndNicsCalculated": true,
-          |     "messages": false,
-          |     "taxableIncome": false,
-          |     "endOfYearEstimate": false,
-          |     "allowancesDeductionsAndReliefs": false
-          |    }
-          |  }
-          |}""".stripMargin).as[JsObject]
+        val successBody: JsObject = Json.parse(
+          s"""
+            |{
+            |  "metadata": {
+            |    "id": "$calcId",
+            |    "taxYear": "2018-19",
+            |    "requestedBy": "customer",
+            |    "calculationReason": "customerRequest",
+            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+            |    "calculationType": "crystallisation",
+            |    "intentToCrystallise": true,
+            |    "crystallised": false,
+            |    "metadataExistence": {
+            |     "incomeTaxAndNicsCalculated": true,
+            |     "messages": false,
+            |     "taxableIncome": false,
+            |     "endOfYearEstimate": false,
+            |     "allowancesDeductionsAndReliefs": false
+            |    }
+            |  }
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
 
-        val successOutput: JsObject = Json.parse(s"""{
-          |    "id": "$calcId",
-          |    "taxYear": "2018-19",
-          |    "requestedBy": "customer",
-          |    "calculationReason": "customerRequest",
-          |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-          |    "calculationType": "crystallisation",
-          |    "intentToCrystallise": true,
-          |    "crystallised": false
-          |}""".stripMargin).as[JsObject]
+        val successOutput: JsObject = Json.parse(
+          s"""
+            |{
+            |    "id": "$calcId",
+            |    "taxYear": "2018-19",
+            |    "requestedBy": "customer",
+            |    "calculationReason": "customerRequest",
+            |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+            |    "calculationType": "crystallisation",
+            |    "intentToCrystallise": true,
+            |    "crystallised": false
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
-        val hateoas: JsObject = Json.parse(s"""{
+        val hateoas: JsObject = Json.parse(
+          s"""
+            |{
             |    "links": [
             |      {
             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
@@ -258,7 +272,9 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |       "rel": "income-tax-and-nics-calculated"
             |      }
             |    ]
-            |}""".stripMargin).as[JsObject]
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -275,7 +291,9 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(s"""|{
+        val successBody: JsObject = Json.parse(
+          s"""
+            |{
             |  "metadata": {
             |    "id": "$calcId",
             |    "taxYear": "2018-19",
@@ -294,9 +312,13 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |       "allowancesDeductionsAndReliefs": false
             |    }
             |  }
-            |}""".stripMargin).as[JsObject]
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
-        val successOutput: JsObject = Json.parse(s"""{
+        val successOutput: JsObject = Json.parse(
+          s"""
+            |{
             |    "id": "$calcId",
             |    "taxYear": "2018-19",
             |    "requestedBy": "customer",
@@ -306,9 +328,13 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |    "intentToCrystallise": true,
             |    "crystallised": false,
             |    "calculationErrorCount" : 1
-            |}""".stripMargin).as[JsObject]
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
-        val hateoasErrors: JsObject = Json.parse(s"""{
+        val hateoasErrors: JsObject = Json.parse(
+          s"""
+            |{
             |    "links": [
             |      {
             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
@@ -316,7 +342,9 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
             |       "rel": "self"
             |      }
             |    ]
-            |}""".stripMargin).as[JsObject]
+            |}
+          """.stripMargin
+        ).as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -333,53 +361,65 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(s"""|{
-                                                  |  "metadata": {
-                                                  |    "id": "$calcId",
-                                                  |    "taxYear": "2018-19",
-                                                  |    "requestedBy": "customer",
-                                                  |    "calculationReason": "customerRequest",
-                                                  |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                                  |    "calculationType": "crystallisation",
-                                                  |    "intentToCrystallise": true,
-                                                  |    "crystallised": false,
-                                                  |    "calculationErrorCount" : 1,
-                                                  |     "metadataExistence": {
-                                                  |       "incomeTaxAndNicsCalculated": false,
-                                                  |       "messages": true,
-                                                  |       "taxableIncome": false,
-                                                  |       "endOfYearEstimate": false,
-                                                  |       "allowancesDeductionsAndReliefs": false
-                                                  |    }
-                                                  |  }
-                                                  |}""".stripMargin).as[JsObject]
+        val successBody: JsObject = Json.parse(
+          s"""
+             |{
+             |   "metadata":{
+             |      "id":"$calcId",
+             |      "taxYear":"2018-19",
+             |      "requestedBy":"customer",
+             |      "calculationReason":"customerRequest",
+             |      "calculationTimestamp":"2019-11-15T09:35:15.094Z",
+             |      "calculationType":"crystallisation",
+             |      "intentToCrystallise":true,
+             |      "crystallised":false,
+             |      "calculationErrorCount":1,
+             |      "metadataExistence":{
+             |         "incomeTaxAndNicsCalculated":false,
+             |         "messages":true,
+             |         "taxableIncome":false,
+             |         "endOfYearEstimate":false,
+             |         "allowancesDeductionsAndReliefs":false
+             |      }
+             |   }
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
-        val successOutput: JsObject = Json.parse(s"""{
-                                                  |    "id": "$calcId",
-                                                  |    "taxYear": "2018-19",
-                                                  |    "requestedBy": "customer",
-                                                  |    "calculationReason": "customerRequest",
-                                                  |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                                                  |    "calculationType": "crystallisation",
-                                                  |    "intentToCrystallise": true,
-                                                  |    "crystallised": false,
-                                                  |    "calculationErrorCount" : 1
-                                                  |}""".stripMargin).as[JsObject]
+        val successOutput: JsObject = Json.parse(
+          s"""
+             |{
+             |    "id": "$calcId",
+             |    "taxYear": "2018-19",
+             |    "requestedBy": "customer",
+             |    "calculationReason": "customerRequest",
+             |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+             |    "calculationType": "crystallisation",
+             |    "intentToCrystallise": true,
+             |    "crystallised": false,
+             |    "calculationErrorCount" : 1
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
-        val hateoasErrors: JsObject = Json.parse(s"""{
-                                                   |    "links": [
-                                                   |      {
-                                                   |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
-                                                   |       "method": "GET",
-                                                   |       "rel": "self"
-                                                   |      },
-                                                   |      {
-                                                   |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
-                                                   |       "method": "GET",
-                                                   |       "rel": "messages"
-                                                   |      }
-                                                   |    ]
-                                                   |}""".stripMargin).as[JsObject]
+        val hateoasErrors: JsObject = Json.parse(
+          s"""
+             |{
+             |    "links": [
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId",
+             |       "method": "GET",
+             |       "rel": "self"
+             |      },
+             |      {
+             |       "href": "/individuals/calculations/$nino/self-assessment/$calcId/messages",
+             |       "method": "GET",
+             |       "rel": "messages"
+             |      }
+             |    ]
+             |}
+           """.stripMargin
+        ).as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -422,10 +462,12 @@ class GetMetadataControllerISpec extends IntegrationBaseSpec {
       "backend service error" when {
 
         def errorBody(code: String): String =
-          s"""{
+          s"""
+             |{
              |  "code": "$code",
              |  "message": "backend message"
-             |}""".stripMargin
+             |}
+           """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new Test {

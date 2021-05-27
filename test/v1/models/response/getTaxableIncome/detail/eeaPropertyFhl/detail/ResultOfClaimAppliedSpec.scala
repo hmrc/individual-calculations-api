@@ -17,8 +17,8 @@
 package v1.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail
 
 import support.UnitSpec
-import v1.models.utils.JsonErrorValidators
 import v1.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.ResultOfClaimAppliedFixture._
+import v1.models.utils.JsonErrorValidators
 
 class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
 

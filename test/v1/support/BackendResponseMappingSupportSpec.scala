@@ -28,7 +28,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
   implicit val logContext: EndpointLogContext = EndpointLogContext("ctrl", "ep")
   val mapping: BackendResponseMappingSupport = new BackendResponseMappingSupport with Logging {}
 
-  val correlationId = "someCorrelationId"
+  val correlationId: String = "someCorrelationId"
 
   object Error1 extends MtdError("msg", "code1")
 
@@ -41,8 +41,8 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
   object ErrorPassthrough extends MtdError("PASS_THROUGH", "message")
 
   // WLOG
-  val backendStatus = 455
-  val mtdStatus     = 466
+  val backendStatus: Int = 455
+  val mtdStatus: Int = 466
 
   val passThroughErrors = List(ErrorPassthrough)
 
@@ -106,8 +106,8 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "default main error to DownstreamError ignore other errors" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId,
-                            BackendErrors(backendStatus,
-                                          List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
+              BackendErrors(backendStatus,
+                List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
             ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }

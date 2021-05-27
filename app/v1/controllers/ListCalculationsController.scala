@@ -33,15 +33,14 @@ import v1.services._
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsController @Inject()(
-                                            authService: EnrolmentsAuthService,
-                                            lookupService: MtdIdLookupService,
-                                            listCalculationsParser: ListCalculationsParser,
-                                            service: StandardService,
-                                            hateoasFactory: HateoasFactory,
-                                            auditService: AuditService,
-                                            cc: ControllerComponents,
-                                            idGenerator: IdGenerator,
+class ListCalculationsController @Inject()(authService: EnrolmentsAuthService,
+                                           lookupService: MtdIdLookupService,
+                                           listCalculationsParser: ListCalculationsParser,
+                                           service: StandardService,
+                                           hateoasFactory: HateoasFactory,
+                                           auditService: AuditService,
+                                           cc: ControllerComponents,
+                                           idGenerator: IdGenerator,
                                           )(implicit ec: ExecutionContext)
   extends StandardController[ListCalculationsRawData,
     ListCalculationsRequest,

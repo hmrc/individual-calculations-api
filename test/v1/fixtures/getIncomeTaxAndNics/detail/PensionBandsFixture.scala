@@ -48,6 +48,6 @@ object PensionBandsFixture {
        |   "contributionAmount": $contributionAmount,
        |   "pensionCharge": $pensionCharge
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

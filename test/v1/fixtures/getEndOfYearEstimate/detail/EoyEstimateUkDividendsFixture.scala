@@ -31,7 +31,7 @@ object EoyEstimateUkDividendsFixture {
   val eoyEstimateUkDividendsJson: JsValue = Json.parse(
     s"""
       |{
-      |   "taxableIncome" : $taxableIncome
+      |   "taxableIncome": $taxableIncome
       |}
     """.stripMargin
   )

@@ -20,13 +20,13 @@ import play.api.libs.json.{JsValue, Json}
 import v1.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
 import v1.fixtures.getIncomeTaxAndNics.summary.CalculationSummaryFixture._
 import v1.fixtures.getMetadata.MetadataResponseFixture._
-import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsResponse
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.models.response.calculationWrappers.CalculationWrapperOrError._
+import v1.models.response.getIncomeTaxAndNics.IncomeTaxAndNicsResponse
 
 object IncomeTaxAndNicsResponseFixture {
 
-  val fixtureCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val fixtureCalculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val incomeTaxAndNicsResponseModel: IncomeTaxAndNicsResponse =
     IncomeTaxAndNicsResponse(
@@ -45,7 +45,7 @@ object IncomeTaxAndNicsResponseFixture {
        |   "detail": $calculationDetailJson,
        |   "id": "$fixtureCalculationId"
        |}
-    """.stripMargin
+     """.stripMargin
   )
 
   val incomeTaxAndNicsResponseTopLevelJson: JsValue = Json.parse(
@@ -56,7 +56,9 @@ object IncomeTaxAndNicsResponseFixture {
        |      "summary": $calculationSummaryJson,
        |      "detail": $calculationDetailJson
        |   }
-       |}""".stripMargin)
+       |}
+     """.stripMargin
+  )
 
   val errorResponseTopLevelJson: JsValue = Json.parse(
     s"""
@@ -78,5 +80,7 @@ object IncomeTaxAndNicsResponseFixture {
        |        {"id":"err2", "text":"text2"}
        |     ]
        |  }
-       |}""".stripMargin)
+       |}
+     """.stripMargin
+  )
 }

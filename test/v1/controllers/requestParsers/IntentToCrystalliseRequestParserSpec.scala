@@ -22,12 +22,13 @@ import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockIntentToCrystalliseValidator
 import v1.models.domain.DesTaxYear
 import v1.models.errors._
-import v1.models.request.intentToCrystallise.{ IntentToCrystalliseRawData, IntentToCrystalliseRequest }
+import v1.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 
 class IntentToCrystalliseRequestParserSpec extends UnitSpec {
-  val nino    = "AA123456B"
-  val taxYear = "2017-18"
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
+  val nino: String = "AA123456B"
+  val taxYear: String = "2017-18"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockIntentToCrystalliseValidator {
     lazy val parser = new IntentToCrystalliseRequestParser(mockIntentToCrystalliseValidator)
@@ -36,7 +37,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
   "parse" when {
     "valid data is supplied" should {
       "return a valid request object" in new Test {
-        val data = IntentToCrystalliseRawData(nino, taxYear)
+        val data: IntentToCrystalliseRawData = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(Nil)
 
         parser.parseRequest(data) shouldBe Right(IntentToCrystalliseRequest(Nino(nino), DesTaxYear.fromMtd(taxYear)))
@@ -45,7 +46,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
 
     "single validation error" should {
       "return the error" in new Test {
-        val data = IntentToCrystalliseRawData(nino, taxYear)
+        val data: IntentToCrystalliseRawData = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
@@ -54,7 +55,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
 
     "multiple validation errors" should {
       "return the errors" in new Test {
-        val data = IntentToCrystalliseRawData(nino, taxYear)
+        val data: IntentToCrystalliseRawData = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))

@@ -40,5 +40,4 @@ trait MockCrystallisationService extends MockFactory {
         .expects(requestData, *, *, *, *)
     }
   }
-
 }

@@ -34,7 +34,7 @@ object UnclaimedLossFixture {
     )
 
   val unclaimedLossJson: JsValue = Json.parse(
-    f"""
+    s"""
        |{
        |   "taxYearLossIncurred": "$taxYearLossIncurred",
        |   "currentLossValue": $currentLossValue,

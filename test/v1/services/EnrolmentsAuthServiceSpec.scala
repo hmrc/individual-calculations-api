@@ -226,7 +226,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       "return a valid AgentReferenceNumber" when {
         "a valid agent Enrolment is supplied" in new Test{
           val expectedArn = "123567890"
-          val actualArn = target.getAgentReferenceFromEnrolments(Enrolments(
+          val actualArn: Option[String] = target.getAgentReferenceFromEnrolments(Enrolments(
             Set(
               Enrolment(
                 "HMRC-AS-AGENT",
@@ -240,6 +240,5 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         }
       }
     }
-
   }
 }

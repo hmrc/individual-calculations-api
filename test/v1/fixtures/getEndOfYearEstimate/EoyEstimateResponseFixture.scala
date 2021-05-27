@@ -19,8 +19,8 @@ package v1.fixtures.getEndOfYearEstimate
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getEndOfYearEstimate.detail.EoyEstimateDetailFixture._
 import v1.fixtures.getEndOfYearEstimate.summary.EoyEstimateSummaryFixture._
-import v1.models.response.getEoyEstimate.EoyEstimateResponse
 import v1.fixtures.getMetadata.MetadataResponseFixture._
+import v1.models.response.getEoyEstimate.EoyEstimateResponse
 
 object EoyEstimateResponseFixture {
 
@@ -34,10 +34,10 @@ object EoyEstimateResponseFixture {
   val eoyEstimateResponseJson: JsObject = Json.parse(
     s"""
        |{
-       |  "summary" : $eoyEstimateSummaryJson,
-       |  "detail" : $eoyEstimateDetailJson
+       |  "summary": $eoyEstimateSummaryJson,
+       |  "detail": $eoyEstimateDetailJson
        |}
-    """.stripMargin
+     """.stripMargin
   ).as[JsObject]
 
   val eoyEstimateResponseTopLevelJson: JsValue = Json.parse(
@@ -49,6 +49,6 @@ object EoyEstimateResponseFixture {
        |   "detail" : $eoyEstimateDetailJson
        | }
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

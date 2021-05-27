@@ -56,8 +56,8 @@ trait HttpParser {
     implicit val reads: Reads[BackendError] =
       (
         __.read[BackendErrorCode] and
-        (__ \ "errors").readNullable[List[BackendErrorCode]]
-      ) { (singleError, errors) =>
+          (__ \ "errors").readNullable[List[BackendErrorCode]]
+        ) { (singleError, errors) =>
         BackendErrors(response.status, singleError :: errors.getOrElse(Nil))
       }
 

@@ -28,23 +28,21 @@ import v1.models.audit.GenericAuditDetail
 import v1.models.errors._
 import v1.models.hateoas.HateoasWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse}
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
+import v1.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse}
 import v1.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
-class GetAllowancesDeductionsAndReliefsController @Inject()(
-                                                             authService: EnrolmentsAuthService,
-                                                             lookupService: MtdIdLookupService,
-                                                             parser: GetCalculationParser,
-                                                             service: StandardService,
-                                                             hateoasFactory: HateoasFactory,
-                                                             auditService: AuditService,
-                                                             cc: ControllerComponents,
-                                                             idGenerator: IdGenerator,
-                                                             )(implicit ec: ExecutionContext)
-
+class GetAllowancesDeductionsAndReliefsController @Inject()(authService: EnrolmentsAuthService,
+                                                            lookupService: MtdIdLookupService,
+                                                            parser: GetCalculationParser,
+                                                            service: StandardService,
+                                                            hateoasFactory: HateoasFactory,
+                                                            auditService: AuditService,
+                                                            cc: ControllerComponents,
+                                                            idGenerator: IdGenerator,
+                                                           )(implicit ec: ExecutionContext)
   extends StandardController[GetCalculationRawData,
     GetCalculationRequest,
     CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],

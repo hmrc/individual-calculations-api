@@ -17,7 +17,7 @@
 package routing
 
 import com.google.inject.ImplementedBy
-import config.{AppConfig, FeatureSwitch}
+import config.AppConfig
 import definition.Versions.{VERSION_1, VERSION_2}
 import javax.inject.Inject
 import play.api.routing.Router
@@ -39,24 +39,9 @@ trait VersionRoutingMap extends Logging {
 case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
                                            defaultRouter: Router,
                                            v1Router: v1.Routes,
-                                           v1r2Router: v1r2.Routes,
-                                           v2Router: v2.Routes,
-                                           liveRouter: live.Routes) extends VersionRoutingMap {
-
-  val featureSwitch: FeatureSwitch = FeatureSwitch(appConfig.featureSwitch)
-
+                                           v2Router: v2.Routes) extends VersionRoutingMap {
   val map: Map[String, Router] = Map(
-    VERSION_1 -> {
-      if (featureSwitch.isV1R2RoutingEnabled) {
-        v1r2Router
-      }
-      else if (featureSwitch.isFullRoutingEnabled) {
-        v1Router
-      }
-      else {
-        liveRouter
-      }
-    },
+    VERSION_1 -> v1Router,
     VERSION_2 -> v2Router
   )
 }

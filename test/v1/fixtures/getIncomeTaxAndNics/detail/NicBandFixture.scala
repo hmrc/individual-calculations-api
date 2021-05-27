@@ -48,6 +48,6 @@ object NicBandFixture {
        |	 "income": $income,
        |	 "amount": $amount
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

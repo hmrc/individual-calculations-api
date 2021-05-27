@@ -42,6 +42,6 @@ object Class4NicDetailFixture {
        |   "totalIncomeChargeableToClass4": ${totalIncomeChargeableToClass4.get},
        |   "class4NicBands": [$nicBandJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

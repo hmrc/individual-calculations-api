@@ -35,10 +35,10 @@ object Class4LossesFixture {
   val class4LossesJson: JsValue = Json.parse(
     s"""
        |{
-       |   "totalClass4LossesAvailable" : ${totalClass4LossesAvailable.get},
-       |   "totalClass4LossesUsed" : ${totalClass4LossesUsed.get},
-       |   "totalClass4LossesCarriedForward" : ${totalClass4LossesCarriedForward.get}
+       |   "totalClass4LossesAvailable": ${totalClass4LossesAvailable.get},
+       |   "totalClass4LossesUsed": ${totalClass4LossesUsed.get},
+       |   "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

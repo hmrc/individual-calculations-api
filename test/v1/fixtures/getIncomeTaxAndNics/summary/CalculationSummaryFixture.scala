@@ -47,15 +47,16 @@ object CalculationSummaryFixture {
   val calculationSummaryJson: JsValue = Json.parse(
     s"""
        |{
-       |   "incomeTax" : $incomeTaxSummaryJson,
-       |   "nics" : $nicSummaryJson,
-       |   "totalStudentLoansRepaymentAmount" : ${totalStudentLoansRepaymentAmount.get},
-       |   "totalAnnualPaymentsTaxCharged" : ${totalAnnualPaymentsTaxCharged.get},
-       |   "totalRoyaltyPaymentsTaxCharged" : ${totalRoyaltyPaymentsTaxCharged.get},
-       |   "totalIncomeTaxNicsCharged" : ${totalIncomeTaxNicsCharged.get},
-       |   "totalTaxDeducted" : ${totalTaxDeducted.get},
-       |   "totalIncomeTaxAndNicsDue" : $totalIncomeTaxAndNicsDue,
-       |   "taxRegime" : "$taxRegime"
+       |   "incomeTax": $incomeTaxSummaryJson,
+       |   "nics": $nicSummaryJson,
+       |   "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+       |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+       |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+       |   "totalIncomeTaxNicsCharged": ${totalIncomeTaxNicsCharged.get},
+       |   "totalTaxDeducted": ${totalTaxDeducted.get},
+       |   "totalIncomeTaxAndNicsDue": $totalIncomeTaxAndNicsDue,
+       |   "taxRegime": "$taxRegime"
        |}
-    """.stripMargin)
+     """.stripMargin
+  )
 }

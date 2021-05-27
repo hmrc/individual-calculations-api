@@ -38,12 +38,12 @@ object LossClaimsDetailFixture {
   val lossClaimsDetailJson: JsValue = Json.parse(
     s"""
        |{
-       |  "lossesBroughtForward" : [$lossBroughtForwardJson],
-       |  "resultOfClaimsApplied" : [$resultOfClaimAppliedJson],
-       |  "unclaimedLosses" : [$unclaimedLossJson],
-       |  "carriedForwardLosses" : [$carriedForwardLossJson],
-       |  "claimsNotApplied" : [$claimNotAppliedJson]
+       |  "lossesBroughtForward": [$lossBroughtForwardJson],
+       |  "resultOfClaimsApplied": [$resultOfClaimAppliedJson],
+       |  "unclaimedLosses": [$unclaimedLossJson],
+       |  "carriedForwardLosses": [$carriedForwardLossJson],
+       |  "claimsNotApplied": [$claimNotAppliedJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

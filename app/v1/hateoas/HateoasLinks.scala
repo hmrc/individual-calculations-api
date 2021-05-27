@@ -55,4 +55,5 @@ trait HateoasLinks {
 
   def crystallise(appConfig: AppConfig, nino: String, taxYear: String): Link =
     Link(href = baseCrystallisationUri(appConfig, nino, taxYear) + "/crystallise", method = POST, rel = CRYSTALLISE)
+
 }

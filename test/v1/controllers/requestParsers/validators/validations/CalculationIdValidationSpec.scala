@@ -22,15 +22,16 @@ import v1.models.errors.CalculationIdFormatError
 class CalculationIdValidationSpec extends UnitSpec {
 
   "validate" should {
-    "return no errors" when{
-      "when a valid calculationId is provided" in{
+    "return no errors" when {
+      "when a valid calculationId is provided" in {
         val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
         val validationResult = CalculationIdValidation.validate(validCalculationId)
         validationResult.isEmpty shouldBe true
       }
     }
-    "return an error" when{
-      "an invalid calculationId is provided" in{
+
+    "return an error" when {
+      "an invalid calculationId is provided" in {
         val invalidCalculationId = "invalidCalculationId"
         val validationResult = CalculationIdValidation.validate(invalidCalculationId)
         validationResult should not be empty
@@ -39,5 +40,4 @@ class CalculationIdValidationSpec extends UnitSpec {
       }
     }
   }
-
 }

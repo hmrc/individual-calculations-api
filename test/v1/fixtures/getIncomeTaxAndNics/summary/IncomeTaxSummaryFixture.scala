@@ -45,14 +45,14 @@ object IncomeTaxSummaryFixture {
   val incomeTaxSummaryJson: JsValue = Json.parse(
     s"""
       |{
-      |   "incomeTaxCharged" : $incomeTaxCharged,
-      |   "incomeTaxDueAfterReliefs" : ${incomeTaxDueAfterReliefs.get},
-      |   "incomeTaxDueAfterGiftAid" : ${incomeTaxDueAfterGiftAid.get},
-      |   "totalNotionalTax" : ${totalNotionalTax.get},
-      |   "totalPensionSavingsTaxCharges" : ${totalPensionSavingsTaxCharges.get},
-      |   "statePensionLumpSumCharges" : ${statePensionLumpSumCharges.get},
-      |   "incomeTaxDueAfterTaxReductions" : ${incomeTaxDueAfterTaxReductions.get},
-      |   "totalIncomeTaxDue" : ${totalIncomeTaxDue.get}
+      |   "incomeTaxCharged": $incomeTaxCharged,
+      |   "incomeTaxDueAfterReliefs": ${incomeTaxDueAfterReliefs.get},
+      |   "incomeTaxDueAfterGiftAid": ${incomeTaxDueAfterGiftAid.get},
+      |   "totalNotionalTax": ${totalNotionalTax.get},
+      |   "totalPensionSavingsTaxCharges": ${totalPensionSavingsTaxCharges.get},
+      |   "statePensionLumpSumCharges": ${statePensionLumpSumCharges.get},
+      |   "incomeTaxDueAfterTaxReductions": ${incomeTaxDueAfterTaxReductions.get},
+      |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get}
       |}
     """.stripMargin
   )

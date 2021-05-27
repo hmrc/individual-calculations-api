@@ -25,6 +25,7 @@ import v1.models.response.common.DesResponse
 case class IntentToCrystalliseResponse(calculationId: String) extends DesResponse
 
 object IntentToCrystalliseResponse extends HateoasLinks {
+
   implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
   implicit val writes: OWrites[IntentToCrystalliseResponse] = Json.writes[IntentToCrystalliseResponse]
 
@@ -38,6 +39,7 @@ object IntentToCrystalliseResponse extends HateoasLinks {
       )
     }
   }
+
 }
 
 case class IntentToCrystalliseHateaosData(nino: String, taxYear: String, calculationId: String) extends HateoasData

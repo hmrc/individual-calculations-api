@@ -30,7 +30,7 @@ trait MockNrsProxyConnector extends MockFactory {
 
   object MockNrsProxyConnector {
     def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
-      (mockNrsProxyConnector.submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
+      (mockNrsProxyConnector.submit(_: String,_: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
         .expects(nino, *, *, *)
     }
   }

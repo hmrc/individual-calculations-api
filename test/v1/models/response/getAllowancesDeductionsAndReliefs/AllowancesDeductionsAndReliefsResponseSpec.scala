@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture._
 import v1.hateoas.HateoasFactory
-import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v1.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 import v1.models.utils.JsonErrorValidators

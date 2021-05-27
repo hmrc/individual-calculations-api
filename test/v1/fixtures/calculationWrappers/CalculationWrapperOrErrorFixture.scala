@@ -17,8 +17,8 @@
 package v1.fixtures.calculationWrappers
 
 import play.api.libs.json.{JsPath, JsValue, Json, Reads}
-import v1.models.response.calculationWrappers.CalculationWrapperOrError.CalculationWrapper
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
+import v1.models.response.calculationWrappers.CalculationWrapperOrError.CalculationWrapper
 
 object CalculationWrapperOrErrorFixture {
 

@@ -339,7 +339,8 @@ class StandardHttpParserSpec extends UnitSpec {
         |     ]
         |   }
         |}
-      """.stripMargin)
+      """.stripMargin
+    )
 
     s"receiving a response with a bvr errors" should {
       "return an outbound BUSINESS_ERROR error containing the BVR ids" in {

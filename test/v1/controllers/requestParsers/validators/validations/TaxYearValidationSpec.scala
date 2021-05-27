@@ -73,6 +73,5 @@ class TaxYearValidationSpec extends UnitSpec {
       validationResult.head shouldBe RuleTaxYearRangeInvalidError
 
     }
-
   }
 }

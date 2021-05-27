@@ -21,8 +21,8 @@ import v1.models.response.getIncomeTaxAndNics.detail.TaxDeductedAtSource
 
 object TaxDeductedAtSourceFixture {
 
-  val ukLandAndProperty: Option[BigInt] = Some(100)
-  val savings: Option[BigInt] = Some(200)
+  val ukLandAndProperty: Option[BigDecimal] = Some(130.45)
+  val savings: Option[BigDecimal] = Some(200.45)
   val cis: Option[BigDecimal] = Some(130.45)
   val securities: Option[BigDecimal] = Some(200.45)
   val voidedIsa: Option[BigDecimal] = Some(300.45)
@@ -45,15 +45,15 @@ object TaxDeductedAtSourceFixture {
   val taxDeductedAtSourceJson: JsValue = Json.parse(
     s"""
        |{
-       |   "ukLandAndProperty" : ${ukLandAndProperty.get},
-       |   "savings" : ${savings.get},
-       |   "cis" : ${cis.get},
-       |   "securities" : ${securities.get},
-       |   "voidedIsa" : ${voidedIsa.get},
-       |   "payeEmployments" : ${payeEmployments.get},
-       |   "occupationalPensions" : ${occupationalPensions.get},
-       |   "stateBenefits" : ${stateBenefits.get}
+       |   "ukLandAndProperty": ${ukLandAndProperty.get},
+       |   "savings": ${savings.get},
+       |   "cis": ${cis.get},
+       |   "securities": ${securities.get},
+       |   "voidedIsa": ${voidedIsa.get},
+       |   "payeEmployments": ${payeEmployments.get},
+       |   "occupationalPensions": ${occupationalPensions.get},
+       |   "stateBenefits": ${stateBenefits.get}
        |}
-  """.stripMargin
+     """.stripMargin
   )
 }

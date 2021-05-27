@@ -19,10 +19,11 @@ package v1.controllers.requestParsers.validators
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
-import v1.models.errors.{CalculationIdFormatError, NinoFormatError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import v1.models.errors._
 import v1.models.request.crystallisation.CrystallisationRawData
 
 class CrystallisationValidatorSpec extends UnitSpec {
+
   private val validNino = "AA123456A"
   private val validTaxYear = "2017-18"
   private val calculationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"

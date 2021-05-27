@@ -16,7 +16,7 @@
 
 package v1.models.response.getTaxableIncome.detail.selfEmployment.summary
 
-import play.api.libs.json.{Json, _}
+import play.api.libs.json._
 
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
                              broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],

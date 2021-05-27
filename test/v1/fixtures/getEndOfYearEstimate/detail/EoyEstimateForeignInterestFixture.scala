@@ -31,7 +31,7 @@ object EoyEstimateForeignInterestFixture {
   val eoyEstimateForeignInterestJson: JsValue = Json.parse(
     s"""
       |{
-      |   "taxableIncome" : $taxableIncome
+      |   "taxableIncome": $taxableIncome
       |}
     """.stripMargin
   )

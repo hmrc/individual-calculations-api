@@ -37,5 +37,4 @@ trait MockAuditService extends MockFactory {
         .returning(Future.successful(AuditResult.Success))
     }
   }
-
 }

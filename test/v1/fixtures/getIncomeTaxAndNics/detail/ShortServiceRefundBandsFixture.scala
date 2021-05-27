@@ -48,6 +48,6 @@ object ShortServiceRefundBandsFixture {
        |   "shortServiceRefundAmount": $shortServiceRefundAmount,
        |   "shortServiceRefundCharge": $shortServiceRefundCharge
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

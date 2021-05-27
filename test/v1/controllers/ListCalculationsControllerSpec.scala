@@ -39,39 +39,22 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ListCalculationsControllerSpec
-    extends ControllerBaseSpec
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockListCalculationsParser
-      with MockHateoasFactory
-      with MockStandardService
-      with MockAuditService
-      with MockIdGenerator {
+  extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockListCalculationsParser
+    with MockHateoasFactory
+    with MockStandardService
+    with MockAuditService
+    with MockIdGenerator {
 
-  trait Test {
-    val hc = HeaderCarrier()
-
-    val controller = new ListCalculationsController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      listCalculationsParser = mockListCalculationsParser,
-      service = mockStandardService,
-      hateoasFactory = mockHateoasFactory,
-      auditService = mockAuditService,
-      cc = cc,
-      idGenerator = mockIdGenerator
-    )
-
-    MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
-    MockedEnrolmentsAuthService.authoriseUser()
-    MockIdGenerator.getCorrelationId.returns(correlationId)
-  }
-
-  private val nino          = "AA123456A"
-  private val taxYear       = "2017-18"
+  private val nino = "AA123456A"
+  private val taxYear= "2017-18"
   private val correlationId = "X-123"
 
-  val responseBody: JsValue = Json.parse("""{
+  val responseBody: JsValue = Json.parse(
+    """
+      |{
       |  "calculations": [
       |    {
       |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -94,13 +77,11 @@ class ListCalculationsControllerSpec
       |       "rel": "test-relationship"
       |     }
       |  ]
-      |}""".stripMargin)
+      |}
+    """.stripMargin
+  )
 
-
-  val testItemHateoasLink       = Link(href = "/foo/bar", method = GET, rel = "test-item-relationship")
-  val testHateoasLink = Link(href = "/foo/bar", method = POST, rel = "test-relationship")
-
-  val response = ListCalculationsResponse(
+  val response: ListCalculationsResponse[CalculationListItem] = ListCalculationsResponse(
     Seq(
       CalculationListItem(
         id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -110,7 +91,10 @@ class ListCalculationsControllerSpec
       )
     ))
 
-  val hateoasResponse = ListCalculationsResponse(
+  val testItemHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-item-relationship")
+  val testHateoasLink: Link = Link(href = "/foo/bar", method = POST, rel = "test-relationship")
+
+  val hateoasResponse: ListCalculationsResponse[HateoasWrapper[CalculationListItem]] = ListCalculationsResponse(
     Seq(HateoasWrapper(
       CalculationListItem(
         id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -121,10 +105,29 @@ class ListCalculationsControllerSpec
       Seq(testItemHateoasLink)
     )))
 
-  private val rawData     = ListCalculationsRawData(nino, Some(taxYear))
+  private val rawData = ListCalculationsRawData(nino, Some(taxYear))
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
 
   private def uri = "/input/uri"
+
+  trait Test {
+    val hc: HeaderCarrier = HeaderCarrier()
+
+    val controller = new ListCalculationsController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      listCalculationsParser = mockListCalculationsParser,
+      service = mockStandardService,
+      hateoasFactory = mockHateoasFactory,
+      auditService = mockAuditService,
+      cc = cc,
+      idGenerator = mockIdGenerator
+    )
+
+    MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
+    MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
+  }
 
   "handleRequest" should {
     "return OK with list of calculations" when {

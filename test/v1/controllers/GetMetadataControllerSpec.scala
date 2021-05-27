@@ -28,8 +28,8 @@ import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
-import v1.models.hateoas.Method.GET
 import v1.models.hateoas.{HateoasWrapper, Link}
+import v1.models.hateoas.Method.GET
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v1.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
@@ -40,14 +40,64 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetMetadataControllerSpec
-    extends ControllerBaseSpec
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockGetCalculationParser
-      with MockStandardService
-      with MockHateoasFactory
-      with MockAuditService
-      with MockIdGenerator{
+  extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockGetCalculationParser
+    with MockStandardService
+    with MockHateoasFactory
+    with MockAuditService
+    with MockIdGenerator {
+
+  private val nino = "AA123456A"
+  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val correlationId = "X-123"
+
+  val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
+
+  val responseBody: JsValue = Json.parse(
+    """
+      |{
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "crystallisation",
+      |    "intentToCrystallise": true,
+      |    "crystallised": false,
+      |    "links": [
+      |      {
+      |       "href": "/foo/bar",
+      |       "method": "GET",
+      |       "rel": "test-relationship"
+      |      }
+      |    ]
+      |}
+     """.stripMargin
+  )
+
+  val response: MetadataResponse = MetadataResponse(
+    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+    taxYear = "2018-19",
+    requestedBy = CalculationRequestor.customer,
+    calculationReason = CalculationReason.customerRequest,
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
+    calculationType = CalculationType.crystallisation,
+    intentToCrystallise = true,
+    crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
+    calculationErrorCount = None,
+    metadataExistence = None
+  )
+
+  val error: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError, None, NOT_FOUND)
+
+  private val rawData = GetCalculationRawData(nino, calcId)
+  private val requestData = GetCalculationRequest(Nino(nino), calcId)
+
+  private def uri = s"/$nino/self-assessment/$calcId"
+  private def queryUri = "/input/uri"
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -67,53 +117,6 @@ class GetMetadataControllerSpec
     MockedEnrolmentsAuthService.authoriseUser()
     MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "X-123"
-
-  val responseBody: JsValue = Json.parse("""
-      |{
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "crystallisation",
-      |    "intentToCrystallise": true,
-      |    "crystallised": false,
-      |    "links": [
-      |      {
-      |       "href": "/foo/bar",
-      |       "method": "GET",
-      |       "rel": "test-relationship"
-      |      }
-      |    ]
-      |}""".stripMargin)
-
-  val response = MetadataResponse(
-    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    taxYear = "2018-19",
-    requestedBy = CalculationRequestor.customer,
-    calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
-    calculationType = CalculationType.crystallisation,
-    intentToCrystallise = true,
-    crystallised = false,
-    totalIncomeTaxAndNicsDue = None,
-    calculationErrorCount = None,
-    metadataExistence = None
-  )
-
-  val error: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError, None, NOT_FOUND)
-
-  private val rawData     = GetCalculationRawData(nino, calcId)
-  private val requestData = GetCalculationRequest(Nino(nino), calcId)
-
-  private def uri = s"/$nino/self-assessment/$calcId"
-  private def queryUri = "/input/uri"
-
-  val testHateoasLink = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
   "handleRequest" should {
     "return OK the calculation metadata" when {
@@ -136,10 +139,11 @@ class GetMetadataControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(OK, None, Some(responseBody)))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata",
+          "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -160,10 +164,11 @@ class GetMetadataControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail(
+        val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
           AuditResponse(NOT_FOUND, Some(List(AuditError(NotFoundError.code))), None))
-        val event = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata",
+          "retrieve-self-assessment-tax-calculation-metadata", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }

@@ -32,8 +32,8 @@ object CalculationDetailFixture {
   val calculationDetailJson: JsValue = Json.parse(
     s"""
       |{
-      |   "reliefs" : $reliefsJson,
-      |   "allowancesAndDeductions" : $allowancesAndDeductionsJson
+      |   "reliefs": $reliefsJson,
+      |   "allowancesAndDeductions": $allowancesAndDeductionsJson
       |}
     """.stripMargin
   )

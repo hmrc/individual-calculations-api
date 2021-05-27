@@ -23,8 +23,8 @@ import v1.models.response.getMetadata.MetadataResponse
 
 object MetadataResponseFixture {
 
-  val id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  val taxYear = "2018-19"
+  val id: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val taxYear: String = "2018-19"
   val requestedBy: CalculationRequestor = CalculationRequestor.customer
   val calculationReason: CalculationReason = CalculationReason.customerRequest
   val calculationTimestamp: Option[String] = Some("2019-11-15T09:35:15.094Z")
@@ -61,7 +61,8 @@ object MetadataResponseFixture {
       |   "intentToCrystallise": $intentToCrystallise,
       |   "crystallised": $crystallised
       |}
-  """.stripMargin)
+    """.stripMargin
+  )
 
   val metadataResponseTopLevelJsonWithErrors: JsValue = Json.parse(
     s"""
@@ -79,7 +80,8 @@ object MetadataResponseFixture {
        |   },
        |   "messages": $messagesResponseJsonErrors
        |}
-  """.stripMargin)
+     """.stripMargin
+  )
 
   val metadataResponseTopLevelJsonWithoutErrors: JsObject =
     Json.obj("metadata" -> metadataResponseJson)
@@ -98,5 +100,6 @@ object MetadataResponseFixture {
        |      "crystallised": true
        |   }
        |}
-  """.stripMargin)
+     """.stripMargin
+  )
 }

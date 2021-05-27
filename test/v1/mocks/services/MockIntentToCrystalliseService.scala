@@ -40,5 +40,4 @@ trait MockIntentToCrystalliseService extends MockFactory {
         .expects(requestData, *, *, *, *)
     }
   }
-
 }

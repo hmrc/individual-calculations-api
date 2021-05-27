@@ -20,45 +20,36 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends IntegrationBaseSpec {
 
-  override def servicesConfig: Map[String, Any] = Map(
-    "microservice.services.des.host" -> mockHost,
-    "microservice.services.des.port" -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.v1r2.enabled" -> false
-  )
-
   private trait Test {
-    val nino          = "AA123456A"
-    val taxYear       = "2017-18"
-    val data        = "someData"
-    val correlationId = "X-123"
+    val nino: String  = "AA123456A"
+    val taxYear: String = "2017-18"
+    val data: String = "someData"
+    val correlationId: String = "X-123"
 
     def uri: String = s"/$nino/self-assessment"
     def backendUrl: String = uri
 
-    val responseBody =  Json.parse("""{
-                                   |  "calculations": [
-                                   |    {
-                                   |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                                   |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-                                   |      "type": "inYear",
-                                   |      "requestedBy": "hmrc"
-                                   |    }
-                                   |  ]
-                                   |}""".stripMargin)
+    val responseBody: JsValue =  Json.parse(
+      """
+        |{
+        |   "calculations":[
+        |      {
+        |         "id":"f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        |         "calculationTimestamp":"2019-03-17T09:22:59Z",
+        |         "type":"inYear",
+        |         "requestedBy":"hmrc"
+        |      }
+        |   ]
+        |}
+       """.stripMargin
+    )
 
     def setupStubs(): StubMapping
 

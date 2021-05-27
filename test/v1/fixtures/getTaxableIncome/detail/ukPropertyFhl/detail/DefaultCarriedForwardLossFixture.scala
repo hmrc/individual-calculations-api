@@ -32,11 +32,11 @@ object DefaultCarriedForwardLossFixture {
     )
 
   val defaultCarriedForwardLossJson: JsValue = Json.parse(
-    f"""
+    s"""
        |{
        |    "taxYearLossIncurred": "$taxYearLossIncurred",
        |    "currentLossValue": $currentLossValue
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

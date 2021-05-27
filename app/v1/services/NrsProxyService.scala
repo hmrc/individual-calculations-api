@@ -18,8 +18,8 @@ package v1.services
 
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.NrsProxyConnector
 import v1.models.domain.CrystallisationRequestBody
+import v1.connectors.NrsProxyConnector
 
 import scala.concurrent.{ExecutionContext, Future}
 

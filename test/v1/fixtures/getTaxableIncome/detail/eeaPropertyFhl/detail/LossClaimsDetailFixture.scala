@@ -38,5 +38,6 @@ object LossClaimsDetailFixture {
       |	  "resultOfClaimsApplied": [$resultOfClaimAppliedJson],
       |	  "defaultCarriedForwardLosses": [$defaultCarriedForwardLossJson]
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 }

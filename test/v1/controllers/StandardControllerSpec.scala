@@ -25,8 +25,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.httpparsers.StandardHttpParser
 import v1.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v1.controllers.requestParsers.RequestParser
-import v1.handler.RequestDefn.Get
 import v1.handler.{AuditHandler, RequestHandler}
+import v1.handler.RequestDefn.Get
 import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v1.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v1.models.errors._
@@ -37,12 +37,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class StandardControllerSpec
-    extends ControllerBaseSpec
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockStandardService
-      with MockAuditService
-      with MockIdGenerator {
+  extends ControllerBaseSpec
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockStandardService
+    with MockAuditService
+    with MockIdGenerator {
 
   case class Raw(data: String) extends RawData
   case class RequestData(data: String)
@@ -69,15 +69,15 @@ class StandardControllerSpec
   trait Test extends MockEnrolmentsAuthService with MockMtdIdLookupService {
     def uri: String = "/input/uri"
     val correlationId = "X-123"
-    val nino          = "nino"
-    val rawData       = Raw("data")
-    val requestData   = RequestData("data")
+    val nino: String = "nino"
+    val rawData: Raw = Raw("data")
+    val requestData: RequestData = RequestData("data")
 
-    val response       = BackendResp("data")
-    val mappedResponse = APIResp("dataMapped")
-    val requestDefn    = Get("url")
+    val response: BackendResp = BackendResp("data")
+    val mappedResponse: APIResp = APIResp("dataMapped")
+    val requestDefn: Get = Get("url")
 
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     MockedMtdIdLookupService
       .lookup(nino)
@@ -165,10 +165,10 @@ class StandardControllerSpec
         val responseBody: JsValue = Json.toJson(mappedResponse)
         contentAsJson(result) shouldBe responseBody
 
-        val detail = GenericAuditDetail("Individual", None, Map(), None, "X-123",
+        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, Map(), None, "X-123",
           AuditResponse(200, None, Some(Json.parse("""{"data":"dataMapped"}"""))))
 
-        val event  = AuditEvent("auditType", "txName", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -229,10 +229,10 @@ class StandardControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail = GenericAuditDetail("Individual",None,Map(),None,"X-123",
+        val detail: GenericAuditDetail = GenericAuditDetail("Individual",None,Map(),None,"X-123",
           AuditResponse(404,Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))),None))
 
-        val event  = AuditEvent("auditType", "txName", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }

@@ -42,5 +42,4 @@ trait MockEnrolmentsAuthService extends MockFactory {
         .expects(predicate, *, *)
     }
   }
-
 }

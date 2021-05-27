@@ -17,13 +17,15 @@
 package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
-import v1.models.errors.{ CalculationIdFormatError, NinoFormatError, TypeFormatError }
+import v1.models.errors.{CalculationIdFormatError, NinoFormatError, TypeFormatError}
 import v1.models.request.GetMessagesRawData
 
 class GetMessagesValidatorSpec extends UnitSpec {
-  val validator                  = new GetMessagesValidator()
-  private val validNino          = "AA112233A"
+
+  private val validNino = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+
+  val validator = new GetMessagesValidator()
 
   "running a validation" should {
     "return no errors" when {
@@ -31,24 +33,28 @@ class GetMessagesValidatorSpec extends UnitSpec {
         validator.validate(GetMessagesRawData(validNino, validCalculationId, Seq("info"))) shouldBe empty
       }
     }
+
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
         validator.validate(GetMessagesRawData("AA111111E", validCalculationId, Seq("info"))) shouldBe
           List(NinoFormatError)
       }
     }
+
     "return CalculationIdFormatError error" when {
       "an invalid calculationId is supplied" in {
         validator.validate(GetMessagesRawData(validNino, "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("info"))) shouldBe
           List(CalculationIdFormatError)
       }
     }
+
     "return TypeFormatError error" when {
       "an invalid type or set of types is supplied" in {
         validator.validate(GetMessagesRawData(validNino, validCalculationId, Seq("shmerror", "shminfo"))) shouldBe
           List(TypeFormatError)
       }
     }
+
     "return multiple errors" when {
       "request supplied has multiple errors" in {
         validator.validate(GetMessagesRawData("AA111111E", "f2fb30e5/4ab6/4a29/b3c1/c7264259ff1c", Seq("shmerror"))) shouldBe
@@ -56,5 +62,4 @@ class GetMessagesValidatorSpec extends UnitSpec {
       }
     }
   }
-
 }

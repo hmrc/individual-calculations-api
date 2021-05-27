@@ -41,24 +41,24 @@ object AuditResponseFixture {
     s"""
        |{
        |  "httpStatus": $OK,
-       |  "body" : $body
+       |  "body": $body
        |}
-    """.stripMargin
+     """.stripMargin
   )
 
   val auditResponseJsonWithErrors: JsValue = Json.parse(
     s"""
        |{
        |  "httpStatus": $BAD_REQUEST,
-       |  "errors" : [
+       |  "errors": [
        |    {
-       |      "errorCode" : "FORMAT_NINO"
+       |      "errorCode": "FORMAT_NINO"
        |    },
        |    {
-       |      "errorCode" : "FORMAT_TAX_YEAR"
+       |      "errorCode": "FORMAT_TAX_YEAR"
        |    }
        |  ]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

@@ -35,10 +35,10 @@ object UkSecuritiesFixture {
   val securitiesJson: JsValue = Json.parse(
     s"""
        |{
-       |    "grossIncome":$grossIncome,
+       |    "grossIncome": $grossIncome,
        |    "netIncome": ${netIncome.get},
        |    "taxDeducted": ${taxDeducted.get}
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

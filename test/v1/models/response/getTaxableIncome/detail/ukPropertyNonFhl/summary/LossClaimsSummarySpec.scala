@@ -16,8 +16,8 @@
 
 package v1.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary
 
-import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixture._
 import support.UnitSpec
+import v1.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummaryFixture._
 import v1.models.utils.JsonErrorValidators
 
 class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {

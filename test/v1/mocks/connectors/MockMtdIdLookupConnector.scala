@@ -33,5 +33,4 @@ trait MockMtdIdLookupConnector extends MockFactory {
         .expects(nino, *, *)
     }
   }
-
 }

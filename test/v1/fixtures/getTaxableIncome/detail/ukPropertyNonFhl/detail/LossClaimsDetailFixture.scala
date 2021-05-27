@@ -37,11 +37,11 @@ object LossClaimsDetailFixture extends UnitSpec {
   val lossClaimsDetailMtdJson: JsValue = Json.parse(
     s"""
        |{
-       |   "lossesBroughtForward" : [$lossBroughtForwardJson],
-       |   "resultOfClaimsApplied" : [$resultOfClaimAppliedJson],
-       |   "defaultCarriedForwardLosses" :[$defaultCarriedForwardLossJson],
-       |   "claimsNotApplied" : [$claimNotAppliedJson]
+       |   "lossesBroughtForward": [$lossBroughtForwardJson],
+       |   "resultOfClaimsApplied": [$resultOfClaimAppliedJson],
+       |   "defaultCarriedForwardLosses":[$defaultCarriedForwardLossJson],
+       |   "claimsNotApplied": [$claimNotAppliedJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

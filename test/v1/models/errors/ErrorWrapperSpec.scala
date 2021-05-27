@@ -23,7 +23,7 @@ import v1.models.audit.AuditError
 
 class ErrorWrapperSpec extends UnitSpec {
 
-  val correlationId = "X-123"
+  val correlationId: String = "X-123"
 
   "Rendering a error response with one error" should {
     val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty), BAD_REQUEST)

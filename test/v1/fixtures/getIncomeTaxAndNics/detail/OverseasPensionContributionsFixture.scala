@@ -45,6 +45,6 @@ object OverseasPensionContributionsFixture {
        |   "totalShortServiceRefundChargeDue": $totalShortServiceRefundChargeDue,
        |   "shortServiceRefundBands": [$shortServiceRefundBandsJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

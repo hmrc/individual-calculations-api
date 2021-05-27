@@ -33,9 +33,9 @@ object DividendsFixture {
   val dividendsJson: JsValue = Json.parse(
     s"""
        |{
-       |   "incomeReceived":$incomeReceived,
-       |   "taxableIncome":$taxableIncome
+       |   "incomeReceived": $incomeReceived,
+       |   "taxableIncome": $taxableIncome
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

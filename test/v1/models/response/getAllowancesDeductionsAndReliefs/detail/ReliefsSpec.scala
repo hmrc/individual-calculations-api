@@ -25,8 +25,6 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
   testJsonProperties[Reliefs](reliefsJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
       "pensionContributionReliefs",
       "reliefsClaimed"
     )

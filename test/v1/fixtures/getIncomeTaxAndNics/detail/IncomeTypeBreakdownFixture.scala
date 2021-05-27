@@ -35,11 +35,11 @@ object IncomeTypeBreakdownFixture {
   val incomeTypeBreakdownJson: JsValue = Json.parse(
     s"""
        |{
-       |   "allowancesAllocated" : $allowancesAllocated,
-       |   "incomeTaxAmount" : $incomeTaxAmount,
-       |   "taxBands" : [$taxBandJson]
+       |   "allowancesAllocated": $allowancesAllocated,
+       |   "incomeTaxAmount": $incomeTaxAmount,
+       |   "taxBands": [$taxBandJson]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 
   def incomeTypeBreakdownModel(input: BigDecimal): IncomeTypeBreakdown =
@@ -52,10 +52,10 @@ object IncomeTypeBreakdownFixture {
   def incomeTypeBreakdownJson(input: BigDecimal): JsValue = Json.parse(
     s"""
        |{
-       |   "allowancesAllocated" : $allowancesAllocated,
-       |   "incomeTaxAmount" : ${input + 0.5},
-       |   "taxBands" : [${taxBandJson(input * 2).toString()}]
+       |   "allowancesAllocated": $allowancesAllocated,
+       |   "incomeTaxAmount": ${input + 0.5},
+       |   "taxBands": [${taxBandJson(input * 2).toString()}]
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

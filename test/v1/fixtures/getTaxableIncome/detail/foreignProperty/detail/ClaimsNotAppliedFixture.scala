@@ -34,12 +34,12 @@ object ClaimsNotAppliedFixture {
     )
 
   val claimsNotAppliedJson: JsValue = Json.parse(
-    f"""
+    s"""
        |{
        |  "claimId": "$claimId",
        |   "claimType": "$claimType",
        |   "taxYearClaimMade": "$taxYearClaimMade"
        |}
-    """.stripMargin
+     """.stripMargin
   )
 }

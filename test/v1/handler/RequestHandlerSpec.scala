@@ -28,7 +28,7 @@ import v1.models.outcomes.ResponseWrapper
 class RequestHandlerSpec extends UnitSpec with Inside {
 
   // WLOG
-  val passThroughErrors                = List(MtdError("CODE", "error"))
+  val passThroughErrors = List(MtdError("CODE", "error"))
   val customErrorMapping: ErrorMapping = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
 
   "RequestHandler" must {

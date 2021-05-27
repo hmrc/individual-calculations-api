@@ -43,6 +43,5 @@ class NinoValidationSpec extends UnitSpec {
 
       }
     }
-
   }
 }

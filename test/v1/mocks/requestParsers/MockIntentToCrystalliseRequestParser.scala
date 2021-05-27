@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.IntentToCrystalliseRequestParser
 import v1.models.errors.ErrorWrapper
-import v1.models.request.intentToCrystallise.{ IntentToCrystalliseRawData, IntentToCrystalliseRequest }
+import v1.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 
 trait MockIntentToCrystalliseRequestParser extends MockFactory {
 

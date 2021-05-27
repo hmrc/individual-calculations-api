@@ -23,9 +23,9 @@ import v1.models.response.getTaxableIncome.detail.selfEmployment.detail.LossBrou
 object LossBroughtForwardFixture {
 
   val lossType: LossType = LossType.INCOME
-  val taxYearLossIncurred: String   = "2055-56"
-  val currentLossValue: BigDecimal    = 673350334
-  val mtdLoss: Boolean            = false
+  val taxYearLossIncurred: String = "2055-56"
+  val currentLossValue: BigDecimal = 673350334
+  val mtdLoss: Boolean = false
 
   val lossBroughtForwardResponse: LossBroughtForward =
     LossBroughtForward(
@@ -36,7 +36,7 @@ object LossBroughtForwardFixture {
     )
 
   val lossBroughtForwardJson: JsValue = Json.parse(
-    f"""
+    s"""
       |{
       |    "lossType": ${Json.toJson(lossType)},
       |    "taxYearLossIncurred": "$taxYearLossIncurred",

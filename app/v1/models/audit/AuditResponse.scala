@@ -16,7 +16,7 @@
 
 package v1.models.audit
 
-import play.api.libs.json.{ JsValue, Json, OWrites }
+import play.api.libs.json.{JsValue, Json, OWrites}
 
 case class AuditResponse(httpStatus: Int, errors: Option[Seq[AuditError]], body: Option[JsValue])
 

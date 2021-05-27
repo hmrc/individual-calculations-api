@@ -39,7 +39,7 @@ class StandardConnectorSpec extends ConnectorSpec {
   }
 
   val queryParams: Seq[(String, String)] = Seq("n" -> "v")
-  val requestDefn = RequestDefn.Get("/some/uri", queryParams)
+  val requestDefn: RequestDefn.Get = RequestDefn.Get("/some/uri", queryParams)
 
   implicit val successCode: SuccessCode = SuccessCode(200)
 
@@ -60,8 +60,8 @@ class StandardConnectorSpec extends ConnectorSpec {
       }
 
       "request is a post" in new Test {
-        val body = JsString("some value")
-        val postRequestDefn = RequestDefn.Post("/some/uri",body)
+        val body: JsString = JsString("some value")
+        val postRequestDefn: RequestDefn.Post = RequestDefn.Post("/some/uri",body)
 
         val expected = Right(Response("someData"))
 
