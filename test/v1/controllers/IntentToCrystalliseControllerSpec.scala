@@ -117,7 +117,7 @@ class IntentToCrystalliseControllerSpec
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
-    MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
+    MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     MockIdGenerator.getCorrelationId.returns(correlationId)
 
     val links: List[Link] = List(

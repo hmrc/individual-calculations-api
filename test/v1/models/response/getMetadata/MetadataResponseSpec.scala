@@ -46,7 +46,7 @@ class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String = "someNino"
       val calcId: String = "someCalcId"
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a MetadataResponse object" should {

@@ -45,7 +45,7 @@ class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String = "someNino"
       val calcId: String = "calcId"
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a IncomeTaxAndNicsResponse object" should {
