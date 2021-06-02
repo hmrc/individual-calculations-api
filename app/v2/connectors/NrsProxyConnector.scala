@@ -18,8 +18,7 @@ package v2.connectors
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpClient, HttpResponse}
 import v2.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.{ExecutionContext, Future}

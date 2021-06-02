@@ -17,7 +17,7 @@
 package v2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.domain.Nino
+import v2.models.domain.Nino
 import v2.models.errors.DownstreamError
 
 import scala.concurrent.Future
@@ -31,7 +31,7 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
-    MockedAppConfig.mtdIdBaseUrl returns baseUrl
+    MockAppConfig.mtdIdBaseUrl returns baseUrl
   }
 
   val mtdId = "test-mtdId"

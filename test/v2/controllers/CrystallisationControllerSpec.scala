@@ -19,10 +19,10 @@ package v2.controllers
 import mocks.MockIdGenerator
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsJson, Result}
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.mocks.requestParsers.MockCrystallisationRequestParser
 import v2.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockNrsProxyService}
+import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.domain.{CrystallisationRequestBody, DesTaxYear}
 import v2.models.errors._

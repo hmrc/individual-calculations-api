@@ -16,12 +16,13 @@
 
 package v1.services
 
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
+import config.AppConfig
+import javax.inject.{ Inject, Singleton }
 import v1.models.domain.CrystallisationRequestBody
 import v1.connectors.NrsProxyConnector
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpClient }
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
@@ -30,5 +31,4 @@ class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
     connector.submit(nino, body)
   }
-
 }

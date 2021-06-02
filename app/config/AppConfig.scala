@@ -45,17 +45,20 @@ trait AppConfig {
   def confidenceLevelConfig: ConfidenceLevelConfig
 
   def mtdNrsProxyBaseUrl: String
+
+  def desEnvironmentHeaders: Option[Seq[String]]
 }
 
 @Singleton
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
-  val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
-  val backendBaseUrl: String = config.baseUrl("individual-calculations")
-  val desBaseUrl: String = config.baseUrl("des")
-  val desEnv: String = config.getString("microservice.services.des.env")
-  val desToken: String = config.getString("microservice.services.des.token")
-  val apiGatewayContext: String = config.getString("api.gateway.context")
+  val mtdIdBaseUrl: String       = config.baseUrl("mtd-id-lookup")
+  val backendBaseUrl: String     = config.baseUrl("individual-calculations")
+  val desBaseUrl: String         = config.baseUrl("des")
+  val desEnv: String             = config.getString("microservice.services.des.env")
+  val desToken: String           = config.getString("microservice.services.des.token")
+  val apiGatewayContext: String  = config.getString("api.gateway.context")
   val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
+  val desEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.des.environmentHeaders")
 
   def apiStatus(version: String): String = config.getString(s"api.$version.status")
 

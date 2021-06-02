@@ -17,7 +17,7 @@
 package v1.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.models.domain.{DesTaxYear, EmptyJsonBody}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.intentToCrystallise.IntentToCrystalliseRequest
@@ -45,9 +45,9 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
   }
 
   "IntentToCrystalliseConnector" when {
@@ -58,8 +58,10 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/nino/$nino/taxYear/${taxYear.value}/tax-calculation?crystallise=true",
-            body = EmptyJsonBody,
-            requiredHeaders = requiredHeaders :_*
+            config = dummyDesHeaderCarrierConfig,
+            EmptyJsonBody,
+            requiredHeaders = requiredDesHeaders,
+            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           ).returns(Future.successful(outcome))
 
         await(connector.submitIntentToCrystallise(request)) shouldBe outcome

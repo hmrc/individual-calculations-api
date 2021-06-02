@@ -18,8 +18,8 @@ package v2.controllers.requestParsers
 
 import play.api.http.Status._
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
 import v2.mocks.validators.MockGetMessagesValidator
+import v2.models.domain.Nino
 import v2.models.domain.MessageType
 import v2.models.errors._
 import v2.models.request.{GetMessagesRawData, GetMessagesRequest}

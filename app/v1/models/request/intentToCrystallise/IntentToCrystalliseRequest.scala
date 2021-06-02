@@ -16,7 +16,7 @@
 
 package v1.models.request.intentToCrystallise
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.models.domain.DesTaxYear
 
 case class IntentToCrystalliseRequest(nino: Nino, taxYear: DesTaxYear)

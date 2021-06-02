@@ -16,7 +16,7 @@
 
 package v1.services
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.mocks.connectors.MockCrystallisationConnector
 import v1.models.domain.DesTaxYear
 import v1.models.errors._

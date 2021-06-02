@@ -17,8 +17,8 @@
 package v2.controllers.requestParsers
 
 import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
 import v2.controllers.requestParsers.validators.IntentToCrystalliseValidator
+import v2.models.domain.Nino
 import v2.models.domain.DesTaxYear
 import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 

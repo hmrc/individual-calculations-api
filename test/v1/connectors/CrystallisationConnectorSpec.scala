@@ -17,7 +17,8 @@
 package v1.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.domain.Nino
+import uk.gov.hmrc.http.HeaderCarrier
+import v1.models.domain.Nino
 import v1.models.domain.{DesTaxYear, EmptyJsonBody}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.crystallisation.CrystallisationRequest
@@ -44,9 +45,9 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
   }
 
   "CrystallisationConnector" when {
@@ -54,11 +55,16 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       "return a success upon HttpClient success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, DesUnit))
 
+        implicit val hc: HeaderCarrier                       = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        val requiredDesHeadersTrigger: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
+
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise",
-            body = EmptyJsonBody,
-            requiredHeaders = requiredHeaders :_*
+            config = dummyDesHeaderCarrierConfig,
+            EmptyJsonBody,
+            requiredHeaders = requiredDesHeadersTrigger,
+            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           ).returns(Future.successful(outcome))
 
         await(connector.declareCrystallisation(request)) shouldBe outcome

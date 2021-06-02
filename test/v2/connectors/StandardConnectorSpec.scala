@@ -27,7 +27,7 @@ import scala.concurrent.Future
 class StandardConnectorSpec extends ConnectorSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
-    MockedAppConfig.backendBaseUrl returns baseUrl
+    MockAppConfig.backendBaseUrl returns baseUrl
 
     val connector: StandardConnector = new StandardConnector(mockAppConfig, mockHttpClient)
   }
@@ -53,7 +53,11 @@ class StandardConnectorSpec extends ConnectorSpec {
         val expected = Right(Response("someData"))
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(s"$baseUrl/some/uri",
+            queryParams,
+            dummyDesHeaderCarrierConfig,
+            requiredDesHeaders,
+            Seq("AnotherHeader" -> "HeaderValue"))
           .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
@@ -66,7 +70,11 @@ class StandardConnectorSpec extends ConnectorSpec {
         val expected = Right(Response("someData"))
 
         MockedHttpClient
-          .post(s"$baseUrl/some/uri", body)
+          .post(s"$baseUrl/some/uri",
+            dummyDesHeaderCarrierConfig,
+            body,
+            requiredDesHeaders,
+            Seq("AnotherHeader" -> "HeaderValue"))
           .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](postRequestDefn)) shouldBe expected
@@ -79,7 +87,12 @@ class StandardConnectorSpec extends ConnectorSpec {
         val expected = Left(BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND ERROR CODE")))
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(
+            s"$baseUrl/some/uri",
+            queryParams,
+            dummyDesHeaderCarrierConfig,
+            requiredDesHeaders,
+            Seq("AnotherHeader" -> "HeaderValue"))
           .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
@@ -90,7 +103,12 @@ class StandardConnectorSpec extends ConnectorSpec {
 
       "when an unexpected error is returned" in new Test {
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",  queryParams)
+          .get(
+            s"$baseUrl/some/uri",
+            queryParams,
+            dummyDesHeaderCarrierConfig,
+            requiredDesHeaders,
+            Seq("AnotherHeader" -> "HeaderValue"))
           .returns(Future.failed(new Exception("unexpected exception")))
 
         the[Exception] thrownBy await(connector.doRequest[Response](requestDefn)) should have message "unexpected exception"

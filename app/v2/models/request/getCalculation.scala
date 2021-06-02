@@ -16,7 +16,7 @@
 
 package v2.models.request
 
-import uk.gov.hmrc.domain.Nino
+import v2.models.domain.Nino
 import v2.models.domain.MessageType
 
 trait CommonCalculationRequest {

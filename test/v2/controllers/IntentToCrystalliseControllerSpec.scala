@@ -19,12 +19,12 @@ package v2.controllers
 import mocks.{MockAppConfig, MockIdGenerator}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.hateoas.HateoasLinks
 import v2.mocks.hateoas.MockHateoasFactory
 import v2.mocks.requestParsers.MockIntentToCrystalliseRequestParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
+import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.domain.DesTaxYear
 import v2.models.errors._
@@ -117,7 +117,7 @@ class IntentToCrystalliseControllerSpec
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
-    MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
+    MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     MockIdGenerator.getCorrelationId.returns(correlationId)
 
     val links: List[Link] = List(

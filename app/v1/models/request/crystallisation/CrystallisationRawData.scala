@@ -17,6 +17,7 @@
 package v1.models.request.crystallisation
 
 import play.api.mvc.AnyContentAsJson
+import v1.models.domain.Nino
 import v1.models.request.RawData
 
 case class CrystallisationRawData(nino: String, taxYear: String, body: AnyContentAsJson) extends RawData

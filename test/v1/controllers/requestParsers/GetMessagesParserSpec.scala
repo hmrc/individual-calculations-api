@@ -18,7 +18,7 @@ package v1.controllers.requestParsers
 
 import play.api.http.Status._
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.mocks.validators.MockGetMessagesValidator
 import v1.models.domain.MessageType
 import v1.models.errors._

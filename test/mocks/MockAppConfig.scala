@@ -24,7 +24,7 @@ import play.api.Configuration
 trait MockAppConfig extends MockFactory {
   val mockAppConfig: AppConfig = mock[AppConfig]
 
-  object MockedAppConfig {
+  object MockAppConfig {
     def mtdIdBaseUrl: CallHandler[String] = (mockAppConfig.mtdIdBaseUrl _: () => String).expects()
 
     def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
@@ -34,6 +34,8 @@ trait MockAppConfig extends MockFactory {
     def desToken: CallHandler[String] = (mockAppConfig.desToken _).expects()
 
     def desEnvironment: CallHandler[String] = (mockAppConfig.desEnv _).expects()
+
+    def desEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (mockAppConfig.desEnvironmentHeaders _).expects()
 
     def featureSwitch: CallHandler[Option[Configuration]] = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()
 
