@@ -16,12 +16,10 @@
 
 package definition
 
-import com.typesafe.config.ConfigFactory
 import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
 import definition.Versions.{VERSION_1, VERSION_2}
 import mocks.{MockAppConfig, MockHttpClient}
-import play.api.Configuration
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 

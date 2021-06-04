@@ -48,6 +48,7 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
     MockAppConfig.desBaseUrl returns baseUrl
     MockAppConfig.desToken returns "des-token"
     MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "IntentToCrystalliseConnector" when {

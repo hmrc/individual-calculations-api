@@ -25,7 +25,7 @@ trait CommonCalculationRequest {
 
   def calculationId: String
 
-  def backendCalculationUri: String = s"/$nino/self-assessment/$calculationId"
+  def backendCalculationUri: String = s"/${nino.nino}/self-assessment/$calculationId"
 }
 
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData

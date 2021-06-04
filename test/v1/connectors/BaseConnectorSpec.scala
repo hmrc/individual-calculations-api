@@ -106,6 +106,7 @@ class BaseConnectorSpec extends ConnectorSpec {
       "DesPost" in new Test(desEnvironmentHeaders) {
         class DesResult(override val value: Int) extends Result(value) with DesResponse
         val desUrl: Uri[DesResult] = Uri[DesResult](url)
+        implicit val httpReads: HttpReads[BackendOutcome[DesResult]] = mock[HttpReads[BackendOutcome[DesResult]]]
 
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
