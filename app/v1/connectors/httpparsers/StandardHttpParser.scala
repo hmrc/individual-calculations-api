@@ -19,13 +19,12 @@ package v1.connectors.httpparsers
 import play.api.http.Status._
 import play.api.libs.json.Reads
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import utils.Logging
 import v1.connectors.BackendOutcome
 import v1.models.errors.{DownstreamError, OutboundError}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.response.common.{DesResponse, DesUnit}
 
-object StandardHttpParser extends HttpParser with Logging {
+object StandardHttpParser extends HttpParser {
 
   case class SuccessCode(status: Int) extends AnyVal
 

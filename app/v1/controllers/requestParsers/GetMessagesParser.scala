@@ -17,9 +17,8 @@
 package v1.controllers.requestParsers
 
 import javax.inject.Inject
-import v1.models.domain.Nino
 import v1.controllers.requestParsers.validators.GetMessagesValidator
-import v1.models.domain.MessageType
+import v1.models.domain.{MessageType, Nino}
 import v1.models.request.{GetMessagesRawData, GetMessagesRequest}
 
 class GetMessagesParser @Inject()(val validator: GetMessagesValidator)

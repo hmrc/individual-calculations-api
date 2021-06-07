@@ -18,6 +18,7 @@ package v2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.{JsString, Json, Reads}
+import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v2.handler.RequestDefn
 import v2.models.errors.{BackendErrorCode, BackendErrors}
@@ -47,35 +48,37 @@ class StandardConnectorSpec extends ConnectorSpec {
 
   "StandardConnector" should {
 
+    implicit val hc: HeaderCarrier = HeaderCarrier().withExtraHeaders(headers = "Authorization" -> "Bearer user-token")
+
     "return a successful response" when {
 
       "request is a get" in new Test {
         val expected = Right(Response("someData"))
 
         MockedHttpClient
-          .get(s"$baseUrl/some/uri",
-            queryParams,
-            dummyDesHeaderCarrierConfig,
-            requiredDesHeaders,
-            Seq("AnotherHeader" -> "HeaderValue"))
-          .returns(Future.successful(expected))
+          .get(
+            url = s"$baseUrl/some/uri",
+            queryParameters = queryParams,
+            config = dummyHeaderCarrierConfig,
+            requiredHeaders = requiredBackendHeaders
+          ).returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
 
       "request is a post" in new Test {
         val body: JsString = JsString("some value")
-        val postRequestDefn: RequestDefn.Post = RequestDefn.Post("/some/uri",body)
+        val postRequestDefn: RequestDefn.Post = RequestDefn.Post("/some/uri", body)
 
         val expected = Right(Response("someData"))
 
         MockedHttpClient
-          .post(s"$baseUrl/some/uri",
-            dummyDesHeaderCarrierConfig,
-            body,
-            requiredDesHeaders,
-            Seq("AnotherHeader" -> "HeaderValue"))
-          .returns(Future.successful(expected))
+          .post(
+            url = s"$baseUrl/some/uri",
+            config = dummyHeaderCarrierConfig,
+            body = body,
+            requiredHeaders = requiredBackendHeaders
+          ).returns(Future.successful(expected))
 
         await(connector.doRequest[Response](postRequestDefn)) shouldBe expected
       }
@@ -88,12 +91,11 @@ class StandardConnectorSpec extends ConnectorSpec {
 
         MockedHttpClient
           .get(
-            s"$baseUrl/some/uri",
-            queryParams,
-            dummyDesHeaderCarrierConfig,
-            requiredDesHeaders,
-            Seq("AnotherHeader" -> "HeaderValue"))
-          .returns(Future.successful(expected))
+            url = s"$baseUrl/some/uri",
+            queryParameters = queryParams,
+            config = dummyHeaderCarrierConfig,
+            requiredHeaders = requiredBackendHeaders
+          ).returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
@@ -104,12 +106,11 @@ class StandardConnectorSpec extends ConnectorSpec {
       "when an unexpected error is returned" in new Test {
         MockedHttpClient
           .get(
-            s"$baseUrl/some/uri",
-            queryParams,
-            dummyDesHeaderCarrierConfig,
-            requiredDesHeaders,
-            Seq("AnotherHeader" -> "HeaderValue"))
-          .returns(Future.failed(new Exception("unexpected exception")))
+            url = s"$baseUrl/some/uri",
+            queryParameters = queryParams,
+            config = dummyHeaderCarrierConfig,
+            requiredHeaders = requiredBackendHeaders
+          ).returns(Future.failed(new Exception("unexpected exception")))
 
         the[Exception] thrownBy await(connector.doRequest[Response](requestDefn)) should have message "unexpected exception"
       }

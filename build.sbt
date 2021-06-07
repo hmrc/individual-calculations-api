@@ -18,7 +18,6 @@ import sbt._
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings}
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
-import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName = "individual-calculations-api"
@@ -31,11 +30,11 @@ lazy val microservice = Project(appName, file("."))
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test(),
     retrieveManaged := true,
-    update / evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
+    update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(warnScalaVersionEviction = false),
     scalaVersion := "2.12.12"
   )
   .settings(
-    Compile / unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "resources"
   )
   .settings(majorVersion := 1)
   .settings(publishingSettings: _*)
@@ -58,11 +57,10 @@ lazy val microservice = Project(appName, file("."))
   .settings(PlayKeys.playDefaultPort := 9767)
   .settings(SilencerSettings())
 
-
 dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.play")
 dependencyUpdatesFilter -= moduleFilter(name = "scala-library")
 dependencyUpdatesFilter -= moduleFilter(name = "flexmark-all")
 dependencyUpdatesFilter -= moduleFilter(name = "scalatestplus-play")
 dependencyUpdatesFilter -= moduleFilter(name = "scalatestplus-scalacheck")
-dependencyUpdatesFilter -= moduleFilter(name = "bootstrap-play-26")
+dependencyUpdatesFilter -= moduleFilter(name = "bootstrap-backend-play-28")
 dependencyUpdatesFailBuild := true

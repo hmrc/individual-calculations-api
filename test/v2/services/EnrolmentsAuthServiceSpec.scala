@@ -47,8 +47,16 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
     lazy val target = new EnrolmentsAuthService(mockAuthConnector, mockAppConfig)
   }
 
-  private val extraPredicatesAnd =
-    CompositePredicate(_, AlternatePredicate(AlternatePredicate(CompositePredicate(AffinityGroup.Individual, ConfidenceLevel.L200), AffinityGroup.Organisation), AffinityGroup.Agent))
+  private val extraPredicatesAnd = CompositePredicate(
+    _,
+    AlternatePredicate(
+      AlternatePredicate(
+        CompositePredicate(AffinityGroup.Individual, ConfidenceLevel.L200),
+        AffinityGroup.Organisation
+      ),
+      AffinityGroup.Agent
+    )
+  )
 
   "calling .buildPredicate" when {
     "confidence level checks are on" should {

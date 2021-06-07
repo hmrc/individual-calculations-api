@@ -16,8 +16,7 @@
 
 package v2.models.request
 
-import v2.models.domain.Nino
-import v2.models.domain.MessageType
+import v2.models.domain.{MessageType, Nino}
 
 trait CommonCalculationRequest {
 

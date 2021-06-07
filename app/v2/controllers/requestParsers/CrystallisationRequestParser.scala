@@ -18,8 +18,7 @@ package v2.controllers.requestParsers
 
 import javax.inject.Inject
 import v2.controllers.requestParsers.validators.CrystallisationValidator
-import v2.models.domain.Nino
-import v2.models.domain.{CrystallisationRequestBody, DesTaxYear}
+import v2.models.domain.{CrystallisationRequestBody, DesTaxYear, Nino}
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
 
 class CrystallisationRequestParser @Inject()(val validator: CrystallisationValidator)

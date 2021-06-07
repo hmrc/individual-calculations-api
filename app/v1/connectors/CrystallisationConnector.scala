@@ -35,7 +35,10 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
     correlationId: String): Future[BackendOutcome[DesUnit]] = {
 
     import v1.connectors.httpparsers.StandardHttpParser._
-    import request._
+
+    val nino: String = request.nino.nino
+    val taxYear: String = request.taxYear.value
+    val calculationId: String = request.calculationId
 
     desPost(
       uri = Uri[DesUnit](s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),

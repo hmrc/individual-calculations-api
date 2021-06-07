@@ -20,12 +20,6 @@ import play.api.libs.json.{Format, Json, OFormat}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import utils.enums.Enums
 
-case class Access(`type`: String, whitelistedApplicationIds: Seq[String])
-
-object Access {
-  implicit val formatAccess: OFormat[Access] = Json.format[Access]
-}
-
 case class Parameter(name: String, required: Boolean = false)
 
 object Parameter {
@@ -33,7 +27,6 @@ object Parameter {
 }
 
 case class PublishingException(message: String) extends Exception(message)
-
 
 sealed trait APIStatus
 
@@ -51,7 +44,7 @@ object APIStatus {
   val parser: PartialFunction[String, APIStatus] = Enums.parser[APIStatus]
 }
 
-case class APIVersion(version: String, access: Option[Access] = None, status: APIStatus, endpointsEnabled: Boolean) {
+case class APIVersion(version: String, status: APIStatus, endpointsEnabled: Boolean) {
 
   require(version.nonEmpty, "version is required")
 }
@@ -60,7 +53,12 @@ object APIVersion {
   implicit val formatAPIVersion: OFormat[APIVersion] = Json.format[APIVersion]
 }
 
-case class APIDefinition(name: String, description: String, context: String, categories: Seq[String], versions: Seq[APIVersion], requiresTrust: Option[Boolean]) {
+case class APIDefinition(name: String,
+                         description: String,
+                         context: String,
+                         categories: Seq[String],
+                         versions: Seq[APIVersion],
+                         requiresTrust: Option[Boolean]) {
 
   require(name.nonEmpty, "name is required")
   require(context.nonEmpty, "context is required")
@@ -69,7 +67,7 @@ case class APIDefinition(name: String, description: String, context: String, cat
   require(versions.nonEmpty, "at least one version is required")
   require(uniqueVersions, "version numbers must be unique")
 
-  private def uniqueVersions = {
+  private def uniqueVersions: Boolean = {
     !versions.map(_.version).groupBy(identity).mapValues(_.size).exists(_._2 > 1)
   }
 }

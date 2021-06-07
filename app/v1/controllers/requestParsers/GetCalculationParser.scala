@@ -17,8 +17,8 @@
 package v1.controllers.requestParsers
 
 import javax.inject.Inject
-import v1.models.domain.Nino
 import v1.controllers.requestParsers.validators.GetCalculationValidator
+import v1.models.domain.Nino
 import v1.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationParser @Inject()(val validator: GetCalculationValidator)

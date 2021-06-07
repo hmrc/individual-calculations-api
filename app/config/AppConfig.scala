@@ -22,51 +22,53 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
 
-
 trait AppConfig {
+  // MTD ID Lookup Config
   def mtdIdBaseUrl: String
 
+  // Backend Config
   def backendBaseUrl: String
 
+  // DES Config
   def desBaseUrl: String
-
   def desEnv: String
-
   def desToken: String
+  def desEnvironmentHeaders: Option[Seq[String]]
 
+  // API Config
   def apiGatewayContext: String
-
+  def confidenceLevelConfig: ConfidenceLevelConfig
   def apiStatus(version: String): String
-
   def endpointsEnabled(version: String): Boolean
-
   def featureSwitch: Option[Configuration]
 
-  def confidenceLevelConfig: ConfidenceLevelConfig
-
+  // NRS Config
   def mtdNrsProxyBaseUrl: String
-
-  def desEnvironmentHeaders: Option[Seq[String]]
 }
 
 @Singleton
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
+  // MTD ID Lookup Config
   val mtdIdBaseUrl: String       = config.baseUrl("mtd-id-lookup")
+
+  // Backend Config
   val backendBaseUrl: String     = config.baseUrl("individual-calculations")
+
+  // DES Config
   val desBaseUrl: String         = config.baseUrl("des")
   val desEnv: String             = config.getString("microservice.services.des.env")
   val desToken: String           = config.getString("microservice.services.des.token")
-  val apiGatewayContext: String  = config.getString("api.gateway.context")
-  val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
   val desEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.des.environmentHeaders")
 
+  // API Config
+  val apiGatewayContext: String  = config.getString("api.gateway.context")
+  val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
   def apiStatus(version: String): String = config.getString(s"api.$version.status")
-
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
-
   def endpointsEnabled(version: String): Boolean = config.getBoolean(s"feature-switch.version-$version.enabled")
 
-  val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
+  // NRS Config
+  val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
 }
 
 trait FixedConfig {

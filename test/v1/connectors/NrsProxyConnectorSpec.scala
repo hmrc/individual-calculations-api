@@ -17,8 +17,7 @@
 package v1.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.http.HeaderCarrier
-import v1.models.domain.{CrystallisationRequestBody, EmptyJsonBody}
+import v1.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.Future
 
@@ -42,16 +41,12 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
   "NrsProxyConnector" when {
     "submit with valid data" should {
       "be successful" in new Test {
-        implicit val hc: HeaderCarrier                       = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
-        val requiredDesHeadersTrigger: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockedHttpClient
           .post(
             url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
-            config = dummyDesHeaderCarrierConfig,
-            EmptyJsonBody,
-            requiredHeaders = requiredDesHeadersTrigger,
-            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
+            config = dummyHeaderCarrierConfig,
+            body = request
           ).returns(Future.successful((): Unit))
 
         await(connector.submit(nino, request)) shouldBe (():Unit)

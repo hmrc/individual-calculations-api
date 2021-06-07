@@ -16,9 +16,8 @@
 
 package v1.services
 
-import v1.models.domain.Nino
 import v1.mocks.connectors.MockIntentToCrystalliseConnector
-import v1.models.domain.DesTaxYear
+import v1.models.domain.{DesTaxYear, Nino}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.intentToCrystallise.IntentToCrystalliseRequest

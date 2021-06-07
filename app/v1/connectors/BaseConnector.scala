@@ -29,10 +29,10 @@ trait BaseConnector extends Logging {
   val appConfig: AppConfig
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
-    .withExtraHeaders("CorrelationId" -> correlationId)
+    .withExtraHeaders(headers = "CorrelationId" -> correlationId)
 
   private def desHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
-                                                                                  correlationId: String): HeaderCarrier =
+                                                                                     correlationId: String): HeaderCarrier =
     HeaderCarrier(
       extraHeaders = hc.extraHeaders ++
         // Contract headers
@@ -57,7 +57,7 @@ trait BaseConnector extends Logging {
       http.POST(urlFrom(uri), body)
     }
 
-    doPost(headerCarrier(hc, correlationId).withExtraHeaders("CorrelationId" -> correlationId))
+    doPost(headerCarrier(hc, correlationId))
   }
 
   def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,

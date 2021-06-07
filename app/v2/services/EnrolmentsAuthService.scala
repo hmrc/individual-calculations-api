@@ -18,7 +18,6 @@ package v2.services
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
@@ -26,6 +25,7 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.Logging
 import v2.models.auth.UserDetails
 import v2.models.errors.{DownstreamError, UnauthorisedError}
 import v2.models.outcomes.AuthOutcome
@@ -33,9 +33,7 @@ import v2.models.outcomes.AuthOutcome
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class EnrolmentsAuthService @Inject()(val connector: AuthConnector, val appConfig: AppConfig) {
-
-  private val logger: Logger = Logger(this.getClass)
+class EnrolmentsAuthService @Inject()(val connector: AuthConnector, val appConfig: AppConfig) extends Logging {
 
   private val authFunction: AuthorisedFunctions = new AuthorisedFunctions {
     override def authConnector: AuthConnector = connector
@@ -49,7 +47,9 @@ class EnrolmentsAuthService @Inject()(val connector: AuthConnector, val appConfi
   def buildPredicate(predicate: Predicate): Predicate =
     if (appConfig.confidenceLevelConfig.authValidationEnabled) {
       predicate and ((Individual and ConfidenceLevel.L200) or Organisation or Agent)
-    } else predicate
+    } else {
+      predicate
+    }
 
   def authorised(predicate: Predicate)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuthOutcome] = {
     authFunction.authorised(buildPredicate(predicate)).retrieve(affinityGroup and authorisedEnrolments) {

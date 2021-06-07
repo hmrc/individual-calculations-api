@@ -17,22 +17,19 @@
 package v2.connectors
 
 import config.AppConfig
-import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpReads, HttpClient }
-
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import utils.Logging
 import v2.models.response.common.DesResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait BaseConnector {
+trait BaseConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
 
-  val logger: Logger = Logger(this.getClass)
-
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
-    .withExtraHeaders("CorrelationId" -> correlationId)
+    .withExtraHeaders(headers = "CorrelationId" -> correlationId)
 
   private def desHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
                                                                                      correlationId: String): HeaderCarrier =
@@ -60,7 +57,7 @@ trait BaseConnector {
       http.POST(urlFrom(uri), body)
     }
 
-    doPost(headerCarrier(hc, correlationId).withExtraHeaders("CorrelationId" -> correlationId))
+    doPost(headerCarrier(hc, correlationId))
   }
 
   def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,

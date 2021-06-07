@@ -36,10 +36,10 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "called" should {
       "return a valid Definition case class" in new Test {
         MockAppConfig.featureSwitch returns None anyNumberOfTimes()
-        MockAppConfig.apiStatus("1.0") returns "BETA"
-        MockAppConfig.apiStatus("2.0") returns "ALPHA"
-        MockAppConfig.endpointsEnabled("1") returns true anyNumberOfTimes()
-        MockAppConfig.endpointsEnabled("2") returns true anyNumberOfTimes()
+        MockAppConfig.apiStatus(status = "1.0") returns "BETA"
+        MockAppConfig.apiStatus(status = "2.0") returns "ALPHA"
+        MockAppConfig.endpointsEnabled(version = "1") returns true anyNumberOfTimes()
+        MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = true, authValidationEnabled = true) anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
@@ -64,9 +64,9 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
-                version = VERSION_1, access = None, status = APIStatus.BETA, endpointsEnabled = true),
+                version = VERSION_1, status = APIStatus.BETA, endpointsEnabled = true),
               APIVersion(
-                version = VERSION_2, access = None, status = APIStatus.ALPHA, endpointsEnabled = true)
+                version = VERSION_2, status = APIStatus.ALPHA, endpointsEnabled = true)
             ),
             requiresTrust = None
           )
@@ -93,14 +93,14 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockAppConfig.apiStatus("1.0") returns "BETA"
+        MockAppConfig.apiStatus(status = "1.0") returns "BETA"
         apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe BETA
       }
     }
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.apiStatus("1.0") returns "ALPHA"
+        MockAppConfig.apiStatus(status = "1.0") returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe ALPHA
       }
     }

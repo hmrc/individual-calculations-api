@@ -17,9 +17,8 @@
 package v1.controllers.requestParsers
 
 import javax.inject.Inject
-import v1.models.domain.Nino
 import v1.controllers.requestParsers.validators.TriggerCalculationValidator
-import v1.models.domain.TriggerCalculationRequestBody
+import v1.models.domain.{Nino, TriggerCalculationRequestBody}
 import v1.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 class TriggerCalculationParser @Inject()(val validator: TriggerCalculationValidator)

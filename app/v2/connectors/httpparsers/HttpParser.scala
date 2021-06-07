@@ -16,7 +16,7 @@
 
 package v2.connectors.httpparsers
 
-import play.api.{Logger, Logging}
+import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -25,7 +25,7 @@ import v2.models.errors._
 
 import scala.util.{Success, Try}
 
-trait HttpParser extends Logging{
+trait HttpParser extends Logging {
 
   implicit class KnownJsonResponse(response: HttpResponse) {
 
