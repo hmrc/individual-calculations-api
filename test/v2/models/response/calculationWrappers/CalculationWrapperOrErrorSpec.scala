@@ -43,8 +43,8 @@ class CalculationWrapperOrErrorSpec extends UnitSpec {
     }
 
     "read from JSON with no metadata present" should {
-      "produce a JsSuccess" in {
-        calculationWrapperJsonWithoutMetadata.validate[WrappedCalculation] shouldBe a[JsSuccess[_]]
+      "produce a JsError" in {
+        calculationWrapperJsonWithoutMetadata.validate[WrappedCalculation] shouldBe a[JsError]
       }
     }
 
