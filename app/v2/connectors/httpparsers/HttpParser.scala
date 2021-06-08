@@ -16,11 +16,11 @@
 
 package v2.connectors.httpparsers
 
-import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.http.HttpResponse
+import utils.Logging
 import v2.models.errors._
 
 import scala.util.{Success, Try}

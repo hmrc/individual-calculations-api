@@ -16,7 +16,7 @@
 
 package v1.models.response.calculationWrappers
 
-import play.api.libs.json.{JsError, JsSuccess}
+import play.api.libs.json.JsError
 import support.UnitSpec
 import v1.fixtures.calculationWrappers.CalculationWrapperOrErrorFixture._
 import v1.models.response.calculationWrappers.CalculationWrapperOrError.ErrorsInCalculation
@@ -42,7 +42,7 @@ class CalculationWrapperOrErrorSpec extends UnitSpec {
       }
     }
 
-    "read from JSON with no metadata present" should {
+    "read from invalid JSON with no metadata present" should {
       "produce a JsError" in {
         calculationWrapperJsonWithoutMetadata.validate[WrappedCalculation] shouldBe a[JsError]
       }
