@@ -18,8 +18,7 @@ package v1.connectors
 
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.response.common.DesResponse
 
@@ -27,70 +26,118 @@ import scala.concurrent.Future
 
 class BaseConnectorSpec extends ConnectorSpec {
 
+  //WLOG
+  case class Result(value: Int)
+
+  //WLOG
+  val body: String = "body"
+  val outcome: Either[Nothing, ResponseWrapper[Any]] = Right(ResponseWrapper(correlationId, Result(2)))
+
+  val url: String = "some/url?param=value"
+  val absoluteUrl: String = s"$baseUrl/$url"
+
+  implicit val httpReads: HttpReads[BackendOutcome[Result]] = mock[HttpReads[BackendOutcome[Result]]]
+
   class Test extends MockHttpClient with MockAppConfig {
-
-    case class Result(value: Int)
-
-    val body: String = "body"
-    val outcome: Either[Nothing, ResponseWrapper[Any]] = Right(ResponseWrapper(correlationId, Result(2)))
-    val url: String = "some/url?param=value"
-    val absoluteUrl: String = s"$baseUrl/$url"
-
     val connector: BaseConnector = new BaseConnector {
       val http: HttpClient = mockHttpClient
       val appConfig: AppConfig = mockAppConfig
     }
-
-    implicit val httpReads: HttpReads[BackendOutcome[Result]] = mock[HttpReads[BackendOutcome[Result]]]
   }
 
-  "post" must {
-    "posts with the required backend headers and returns the result" in new Test {
-      MockedAppConfig.backendBaseUrl returns baseUrl
-
-      MockedHttpClient
-        .post(absoluteUrl, body, "Authorization" -> s"Bearer user-token")
-        .returns(Future.successful(outcome))
-
-      await(connector.post(body, url)) shouldBe outcome
-    }
-  }
-
-  "desPost" must {
-    "posts with the required des headers and returns the result" in new Test {
-      implicit val hc: HeaderCarrier = HeaderCarrier()
-
-      val desHeaders: Seq[(String, String)] = Seq(
-        "Authorization" -> s"Bearer des-token",
-        "Environment" -> "des-env"
+  "BaseConnector" when {
+    "making a HTTP request to DES" must {
+      val requiredHeaders: Seq[(String, String)] = Seq(
+        "Environment" -> "des-environment",
+        "Authorization" -> "Bearer des-token",
+        "User-Agent" -> "individual-calculations-api",
+        "CorrelationId" -> correlationId,
+        "Gov-Test-Scenario" -> "DEFAULT"
       )
 
-      class DesResult(override val value: Int) extends Result(value) with DesResponse
-      val desUrl: Uri[DesResult] = Uri[DesResult](url)
+      val excludedHeaders: Seq[(String, String)] = Seq(
+        "AnotherHeader" -> "HeaderValue"
+      )
 
-      implicit val desHttpReads: HttpReads[BackendOutcome[DesResult]] = mock[HttpReads[BackendOutcome[DesResult]]]
+      desTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, excludedHeaders, Some(allowedDesHeaders))
 
-      MockedAppConfig.desToken returns "des-token"
-      MockedAppConfig.desEnvironment returns "des-env"
-      MockedAppConfig.desBaseUrl returns baseUrl
+      "exclude all `otherHeaders` when no external service header allow-list is found" should {
+        val requiredHeaders: Seq[(String, String)] = Seq(
+          "Environment" -> "des-environment",
+          "Authorization" -> "Bearer des-token",
+          "User-Agent" -> "individual-calculations-api",
+          "CorrelationId" -> correlationId
+        )
 
-      MockedHttpClient
-        .post(absoluteUrl, body, desHeaders:_*)
-        .returns(Future.successful(outcome))
+        desTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, otherHeaders, None)
+      }
+    }
 
-      await(connector.desPost(body, desUrl)) shouldBe outcome
+    "making a HTTP request to the backend" must {
+      val requiredHeaders: Seq[(String, String)] = Seq(
+        "Authorization" -> "Bearer user-token",
+        "CorrelationId" -> correlationId
+      )
+
+      backendTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders)
     }
   }
 
-  "get" must {
-    "get with the required backend headers and return the result with query parameters" in new Test {
-      MockedAppConfig.backendBaseUrl returns baseUrl
+  def desTestHttpMethods(config: HeaderCarrier.Config,
+                         requiredHeaders: Seq[(String, String)],
+                         excludedHeaders: Seq[(String, String)],
+                         desEnvironmentHeaders: Option[Seq[String]]): Unit = {
 
-      MockedHttpClient
-        .get(absoluteUrl, Seq(("key", "value")), requiredHeaders :_*)
-        .returns(Future.successful(outcome))
+    "complete the request successfully with the required headers" when {
 
-      await(connector.get(url, Seq(("key", "value")))) shouldBe outcome
+      "DesPost" in new Test {
+        class DesResult(override val value: Int) extends Result(value) with DesResponse
+
+        val desUrl: Uri[DesResult] = Uri[DesResult](url)
+        implicit val httpReads: HttpReads[BackendOutcome[DesResult]] = mock[HttpReads[BackendOutcome[DesResult]]]
+
+        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
+
+        MockAppConfig.desBaseUrl returns baseUrl
+        MockAppConfig.desToken returns "des-token"
+        MockAppConfig.desEnvironment returns "des-environment"
+        MockAppConfig.desEnvironmentHeaders returns desEnvironmentHeaders
+
+        MockedHttpClient
+          .post(absoluteUrl, config, body, requiredHeadersPost, excludedHeaders)
+          .returns(Future.successful(outcome))
+
+        await(connector.desPost(body, desUrl)) shouldBe outcome
+      }
+    }
+  }
+
+  def backendTestHttpMethods(config: HeaderCarrier.Config,
+                             requiredHeaders: Seq[(String, String)]): Unit = {
+
+    "complete the request successfully with the required headers" when {
+      implicit val hc: HeaderCarrier = HeaderCarrier().withExtraHeaders(headers = "Authorization" -> "Bearer user-token")
+
+      "Get" in new Test {
+        MockAppConfig.backendBaseUrl returns baseUrl
+
+        MockedHttpClient
+          .get(absoluteUrl, Seq(("key", "value")), config, requiredHeaders)
+          .returns(Future.successful(outcome))
+
+        await(connector.get(url, Seq(("key", "value")))) shouldBe outcome
+      }
+
+      "Post" in new Test {
+        MockAppConfig.backendBaseUrl returns baseUrl
+
+        MockedHttpClient
+          .post(absoluteUrl, config, body, requiredHeaders)
+          .returns(Future.successful(outcome))
+
+        await(connector.post(body, url)) shouldBe outcome
+      }
     }
   }
 }

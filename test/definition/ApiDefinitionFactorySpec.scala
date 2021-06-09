@@ -16,12 +16,10 @@
 
 package definition
 
-import com.typesafe.config.ConfigFactory
 import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
 import definition.Versions.{VERSION_1, VERSION_2}
 import mocks.{MockAppConfig, MockHttpClient}
-import play.api.Configuration
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -29,7 +27,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
     val apiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
-    MockedAppConfig.apiGatewayContext returns "api.gateway.context"
+    MockAppConfig.apiGatewayContext returns "api.gateway.context"
   }
 
   private val confidenceLevel: ConfidenceLevel = ConfidenceLevel.L200
@@ -37,12 +35,12 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        MockedAppConfig.featureSwitch returns None anyNumberOfTimes()
-        MockedAppConfig.apiStatus("1.0") returns "BETA"
-        MockedAppConfig.apiStatus("2.0") returns "ALPHA"
-        MockedAppConfig.endpointsEnabled("1") returns true anyNumberOfTimes()
-        MockedAppConfig.endpointsEnabled("2") returns true anyNumberOfTimes()
-        MockedAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = true, authValidationEnabled = true) anyNumberOfTimes()
+        MockAppConfig.featureSwitch returns None anyNumberOfTimes()
+        MockAppConfig.apiStatus(status = "1.0") returns "BETA"
+        MockAppConfig.apiStatus(status = "2.0") returns "ALPHA"
+        MockAppConfig.endpointsEnabled(version = "1") returns true anyNumberOfTimes()
+        MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes()
+        MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = true, authValidationEnabled = true) anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(
@@ -66,9 +64,9 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
-                version = VERSION_1, access = None, status = APIStatus.BETA, endpointsEnabled = true),
+                version = VERSION_1, status = APIStatus.BETA, endpointsEnabled = true),
               APIVersion(
-                version = VERSION_2, access = None, status = APIStatus.ALPHA, endpointsEnabled = true)
+                version = VERSION_2, status = APIStatus.ALPHA, endpointsEnabled = true)
             ),
             requiresTrust = None
           )
@@ -85,7 +83,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
       case (definitionEnabled, cl) =>
         s"confidence-level-check.definition.enabled is $definitionEnabled in config" should {
           s"return $cl" in new Test {
-            MockedAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = definitionEnabled, authValidationEnabled = true)
+            MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = definitionEnabled, authValidationEnabled = true)
             apiDefinitionFactory.confidenceLevel shouldBe cl
           }
         }
@@ -95,45 +93,16 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockedAppConfig.apiStatus("1.0") returns "BETA"
-        apiDefinitionFactory.buildAPIStatus("1.0") shouldBe BETA
+        MockAppConfig.apiStatus(status = "1.0") returns "BETA"
+        apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe BETA
       }
     }
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockedAppConfig.apiStatus("1.0") returns "ALPHO"
-        apiDefinitionFactory.buildAPIStatus("1.0") shouldBe ALPHA
+        MockAppConfig.apiStatus(status = "1.0") returns "ALPHO"
+        apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe ALPHA
       }
     }
   }
-
-  "buildWhiteListingAccess" when {
-    "the 'featureSwitch' parameter is not present" should {
-      "return None" in new Test {
-        MockedAppConfig.featureSwitch returns None
-        apiDefinitionFactory.buildWhiteListingAccess() shouldBe None
-      }
-    }
-
-    "the 'featureSwitch' parameter is present and white listing is enabled" should {
-      "return the correct Access object" in new Test {
-
-        MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString(
-          """|white-list.enabled = true
-             |white-list.applicationIds = ["anId"]
-             |""".stripMargin))))
-
-        apiDefinitionFactory.buildWhiteListingAccess() shouldBe Some(Access("PRIVATE", Seq("anId")))
-      }
-    }
-
-    "the 'featureSwitch' parameter is present and white listing is not enabled" should {
-      "return None" in new Test {
-        MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""|white-list.enabled = false""".stripMargin))))
-        apiDefinitionFactory.buildWhiteListingAccess() shouldBe None
-      }
-    }
-  }
-
 }

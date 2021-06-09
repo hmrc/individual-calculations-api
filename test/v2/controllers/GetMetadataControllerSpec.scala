@@ -19,13 +19,13 @@ package v2.controllers
 import mocks.MockIdGenerator
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v2.handler.{RequestDefn, RequestHandler}
 import v2.mocks.hateoas.MockHateoasFactory
 import v2.mocks.requestParsers.MockGetCalculationParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.errors._
 import v2.models.hateoas.{HateoasWrapper, Link}

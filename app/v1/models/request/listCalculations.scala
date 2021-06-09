@@ -16,7 +16,7 @@
 
 package v1.models.request
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 

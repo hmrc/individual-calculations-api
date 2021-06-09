@@ -16,7 +16,6 @@
 
 package v1.models.request.crystallisation
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.domain.DesTaxYear
+import v1.models.domain.{DesTaxYear, Nino}
 
 case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)

@@ -35,7 +35,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockedAppConfig.mtdNrsProxyBaseUrl returns baseUrl
+    MockAppConfig.mtdNrsProxyBaseUrl returns baseUrl
   }
 
   "NrsProxyConnector" when {
@@ -45,8 +45,10 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .post(
             url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
+            config = dummyHeaderCarrierConfig,
             body = request
           ).returns(Future.successful((): Unit))
+
 
         await(connector.submit(nino, request)) shouldBe (():Unit)
       }

@@ -17,75 +17,66 @@
 package routing
 
 import akka.actor.ActorSystem
-import akka.stream.{ActorMaterializer, Materializer}
 import com.typesafe.config.ConfigFactory
 import mocks.MockAppConfig
-import org.scalamock.handlers.CallHandler1
 import org.scalatest.Inside
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
-import play.api.http.{HttpConfiguration, HttpFilters}
+import play.api.http.{HttpConfiguration, HttpErrorHandler, HttpFilters}
 import play.api.libs.json.Json
 import play.api.mvc.{EssentialAction, _}
 import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import support.UnitSpec
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
-import utils.ErrorHandler
 import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
-
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockAppConfig with GuiceOneAppPerSuite {
   test =>
 
   implicit private val actorSystem: ActorSystem = ActorSystem("test")
-  implicit private val mat: Materializer        = ActorMaterializer()
-  val action: DefaultActionBuilder              = app.injector.instanceOf[DefaultActionBuilder]
+  val action: DefaultActionBuilder = app.injector.instanceOf[DefaultActionBuilder]
 
-  private val defaultRouter = mock[Router]
-  private val v1Router      = mock[Router]
-  private val v2Router      = mock[Router]
-  private val v3Router      = mock[Router]
+  import play.api.mvc.Handler
+  import play.api.routing.sird._
+
+  object DefaultHandler extends Handler
+  object V1Handler extends Handler
+  object V2Handler extends Handler
+  object V3Handler extends Handler
+
+  private val defaultRouter = Router.from {
+    case GET(p"") => DefaultHandler
+  }
+  private val v1Router      = Router.from {
+    case GET(p"/v1") => V1Handler
+  }
+  private val v2Router      = Router.from {
+    case GET(p"/v2") => V2Handler
+  }
+  private val v3Router = Router.from {
+    case GET(p"/v3") => V3Handler
+  }
 
   private val routingMap = new VersionRoutingMap {
-    override val defaultRouter: Router    = test.defaultRouter
+    override val defaultRouter: Router = test.defaultRouter
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration: HttpConfiguration = HttpConfiguration("context")
-    val auditConnector: AuditConnector = mock[AuditConnector]
-    val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
-    val configuration: Configuration = Configuration(
-      "appName" -> "myApp",
-      "bootstrap.errorHandler.warnOnly.statusCodes" -> Seq.empty[Int]
-    )
-
-    private val errorHandler = new ErrorHandler(configuration, auditConnector, httpAuditEvent)
-    private val filters      = mock[HttpFilters]
+    private val errorHandler      = mock[HttpErrorHandler]
+    private val filters           = mock[HttpFilters]
     (filters.filters _).stubs().returns(Seq.empty)
 
-    MockedAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString(
-      """
-        |version-1.enabled = true
-        |version-2.enabled = true
-      """.stripMargin)))
-    )
+    MockAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
+                                                                                       |version-1.enabled = true
+                                                                                       |version-2.enabled = true
+                                                                         """.stripMargin))))
 
-    //noinspection ScalaDeprecation
     val requestHandler: VersionRoutingRequestHandler =
       new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, action)
-
-    def stubHandling(router: Router, path: String)(handler: Option[Handler]): CallHandler1[RequestHeader, Option[Handler]] =
-      (router.handlerFor _)
-        .expects(where { r: RequestHeader =>
-          r.path == path
-        })
-        .returns(handler)
 
     def buildRequest(path: String): RequestHeader =
       acceptHeader
@@ -96,21 +87,68 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
 
   "Routing requests with no version" should {
     implicit val acceptHeader: None.type = None
-    handleWithDefaultRoutes(defaultRouter)
+
+    handleWithDefaultRoutes()
   }
 
   "Routing requests with valid version" should {
     implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
-    handleWithDefaultRoutes(defaultRouter)
+
+    handleWithDefaultRoutes()
+  }
+
+  "Routing requests with v1" should {
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
+
+    handleWithVersionRoutes("/v1", V1Handler)
+  }
+
+  "Routing requests with v2" should {
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
+    handleWithVersionRoutes("/v2", V2Handler)
+  }
+
+  private def handleWithDefaultRoutes()(implicit acceptHeader: Option[String]): Unit = {
+    "if the request ends with a trailing slash" when {
+      "handler found" should {
+        "use it" in new Test {
+          requestHandler.routeRequest(buildRequest("/")) shouldBe Some(DefaultHandler)
+        }
+      }
+
+      "handler not found" should {
+        "try without the trailing slash" in new Test {
+
+          requestHandler.routeRequest(buildRequest("")) shouldBe Some(DefaultHandler)
+        }
+      }
+    }
+  }
+
+  private def handleWithVersionRoutes(path: String, handler: Handler)(implicit acceptHeader: Option[String]): Unit = {
+    "if the request ends with a trailing slash" when {
+      "handler found" should {
+        "use it" in new Test {
+
+          requestHandler.routeRequest(buildRequest(s"$path/")) shouldBe Some(handler)
+        }
+      }
+
+      "handler not found" should {
+        "try without the trailing slash" in new Test {
+
+          requestHandler.routeRequest(buildRequest(s"$path")) shouldBe Some(handler)
+        }
+      }
+    }
   }
 
   "Routing requests to non default router with no version" should {
     implicit val acceptHeader: None.type = None
 
     "return 406" in new Test {
-      stubHandling(defaultRouter, "path")(None)
 
-      val request: RequestHeader = buildRequest("path")
+      val request: RequestHeader = buildRequest("/v1")
       inside(requestHandler.routeRequest(request)) {
         case Some(a: EssentialAction) =>
           val result = a.apply(request)
@@ -121,22 +159,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     }
   }
 
-  "Routing requests with v1" should {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.1.0+json")
-    handleWithVersionRoutes(v1Router)
-  }
-
-  "Routing requests with v2" should {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
-    handleWithVersionRoutes(v2Router)
-  }
-
   "Routing requests with unsupported version" should {
     implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
 
     "return 404" in new Test {
-      stubHandling(defaultRouter, "path")(None)
-      private val request = buildRequest("path")
+      private val request = buildRequest("/v1")
 
       inside(requestHandler.routeRequest(request)) {
         case Some(a: EssentialAction) =>
@@ -153,72 +180,15 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
 
     "the version has a route for the resource" must {
       "return 404 Not Found" in new Test {
-        stubHandling(defaultRouter, "path")(None)
-        private val request = buildRequest("path")
 
+        private val request = buildRequest("/v1")
         inside(requestHandler.routeRequest(request)) {
-          case Some(a: EssentialAction) =>
+          case Some(a:EssentialAction) =>
             val result = a.apply(request)
 
             status(result) shouldBe NOT_FOUND
             contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
 
-        }
-      }
-    }
-  }
-
-  private def handleWithDefaultRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit = {
-    "if the request ends with a trailing slash" when {
-      "handler found" should {
-        "use it" in new Test {
-          val handler: Handler = mock[Handler]
-          stubHandling(router, "path/")(Some(handler))
-
-          requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
-        }
-      }
-
-      "handler not found" should {
-        "try without the trailing slash" in new Test {
-          val handler: Handler = mock[Handler]
-          inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
-          }
-
-          requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
-        }
-      }
-    }
-  }
-
-  private def handleWithVersionRoutes(router: Router)(implicit acceptHeader: Option[String]): Unit = {
-    "if the request ends with a trailing slash" when {
-      "handler found" should {
-        "use it" in new Test {
-          val handler: Handler = mock[Handler]
-
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
-          stubHandling(router, "path/")(Some(handler))
-
-          requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
-        }
-      }
-
-      "handler not found" should {
-        "try without the trailing slash" in new Test {
-          val handler: Handler = mock[Handler]
-
-          stubHandling(defaultRouter, "path/")(None)
-          stubHandling(defaultRouter, "path")(None)
-          inSequence {
-            stubHandling(router, "path/")(None)
-            stubHandling(router, "path")(Some(handler))
-          }
-
-          requestHandler.routeRequest(buildRequest("path/")) shouldBe Some(handler)
         }
       }
     }

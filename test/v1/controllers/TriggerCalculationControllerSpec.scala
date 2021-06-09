@@ -19,7 +19,7 @@ package v1.controllers
 import mocks.MockIdGenerator
 import play.api.libs.json.{Format, JsValue, Json}
 import play.api.mvc.{AnyContentAsJson, Result}
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.handler.{RequestDefn, RequestHandler}

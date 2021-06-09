@@ -17,8 +17,8 @@
 package v2.controllers.requestParsers
 
 import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
 import v2.controllers.requestParsers.validators.GetCalculationValidator
+import v2.models.domain.Nino
 import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationParser @Inject()(val validator: GetCalculationValidator)

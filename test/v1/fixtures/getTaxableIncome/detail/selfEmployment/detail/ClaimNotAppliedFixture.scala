@@ -24,7 +24,7 @@ object ClaimNotAppliedFixture {
 
   val claimId: String = "CCIS12345678912"
   val taxYearClaimMade: String = "2046-47"
-  val claimType: TypeOfClaim.`carry-forward`.type = TypeOfClaim.`carry-forward`
+  val claimType: TypeOfClaim = TypeOfClaim.`carry-forward`
 
   val claimNotAppliedModel: ClaimNotApplied =
     ClaimNotApplied(

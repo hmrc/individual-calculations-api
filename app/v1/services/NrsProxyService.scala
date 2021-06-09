@@ -30,5 +30,4 @@ class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
     connector.submit(nino, body)
   }
-
 }

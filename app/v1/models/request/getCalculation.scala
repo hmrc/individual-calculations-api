@@ -16,8 +16,7 @@
 
 package v1.models.request
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.domain.MessageType
+import v1.models.domain.{MessageType, Nino}
 
 trait CommonCalculationRequest {
 
@@ -25,7 +24,7 @@ trait CommonCalculationRequest {
 
   def calculationId: String
 
-  def backendCalculationUri: String = s"/$nino/self-assessment/$calculationId"
+  def backendCalculationUri: String = s"/${nino.nino}/self-assessment/$calculationId"
 }
 
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData

@@ -18,8 +18,7 @@ package v2.connectors
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.models.domain.EmptyJsonBody
 import v2.models.request.crystallisation.CrystallisationRequest
 import v2.models.response.common.DesUnit
@@ -36,7 +35,10 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
     correlationId: String): Future[BackendOutcome[DesUnit]] = {
 
     import v2.connectors.httpparsers.StandardHttpParser._
-    import request._
+
+    val nino: String = request.nino.nino
+    val taxYear: String = request.taxYear.value
+    val calculationId: String = request.calculationId
 
     desPost(
       uri = Uri[DesUnit](s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),

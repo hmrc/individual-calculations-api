@@ -17,8 +17,8 @@
 package v2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.domain.Nino
-import v2.models.domain.{DesTaxYear, EmptyJsonBody}
+import uk.gov.hmrc.http.HeaderCarrier
+import v2.models.domain.{DesTaxYear, EmptyJsonBody, Nino}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.intentToCrystallise.IntentToCrystalliseRequest
 import v2.models.response.intentToCrystallise.IntentToCrystalliseResponse
@@ -28,7 +28,7 @@ import scala.concurrent.Future
 class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA111111A"
-  val taxYear: DesTaxYear = DesTaxYear.fromMtd("2021-22")
+  val taxYear: DesTaxYear = DesTaxYear.fromMtd(taxYear = "2021-22")
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
@@ -45,9 +45,10 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "IntentToCrystalliseConnector" when {
@@ -55,12 +56,18 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
       "return a success upon HttpClient success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, response))
 
+        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
+
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/nino/$nino/taxYear/${taxYear.value}/tax-calculation?crystallise=true",
+            config = dummyHeaderCarrierConfig,
             body = EmptyJsonBody,
-            requiredHeaders = requiredHeaders :_*
+            requiredHeaders = requiredDesHeadersPost,
+            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           ).returns(Future.successful(outcome))
+
 
         await(connector.submitIntentToCrystallise(request)) shouldBe outcome
       }

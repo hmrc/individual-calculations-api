@@ -17,9 +17,8 @@
 package v2.controllers.requestParsers
 
 import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
 import v2.controllers.requestParsers.validators.GetMessagesValidator
-import v2.models.domain.MessageType
+import v2.models.domain.{MessageType, Nino}
 import v2.models.request.{GetMessagesRawData, GetMessagesRequest}
 
 class GetMessagesParser @Inject()(val validator: GetMessagesValidator)

@@ -77,7 +77,7 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
       val nino: String = "someNino"
       val taxYear: String = "2018-19"
       val calcId: String = "someCalcId"
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a IntentToCrystalliseResponse object" should {

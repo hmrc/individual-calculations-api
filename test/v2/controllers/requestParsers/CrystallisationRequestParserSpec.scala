@@ -20,9 +20,8 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
 import v2.mocks.validators.MockCrystallisationValidator
-import v2.models.domain.DesTaxYear
+import v2.models.domain.{DesTaxYear, Nino}
 import v2.models.errors._
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
 

@@ -53,7 +53,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String = "someNino"
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a TriggerCalculationResponse object" should {

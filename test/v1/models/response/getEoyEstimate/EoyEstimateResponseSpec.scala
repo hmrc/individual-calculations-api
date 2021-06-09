@@ -45,7 +45,7 @@ class EoyEstimateResponseSpec extends UnitSpec {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String = "someNino"
       val calcId: String = "someCalcId"
-      MockedAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping an EoyEstimateResponse object" should {

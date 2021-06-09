@@ -16,6 +16,7 @@
 
 package v1.fixtures.calculationWrappers
 
+import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, JsValue, Json, Reads}
 import v1.models.response.calculationWrappers.CalculationWrapperOrError
 import v1.models.response.calculationWrappers.CalculationWrapperOrError.CalculationWrapper
@@ -24,14 +25,16 @@ object CalculationWrapperOrErrorFixture {
 
   type WrappedCalculation = CalculationWrapperOrError[TestCalculation]
 
-  case class TestCalculation(value: String)
+  case class TestCalculation(value: String, id: String)
 
   object TestCalculation {
-    implicit val reads: Reads[TestCalculation] =
-      (JsPath \ "calculation").read[TestCalculation](Json.reads[TestCalculation])
+    implicit val reads: Reads[TestCalculation] = (
+      (JsPath \ "calculation" \ "value").read[String] and
+        (JsPath \ "metadata" \ "id").read[String]
+      ) (TestCalculation.apply _)
   }
 
-  val wrappedCalculation: WrappedCalculation = CalculationWrapper(TestCalculation("someValue"))
+  val wrappedCalculation: WrappedCalculation = CalculationWrapper(TestCalculation("someValue", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
 
   val calculationWrapperJsonWithErrors: JsValue = Json.parse(
     """

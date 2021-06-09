@@ -18,9 +18,9 @@ package v1.services
 
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
+import v1.models.domain.Nino
 
 import scala.concurrent.ExecutionContext
 

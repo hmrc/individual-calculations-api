@@ -17,21 +17,20 @@
 package v2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.domain.Nino
 import v2.models.errors.DownstreamError
 
 import scala.concurrent.Future
 
 class MtdIdLookupConnectorSpec extends ConnectorSpec {
 
-  private val nino = Nino("AA123456A")
+  private val nino = "AA123456A"
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector = new MtdIdLookupConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
-    MockedAppConfig.mtdIdBaseUrl returns baseUrl
+    MockAppConfig.mtdIdBaseUrl returns baseUrl
   }
 
   val mtdId = "test-mtdId"
@@ -39,20 +38,24 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
   "getMtdId" should {
     "return an MtdId" when {
       "the http client returns a mtd id" in new Test {
-        MockedHttpClient.get[MtdIdLookupOutcome](s"$baseUrl/mtd-identifier-lookup/nino/$nino", queryParameters = Nil)
-          .returns(Future.successful(Right(mtdId)))
+        MockedHttpClient.get[MtdIdLookupOutcome](
+          url = s"$baseUrl/mtd-identifier-lookup/nino/$nino",
+          config = dummyHeaderCarrierConfig
+        ).returns(Future.successful(Right(mtdId)))
 
-        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino.nino))
+        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino))
         result shouldBe Right(mtdId)
       }
     }
 
     "return a DownstreamError" when {
       "the http client returns a DownstreamError" in new Test {
-        MockedHttpClient.get[MtdIdLookupOutcome](s"$baseUrl/mtd-identifier-lookup/nino/$nino", queryParameters = Nil)
-          .returns(Future.successful(Left(DownstreamError)))
+        MockedHttpClient.get[MtdIdLookupOutcome](
+          url = s"$baseUrl/mtd-identifier-lookup/nino/$nino",
+          config = dummyHeaderCarrierConfig
+        ).returns(Future.successful(Left(DownstreamError)))
 
-        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino.nino))
+        val result: MtdIdLookupOutcome = await(connector.getMtdId(nino))
         result shouldBe Left(DownstreamError)
       }
     }
