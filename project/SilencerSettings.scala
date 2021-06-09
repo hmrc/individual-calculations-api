@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import sbt.{ CrossVersion, Def, compilerPlugin, _ }
 import sbt.Keys._
+import sbt.{CrossVersion, Def, compilerPlugin, _}
 
 object SilencerSettings {
 
-  private val silencerVersion = "1.7.1"
+  private val silencerVersion = "1.7.5"
 
   // stop "unused import" warnings from routes files
   def apply(): Seq[Def.Setting[_ >: Seq[ModuleID] with Task[Seq[String]] <: Equals]] = Seq(
