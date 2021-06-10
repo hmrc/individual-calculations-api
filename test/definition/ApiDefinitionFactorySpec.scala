@@ -16,10 +16,12 @@
 
 package definition
 
+import com.typesafe.config.ConfigFactory
 import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
 import definition.Versions.{VERSION_1, VERSION_2}
 import mocks.{MockAppConfig, MockHttpClient}
+import play.api.Configuration
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -102,6 +104,35 @@ class ApiDefinitionFactorySpec extends UnitSpec {
       "default to alpha" in new Test {
         MockAppConfig.apiStatus(status = "1.0") returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus(version = "1.0") shouldBe ALPHA
+      }
+    }
+  }
+
+  "buildWhiteListingAccess" when {
+    "the 'featureSwitch' parameter is not present" should {
+      "return None" in new Test {
+        MockAppConfig.featureSwitch returns None
+      }
+    }
+
+    "the 'featureSwitch' parameter is present and white listing is enabled" should {
+      "return the correct Access object" in new Test {
+
+        private val someString =
+          """
+            |{
+            |   white-list.enabled = true
+            |   white-list.applicationIds = ["anId"]
+            |}
+          """.stripMargin
+
+        MockAppConfig.featureSwitch returns Some(Configuration(ConfigFactory.parseString(someString)))
+      }
+    }
+
+    "the 'featureSwitch' parameter is present and white listing is not enabled" should {
+      "return None" in new Test {
+        MockAppConfig.featureSwitch returns Some(Configuration(ConfigFactory.parseString("""white-list.enabled = false""")))
       }
     }
   }

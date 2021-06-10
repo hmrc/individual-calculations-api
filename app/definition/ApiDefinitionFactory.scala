@@ -21,12 +21,15 @@ import definition.Versions._
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import javax.inject.{Inject, Singleton}
 import utils.Logging
+import play.api.Logger
 
 @Singleton
 class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
 
   private val readScope = "read:self-assessment"
   private val writeScope = "write:self-assessment"
+
+  private val logger: Logger = Logger(this.getClass)
 
   def confidenceLevel: ConfidenceLevel = if (appConfig.confidenceLevelConfig.definitionEnabled) ConfidenceLevel.L200 else ConfidenceLevel.L50
 
