@@ -1,3 +1,5 @@
+From 30 November 2021 v1.0 will no longer be available.
+
 This API allows a self-assessment taxpayer to:
 
 * trigger a self-assessment tax calculation
