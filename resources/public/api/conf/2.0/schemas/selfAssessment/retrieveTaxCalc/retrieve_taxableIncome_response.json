@@ -241,7 +241,7 @@
                     "properties": {
                       "selfEmploymentId": {
                         "title": "selfEmploymentId",
-                        "description": "A unique identifier for the self-employment business income source.",
+                        "description": "A unique identifier for the self-employment business income source. Also referred to as businessId.",
                         "type": "string",
                         "example": "XGIS00000001319",
                         "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
