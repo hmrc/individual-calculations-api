@@ -29,9 +29,6 @@ object IncomeTaxSummaryFixture {
   val statePensionLumpSumCharges: Option[BigDecimal] = Some(150.10)
   val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
   val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
-  val payeUnderpaymentsCodedOut: Option[BigDecimal] = Some(180)
-  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
-  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
 
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
