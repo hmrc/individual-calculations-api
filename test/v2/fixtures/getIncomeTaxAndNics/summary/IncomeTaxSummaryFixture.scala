@@ -29,6 +29,9 @@ object IncomeTaxSummaryFixture {
   val statePensionLumpSumCharges: Option[BigDecimal] = Some(150.10)
   val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
   val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
+  val payeUnderpaymentsCodedOut: Option[BigDecimal] = Some(180)
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
+  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
 
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
@@ -39,21 +42,27 @@ object IncomeTaxSummaryFixture {
       totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
       statePensionLumpSumCharges = statePensionLumpSumCharges,
       incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
-      totalIncomeTaxDue = totalIncomeTaxDue
+      totalIncomeTaxDue = totalIncomeTaxDue,
+      payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut,
+      totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
+      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
     )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "incomeTaxCharged": $incomeTaxCharged,
-      |   "incomeTaxDueAfterReliefs": ${incomeTaxDueAfterReliefs.get},
-      |   "incomeTaxDueAfterGiftAid": ${incomeTaxDueAfterGiftAid.get},
-      |   "totalNotionalTax": ${totalNotionalTax.get},
-      |   "totalPensionSavingsTaxCharges": ${totalPensionSavingsTaxCharges.get},
-      |   "statePensionLumpSumCharges": ${statePensionLumpSumCharges.get},
-      |   "incomeTaxDueAfterTaxReductions": ${incomeTaxDueAfterTaxReductions.get},
-      |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get}
-      |}
+       |{
+       |   "incomeTaxCharged": $incomeTaxCharged,
+       |   "incomeTaxDueAfterReliefs": ${incomeTaxDueAfterReliefs.get},
+       |   "incomeTaxDueAfterGiftAid": ${incomeTaxDueAfterGiftAid.get},
+       |   "totalNotionalTax": ${totalNotionalTax.get},
+       |   "totalPensionSavingsTaxCharges": ${totalPensionSavingsTaxCharges.get},
+       |   "statePensionLumpSumCharges": ${statePensionLumpSumCharges.get},
+       |   "incomeTaxDueAfterTaxReductions": ${incomeTaxDueAfterTaxReductions.get},
+       |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get},
+       |   "payeUnderpaymentsCodedOut": ${payeUnderpaymentsCodedOut.get},
+       |    "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+       |    "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
+       |}
     """.stripMargin
   )
 }

@@ -42,10 +42,7 @@ object IncomeTaxSummaryFixture {
       totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
       statePensionLumpSumCharges = statePensionLumpSumCharges,
       incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
-      totalIncomeTaxDue = totalIncomeTaxDue,
-      payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut,
-      totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
-      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
+      totalIncomeTaxDue = totalIncomeTaxDue
     )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
@@ -58,10 +55,7 @@ object IncomeTaxSummaryFixture {
       |   "totalPensionSavingsTaxCharges": ${totalPensionSavingsTaxCharges.get},
       |   "statePensionLumpSumCharges": ${statePensionLumpSumCharges.get},
       |   "incomeTaxDueAfterTaxReductions": ${incomeTaxDueAfterTaxReductions.get},
-      |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get},
-      |   "payeUnderpaymentsCodedOut": ${payeUnderpaymentsCodedOut.get},
-      |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
-      |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
+      |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get}
       |}
     """.stripMargin
   )
