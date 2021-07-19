@@ -21,7 +21,10 @@
     "totalIncomeTaxNicsCharged": 5000,
     "totalTaxDeducted": 12500,
     "totalIncomeTaxAndNicsDue": -99999999999.99,
-    "taxRegime": "UK"
+    "taxRegime": "UK",
+    "payeUnderpaymentsCodedOut": 7003.43,
+    "totalTaxDeductedBeforeCodingOut": 98234.44,
+    "saUnderpaymentsCodedOut": 38495.21
   },
   "detail": {
     "incomeTax": {
