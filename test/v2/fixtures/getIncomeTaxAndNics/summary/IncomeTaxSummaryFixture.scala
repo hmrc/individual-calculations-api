@@ -30,8 +30,6 @@ object IncomeTaxSummaryFixture {
   val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
   val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
   val payeUnderpaymentsCodedOut: Option[BigDecimal] = Some(180)
-  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
-  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
 
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
@@ -43,9 +41,7 @@ object IncomeTaxSummaryFixture {
       statePensionLumpSumCharges = statePensionLumpSumCharges,
       incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
       totalIncomeTaxDue = totalIncomeTaxDue,
-      payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut,
-      totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
-      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
+      payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut
     )
 
   val incomeTaxSummaryJson: JsValue = Json.parse(
@@ -59,9 +55,7 @@ object IncomeTaxSummaryFixture {
        |   "statePensionLumpSumCharges": ${statePensionLumpSumCharges.get},
        |   "incomeTaxDueAfterTaxReductions": ${incomeTaxDueAfterTaxReductions.get},
        |   "totalIncomeTaxDue": ${totalIncomeTaxDue.get},
-       |   "payeUnderpaymentsCodedOut": ${payeUnderpaymentsCodedOut.get},
-       |    "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
-       |    "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
+       |   "payeUnderpaymentsCodedOut": ${payeUnderpaymentsCodedOut.get}
        |}
     """.stripMargin
   )
