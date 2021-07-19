@@ -8,7 +8,8 @@
       "incomeTaxDueAfterTaxReductions": 5000.99,
       "totalPensionSavingsTaxCharges": 5000.99,
       "statePensionLumpSumCharges": 5000.99,
-      "totalIncomeTaxDue": 5000.99
+      "totalIncomeTaxDue": 5000.99,
+      "payeUnderpaymentsCodedOut": 7003.43
     },
     "nics": {
       "class2NicsAmount": 5000,
@@ -21,7 +22,9 @@
     "totalIncomeTaxNicsCharged": 5000,
     "totalTaxDeducted": 12500,
     "totalIncomeTaxAndNicsDue": -99999999999.99,
-    "taxRegime": "UK"
+    "taxRegime": "UK",
+    "totalTaxDeductedBeforeCodingOut": 98234.44,
+    "saUnderpaymentsCodedOut": 38495.21
   },
   "detail": {
     "incomeTax": {
@@ -232,7 +235,8 @@
       "payeEmployments": 5000.99,
       "occupationalPensions": 5000.99,
       "stateBenefits": -99999999999.99,
-      "specialWithholdingTaxOrUkTaxPaid": 5000.99
+      "specialWithholdingTaxOrUkTaxPaid": 5000.99,
+      "inYearAdjustmentCodedInLaterTaxYear": 68394.21
     }
   },
   "links": [
