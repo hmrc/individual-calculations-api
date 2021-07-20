@@ -32,6 +32,8 @@ object EoyEstimateSummaryFixture {
   val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(7000.98)
   val totalTaxDeducted: Option[BigDecimal] = Some(9000.98)
   val incomeTaxNicAmount: Option[BigDecimal] = Some(7000.98)
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(8000.98)
+  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(9000.98)
 
   val eoyEstimateSummaryModel: EoyEstimateSummary =
     EoyEstimateSummary(
@@ -45,7 +47,9 @@ object EoyEstimateSummaryFixture {
       totalAnnualPaymentsTaxCharged = totalAnnualPaymentsTaxCharged,
       totalRoyaltyPaymentsTaxCharged = totalRoyaltyPaymentsTaxCharged,
       totalTaxDeducted = totalTaxDeducted,
-      incomeTaxNicAmount = incomeTaxNicAmount
+      incomeTaxNicAmount = incomeTaxNicAmount,
+      totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
+      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
     )
 
   val eoyEstimateSummaryJson: JsValue = Json.parse(
@@ -61,7 +65,9 @@ object EoyEstimateSummaryFixture {
       |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
       |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
       |   "totalTaxDeducted": ${totalTaxDeducted.get},
-      |   "incomeTaxNicAmount": ${incomeTaxNicAmount.get}
+      |   "incomeTaxNicAmount": ${incomeTaxNicAmount.get},
+      |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+      |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
       |}
     """.stripMargin
   )
