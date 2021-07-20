@@ -60,8 +60,8 @@ object CalculationSummaryFixture {
        |   "totalTaxDeducted": ${totalTaxDeducted.get},
        |   "totalIncomeTaxAndNicsDue": $totalIncomeTaxAndNicsDue,
        |   "taxRegime": "$taxRegime",
-       |    "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
-       |    "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
+       |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
        |}
      """.stripMargin
   )
