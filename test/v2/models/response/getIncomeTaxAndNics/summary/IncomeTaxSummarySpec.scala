@@ -33,7 +33,8 @@ class IncomeTaxSummarySpec extends UnitSpec with JsonErrorValidators {
       "totalPensionSavingsTaxCharges",
       "statePensionLumpSumCharges",
       "incomeTaxDueAfterTaxReductions",
-      "totalIncomeTaxDue"
+      "totalIncomeTaxDue",
+      "payeUnderpaymentsCodedOut"
     )
   )
 }

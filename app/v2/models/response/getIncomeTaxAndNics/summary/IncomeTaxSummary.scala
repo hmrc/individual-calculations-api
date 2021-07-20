@@ -25,7 +25,8 @@ case class IncomeTaxSummary(incomeTaxCharged: BigDecimal,
                             totalPensionSavingsTaxCharges: Option[BigDecimal],
                             statePensionLumpSumCharges: Option[BigDecimal],
                             incomeTaxDueAfterTaxReductions: Option[BigDecimal],
-                            totalIncomeTaxDue: Option[BigDecimal])
+                            totalIncomeTaxDue: Option[BigDecimal],
+                            payeUnderpaymentsCodedOut: Option[BigDecimal])
 
 object IncomeTaxSummary {
   implicit val format: OFormat[IncomeTaxSummary] = Json.format[IncomeTaxSummary]

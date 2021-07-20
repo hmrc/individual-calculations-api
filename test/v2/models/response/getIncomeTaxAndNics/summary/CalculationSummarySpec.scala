@@ -34,7 +34,9 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
       "totalAnnualPaymentsTaxCharged",
       "totalRoyaltyPaymentsTaxCharged",
       "totalIncomeTaxNicsCharged",
-      "totalTaxDeducted"
+      "totalTaxDeducted",
+      "totalTaxDeductedBeforeCodingOut",
+      "saUnderpaymentsCodedOut"
     )
   )
 }

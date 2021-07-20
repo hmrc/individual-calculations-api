@@ -30,6 +30,8 @@ object CalculationSummaryFixture {
   val totalTaxDeducted: Option[BigDecimal] = Some(500.25)
   val totalIncomeTaxAndNicsDue: BigDecimal = 600.25
   val taxRegime: String = "UK"
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
+  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
@@ -41,7 +43,9 @@ object CalculationSummaryFixture {
       totalIncomeTaxNicsCharged = totalIncomeTaxNicsCharged,
       totalTaxDeducted = totalTaxDeducted,
       totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
-      taxRegime = taxRegime
+      taxRegime = taxRegime,
+      totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
+      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
     )
 
   val calculationSummaryJson: JsValue = Json.parse(
@@ -55,7 +59,9 @@ object CalculationSummaryFixture {
        |   "totalIncomeTaxNicsCharged": ${totalIncomeTaxNicsCharged.get},
        |   "totalTaxDeducted": ${totalTaxDeducted.get},
        |   "totalIncomeTaxAndNicsDue": $totalIncomeTaxAndNicsDue,
-       |   "taxRegime": "$taxRegime"
+       |   "taxRegime": "$taxRegime",
+       |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
        |}
      """.stripMargin
   )
