@@ -10,8 +10,9 @@
     "totalStudentLoansRepaymentAmount": 2000.95,
     "totalAnnualPaymentsTaxCharged": 2000.95,
     "totalRoyaltyPaymentsTaxCharged": 2000.95,
-    "totalTaxDeducted": 2000.58
-
+    "totalTaxDeducted": 2000.58,
+    "totalTaxDeductedBeforeCodingOut": 5000.99,
+    "saUnderpaymentsCodedOut": 4142.41
   },
   "detail": {
     "selfEmployments": [{
