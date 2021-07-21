@@ -43,6 +43,7 @@ object PayPensionsProfitFixture {
   val totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal] = Some(14)
   val totalOverseasIncomeAndGains: Option[BigDecimal] = Some(15)
   val totalForeignBenefitsAndGifts: Option[BigDecimal] = Some(16)
+  val tipsIncome: Option[BigDecimal] = Some(17)
 
   val payPensionsProfitModel: PayPensionsProfit =
     PayPensionsProfit(
@@ -67,6 +68,7 @@ object PayPensionsProfitFixture {
       totalAllOtherIncomeReceivedWhilstAbroad = totalAllOtherIncomeReceivedWhilstAbroad,
       totalOverseasIncomeAndGains = totalOverseasIncomeAndGains,
       totalForeignBenefitsAndGifts = totalForeignBenefitsAndGifts,
+      tipsIncome = tipsIncome,
       businessProfitAndLoss = Some(businessProfitAndLossModel)
     )
 
@@ -94,6 +96,7 @@ object PayPensionsProfitFixture {
        |    "totalAllOtherIncomeReceivedWhilstAbroad": ${totalAllOtherIncomeReceivedWhilstAbroad.get},
        |    "totalOverseasIncomeAndGains": ${totalOverseasIncomeAndGains.get},
        |    "totalForeignBenefitsAndGifts": ${totalForeignBenefitsAndGifts.get},
+       |    "tipsIncome": ${tipsIncome.get},
        |    "businessProfitAndLoss": $businessProfitAndLossJson
        |}
      """.stripMargin
