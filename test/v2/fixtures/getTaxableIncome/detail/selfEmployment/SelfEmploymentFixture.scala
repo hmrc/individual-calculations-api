@@ -32,7 +32,6 @@ object SelfEmploymentFixture {
   val class4Loss: Option[BigInt] = Some(2)
   val totalAdditions: Option[BigDecimal] = Some(39901282)
   val totalDeductions: Option[BigDecimal] = Some(80648172)
-  val accountingAdjustments: Option[BigDecimal] = Some(-8769926.99)
   val taxableProfit: Option[BigInt] = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigDecimal] = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
@@ -51,7 +50,6 @@ object SelfEmploymentFixture {
       class4Loss = class4Loss,
       totalAdditions = totalAdditions,
       totalDeductions = totalDeductions,
-      accountingAdjustments = accountingAdjustments,
       adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
       taxableProfit = taxableProfit,
       taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
@@ -80,7 +78,6 @@ object SelfEmploymentFixture {
        |    "class4Loss": ${class4Loss.get},
        |    "totalAdditions": ${totalAdditions.get},
        |    "totalDeductions": ${totalDeductions.get},
-       |    "accountingAdjustments": ${accountingAdjustments.get},
        |    "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
        |    "taxableProfit": ${taxableProfit.get},
        |    "taxableProfitAfterIncomeTaxLossesDeduction": ${taxableProfitAfterIncomeTaxLossesDeduction.get},
