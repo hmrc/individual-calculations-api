@@ -109,7 +109,7 @@
         },
         "totalTaxDeductedBeforeCodingOut": {
           "title": "totalTaxDeductedBeforeCodingOut",
-          "description": "The total deducted before coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "The estimated end-of-year total deducted before coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
           "minimum": 0,
@@ -118,7 +118,7 @@
         },
         "saUnderpaymentsCodedOut": {
           "title": "saUnderpaymentsCodedOut",
-          "description": "The total coded out amount attributed to Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "The estimated end-of-year total coded out amount attributed to Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
           "minimum": 0,
