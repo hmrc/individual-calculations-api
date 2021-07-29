@@ -28,6 +28,7 @@ object AllowancesAndDeductionsFixture {
   val giftOfInvestmentsAndPropertyToCharity: Option[BigInt] = Some(12502)
   val blindPersonsAllowance: Option[BigInt] = Some(12503)
   val lossesAppliedToGeneralIncome: Option[BigInt] = Some(12504)
+  val cgtLossSetAgainstInYearGeneralIncome:Option[BigInt] = Some(12505)
   val qualifyingLoanInterestFromInvestments: Option[BigDecimal] = Some(12503.99)
   val postCessationTradeReceipts: Option[BigDecimal] = Some(12503.99)
   val paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal] = Some(12503.99)
@@ -39,6 +40,7 @@ object AllowancesAndDeductionsFixture {
       giftOfInvestmentsAndPropertyToCharity = giftOfInvestmentsAndPropertyToCharity,
       blindPersonsAllowance = blindPersonsAllowance,
       lossesAppliedToGeneralIncome = lossesAppliedToGeneralIncome,
+      cgtLossSetAgainstInYearGeneralIncome = cgtLossSetAgainstInYearGeneralIncome,
       qualifyingLoanInterestFromInvestments = qualifyingLoanInterestFromInvestments,
       postCessationTradeReceipts = postCessationTradeReceipts,
       paymentsToTradeUnionsForDeathBenefits = paymentsToTradeUnionsForDeathBenefits,
@@ -54,6 +56,7 @@ object AllowancesAndDeductionsFixture {
       |  "giftOfInvestmentsAndPropertyToCharity": ${giftOfInvestmentsAndPropertyToCharity.get},
       |  "blindPersonsAllowance": ${blindPersonsAllowance.get},
       |  "lossesAppliedToGeneralIncome": ${lossesAppliedToGeneralIncome.get},
+      |  "cgtLossSetAgainstInYearGeneralIncome": ${cgtLossSetAgainstInYearGeneralIncome.get},
       |  "qualifyingLoanInterestFromInvestments": ${qualifyingLoanInterestFromInvestments.get},
       |  "postCessationTradeReceipts": ${postCessationTradeReceipts.get},
       |  "paymentsToTradeUnionsForDeathBenefits": ${paymentsToTradeUnionsForDeathBenefits.get},
