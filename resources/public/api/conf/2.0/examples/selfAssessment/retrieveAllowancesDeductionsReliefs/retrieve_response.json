@@ -80,7 +80,10 @@
           "amountUsed": 2000.58,
           "rate": 20
         }
-      ]
+      ],
+      "topSlicingRelief": {
+        "amount": 2000.58
+      }
     }
   },
   "links": [
