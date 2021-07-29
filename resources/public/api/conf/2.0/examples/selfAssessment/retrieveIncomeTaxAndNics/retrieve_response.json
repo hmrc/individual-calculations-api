@@ -24,7 +24,22 @@
     "totalIncomeTaxAndNicsDue": -99999999999.99,
     "taxRegime": "UK",
     "totalTaxDeductedBeforeCodingOut": 98234.44,
-    "saUnderpaymentsCodedOut": 38495.21
+    "saUnderpaymentsCodedOut": 38495.21,
+    "totalIncomeTaxAndNicsAndCgt": 8764.99,
+    "capitalGainsTax": {
+      "capitalGainsTax": 6000.99,
+      "totalCapitalGainsIncome": 6001.99,
+      "annualExemptionAmount": 6002.99,
+      "totalTaxableGains": 6003.99,
+      "capitalGainsTaxAmount": 6004.99,
+      "adjustments": -99999999999.99,
+      "adjustedCapitalGainsTax": 6005.99,
+      "foreignTaxCreditRelief": 6006.99,
+      "capitalGainsTaxAfterFTCR": 6007.99,
+      "taxOnGainsAlreadyPaid": 6008.99,
+      "capitalGainsTaxDue": 6009.99,
+      "capitalGainsOverpaid": 6007.99
+    }
   },
   "detail": {
     "incomeTax": {
