@@ -16,14 +16,16 @@
 
 package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.TopSlicingReliefFixture.topSlicingReliefJson
+import v2.models.utils.JsonErrorValidators
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   pensionContributionReliefs: Option[PensionContributionReliefs],
-                   reliefsClaimed: Option[Seq[ReliefsClaimed]],
-                   topSlicingRelief: Option[TopSlicingRelief])
+class TopSlicingReliefSpec extends UnitSpec with JsonErrorValidators {
 
-object Reliefs {
-  implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
+  testJsonProperties[TopSlicingRelief](topSlicingReliefJson)(
+    mandatoryProperties = Seq(),
+    optionalProperties = Seq(
+      "amount"
+    )
+  )
 }

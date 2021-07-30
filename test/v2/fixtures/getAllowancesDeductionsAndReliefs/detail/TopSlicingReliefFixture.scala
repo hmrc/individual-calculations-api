@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package v2.models.response.getAllowancesDeductionsAndReliefs.detail
+package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsValue, Json}
+import v2.models.response.getAllowancesDeductionsAndReliefs.detail.TopSlicingRelief
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   pensionContributionReliefs: Option[PensionContributionReliefs],
-                   reliefsClaimed: Option[Seq[ReliefsClaimed]],
-                   topSlicingRelief: Option[TopSlicingRelief])
+object TopSlicingReliefFixture {
 
-object Reliefs {
-  implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
+  val amount: Option[BigDecimal] = Some(2000.58)
+
+  val topSlicingReliefModel: TopSlicingRelief =
+    TopSlicingRelief(
+      amount = amount
+    )
+
+  val topSlicingReliefJson: JsValue = Json.parse(
+    s"""
+       |{
+       |  "amount": ${amount.get}
+       |}
+    """.stripMargin
+  )
 }

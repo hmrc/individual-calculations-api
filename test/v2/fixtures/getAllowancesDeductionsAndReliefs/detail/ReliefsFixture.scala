@@ -21,6 +21,7 @@ import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCreditReli
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.PensionContributionReliefsFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsClaimedFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ResidentialFinanceCostsFixture._
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.TopSlicingReliefFixture.{topSlicingReliefJson, topSlicingReliefModel}
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.Reliefs
 
 object ReliefsFixture {
@@ -29,7 +30,8 @@ object ReliefsFixture {
     residentialFinanceCosts = Some(residentialFinanceCostsModel),
     foreignTaxCreditRelief = Some(foreignTaxCreditReliefModel),
     pensionContributionReliefs = Some(pensionContributionReliefsModel),
-    reliefsClaimed = Some(Seq(reliefsClaimedModel))
+    reliefsClaimed = Some(Seq(reliefsClaimedModel)),
+    topSlicingRelief = Some(topSlicingReliefModel)
   )
 
   val reliefsJson: JsValue = Json.parse(
@@ -38,7 +40,8 @@ object ReliefsFixture {
        |  "residentialFinanceCosts": $residentialFinanceCostsJson,
        |  "foreignTaxCreditRelief": $foreignTaxCreditReliefJson,
        |  "pensionContributionReliefs": $pensionContributionReliefsJson,
-       |  "reliefsClaimed": [$reliefsClaimedJson]
+       |  "reliefsClaimed": [$reliefsClaimedJson],
+       |  "topSlicingRelief": [$topSlicingReliefJson]
        |}
      """.stripMargin
   )
