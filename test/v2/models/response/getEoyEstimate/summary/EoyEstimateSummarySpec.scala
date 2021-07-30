@@ -37,7 +37,9 @@ class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
       "totalTaxDeducted",
       "incomeTaxNicAmount",
       "totalTaxDeductedBeforeCodingOut",
-      "saUnderpaymentsCodedOut"
+      "saUnderpaymentsCodedOut",
+      "cgtAmount",
+      "incomeTaxNicAndCgtAmount"
     )
   )
 }

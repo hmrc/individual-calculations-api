@@ -34,6 +34,8 @@ object EoyEstimateSummaryFixture {
   val incomeTaxNicAmount: Option[BigDecimal] = Some(7000.98)
   val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(8000.98)
   val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(9000.98)
+  val cgtAmount: Option[BigDecimal] = Some(9100.98)
+  val incomeTaxNicAndCgtAmount: Option[BigDecimal] = Some(9200.98)
 
   val eoyEstimateSummaryModel: EoyEstimateSummary =
     EoyEstimateSummary(
@@ -49,26 +51,30 @@ object EoyEstimateSummaryFixture {
       totalTaxDeducted = totalTaxDeducted,
       incomeTaxNicAmount = incomeTaxNicAmount,
       totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
-      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
+      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut,
+      cgtAmount = cgtAmount,
+      incomeTaxNicAndCgtAmount = incomeTaxNicAndCgtAmount
     )
 
   val eoyEstimateSummaryJson: JsValue = Json.parse(
     s"""
-      |{
-      |   "totalEstimatedIncome": ${totalEstimatedIncome.get},
-      |   "totalTaxableIncome": ${totalTaxableIncome.get},
-      |   "incomeTaxAmount": ${incomeTaxAmount.get},
-      |   "nic2": ${nic2.get},
-      |   "nic4": ${nic4.get},
-      |   "totalNicAmount": ${totalNicAmount.get},
-      |   "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
-      |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
-      |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
-      |   "totalTaxDeducted": ${totalTaxDeducted.get},
-      |   "incomeTaxNicAmount": ${incomeTaxNicAmount.get},
-      |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
-      |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
-      |}
+       |{
+       |   "totalEstimatedIncome": ${totalEstimatedIncome.get},
+       |   "totalTaxableIncome": ${totalTaxableIncome.get},
+       |   "incomeTaxAmount": ${incomeTaxAmount.get},
+       |   "nic2": ${nic2.get},
+       |   "nic4": ${nic4.get},
+       |   "totalNicAmount": ${totalNicAmount.get},
+       |   "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+       |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+       |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+       |   "totalTaxDeducted": ${totalTaxDeducted.get},
+       |   "incomeTaxNicAmount": ${incomeTaxNicAmount.get},
+       |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get},
+       |   "cgtAmount": ${cgtAmount.get},
+       |   "incomeTaxNicAndCgtAmount": ${incomeTaxNicAndCgtAmount.get}
+       |}
     """.stripMargin
   )
 }

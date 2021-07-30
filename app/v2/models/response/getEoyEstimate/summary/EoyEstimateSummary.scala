@@ -30,7 +30,9 @@ case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               totalTaxDeducted: Option[BigDecimal],
                               incomeTaxNicAmount: Option[BigDecimal],
                               totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
-                              saUnderpaymentsCodedOut: Option[BigDecimal])
+                              saUnderpaymentsCodedOut: Option[BigDecimal],
+                              cgtAmount: Option[BigDecimal],
+                              incomeTaxNicAndCgtAmount: Option[BigDecimal])
 
 object EoyEstimateSummary {
   implicit val format: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
