@@ -41,7 +41,7 @@ object ReliefsFixture {
        |  "foreignTaxCreditRelief": $foreignTaxCreditReliefJson,
        |  "pensionContributionReliefs": $pensionContributionReliefsJson,
        |  "reliefsClaimed": [$reliefsClaimedJson],
-       |  "topSlicingRelief": [$topSlicingReliefJson]
+       |  "topSlicingRelief": $topSlicingReliefJson
        |}
      """.stripMargin
   )
