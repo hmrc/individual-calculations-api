@@ -124,6 +124,24 @@
           "minimum": 0,
           "maximum": 99999999999.99,
           "example": "5000.99"
+        },
+        "cgtAmount": {
+          "title": "cgtAmount",
+          "description": "The estimated end-of-year Capital Gains Tax amount. The value must be between 0 and 99999999999.99. up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
+        },
+        "incomeTaxNicAndCgtAmount": {
+          "title": "incomeTaxNicAndCgtAmount",
+          "description": "The estimated end-of-year combined Income Tax, National Insurance Contributions and Capital Gains Tax Amount. The value must be between 0 and 99999999999.99. up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
         }
       }
     },
