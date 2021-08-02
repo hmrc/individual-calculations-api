@@ -17,11 +17,11 @@
 package v2.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.NicDetailFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.StudentLoansFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.incomeTax.IncomeTaxDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.nics.NicDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.PensionSavingsTaxChargesFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.studentLoans.StudentLoansFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.taxDeductedAtSource.TaxDeductedAtSourceFixture._
 import v2.models.response.getIncomeTaxAndNics.detail._
 
 object CalculationDetailFixture {
