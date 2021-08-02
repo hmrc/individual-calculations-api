@@ -18,7 +18,6 @@ package v2.fixtures.getIncomeTaxAndNics.detail.incomeTax
 
 import play.api.libs.json.{JsValue, Json}
 import v2.fixtures.getIncomeTaxAndNics.detail.incomeTax.TaxBandFixture._
-import v2.models.response.getIncomeTaxAndNics.detail.incomeTax
 import v2.models.response.getIncomeTaxAndNics.detail.incomeTax.IncomeTypeBreakdown
 
 object IncomeTypeBreakdownFixture {
@@ -44,7 +43,7 @@ object IncomeTypeBreakdownFixture {
   )
 
   def incomeTypeBreakdownModel(input: BigDecimal): IncomeTypeBreakdown =
-    incomeTax.IncomeTypeBreakdown(
+    IncomeTypeBreakdown(
       allowancesAllocated = allowancesAllocated,
       incomeTaxAmount = input + 0.5,
       taxBands = Some(Seq(taxBandModel(2 * input)))
