@@ -12,7 +12,9 @@
     "totalRoyaltyPaymentsTaxCharged": 2000.95,
     "totalTaxDeducted": 2000.58,
     "totalTaxDeductedBeforeCodingOut": 5000.99,
-    "saUnderpaymentsCodedOut": 4142.41
+    "saUnderpaymentsCodedOut": 4142.41,
+    "cgtAmount": 2400.99,
+    "incomeTaxNicAndCgtAmount": 3000.99
   },
   "detail": {
     "selfEmployments": [{
