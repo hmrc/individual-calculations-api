@@ -118,6 +118,106 @@
             }
           }
         },
+        "capitalGainsTax": {
+          "type": "object",
+          "description": "Details the breakdown of Capital Gains Tax due.",
+          "properties": {
+            "totalCapitalGainsIncome": {
+              "type": "number",
+              "description": "The total amount of Capital Gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3000.99"
+            },
+            "annualExemptionAmount": {
+              "type": "number",
+              "description": "The total amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3001.99"
+            },
+            "totalTaxableGains": {
+              "type": "number",
+              "description": "The total amount of taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3002.99"
+            },
+            "capitalGainsTaxAmount": {
+              "type": "number",
+              "description": "The total amount of Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3003.99"
+            },
+            "adjustments": {
+              "type": "number",
+              "description": "The total amount of the  adjustments. This value must be between -99999999999.99 and 99999999999.99.",
+              "multipleOf": 0.01,
+              "minimum": -99999999999.99,
+              "maximum": 99999999999.99,
+              "example": "3004.99"
+            },
+            "adjustedCapitalGainsTax": {
+              "type": "number",
+              "description": "The total amount of the adjusted Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3005.99"
+            },
+            "foreignTaxCreditRelief": {
+              "type": "number",
+              "description": "The total amount of the foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3006.99"
+            },
+            "capitalGainsTaxAfterFTCR": {
+              "type": "number",
+              "description": "The total amount of Capital Gains Tax after Foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3007.99"
+            },
+            "taxOnGainsAlreadyPaid": {
+              "type": "number",
+              "description": "The total amount of tax already pain on Capital Gain. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3008.99"
+            },
+            "capitalGainsTaxDue": {
+              "type": "number",
+              "description": "The total amount of Capital Gain Tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3009.99"
+            },
+            "capitalGainsOverpaid": {
+              "type": "number",
+              "description": "The total amount of Capital Gain Tax overpaid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3010.99"
+            }
+          },
+          "required": [
+            "totalCapitalGainsIncome",
+            "annualExemptionAmount",
+            "totalTaxableGains",
+            "capitalGainsTaxDue"
+          ]
+        },
         "totalStudentLoansRepaymentAmount": {
           "type": "number",
           "description": "The total amount of student loan repayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -211,106 +311,6 @@
           "maximum": 99999999999.99,
           "example": "5600.99"
         },
-        "capitalGainsTax": {
-          "type": "object",
-          "description": "Details the breakdown of Capital Gains Tax due.",
-          "properties": {
-            "totalCapitalGainsIncome": {
-              "type": "number",
-              "description": "The total amount of Capital Gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3000.99"
-            },
-            "annualExemptionAmount": {
-              "type": "number",
-              "description": "The total amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3001.99"
-            },
-            "totalTaxableGains": {
-              "type": "number",
-              "description": "The total amount of taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3002.99"
-            },
-            "capitalGainsTaxAmount": {
-              "type": "number",
-              "description": "The total amount of Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3003.99"
-            },
-            "adjustments": {
-              "type": "number",
-              "description": "The total amount of the  adjustments. This value must be between -99999999999.99 and 99999999999.99",
-              "multipleOf": 0.01,
-              "minimum": -99999999999.99,
-              "maximum": 99999999999.99,
-              "example": "3004.99"
-            },
-            "adjustedCapitalGainsTax": {
-              "type": "number",
-              "description": "The total amount of the adjusted Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3005.99"
-            },
-            "foreignTaxCreditRelief": {
-              "type": "number",
-              "description": "The total amount of the foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3006.99"
-            },
-            "capitalGainsTaxAfterFTCR": {
-              "type": "number",
-              "description": "The total amount of Capital Gains Tax after Foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3007.99"
-            },
-            "taxOnGainsAlreadyPaid": {
-              "type": "number",
-              "description": "The total amount of tax already pain on Capital Gain. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3008.99"
-            },
-            "capitalGainsTaxDue": {
-              "type": "number",
-              "description": "The total amount of Capital Gain Tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3009.99"
-            },
-            "capitalGainsOverpaid": {
-              "type": "number",
-              "description": "The total amount of Capital Gain Tax overpaid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "3010.99"
-            }
-          },
-          "required": [
-            "totalCapitalGainsIncome",
-            "annualExemptionAmount",
-            "totalTaxableGains",
-            "capitalGainsTaxDue"
-          ]
-        }
       },
     "required": [
       "incomeTax",
