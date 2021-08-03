@@ -1921,7 +1921,7 @@
                   "example": "2004.04"
                 },
                 "annualExemptionAmount": {
-                  "type": "number,",
+                  "type": "number",
                   "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
