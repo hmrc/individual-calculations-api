@@ -39,7 +39,7 @@
     "taxRegime": "UK",
     "totalTaxDeductedBeforeCodingOut": 98234.44,
     "saUnderpaymentsCodedOut": 38495.21,
-    "totalIncomeTaxAndNicsAndCgt": 8764.99,
+    "totalIncomeTaxAndNicsAndCgt": 8764.99
   },
   "detail": {
     "incomeTax": {
@@ -277,7 +277,7 @@
             "rate": 55.05,
             "income": 100.99,
             "taxAmount": 500.99
-          },
+          }
         ],
         "totalTaxAmount": 100.99
       },
