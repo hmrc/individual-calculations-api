@@ -310,7 +310,7 @@
           "minimum": 0,
           "maximum": 99999999999.99,
           "example": "5600.99"
-        },
+        }
       },
     "required": [
       "incomeTax",
@@ -2009,7 +2009,7 @@
                 "cgtTaxBand": {
                   "type": "array",
                   "items": {
-                    "type": "string",
+                    "type": "object",
                     "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                     "properties": {
                       "name": {
