@@ -29,7 +29,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
       "foreignTaxCreditRelief",
       "pensionContributionReliefs",
       "reliefsClaimed",
-      "topSlicingReliefs"
+      "topSlicingRelief"
     )
   )
 }
