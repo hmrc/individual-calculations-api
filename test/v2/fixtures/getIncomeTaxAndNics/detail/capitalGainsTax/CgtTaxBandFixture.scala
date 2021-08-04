@@ -23,7 +23,7 @@ object CgtTaxBandFixture {
   def cgtTaxBandModel(name: CgtTaxBandName): CgtTaxBand =
     CgtTaxBand(
       name = name,
-      rate = 100.25,
+      rate = 10.25,
       income = 200.25,
       taxAmount = 300.25
     )
@@ -32,7 +32,7 @@ object CgtTaxBandFixture {
     s"""
       |{
       |  "name": "$name",
-      |  "rate": 100.25,
+      |  "rate": 10.25,
       |  "income": 200.25,
       |  "taxAmount": 300.25
       |}

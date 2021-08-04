@@ -28,7 +28,7 @@ object BusinessAssetsDisposalsAndInvestorsRelFixture {
       gainsAfterLosses = Some(400.25),
       annualExemptionAmount = Some(500.25),
       taxableGains = Some(600.25),
-      rate = Some(700.25),
+      rate = Some(70.25),
       taxAmount = Some(800.25),
     )
 
@@ -41,7 +41,7 @@ object BusinessAssetsDisposalsAndInvestorsRelFixture {
        |  "gainsAfterLosses": 400.25,
        |  "annualExemptionAmount": 500.25,
        |  "taxableGains": 600.25,
-       |  "rate": 700.25,
+       |  "rate": 70.25,
        |  "taxAmount": 800.25
        |}
      """.stripMargin
