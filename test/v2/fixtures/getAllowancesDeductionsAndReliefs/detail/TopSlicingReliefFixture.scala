@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package v2.models.response.getAllowancesDeductionsAndReliefs.detail
+package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import support.UnitSpec
-import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
-import v2.models.utils.JsonErrorValidators
+import play.api.libs.json.{JsValue, Json}
+import v2.models.response.getAllowancesDeductionsAndReliefs.detail.TopSlicingRelief
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+object TopSlicingReliefFixture {
 
-  testJsonProperties[Reliefs](reliefsJson)(
-    mandatoryProperties = Seq(),
-    optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed",
-      "topSlicingRelief"
+  val amount: Option[BigDecimal] = Some(2000.58)
+
+  val topSlicingReliefModel: TopSlicingRelief =
+    TopSlicingRelief(
+      amount = amount
     )
+
+  val topSlicingReliefJson: JsValue = Json.parse(
+    s"""
+       |{
+       |  "amount": ${amount.get}
+       |}
+    """.stripMargin
   )
 }

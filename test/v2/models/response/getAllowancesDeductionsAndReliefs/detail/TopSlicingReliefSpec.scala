@@ -17,19 +17,15 @@
 package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import support.UnitSpec
-import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.ReliefsFixture._
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.TopSlicingReliefFixture.topSlicingReliefJson
 import v2.models.utils.JsonErrorValidators
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+class TopSlicingReliefSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[Reliefs](reliefsJson)(
+  testJsonProperties[TopSlicingRelief](topSlicingReliefJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "residentialFinanceCosts",
-      "foreignTaxCreditRelief",
-      "pensionContributionReliefs",
-      "reliefsClaimed",
-      "topSlicingRelief"
+      "amount"
     )
   )
 }
