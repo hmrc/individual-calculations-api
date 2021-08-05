@@ -16,27 +16,26 @@
 
 package v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl
 
-import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{lossClaimsDetailJson, lossClaimsDetailModel}
-import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{lossClaimSummaryJson, lossClaimsSummaryModel}
+import play.api.libs.json.{ JsValue, Json }
+import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{ lossClaimsDetailJson, lossClaimsDetailModel }
+import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{ lossClaimSummaryJson, lossClaimsSummaryModel }
 import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhl
 import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.BusinessSourceAdjustableSummary
 
 object EeaPropertyFhlFixture {
 
-  val totalIncome: Option[BigDecimal] = Some(1000.01)
-  val totalExpenses: Option[BigDecimal] = Some(1000.02)
-  val netProfit: Option[BigDecimal] = Some(1000.03)
-  val netLoss: Option[BigDecimal] = Some(1000.04)
-  val totalAdditions: Option[BigDecimal] = Some(1000.05)
-  val totalDeductions: Option[BigDecimal] = Some(1000.06)
-  val adjustedIncomeTaxLoss: Option[BigInt] = Some(1000)
-  val taxableProfit: Option[BigInt] = Some(1008)
-  val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = None
-  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(
-    bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9",
-    applied = true,
-    links = None)
+  val totalIncome: Option[BigDecimal]                            = Some(1000.01)
+  val totalExpenses: Option[BigDecimal]                          = Some(1000.02)
+  val netProfit: Option[BigDecimal]                              = Some(1000.03)
+  val netLoss: Option[BigDecimal]                                = Some(1000.04)
+  val totalAdditions: Option[BigDecimal]                         = Some(1000.05)
+  val totalDeductions: Option[BigDecimal]                        = Some(1000.06)
+  val adjustedIncomeTaxLoss: Option[BigInt]                      = Some(1000)
+  val taxableProfit: Option[BigInt]                              = Some(1008)
+  val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(123)
+
+  val bsas: BusinessSourceAdjustableSummary =
+    BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, links = None)
 
   val eeaPropertyFhlModel: EeaPropertyFhl =
     EeaPropertyFhl(
@@ -74,6 +73,7 @@ object EeaPropertyFhlFixture {
        |   "totalDeductions": ${totalDeductions.get},
        |   "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
        |   "taxableProfit": ${taxableProfit.get},
+       |   "taxableProfitAfterIncomeTaxLossesDeduction": ${taxableProfitAfterIncomeTaxLossesDeduction.get},
        |	 "lossClaimsSummary": $lossClaimSummaryJson,
        |   "lossClaimsDetail": $lossClaimsDetailJson,
        |   "bsas": $bsasJson
