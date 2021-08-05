@@ -17,7 +17,6 @@
       "totalNic": 5000
     },
     "capitalGainsTax": {
-      "capitalGainsTax": 6000.99,
       "totalCapitalGainsIncome": 6001.99,
       "annualExemptionAmount": 6002.99,
       "totalTaxableGains": 6003.99,

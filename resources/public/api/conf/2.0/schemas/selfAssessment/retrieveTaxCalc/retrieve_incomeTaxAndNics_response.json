@@ -2014,7 +2014,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
-                        "description": "The name of the tax band. Limited to the following possible values: ",
+                        "description": "The name of the tax band.",
                         "enum": [
                           "lowerRate",
                           "higherRate"
@@ -2139,7 +2139,7 @@
                     "properties": {
                       "name": {
                         "type": "string",
-                        "description": "The name of the tax band. Limited to the following possible values: ",
+                        "description": "The name of the tax band.",
                         "enum": [
                           "lowerRate",
                           "higherRate"
