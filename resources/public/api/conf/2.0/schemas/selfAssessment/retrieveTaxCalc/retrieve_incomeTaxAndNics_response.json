@@ -2030,7 +2030,7 @@
                       },
                       "income": {
                         "type": "number",
-                        "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The amount from Residential Property and Carried Interest income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "multipleOf": 0.01,
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -2038,7 +2038,7 @@
                       },
                       "taxAmount": {
                         "type": "number",
-                        "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The amount of tax paid on Residential Property and Carried Interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "multipleOf": 0.01,
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -2069,7 +2069,7 @@
               "properties": {
                 "gainsIncome": {
                   "type": "number",
-                  "description": "The amount of gains income from Residential Property and Carried Interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "description": "The amount of gains income from Other Gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
@@ -2101,7 +2101,7 @@
                 },
                 "attributedGains": {
                   "type": "number",
-                  "description": "This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "description": "The amount of attributed gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
@@ -2109,7 +2109,7 @@
                 },
                 "netGains": {
                   "type": "number",
-                  "description": "This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "description": "The amount of net gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99999999999.99,
@@ -2155,7 +2155,7 @@
                       },
                       "income": {
                         "type": "number",
-                        "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The amount from Other Gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "multipleOf": 0.01,
                         "minimum": 0,
                         "maximum": 99999999999.99,
@@ -2163,7 +2163,7 @@
                       },
                       "taxAmount": {
                         "type": "number",
-                        "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "description": "The amount of paid tax on Other Gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                         "multipleOf": 0.01,
                         "minimum": 0,
                         "maximum": 99999999999.99,
