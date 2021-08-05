@@ -22,40 +22,44 @@ import support.UnitSpec
 trait JsonErrorValidators {
   _: UnitSpec =>
 
-  type JsError = (JsPath, Seq[JsonValidationError])
+  type JsError  = (JsPath, Seq[JsonValidationError])
   type JsErrors = Seq[JsError]
 
   object JsonError {
     val NUMBER_OR_STRING_FORMAT_EXCEPTION = "error.expected.jsnumberorjsstring"
-    val NUMBER_FORMAT_EXCEPTION = "error.expected.numberformatexception"
-    val BOOLEAN_FORMAT_EXCEPTION = "error.expected.jsboolean"
-    val STRING_FORMAT_EXCEPTION = "error.expected.jsstring"
-    val JSNUMBER_FORMAT_EXCEPTION = "error.expected.jsnumber"
-    val JSARRAY_FORMAT_EXCEPTION = "error.expected.jsarray"
-    val PATH_MISSING_EXCEPTION = "error.path.missing"
+    val NUMBER_FORMAT_EXCEPTION           = "error.expected.numberformatexception"
+    val BOOLEAN_FORMAT_EXCEPTION          = "error.expected.jsboolean"
+    val STRING_FORMAT_EXCEPTION           = "error.expected.jsstring"
+    val JSNUMBER_FORMAT_EXCEPTION         = "error.expected.jsnumber"
+    val JSARRAY_FORMAT_EXCEPTION          = "error.expected.jsarray"
+    val PATH_MISSING_EXCEPTION            = "error.path.missing"
   }
 
-  implicit class JsErrorOps(err: JsError){
+  implicit class JsErrorOps(err: JsError) {
     def path: JsPath = err._1
   }
 
-  implicit class AnyToJson[T : Writes](a: T){
+  implicit class AnyToJson[T: Writes](a: T) {
     def toJson: JsValue = Json.toJson(a)
   }
 
   implicit class JsResultOps[T](res: JsResult[T]) {
+
     def errors: JsErrors = res match {
       case JsError(jsErrors) => jsErrors
-      case JsSuccess(_, _) => fail("A JSON error was expected")
+      case JsSuccess(_, _)   => fail("A JSON error was expected")
     }
   }
 
-  implicit class JsValueOps(json: JsValue){
+  implicit class JsValueOps(json: JsValue) {
+
     def removeProperty(path: JsPath): JsValue = {
-      path.prune(json).fold(
-        invalid = errs => fail(s"an error occurred when reading $path: $errs"),
-        valid = x => x
-      )
+      path
+        .prune(json)
+        .fold(
+          invalid = errs => fail(s"an error occurred when reading $path: $errs"),
+          valid = x => x
+        )
     }
   }
 
@@ -63,7 +67,7 @@ trait JsonErrorValidators {
     s"the JSON is missing the required property $property" should {
 
       val jsPath: JsPath = property.split("/").filterNot(_ == "").foldLeft(JsPath())(_ \ _)
-      val jsResult = json.removeProperty(jsPath).validate[A]
+      val jsResult       = json.removeProperty(jsPath).validate[A]
 
       "only throw one error" in {
         jsResult.errors.size shouldBe 1
@@ -84,33 +88,37 @@ trait JsonErrorValidators {
   def testOptionalProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
     s"the JSON is missing the optional property $property" should {
 
-      val jsResult = json.as[JsObject].-(property).validate[A]
+      val jsonWithoutProperty = json.as[JsObject].-(property)
 
       "not throw any errors" in {
-        jsResult.isError shouldBe false
+        jsonWithoutProperty.validate[A].isError shouldBe false
+      }
+
+      "exist in the sample json" in {
+        jsonWithoutProperty should not equal json
       }
     }
   }
 
-  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String],
-                                           optionalProperties: Seq[String],
-                                           modelName: Option[String] = None)(implicit rds: Reads[A]): Unit = {
+  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String], optionalProperties: Seq[String], modelName: Option[String] = None)(
+      implicit rds: Reads[A]): Unit = {
     s"For data model ${modelName.fold("")(modelName => s"- $modelName")}" when {
       mandatoryProperties.foreach(property => testMandatoryProperty(json)(property))
       optionalProperties.foreach(property => testOptionalProperty(json)(property))
     }
   }
 
-  def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)
-                         (implicit rds: Reads[T]): Unit = {
+  def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)(implicit rds: Reads[T]): Unit = {
 
     val jsPath = path.split("/").filterNot(_ == "").foldLeft(JsPath())(_ \ _)
 
     lazy val jsResult = {
-      val amendedJson: JsValue = jsPath.json.pickBranch.reads(json).fold(
-        invalid = errs => fail(s"an error occurred when reading $path : $errs"),
-        valid = _ => overwriteJsonProperty(jsPath, json, replacement)
-      )
+      val amendedJson: JsValue = jsPath.json.pickBranch
+        .reads(json)
+        .fold(
+          invalid = errs => fail(s"an error occurred when reading $path : $errs"),
+          valid = _ => overwriteJsonProperty(jsPath, json, replacement)
+        )
       rds.reads(amendedJson)
     }
 
@@ -140,8 +148,8 @@ trait JsonErrorValidators {
   private def filterErrorByPath(jsPath: JsPath, jsError: JsError): JsonValidationError = {
     jsError match {
       case (path, err :: Nil) if jsError.path == path => err
-      case (path, _ :: Nil)=> fail(s"single error returned but path $path does not match $jsPath")
-      case (path, errs @ _ :: _)=> fail(s"multiple errors returned for $path but only 1 required : $errs")
+      case (path, _ :: Nil)                           => fail(s"single error returned but path $path does not match $jsPath")
+      case (path, errs @ _ :: _)                      => fail(s"multiple errors returned for $path but only 1 required : $errs")
     }
   }
 }
