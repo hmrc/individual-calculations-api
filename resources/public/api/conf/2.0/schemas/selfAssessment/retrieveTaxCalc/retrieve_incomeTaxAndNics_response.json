@@ -118,6 +118,106 @@
             }
           }
         },
+        "capitalGainsTax": {
+          "type": "object",
+          "description": "Details the breakdown of Capital Gains Tax due.",
+          "properties": {
+            "totalCapitalGainsIncome": {
+              "type": "number",
+              "description": "The total amount of Capital Gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3000.99"
+            },
+            "annualExemptionAmount": {
+              "type": "number",
+              "description": "The total amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3001.99"
+            },
+            "totalTaxableGains": {
+              "type": "number",
+              "description": "The total amount of taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3002.99"
+            },
+            "capitalGainsTaxAmount": {
+              "type": "number",
+              "description": "The total amount of Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3003.99"
+            },
+            "adjustments": {
+              "type": "number",
+              "description": "The total amount of the  adjustments. This value must be between -99999999999.99 and 99999999999.99.",
+              "multipleOf": 0.01,
+              "minimum": -99999999999.99,
+              "maximum": 99999999999.99,
+              "example": "3004.99"
+            },
+            "adjustedCapitalGainsTax": {
+              "type": "number",
+              "description": "The total amount of the adjusted Capital Gains Tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3005.99"
+            },
+            "foreignTaxCreditRelief": {
+              "type": "number",
+              "description": "The total amount of the foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3006.99"
+            },
+            "capitalGainsTaxAfterFTCR": {
+              "type": "number",
+              "description": "The total amount of Capital Gains Tax after Foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3007.99"
+            },
+            "taxOnGainsAlreadyPaid": {
+              "type": "number",
+              "description": "The total amount of tax already pain on Capital Gain. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3008.99"
+            },
+            "capitalGainsTaxDue": {
+              "type": "number",
+              "description": "The total amount of Capital Gain Tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3009.99"
+            },
+            "capitalGainsOverpaid": {
+              "type": "number",
+              "description": "The total amount of Capital Gain Tax overpaid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "3010.99"
+            }
+          },
+          "required": [
+            "totalCapitalGainsIncome",
+            "annualExemptionAmount",
+            "totalTaxableGains",
+            "capitalGainsTaxDue"
+          ]
+        },
         "totalStudentLoansRepaymentAmount": {
           "type": "number",
           "description": "The total amount of student loan repayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -202,14 +302,22 @@
           "minimum": 0,
           "maximum": 99999999999.99,
           "example": "1000.17"
+        },
+        "totalIncomeTaxAndNicsAndCgt": {
+          "type": "number",
+          "description": "The total amount of income tax, national insurance and capital gains tax. The value must be between 0 and 99999999999.99.",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5600.99"
         }
       },
-      "required": [
-        "incomeTax",
-        "totalIncomeTaxAndNicsDue",
-        "taxRegime"
-      ]
-    },
+    "required": [
+      "incomeTax",
+      "totalIncomeTaxAndNicsDue",
+      "taxRegime"
+    ]
+  },
     "detail": {
       "type": "object",
       "description": "Details the breakdown of Income Tax and National Insurance Contributions due.",
@@ -1039,7 +1147,7 @@
                       "type": "object",
                       "description": "Details of lump sum benefit taken in excess of lifetime allowance.",
                       "properties": {
-                        "amount" : {
+                        "amount": {
                           "type": "number",
                           "description": "The amount of lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "2532.35",
@@ -1047,7 +1155,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "taxPaid" : {
+                        "taxPaid": {
                           "type": "number",
                           "description": "Tax paid on lump sum benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "3643.34",
@@ -1055,7 +1163,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "rate" : {
+                        "rate": {
                           "type": "number",
                           "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
                           "example": "65.87",
@@ -1063,7 +1171,7 @@
                           "maximum": 99.99,
                           "multipleOf": 0.01
                         },
-                        "chargeableAmount" : {
+                        "chargeableAmount": {
                           "type": "number",
                           "description": "The amount chargeable on the lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "3456.87",
@@ -1077,7 +1185,7 @@
                       "type": "object",
                       "description": "Details of benefits taken in excess of lifetime allowance.",
                       "properties": {
-                        "amount" : {
+                        "amount": {
                           "type": "number",
                           "description": "The amount of benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "6343.45",
@@ -1085,7 +1193,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "taxPaid" : {
+                        "taxPaid": {
                           "type": "number",
                           "description": "Tax paid on benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "5445.75",
@@ -1093,7 +1201,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "rate" : {
+                        "rate": {
                           "type": "number",
                           "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
                           "example": "55.34",
@@ -1101,7 +1209,7 @@
                           "maximum": 99.99,
                           "multipleOf": 0.01
                         },
-                        "chargeableAmount" : {
+                        "chargeableAmount": {
                           "type": "number",
                           "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "5765.45",
@@ -1137,7 +1245,7 @@
                       "type": "object",
                       "description": "Details of pension scheme unauthorised payments surcharge.",
                       "properties": {
-                        "amount" : {
+                        "amount": {
                           "type": "number",
                           "description": "The amount of unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "3453.43",
@@ -1145,7 +1253,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "taxPaid" : {
+                        "taxPaid": {
                           "type": "number",
                           "description": "Tax paid on unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "4564.76",
@@ -1153,7 +1261,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "rate" : {
+                        "rate": {
                           "type": "number",
                           "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
                           "example": "76.44",
@@ -1161,7 +1269,7 @@
                           "maximum": 99.99,
                           "multipleOf": 0.01
                         },
-                        "chargeableAmount" : {
+                        "chargeableAmount": {
                           "type": "number",
                           "description": "The amount chargeable on unauthorised payments surcharges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "7655.45",
@@ -1175,7 +1283,7 @@
                       "type": "object",
                       "description": "Details of pension scheme unauthorised payments non surcharge.",
                       "properties": {
-                        "amount" : {
+                        "amount": {
                           "type": "number",
                           "description": "The amount of unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "7866.34",
@@ -1183,7 +1291,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "taxPaid" : {
+                        "taxPaid": {
                           "type": "number",
                           "description": "Tax paid on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "4574.78",
@@ -1191,7 +1299,7 @@
                           "maximum": 99999999999.99,
                           "multipleOf": 0.01
                         },
-                        "rate" : {
+                        "rate": {
                           "type": "number",
                           "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
                           "example": "45.36",
@@ -1199,7 +1307,7 @@
                           "maximum": 99.99,
                           "multipleOf": 0.01
                         },
-                        "chargeableAmount" : {
+                        "chargeableAmount": {
                           "type": "number",
                           "description": "The amount chargeable on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                           "example": "4353.64",
@@ -1211,11 +1319,11 @@
                     }
                   }
                 },
-                "pensionSchemeOverseasTransfers" : {
+                "pensionSchemeOverseasTransfers": {
                   "type": "object",
                   "description": "Details of pension scheme overseas transfers.",
                   "properties": {
-                    "transferCharge" : {
+                    "transferCharge": {
                       "type": "number",
                       "description": "The amount of overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "example": "4654.76",
@@ -1223,7 +1331,7 @@
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
                     },
-                    "transferChargeTaxPaid" : {
+                    "transferChargeTaxPaid": {
                       "type": "number",
                       "description": "Tax paid on overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "example": "6344.65",
@@ -1231,7 +1339,7 @@
                       "maximum": 99999999999.99,
                       "multipleOf": 0.01
                     },
-                    "rate" : {
+                    "rate": {
                       "type": "number",
                       "description": "The rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
                       "example": "43.23",
@@ -1239,7 +1347,7 @@
                       "maximum": 99.99,
                       "multipleOf": 0.01
                     },
-                    "chargeableAmount" : {
+                    "chargeableAmount": {
                       "type": "number",
                       "description": "The amount chargeable on overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                       "example": "3453.54",
@@ -1249,7 +1357,7 @@
                     }
                   }
                 },
-                "pensionContributionsInExcessOfTheAnnualAllowance" : {
+                "pensionContributionsInExcessOfTheAnnualAllowance": {
                   "type": "object",
                   "description": "Details of pension contributions in excess of the annual allowance.",
                   "properties": {
@@ -1380,7 +1488,7 @@
                     "totalPensionChargeDue"
                   ]
                 },
-                "overseasPensionContributions" : {
+                "overseasPensionContributions": {
                   "type": "object",
                   "description": "Details of overseas pensions contributions",
                   "properties": {
@@ -1769,6 +1877,316 @@
               "minimum": 0,
               "maximum": 99999999999.99,
               "example": "1000.15"
+            }
+          }
+        },
+        "capitalGainsTax": {
+          "type": "object",
+          "description": "Details the breakdown of Capital Gains Tax",
+          "properties": {
+            "businessAssetsDisposalsAndInvestorsRel": {
+              "type": "object",
+              "description": "Details about tax due on Business assets disposals and Investors Reliefs",
+              "properties": {
+                "gainsIncome": {
+                  "type": "number",
+                  "description": "The amount of gains income from Business assets disposals and Investors Reliefs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2001.01"
+                },
+                "lossesBroughtForward": {
+                  "type": "number",
+                  "description": "The amount of losses brought forward. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2002.02"
+                },
+                "lossesArisingThisYear": {
+                  "type": "number",
+                  "description": "The amount of losses arising from this year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2003.03"
+                },
+                "gainsAfterLosses": {
+                  "type": "number",
+                  "description": "The amount of gains after losses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2004.04"
+                },
+                "annualExemptionAmount": {
+                  "type": "number",
+                  "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2005.05"
+                },
+                "taxableGains": {
+                  "type": "number",
+                  "description": "The taxable gains amount from selling the asset. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2006.06"
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to two decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99.99,
+                  "example": "55.99"
+                },
+                "taxAmount": {
+                  "type": "number",
+                  "description": "The amount of tax paid on business Assets disposals And Investors Reliefs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2007.07"
+                }
+              }
+            },
+            "residentialPropertyAndCarriedInterest": {
+              "type": "object",
+              "description": "Details about tax due on Residential Property and Carried Interest",
+              "properties": {
+                "gainsIncome": {
+                  "type": "number",
+                  "description": "The amount of gains income from Residential Property and Carried Interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2008.08"
+                },
+                "lossesBroughtForward": {
+                  "type": "number",
+                  "description": "The amount of losses brought forward. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2009.09"
+                },
+                "lossesArisingThisYear": {
+                  "type": "number",
+                  "description": "The amount of losses arising from this year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2010.10"
+                },
+                "gainsAfterLosses": {
+                  "type": "number",
+                  "description": "The amount of gains after losses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2011.11"
+                },
+                "annualExemptionAmount": {
+                  "type": "number",
+                  "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2012.12"
+                },
+                "taxableGains": {
+                  "type": "number",
+                  "description": "The taxable gains amount from selling the asset. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2013.13"
+                },
+                "cgtTaxBand": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the tax band.",
+                        "enum": [
+                          "lowerRate",
+                          "higherRate"
+                        ]
+                      },
+                      "rate": {
+                        "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to two decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99.99,
+                        "example": "20.14"
+                      },
+                      "income": {
+                        "type": "number",
+                        "description": "The amount from Residential Property and Carried Interest income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "215.15"
+                      },
+                      "taxAmount": {
+                        "type": "number",
+                        "description": "The amount of tax paid on Residential Property and Carried Interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2016.16"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "rate",
+                      "income",
+                      "taxAmount"
+                    ]
+                  }
+                },
+                "totalTaxAmount": {
+                  "type": "number",
+                  "description": "The total amount of tax paid on Residential Property and Carried Interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2017.17"
+                }
+              }
+            },
+            "otherGains": {
+              "type": "object",
+              "description": "Details about tax due on Other Gains",
+              "properties": {
+                "gainsIncome": {
+                  "type": "number",
+                  "description": "The amount of gains income from Other Gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "218.18"
+                },
+                "lossesBroughtForward": {
+                  "type": "number",
+                  "description": "The amount of losses brought forward. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2019.19"
+                },
+                "lossesArisingThisYear": {
+                  "type": "number",
+                  "description": "The amount of losses arising from this year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2020.20"
+                },
+                "gainsAfterLosses": {
+                  "type": "number",
+                  "description": "The amount of gains after losses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "221.21"
+                },
+                "attributedGains": {
+                  "type": "number",
+                  "description": "The amount of attributed gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2022.22"
+                },
+                "netGains": {
+                  "type": "number",
+                  "description": "The amount of net gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2023.23"
+                },
+                "annualExemptionAmount": {
+                  "type": "number",
+                  "description": "The amount of annual exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "224.24"
+                },
+                "taxableGains": {
+                  "type": "number",
+                  "description": "The taxable gains amount from selling the asset. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2025.25"
+                },
+                "cgtTaxBand": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the tax band.",
+                        "enum": [
+                          "lowerRate",
+                          "higherRate"
+                        ]
+                      },
+                      "rate": {
+                        "type": "number",
+                        "description": "The rate associated with the tax band. This value must be between 0 and 99.99 up to two decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99.99,
+                        "example": "26.6"
+                      },
+                      "income": {
+                        "type": "number",
+                        "description": "The amount from Other Gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2027.27"
+                      },
+                      "taxAmount": {
+                        "type": "number",
+                        "description": "The amount of paid tax on Other Gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "228.28"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "rate",
+                      "income",
+                      "taxAmount"
+                    ]
+                  }
+                },
+                "totalTaxAmount": {
+                  "type": "number",
+                  "description": "The total amount of tax paid on Other Gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "2029.29"
+                }
+              }
             }
           }
         }
