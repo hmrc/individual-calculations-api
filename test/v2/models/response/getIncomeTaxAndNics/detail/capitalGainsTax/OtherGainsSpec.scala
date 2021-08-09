@@ -32,7 +32,7 @@ class OtherGainsSpec extends UnitSpec with JsonErrorValidators {
       "netGains",
       "annualExemptionAmount",
       "taxableGains",
-      "cgtTaxBand",
+      "cgtTaxBands",
       "totalTaxAmount"
     )
   )

@@ -30,7 +30,7 @@ class ResidentialPropertyAndCarriedInterestSpec extends UnitSpec with JsonErrorV
       "gainsAfterLosses",
       "annualExemptionAmount",
       "taxableGains",
-      "cgtTaxBand",
+      "cgtTaxBands",
       "totalTaxAmount"
     )
   )

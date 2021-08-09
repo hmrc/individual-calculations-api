@@ -26,7 +26,7 @@ case class OtherGains(gainsIncome: Option[BigDecimal],
                       netGains: Option[BigDecimal],
                       annualExemptionAmount: Option[BigDecimal],
                       taxableGains: Option[BigDecimal],
-                      cgtTaxBand: Option[Seq[CgtTaxBand]],
+                      cgtTaxBands: Option[Seq[CgtTaxBand]],
                       totalTaxAmount: Option[BigDecimal]
                      )
 

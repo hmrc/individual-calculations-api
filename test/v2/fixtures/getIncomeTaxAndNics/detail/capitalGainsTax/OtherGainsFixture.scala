@@ -31,7 +31,7 @@ object OtherGainsFixture {
       netGains = Some(600.25),
       annualExemptionAmount = Some(700.25),
       taxableGains = Some(800.25),
-      cgtTaxBand = Some(Seq(cgtTaxBandModel(CgtTaxBandName.lowerRate), cgtTaxBandModel(CgtTaxBandName.higherRate))),
+      cgtTaxBands = Some(Seq(cgtTaxBandModel(CgtTaxBandName.lowerRate), cgtTaxBandModel(CgtTaxBandName.higherRate))),
       totalTaxAmount = Some(900.25)
     )
 
@@ -46,7 +46,7 @@ object OtherGainsFixture {
        |  "netGains": 600.25,
        |  "annualExemptionAmount": 700.25,
        |  "taxableGains": 800.25,
-       |  "cgtTaxBand": [
+       |  "cgtTaxBands": [
        |    ${cgtTaxBandJson(CgtTaxBandName.lowerRate)},
        |    ${cgtTaxBandJson(CgtTaxBandName.higherRate)}
        |  ],

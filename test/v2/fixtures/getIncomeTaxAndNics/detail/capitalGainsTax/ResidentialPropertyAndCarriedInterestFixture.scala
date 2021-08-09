@@ -29,7 +29,7 @@ object ResidentialPropertyAndCarriedInterestFixture {
       gainsAfterLosses = Some(400.25),
       annualExemptionAmount = Some(500.25),
       taxableGains = Some(600.25),
-      cgtTaxBand = Some(Seq(cgtTaxBandModel(CgtTaxBandName.lowerRate), cgtTaxBandModel(CgtTaxBandName.higherRate))),
+      cgtTaxBands = Some(Seq(cgtTaxBandModel(CgtTaxBandName.lowerRate), cgtTaxBandModel(CgtTaxBandName.higherRate))),
       totalTaxAmount = Some(700.25)
     )
 
@@ -42,7 +42,7 @@ object ResidentialPropertyAndCarriedInterestFixture {
       |  "gainsAfterLosses": 400.25,
       |  "annualExemptionAmount": 500.25,
       |  "taxableGains": 600.25,
-      |  "cgtTaxBand": [
+      |  "cgtTaxBands": [
       |    ${cgtTaxBandJson(CgtTaxBandName.lowerRate)},
       |    ${cgtTaxBandJson(CgtTaxBandName.higherRate)}
       |  ],
