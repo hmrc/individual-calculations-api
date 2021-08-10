@@ -24,6 +24,10 @@
         "retirementAnnuityPayments": 2000.58,
         "paymentToEmployersSchemeNoTaxRelief": 2000.58,
         "overseasPensionSchemeContributions": 2000.58
+      },
+      "marriageAllowanceTransferOut": {
+        "personalAllowanceBeforeTransferOut": 5000.00,
+        "transferredOutAmount": 3000.58
       }
     },
     "reliefs": {
