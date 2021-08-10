@@ -16,21 +16,22 @@
 
 package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{ JsValue, Json }
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.AnnualPaymentsFixture._
+import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.MarriageAllowanceTransferOutFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.PensionContributionsFixture._
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.AllowancesAndDeductions
 
 object AllowancesAndDeductionsFixture {
 
-  val personalAllowance: Option[BigInt] = Some(12500)
-  val reducedPersonalAllowance: Option[BigInt] = Some(12501)
-  val giftOfInvestmentsAndPropertyToCharity: Option[BigInt] = Some(12502)
-  val blindPersonsAllowance: Option[BigInt] = Some(12503)
-  val lossesAppliedToGeneralIncome: Option[BigInt] = Some(12504)
-  val cgtLossSetAgainstInYearGeneralIncome:Option[BigInt] = Some(12505)
+  val personalAllowance: Option[BigInt]                         = Some(12500)
+  val reducedPersonalAllowance: Option[BigInt]                  = Some(12501)
+  val giftOfInvestmentsAndPropertyToCharity: Option[BigInt]     = Some(12502)
+  val blindPersonsAllowance: Option[BigInt]                     = Some(12503)
+  val lossesAppliedToGeneralIncome: Option[BigInt]              = Some(12504)
+  val cgtLossSetAgainstInYearGeneralIncome: Option[BigInt]      = Some(12505)
   val qualifyingLoanInterestFromInvestments: Option[BigDecimal] = Some(12503.99)
-  val postCessationTradeReceipts: Option[BigDecimal] = Some(12503.99)
+  val postCessationTradeReceipts: Option[BigDecimal]            = Some(12503.99)
   val paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal] = Some(12503.99)
 
   val allowancesAndDeductionsModel: AllowancesAndDeductions =
@@ -45,7 +46,8 @@ object AllowancesAndDeductionsFixture {
       postCessationTradeReceipts = postCessationTradeReceipts,
       paymentsToTradeUnionsForDeathBenefits = paymentsToTradeUnionsForDeathBenefits,
       annualPayments = Some(annualPaymentsModel),
-      pensionContributions = Some(pensionContributionsModel)
+      pensionContributions = Some(pensionContributionsModel),
+      marriageAllowanceTransferOut = Some(marriageAllowanceTransferOutModel)
     )
 
   val allowancesAndDeductionsJson: JsValue = Json.parse(
@@ -61,7 +63,8 @@ object AllowancesAndDeductionsFixture {
       |  "postCessationTradeReceipts": ${postCessationTradeReceipts.get},
       |  "paymentsToTradeUnionsForDeathBenefits": ${paymentsToTradeUnionsForDeathBenefits.get},
       |  "annualPayments": $annualPaymentsJson,
-      |  "pensionContributions": $pensionContributionsJson
+      |  "pensionContributions": $pensionContributionsJson,
+      |  "marriageAllowanceTransferOut": $marriageAllowanceTransferOutJson
       |}
     """.stripMargin
   )

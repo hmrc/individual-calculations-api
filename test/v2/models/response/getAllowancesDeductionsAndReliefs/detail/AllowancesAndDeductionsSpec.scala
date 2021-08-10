@@ -35,7 +35,8 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
       "postCessationTradeReceipts",
       "paymentsToTradeUnionsForDeathBenefits",
       "annualPayments",
-      "pensionContributions"
+      "pensionContributions",
+      "marriageAllowanceTransferOut"
     )
   )
 }
