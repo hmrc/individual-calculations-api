@@ -270,7 +270,7 @@
         "gainsAfterLosses": 210.11,
         "annualExemptionAmount": 500.99,
         "taxableGains": 210.99,
-        "cgtTaxBand": [
+        "cgtTaxBands": [
           {
             "name": "higherRate",
             "rate": 55.05,
@@ -289,7 +289,7 @@
         "netGains": 250.99,
         "annualExemptionAmount": 500.99,
         "taxableGains": 100.99,
-        "cgtTaxBand": [
+        "cgtTaxBands": [
           {
             "name": "lowerRate",
             "rate": 10.55,
