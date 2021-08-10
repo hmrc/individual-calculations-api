@@ -17,11 +17,12 @@
 package v2.fixtures.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getIncomeTaxAndNics.detail.IncomeTaxDetailFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.NicDetailFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.PensionSavingsTaxChargesFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.StudentLoansFixture._
-import v2.fixtures.getIncomeTaxAndNics.detail.TaxDeductedAtSourceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.CapitalGainsTaxDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.incomeTax.IncomeTaxDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.nics.NicDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.PensionSavingsTaxChargesFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.studentLoans.StudentLoansFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.taxDeductedAtSource.TaxDeductedAtSourceFixture._
 import v2.models.response.getIncomeTaxAndNics.detail._
 
 object CalculationDetailFixture {
@@ -32,7 +33,8 @@ object CalculationDetailFixture {
       studentLoans = Some(Seq(studentLoansModel)),
       pensionSavingsTaxCharges = Some(pensionSavingsTaxChargesModel),
       nics = Some(nicDetailModel),
-      taxDeductedAtSource = Some(taxDeductedAtSourceModel)
+      taxDeductedAtSource = Some(taxDeductedAtSourceModel),
+      capitalGainsTax = Some(capitalGainsTaxDetailModel)
     )
 
   val calculationDetailJson: JsValue = Json.parse(
@@ -42,7 +44,8 @@ object CalculationDetailFixture {
        |   "studentLoans": [$studentLoansJson],
        |   "pensionSavingsTaxCharges": $pensionSavingsTaxChargesJson,
        |   "nics": $nicDetailJson,
-       |   "taxDeductedAtSource": $taxDeductedAtSourceJson
+       |   "taxDeductedAtSource": $taxDeductedAtSourceJson,
+       |   "capitalGainsTax": $capitalGainsTaxDetailJson
        |}
      """.stripMargin
   )

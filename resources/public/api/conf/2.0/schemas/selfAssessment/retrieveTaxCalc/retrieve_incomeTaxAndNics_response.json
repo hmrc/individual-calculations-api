@@ -2006,7 +2006,7 @@
                   "maximum": 99999999999.99,
                   "example": "2013.13"
                 },
-                "cgtTaxBand": {
+                "cgtTaxBands": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -2131,7 +2131,7 @@
                   "maximum": 99999999999.99,
                   "example": "2025.25"
                 },
-                "cgtTaxBand": {
+                "cgtTaxBands": {
                   "type": "array",
                   "items": {
                     "type": "object",

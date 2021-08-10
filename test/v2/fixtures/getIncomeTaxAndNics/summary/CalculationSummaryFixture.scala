@@ -17,6 +17,7 @@
 package v2.fixtures.getIncomeTaxAndNics.summary
 
 import play.api.libs.json.{JsValue, Json}
+import v2.fixtures.getIncomeTaxAndNics.summary.CapitalGainsTaxSummaryFixture.{capitalGainsTaxSummaryJson, capitalGainsTaxSummaryModel}
 import v2.fixtures.getIncomeTaxAndNics.summary.IncomeTaxSummaryFixture._
 import v2.fixtures.getIncomeTaxAndNics.summary.NicSummaryFixture._
 import v2.models.response.getIncomeTaxAndNics.summary.CalculationSummary
@@ -32,6 +33,7 @@ object CalculationSummaryFixture {
   val taxRegime: String = "UK"
   val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
   val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
+  val totalIncomeTaxAndNicsAndCgt: Option[BigDecimal] = Some(300)
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
@@ -44,8 +46,10 @@ object CalculationSummaryFixture {
       totalTaxDeducted = totalTaxDeducted,
       totalIncomeTaxAndNicsDue = totalIncomeTaxAndNicsDue,
       taxRegime = taxRegime,
+      capitalGainsTax = Some(capitalGainsTaxSummaryModel),
       totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
-      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut
+      saUnderpaymentsCodedOut = saUnderpaymentsCodedOut,
+      totalIncomeTaxAndNicsAndCgt =totalIncomeTaxAndNicsAndCgt
     )
 
   val calculationSummaryJson: JsValue = Json.parse(
@@ -60,8 +64,10 @@ object CalculationSummaryFixture {
        |   "totalTaxDeducted": ${totalTaxDeducted.get},
        |   "totalIncomeTaxAndNicsDue": $totalIncomeTaxAndNicsDue,
        |   "taxRegime": "$taxRegime",
+       |   "capitalGainsTax": $capitalGainsTaxSummaryJson,
        |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
-       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
+       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get},
+       |   "totalIncomeTaxAndNicsAndCgt": ${totalIncomeTaxAndNicsAndCgt.get}
        |}
      """.stripMargin
   )

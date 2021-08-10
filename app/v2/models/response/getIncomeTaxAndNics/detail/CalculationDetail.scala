@@ -17,12 +17,19 @@
 package v2.models.response.getIncomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
+import v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax.CapitalGainsTaxDetail
+import v2.models.response.getIncomeTaxAndNics.detail.incomeTax.IncomeTaxDetail
+import v2.models.response.getIncomeTaxAndNics.detail.nics.NicDetail
+import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.PensionSavingsTaxCharges
+import v2.models.response.getIncomeTaxAndNics.detail.studentLoans.StudentLoans
+import v2.models.response.getIncomeTaxAndNics.detail.taxDeductedAtSource.TaxDeductedAtSource
 
 case class CalculationDetail(incomeTax: IncomeTaxDetail,
                              studentLoans: Option[Seq[StudentLoans]],
                              pensionSavingsTaxCharges: Option[PensionSavingsTaxCharges],
                              nics: Option[NicDetail],
-                             taxDeductedAtSource: Option[TaxDeductedAtSource])
+                             taxDeductedAtSource: Option[TaxDeductedAtSource],
+                             capitalGainsTax: Option[CapitalGainsTaxDetail])
 
 object CalculationDetail {
   implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
