@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package v2.models.response.getIncomeTaxAndNics.detail
+package v2.models.response.getIncomeTaxAndNics.detail.marriageAllowanceTransferredIn
 
 import support.UnitSpec
-import v2.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.marriageAllowanceTransferredIn.MarriageAllowanceTransferredInFixture._
 import v2.models.utils.JsonErrorValidators
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+class MarriageAllowanceTransferredInSpec extends UnitSpec with JsonErrorValidators {
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
-    mandatoryProperties = Seq(
-      "incomeTax"
-    ),
+  testJsonProperties[MarriageAllowanceTransferredIn](marriageAllowanceTransferredInJson)(
+    mandatoryProperties = Seq(),
     optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource",
-      "marriageAllowanceTransferredIn"
+      "amount",
+      "rate"
     )
   )
+
 }
