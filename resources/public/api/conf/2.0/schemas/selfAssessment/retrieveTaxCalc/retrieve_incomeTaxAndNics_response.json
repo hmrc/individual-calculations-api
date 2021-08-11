@@ -2187,6 +2187,28 @@
                   "example": "2029.29"
                 }
               }
+            },
+            "marriageAllowanceTransferredIn": {
+              "type": "object",
+              "description": "Details holding marriage allowance transfer in amount. ",
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "description": "The amount of marriage allowance transferred in. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99999999999.99,
+                  "example": "3000.00"
+                },
+                "rate": {
+                  "type": "number",
+                  "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to two decimal places.",
+                  "multipleOf": 0.01,
+                  "minimum": 0,
+                  "maximum": 99.99,
+                  "example": "10.50"
+                }
+              }
             }
           }
         }
