@@ -2202,7 +2202,7 @@
                 },
                 "rate": {
                   "type": "number",
-                  "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to two decimal places.",
+                  "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to 2 decimal places.",
                   "multipleOf": 0.01,
                   "minimum": 0,
                   "maximum": 99.99,
