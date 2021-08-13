@@ -23,6 +23,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.nics.NicDetailFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.PensionSavingsTaxChargesFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.studentLoans.StudentLoansFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.taxDeductedAtSource.TaxDeductedAtSourceFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.marriageAllowanceTransferredIn.MarriageAllowanceTransferredInFixture._
 import v2.models.response.getIncomeTaxAndNics.detail._
 
 object CalculationDetailFixture {
@@ -34,7 +35,8 @@ object CalculationDetailFixture {
       pensionSavingsTaxCharges = Some(pensionSavingsTaxChargesModel),
       nics = Some(nicDetailModel),
       taxDeductedAtSource = Some(taxDeductedAtSourceModel),
-      capitalGainsTax = Some(capitalGainsTaxDetailModel)
+      capitalGainsTax = Some(capitalGainsTaxDetailModel),
+      marriageAllowanceTransferredIn = Some(marriageAllowanceTransferredInModel)
     )
 
   val calculationDetailJson: JsValue = Json.parse(
@@ -45,7 +47,8 @@ object CalculationDetailFixture {
        |   "pensionSavingsTaxCharges": $pensionSavingsTaxChargesJson,
        |   "nics": $nicDetailJson,
        |   "taxDeductedAtSource": $taxDeductedAtSourceJson,
-       |   "capitalGainsTax": $capitalGainsTaxDetailJson
+       |   "capitalGainsTax": $capitalGainsTaxDetailJson,
+       |   "marriageAllowanceTransferredIn": $marriageAllowanceTransferredInJson
        |}
      """.stripMargin
   )

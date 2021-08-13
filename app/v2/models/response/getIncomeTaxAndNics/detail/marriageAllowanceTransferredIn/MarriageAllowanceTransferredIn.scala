@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package v2.models.response.getIncomeTaxAndNics.detail
+package v2.models.response.getIncomeTaxAndNics.detail.marriageAllowanceTransferredIn
 
-import support.UnitSpec
-import v2.fixtures.getIncomeTaxAndNics.detail.CalculationDetailFixture._
-import v2.models.utils.JsonErrorValidators
+import play.api.libs.json.{Json, OFormat}
 
-class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
+case class MarriageAllowanceTransferredIn(amount: Option[BigDecimal],
+                                          rate: Option[BigDecimal])
 
-  testJsonProperties[CalculationDetail](calculationDetailJson)(
-    mandatoryProperties = Seq(
-      "incomeTax"
-    ),
-    optionalProperties = Seq(
-      "studentLoans",
-      "pensionSavingsTaxCharges",
-      "nics",
-      "taxDeductedAtSource",
-      "marriageAllowanceTransferredIn"
-    )
-  )
+
+object MarriageAllowanceTransferredIn {
+  implicit val format: OFormat[MarriageAllowanceTransferredIn] = Json.format[MarriageAllowanceTransferredIn]
 }
