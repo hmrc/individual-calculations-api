@@ -298,6 +298,10 @@
           }
         ],
         "totalTaxAmount": 500.99
+      },
+      "marriageAllowanceTransferredIn": {
+        "amount": 3000.00,
+        "rate": 10.50
       }
     }
   },
