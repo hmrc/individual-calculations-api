@@ -16,7 +16,7 @@
 
 package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{ Json, OFormat }
 
 case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    reducedPersonalAllowance: Option[BigInt],
@@ -28,7 +28,8 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    postCessationTradeReceipts: Option[BigDecimal],
                                    paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
                                    annualPayments: Option[AnnualPayments],
-                                   pensionContributions: Option[PensionContributions])
+                                   pensionContributions: Option[PensionContributions],
+                                   marriageAllowanceTransferOut: Option[MarriageAllowanceTransferOut])
 
 object AllowancesAndDeductions {
   implicit val format: OFormat[AllowancesAndDeductions] = Json.format[AllowancesAndDeductions]

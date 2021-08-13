@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package v2.models.response.getTaxableIncome.detail.selfEmployment.detail
+package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
-import support.UnitSpec
-import v2.fixtures.getTaxableIncome.detail.selfEmployment.SelfEmploymentFixture._
-import v2.models.utils.JsonErrorValidators
+import play.api.libs.json.{ Json, OFormat }
 
-class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidators {
+case class MarriageAllowanceTransferOut(
+    personalAllowanceBeforeTransferOut: BigDecimal,
+    transferredOutAmount: BigDecimal
+)
 
-  testJsonProperties[BusinessSourceAdjustableSummary](bsasJson)(
-    mandatoryProperties = Seq(
-      "bsasId",
-      "applied"
-    ),
-    optionalProperties = Seq()
-  )
+object MarriageAllowanceTransferOut {
+  implicit val format: OFormat[MarriageAllowanceTransferOut] = Json.format[MarriageAllowanceTransferOut]
 }

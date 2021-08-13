@@ -28,8 +28,8 @@ class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
       "selfEmployments",
       "ukPropertyFhl",
       "ukPropertyNonFhl",
-      "eeaPropertyFhlModel",
-      "foreignPropertyModel"
+      "eeaPropertyFhl",
+      "foreignProperty"
     )
   )
 }
