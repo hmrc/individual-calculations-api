@@ -25,10 +25,10 @@ class SavingsAndGainsSpec extends UnitSpec with JsonErrorValidators {
   testJsonProperties[SavingsAndGains](savingsAndGainsJson)(
     mandatoryProperties = Seq(
       "incomeReceived",
-      "taxableIncome",
-      "totalOfAllGains"
+      "taxableIncome"
     ),
     optionalProperties = Seq(
+      "totalOfAllGains",
       "ukSavings",
       "ukSecurities",
       "totalUkSavingsAndSecurities",
