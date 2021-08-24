@@ -35,7 +35,7 @@ object SavingsAndGainsFixture {
     SavingsAndGains(
       incomeReceived = incomeReceivedSAG,
       taxableIncome = taxableIncomeSAG,
-      totalOfAllGains = totalOfAllGains,
+      totalOfAllGains = Some(totalOfAllGains),
       totalUkSavingsAndSecurities = totalUkSavingsAndSecurities,
       ukSavings = Some(Seq(savingsModel)),
       ukSecurities = Some(Seq(securitiesModel)),

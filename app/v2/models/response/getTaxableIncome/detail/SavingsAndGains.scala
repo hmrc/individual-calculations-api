@@ -20,7 +20,7 @@ import play.api.libs.json._
 
 case class SavingsAndGains(incomeReceived: BigInt,
                            taxableIncome: BigInt,
-                           totalOfAllGains: BigInt,
+                           totalOfAllGains: Option[BigInt],
                            totalUkSavingsAndSecurities: Option[BigInt],
                            ukSavings: Option[Seq[Savings]],
                            ukSecurities: Option[Seq[UkSecurities]],
