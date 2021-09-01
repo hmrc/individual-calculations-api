@@ -114,6 +114,8 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
       case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError |
         RuleResidencyChangedError | RuleFinalDeclarationReceivedError
       => Forbidden(Json.toJson(errorWrapper))
+      case RuleIncomeSourcesInvalid | RuleNoIncomeSubmissionsExistError |
+           RuleSubmissionFailed => Forbidden(Json.toJson(errorWrapper))
       case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }

@@ -74,6 +74,9 @@ class CrystallisationServiceSpec extends ServiceSpec {
           ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError, CONFLICT),
           ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError, CONFLICT),
           ("RESIDENCY_CHANGED", RuleResidencyChangedError, CONFLICT),
+          ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalid, UNPROCESSABLE_ENTITY),
+          ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError, UNPROCESSABLE_ENTITY),
+          ("BUSINESS_VALIDATION", RuleSubmissionFailed, UNPROCESSABLE_ENTITY),
           ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError, CONFLICT),
           ("SERVER_ERROR", DownstreamError, INTERNAL_SERVER_ERROR),
           ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE)

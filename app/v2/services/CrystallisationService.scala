@@ -56,6 +56,9 @@ class CrystallisationService @Inject()(connector: CrystallisationConnector) exte
       "INCOME_SOURCES_CHANGED" -> RuleIncomeSourcesChangedError,
       "RECENT_SUBMISSIONS_EXIST" -> RuleRecentSubmissionsExistError,
       "RESIDENCY_CHANGED" -> RuleResidencyChangedError,
+      "INVALID_INCOME_SOURCES" -> RuleIncomeSourcesInvalid,
+      "INCOME_SUBMISSIONS_NOT_EXIST" -> RuleNoIncomeSubmissionsExistError,
+      "BUSINESS_VALIDATION" -> RuleSubmissionFailed,
       "FINAL_DECLARATION_RECEIVED" -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR" -> DownstreamError,
       "SERVICE_UNAVAILABLE" -> DownstreamError
