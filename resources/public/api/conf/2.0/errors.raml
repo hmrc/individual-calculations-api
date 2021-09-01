@@ -169,6 +169,39 @@ traits:
                 description: 'Your residency has changed. You will need to intent to crystallise again before crystallising.'
                 value:
                   code: RULE_RESIDENCY_CHANGED
+  ruleIncomeSourceInvalid:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleIncomeSourceInvalid:
+                description: 'There are no valid income sources.'
+                value:
+                  code: RULE_INCOME_SOURCES_INVALID
+  ruleNoIncomeSubmissionsExist:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleNoIncomeSubmissionsExist:
+                description: 'No income submissions exist for the supplied calculation id.'
+                value:
+                  code: RULE_NO_INCOME_SUBMISSIONS_EXIST
+  ruleSubmissionFailed:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleSubmissionFailed:
+                description: 'The submission cannot be completed due to validation failures.'
+                value:
+                  code: RULE_SUBMISSION_FAILED
   notFoundListCalculations:
     responses:
       404:
