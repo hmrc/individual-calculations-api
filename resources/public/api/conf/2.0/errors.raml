@@ -180,17 +180,6 @@ traits:
                 description: 'There are no valid income sources.'
                 value:
                   code: RULE_INCOME_SOURCES_INVALID
-  ruleNoIncomeSubmissionsExist:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleNoIncomeSubmissionsExist:
-                description: 'No income submissions exist for the supplied calculation id.'
-                value:
-                  code: RULE_NO_INCOME_SUBMISSIONS_EXIST
   ruleSubmissionFailed:
     responses:
       403:
