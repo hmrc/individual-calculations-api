@@ -10,5 +10,5 @@ Before starting the final declaration journey the software package will need to 
 
 Here, the developer can:
 
-- provide the customer’s intent to make a final declaration to receive estimated tax calculation id
+- provide the customer’s intent to make a final declaration, for which they will receive a Calculation ID
 - submit final declaration for a tax year
