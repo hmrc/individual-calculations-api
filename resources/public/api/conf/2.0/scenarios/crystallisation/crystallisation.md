@@ -36,7 +36,7 @@
             <td><p>Simulates the scenario where no income submissions exist.</p></td>
         </tr>   
         <tr>
-            <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
+            <td><p>SUBMISSION_FAILED</p></td>
             <td><p>Simulates the scenario where business validation rule failures.</p></td>
         </tr>
         <tr>
