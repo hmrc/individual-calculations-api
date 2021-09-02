@@ -26,6 +26,18 @@
         <tr>
             <td><p>FINAL_DECLARATION_RECEIVED</p></td>
             <td><p>Simulates the scenario where a crystallisation declaration has already been received.</p></td>
+        </tr>   
+        <tr>
+            <td><p>INCOME_SOURCES_INVALID</p></td>
+            <td><p>Simulates the scenario where a valid income source can not be found.</p></td>
+        </tr>   
+        <tr>
+            <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
+            <td><p>Simulates the scenario where no income submissions exist.</p></td>
+        </tr>   
+        <tr>
+            <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
+            <td><p>Simulates the scenario where business validation rule failures.</p></td>
         </tr>
         <tr>
             <td><p>NOT_FOUND</p></td>
