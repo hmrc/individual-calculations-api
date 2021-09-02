@@ -37,7 +37,7 @@
         </tr>   
         <tr>
             <td><p>SUBMISSION_FAILED</p></td>
-            <td><p>Simulates the scenario where business validation rule failures.</p></td>
+            <td><p>Simulates the scenario where a submission has failed.</p></td>
         </tr>
         <tr>
             <td><p>NOT_FOUND</p></td>
