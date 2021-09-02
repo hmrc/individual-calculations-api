@@ -1,6 +1,8 @@
-These resources allow software packages to crystallise a taxpayer's end of year position for a tax year.
+**Final declaration was previously called Crystallisation.**
 
-Before starting the crystallisation journey the software package will need to ensure that, for the relevant tax year, taxpayer
+These resources allow software packages to make a final declaration regarding a customer’s end of year position for a tax year.
+
+Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:
 
 - has finalised EOPS for all their businesses (self-employment and uk-property)
 - has already provided their entire income e.g. interest, dividends, other SA schedules
@@ -8,5 +10,5 @@ Before starting the crystallisation journey the software package will need to en
 
 Here, the developer can:
 
-- provide taxpayer's intent to crystallise to receive estimated tax calculation id
-- submit crystallisation for a tax year
+- provide the customer’s intent to make a final declaration, for which they will receive a Calculation ID
+- submit final declaration for a tax year
