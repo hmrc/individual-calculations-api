@@ -180,6 +180,9 @@ class CrystallisationControllerISpec extends IntegrationBaseSpec {
           (CONFLICT, "INCOME_SOURCES_CHANGED", FORBIDDEN, RuleIncomeSourcesChangedError),
           (CONFLICT, "RECENT_SUBMISSIONS_EXIST", FORBIDDEN, RuleRecentSubmissionsExistError),
           (CONFLICT, "RESIDENCY_CHANGED", FORBIDDEN, RuleResidencyChangedError),
+          (UNPROCESSABLE_ENTITY, "INVALID_INCOME_SOURCES", FORBIDDEN, RuleIncomeSourcesInvalid),
+          (UNPROCESSABLE_ENTITY, "INCOME_SUBMISSIONS_NOT_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError),
+          (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", FORBIDDEN, RuleSubmissionFailed),
           (CONFLICT, "FINAL_DECLARATION_RECEIVED", FORBIDDEN, RuleFinalDeclarationReceivedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)

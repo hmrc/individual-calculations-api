@@ -100,6 +100,11 @@ object RuleNoSubmissionsExistError extends MtdError(
   message = "No periodic or annual income data has been submitted"
 )
 
+object RuleSubmissionFailed extends MtdError(
+  code = "RULE_SUBMISSION_FAILED",
+  message = "The submission cannot be completed due to validation failures"
+)
+
 object RuleFinalDeclarationReceivedError extends MtdError(
   code = "RULE_FINAL_DECLARATION_RECEIVED",
   message = "Crystallisation declaration has already been received"
@@ -108,6 +113,11 @@ object RuleFinalDeclarationReceivedError extends MtdError(
 object RuleIncomeSourcesChangedError extends MtdError(
   code = "RULE_INCOME_SOURCES_CHANGED",
   message = "Income sources data has changed. Perform intent to crystallise"
+)
+
+object RuleIncomeSourcesInvalid extends MtdError(
+  code = "RULE_INCOME_SOURCES_INVALID",
+  message = "No valid income sources could be found"
 )
 
 object RuleRecentSubmissionsExistError extends MtdError(

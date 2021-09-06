@@ -193,6 +193,9 @@ class CrystallisationControllerSpec
           (RuleIncomeSourcesChangedError, FORBIDDEN),
           (RuleRecentSubmissionsExistError, FORBIDDEN),
           (RuleResidencyChangedError, FORBIDDEN),
+          (RuleIncomeSourcesInvalid, FORBIDDEN),
+          (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
+          (RuleSubmissionFailed, FORBIDDEN),
           (RuleFinalDeclarationReceivedError, FORBIDDEN),
           (DownstreamError, INTERNAL_SERVER_ERROR)
         )
