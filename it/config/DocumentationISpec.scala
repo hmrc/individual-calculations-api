@@ -50,7 +50,7 @@ class DocumentationISpec extends IntegrationBaseSpec {
       |      {
       |        "version":"1.0",
       |        "status":"RETIRED",
-      |        "endpointsEnabled":false
+      |        "endpointsEnabled":true
       |      },
       |      {
       |        "version":"2.0",
