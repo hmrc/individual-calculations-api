@@ -49,8 +49,8 @@ class DocumentationISpec extends IntegrationBaseSpec {
       |    "versions":[
       |      {
       |        "version":"1.0",
-      |        "status":"BETA",
-      |        "endpointsEnabled":true
+      |        "status":"RETIRED",
+      |        "endpointsEnabled":false
       |      },
       |      {
       |        "version":"2.0",
