@@ -8,8 +8,8 @@ is:
   - errors.notFoundRetrieveTaxCalc
   - errors.noMessagesPresent
   - queryParameters.type
-displayName: Retrieve Self Assessment Tax Calculation Messages
-description: From 30 November 2021 v1.0 will no longer be available. This endpoint allows you to retrieve 'info', 'warning' and 'error' level messages linked to a Calculation ID.  One or more error messages for a Calculation ID means a calculation could not be performed.  Vendor software should surface these messages to the end user.
+displayName: Retrieve Self Assessment Tax Calculation Messages [No longer available]
+description: This resource is no longer available. It has been replaced by the Retrieve Self Assessment Tax Calculation Messages endpoint in the <a href="/api-documentation/docs/api/service/individual-calculations-api/2.0">individual-calculations-api v2.0</a>.
 (annotations.sandboxData): !include ../../scenarios/selfAssessment/retrieveMessages.md
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]

@@ -9,8 +9,8 @@ is:
   - errors.clientOrAgentNotAuthorised
   - errors.incorrectOrEmptyBody
   - errors.ruleNoIncomeSubmissionExists
-displayName: Trigger a Self Assessment Tax Calculation
-description: From 30 November 2021 v1.0 will no longer be available. This endpoint allows the user to trigger a self-assessment tax calculation for a given tax year. It should be called whenever income data is updated through a periodic or annual endpoint. The tax calculation can take up to 5 seconds to process. We recommend you wait 5 seconds before calling retrieval endpoints. The result of the calculation can be seen using the “Retrieve Self Assessment Tax Calculation Metadata” endpoint.
+displayName: Trigger a Self Assessment Tax Calculation [No longer available]
+description: This resource is no longer available. It has been replaced by the Trigger a Self Assessment Tax Calculation endpoint in the <a href="/api-documentation/docs/api/service/individual-calculations-api/2.0">individual-calculations-api v2.0</a>.
 (annotations.sandboxData): !include ../../scenarios/selfAssessment/trigger.md
 (annotations.scope): "write:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
