@@ -30,7 +30,7 @@ import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import support.UnitSpec
-import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
+import v2.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
 class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockAppConfig with GuiceOneAppPerSuite {
   test =>
@@ -148,7 +148,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
 
     "return 406" in new Test {
 
-      val request: RequestHeader = buildRequest("/v1")
+      val request: RequestHeader = buildRequest("/v2")
       inside(requestHandler.routeRequest(request)) {
         case Some(a: EssentialAction) =>
           val result = a.apply(request)
@@ -163,7 +163,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
 
     "return 404" in new Test {
-      private val request = buildRequest("/v1")
+      private val request = buildRequest("/v2")
 
       inside(requestHandler.routeRequest(request)) {
         case Some(a: EssentialAction) =>
@@ -181,7 +181,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     "the version has a route for the resource" must {
       "return 404 Not Found" in new Test {
 
-        private val request = buildRequest("/v1")
+        private val request = buildRequest("/v2")
         inside(requestHandler.routeRequest(request)) {
           case Some(a:EssentialAction) =>
             val result = a.apply(request)

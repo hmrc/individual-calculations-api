@@ -24,7 +24,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{DefaultActionBuilder, Handler, RequestHeader, Results}
 import play.api.routing.Router
 import play.core.DefaultWebCommands
-import v1.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
+import v2.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 
 @Singleton
 class VersionRoutingRequestHandler @Inject()(versionRoutingMap: VersionRoutingMap,
