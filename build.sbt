@@ -42,15 +42,15 @@ lazy val microservice = Project(appName, file("."))
   .settings(defaultSettings(): _*)
   .configs(ItTest)
   .settings(
-    inConfig(ItTest)(Defaults.itSettings ++ headerSettings(ItTest) ++ automateHeaderSettings(ItTest)),
-    ItTest / fork := true,
-    ItTest / unmanagedSourceDirectories := Seq((ItTest / baseDirectory).value / "it"),
-    ItTest / unmanagedClasspath += baseDirectory.value / "resources",
-    Runtime / unmanagedClasspath += baseDirectory.value / "resources",
-    ItTest / javaOptions += "-Dlogger.resource=logback-test.xml",
-    ItTest / parallelExecution := false,
-    addTestReportOption(ItTest, directory = "int-test-reports")
-  )
+  inConfig(ItTest)(Defaults.itSettings ++ headerSettings(ItTest) ++ automateHeaderSettings(ItTest)),
+  ItTest / fork := true,
+  ItTest / unmanagedSourceDirectories := Seq((ItTest / baseDirectory).value / "it"),
+  ItTest / unmanagedClasspath += baseDirectory.value / "resources",
+  Runtime / unmanagedClasspath += baseDirectory.value / "resources",
+  ItTest / javaOptions += "-Dlogger.resource=logback-test.xml",
+  ItTest / parallelExecution := false,
+  addTestReportOption(ItTest, directory = "int-test-reports")
+)
   .settings(
     resolvers += Resolver.jcenterRepo
   )

@@ -53,11 +53,6 @@ class ApiDefinitionFactory @Inject()(appConfig: AppConfig) extends Logging {
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(
-            version = VERSION_1,
-            status = buildAPIStatus(VERSION_1),
-            endpointsEnabled = appConfig.endpointsEnabled(version = "1")
-          ),
-          APIVersion(
             version = VERSION_2,
             status = buildAPIStatus(VERSION_2),
             endpointsEnabled = appConfig.endpointsEnabled(version = "2")
