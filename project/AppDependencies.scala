@@ -24,15 +24,15 @@ object AppDependencies {
     ws,
     "uk.gov.hmrc"   %% "bootstrap-backend-play-28" % "5.19.0",
     "uk.gov.hmrc"   %% "play-hmrc-api"     % "6.4.0-play-28",
-    "org.typelevel" %% "cats-core"         % "2.6.1",
+    "org.typelevel" %% "cats-core"         % "2.7.0",
     "com.chuusai"   %% "shapeless"         % "2.4.0-M1"
   )
 
   def test(scope: String = "test, it"): Seq[sbt.ModuleID] = Seq(
-    "org.scalatest"          %% "scalatest"          % "3.2.9"             % scope,
-    "com.vladsch.flexmark"   % "flexmark-all"        % "0.36.8"            % scope,
+    "org.scalatest"          %% "scalatest"          % "3.2.10"             % scope,
+    "com.vladsch.flexmark"   % "flexmark-all"        % "0.62.2"            % scope,
     "org.scalacheck"         %% "scalacheck"         % "1.15.4"            % scope,
-    "org.scalamock"          %% "scalamock"          % "5.1.0"             % scope,
+    "org.scalamock"          %% "scalamock"          % "5.2.0"             % scope,
     "org.pegdown"            % "pegdown"             % "1.6.0"             % scope,
     "com.typesafe.play"      %% "play-test"          % PlayVersion.current % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0"             % scope,
