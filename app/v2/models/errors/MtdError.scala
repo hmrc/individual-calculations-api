@@ -90,11 +90,6 @@ object RuleCalculationErrorMessagesExist extends MtdError(
   message = "Calculation error messages exist for the supplied calculation ID"
 )
 
-object NoAllowancesDeductionsAndReliefsExist extends MtdError(
-  code = "NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST",
-  message = "No allowances, deductions and reliefs data exists"
-)
-
 object RuleNoSubmissionsExistError extends MtdError(
   code = "RULE_NO_SUBMISSIONS_EXIST",
   message = "No periodic or annual income data has been submitted"

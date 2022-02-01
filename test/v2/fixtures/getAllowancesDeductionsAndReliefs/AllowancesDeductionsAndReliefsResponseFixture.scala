@@ -50,6 +50,10 @@ object AllowancesDeductionsAndReliefsResponseFixture {
     Json.obj("summary" -> calculationSummaryJson) ++
     Json.obj("detail" -> calculationDetailJson)
 
+  val allowancesDeductionsAndReliefsResponseEmptyJson: JsObject =
+    Json.obj("summary" -> JsObject.empty) ++
+      Json.obj("detail" -> JsObject.empty)
+
   val allowancesDeductionsAndReliefsResponseJsonEmpty: JsObject = Json.parse(
     """
       |{
