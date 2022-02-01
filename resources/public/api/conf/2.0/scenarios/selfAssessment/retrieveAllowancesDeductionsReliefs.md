@@ -1,4 +1,4 @@
-<p>Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.</p>
+<p xmlns="http://www.w3.org/1999/html">Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.</p>
 <table>
     <thead>
         <tr>
@@ -17,7 +17,13 @@
         </tr>
         <tr>
             <td><p>NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST</p></td>
-            <td><p>Simulates the scenario where no allowances, deductions and reliefs data exists.</p></td>
+            <td>
+                <p>Simulates the scenario where no allowances, deductions and reliefs data exists.</p>
+                <p><strong>
+                    Note: this scenario no longer triggers an error.
+                    Instead, a 200 response with zero totalAllowancesAndDeductions, zero totalReliefs, and empty details will be returned.
+                </strong></p>
+            </td>
         </tr>
         <tr>
             <td><p>NOT_FOUND</p></td>
