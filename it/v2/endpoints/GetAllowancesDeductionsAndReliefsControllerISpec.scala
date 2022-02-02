@@ -101,7 +101,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
       }
     }
 
-    "return 200 with empty summary" when {
+    "return 200 with zeroes in summary and empty details (NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST scenario)" when {
       "no allowances, deductions or reliefs exist" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -116,7 +116,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
-        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseEmptyJson.deepMerge(linksJson)
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
         response.header("Content-Type") shouldBe Some("application/json")
       }
     }
