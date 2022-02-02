@@ -32,7 +32,6 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
   private trait Test {
 
     val nino: String = "AA123456A"
-    val correlationId: String = "X-123"
     val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     val linksJson: JsObject = Json.parse(
@@ -102,7 +101,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
       }
     }
 
-    "return 404 (NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST)" when {
+    "return 200 with zeroes in summary and empty details (NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST scenario)" when {
       "no allowances, deductions or reliefs exist" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -116,8 +115,8 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends IntegrationBaseSp
 
         val response: WSResponse = await(request.get)
 
-        response.status shouldBe NOT_FOUND
-        response.json shouldBe Json.toJson(NoAllowancesDeductionsAndReliefsExist)
+        response.status shouldBe OK
+        response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
         response.header("Content-Type") shouldBe Some("application/json")
       }
     }

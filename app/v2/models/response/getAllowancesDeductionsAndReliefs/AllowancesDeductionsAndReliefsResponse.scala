@@ -19,35 +19,27 @@ package v2.models.response.getAllowancesDeductionsAndReliefs
 import config.AppConfig
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v2.hateoas.{HateoasLinks, HateoasLinksFactory}
-import v2.models.hateoas.{HateoasData, Link}
+import v2.hateoas.{ HateoasLinks, HateoasLinksFactory }
+import v2.models.hateoas.{ HateoasData, Link }
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v2.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
-case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, detail: CalculationDetail, id: String) {
-
-  def isEmpty: Boolean =
-    (summary.totalAllowancesAndDeductions, summary.totalReliefs) match {
-      case (Some(x), _) if x > 0 => false
-      case (_, Some(x)) if x > 0 => false
-      case _ => true
-    }
-}
+case class AllowancesDeductionsAndReliefsResponse(summary: CalculationSummary, detail: CalculationDetail, id: String)
 
 object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
 
   implicit val writes: OWrites[AllowancesDeductionsAndReliefsResponse] = new OWrites[AllowancesDeductionsAndReliefsResponse] {
+
     def writes(response: AllowancesDeductionsAndReliefsResponse): JsObject =
       Json.obj(
         "summary" -> response.summary,
-        "detail" -> response.detail
+        "detail"  -> response.detail
       )
   }
-  implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] = (
-    (JsPath \ "allowancesDeductionsAndReliefs" \ "summary").read[CalculationSummary] and
-    (JsPath \ "allowancesDeductionsAndReliefs" \ "detail").read[CalculationDetail] and
-    (JsPath \ "metadata" \ "id").read[String])(AllowancesDeductionsAndReliefsResponse.apply _)
-
+  implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
+    ((JsPath \ "allowancesDeductionsAndReliefs" \ "summary").read[CalculationSummary] and
+      (JsPath \ "allowancesDeductionsAndReliefs" \ "detail").read[CalculationDetail] and
+      (JsPath \ "metadata" \ "id").read[String])(AllowancesDeductionsAndReliefsResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesDeductionsAndReliefsHateoasData] {
     override def links(appConfig: AppConfig, data: AllowancesDeductionsAndReliefsHateoasData): Seq[Link] = {

@@ -235,17 +235,6 @@ traits:
                 description: No messages are present for the supplied types or no messages exist for that calculation ID.
                 value:
                   code: NO_MESSAGES_PRESENT
-  noAllowancesDeductionsReliefs:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              noAllowancesDeductionsReliefs:
-                description: No allowances, deductions and reliefs data exists for the supplied calculation ID and NINO.
-                value:
-                  code: NO_ALLOWANCES_DEDUCTIONS_RELIEFS_EXIST
   notFoundCrystallisation:
     responses:
       404:

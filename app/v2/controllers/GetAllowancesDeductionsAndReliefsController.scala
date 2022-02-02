@@ -17,20 +17,20 @@
 package v2.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
+import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v2.controllers.requestParsers.GetCalculationParser
-import v2.handler.{AuditHandler, RequestDefn, RequestHandler}
+import v2.handler.{ AuditHandler, RequestDefn, RequestHandler }
 import v2.hateoas.HateoasFactory
 import v2.models.audit.GenericAuditDetail
 import v2.models.errors._
 import v2.models.hateoas.HateoasWrapper
-import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
+import v2.models.request.{ GetCalculationRawData, GetCalculationRequest }
 import v2.models.response.calculationWrappers.CalculationWrapperOrError
-import v2.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse}
-import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import v2.models.response.getAllowancesDeductionsAndReliefs.{ AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse }
+import v2.services.{ AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService }
 
 import scala.concurrent.ExecutionContext
 
@@ -70,7 +70,7 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(authService: Enrolme
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
           case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
-          case CalculationWrapperOrError.CalculationWrapper(calc) => if (calc.isEmpty) Left(ErrorWrapper(responseWrapper.correlationId, NoAllowancesDeductionsAndReliefsExist, None, NOT_FOUND)) else Right(calc)
+          case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
       .mapSuccessSimple(rawResponse =>
