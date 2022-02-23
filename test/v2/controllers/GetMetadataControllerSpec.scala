@@ -32,7 +32,7 @@ import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
-import v2.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v2.models.response.common.{CalculationRequestor, CalculationType}
 import v2.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
 import v2.support.BackendResponseMappingSupport
 
@@ -81,7 +81,7 @@ class GetMetadataControllerSpec
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
-    calculationReason = CalculationReason.customerRequest,
+    calculationReason = "customerRequest",
     calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
     calculationType = CalculationType.crystallisation,
     intentToCrystallise = true,

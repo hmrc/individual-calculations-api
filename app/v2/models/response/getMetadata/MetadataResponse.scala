@@ -20,12 +20,12 @@ import config.AppConfig
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v2.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v2.models.hateoas.{HateoasData, Link}
-import v2.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v2.models.response.common.{CalculationRequestor, CalculationType}
 
 case class MetadataResponse(id: String,
                             taxYear: String,
                             requestedBy: CalculationRequestor,
-                            calculationReason: CalculationReason,
+                            calculationReason: String,
                             calculationTimestamp: Option[String],
                             calculationType: CalculationType,
                             intentToCrystallise: Boolean,

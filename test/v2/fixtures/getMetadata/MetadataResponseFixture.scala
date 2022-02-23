@@ -18,7 +18,7 @@ package v2.fixtures.getMetadata
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v2.fixtures.getMessages.MessagesResponseFixture._
-import v2.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v2.models.response.common.{CalculationRequestor, CalculationType}
 import v2.models.response.getMetadata.MetadataResponse
 
 object MetadataResponseFixture {
@@ -26,7 +26,7 @@ object MetadataResponseFixture {
   val id: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   val taxYear: String = "2018-19"
   val requestedBy: CalculationRequestor = CalculationRequestor.customer
-  val calculationReason: CalculationReason = CalculationReason.customerRequest
+  val calculationReason: String = "customerRequest"
   val calculationTimestamp: Option[String] = Some("2019-11-15T09:35:15.094Z")
   val calculationType: CalculationType = CalculationType.inYear
   val intentToCrystallise: Boolean = true
@@ -39,7 +39,7 @@ object MetadataResponseFixture {
       id = id,
       taxYear = taxYear,
       requestedBy = requestedBy,
-      calculationReason = calculationReason,
+      calculationReason = "customerRequest",
       calculationTimestamp = calculationTimestamp,
       calculationType = calculationType,
       intentToCrystallise = intentToCrystallise,
