@@ -75,6 +75,12 @@
             "updatedAnnualAdjustmentEvent"
           ],
           "description": "The calculation was triggered internally by HMRC on receipt of an adjustment to an adjustable summary calculation made by the customer. This event is not currently supported."
+        },
+        {
+          "enum": [
+            "unattendedCalculation"
+          ],
+          "description": "The calculation was triggered without attendence <filler content>. This event is not currently supported."
         }
       ]
     },
