@@ -44,14 +44,7 @@
             "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
             "bsas": {
               "bsasId": "717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4",
-              "applied": true,
-              "links": [
-                {
-                  "href": "/individuals/self-assessment/adjustable-summary/AA123456A/self-employment/717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4/adjust",
-                  "rel": "retrieve-self-employment-accounting-adjustments",
-                  "method": "GET"
-                }
-              ]
+              "applied": true
             },
             "lossClaimsSummary": {
               "carrySidewaysIncomeTaxLossesUsed": 1000,
@@ -123,14 +116,7 @@
           "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
           "bsas": {
             "bsasId": "818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/property/818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4/adjust",
-                "rel": "retrieve-uk-property-accounting-adjustments",
-                "method": "GET"
-              }
-            ]
+            "applied": true
           },
           "lossClaimsSummary": {
             "lossForCSFHL": 12500,
@@ -178,14 +164,7 @@
           "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
           "bsas": {
             "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust",
-                "rel": "retrieve-uk-property-accounting-adjustments",
-                "method": "GET"
-              }
-            ]
+            "applied": true
           },
           "lossClaimsSummary": {
             "totalBroughtForwardIncomeTaxLosses": 12500,
@@ -241,14 +220,7 @@
           "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
           "bsas": {
             "bsasId": "818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/818f3a7a-db8e-11e9-8a34-2a2ae2dbdde4/adjust",
-                "rel": "retrieve-foreign-property-accounting-adjustments",
-                "method": "GET"
-              }
-            ]
+            "applied": true
           },
           "lossClaimsSummary": {
             "lossForCSFHL": 12500,
@@ -296,14 +268,7 @@
           "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
           "bsas": {
             "bsasId": "a54ba782-5ef4-47f4-ab72-495406665ca9",
-            "applied": true,
-            "links": [
-              {
-                "href": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust",
-                "rel": "retrieve-foreign-property-accounting-adjustments",
-                "method": "GET"
-              }
-            ]
+            "applied": true
           },
           "lossClaimsSummary": {
             "totalBroughtForwardIncomeTaxLosses": 12500,

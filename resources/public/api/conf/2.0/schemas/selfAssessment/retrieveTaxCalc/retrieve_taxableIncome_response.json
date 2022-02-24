@@ -1472,39 +1472,6 @@
                           "title": "applied",
                           "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
                           "example": "false"
-                        },
-                        "links": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
-                            "properties": {
-                              "href": {
-                                "description": "The relative url of the endpoint",
-                                "type": "string",
-                                "example": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust"
-                              },
-                              "rel": {
-                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
-                                "type": "string",
-                                "enum": [
-                                  "retrieve-foreign-property-accounting-adjustments"
-                                ]
-                              },
-                              "method": {
-                                "description": "The HTTP method type for the endpoint",
-                                "type": "string",
-                                "enum": [
-                                  "GET"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "href",
-                              "rel",
-                              "method"
-                            ]
-                          }
                         }
                       },
                       "required": [
@@ -1803,39 +1770,6 @@
                           "title": "applied",
                           "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
                           "example": "false"
-                        },
-                        "links": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "description": "A list of endpoint links that indicate possible Business Source Adjustable Summary related actions.",
-                            "properties": {
-                              "href": {
-                                "description": "The relative url of the endpoint",
-                                "type": "string",
-                                "example": "/individuals/self-assessment/adjustable-summary/AA123456A/foreign-property/a54ba782-5ef4-47f4-ab72-495406665ca9/adjust"
-                              },
-                              "rel": {
-                                "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
-                                "type": "string",
-                                "enum": [
-                                  "retrieve-foreign-property-accounting-adjustments"
-                                ]
-                              },
-                              "method": {
-                                "description": "The HTTP method type for the endpoint",
-                                "type": "string",
-                                "enum": [
-                                  "GET"
-                                ]
-                              }
-                            },
-                            "required": [
-                              "href",
-                              "rel",
-                              "method"
-                            ]
-                          }
                         }
                       },
                       "required": [
@@ -2122,15 +2056,6 @@
             },
             "totalUkSavingsAndSecurities": {
               "title": "totalUkSavingsAndSecurities",
-              "description": "The total value of UK Savings and UK Securities. This value must be between 0 and 99999999999. No decimals.",
-              "type": "number",
-              "multipleOf": 1,
-              "minimum": 0,
-              "maximum": 99999999999,
-              "example": "5000"
-            },
-            "totalUkSavingsAndGains": {
-              "title": "totalUkSavingsAndGains",
               "description": "The total value of UK Savings and UK Securities. This value must be between 0 and 99999999999. No decimals.",
               "type": "number",
               "multipleOf": 1,

@@ -33,7 +33,7 @@
     "totalAnnualPaymentsTaxCharged": 12500,
     "totalRoyaltyPaymentsTaxCharged": 5000.99,
     "totalIncomeTaxNicsCharged": 5000,
-    "totalTaxDeducted": 12500,
+    "totalTaxDeducted": 250.32,
     "totalIncomeTaxAndNicsDue": -99999999999.99,
     "taxRegime": "UK",
     "totalTaxDeductedBeforeCodingOut": 98234.44,
@@ -220,7 +220,7 @@
         "actualClass2Nic": true,
         "class2VoluntaryContributions": true
       },
-      "class4Nic": {
+      "class4Nics": {
         "totalIncomeLiableToClass4Charge": 200,
         "class4Losses": {
           "totalClass4LossesAvailable": 2000,
