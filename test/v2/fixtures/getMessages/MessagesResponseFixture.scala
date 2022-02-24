@@ -17,7 +17,7 @@
 package v2.fixtures.getMessages
 
 import play.api.libs.json.{JsValue, Json}
-import v2.models.response.common.{CalculationReason, CalculationRequestor, CalculationType}
+import v2.models.response.common.{CalculationRequestor, CalculationType}
 import v2.models.response.getMessages.{Message, MessagesResponse}
 
 object MessageFixture {
@@ -101,7 +101,7 @@ object MessagesResponseFixture {
        |      "id": "$calcId",
        |      "taxYear": "2018-19",
        |      "requestedBy": "${CalculationRequestor.customer}",
-       |      "calculationReason": "${CalculationReason.customerRequest}",
+       |      "calculationReason": "customerRequest",
        |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
        |      "calculationType": "${CalculationType.inYear}",
        |      "intentToCrystallise": true,
@@ -132,7 +132,7 @@ object MessagesResponseFixture {
       |     "id": "$calcId",
       |     "taxYear": "2018-19",
       |     "requestedBy": "${CalculationRequestor.customer}",
-      |     "calculationReason": "${CalculationReason.customerRequest}",
+      |     "calculationReason": "customerRequest",
       |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
       |     "calculationType": "${CalculationType.inYear}",
       |     "intentToCrystallise": true,
@@ -150,7 +150,7 @@ object MessagesResponseFixture {
       |     "id": "$calcId",
       |     "taxYear": "2018-19",
       |     "requestedBy": "${CalculationRequestor.customer}",
-      |     "calculationReason": "${CalculationReason.customerRequest}",
+      |     "calculationReason": "customerRequest",
       |     "calculationTimestamp": "2019-11-15T09:35:15.094Z",
       |     "calculationType": "${CalculationType.inYear}",
       |     "intentToCrystallise": true,
