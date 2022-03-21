@@ -17,9 +17,13 @@
 package v2.connectors
 
 import config.AppConfig
-import play.api.libs.json.Writes
+import play.api.libs.json.{Json, Writes}
+import play.api.mvc.Result
+import play.api.mvc.Results.InternalServerError
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import utils.Logging
+import v2.controllers.EndpointLogContext
+import v2.models.errors.{DownstreamError, ErrorWrapper}
 import v2.models.response.common.DesResponse
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,6 +31,13 @@ import scala.concurrent.{ExecutionContext, Future}
 trait BaseConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
+
+  protected def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
+    logger.error(
+      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+        s"Unhandled error: $errorWrapper")
+    InternalServerError(Json.toJson(DownstreamError))
+  }
 
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
     .withExtraHeaders(headers = "CorrelationId" -> correlationId)

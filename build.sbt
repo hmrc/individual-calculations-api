@@ -15,7 +15,7 @@
  */
 
 import sbt._
-import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings}
+import uk.gov.hmrc.DefaultBuildSettings.{ addTestReportOption, defaultSettings }
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
@@ -31,7 +31,8 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test(),
     retrieveManaged := true,
     update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(warnScalaVersionEviction = false),
-    scalaVersion := "2.12.15"
+    scalaVersion := "2.12.15",
+    scalacOptions ++= Seq("-Xfatal-warnings", "-Wconf:src=routes/.*:silent", "-feature", "-language:higherKinds")
   )
   .settings(
     Compile / unmanagedResourceDirectories += baseDirectory.value / "resources"
@@ -42,20 +43,19 @@ lazy val microservice = Project(appName, file("."))
   .settings(defaultSettings(): _*)
   .configs(ItTest)
   .settings(
-  inConfig(ItTest)(Defaults.itSettings ++ headerSettings(ItTest) ++ automateHeaderSettings(ItTest)),
-  ItTest / fork := true,
-  ItTest / unmanagedSourceDirectories := Seq((ItTest / baseDirectory).value / "it"),
-  ItTest / unmanagedClasspath += baseDirectory.value / "resources",
-  Runtime / unmanagedClasspath += baseDirectory.value / "resources",
-  ItTest / javaOptions += "-Dlogger.resource=logback-test.xml",
-  ItTest / parallelExecution := false,
-  addTestReportOption(ItTest, directory = "int-test-reports")
-)
+    inConfig(ItTest)(Defaults.itSettings ++ headerSettings(ItTest) ++ automateHeaderSettings(ItTest)),
+    ItTest / fork := true,
+    ItTest / unmanagedSourceDirectories := Seq((ItTest / baseDirectory).value / "it"),
+    ItTest / unmanagedClasspath += baseDirectory.value / "resources",
+    Runtime / unmanagedClasspath += baseDirectory.value / "resources",
+    ItTest / javaOptions += "-Dlogger.resource=logback-test.xml",
+    ItTest / parallelExecution := false,
+    addTestReportOption(ItTest, directory = "int-test-reports")
+  )
   .settings(
     resolvers += Resolver.jcenterRepo
   )
   .settings(PlayKeys.playDefaultPort := 9767)
-  .settings(SilencerSettings())
 
 dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.play")
 dependencyUpdatesFilter -= moduleFilter(name = "scala-library")
