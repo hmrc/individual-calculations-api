@@ -1,0 +1,36 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatTaxYear
+  - errors.ruleTaxYearNotSupported
+  - errors.ruleTaxYearRangeInvalid
+  - errors.formatCalcId
+  - errors.incorrectOrEmptyBody
+  - errors.ruleIncomeSourcesChanged
+  - errors.ruleRecentSubmissionsExist
+  - errors.ruleResidencyChanged
+  - errors.ruleFinalDeclarationReceived
+  - errors.ruleIncomeSourceInvalid
+  - errors.ruleNoIncomeSubmissionExists
+  - errors.ruleSubmissionFailed
+  - errors.clientOrAgentNotAuthorised
+  - errors.notFoundCrystallisation
+displayName: Crystallisation
+description: "This endpoint allows the developer to crystallise a tax year by agreeing to the HMRC's tax calculation."
+(annotations.sandboxData): !include ../../scenarios/crystallisation/crystallisation.md
+(annotations.scope): "write:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+body:
+ application/json:
+   type: !include ../../schemas/crystallisation/crystallise_request.json
+   examples:
+     example:
+       value: !include ../../examples/crystallisation/crystallisation_request.json
+responses:
+ 204:
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.

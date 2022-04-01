@@ -1,0 +1,42 @@
+#%RAML 1.0
+
+uses:
+  sec: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/securitySchemes.raml
+  annotations: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/annotations.raml
+  types: https://developer.service.hmrc.gov.uk/api-documentation/assets/common/modules/types.raml
+  errors: errors.raml
+  headers: headers.raml
+  queryParameters: queryParameters.raml
+
+title: Individual Calculations (MTD)
+description: Trigger a self-assessment tax calculation.
+version: 3.0
+protocols: [ HTTPS ]
+baseUri: https://api.service.hmrc.gov.uk/
+mediaType: application/json
+
+documentation:
+ - title: Overview
+   content: !include docs/overview.md
+ - title: Send fraud prevention data
+   content: !include https://developer.service.hmrc.gov.uk/api-documentation/assets/common/docs/fraud-prevention.md
+ - title: Versioning
+   content: !include https://developer.service.hmrc.gov.uk/api-documentation/assets/common/docs/versioning.md
+ - title: Errors
+   content: !include docs/errors.md
+ - title: Changelog
+   content: !include docs/changelog.md
+ - title: Support
+   content: !include docs/support.md
+ - title: Testing
+   content: !include docs/testing.md
+
+'/individuals/calculations':
+  /{nino}:
+    uriParameters:
+      nino: !include pathParameters/nino.raml
+    /self-assessment:
+      (annotations.group):
+        name: Self Assessment
+        description: !include docs/group_selfAssessment.md
+      post: !include endpoints/selfAssessment/trigger.raml

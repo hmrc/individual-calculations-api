@@ -1,0 +1,495 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve Self Assessment Tax Calculation End of Year Estimate",
+  "description": "Retrieve Self Assessment Tax Calculation End of Year Estimate",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "description": "Details the high-level Income Tax and National Insurance Contributions due",
+      "properties": {
+        "totalEstimatedIncome": {
+          "title": "totalEstimatedIncome",
+          "description": "The total estimated end of year income. This value must be between 0 and 99999999999.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "2000"
+        },
+        "totalTaxableIncome": {
+          "title": "totalTaxableIncome",
+          "description": "The total taxable end of year income. This value must be between 0 and 99999999999. No Decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "2000"
+        },
+        "incomeTaxAmount": {
+          "title": "incomeTaxAmount",
+          "description": "The estimated end of year Income Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "nic2": {
+          "title": "nic2",
+          "description": "The estimated end of year Class 2 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "nic4": {
+          "title": "nic4",
+          "description": "The estimated end of year Class 4 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "totalNicAmount": {
+          "title": "totalNicAmount",
+          "description": "The estimated end of year combined Class 2 and Class 4 National Insurance contributions amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "1000.12"
+        },
+        "incomeTaxNicAmount": {
+          "title": "incomeTaxNicAmount",
+          "description": "The estimated end-of-year combined Income Tax, Class 2 and Class 4 National Insurance contributions amount. This value must be between -99999999999.99 and 99999999999.99",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": -99999999999.99,
+          "maximum": 99999999999.99,
+          "example": "2000.58"
+        },
+        "totalStudentLoansRepaymentAmount": {
+          "title": "totalStudentLoansRepaymentAmount",
+          "description": "The estimated end-of-year student loans repayment amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "2000.95"
+        },
+        "totalAnnualPaymentsTaxCharged": {
+          "title": "totalAnnualPaymentsTaxCharged",
+          "description": "The estimated end-of-year annual payments tax charged amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "2000.95"
+        },
+        "totalRoyaltyPaymentsTaxCharged": {
+          "title": "totalRoyaltyPaymentsTaxCharged",
+          "description": "The estimated end-of-year royalty payments tax charged amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "2000.95"
+        },
+        "totalTaxDeducted": {
+          "title": "totalTaxDeducted",
+          "description": "The estimated end-of-year total tax deducted amount. This value must be between -99999999999.99 and 99999999999.99",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": -99999999999.99,
+          "maximum": 99999999999.99,
+          "example": "2000.58"
+        },
+        "totalTaxDeductedBeforeCodingOut": {
+          "title": "totalTaxDeductedBeforeCodingOut",
+          "description": "The estimated end-of-year total deducted before coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
+        },
+        "saUnderpaymentsCodedOut": {
+          "title": "saUnderpaymentsCodedOut",
+          "description": "The estimated end-of-year total coded out amount attributed to Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
+        },
+        "cgtAmount": {
+          "title": "cgtAmount",
+          "description": "The estimated end-of-year Capital Gains Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
+        },
+        "incomeTaxNicAndCgtAmount": {
+          "title": "incomeTaxNicAndCgtAmount",
+          "description": "The estimated end-of-year combined Income Tax, National Insurance Contributions and Capital Gains Tax Amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": "5000.99"
+        }
+      }
+    },
+    "detail": {
+      "type": "object",
+      "description": "Details the low-level taxable income amounts of each income source",
+      "properties": {
+        "selfEmployments": {
+          "type": "array",
+          "description": "A list of self-employment business detailing the taxable income estimate for each business",
+          "items": {
+            "type": "object",
+            "properties": {
+              "selfEmploymentId": {
+                "title": "selfEmploymentId",
+                "description": "An identifier for the self-employment business, unique to the customer. Also referred to as businessId.",
+                "type": "string",
+                "example": "XGIS00000001319",
+                "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
+              },
+              "taxableIncome": {
+                "title": "taxableIncome",
+                "description": "The estimated end of year income. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "2000"
+              },
+              "finalised": {
+                "title": "finalised",
+                "description": "Shows whether the self-employment income has been finalised.",
+                "type": "boolean",
+                "example": "true"
+              }
+            },
+            "required": [
+              "selfEmploymentId",
+              "taxableIncome"
+            ]
+          }
+        },
+        "ukPropertyFhl": {
+          "type": "object",
+          "description": "Details the taxable income estimate for UK Property FHL",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end of year income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "finalised": {
+              "title": "finalised",
+              "description": "Shows whether the UK Property FHL income has been finalised.",
+              "type": "boolean",
+              "example": "true"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "ukPropertyNonFhl": {
+          "type": "object",
+          "description": "Details the taxable income estimate for UK Property Non-FHL",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "finalised": {
+              "title": "finalised",
+              "description": "Shows whether the UK Property Non-FHL income has been finalised.",
+              "type": "boolean",
+              "example": "true"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "ukSavings": {
+          "type": "array",
+          "description": "Details the taxable income estimate for UK savings",
+          "items": {
+            "type": "object",
+            "properties": {
+              "savingsAccountId": {
+                "title": "savingsAccountId",
+                "description": "The unique identifier of the savings account.",
+                "type": "string",
+                "example": "SAVKB2UVwUTBQGJ",
+                "pattern": "^[A-Za-z0-9]{15}$"
+              },
+              "savingsAccountName": {
+                "title": "savingsAccountName",
+                "description": "Friendly account name. Each account name will be unique for that National Insurance number. The account name will be between 1 and 32 characters in length. Allowed characters, including spaces are: mixed case alphanumeric characters and the characters; &'()*,-./@£.",
+                "type": "string",
+                "example": "UK Prime Bank Account 1",
+                "pattern": "^[A-Za-z0-9 &'()*,-./@£]{1,32}$"
+              },
+              "taxableIncome": {
+                "title": "taxableIncome",
+                "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+                "type": "number",
+                "multipleOf": 1,
+                "minimum": 0,
+                "maximum": 99999999999,
+                "example": "2000"
+              }
+            },
+            "required": [
+              "savingsAccountId",
+              "savingsAccountName",
+              "taxableIncome"
+            ]
+          }
+        },
+        "ukDividends": {
+          "type": "object",
+          "description": "Details the taxable income estimate for UK dividends",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end of year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "otherDividends": {
+          "type": "object",
+          "description": "Details the taxable income estimate for other dividends",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "foreignCompanyDividends": {
+          "type": "object",
+          "description": "Details the taxable income estimate for foreign company dividends.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "stateBenefits": {
+          "type": "object",
+          "description": "Details the taxable income estimate for state benefits",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "ukSecurities": {
+          "type": "object",
+          "description": "Details the taxable income estimate for UK Securities",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "foreignProperty": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Foreign Property",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "finalised": {
+              "title": "finalised",
+              "description": "Shows whether the Foreign Property income has been finalised.",
+              "type": "boolean",
+              "example": "true"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "eeaPropertyFhl": {
+          "type": "object",
+          "description": "Details the taxable income estimate for EEA Property FHL.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "foreignInterest": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Foreign Interest",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "otherIncome": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Other Income.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        },
+        "foreignPension": {
+          "type": "object",
+          "description": "Details the taxable income estimate for Foreign Pension.",
+          "properties": {
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The estimated end-of-year taxable income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum:": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "taxableIncome"
+          ]
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
+            "description": "The relative url of the endpoint",
+            "type": "string",
+            "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+          },
+          "rel": {
+            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "type": "string",
+            "enum": [
+              "self",
+              "metadata"
+            ]
+          },
+          "method": {
+            "description": "The HTTP method type for the endpoint",
+            "type": "string",
+            "enum": [
+              "GET"
+            ]
+          }
+        },
+        "required": [
+          "href",
+          "rel",
+          "method"
+        ]
+      }
+    }
+  }
+}

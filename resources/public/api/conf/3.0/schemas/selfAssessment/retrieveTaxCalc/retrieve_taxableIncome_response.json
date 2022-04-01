@@ -1,0 +1,2352 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve Self Assessment Tax Calculation Taxable Income",
+  "description": "Retrieve Self Assessment Tax Calculation Taxable Income",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "description": "Details the high-level income for the calculation.",
+      "properties": {
+        "totalIncomeReceivedFromAllSources": {
+          "title": "totalIncomeReceivedFromAllSources",
+          "description": "The total income received from all income sources. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "5000"
+        },
+        "totalTaxableIncome": {
+          "title": "totalTaxableIncome",
+          "description": "The total income that is taxable across all income sources after allowances and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "5000"
+        }
+      },
+      "required": [
+        "totalIncomeReceivedFromAllSources",
+        "totalTaxableIncome"
+      ]
+    },
+    "detail": {
+      "type": "object",
+      "description": "Details the income breakdown for the calculation.",
+      "properties": {
+        "payPensionsProfit": {
+          "type": "object",
+          "description": "Details the income breakdown of pay, pensions and profit.",
+          "properties": {
+            "incomeReceived": {
+              "title": "incomeReceived",
+              "description": "The income received across all pay, pensions and profit sources. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The total taxable income from all pay, pensions and profit sources after allowances and deductions have been applied. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalSelfEmploymentProfit": {
+              "title": "totalSelfEmploymentProfit",
+              "description": "The total self-employment profit for all self-employment businesses. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalPropertyProfit": {
+              "title": "totalPropertyProfit",
+              "description": "The total of the UK Property FHL and UK Property Non-FHL profits. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalFHLPropertyProfit": {
+              "title": "totalFHLPropertyProfit",
+              "description": "The total UK Property FHL profit. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalUKOtherPropertyProfit": {
+              "title": "totalUKOtherPropertyProfit",
+              "description": "The total UK Property Non-FHL profit. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalForeignPropertyProfit": {
+              "title": "totalForeignPropertyProfit",
+              "description": "The total Foreign Property Profit. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalEeaFhlProfit": {
+              "title": "totalEeaFhlProfit",
+              "description": "The total EEA FHL Profit. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalOccupationalPensionIncome": {
+              "title": "totalOccupationalPensionIncome",
+              "description": "The total occupational pension income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalStateBenefitsIncome": {
+              "title": "totalStateBenefitsIncome",
+              "description": "The total state benefits income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalBenefitsInKind": {
+              "title": "totalBenefitsInKind",
+              "description": "The total benefits in kind. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalPayeEmploymentAndLumpSumIncome": {
+              "title": "totalPayeEmploymentAndLumpSumIncome",
+              "description": "The total PAYE employment and lump sum income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalEmploymentExpenses": {
+              "title": "totalEmploymentExpenses",
+              "description": "The total employment expenses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalSeafarersDeduction": {
+              "title": "totalSeafarersDeduction",
+              "description": "The total value of any Seafarers Deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalForeignTaxOnForeignEmployment": {
+              "title": "totalForeignTaxOnForeignEmployment",
+              "description": "The total value of foreign tax on foreign income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalEmploymentIncome": {
+              "title": "totalEmploymentIncome",
+              "description": "The total employment and benefit income minus expenses. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "45000"
+            },
+            "totalShareSchemesIncome": {
+              "title": "totalShareSchemesIncome",
+              "description": "The total share schemes income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalOverseasPensionsStateBenefitsRoyalties": {
+              "title": "totalOverseasPensionsStateBenefitsRoyalties",
+              "description": "The total value of overseas pensions state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalAllOtherIncomeReceivedWhilstAbroad": {
+              "title": "totalAllOtherIncomeReceivedWhilstAbroad",
+              "description": "The total value of all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalOverseasIncomeAndGains": {
+              "title": "totalOverseasIncomeAndGains",
+              "description": "The total value of overseas income and gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "totalForeignBenefitsAndGifts": {
+              "title": "totalForeignBenefitsAndGifts",
+              "description": "The total value of foreign benefits and gifts. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "tipsIncome": {
+              "title": "tipsIncome",
+              "description": "The total amount of tips received. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "2000.99"
+            },
+            "businessProfitAndLoss": {
+              "type": "object",
+              "description": "Details the profit and loss position for business income sources.",
+              "properties": {
+                "selfEmployments": {
+                  "type": "array",
+                  "description": "A list that shows the profit and loss position for each self-employment business.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "selfEmploymentId": {
+                        "title": "selfEmploymentId",
+                        "description": "A unique identifier for the self-employment business income source. Also referred to as businessId.",
+                        "type": "string",
+                        "example": "XGIS00000001319",
+                        "pattern": "^X[A-Z0-9]{1}IS[0-9]{11}$"
+                      },
+                      "totalIncome": {
+                        "title": "totalIncome",
+                        "description": "The total income received for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "totalExpenses": {
+                        "title": "totalExpenses",
+                        "description": "The total expenses for the self-employment business. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": -99999999999.99,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "netProfit": {
+                        "title": "netProfit",
+                        "description": "If the total income is greater than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "netLoss": {
+                        "title": "netLoss",
+                        "description": "If the total income is less than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "totalAdditions": {
+                        "title": "totalAdditions",
+                        "description": "The total additions to the net profit (or deductions from the net loss) for the self-employment business. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": -99999999999.99,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "totalDeductions": {
+                        "title": "totalDeductions",
+                        "description": "The total deductions from the net loss (or additions to the net profit) for the self-employment business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "accountingAdjustments": {
+                        "title": "accountingAdjustments",
+                        "description": "Accounting adjustments applied to the profit or loss calculation for the self-employment business. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": -999999999999.99,
+                        "maximum": 99999999999.99,
+                        "example": "2000.99"
+                      },
+                      "taxableProfit": {
+                        "title": "taxableProfit",
+                        "description": "The taxable profit after all additions and deductions have been applied for the self-employment business. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": "5000"
+                      },
+                      "adjustedIncomeTaxLoss": {
+                        "title": "adjustedIncomeTaxLoss",
+                        "description": "The adjusted Income Tax loss after all additions and deductions have been applied for the self-employment business. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": "5000"
+                      },
+                      "class4Loss": {
+                        "title": "class4Loss",
+                        "description": "The Class 4 National Insurance Contributions loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 999999999999,
+                        "example": "5000"
+                      },
+                      "taxableProfitAfterIncomeTaxLossesDeduction": {
+                        "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                        "description": "The taxable profit after income tax losses have been deducted for the self-employment business. This value must be between 0 and 99999999999. No decimals.",
+                        "type": "number",
+                        "multipleOf": 1,
+                        "minimum": 0,
+                        "maximum": 99999999999,
+                        "example": "5000"
+                      },
+                      "lossClaimsSummary": {
+                        "type": "object",
+                        "description": "Summarises losses and claims for the self-employment business. This will only be present for a crystallisation calculation.",
+                        "properties": {
+                          "totalBroughtForwardIncomeTaxLosses": {
+                            "title": "totalBroughtForwardIncomeTaxLosses",
+                            "description": "The total sum of Income Tax losses brought forward from earlier years for the self-employment business. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "broughtForwardIncomeTaxLossesUsed": {
+                            "title": "broughtForwardIncomeTaxLossesUsed",
+                            "description": "This is the total sum of losses brought forward from previous years used against the taxable profit for the self-employment business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "carrySidewaysIncomeTaxLossesUsed": {
+                            "title": "carrySidewaysIncomeTaxLossesUsed",
+                            "description": "The Income Tax losses for the self-employment business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "totalIncomeTaxLossesCarriedForward": {
+                            "title": "totalIncomeTaxLossesCarriedForward",
+                            "description": "The total sum of Income Tax losses to be carried forward that have not been used against the self-employment business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "totalBroughtForwardClass4Losses": {
+                            "title": "totalBroughtForwardClass4Losses",
+                            "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years for the self-employment business. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "broughtForwardClass4LossesUsed": {
+                            "title": "broughtForwardClass4LossesUsed",
+                            "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the self-employment business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "carrySidewaysClass4LossesUsed": {
+                            "title": "carrySidewaysClass4LossesUsed",
+                            "description": "The Class 4 National Insurance Contributions losses for the self-employment business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "totalClass4LossesCarriedForward": {
+                            "title": "totalClass4LossesCarriedForward",
+                            "description": "The total sum of Class 4 National Insurance Contributions losses to be carried forward that have not been used against the self-employment business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          }
+                        }
+                      },
+                      "lossClaimsDetail": {
+                        "type": "object",
+                        "description": "Details individual loss claims and how they have been used in the calculation for the self-employment business. This section will only be present for a crystallisation calculation",
+                        "properties": {
+                          "lossesBroughtForward": {
+                            "type": "array",
+                            "description": "A list of losses brought forward into this calculation for the self-employment business.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": [
+                                    "income",
+                                    "class4-nics"
+                                  ]
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year of the loss. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 99999999999,
+                                  "example": "2000"
+                                },
+                                "mtdLoss": {
+                                  "title": "mtdLoss",
+                                  "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                  "type": "boolean",
+                                  "example": "false"
+                                }
+                              },
+                              "required": [
+                                "lossType",
+                                "taxYearLossIncurred",
+                                "currentLossValue",
+                                "mtdLoss"
+                              ]
+                            }
+                          },
+                          "resultOfClaimsApplied": {
+                            "type": "array",
+                            "description": "A list of loss claims in this calculation for the self-employment business.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The Claim ID of the loss.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of loss claim that was made.",
+                                  "type": "string",
+                                  "enum": [
+                                    "carry-forward",
+                                    "carry-sideways"
+                                  ]
+                                },
+                                "mtdLoss": {
+                                  "title": "mtdLoss",
+                                  "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                  "type": "boolean",
+                                  "example": "false"
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year in which the loss was incurred. Date in the format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "lossAmountUsed": {
+                                  "title": "lossAmountUsed",
+                                  "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "remainingLossValue": {
+                                  "title": "remainingLossValue",
+                                  "description": "The amount of remaining loss not used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "5000"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": [
+                                    "income",
+                                    "class4-nics"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "taxYearClaimMade",
+                                "claimType",
+                                "mtdLoss",
+                                "taxYearLossIncurred",
+                                "lossAmountUsed",
+                                "remainingLossValue",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "unclaimedLosses": {
+                            "type": "array",
+                            "description": "Losses from the self-employment business from this calculation where no carry forward claim has been made",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year the loss arose. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": [
+                                    "income",
+                                    "class4-nics"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "taxYearLossIncurred",
+                                "currentLossValue",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "carriedForwardLosses": {
+                            "type": "array",
+                            "description": "Losses from the self-employment business from this calculation where a carry forward claim has been made",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The Claim ID of the loss.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of claim that was made.",
+                                  "type": "string",
+                                  "enum": [
+                                    "carry-forward"
+                                  ]
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "taxYearLossIncurred": {
+                                  "title": "taxYearLossIncurred",
+                                  "description": "The tax year of the loss. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "currentLossValue": {
+                                  "title": "currentLossValue",
+                                  "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                  "type": "number",
+                                  "multipleOf": 1,
+                                  "minimum": 0,
+                                  "maximum": 999999999999,
+                                  "example": "2000"
+                                },
+                                "lossType": {
+                                  "title": "lossType",
+                                  "description": "The type of loss.",
+                                  "type": "string",
+                                  "enum": [
+                                    "income",
+                                    "class4-nics"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "claimType",
+                                "taxYearLossIncurred",
+                                "currentLossValue",
+                                "lossType"
+                              ]
+                            }
+                          },
+                          "claimsNotApplied": {
+                            "type": "array",
+                            "description": "Loss claims that could not be applied in this calculation for the self-employment business",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "claimId": {
+                                  "title": "claimId",
+                                  "description": "The Claim ID of the loss.",
+                                  "type": "string",
+                                  "example": "EzluDU2ObK02SdA",
+                                  "pattern": "^[A-Za-z0-9]{15}$"
+                                },
+                                "taxYearClaimMade": {
+                                  "title": "taxYearClaimMade",
+                                  "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                  "type": "string",
+                                  "example": "2019-20"
+                                },
+                                "claimType": {
+                                  "title": "claimType",
+                                  "description": "The type of claim that was made.",
+                                  "type": "string",
+                                  "enum": [
+                                    "carry-sideways",
+                                    "carry-forward"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "claimId",
+                                "taxYearClaimMade",
+                                "claimType"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "bsas": {
+                        "type": "object",
+                        "title": "Business Source Adjustable Summary",
+                        "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for this self-employment business have been used in this calculation.",
+                        "properties": {
+                          "bsasId": {
+                            "type": "string",
+                            "title": "Business Source Account Summary ID",
+                            "description": "The unique identifier of the Business Source Adjustable Summary for this self-employment business.",
+                            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                            "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                          },
+                          "applied": {
+                            "type": "boolean",
+                            "title": "Applied",
+                            "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                            "example": "false"
+                          }
+                        },
+                        "required": [
+                          "bsasId",
+                          "applied"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "selfEmploymentId"
+                    ]
+                  }
+                },
+                "ukPropertyFhl": {
+                  "type": "object",
+                  "description": "Details the profit and loss position for UK Property FHL.",
+                  "properties": {
+                    "totalIncome": {
+                      "title": "totalIncome",
+                      "description": "The total income received for UK Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalExpenses": {
+                      "title": "totalExpenses",
+                      "description": "The total expenses for UK Property FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "netProfit": {
+                      "title": "netProfit",
+                      "description": "If the total income is greater than the total expenses the result will be displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "netLoss": {
+                      "title": "netLoss",
+                      "description": "If the total income is less than the total expenses the result will be displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalAdditions": {
+                      "title": "totalAdditions",
+                      "description": "The total additions to the net profit (or deductions from the net loss) for UK Property FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalDeductions": {
+                      "title": "totalDeductions",
+                      "description": "The total deductions from the net loss (or additions to the net profit) for the UK Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit after all additions and deductions have been applied for UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss after all additions and deductions have been applied for UK property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "taxableProfitAfterIncomeTaxLossesDeduction": {
+                      "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                      "description": "The taxable profit after income tax losses have been deducted for UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "lossClaimsSummary": {
+                      "type": "object",
+                      "description": "Summarises losses and claims for the UK Property FHL. This section will only be present for a crystallisation calculation ",
+                      "properties": {
+                        "lossForCSFHL": {
+                          "title": "lossForCSFHL",
+                          "description": "The losses from UK Property Non-FHL that have been carried sideways to UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "The total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total sum of Income Tax losses to be carried forward that have not been used against the UK Property FHL profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        }
+                      }
+                    },
+                    "lossClaimsDetail": {
+                      "type": "object",
+                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property FHL.\n\nThis section will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "lossesBroughtForward": {
+                          "type": "array",
+                          "description": "A list of losses brought forward into this calculation for UK Property FHL.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY ",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue",
+                              "mtdLoss"
+                            ]
+                          }
+                        },
+                        "resultOfClaimsApplied": {
+                          "type": "array",
+                          "description": "A list of loss claims in this calculation for UK Property FHL",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "claimId": {
+                                "title": "claimId",
+                                "description": "The Claim ID of the loss.",
+                                "type": "string",
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
+                              },
+                              "taxYearClaimMade": {
+                                "title": "taxYearClaimMade",
+                                "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "claimType": {
+                                "title": "claimType",
+                                "description": "The type of claim made.",
+                                "type": "string",
+                                "enum": [
+                                  "carry-forward"
+                                ]
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating whether the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              },
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year in which the loss was incurred. Date in the format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "lossAmountUsed": {
+                                "title": "lossAmountUsed",
+                                "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "remainingLossValue": {
+                                "title": "remainingLossValue",
+                                "description": "The amount of remaining loss not used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearClaimMade",
+                              "claimType",
+                              "mtdLoss",
+                              "taxYearLossIncurred",
+                              "lossAmountUsed",
+                              "remainingLossValue"
+                            ]
+                          }
+                        },
+                        "defaultCarriedForwardLosses": {
+                          "type": "array",
+                          "description": "UK Property FHL losses from this calculation that will be carried forward to the next tax year.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "bsas": {
+                      "type": "object",
+                      "title": "Business Source Adjustable Summary",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for UK Property FHL have been used in this calculation.",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for UK Property FHL.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "Applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        }
+                      },
+                      "required": [
+                        "bsasId",
+                        "applied"
+                      ]
+                    }
+                  }
+                },
+                "ukPropertyNonFhl": {
+                  "type": "object",
+                  "description": "Details the profit and loss position for UK Property Non-FHL.",
+                  "properties": {
+                    "totalIncome": {
+                      "title": "totalIncome",
+                      "description": "The total income received for UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalExpenses": {
+                      "title": "totalExpenses",
+                      "description": "The total expenses for UK property Non-FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "netProfit": {
+                      "title": "netProfit",
+                      "description": "If the total income is greater than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.99"
+                    },
+                    "netLoss": {
+                      "title": "netLoss",
+                      "description": "If the total income is less than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.99"
+                    },
+                    "totalAdditions": {
+                      "title": "totalAdditions",
+                      "description": "The total additions to the net profit (or deductions from the net loss) for UK Property Non-FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalDeductions": {
+                      "title": "totalDeductions",
+                      "description": "The total deductions from the net loss (or additions to the net profit) for UK Property Non-FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 999999999999.99,
+                      "example": "2000.98"
+                    },
+                    "accountingAdjustments": {
+                      "title": "accountingAdjustments",
+                      "description": "Accounting adjustments applied to the profit or loss calculation for UK Property Non-FHL. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -999999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "-2000.98"
+                    },
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit after all additions and deductions have been applied for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss after all additions and deductions have been applied for UK property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "taxableProfitAfterIncomeTaxLossesDeduction": {
+                      "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                      "description": "The taxable profit after income tax losses have been deducted for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "lossClaimsSummary": {
+                      "type": "object",
+                      "description": "Summarises losses and claims for UK Property Non-FHL This will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for UK Property Non-FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "The total sum of losses brought forward from previous years used against the taxable profit for UK Property Non-FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2001"
+                        },
+                        "carrySidewaysIncomeTaxLossesUsed": {
+                          "title": "carrySidewaysIncomeTaxLossesUsed",
+                          "description": "The Income Tax losses for UK Property Non-FHL that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the UK Property Non-FHL profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
+                          "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
+                          "description": "The total sum of the carry sideways losses for UK Property Non-FHL brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        }
+                      }
+                    },
+                    "lossClaimsDetail": {
+                      "type": "object",
+                      "description": "Details individual loss claims and how they have been used in the calculation for the UK Property Non-FHL. This section will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "lossesBroughtForward": {
+                          "type": "array",
+                          "description": "A list of losses brought forward into this calculation for UK Property Non-FHL.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue",
+                              "mtdLoss"
+                            ]
+                          }
+                        },
+                        "resultOfClaimsApplied": {
+                          "type": "array",
+                          "description": "A list of loss claims in this calculation for UK Property Non-FHL",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "claimId": {
+                                "title": "claimId",
+                                "description": "The Claim ID of the loss.",
+                                "type": "string",
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
+                              },
+                              "originatingClaimId": {
+                                "title": "originatingClaimId",
+                                "description": "The ID of an original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
+                                "type": "string",
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
+                              },
+                              "taxYearClaimMade": {
+                                "title": "taxYearClaimMade",
+                                "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "claimType": {
+                                "title": "claimType",
+                                "description": "The type of claim that was made.",
+                                "type": "string",
+                                "enum": [
+                                  "carry-forward",
+                                  "carry-sideways",
+                                  "carry-forward-to-carry-sideways",
+                                  "carry-sideways-fhl"
+                                ]
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              },
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year in which the loss was incurred. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "lossAmountUsed": {
+                                "title": "lossAmountUsed",
+                                "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "5000"
+                              },
+                              "remainingLossValue": {
+                                "title": "remainingLossValue",
+                                "description": "The amount of remaining loss not used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearClaimMade",
+                              "claimType",
+                              "mtdLoss",
+                              "lossAmountUsed",
+                              "remainingLossValue"
+                            ]
+                          }
+                        },
+                        "defaultCarriedForwardLosses": {
+                          "type": "array",
+                          "description": "UK Property Non-FHL losses from this calculation that will be carried forward to the next tax year.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2018-19"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
+                        },
+                        "claimsNotApplied": {
+                          "type": "array",
+                          "description": "Loss claims that could not be applied in this calculation for UK Property Non-FHL.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "claimId": {
+                                "title": "claimId",
+                                "description": "The Claim ID of the loss.",
+                                "type": "string",
+                                "example": "EzluDU2ObK02SdA",
+                                "pattern": "^[A-Za-z0-9]{15}$"
+                              },
+                              "taxYearClaimMade": {
+                                "title": "taxYearClaimMade",
+                                "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2018-19"
+                              },
+                              "claimType": {
+                                "title": "claimType",
+                                "description": "The type of claim that was made.",
+                                "type": "string",
+                                "enum": [
+                                  "carry-sideways",
+                                  "carry-sideways-fhl",
+                                  "carry-forward",
+                                  "carry-forward-to-carry-sideways"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "claimId",
+                              "taxYearClaimMade",
+                              "claimType"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "bsas": {
+                      "type": "object",
+                      "title": "Business Source Adjustable Summary",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for UK Property Non-FHL have been used in this calculation.",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for UK Property Non-FHL.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "Applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        }
+                      },
+                      "required": [
+                        "bsasId",
+                        "applied"
+                      ]
+                    }
+                  }
+                },
+                "eeaPropertyFhl": {
+                  "type": "object",
+                  "description": "Details the profit and loss position for EEA Property FHL.",
+                  "properties": {
+                    "totalIncome": {
+                      "title": "totalIncome",
+                      "description": "The total income received for EEA Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalExpenses": {
+                      "title": "totalExpenses",
+                      "description": "The total expenses for EEA Property FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "netProfit": {
+                      "title": "netProfit",
+                      "description": "If the total income is greater than the total expenses the result will be displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "netLoss": {
+                      "title": "netLoss",
+                      "description": "If the total income is less than the total expenses the result will be displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalAdditions": {
+                      "title": "totalAdditions",
+                      "description": "The total additions to the net profit (or deductions from the net loss) for EEA Property FHL. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalDeductions": {
+                      "title": "totalDeductions",
+                      "description": "The total deductions from the net loss (or additions to the net profit) for the EEA Property FHL. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit after all additions and deductions have been applied for EEA Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "5000"
+                    },
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss after all additions and deductions have been applied for EEA property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "taxableProfitAfterIncomeTaxLossesDeduction": {
+                      "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                      "description": "The taxable profit after income tax losses have been deducted for EEA Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "bsas": {
+                      "type": "object",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for EEA Property FHL have been used in this calculation",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for EEA Property FHL.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        }
+                      },
+                      "required": [
+                        "bsasId",
+                        "applied"
+                      ]
+                    },
+                    "lossClaimsSummary": {
+                      "type": "object",
+                      "description": "Summarises losses and claims for the EEA Property FHL. This section will only be present for a crystallisation calculation",
+                      "properties": {
+                        "lossForCSFHL": {
+                          "title": "lossForCSFHL",
+                          "description": "The losses from Foreign Property that have been carried sideways to EEA Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for EEA Property FHL. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "This is the total sum of losses brought forward from previous years used against the taxable profit for EEA Property FHL for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total sum of Income Tax losses to be carried forward that have not been used against the EEA Property FHL profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        }
+                      }
+                    },
+                    "lossClaimsDetail": {
+                      "type": "object",
+                      "description": "Details individual loss claims and how they have been used in the calculation for the EEA Property FHL. This section will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "lossesBroughtForward": {
+                          "type": "array",
+                          "description": "A list of losses brought forward into this calculation for EEA Property FHL.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY ",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue",
+                              "mtdLoss"
+                            ]
+                          }
+                        },
+                        "resultOfClaimsApplied": {
+                          "type": "array",
+                          "description": "A list of loss claims in this calculation for EEA Property FHL",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "claimId": {
+                                "title": "claimId",
+                                "description": "The Claim ID of the loss.",
+                                "type": "string",
+                                "example": "EzluDU2ObK02SdA ",
+                                "pattern": "^[A-Za-z0-9]{15}$"
+                              },
+                              "taxYearClaimMade": {
+                                "title": "taxYearClaimMade",
+                                "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "claimType": {
+                                "title": "claimType",
+                                "description": "The type of claim made.",
+                                "type": "string",
+                                "enum": [
+                                  "carry-forward"
+                                ]
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              },
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year in which the loss was incurred. Date in the format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "lossAmountUsed": {
+                                "title": "lossAmountUsed",
+                                "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "remainingLossValue": {
+                                "title": "remainingLossValue",
+                                "description": " The amount of remaining loss not used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearClaimMade",
+                              "claimType",
+                              "mtdLoss",
+                              "taxYearLossIncurred",
+                              "lossAmountUsed",
+                              "remainingLossValue"
+                            ]
+                          }
+                        },
+                        "defaultCarriedForwardLosses": {
+                          "type": "array",
+                          "description": "EEA Property FHL losses from this calculation that will be carried forward to the next tax year.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "foreignProperty": {
+                  "type": "object",
+                  "description": "Details the profit and loss position for Foreign Property.",
+                  "properties": {
+                    "totalIncome": {
+                      "title": "totalIncome",
+                      "description": "The total income received for Foreign Property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalExpenses": {
+                      "title": "totalExpenses",
+                      "description": "The total expenses for Foreign Property. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 99999999999.99,
+                      "example": "2000.99"
+                    },
+                    "netProfit": {
+                      "title": "netProfit",
+                      "description": "If the total income is greater than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.99"
+                    },
+                    "netLoss": {
+                      "title": "netLoss",
+                      "description": "If the total income is less than the total expenses the result is displayed in this field. This value is between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalAdditions": {
+                      "title": "totalAdditions",
+                      "description": "The total additions to the net profit (or deductions from the net loss) for Foreign Property. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -99999999999.99,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "totalDeductions": {
+                      "title": "totalDeductions",
+                      "description": "The total deductions from the net loss (or additions to the net profit) for Foreign Property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": 0,
+                      "maximum": 99999999999.99,
+                      "example": "2000.98"
+                    },
+                    "accountingAdjustments": {
+                      "title": "accountingAdjustments",
+                      "description": "Accounting adjustments applied to the profit or loss calculation for Foreign Property. This value must be between -999999999999.99 and 999999999999.99 up to 2 decimal places.",
+                      "type": "number",
+                      "multipleOf": 0.01,
+                      "minimum": -999999999999.99,
+                      "maximum": 999999999999.99,
+                      "example": "-2000.98"
+                    },
+                    "taxableProfit": {
+                      "title": "taxableProfit",
+                      "description": "The taxable profit after all additions and deductions have been applied for Foreign Property. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "adjustedIncomeTaxLoss": {
+                      "title": "adjustedIncomeTaxLoss",
+                      "description": "The adjusted Income Tax loss after all additions and deductions have been applied for Foreign Property. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "taxableProfitAfterIncomeTaxLossesDeduction": {
+                      "title": "taxableProfitAfterIncomeTaxLossesDeduction",
+                      "description": "The taxable profit after income tax losses have been deducted for Foreign Property. This value must be between 0 and 99999999999. No decimals.",
+                      "type": "number",
+                      "multipleOf": 1,
+                      "minimum": 0,
+                      "maximum": 99999999999,
+                      "example": "2000"
+                    },
+                    "bsas": {
+                      "type": "object",
+                      "description": "Details if the amounts in a Business Source Adjustable Summary adjustment for Foreign Property have been used in this calculation",
+                      "properties": {
+                        "bsasId": {
+                          "type": "string",
+                          "title": "Business Source Account Summary ID",
+                          "description": "The unique identifier of the Business Source Adjustable Summary for Foreign Property.",
+                          "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                          "example": "a54ba782-5ef4-47f4-ab72-495406665ca9"
+                        },
+                        "applied": {
+                          "type": "boolean",
+                          "title": "applied",
+                          "description": "Flag indicating whether the amounts in the Business Source Adjustable Summary adjustment have been used in this calculation.",
+                          "example": "false"
+                        }
+                      },
+                      "required": [
+                        "bsasId",
+                        "applied"
+                      ]
+                    },
+                    "lossClaimsSummary": {
+                      "type": "object",
+                      "description": "Summarises losses and claims for Foreign Property. This will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "totalBroughtForwardIncomeTaxLosses": {
+                          "title": "totalBroughtForwardIncomeTaxLosses",
+                          "description": "The total sum of Income Tax losses brought forward from earlier years for Foreign Property. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        },
+                        "broughtForwardIncomeTaxLossesUsed": {
+                          "title": "broughtForwardIncomeTaxLossesUsed",
+                          "description": "The total sum of losses brought forward from previous years used against the taxable profit for Foreign Property for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        },
+                        "carrySidewaysIncomeTaxLossesUsed": {
+                          "title": "carrySidewaysIncomeTaxLossesUsed",
+                          "description": "The Income Tax losses for Foreign Property that have been carried sideways in this calculation and used against general income in this financial year. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        },
+                        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
+                          "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
+                          "description": "The total sum of the carry sideways losses for Foreign Property brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "5000"
+                        },
+                        "totalIncomeTaxLossesCarriedForward": {
+                          "title": "totalIncomeTaxLossesCarriedForward",
+                          "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the Foreign Property profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                          "type": "number",
+                          "multipleOf": 1,
+                          "minimum": 0,
+                          "maximum": 99999999999,
+                          "example": "2000"
+                        }
+                      }
+                    },
+                    "lossClaimsDetail": {
+                      "type": "object",
+                      "description": "Details individual loss claims and how they have been used in the calculation for Foreign Property. This section will only be present for a crystallisation calculation.",
+                      "properties": {
+                        "lossesBroughtForward": {
+                          "type": "array",
+                          "description": "A list of losses brought forward into this calculation for Foreign Property.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "taxYearLossIncurred": {
+                                "title": "taxYearLossIncurred",
+                                "description": "The tax year of the loss. Format: YYYY-YY ",
+                                "type": "string",
+                                "example": "2019-20"
+                              },
+                              "currentLossValue": {
+                                "title": "currentLossValue",
+                                "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                                "type": "number",
+                                "multipleOf": 1,
+                                "minimum": 0,
+                                "maximum": 99999999999,
+                                "example": "2000"
+                              },
+                              "mtdLoss": {
+                                "title": "mtdLoss",
+                                "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                                "type": "boolean",
+                                "example": "false"
+                              }
+                            },
+                            "required": [
+                              "taxYearLossIncurred",
+                              "currentLossValue",
+                              "mtdLoss"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "resultOfClaimsApplied": {
+                      "type": "array",
+                      "description": "A list of loss claims in this calculation for Foreign Property.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "claimId": {
+                            "title": "claimId",
+                            "description": "The Claim ID of the loss.",
+                            "type": "string",
+                            "example": "EzluDU2ObK02SdA ",
+                            "pattern": "^[A-Za-z0-9]{15}$"
+                          },
+                          "originatingClaimId": {
+                            "title": "originatingClaimId",
+                            "description": "The ID of an original carry-sideways-fhl or carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
+                            "type": "string",
+                            "example": "EzluDU2ObK02SdA ",
+                            "pattern": "^[A-Za-z0-9]{15}$"
+                          },
+                          "taxYearClaimMade": {
+                            "title": "taxYearClaimMade",
+                            "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                            "type": "string",
+                            "example": "2019-20"
+                          },
+                          "claimType": {
+                            "title": "claimType",
+                            "description": "The type of claim made.",
+                            "type": "string",
+                            "enum": [
+                              "carry-forward",
+                              "carry-sideways",
+                              "carry-forward-to-carry-sideways",
+                              "carry-sideways-fhl"
+                            ]
+                          },
+                          "mtdLoss": {
+                            "title": "mtdLoss",
+                            "description": "Flag indicating the loss was registered by the taxpayer on joining MTD.",
+                            "type": "boolean",
+                            "example": "false"
+                          },
+                          "taxYearLossIncurred": {
+                            "title": "taxYearLossIncurred",
+                            "description": "The tax year of the loss. Format: YYYY-YY",
+                            "type": "string",
+                            "example": "2019-20"
+                          },
+                          "lossAmountUsed": {
+                            "title": "lossAmountUsed",
+                            "description": "The amount of loss used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "5000"
+                          },
+                          "remainingLossValue": {
+                            "title": "remainingLossValue",
+                            "description": "The amount of remaining loss not used in the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          }
+                        },
+                        "required": [
+                          "taxYearClaimMade",
+                          "claimType",
+                          "mtdLoss",
+                          "taxYearLossIncurred",
+                          "lossAmountUsed",
+                          "remainingLossValue"
+                        ]
+                      }
+                    },
+                    "defaultCarriedForwardLosses": {
+                      "type": "array",
+                      "description": "Foreign Property losses from this calculation that will be carried forward to the next tax year.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "taxYearLossIncurred": {
+                            "title": "taxYearLossIncurred",
+                            "description": "The tax year of the loss. Format: YYYY-YY",
+                            "type": "string",
+                            "example": "2019-20"
+                          },
+                          "currentLossValue": {
+                            "title": "currentLossValue",
+                            "description": "The current loss value. This value must be between 0 and 99999999999. No decimals.",
+                            "type": "number",
+                            "multipleOf": 1,
+                            "minimum": 0,
+                            "maximum": 99999999999,
+                            "example": "2000"
+                          }
+                        },
+                        "required": [
+                          "taxYearLossIncurred",
+                          "currentLossValue"
+                        ]
+                      }
+                    },
+                    "claimsNotApplied": {
+                      "type": "array",
+                      "description": "Loss claims that could not be applied in this calculation for Foreign Property.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "claimId": {
+                            "title": "claimId",
+                            "description": "The Claim ID of the loss.",
+                            "type": "string",
+                            "example": "EzluDU2ObK02SdA ",
+                            "pattern": "^[A-Za-z0-9]{15}$"
+                          },
+                          "taxYearClaimMade": {
+                            "title": "taxYearClaimMade",
+                            "description": "The tax year in which the claim was made. Format: YYYY-YY",
+                            "type": "string",
+                            "example": "2019-20"
+                          },
+                          "claimType": {
+                            "title": "claimType",
+                            "description": "The type of claim that was made.",
+                            "type": "string",
+                            "enum": [
+                              "carry-forward",
+                              "carry-sideways",
+                              "carry-forward-to-carry-sideways",
+                              "carry-sideways-fhl"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "claimId",
+                          "taxYearClaimMade",
+                          "claimType"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "incomeReceived",
+            "taxableIncome"
+          ]
+        },
+        "savingsAndGains": {
+          "type": "object",
+          "description": "Details the breakdown of taxable savings income.",
+          "properties": {
+            "incomeReceived": {
+              "title": "incomeReceived",
+              "description": "The total taxed and untaxed savings income received. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The taxable savings income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "totalOfAllGains": {
+              "title": "totalOfAllGains",
+              "description": "The total of all gains without tax paid and gains with tax paid. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "totalUkSavingsAndSecurities": {
+              "title": "totalUkSavingsAndSecurities",
+              "description": "The total value of UK Savings and UK Securities. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "ukSavings": {
+              "type": "array",
+              "description": "Details of each savings account.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "savingsAccountId": {
+                    "title": "savingsAccountId",
+                    "description": "The unique identifier of the savings account.",
+                    "type": "string",
+                    "example": "SAVKB2UVwUTBQGJ",
+                    "pattern": "^[A-Za-z0-9]{15}$"
+                  },
+                  "savingsAccountName": {
+                    "title": "savingsAccountName",
+                    "description": "Friendly account name. Each account name added must be unique for that National Insurance number. The account name must be between 1 and 32 characters in length. Valid characters, including spaces are: ; & ' ( ) * , - . / @ £ and mixed case alphanumeric characters./@£.",
+                    "type": "string",
+                    "example": "UK savings account",
+                    "pattern": "^[A-Za-z0-9 &'()*,-./@£]{1,32}$"
+                  },
+                  "grossIncome": {
+                    "title": "grossIncome",
+                    "description": "The gross interest received from the savings account. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 999999999999.99,
+                    "example": "2000.98"
+                  },
+                  "netIncome": {
+                    "title": "netIncome",
+                    "description": "The net interest received from the savings account. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 999999999999.99,
+                    "example": "2000.98"
+                  },
+                  "taxDeducted": {
+                    "title": "taxDeducted",
+                    "description": "The tax deducted from the savings account (gross figure minus the net figure). The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 999999999999.99,
+                    "example": "2000.98"
+                  }
+                },
+                "required": [
+                  "grossIncome"
+                ]
+              }
+            },
+            "ukSecurities": {
+              "type": "array",
+              "description": "Details of UK Securities accounts.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "grossIncome": {
+                    "title": "grossIncome",
+                    "description": "The gross interest received from UK securities account. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "netIncome": {
+                    "title": "netIncome",
+                    "description": "The net interest received from the UK securities account. The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "taxDeducted": {
+                    "title": "taxDeducted",
+                    "description": "The tax deducted from the UK securities account (gross figure minus the net figure). The value must be between 0 and 999999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  }
+                },
+                "required": [
+                  "grossIncome"
+                ]
+              }
+            },
+            "totalGainsWithNoTaxPaidAndVoidedIsa": {
+              "title": "totalGainsWithNoTaxPaidAndVoidedIsa",
+              "description": "The total gains on life policies where no tax has been paid and voided ISAs. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalForeignGainsOnLifePoliciesNoTaxPaid": {
+              "title": "totalForeignGainsOnLifePoliciesNoTaxPaid",
+              "description": "The total gains on foreign life policies where no tax has been paid. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalForeignSavingsAndGainsIncome": {
+              "title": "totalForeignSavingsAndGainsIncome",
+              "description": "The total value of Foreign Savings and Gains Income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            }
+          },
+          "required": [
+            "incomeReceived",
+            "taxableIncome"
+          ]
+        },
+        "dividends": {
+          "type": "object",
+          "description": "Details of dividend income.",
+          "properties": {
+            "incomeReceived": {
+              "title": "incomeReceived",
+              "description": "The dividends income received. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The taxable dividends income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "totalUkDividends": {
+              "title": "totalUkDividends",
+              "description": "The total value of UK Dividends. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2500"
+            },
+            "totalForeignDividends": {
+              "title": "totalForeignDividends",
+              "description": "The total value of Foreign Dividends. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2500"
+            }
+          },
+          "required": [
+            "incomeReceived",
+            "taxableIncome"
+          ]
+        },
+        "lumpSums": {
+          "type": "object",
+          "description": "Details of lump sums income.",
+          "properties": {
+            "incomeReceived": {
+              "title": "incomeReceived",
+              "description": "The lump sums income received. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The taxable lump sums income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            }
+          },
+          "required": [
+            "incomeReceived",
+            "taxableIncome"
+          ]
+        },
+        "gainsOnLifePolicies": {
+          "type": "object",
+          "description": "Details of gains on life policies income.",
+          "properties": {
+            "incomeReceived": {
+              "title": "incomeReceived",
+              "description": "The gains on life policies income received. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "taxableIncome": {
+              "title": "taxableIncome",
+              "description": "The taxable gains on life policies income. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "2000"
+            },
+            "totalUkGainsWithTaxPaid": {
+              "title": "totalUkGainsWithTaxPaid",
+              "description": "The total value of UK gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            },
+            "totalForeignGainsOnLifePoliciesWithTaxPaid": {
+              "title": "totalForeignGainsOnLifePoliciesWithTaxPaid",
+              "description": "The total value of foreign gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
+              "type": "number",
+              "multipleOf": 1,
+              "minimum": 0,
+              "maximum": 99999999999,
+              "example": "5000"
+            }
+          },
+          "required": [
+            "incomeReceived",
+            "taxableIncome"
+          ]
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "properties": {
+          "href": {
+            "description": "The relative url of the endpoint",
+            "type": "string",
+            "example": "/individuals/calculations/{nino}/self-assessment/{calculationId}"
+          },
+          "rel": {
+            "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource",
+            "type": "string",
+            "enum": [
+              "self",
+              "metadata"
+            ]
+          },
+          "method": {
+            "description": "The HTTP method type for the endpoint",
+            "type": "string",
+            "enum": [
+              "GET"
+            ]
+          }
+        },
+        "required": [
+          "href",
+          "rel",
+          "method"
+        ]
+      }
+    }
+  },
+  "required": [
+    "summary",
+    "detail"
+  ]
+}
