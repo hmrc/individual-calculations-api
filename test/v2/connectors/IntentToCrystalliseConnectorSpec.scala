@@ -46,10 +46,10 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.downstreamBaseUrl returns baseUrl
-    MockAppConfig.downstreamToken returns "downstream-token"
-    MockAppConfig.downstreamEnvironment returns "downstream-environment"
-    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "IntentToCrystalliseConnector" when {
@@ -58,14 +58,14 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
         val outcome = Right(ResponseWrapper(correlationId, response))
 
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
-        val requiredDownstreamHeadersPost: Seq[(String, String)] = requiredDownstreamHeaders ++ Seq("Content-Type" -> "application/json")
+        val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/nino/$nino/taxYear/${taxYear.value}/tax-calculation?crystallise=true",
             config = dummyHeaderCarrierConfig,
             body = EmptyJsonBody,
-            requiredHeaders = requiredDownstreamHeadersPost,
+            requiredHeaders = requiredDesHeadersPost,
             excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           )
           .returns(Future.successful(outcome))

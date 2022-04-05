@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package common.models.domain
+package v3.models.response
 
-/**
- * Represents a tax year for Downstream
- *
- * @param value the tax year string (where 2018 represents 2017-18)
- */
-case class DownstreamTaxYear(value: String) extends AnyVal {
-  override def toString: String = value
-}
+import play.api.libs.json.{Json, OFormat}
 
-object DownstreamTaxYear {
 
-  /**
-   * @param taxYear tax year in MTD format (e.g. 2017-18)
-   */
-  def fromMtd(taxYear: String): DownstreamTaxYear =
-    DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
+case class Message(id: String, message: String)
 
-  def fromDownstreamIntToString(taxYear: Int): String =
-    (taxYear - 1) + "-" + taxYear.toString.drop(2)
+case class Messages(info: Option[Seq[Message]],
+                    warnings: Option[Seq[Message]],
+                    errors: Option[Seq[Message]])
+
+object Messages {
+  implicit val messageFormat: OFormat[Message] = Json.format[Message]
+  implicit val messagesFormat: OFormat[Messages] = Json.format[Messages]
 }

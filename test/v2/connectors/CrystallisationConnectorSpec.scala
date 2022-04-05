@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v2.models.domain.{EmptyJsonBody, Nino}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DownstreamUnit
+import v2.models.response.common.DesUnit
 
 import scala.concurrent.Future
 
@@ -45,26 +45,26 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.downstreamBaseUrl returns baseUrl
-    MockAppConfig.downstreamToken returns "downstream-token"
-    MockAppConfig.downstreamEnvironment returns "downstream-environment"
-    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "CrystallisationConnector" when {
     ".declareCrystallisation" should {
       "return a success upon HttpClient success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, DownstreamUnit))
+        val outcome = Right(ResponseWrapper(correlationId, DesUnit))
 
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
-        val requiredDownstreamHeadersPost: Seq[(String, String)] = requiredDownstreamHeaders ++ Seq("Content-Type" -> "application/json")
+        val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/calculation/nino/$nino/${taxYear.value}/$calculationId/crystallise",
             config = dummyHeaderCarrierConfig,
             body = EmptyJsonBody,
-            requiredHeaders = requiredDownstreamHeadersPost,
+            requiredHeaders = requiredDesHeadersPost,
             excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           )
           .returns(Future.successful(outcome))
