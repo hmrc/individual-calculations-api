@@ -1,0 +1,1 @@
+POST      /:nino/self-assessment                                         v3.controllers.TriggerCalculationController.triggerCalculation(nino: String)

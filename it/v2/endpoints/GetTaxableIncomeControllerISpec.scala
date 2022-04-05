@@ -21,13 +21,13 @@ import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import support.IntegrationBaseSpec
+import support.V2IntegrationBaseSpec
 import v2.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v2.fixtures.getTaxableIncome.TaxableIncomeResponseFixture._
 import v2.models.errors._
 import v2.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class GetTaxableIncomeControllerISpec extends IntegrationBaseSpec {
+class GetTaxableIncomeControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
