@@ -39,13 +39,13 @@ class AuthISpec extends V3IntegrationBaseSpec {
     val responseBody: JsValue =  Json.parse(
       """
         |{
-        |   "calculations":[
-        |      {
-        |         "id":"f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |         "calculationTimestamp":"2019-03-17T09:22:59Z",
-        |         "type":"inYear",
-        |         "requestedBy":"hmrc"
-        |      }
+        | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        | "links":[
+        |   {
+        |   "href":"/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        |   "method":"GET",
+        |   "rel":"self"
+        |     }
         |   ]
         |}
        """.stripMargin
@@ -72,7 +72,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -84,11 +84,11 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
+          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, responseBody)
         }
 
-        val response: WSResponse = await(request().get)
-        response.status shouldBe Status.OK
+        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        response.status shouldBe Status.ACCEPTED
       }
     }
 
@@ -103,7 +103,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -119,7 +119,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
         response.status shouldBe Status.FORBIDDEN
       }
     }

@@ -1,12 +1,1 @@
-GET       /:nino/self-assessment                                         v3.controllers.ListCalculationsController.listCalculations(nino: String, taxYear: Option[String])
-GET       /:nino/self-assessment/:calcId                                 v3.controllers.GetMetadataController.getMetadata(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/income-tax-nics-calculated      v3.controllers.GetIncomeTaxAndNicsController.getIncomeTaxAndNics(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/taxable-income                  v3.controllers.GetTaxableIncomeController.getTaxableIncome(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/allowances-deductions-reliefs   v3.controllers.GetAllowancesDeductionsAndReliefsController.getAllowancesDeductionsAndReliefs(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/end-of-year-estimate            v3.controllers.GetEoyEstimateController.getEoyEstimate(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/messages                        v3.controllers.GetMessagesController.getMessages(nino: String, calcId: String)
-
 POST      /:nino/self-assessment                                         v3.controllers.TriggerCalculationController.triggerCalculation(nino: String)
-POST      /crystallisation/:nino/:taxYear/intent-to-crystallise          v3.controllers.IntentToCrystalliseController.submitIntentToCrystallise(nino: String, taxYear: String)
-POST      /crystallisation/:nino/:taxYear/crystallise                    v3.controllers.CrystallisationController.declareCrystallisation(nino: String, taxYear: String)
-
