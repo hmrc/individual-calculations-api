@@ -12,7 +12,7 @@ traits:
             type: types.errorResponse
             examples:
               formatNino:
-                description: The format of the supplied NINO is not valid
+                description: 'The format of the supplied NINO field is not valid.'
                 value:
                   code: FORMAT_NINO
   formatTaxYear:
@@ -23,42 +23,20 @@ traits:
             type: types.errorResponse
             examples:
               formatTaxYear:
-                description: The format of the supplied tax year field is not valid
+                description: 'The format of the supplied taxYear value is not valid.'
                 value:
                   code: FORMAT_TAX_YEAR
-  formatCalcId:
+  formatFinalDeclaration:
     responses:
       400:
         body:
           application/json:
             type: types.errorResponse
             examples:
-              formatCalcId:
-                description: The format of the supplied Calculation ID is not valid
+              formatFinalDeclaration:
+                description: 'The format of the supplied finalDeclaration value is not valid.'
                 value:
-                  code: FORMAT_CALC_ID
-  formatType:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              formatType:
-                description: The format of the type query parameter is not valid
-                value:
-                  code: FORMAT_TYPE
-  incorrectOrEmptyBody:
-    responses:
-      400:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              incorrectOrEmptyBody:
-                description: An empty or non-matching body was submitted, this could be caused by a missing mandatory field
-                value:
-                  code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
+                  code: FORMAT_FINAL_DECLARATION
   ruleTaxYearNotSupported:
     responses:
       400:
@@ -67,7 +45,7 @@ traits:
             type: types.errorResponse
             examples:
               rule_TaxYearNotSupported:
-                description: The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value.
+                description: 'The specified tax year is not supported, that is, the tax year specified is before the minimum tax year value.'
                 value:
                   code: RULE_TAX_YEAR_NOT_SUPPORTED
   ruleTaxYearRangeInvalid:
@@ -78,9 +56,20 @@ traits:
             type: types.errorResponse
             examples:
               ruleTaxYearRangeInvalid:
-                description: Tax year range invalid. A tax year range of one year is required.
+                description: 'Tax year range invalid. A tax year range of one year is required.'
                 value:
                   code: RULE_TAX_YEAR_RANGE_INVALID
+  ruleNoIncomeSubmissionExists:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleNoIncomeSubmissionExists:
+                description: 'A calculation could not be performed because no income data has been submitted against the tax year.'
+                value:
+                  code: RULE_NO_INCOME_SUBMISSIONS_EXIST
   clientOrAgentNotAuthorised:
     responses:
       403:
@@ -92,39 +81,6 @@ traits:
                 description: 'The client and/or agent is not authorised. This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.'
                 value:
                   code: CLIENT_OR_AGENT_NOT_AUTHORISED
-  ruleNoIncomeSubmissionExists:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleNoIncomeSubmissionExists:
-                description: A calculation could not be performed because no income data has been submitted against the tax year
-                value:
-                  code: RULE_NO_INCOME_SUBMISSIONS_EXIST
-  ruleCalculationErrorMessagesExist:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleCalculationErrorMessagesExist:
-                description: No Income Tax and National Insurance Contributions data exists for the supplied calculation ID and NINO because error messages were generated while performing the calculation. These error messages can be viewed using the "Retrieve self assessment tax calculation messages" endpoint.
-                value:
-                  code: RULE_CALCULATION_ERROR_MESSAGES_EXIST
-  ruleNoSubmissionsExists:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleNoSubmissionsExists:
-                description: 'No periodic or annual income data has been submitted.'
-                value:
-                  code: RULE_NO_SUBMISSIONS_EXIST
   ruleFinalDeclarationReceived:
     responses:
       403:
@@ -133,116 +89,6 @@ traits:
             type: types.errorResponse
             examples:
               ruleFinalDeclarationReceived:
-                description: 'Crystallisation declaration has already been received.'
+                description: 'Final declaration has already been received.'
                 value:
                   code: RULE_FINAL_DECLARATION_RECEIVED
-  ruleIncomeSourcesChanged:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleIncomeSourcesChanged:
-                description: 'Information relating to your income sources changed. You will need to intent to crystallise again before crystallising.'
-                value:
-                  code: RULE_INCOME_SOURCES_CHANGED
-  ruleRecentSubmissionsExist:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleRecentSubmissionsExist:
-                description: 'More recent submissions exist. You will need to intent to crystallise again before crystallising.'
-                value:
-                  code: RULE_RECENT_SUBMISSIONS_EXIST
-  ruleResidencyChanged:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleResidencyChanged:
-                description: 'Your residency has changed. You will need to intent to crystallise again before crystallising.'
-                value:
-                  code: RULE_RESIDENCY_CHANGED
-  ruleIncomeSourceInvalid:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleIncomeSourceInvalid:
-                description: 'There are no valid income sources.'
-                value:
-                  code: RULE_INCOME_SOURCES_INVALID
-  ruleSubmissionFailed:
-    responses:
-      403:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              ruleSubmissionFailed:
-                description: 'The submission cannot be completed due to validation failures.'
-                value:
-                  code: RULE_SUBMISSION_FAILED
-  notFoundListCalculations:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundListCalculations:
-                description: No tax calculations can be found for the supplied NINO and tax year.
-                value:
-                  code: MATCHING_RESOURCE_NOT_FOUND
-  notFoundRetrieveTaxCalc:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundRetrieveMessages:
-                description: No tax calculation data exists for the supplied NINO and calculation ID.
-                value:
-                  code: MATCHING_RESOURCE_NOT_FOUND
-  notFoundEoyEstimate:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundEoyEstimate:
-                description: End of year estimate data will only be returned for an in-year calculation
-                value:
-                  code: END_OF_YEAR_ESTIMATE_NOT_PRESENT
-  noMessagesPresent:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              noMessagesPresent:
-                description: No messages are present for the supplied types or no messages exist for that calculation ID.
-                value:
-                  code: NO_MESSAGES_PRESENT
-  notFoundCrystallisation:
-    responses:
-      404:
-        body:
-          application/json:
-            type: types.errorResponse
-            examples:
-              notFoundCrystallisation:
-                description: 'The supplied income source could not be found.'
-                value:
-                  code: MATCHING_RESOURCE_NOT_FOUND
