@@ -18,7 +18,7 @@ package definition
 
 import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
-import definition.Versions.VERSION_2
+import definition.Versions.{VERSION_2, VERSION_3}
 import mocks.{MockAppConfig, MockHttpClient}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -38,6 +38,8 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.featureSwitch returns None anyNumberOfTimes()
         MockAppConfig.apiStatus(status = "2.0") returns "BETA"
         MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes()
+        MockAppConfig.apiStatus(status = "3.0") returns "BETA"
+        MockAppConfig.endpointsEnabled(version = "3") returns true anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = true, authValidationEnabled = true) anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
@@ -62,7 +64,11 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
-                version = VERSION_2, status = APIStatus.BETA, endpointsEnabled = true)
+                version = VERSION_2, status = APIStatus.BETA, endpointsEnabled = true
+              ),
+              APIVersion(
+                version = VERSION_3, status = APIStatus.BETA, endpointsEnabled = true
+              )
             ),
             requiresTrust = None
           )
