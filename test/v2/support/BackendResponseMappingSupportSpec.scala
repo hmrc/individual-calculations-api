@@ -86,7 +86,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     }
 
     "multiple errors" when {
-      "the error codownstream is in the map provided" must {
+      "the error code is in the map provided" must {
         "use the mapping and wrap with main error type of BadRequest" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
             ResponseWrapper(correlationId, BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("ERR2"))))) shouldBe
