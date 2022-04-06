@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.marriageAllowanceTransferredIn
+package common.models.domain
 
-import play.api.libs.json.{Json, OFormat}
+/**
+ * Represents a tax year for Downstream
+ *
+ * @param value the tax year string (where 2018 represents 2017-18)
+ */
+case class DownstreamTaxYear(value: String) extends AnyVal {
+  override def toString: String = value
+}
 
+object DownstreamTaxYear {
 
-case class MarriageAllowanceTransferredIn (amount: Option[BigDecimal], rate: Option[BigDecimal])
+  /**
+   * @param taxYear tax year in MTD format (e.g. 2017-18)
+   */
+  def fromMtd(taxYear: String): DownstreamTaxYear =
+    DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
 
-object MarriageAllowanceTransferredIn {
-  implicit val format: OFormat[MarriageAllowanceTransferredIn] = Json.format[MarriageAllowanceTransferredIn]
+  def fromDownstreamIntToString(taxYear: Int): String =
+    (taxYear - 1) + "-" + taxYear.toString.drop(2)
 }

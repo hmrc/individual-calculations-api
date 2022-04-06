@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package v2.models.domain
+package v3.models.response.retrieveCalculation.inputs
 
-/** Represents a tax year for DES
-  *
-  * @param value
-  *   the tax year string (where 2018 represents 2017-18)
-  */
-case class DownstreamTaxYear(value: String) extends AnyVal {
-  override def toString: String = value
-}
+import play.api.libs.json.{Json, OFormat}
 
-object DownstreamTaxYear {
+case class PeriodData(deductionFromDate: String,
+                      deductionToDate: String,
+                      submissionTimestamp: String,
+                      source: String,
+                      deductionAmount: BigDecimal)
 
-  /** @param taxYear
-    *   tax year in MTD format (e.g. 2017-18)
-    */
-  def fromMtd(taxYear: String): DownstreamTaxYear =
-    DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
-
+object PeriodData {
+  implicit val format: OFormat[PeriodData] = Json.format[PeriodData]
 }

@@ -32,7 +32,7 @@ import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 import v3.models.response.retrieveCalculation.calculation.Calculation
-import v3.models.response.retrieveCalculation.inputs.Inputs
+import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.messages.Messages
 import v3.models.response.retrieveCalculation.metadata.Metadata
 import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
@@ -56,8 +56,15 @@ class RetrieveCalculationControllerSpec
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId = "X-123"
 
+  // This is a filler model to make the branch compile
+  val inputsModel: Inputs = Inputs(
+    PersonalInformation("", None, "", None, None, None, None, None),
+    IncomeSources(None, None),
+    None, None, None, None, None, None, None
+  )
+
   val response: RetrieveCalculationResponse =
-    RetrieveCalculationResponse(metadata = Metadata(""), inputs = Inputs(""), calculation = Some(Calculation("")), messages = Some(Messages("")))
+    RetrieveCalculationResponse(metadata = Metadata(""), inputs = inputsModel, calculation = Some(Calculation("")), messages = Some(Messages("")))
 
   val json: JsValue = Json.parse(
     """

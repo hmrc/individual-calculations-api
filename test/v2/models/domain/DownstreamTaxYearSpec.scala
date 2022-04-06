@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.marriageAllowanceTransferredIn
+package v2.models.domain
 
-import play.api.libs.json.{Json, OFormat}
+import common.models.domain.DownstreamTaxYear
+import support.UnitSpec
 
+class DownstreamTaxYearSpec extends UnitSpec {
 
-case class MarriageAllowanceTransferredIn (amount: Option[BigDecimal], rate: Option[BigDecimal])
+  "DownstreamTaxYear" when {
+    "toString" should {
+      "produce the correct String" in {
+        DownstreamTaxYear("2019").toString shouldBe "2019"
+      }
+    }
 
-object MarriageAllowanceTransferredIn {
-  implicit val format: OFormat[MarriageAllowanceTransferredIn] = Json.format[MarriageAllowanceTransferredIn]
+    "fromMtd" should {
+      "produce the correct String" in {
+        DownstreamTaxYear.fromMtd("2019-20") shouldBe DownstreamTaxYear("2020")
+      }
+    }
+  }
+
 }

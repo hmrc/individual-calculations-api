@@ -16,10 +16,11 @@
 
 package v2.controllers.requestParsers
 
+import common.models.domain.DownstreamTaxYear
 import play.api.http.Status._
 import support.UnitSpec
 import v2.mocks.validators.MockIntentToCrystalliseValidator
-import v2.models.domain.{DownstreamTaxYear, Nino}
+import v2.models.domain.Nino
 import v2.models.errors._
 import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 
