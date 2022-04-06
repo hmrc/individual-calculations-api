@@ -19,8 +19,8 @@ package v2.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
-import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
+import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.ws.{ EmptyBody, WSRequest, WSResponse }
 import support.V2IntegrationBaseSpec
 import v2.models.errors._
 import v2.stubs._
@@ -29,16 +29,16 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
-    val mtdTaxYear: String = "2019-20"
-    val desTaxYear: String = "2020"
-    val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-    val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+    val nino: String              = "AA123456A"
+    val mtdTaxYear: String        = "2019-20"
+    val downstreamTaxYear: String = "2020"
+    val calculationId: String     = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+    val correlationId: String     = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-    def uri: String = s"/crystallisation/$nino/$mtdTaxYear/intent-to-crystallise"
-    def desUri: String = s"/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation"
+    def uri: String           = s"/crystallisation/$nino/$mtdTaxYear/intent-to-crystallise"
+    def downstreamUri: String = s"/income-tax/nino/$nino/taxYear/$downstreamTaxYear/tax-calculation"
 
-    val desQueryParams: Map[String, String] = Map("crystallise" -> "true")
+    val downstreamQueryParams: Map[String, String] = Map("crystallise" -> "true")
 
     val mtdResponseJson: JsValue = Json.parse(
       s"""
@@ -60,7 +60,7 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
     """.stripMargin
     )
 
-    val desResponseJson: JsValue = Json.parse(
+    val downstreamResponseJson: JsValue = Json.parse(
       s"""
          |{
          |   "id": "$calculationId"
@@ -85,7 +85,7 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.POST, desUri, desQueryParams, OK, desResponseJson)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, downstreamQueryParams, OK, downstreamResponseJson)
         }
 
         val response: WSResponse = await(request().post(EmptyBody))
@@ -101,7 +101,7 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String = requestNino
+            override val nino: String       = requestNino
             override val mtdTaxYear: String = requestTaxYear
 
             override def setupStubs(): StubMapping = {
@@ -136,14 +136,14 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
              |}
            """.stripMargin
 
-        def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $desCode error and status $desStatus" in new Test {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.onError(DesStub.POST, desUri, desQueryParams, desStatus, errorBody(desCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, downstreamQueryParams, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request().post(EmptyBody))

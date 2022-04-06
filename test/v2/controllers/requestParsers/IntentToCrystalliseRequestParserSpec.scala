@@ -19,7 +19,7 @@ package v2.controllers.requestParsers
 import play.api.http.Status._
 import support.UnitSpec
 import v2.mocks.validators.MockIntentToCrystalliseValidator
-import v2.models.domain.{DesTaxYear, Nino}
+import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.errors._
 import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 
@@ -39,7 +39,7 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
         val data: IntentToCrystalliseRawData = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(IntentToCrystalliseRequest(Nino(nino), DesTaxYear.fromMtd(taxYear)))
+        parser.parseRequest(data) shouldBe Right(IntentToCrystalliseRequest(Nino(nino), DownstreamTaxYear.fromMtd(taxYear)))
       }
     }
 

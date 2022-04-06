@@ -19,7 +19,7 @@ package v2.models.errors
 import play.api.libs.json.{Json, Reads}
 
 case class BackendErrorCode(code: String){
-  def fromDes: MtdError = MtdError(code = code, message = "")
+  def fromDownstream: MtdError = MtdError(code = code, message = "")
 }
 
 object BackendErrorCode {

@@ -17,11 +17,11 @@
 package v2.services
 
 import v2.mocks.connectors.MockCrystallisationConnector
-import v2.models.domain.{DesTaxYear, Nino}
+import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.Future
 
@@ -40,13 +40,13 @@ class CrystallisationServiceSpec extends ServiceSpec {
 
     val request: CrystallisationRequest = CrystallisationRequest(
       nino = Nino(nino),
-      taxYear = DesTaxYear.fromMtd(taxYear),
+      taxYear = DownstreamTaxYear.fromMtd(taxYear),
       calculationId = calculationId
     )
 
     "declareCrystallisation" must {
       "return correct result for a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, DesUnit))
+        val outcome = Right(ResponseWrapper(correlationId, DownstreamUnit))
 
         MockCrystallisationConnector.submitIntent(request)
           .returns(Future.successful(outcome))
@@ -56,13 +56,13 @@ class CrystallisationServiceSpec extends ServiceSpec {
 
       "map errors according to spec" when {
 
-        def serviceError(desErrorCode: String, error: MtdError, desErrorStatus: Int): Unit =
-          s"a $desErrorCode error is returned from the service" in new Test {
+        def serviceError(downstreamErrorCode: String, error: MtdError, downstreamErrorStatus: Int): Unit =
+          s"a $downstreamErrorCode error is returned from the service" in new Test {
 
             MockCrystallisationConnector.submitIntent(request)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(desErrorStatus, BackendErrorCode(desErrorCode))))))
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
 
-            await(service.declareCrystallisation(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, desErrorStatus))
+            await(service.declareCrystallisation(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, downstreamErrorStatus))
           }
 
         val input = Seq(

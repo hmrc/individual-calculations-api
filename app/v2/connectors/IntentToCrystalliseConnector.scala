@@ -39,7 +39,7 @@ class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
     val nino: String = request.nino.nino
     val taxYear: String = request.taxYear.value
 
-    desPost(
+    downstreamPost(
       uri = Uri[IntentToCrystalliseResponse](s"income-tax/nino/$nino/taxYear/$taxYear/tax-calculation?crystallise=true"),
       body = EmptyJsonBody
     )

@@ -65,7 +65,7 @@ trait BackendResponseMappingSupport {
     }
   }
 
-  final def mapDesErrors[D](errorCodeMap: PartialFunction[String, MtdError])(desResponseWrapper: ResponseWrapper[BackendError])(
+  final def mapDownstreamErrors[D](errorCodeMap: PartialFunction[String, MtdError])(downstreamResponseWrapper: ResponseWrapper[BackendError])(
     implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
@@ -73,7 +73,7 @@ trait BackendResponseMappingSupport {
       DownstreamError
     }
 
-    desResponseWrapper match {
+    downstreamResponseWrapper match {
       case ResponseWrapper(correlationId, BackendErrors(statusCode, error :: Nil)) =>
         ErrorWrapper(correlationId, errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None, statusCode)
 

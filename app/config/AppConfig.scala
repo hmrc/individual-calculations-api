@@ -17,10 +17,10 @@
 package config
 
 import com.typesafe.config.Config
-import play.api.{ConfigLoader, Configuration}
+import play.api.{ ConfigLoader, Configuration }
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 
 trait AppConfig {
   // MTD ID Lookup Config
@@ -30,10 +30,10 @@ trait AppConfig {
   def backendBaseUrl: String
 
   // DES Config
-  def desBaseUrl: String
-  def desEnv: String
-  def desToken: String
-  def desEnvironmentHeaders: Option[Seq[String]]
+  def downstreamBaseUrl: String
+  def downstreamEnv: String
+  def downstreamToken: String
+  def downstreamEnvironmentHeaders: Option[Seq[String]]
 
   // API Config
   def apiGatewayContext: String
@@ -49,23 +49,25 @@ trait AppConfig {
 @Singleton
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
   // MTD ID Lookup Config
-  val mtdIdBaseUrl: String       = config.baseUrl("mtd-id-lookup")
+  val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
 
   // Backend Config
-  val backendBaseUrl: String     = config.baseUrl("individual-calculations")
+  val backendBaseUrl: String = config.baseUrl("individual-calculations")
 
   // DES Config
-  val desBaseUrl: String         = config.baseUrl("des")
-  val desEnv: String             = config.getString("microservice.services.des.env")
-  val desToken: String           = config.getString("microservice.services.des.token")
-  val desEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.des.environmentHeaders")
+  val downstreamBaseUrl: String = config.baseUrl("downstream")
+  val downstreamEnv: String     = config.getString("microservice.services.downstream.env")
+  val downstreamToken: String   = config.getString("microservice.services.downstream.token")
+
+  val downstreamEnvironmentHeaders: Option[Seq[String]] =
+    configuration.getOptional[Seq[String]]("microservice.services.downstream.environmentHeaders")
 
   // API Config
-  val apiGatewayContext: String  = config.getString("api.gateway.context")
+  val apiGatewayContext: String                    = config.getString("api.gateway.context")
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
-  def apiStatus(version: String): String = config.getString(s"api.$version.status")
-  def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
-  def endpointsEnabled(version: String): Boolean = config.getBoolean(s"feature-switch.version-$version.enabled")
+  def apiStatus(version: String): String           = config.getString(s"api.$version.status")
+  def featureSwitch: Option[Configuration]         = configuration.getOptional[Configuration](s"feature-switch")
+  def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"feature-switch.version-$version.enabled")
 
   // NRS Config
   val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")

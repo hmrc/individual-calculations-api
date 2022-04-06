@@ -18,12 +18,12 @@ package v2.controllers.requestParsers
 
 import javax.inject.Inject
 import v2.controllers.requestParsers.validators.IntentToCrystalliseValidator
-import v2.models.domain.{DesTaxYear, Nino}
+import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
 
 class IntentToCrystalliseRequestParser @Inject()(val validator: IntentToCrystalliseValidator)
   extends RequestParser[IntentToCrystalliseRawData, IntentToCrystalliseRequest] {
 
   override protected def requestFor(data: IntentToCrystalliseRawData): IntentToCrystalliseRequest =
-    IntentToCrystalliseRequest(Nino(data.nino), DesTaxYear.fromMtd(data.taxYear))
+    IntentToCrystalliseRequest(Nino(data.nino), DownstreamTaxYear.fromMtd(data.taxYear))
 }

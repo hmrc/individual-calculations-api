@@ -16,19 +16,22 @@
 
 package v3.connectors
 
-import mocks.{MockAppConfig, MockHttpClient}
-import play.api.libs.json.{JsString, Json, Reads}
+import mocks.{ MockAppConfig, MockHttpClient }
+import play.api.libs.json.{ JsString, Json, Reads }
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v3.handler.RequestDefn
-import v3.models.errors.{BackendErrorCode, BackendErrors}
+import v3.models.errors.{ BackendErrorCode, BackendErrors }
 
 import scala.concurrent.Future
 
 class StandardConnectorSpec extends ConnectorSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
-    MockAppConfig.backendBaseUrl returns baseUrl
+    MockAppConfig.downstreamBaseUrl returns baseUrl
+    MockAppConfig.downstreamToken returns "Bearer downstream-token"
+    MockAppConfig.downstreamEnvironment returns "downstream-environment"
+    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
 
     val connector: StandardConnector = new StandardConnector(mockAppConfig, mockHttpClient)
   }
@@ -40,7 +43,7 @@ class StandardConnectorSpec extends ConnectorSpec {
   }
 
   val queryParams: Seq[(String, String)] = Seq("n" -> "v")
-  val requestDefn: RequestDefn.Get = RequestDefn.Get("/some/uri", queryParams)
+  val requestDefn: RequestDefn.Get       = RequestDefn.Get("/some/uri", queryParams)
 
   implicit val successCode: SuccessCode = SuccessCode(200)
 
@@ -61,13 +64,14 @@ class StandardConnectorSpec extends ConnectorSpec {
             queryParameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
-          ).returns(Future.successful(expected))
+          )
+          .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
 
       "request is a post" in new Test {
-        val body: JsString = JsString("some value")
+        val body: JsString                    = JsString("some value")
         val postRequestDefn: RequestDefn.Post = RequestDefn.Post("/some/uri", body)
 
         val expected = Right(Response("someData"))
@@ -78,7 +82,8 @@ class StandardConnectorSpec extends ConnectorSpec {
             config = dummyHeaderCarrierConfig,
             body = body,
             requiredHeaders = requiredBackendHeaders
-          ).returns(Future.successful(expected))
+          )
+          .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](postRequestDefn)) shouldBe expected
       }
@@ -95,7 +100,8 @@ class StandardConnectorSpec extends ConnectorSpec {
             queryParameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
-          ).returns(Future.successful(expected))
+          )
+          .returns(Future.successful(expected))
 
         await(connector.doRequest[Response](requestDefn)) shouldBe expected
       }
@@ -110,7 +116,8 @@ class StandardConnectorSpec extends ConnectorSpec {
             queryParameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
-          ).returns(Future.failed(new Exception("unexpected exception")))
+          )
+          .returns(Future.failed(new Exception("unexpected exception")))
 
         the[Exception] thrownBy await(connector.doRequest[Response](requestDefn)) should have message "unexpected exception"
       }

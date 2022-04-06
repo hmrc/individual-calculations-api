@@ -25,7 +25,7 @@ import v2.controllers.EndpointLogContext
 import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 import v2.support.BackendResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,16 +37,16 @@ class CrystallisationService @Inject()(connector: CrystallisationConnector) exte
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
     logContext: EndpointLogContext,
-    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]] = {
+    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[DownstreamUnit]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(connector.declareCrystallisation(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper
+      downstreamResponseWrapper <- EitherT(connector.declareCrystallisation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
+    } yield downstreamResponseWrapper
 
     result.value
   }
 
-  private def desErrorMap: Map[String, MtdError] =
+  private def downstreamErrorMap: Map[String, MtdError] =
     Map(
       "INVALID_IDTYPE" -> DownstreamError,
       "INVALID_IDVALUE" -> NinoFormatError,

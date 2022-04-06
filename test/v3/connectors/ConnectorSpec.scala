@@ -41,9 +41,9 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
       Some("individual-calculations-api")
     )
 
-  val requiredDesHeaders: Seq[(String, String)] = Seq(
-    "Authorization" -> "Bearer des-token",
-    "Environment" -> "des-environment",
+  val requiredDownstreamHeaders: Seq[(String, String)] = Seq(
+    "Authorization" -> "Bearer downstream-token",
+    "Environment" -> "downstream-environment",
     "User-Agent" -> "individual-calculations-api",
     "CorrelationId" -> correlationId,
     "Gov-Test-Scenario" -> "DEFAULT"
@@ -54,7 +54,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     "CorrelationId" -> correlationId
   )
 
-  val allowedDesHeaders: Seq[String] = Seq(
+  val allowedDownstreamHeaders: Seq[String] = Seq(
     "Accept",
     "Gov-Test-Scenario",
     "Content-Type",

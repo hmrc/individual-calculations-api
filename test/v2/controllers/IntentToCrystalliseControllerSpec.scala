@@ -26,7 +26,7 @@ import v2.mocks.requestParsers.MockIntentToCrystalliseRequestParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
 import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v2.models.domain.DesTaxYear
+import v2.models.domain.DownstreamTaxYear
 import v2.models.errors._
 import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.outcomes.ResponseWrapper
@@ -60,7 +60,7 @@ class IntentToCrystalliseControllerSpec
 
   val requestData: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
     nino = Nino(nino),
-    taxYear = DesTaxYear.fromMtd(taxYear)
+    taxYear = DownstreamTaxYear.fromMtd(taxYear)
   )
 
   val responseData: IntentToCrystalliseResponse = IntentToCrystalliseResponse(

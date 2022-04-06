@@ -21,7 +21,7 @@ import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.{BackendOutcome, CrystallisationConnector}
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,7 +31,7 @@ trait MockCrystallisationConnector extends MockFactory {
 
   object MockCrystallisationConnector {
 
-    def submitIntent(request: CrystallisationRequest): CallHandler[Future[BackendOutcome[DesUnit]]] = {
+    def submitIntent(request: CrystallisationRequest): CallHandler[Future[BackendOutcome[DownstreamUnit]]] = {
       (mockCrystallisationConnector
         .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)

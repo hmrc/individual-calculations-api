@@ -16,7 +16,8 @@
 
 package v3.models.errors
 
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 case class MtdError(code: String, message: String, paths: Option[Seq[String]] = None)
 
@@ -25,6 +26,12 @@ object MtdError {
 
   implicit def genericWrites[T <: MtdError]: OWrites[T] =
     writes.contramap[T](c => c: MtdError)
+
+  implicit val reads: Reads[MtdError] = (
+    (__ \ "code").read[String] and
+      (__ \ "reason").read[String] and
+      Reads.pure(None)
+    )(MtdError.apply _)
 }
 
 object CustomMtdError {

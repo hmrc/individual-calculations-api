@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import utils.Logging
 import v2.controllers.EndpointLogContext
 import v2.models.errors.{DownstreamError, ErrorWrapper}
-import v2.models.response.common.DesResponse
+import v2.models.response.common.DownstreamResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -42,18 +42,18 @@ trait BaseConnector extends Logging {
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
     .withExtraHeaders(headers = "CorrelationId" -> correlationId)
 
-  private def desHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
+  private def downstreamHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
                                                                                      correlationId: String): HeaderCarrier =
     HeaderCarrier(
       extraHeaders = hc.extraHeaders ++
         // Contract headers
         Seq(
-          "Authorization" -> s"Bearer ${appConfig.desToken}",
-          "Environment" -> appConfig.desEnv,
+          "Authorization" -> s"Bearer ${appConfig.downstreamToken}",
+          "Environment" -> appConfig.downstreamEnv,
           "CorrelationId" -> correlationId
         ) ++
         // Other headers (i.e Gov-Test-Scenario, Content-Type)
-        hc.headers(additionalHeaders ++ appConfig.desEnvironmentHeaders.getOrElse(Seq.empty))
+        hc.headers(additionalHeaders ++ appConfig.downstreamEnvironmentHeaders.getOrElse(Seq.empty))
     )
 
   private def urlFrom(uri: String): String =
@@ -71,16 +71,16 @@ trait BaseConnector extends Logging {
     doPost(headerCarrier(hc, correlationId))
   }
 
-  def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
+  def downstreamPost[Body: Writes, Resp <: DownstreamResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
                                                                              hc: HeaderCarrier,
                                                                              httpReads: HttpReads[BackendOutcome[Resp]],
                                                                              correlationId: String): Future[BackendOutcome[Resp]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
-      http.POST(s"${appConfig.desBaseUrl}/${uri.value}", body)
+      http.POST(s"${appConfig.downstreamBaseUrl}/${uri.value}", body)
     }
 
-    doPost(desHeaderCarrier())
+    doPost(downstreamHeaderCarrier())
   }
 
   def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,

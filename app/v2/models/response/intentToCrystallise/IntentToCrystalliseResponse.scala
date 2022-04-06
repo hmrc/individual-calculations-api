@@ -20,9 +20,9 @@ import config.AppConfig
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v2.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v2.models.hateoas.{HateoasData, Link}
-import v2.models.response.common.DesResponse
+import v2.models.response.common.DownstreamResponse
 
-case class IntentToCrystalliseResponse(calculationId: String) extends DesResponse
+case class IntentToCrystalliseResponse(calculationId: String) extends DownstreamResponse
 
 object IntentToCrystalliseResponse extends HateoasLinks {
 

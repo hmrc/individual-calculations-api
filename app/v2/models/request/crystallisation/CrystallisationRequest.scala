@@ -16,6 +16,6 @@
 
 package v2.models.request.crystallisation
 
-import v2.models.domain.{DesTaxYear, Nino}
+import v2.models.domain.{DownstreamTaxYear, Nino}
 
-case class CrystallisationRequest(nino: Nino, taxYear: DesTaxYear, calculationId: String)
+case class CrystallisationRequest(nino: Nino, taxYear: DownstreamTaxYear, calculationId: String)

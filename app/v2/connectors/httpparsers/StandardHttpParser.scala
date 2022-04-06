@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import v2.connectors.BackendOutcome
 import v2.models.errors.{DownstreamError, OutboundError}
 import v2.models.outcomes.ResponseWrapper
-import v2.models.response.common.{DesResponse, DesUnit}
+import v2.models.response.common.{DownstreamResponse, DownstreamUnit}
 
 object StandardHttpParser extends HttpParser {
 
@@ -34,9 +34,9 @@ object StandardHttpParser extends HttpParser {
       Right(ResponseWrapper(correlationId, ()))
     }
 
-  implicit def desReadsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[DesUnit]] =
-    (_: String, url: String, response: HttpResponse) => doDesRead(url, response) { correlationId =>
-      Right(ResponseWrapper(correlationId, DesUnit))
+  implicit def downstreamReadsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[BackendOutcome[DownstreamUnit]] =
+    (_: String, url: String, response: HttpResponse) => doDownstreamRead(url, response) { correlationId =>
+      Right(ResponseWrapper(correlationId, DownstreamUnit))
     }
 
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[BackendOutcome[A]] =
@@ -47,8 +47,8 @@ object StandardHttpParser extends HttpParser {
       }
     }
 
-  implicit def desReads[A <: DesResponse](implicit successCode: SuccessCode = SuccessCode(OK), reads: Reads[A]): HttpReads[BackendOutcome[A]] =
-    (_: String, url: String, response: HttpResponse) => doDesRead(url, response) { correlationId =>
+  implicit def downstreamReads[A <: DownstreamResponse](implicit successCode: SuccessCode = SuccessCode(OK), reads: Reads[A]): HttpReads[BackendOutcome[A]] =
+    (_: String, url: String, response: HttpResponse) => doDownstreamRead(url, response) { correlationId =>
       response.validateJson[A] match {
         case Some(ref) => Right(ResponseWrapper(correlationId, ref))
         case None => Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
@@ -78,10 +78,10 @@ object StandardHttpParser extends HttpParser {
     }
   }
 
-  private def doDesRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => BackendOutcome[A])(
+  private def doDownstreamRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => BackendOutcome[A])(
     implicit successCode: SuccessCode): BackendOutcome[A] = {
 
-    val correlationId = retrieveDesCorrelationId(response)
+    val correlationId = retrieveDownstreamCorrelationId(response)
 
     if (response.status != successCode.status) {
       logger.warn(
@@ -96,7 +96,7 @@ object StandardHttpParser extends HttpParser {
           "[StandardHttpParser][read] - " +
             s"Success response received from backend with correlationId: $correlationId when calling $url")
         successOutcomeFactory(correlationId)
-      case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY => Left(ResponseWrapper(correlationId, parseDesErrors(response)))
+      case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY => Left(ResponseWrapper(correlationId, parseDownstreamErrors(response)))
       case _                                              => Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
     }
   }

@@ -21,7 +21,7 @@ import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.models.domain.EmptyJsonBody
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -32,7 +32,7 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
   def declareCrystallisation(request: CrystallisationRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
-    correlationId: String): Future[BackendOutcome[DesUnit]] = {
+    correlationId: String): Future[BackendOutcome[DownstreamUnit]] = {
 
     import v2.connectors.httpparsers.StandardHttpParser._
 
@@ -40,8 +40,8 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
     val taxYear: String = request.taxYear.value
     val calculationId: String = request.calculationId
 
-    desPost(
-      uri = Uri[DesUnit](s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),
+    downstreamPost(
+      uri = Uri[DownstreamUnit](s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"),
       body = EmptyJsonBody
     )
   }
