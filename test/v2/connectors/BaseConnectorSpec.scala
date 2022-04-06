@@ -20,7 +20,7 @@ import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpClient}
 import v2.models.outcomes.ResponseWrapper
-import v2.models.response.common.DesResponse
+import v2.models.response.common.DownstreamResponse
 
 import scala.concurrent.Future
 
@@ -48,8 +48,8 @@ class BaseConnectorSpec extends ConnectorSpec {
   "BaseConnector" when {
     "making a HTTP request to DES" must {
       val requiredHeaders: Seq[(String, String)] = Seq(
-        "Environment" -> "des-environment",
-        "Authorization" -> "Bearer des-token",
+        "Environment" -> "downstream-environment",
+        "Authorization" -> "Bearer downstream-token",
         "User-Agent" -> "individual-calculations-api",
         "CorrelationId" -> correlationId,
         "Gov-Test-Scenario" -> "DEFAULT"
@@ -59,17 +59,17 @@ class BaseConnectorSpec extends ConnectorSpec {
         "AnotherHeader" -> "HeaderValue"
       )
 
-      desTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, excludedHeaders, Some(allowedDesHeaders))
+      downstreamTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, excludedHeaders, Some(allowedDownstreamHeaders))
 
       "exclude all `otherHeaders` when no external service header allow-list is found" should {
         val requiredHeaders: Seq[(String, String)] = Seq(
-          "Environment" -> "des-environment",
-          "Authorization" -> "Bearer des-token",
+          "Environment" -> "downstream-environment",
+          "Authorization" -> "Bearer downstream-token",
           "User-Agent" -> "individual-calculations-api",
           "CorrelationId" -> correlationId
         )
 
-        desTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, otherHeaders, None)
+        downstreamTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, otherHeaders, None)
       }
     }
 
@@ -83,32 +83,32 @@ class BaseConnectorSpec extends ConnectorSpec {
     }
   }
 
-  def desTestHttpMethods(config: HeaderCarrier.Config,
+  def downstreamTestHttpMethods(config: HeaderCarrier.Config,
                          requiredHeaders: Seq[(String, String)],
                          excludedHeaders: Seq[(String, String)],
-                         desEnvironmentHeaders: Option[Seq[String]]): Unit = {
+                         downstreamEnvironmentHeaders: Option[Seq[String]]): Unit = {
 
     "complete the request successfully with the required headers" when {
 
-      "DesPost" in new Test {
-        class DesResult(override val value: Int) extends Result(value) with DesResponse
+      "DownstreamPost" in new Test {
+        class DownstreamResult(override val value: Int) extends Result(value) with DownstreamResponse
 
-        val desUrl: Uri[DesResult] = Uri[DesResult](url)
-        implicit val httpReads: HttpReads[BackendOutcome[DesResult]] = mock[HttpReads[BackendOutcome[DesResult]]]
+        val downstreamUrl: Uri[DownstreamResult] = Uri[DownstreamResult](url)
+        implicit val httpReads: HttpReads[BackendOutcome[DownstreamResult]] = mock[HttpReads[BackendOutcome[DownstreamResult]]]
 
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
 
-        MockAppConfig.desBaseUrl returns baseUrl
-        MockAppConfig.desToken returns "des-token"
-        MockAppConfig.desEnvironment returns "des-environment"
-        MockAppConfig.desEnvironmentHeaders returns desEnvironmentHeaders
+        MockAppConfig.downstreamBaseUrl returns baseUrl
+        MockAppConfig.downstreamToken returns "downstream-token"
+        MockAppConfig.downstreamEnvironment returns "downstream-environment"
+        MockAppConfig.downstreamEnvironmentHeaders returns downstreamEnvironmentHeaders
 
         MockedHttpClient
           .post(absoluteUrl, config, body, requiredHeadersPost, excludedHeaders)
           .returns(Future.successful(outcome))
 
-        await(connector.desPost(body, desUrl)) shouldBe outcome
+        await(connector.downstreamPost(body, downstreamUrl)) shouldBe outcome
       }
     }
   }

@@ -30,7 +30,7 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
   "IntentToCrystalliseResponse" when {
     "read from valid JSON" should {
       "produce the expected IntentToCrystalliseResponse object" in {
-        val desJson: JsValue = Json.parse(
+        val downstreamJson: JsValue = Json.parse(
           """
             |{
             |  "id": "anId"
@@ -38,13 +38,13 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
           """.stripMargin
         )
 
-        desJson.as[IntentToCrystalliseResponse] shouldBe model
+        downstreamJson.as[IntentToCrystalliseResponse] shouldBe model
       }
     }
 
     "read from invalid JSON" should {
       "produce the expected IntentToCrystalliseResponse object" in {
-        val invalidDesJson: JsValue = Json.parse(
+        val invalidDownstreamJson: JsValue = Json.parse(
           """
             |{
             |  "id": true
@@ -52,7 +52,7 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
           """.stripMargin
         )
 
-        invalidDesJson.validate[IntentToCrystalliseResponse] shouldBe a[JsError]
+        invalidDownstreamJson.validate[IntentToCrystalliseResponse] shouldBe a[JsError]
       }
     }
 

@@ -17,47 +17,36 @@
 package v3.connectors
 
 import config.AppConfig
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{ Json, Writes }
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpClient, HttpReads }
 import utils.Logging
 import v3.controllers.EndpointLogContext
-import v3.models.errors.{DownstreamError, ErrorWrapper}
-import v3.models.response.common.DesResponse
+import v3.models.errors.{ DownstreamError, ErrorWrapper }
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 trait BaseConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
 
-  protected def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
-    logger.error(
-      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-        s"Unhandled error: $errorWrapper")
-    InternalServerError(Json.toJson(DownstreamError))
-  }
-
-  private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
-    .withExtraHeaders(headers = "CorrelationId" -> correlationId)
-
-  private def desHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
-                                                                                     correlationId: String): HeaderCarrier =
+  private def downstreamHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
+                                                                                            correlationId: String): HeaderCarrier =
     HeaderCarrier(
       extraHeaders = hc.extraHeaders ++
         // Contract headers
         Seq(
-          "Authorization" -> s"Bearer ${appConfig.desToken}",
-          "Environment" -> appConfig.desEnv,
+          "Authorization" -> s"Bearer ${appConfig.downstreamToken}",
+          "Environment"   -> appConfig.downstreamEnv,
           "CorrelationId" -> correlationId
         ) ++
         // Other headers (i.e Gov-Test-Scenario, Content-Type)
-        hc.headers(additionalHeaders ++ appConfig.desEnvironmentHeaders.getOrElse(Seq.empty))
+        hc.headers(additionalHeaders ++ appConfig.downstreamEnvironmentHeaders.getOrElse(Seq.empty))
     )
 
   private def urlFrom(uri: String): String =
-    if (uri.startsWith("/")) s"${appConfig.backendBaseUrl}$uri" else s"${appConfig.backendBaseUrl}/$uri"
+    if (uri.startsWith("/")) s"${appConfig.downstreamBaseUrl}$uri" else s"${appConfig.downstreamBaseUrl}/$uri"
 
   def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
                                                      hc: HeaderCarrier,
@@ -68,19 +57,7 @@ trait BaseConnector extends Logging {
       http.POST(urlFrom(uri), body)
     }
 
-    doPost(headerCarrier(hc, correlationId))
-  }
-
-  def desPost[Body: Writes, Resp <: DesResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
-                                                                             hc: HeaderCarrier,
-                                                                             httpReads: HttpReads[BackendOutcome[Resp]],
-                                                                             correlationId: String): Future[BackendOutcome[Resp]] = {
-
-    def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
-      http.POST(s"${appConfig.desBaseUrl}/${uri.value}", body)
-    }
-
-    doPost(desHeaderCarrier())
+    doPost(downstreamHeaderCarrier())
   }
 
   def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,
@@ -91,6 +68,6 @@ trait BaseConnector extends Logging {
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
       http.GET(urlFrom(uri), queryParameters)
 
-    doGet(headerCarrier(hc, correlationId))
+    doGet(downstreamHeaderCarrier())
   }
 }

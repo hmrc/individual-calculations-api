@@ -18,18 +18,18 @@ package v2.models.domain
 
 import support.UnitSpec
 
-class DesTaxYearSpec extends UnitSpec {
+class DownstreamTaxYearSpec extends UnitSpec {
 
-  "DesTaxYear" when {
+  "DownstreamTaxYear" when {
     "toString" should {
       "produce the correct String" in {
-        DesTaxYear("2019").toString shouldBe "2019"
+        DownstreamTaxYear("2019").toString shouldBe "2019"
       }
     }
 
     "fromMtd" should {
       "produce the correct String" in {
-        DesTaxYear.fromMtd("2019-20") shouldBe DesTaxYear("2020")
+        DownstreamTaxYear.fromMtd("2019-20") shouldBe DownstreamTaxYear("2020")
       }
     }
   }

@@ -16,6 +16,6 @@
 
 package v2.models.response.common
 
-trait DesResponse
-class DesUnit extends DesResponse
-object DesUnit extends DesUnit
+trait DownstreamResponse
+class DownstreamUnit extends DownstreamResponse
+object DownstreamUnit extends DownstreamUnit

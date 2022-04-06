@@ -18,17 +18,17 @@ package v2.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.models.domain.{DesTaxYear, EmptyJsonBody, Nino}
+import v2.models.domain.{DownstreamTaxYear, EmptyJsonBody, Nino}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.Future
 
 class CrystallisationConnectorSpec extends ConnectorSpec {
 
   val nino: String = "AA111111A"
-  val taxYear: DesTaxYear = DesTaxYear.fromMtd(taxYear = "2021-22")
+  val taxYear: DownstreamTaxYear = DownstreamTaxYear.fromMtd(taxYear = "2021-22")
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: CrystallisationRequest = CrystallisationRequest(
@@ -44,26 +44,26 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.desBaseUrl returns baseUrl
-    MockAppConfig.desToken returns "des-token"
-    MockAppConfig.desEnvironment returns "des-environment"
-    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
+    MockAppConfig.downstreamBaseUrl returns baseUrl
+    MockAppConfig.downstreamToken returns "downstream-token"
+    MockAppConfig.downstreamEnvironment returns "downstream-environment"
+    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
   }
 
   "CrystallisationConnector" when {
     ".declareCrystallisation" should {
       "return a success upon HttpClient success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, DesUnit))
+        val outcome = Right(ResponseWrapper(correlationId, DownstreamUnit))
 
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
-        val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
+        val requiredDownstreamHeadersPost: Seq[(String, String)] = requiredDownstreamHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockedHttpClient
           .post(
             url = s"$baseUrl/income-tax/calculation/nino/$nino/${taxYear.value}/$calculationId/crystallise",
             config = dummyHeaderCarrierConfig,
             body = EmptyJsonBody,
-            requiredHeaders = requiredDesHeadersPost,
+            requiredHeaders = requiredDownstreamHeadersPost,
             excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
           ).returns(Future.successful(outcome))
 

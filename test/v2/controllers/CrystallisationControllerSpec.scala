@@ -24,11 +24,11 @@ import v2.mocks.requestParsers.MockCrystallisationRequestParser
 import v2.mocks.services.{MockAuditService, MockCrystallisationService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockNrsProxyService}
 import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v2.models.domain.{CrystallisationRequestBody, DesTaxYear}
+import v2.models.domain.{CrystallisationRequestBody, DownstreamTaxYear}
 import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -61,7 +61,7 @@ class CrystallisationControllerSpec
 
   val requestData: CrystallisationRequest = CrystallisationRequest(
     nino = Nino(nino),
-    taxYear = DesTaxYear.fromMtd(taxYear),
+    taxYear = DownstreamTaxYear.fromMtd(taxYear),
     calculationId = calculationId
   )
 
@@ -108,7 +108,7 @@ class CrystallisationControllerSpec
 
         MockCrystallisationService
           .submitIntent(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, DesUnit))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, DownstreamUnit))))
 
         MockNrsProxyService
           .submit(nino, crystallisationRequestBody)

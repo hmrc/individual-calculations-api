@@ -41,13 +41,13 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
     correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper
+      downstreamResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
+    } yield downstreamResponseWrapper
 
     result.value
   }
 
-  private def desErrorMap: Map[String, MtdError] =
+  private def downstreamErrorMap: Map[String, MtdError] =
     Map(
       "INVALID_NINO" -> NinoFormatError,
       "INVALID_TAX_YEAR" -> TaxYearFormatError,

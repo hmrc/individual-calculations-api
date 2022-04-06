@@ -32,10 +32,10 @@ trait MockAppConfig extends MockFactory {
     def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
 
     // DES Config
-    def desBaseUrl: CallHandler[String] = (mockAppConfig.desBaseUrl _: () => String).expects()
-    def desToken: CallHandler[String] = (mockAppConfig.desToken _).expects()
-    def desEnvironment: CallHandler[String] = (mockAppConfig.desEnv _).expects()
-    def desEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (mockAppConfig.desEnvironmentHeaders _).expects()
+    def downstreamBaseUrl: CallHandler[String] = (mockAppConfig.downstreamBaseUrl _: () => String).expects()
+    def downstreamToken: CallHandler[String] = (mockAppConfig.downstreamToken _).expects()
+    def downstreamEnvironment: CallHandler[String] = (mockAppConfig.downstreamEnv _).expects()
+    def downstreamEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (mockAppConfig.downstreamEnvironmentHeaders _).expects()
 
     // API Config
     def featureSwitch: CallHandler[Option[Configuration]] = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()

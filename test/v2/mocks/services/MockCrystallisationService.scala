@@ -23,7 +23,7 @@ import v2.controllers.EndpointLogContext
 import v2.models.errors.ErrorWrapper
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 import v2.services.CrystallisationService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +34,7 @@ trait MockCrystallisationService extends MockFactory {
 
   object MockCrystallisationService {
 
-    def submitIntent(requestData: CrystallisationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[DesUnit]]]] = {
+    def submitIntent(requestData: CrystallisationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[DownstreamUnit]]]] = {
       (mockCrystallisationService
         .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
         .expects(requestData, *, *, *, *)

@@ -21,7 +21,7 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import v2.mocks.validators.MockCrystallisationValidator
-import v2.models.domain.{DesTaxYear, Nino}
+import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.errors._
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
 
@@ -42,7 +42,7 @@ class CrystallisationRequestParserSpec extends UnitSpec {
         val data: CrystallisationRawData = CrystallisationRawData(nino, taxYear, AnyContentAsJson(Json.obj("calculationId" -> calculationId)))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(CrystallisationRequest(Nino(nino), DesTaxYear.fromMtd(taxYear), calculationId))
+        parser.parseRequest(data) shouldBe Right(CrystallisationRequest(Nino(nino), DownstreamTaxYear.fromMtd(taxYear), calculationId))
       }
     }
 

@@ -31,13 +31,13 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
 
     val nino: String = "AA123456A"
     val mtdTaxYear: String = "2019-20"
-    val desTaxYear: String = "2020"
+    val downstreamTaxYear: String = "2020"
     val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
     val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
     val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
     def uri: String = s"/crystallisation/$nino/$mtdTaxYear/crystallise"
-    def desUri: String = s"/income-tax/calculation/nino/$nino/$desTaxYear/$calculationId/crystallise"
+    def downstreamUri: String = s"/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
@@ -67,7 +67,7 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
           NrsStub.onSuccess(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/itsa-crystallisation", ACCEPTED, nrsSuccess)
-          DesStub.onSuccess(DesStub.POST, desUri, NO_CONTENT)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, NO_CONTENT)
         }
 
         val response: WSResponse = await(request().post(requestBody))
@@ -140,14 +140,14 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
              |}
             """.stripMargin
 
-        def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $desCode error and status $desStatus" in new Test {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $downstreamCode error and status $downstreamStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.onError(DesStub.POST, desUri, desStatus, errorBody(desCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request().post(requestBody))
