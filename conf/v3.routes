@@ -1,1 +1,3 @@
-POST      /:nino/self-assessment                                         v3.controllers.TriggerCalculationController.triggerCalculation(nino: String)
+POST        /:nino/self-assessment                                v3.controllers.TriggerCalculationController.triggerCalculation(nino: String)
+
+GET         /:nino/self-assessment/:taxYear/:calculationId        v3.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
