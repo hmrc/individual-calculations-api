@@ -16,15 +16,27 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.Format
+import play.api.libs.json.Reads
 import utils.enums.Enums
 
-sealed trait CalculationType
+sealed trait CalculationType {
+  def toMtdString: String
+}
 
 object CalculationType {
 
-  case object inYear          extends CalculationType
-  case object crystallisation extends CalculationType
+  case object inYear extends CalculationType {
+    override def toMtdString: String = "inYear"
+  }
+  case object crystallisation extends CalculationType {
+    override def toMtdString: String = "endOfYear"
+  }
+  case object biss extends CalculationType {
+    override def toMtdString: String = "biss"
+  }
+  case object POA extends CalculationType {
+    override def toMtdString: String = "POA"
+  }
 
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+  implicit val reads: Reads[CalculationType] = Enums.reads[CalculationType]
 }

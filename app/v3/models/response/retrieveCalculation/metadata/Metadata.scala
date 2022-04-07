@@ -16,12 +16,39 @@
 
 package v3.models.response.retrieveCalculation.metadata
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import common.models.domain.DownstreamTaxYear
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v3.models.response.common.CalculationType
 
-case class Metadata(field: String)
+case class Metadata(calculationId: String,
+                    taxYear: String,
+                    requestedBy: String,
+                    requestedTimestamp: Option[String],
+                    calculationReason: String,
+                    calculationTimestamp: Option[String],
+                    calculationType: String,
+                    intentToSubmitFinalDeclaration: Boolean,
+                    finalDeclaration: Boolean,
+                    finalDeclarationTimestamp: Option[String],
+                    periodFrom: String,
+                    periodTo: String)
 
 object Metadata {
-  implicit val reads: Reads[Metadata] = Json.reads[Metadata]
-
   implicit val writes: OWrites[Metadata] = Json.writes[Metadata]
+
+  implicit val reads: Reads[Metadata] = (
+    (JsPath \ "calculationId").read[String] and
+      (JsPath \ "taxYear").read[Int].map(DownstreamTaxYear.fromDownstreamIntToString) and
+      (JsPath \ "requestedBy").read[String] and
+      (JsPath \ "requestedTimestamp").readNullable[String] and
+      (JsPath \ "calculationReason").read[String] and
+      (JsPath \ "calculationTimestamp").readNullable[String] and
+      (JsPath \ "calculationType").read[CalculationType].map(_.toMtdString) and
+      (JsPath \ "intentToCrystallise").readWithDefault(false) and
+      (JsPath \ "crystallised").readWithDefault(false)[Boolean] and
+      (JsPath \ "crystallisationTimestamp").readNullable[String] and
+      (JsPath \ "periodFrom").read[String] and
+      (JsPath \ "periodTo").read[String]
+  )(Metadata.apply _)
 }
