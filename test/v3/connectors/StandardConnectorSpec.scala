@@ -16,12 +16,12 @@
 
 package v3.connectors
 
-import mocks.{ MockAppConfig, MockHttpClient }
-import play.api.libs.json.{ JsString, Json, Reads }
+import mocks.{MockAppConfig, MockHttpClient}
+import play.api.libs.json.{JsString, Json, Reads}
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v3.handler.RequestDefn
-import v3.models.errors.{ BackendErrorCode, BackendErrors }
+import v3.models.errors.{BackendErrorCode, BackendErrors}
 
 import scala.concurrent.Future
 
@@ -123,4 +123,5 @@ class StandardConnectorSpec extends ConnectorSpec {
       }
     }
   }
+
 }

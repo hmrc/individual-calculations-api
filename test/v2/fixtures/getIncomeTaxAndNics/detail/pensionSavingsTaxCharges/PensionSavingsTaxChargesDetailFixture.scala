@@ -46,4 +46,5 @@ object PensionSavingsTaxChargesDetailFixture {
        |}
      """.stripMargin
   )
+
 }

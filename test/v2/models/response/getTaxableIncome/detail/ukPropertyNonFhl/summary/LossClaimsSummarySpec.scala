@@ -32,4 +32,5 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
       "broughtForwardCarrySidewaysIncomeTaxLossesUsed"
     )
   )
+
 }

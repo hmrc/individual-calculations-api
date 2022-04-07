@@ -29,9 +29,9 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String            = "AA123456A"
     val taxYear: Option[String] = None
-    val correlationId: String = "X-123"
+    val correlationId: String   = "X-123"
 
     def uri: String = s"/$nino/self-assessment"
 
@@ -83,6 +83,7 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
         .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
+
   }
 
   "Calling the list calculations endpoint" should {
@@ -193,4 +194,5 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

@@ -18,9 +18,7 @@ package v2.models.response.getIncomeTaxAndNics.detail.incomeTax
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTypeBreakdown(allowancesAllocated: BigInt,
-                               incomeTaxAmount: BigDecimal,
-                               taxBands: Option[Seq[TaxBand]])
+case class IncomeTypeBreakdown(allowancesAllocated: BigInt, incomeTaxAmount: BigDecimal, taxBands: Option[Seq[TaxBand]])
 
 object IncomeTypeBreakdown {
   implicit val format: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]

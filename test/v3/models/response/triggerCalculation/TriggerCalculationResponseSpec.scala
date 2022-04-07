@@ -52,7 +52,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
@@ -66,4 +66,5 @@ class TriggerCalculationResponseSpec extends UnitSpec {
       }
     }
   }
+
 }

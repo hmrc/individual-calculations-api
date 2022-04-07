@@ -25,8 +25,8 @@ sealed trait EoyEstimateWrapperOrError
 object EoyEstimateWrapperOrError {
 
   case class EoyEstimateWrapper(eoyEstimate: EoyEstimateResponse) extends EoyEstimateWrapperOrError
-  case object EoyErrorMessages        extends EoyEstimateWrapperOrError
-  case object EoyCrystallisedError    extends EoyEstimateWrapperOrError
+  case object EoyErrorMessages                                    extends EoyEstimateWrapperOrError
+  case object EoyCrystallisedError                                extends EoyEstimateWrapperOrError
 
   // Note: the implicit Reads[A] must correctly locate the embedded calculation object
   // from within the JSON as it is received from the backend microservice.
@@ -34,19 +34,18 @@ object EoyEstimateWrapperOrError {
     for {
       errCount <- (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault[Int](0)
       calcType <- (JsPath \ "metadata" \ "calculationType").readWithDefault[CalculationType](CalculationType.inYear)
-      result <- readsErrorChecker(errCount, calcType)
+      result   <- readsErrorChecker(errCount, calcType)
     } yield result
   }
 
   def readsErrorChecker(errCount: Int, calcType: CalculationType): Reads[EoyEstimateWrapperOrError] = {
     if (errCount > 0) {
       Reads.pure[EoyEstimateWrapperOrError](EoyErrorMessages)
-    }
-    else if (calcType == CalculationType.crystallisation) {
+    } else if (calcType == CalculationType.crystallisation) {
       Reads.pure[EoyEstimateWrapperOrError](EoyCrystallisedError)
-    }
-    else {
+    } else {
       JsPath.read[EoyEstimateResponse].map(EoyEstimateWrapper)
     }
   }
+
 }

@@ -21,10 +21,10 @@ import v2.models.response.getTaxableIncome.detail.foreignProperty.summary.LossCl
 
 object LossClaimSummaryFixture {
 
-  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
-  val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
-  val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1000)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt]               = Some(1000)
+  val totalBroughtForwardIncomeTaxLosses: Option[BigInt]             = Some(1000)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]              = Some(1000)
+  val totalIncomeTaxLossesCarriedForward: Option[BigInt]             = Some(1000)
   val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
@@ -47,4 +47,5 @@ object LossClaimSummaryFixture {
        |}
      """.stripMargin
   )
+
 }

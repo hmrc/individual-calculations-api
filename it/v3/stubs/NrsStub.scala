@@ -31,4 +31,5 @@ object NrsStub extends WireMockMethods {
     when(method = method, uri = uri)
       .thenReturn(status = errorStatus, errorBody)
   }
+
 }

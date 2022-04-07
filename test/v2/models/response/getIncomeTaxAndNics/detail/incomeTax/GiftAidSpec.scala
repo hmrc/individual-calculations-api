@@ -34,4 +34,5 @@ class GiftAidSpec extends UnitSpec with JsonErrorValidators {
       "giftAidCharge"
     )
   )
+
 }

@@ -18,7 +18,7 @@ package v3.models.response.retrieveCalculation.messages
 
 import play.api.libs.json.{Json, OWrites, Reads}
 
-case class Messages (field: String)
+case class Messages(field: String)
 
 object Messages {
   implicit val reads: Reads[Messages] = Json.reads[Messages]

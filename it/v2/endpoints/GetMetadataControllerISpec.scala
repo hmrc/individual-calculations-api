@@ -29,9 +29,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String          = "AA123456A"
     val correlationId: String = "X-123"
-    val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calcId: String        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def uri: String = s"/$nino/self-assessment/$calcId"
 
@@ -44,6 +44,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
+
   }
 
   "Calling the get calculation metadata endpoint" should {
@@ -57,8 +58,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(
-          s"""
+        val successBody: JsObject = Json
+          .parse(
+            s"""
               |{
               |  "metadata": {
               |    "id": "$calcId",
@@ -78,10 +80,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
               |    }
               |  }
               |}""".stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val successOutput: JsObject = Json.parse(
-          s"""
+        val successOutput: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "id": "$calcId",
              |    "taxYear": "2018-19",
@@ -93,10 +97,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    "crystallised": false
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val hateoas: JsObject = Json.parse(
-          s"""
+        val hateoas: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "links": [
              |      {
@@ -107,7 +113,8 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    ]
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -124,8 +131,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(
-          s"""
+        val successBody: JsObject = Json
+          .parse(
+            s"""
               |{
               |  "metadata": {
               |    "id": "$calcId",
@@ -146,10 +154,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
               |  }
               |}
              """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val successOutput: JsObject = Json.parse(
-          s"""
+        val successOutput: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "id": "$calcId",
              |    "taxYear": "2018-19",
@@ -161,10 +171,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    "crystallised": false
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val hateoas: JsObject = Json.parse(
-          s"""
+        val hateoas: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "links": [
              |      {
@@ -200,7 +212,8 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    ]
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -217,8 +230,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(
-          s"""
+        val successBody: JsObject = Json
+          .parse(
+            s"""
             |{
             |  "metadata": {
             |    "id": "$calcId",
@@ -239,11 +253,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |  }
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-
-        val successOutput: JsObject = Json.parse(
-          s"""
+        val successOutput: JsObject = Json
+          .parse(
+            s"""
             |{
             |    "id": "$calcId",
             |    "taxYear": "2018-19",
@@ -255,10 +270,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |    "crystallised": false
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val hateoas: JsObject = Json.parse(
-          s"""
+        val hateoas: JsObject = Json
+          .parse(
+            s"""
             |{
             |    "links": [
             |      {
@@ -274,7 +291,8 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |    ]
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -291,8 +309,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(
-          s"""
+        val successBody: JsObject = Json
+          .parse(
+            s"""
             |{
             |  "metadata": {
             |    "id": "$calcId",
@@ -314,10 +333,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |  }
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val successOutput: JsObject = Json.parse(
-          s"""
+        val successOutput: JsObject = Json
+          .parse(
+            s"""
             |{
             |    "id": "$calcId",
             |    "taxYear": "2018-19",
@@ -330,10 +351,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |    "calculationErrorCount" : 1
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val hateoasErrors: JsObject = Json.parse(
-          s"""
+        val hateoasErrors: JsObject = Json
+          .parse(
+            s"""
             |{
             |    "links": [
             |      {
@@ -344,7 +367,8 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
             |    ]
             |}
           """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -361,8 +385,9 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val successBody: JsObject = Json.parse(
-          s"""
+        val successBody: JsObject = Json
+          .parse(
+            s"""
              |{
              |   "metadata":{
              |      "id":"$calcId",
@@ -384,10 +409,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |   }
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val successOutput: JsObject = Json.parse(
-          s"""
+        val successOutput: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "id": "$calcId",
              |    "taxYear": "2018-19",
@@ -400,10 +427,12 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    "calculationErrorCount" : 1
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
-        val hateoasErrors: JsObject = Json.parse(
-          s"""
+        val hateoasErrors: JsObject = Json
+          .parse(
+            s"""
              |{
              |    "links": [
              |      {
@@ -419,7 +448,8 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
              |    ]
              |}
            """.stripMargin
-        ).as[JsObject]
+          )
+          .as[JsObject]
 
         val response: WSResponse = await(request.get)
 
@@ -498,4 +528,5 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

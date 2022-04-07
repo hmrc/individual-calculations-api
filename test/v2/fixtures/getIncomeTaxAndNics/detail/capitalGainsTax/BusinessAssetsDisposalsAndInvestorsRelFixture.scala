@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax.BusinessAssetsDisposalsAndInvestorsRel
 
 object BusinessAssetsDisposalsAndInvestorsRelFixture {
+
   def businessAssetsDisposalsAndInvestorsRelModel: BusinessAssetsDisposalsAndInvestorsRel =
     BusinessAssetsDisposalsAndInvestorsRel(
       gainsIncome = Some(100.25),
@@ -29,7 +30,7 @@ object BusinessAssetsDisposalsAndInvestorsRelFixture {
       annualExemptionAmount = Some(500.25),
       taxableGains = Some(600.25),
       rate = Some(70.25),
-      taxAmount = Some(800.25),
+      taxAmount = Some(800.25)
     )
 
   def businessAssetsDisposalsAndInvestorsRelJson: JsValue = Json.parse(
@@ -46,4 +47,5 @@ object BusinessAssetsDisposalsAndInvestorsRelFixture {
        |}
      """.stripMargin
   )
+
 }

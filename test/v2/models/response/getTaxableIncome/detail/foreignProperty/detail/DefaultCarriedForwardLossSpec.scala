@@ -29,4 +29,5 @@ class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

@@ -26,17 +26,19 @@ import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.support.BackendResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
-class StandardService @Inject()(connector: StandardConnector) extends BackendResponseMappingSupport with Logging {
+class StandardService @Inject() (connector: StandardConnector) extends BackendResponseMappingSupport with Logging {
 
-  def doService[Req, Resp](requestHandler: RequestHandler[Resp, _])(implicit logContext: EndpointLogContext,
-                                                                    ec: ExecutionContext,
-                                                                    hc: HeaderCarrier,
-                                                                    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
+  def doService[Req, Resp](requestHandler: RequestHandler[Resp, _])(implicit
+      logContext: EndpointLogContext,
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Resp]]] = {
 
     import requestHandler._
 
     connector.doRequest(requestDefn).map(directMap(passThroughErrors, customErrorMapping))
   }
+
 }

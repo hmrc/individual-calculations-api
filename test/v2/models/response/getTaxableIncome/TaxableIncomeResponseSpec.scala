@@ -43,7 +43,7 @@ class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       val calcId: String = "someCalcId"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -51,14 +51,15 @@ class TaxableIncomeResponseSpec extends UnitSpec with MockAppConfig {
     "wrapping a TaxableIncomeResponse object" should {
       "expose the correct hateoas links" in new Test {
         hateoasFactory.wrap(taxableIncomeResponseModel, TaxableIncomeHateoasData(nino, calcId)) shouldBe
-        HateoasWrapper(
-          taxableIncomeResponseModel,
-          Seq(
-            Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "metadata"),
-            Link(s"/individuals/calculations/$nino/self-assessment/$calcId/taxable-income", GET, "self")
+          HateoasWrapper(
+            taxableIncomeResponseModel,
+            Seq(
+              Link(s"/individuals/calculations/$nino/self-assessment/$calcId", GET, "metadata"),
+              Link(s"/individuals/calculations/$nino/self-assessment/$calcId/taxable-income", GET, "self")
+            )
           )
-        )
       }
     }
   }
+
 }

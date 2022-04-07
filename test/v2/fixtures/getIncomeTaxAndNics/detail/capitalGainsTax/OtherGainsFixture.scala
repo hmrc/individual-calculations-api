@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.CgtTaxBandFixture.
 import v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax.{CgtTaxBandName, OtherGains}
 
 object OtherGainsFixture {
+
   def otherGainsModel: OtherGains =
     OtherGains(
       gainsIncome = Some(100.25),
@@ -54,4 +55,5 @@ object OtherGainsFixture {
        |}
      """.stripMargin
   )
+
 }

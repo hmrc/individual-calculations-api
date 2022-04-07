@@ -24,22 +24,21 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.Business
 
 object SelfEmploymentFixture {
 
-  val selfEmploymentId: String = "AAIS12345678904"
-  val totalIncome: Option[BigDecimal] = Some(79291394)
-  val totalExpenses: Option[BigDecimal] = Some(89005890)
-  val netProfit: Option[BigDecimal] = Some(93480427)
-  val netLoss: Option[BigDecimal] = Some(10017816)
-  val class4Loss: Option[BigInt] = Some(2)
-  val totalAdditions: Option[BigDecimal] = Some(39901282)
-  val totalDeductions: Option[BigDecimal] = Some(80648172)
-  val accountingAdjustments: Option[BigDecimal] = Some(-8769926.99)
-  val taxableProfit: Option[BigInt] = Some(92149284)
-  val adjustedIncomeTaxLoss: Option[BigDecimal] = Some(2)
+  val selfEmploymentId: String                                   = "AAIS12345678904"
+  val totalIncome: Option[BigDecimal]                            = Some(79291394)
+  val totalExpenses: Option[BigDecimal]                          = Some(89005890)
+  val netProfit: Option[BigDecimal]                              = Some(93480427)
+  val netLoss: Option[BigDecimal]                                = Some(10017816)
+  val class4Loss: Option[BigInt]                                 = Some(2)
+  val totalAdditions: Option[BigDecimal]                         = Some(39901282)
+  val totalDeductions: Option[BigDecimal]                        = Some(80648172)
+  val accountingAdjustments: Option[BigDecimal]                  = Some(-8769926.99)
+  val taxableProfit: Option[BigInt]                              = Some(92149284)
+  val adjustedIncomeTaxLoss: Option[BigDecimal]                  = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
-  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(
-    bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9",
-    applied = true,
-    links = None)
+
+  val bsas: BusinessSourceAdjustableSummary =
+    BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, links = None)
 
   val selfEmploymentModel: SelfEmployment =
     SelfEmployment(
@@ -90,4 +89,5 @@ object SelfEmploymentFixture {
        |}
      """.stripMargin
   )
+
 }

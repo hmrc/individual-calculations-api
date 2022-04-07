@@ -25,15 +25,15 @@ import v2.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 object CalculationSummaryFixture {
 
   val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(100.25)
-  val totalAnnualPaymentsTaxCharged: Option[BigInt] = Some(200)
-  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(300.25)
-  val totalIncomeTaxNicsCharged: Option[BigDecimal] = Some(400.25)
-  val totalTaxDeducted: Option[BigDecimal] = Some(500.25)
-  val totalIncomeTaxAndNicsDue: BigDecimal = 600.25
-  val taxRegime: String = "UK"
-  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(190)
-  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(200)
-  val totalIncomeTaxAndNicsAndCgt: Option[BigDecimal] = Some(300)
+  val totalAnnualPaymentsTaxCharged: Option[BigInt]        = Some(200)
+  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal]   = Some(300.25)
+  val totalIncomeTaxNicsCharged: Option[BigDecimal]        = Some(400.25)
+  val totalTaxDeducted: Option[BigDecimal]                 = Some(500.25)
+  val totalIncomeTaxAndNicsDue: BigDecimal                 = 600.25
+  val taxRegime: String                                    = "UK"
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal]  = Some(190)
+  val saUnderpaymentsCodedOut: Option[BigDecimal]          = Some(200)
+  val totalIncomeTaxAndNicsAndCgt: Option[BigDecimal]      = Some(300)
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
@@ -49,7 +49,7 @@ object CalculationSummaryFixture {
       capitalGainsTax = Some(capitalGainsTaxSummaryModel),
       totalTaxDeductedBeforeCodingOut = totalTaxDeductedBeforeCodingOut,
       saUnderpaymentsCodedOut = saUnderpaymentsCodedOut,
-      totalIncomeTaxAndNicsAndCgt =totalIncomeTaxAndNicsAndCgt
+      totalIncomeTaxAndNicsAndCgt = totalIncomeTaxAndNicsAndCgt
     )
 
   val calculationSummaryJson: JsValue = Json.parse(
@@ -71,4 +71,5 @@ object CalculationSummaryFixture {
        |}
      """.stripMargin
   )
+
 }

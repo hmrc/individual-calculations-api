@@ -22,13 +22,13 @@ import v2.models.audit.GenericAuditDetail
 
 object GenericAuditDetailFixture {
 
-  val nino: String = "ZG903729C"
-  val calculationId: String = "calcId"
-  val userType: String = "Agent"
+  val nino: String                         = "ZG903729C"
+  val calculationId: String                = "calcId"
+  val userType: String                     = "Agent"
   val agentReferenceNumber: Option[String] = Some("012345678")
-  val pathParams: Map[String, String] = Map("nino" -> nino, "calculationId" -> calculationId)
-  val requestBody: Option[JsValue] = None
-  val xCorrId: String = "a1e8057e-fbbc-47a8-a8b478d9f015c253"
+  val pathParams: Map[String, String]      = Map("nino" -> nino, "calculationId" -> calculationId)
+  val requestBody: Option[JsValue]         = None
+  val xCorrId: String                      = "a1e8057e-fbbc-47a8-a8b478d9f015c253"
 
   val genericAuditDetailModelSuccess: GenericAuditDetail =
     GenericAuditDetail(
@@ -73,4 +73,5 @@ object GenericAuditDetailFixture {
        |}
      """.stripMargin
   )
+
 }

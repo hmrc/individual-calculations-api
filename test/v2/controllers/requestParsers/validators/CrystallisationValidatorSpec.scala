@@ -24,8 +24,8 @@ import v2.models.request.crystallisation.CrystallisationRawData
 
 class CrystallisationValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA123456A"
-  private val validTaxYear = "2017-18"
+  private val validNino     = "AA123456A"
+  private val validTaxYear  = "2017-18"
   private val calculationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   val validator = new CrystallisationValidator()
@@ -33,7 +33,8 @@ class CrystallisationValidatorSpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe empty
+        validator.validate(
+          CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe empty
       }
     }
 
@@ -53,42 +54,38 @@ class CrystallisationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(
-          CrystallisationRawData(validNino, "2010-11", AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe
+        validator.validate(CrystallisationRawData(validNino, "2010-11", AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
 
     "return RuleTaxYearRangeInvalidError error" when {
       "tax year range is too large" in {
-        validator.validate(
-          CrystallisationRawData(validNino, "2018-20", AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe
+        validator.validate(CrystallisationRawData(validNino, "2018-20", AnyContentAsJson(Json.obj("calculationId" -> calculationId)))) shouldBe
           List(RuleTaxYearRangeInvalidError)
       }
     }
 
     "return IncorrectOrEmptyBodyError error" when {
       "an empty json body is supplied" in {
-        validator.validate(
-          CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj()))) shouldBe
+        validator.validate(CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj()))) shouldBe
           List(RuleIncorrectOrEmptyBodyError)
       }
     }
 
     "return IncorrectOrEmptyBodyError error" when {
       "request body format is invalid" in {
-        validator.validate(
-          CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> true)))) shouldBe
+        validator.validate(CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> true)))) shouldBe
           List(RuleIncorrectOrEmptyBodyError)
       }
     }
 
     "return CalculationIdFormatError error" when {
       "request body contains a calculation id string with incorrect format" in {
-        validator.validate(
-          CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> "notAnId")))) shouldBe
+        validator.validate(CrystallisationRawData(validNino, validTaxYear, AnyContentAsJson(Json.obj("calculationId" -> "notAnId")))) shouldBe
           List(CalculationIdFormatError)
       }
     }
   }
+
 }

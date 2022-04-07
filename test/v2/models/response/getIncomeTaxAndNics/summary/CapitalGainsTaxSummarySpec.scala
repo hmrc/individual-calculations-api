@@ -39,4 +39,5 @@ class CapitalGainsTaxSummarySpec extends UnitSpec with JsonErrorValidators {
       "capitalGainsOverpaid"
     )
   )
+
 }

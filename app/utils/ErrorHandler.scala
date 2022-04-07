@@ -21,7 +21,7 @@ import play.api.Configuration
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.mvc.Results._
-import play.api.mvc.{ RequestHeader, Result }
+import play.api.mvc.{RequestHeader, Result}
 import uk.gov.hmrc.auth.core.AuthorisationException
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -30,14 +30,13 @@ import uk.gov.hmrc.play.bootstrap.backend.http.JsonErrorHandler
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import v2.models.errors._
 
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{Inject, Singleton}
 import scala.concurrent._
 
 @Singleton
-class ErrorHandler @Inject()(config: Configuration,
-                             auditConnector: AuditConnector,
-                             httpAuditEvent: HttpAuditEvent)(implicit ec: ExecutionContext)
-  extends JsonErrorHandler(auditConnector, httpAuditEvent, config) with Logging {
+class ErrorHandler @Inject() (config: Configuration, auditConnector: AuditConnector, httpAuditEvent: HttpAuditEvent)(implicit ec: ExecutionContext)
+    extends JsonErrorHandler(auditConnector, httpAuditEvent, config)
+    with Logging {
 
   import httpAuditEvent.dataEvent
 
@@ -45,25 +44,24 @@ class ErrorHandler @Inject()(config: Configuration,
 
     implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    logger.warn(s"[ErrorHandler][onClientError] error in version ${Versions.getFromRequest(request).getOrElse("<unspecified>")}, " +
-      s"for (${request.method}) [${request.uri}] with status:$statusCode and message: $message")
+    logger.warn(
+      s"[ErrorHandler][onClientError] error in version ${Versions.getFromRequest(request).getOrElse("<unspecified>")}, " +
+        s"for (${request.method}) [${request.uri}] with status:$statusCode and message: $message")
     statusCode match {
       case BAD_REQUEST =>
-        auditConnector.sendEvent(dataEvent("ServerValidationError",
-          "Request bad format exception", request))
+        auditConnector.sendEvent(dataEvent("ServerValidationError", "Request bad format exception", request))
         logger.warn(s"[ErrorHandler][onBadRequest] - Received undetected error: '$message'")
         val result = BadRequest(Json.toJson(MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(message))))
 
         Future.successful(result)
       case NOT_FOUND =>
-        auditConnector.sendEvent(dataEvent("ResourceNotFound",
-          "Resource Endpoint Not Found", request))
+        auditConnector.sendEvent(dataEvent("ResourceNotFound", "Resource Endpoint Not Found", request))
         Future.successful(NotFound(Json.toJson(NotFoundError)))
       case _ =>
         val errorCode = statusCode match {
-          case UNAUTHORIZED => UnauthorisedError
+          case UNAUTHORIZED           => UnauthorisedError
           case UNSUPPORTED_MEDIA_TYPE => InvalidBodyTypeError
-          case _ => MtdError("INVALID_REQUEST", message)
+          case _                      => MtdError("INVALID_REQUEST", message)
         }
 
         auditConnector.sendEvent(
@@ -86,15 +84,19 @@ class ErrorHandler @Inject()(config: Configuration,
       message = s"[ErrorHandler][onServerError] Internal server error in version " +
         s"${Versions.getFromRequest(request).getOrElse("<unspecified>")}, " +
         s"for (${request.method}) [${request.uri}] -> ",
-      ex)
+      ex
+    )
 
     val (status, errorCode, eventType) = ex match {
       case _: NotFoundException      => (NOT_FOUND, NotFoundError, "ResourceNotFound")
       case _: AuthorisationException => (UNAUTHORIZED, UnauthorisedError, "ClientError")
-      case e: JsValidationException  => (BAD_REQUEST, MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(e.getMessage())), "ServerValidationError")
-      case e: HttpException          => (e.responseCode, BadRequestError, "ServerValidationError")
-      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined => (e.reportAs, BadRequestError, "ServerValidationError")
-      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined => (e.reportAs, DownstreamError, "ServerInternalError")
+      case e: JsValidationException =>
+        (BAD_REQUEST, MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(e.getMessage())), "ServerValidationError")
+      case e: HttpException => (e.responseCode, BadRequestError, "ServerValidationError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined =>
+        (e.reportAs, BadRequestError, "ServerValidationError")
+      case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined =>
+        (e.reportAs, DownstreamError, "ServerInternalError")
       case _ => (INTERNAL_SERVER_ERROR, DownstreamError, "ServerInternalError")
     }
 
@@ -109,5 +111,5 @@ class ErrorHandler @Inject()(config: Configuration,
 
     Future.successful(Status(status)(Json.toJson(errorCode)))
   }
-}
 
+}

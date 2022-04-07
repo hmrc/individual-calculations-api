@@ -18,9 +18,7 @@ package v2.models.response.getIncomeTaxAndNics.detail.marriageAllowanceTransferr
 
 import play.api.libs.json.{Json, OFormat}
 
-case class MarriageAllowanceTransferredIn(amount: Option[BigDecimal],
-                                          rate: Option[BigDecimal])
-
+case class MarriageAllowanceTransferredIn(amount: Option[BigDecimal], rate: Option[BigDecimal])
 
 object MarriageAllowanceTransferredIn {
   implicit val format: OFormat[MarriageAllowanceTransferredIn] = Json.format[MarriageAllowanceTransferredIn]

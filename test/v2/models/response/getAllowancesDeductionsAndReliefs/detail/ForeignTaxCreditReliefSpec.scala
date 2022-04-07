@@ -34,4 +34,5 @@ class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
       "foreignTaxCreditReliefOnForeignIncome"
     )
   )
+
 }

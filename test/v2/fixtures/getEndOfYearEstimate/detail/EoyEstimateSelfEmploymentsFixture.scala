@@ -21,8 +21,8 @@ import v2.models.response.getEoyEstimate.detail.EoyEstimateSelfEmployments
 
 object EoyEstimateSelfEmploymentsFixture {
 
-  val selfEmploymentId: String = "XGIS00000001319"
-  val taxableIncome: BigInt = 1005
+  val selfEmploymentId: String   = "XGIS00000001319"
+  val taxableIncome: BigInt      = 1005
   val finalised: Option[Boolean] = Some(true)
 
   val eoyEstimateSelfEmploymentsModel: EoyEstimateSelfEmployments =
@@ -41,4 +41,5 @@ object EoyEstimateSelfEmploymentsFixture {
       |}
     """.stripMargin
   )
+
 }

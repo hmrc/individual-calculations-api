@@ -36,4 +36,5 @@ class StudentLoansSpec extends UnitSpec with JsonErrorValidators {
       "studentLoanDeductionsFromEmployment"
     )
   )
+
 }

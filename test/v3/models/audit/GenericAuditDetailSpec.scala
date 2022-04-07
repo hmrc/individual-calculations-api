@@ -35,4 +35,5 @@ class GenericAuditDetailSpec extends UnitSpec {
       }
     }
   }
+
 }

@@ -31,13 +31,13 @@ import v2.support.BackendResponseMappingSupport
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CrystallisationService @Inject()(connector: CrystallisationConnector) extends BackendResponseMappingSupport with Logging {
+class CrystallisationService @Inject() (connector: CrystallisationConnector) extends BackendResponseMappingSupport with Logging {
 
-  def declareCrystallisation(request: CrystallisationRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    logContext: EndpointLogContext,
-    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[DownstreamUnit]]] = {
+  def declareCrystallisation(request: CrystallisationRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      logContext: EndpointLogContext,
+      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[DownstreamUnit]]] = {
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.declareCrystallisation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
@@ -48,19 +48,20 @@ class CrystallisationService @Inject()(connector: CrystallisationConnector) exte
 
   private def downstreamErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_IDTYPE" -> DownstreamError,
-      "INVALID_IDVALUE" -> NinoFormatError,
-      "INVALID_TAXYEAR" -> TaxYearFormatError,
-      "INVALID_CALCID" -> CalculationIdFormatError,
-      "NOT_FOUND" -> NotFoundError,
-      "INCOME_SOURCES_CHANGED" -> RuleIncomeSourcesChangedError,
-      "RECENT_SUBMISSIONS_EXIST" -> RuleRecentSubmissionsExistError,
-      "RESIDENCY_CHANGED" -> RuleResidencyChangedError,
-      "INVALID_INCOME_SOURCES" -> RuleIncomeSourcesInvalid,
+      "INVALID_IDTYPE"               -> DownstreamError,
+      "INVALID_IDVALUE"              -> NinoFormatError,
+      "INVALID_TAXYEAR"              -> TaxYearFormatError,
+      "INVALID_CALCID"               -> CalculationIdFormatError,
+      "NOT_FOUND"                    -> NotFoundError,
+      "INCOME_SOURCES_CHANGED"       -> RuleIncomeSourcesChangedError,
+      "RECENT_SUBMISSIONS_EXIST"     -> RuleRecentSubmissionsExistError,
+      "RESIDENCY_CHANGED"            -> RuleResidencyChangedError,
+      "INVALID_INCOME_SOURCES"       -> RuleIncomeSourcesInvalid,
       "INCOME_SUBMISSIONS_NOT_EXIST" -> RuleNoIncomeSubmissionsExistError,
-      "BUSINESS_VALIDATION" -> RuleSubmissionFailed,
-      "FINAL_DECLARATION_RECEIVED" -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR" -> DownstreamError,
-      "SERVICE_UNAVAILABLE" -> DownstreamError
+      "BUSINESS_VALIDATION"          -> RuleSubmissionFailed,
+      "FINAL_DECLARATION_RECEIVED"   -> RuleFinalDeclarationReceivedError,
+      "SERVER_ERROR"                 -> DownstreamError,
+      "SERVICE_UNAVAILABLE"          -> DownstreamError
     )
+
 }

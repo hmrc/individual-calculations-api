@@ -27,4 +27,5 @@ class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
     ("hmrc", hmrc),
     ("agent", agent)
   )
+
 }

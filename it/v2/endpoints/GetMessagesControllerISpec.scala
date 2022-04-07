@@ -32,9 +32,9 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String          = "AA123456A"
     val correlationId: String = "X-123"
-    val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calcId: String        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -52,9 +52,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
   "Calling the get calculation messages endpoint" should {
     "return a 200 status code" when {
 
-      val successBody = Json.obj(
-        "metadata" -> metadataResponseJson,
-        "messages" -> MessagesResponseFixture.messagesResponseJson)
+      val successBody = Json.obj("metadata" -> metadataResponseJson, "messages" -> MessagesResponseFixture.messagesResponseJson)
 
       val hateoasLinks: JsValue = Json.parse(
         """
@@ -114,8 +112,10 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val response: WSResponse = await(request
-          .withQueryStringParameters("type" -> "error", "type" -> "warning", "type" -> "info").get)
+        val response: WSResponse = await(
+          request
+            .withQueryStringParameters("type" -> "error", "type" -> "warning", "type" -> "info")
+            .get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -123,8 +123,8 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
       }
     }
 
-    "return a noMessagesExist error" when{
-      "a calculation is returned without messages" in new Test{
+    "return a noMessagesExist error" when {
+      "a calculation is returned without messages" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -139,7 +139,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
         response.json shouldBe Json.toJson(NoMessagesExistError)
       }
 
-      "all returned messages are filtered out" in new Test{
+      "all returned messages are filtered out" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -185,7 +185,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
 
         val input = Seq(
           ("AA1123A", "12345678", None, BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "AAAAAAA",None,  BAD_REQUEST, CalculationIdFormatError),
+          ("AA123456A", "AAAAAAA", None, BAD_REQUEST, CalculationIdFormatError),
           ("AA123456A", "12345678", Some("shmerrors"), BAD_REQUEST, TypeFormatError)
         )
 
@@ -231,4 +231,5 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

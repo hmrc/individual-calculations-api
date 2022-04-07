@@ -21,15 +21,15 @@ import v2.models.response.getIncomeTaxAndNics.detail.taxDeductedAtSource.TaxDedu
 
 object TaxDeductedAtSourceFixture {
 
-  val ukLandAndProperty: Option[BigDecimal] = Some(100)
-  val savings: Option[BigDecimal] = Some(200)
-  val cis: Option[BigDecimal] = Some(130.45)
-  val securities: Option[BigDecimal] = Some(200.45)
-  val voidedIsa: Option[BigDecimal] = Some(300.45)
-  val payeEmployments: Option[BigDecimal] = Some(400.45)
-  val occupationalPensions: Option[BigDecimal] = Some(500.45)
-  val stateBenefits: Option[BigDecimal] = Some(600.45)
-  val specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal] = Some(700.45)
+  val ukLandAndProperty: Option[BigDecimal]                   = Some(100)
+  val savings: Option[BigDecimal]                             = Some(200)
+  val cis: Option[BigDecimal]                                 = Some(130.45)
+  val securities: Option[BigDecimal]                          = Some(200.45)
+  val voidedIsa: Option[BigDecimal]                           = Some(300.45)
+  val payeEmployments: Option[BigDecimal]                     = Some(400.45)
+  val occupationalPensions: Option[BigDecimal]                = Some(500.45)
+  val stateBenefits: Option[BigDecimal]                       = Some(600.45)
+  val specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal]    = Some(700.45)
   val inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal] = Some(700.45)
 
   val taxDeductedAtSourceModel: TaxDeductedAtSource =
@@ -62,4 +62,5 @@ object TaxDeductedAtSourceFixture {
        |}
      """.stripMargin
   )
+
 }

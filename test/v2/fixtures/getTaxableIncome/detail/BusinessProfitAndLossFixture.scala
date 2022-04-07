@@ -46,4 +46,5 @@ object BusinessProfitAndLossFixture {
       |}
     """.stripMargin
   )
+
 }

@@ -41,4 +41,5 @@ class EoyEstimateIncomeSourceSummarySpec extends UnitSpec with JsonErrorValidato
     ),
     modelName = Some("IncomeSourceSummaryWithFinalised")
   )
+
 }

@@ -22,10 +22,10 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.LossBrou
 
 object LossBroughtForwardFixture {
 
-  val lossType: LossType = LossType.INCOME
-  val taxYearLossIncurred: String = "2055-56"
+  val lossType: LossType           = LossType.INCOME
+  val taxYearLossIncurred: String  = "2055-56"
   val currentLossValue: BigDecimal = 673350334
-  val mtdLoss: Boolean = false
+  val mtdLoss: Boolean             = false
 
   val lossBroughtForwardResponse: LossBroughtForward =
     LossBroughtForward(
@@ -45,4 +45,5 @@ object LossBroughtForwardFixture {
       |}
     """.stripMargin
   )
+
 }

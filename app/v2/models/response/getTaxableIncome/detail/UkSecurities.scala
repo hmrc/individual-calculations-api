@@ -18,9 +18,7 @@ package v2.models.response.getTaxableIncome.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class UkSecurities(grossIncome: BigDecimal,
-                        netIncome: Option[BigDecimal],
-                        taxDeducted: Option[BigDecimal])
+case class UkSecurities(grossIncome: BigDecimal, netIncome: Option[BigDecimal], taxDeducted: Option[BigDecimal])
 
 object UkSecurities {
   implicit val format: OFormat[UkSecurities] = Json.format[UkSecurities]

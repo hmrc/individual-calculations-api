@@ -37,4 +37,5 @@ class IncomeTaxSummarySpec extends UnitSpec with JsonErrorValidators {
       "payeUnderpaymentsCodedOut"
     )
   )
+
 }

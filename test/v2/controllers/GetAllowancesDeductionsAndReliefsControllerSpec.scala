@@ -17,21 +17,21 @@
 package v2.controllers
 
 import mocks.MockIdGenerator
-import play.api.libs.json.{ JsObject, Json }
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.fixtures.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsResponseFixture
 import v2.handler.RequestDefn
 import v2.mocks.hateoas.MockHateoasFactory
 import v2.mocks.requestParsers.MockGetCalculationParser
-import v2.mocks.services.{ MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService }
+import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v2.models.domain.Nino
-import v2.models.audit.{ AuditError, AuditEvent, AuditResponse, GenericAuditDetail }
+import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.errors._
-import v2.models.hateoas.{ HateoasWrapper, Link }
+import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
 import v2.models.outcomes.ResponseWrapper
-import v2.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v2.models.response.calculationWrappers.CalculationWrapperOrError
 import v2.models.response.getAllowancesDeductionsAndReliefs.AllowancesDeductionsAndReliefsHateoasData
 
@@ -107,13 +107,16 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           .doService(RequestDefn.Get(uri), OK)
           .returns(
             Future.successful(
-              Right(ResponseWrapper(correlationId,
-                                    CalculationWrapperOrError.CalculationWrapper(
-                                      AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
+              Right(
+                ResponseWrapper(
+                  correlationId,
+                  CalculationWrapperOrError.CalculationWrapper(
+                    AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel)))))
 
         MockHateoasFactory
-          .wrap(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel,
-                AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
+          .wrap(
+            AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel,
+            AllowancesDeductionsAndReliefsHateoasData(nino, calcId))
           .returns(HateoasWrapper(AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsResponseModel, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.getAllowancesDeductionsAndReliefs(nino, calcId)(fakeGetRequest(queryUri))
@@ -123,15 +126,17 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail: GenericAuditDetail = GenericAuditDetail("Individual",
-                                                            None,
-                                                            Map("nino" -> nino, "calculationId" -> calcId),
-                                                            None,
-                                                            correlationId,
-                                                            AuditResponse(OK, None, Some(responseBody)))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
-                                                               "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-                                                               detail)
+        val detail: GenericAuditDetail = GenericAuditDetail(
+          "Individual",
+          None,
+          Map("nino" -> nino, "calculationId" -> calcId),
+          None,
+          correlationId,
+          AuditResponse(OK, None, Some(responseBody)))
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+          "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
+          "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
+          detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -160,11 +165,13 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           correlationId,
           AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None)
         )
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
-                                                               "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-                                                               detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+          "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
+          "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
+          detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
+
 }

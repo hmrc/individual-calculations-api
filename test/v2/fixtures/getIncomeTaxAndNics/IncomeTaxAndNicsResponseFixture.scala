@@ -83,4 +83,5 @@ object IncomeTaxAndNicsResponseFixture {
        |}
      """.stripMargin
   )
+
 }

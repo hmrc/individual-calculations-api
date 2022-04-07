@@ -22,8 +22,8 @@ import v2.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.LossBr
 object LossBroughtForwardFixture {
 
   val taxYearLossIncurred: String = "2018-19"
-  val currentLossValue: Int = 2000
-  val mtdLoss: Boolean = false
+  val currentLossValue: Int       = 2000
+  val mtdLoss: Boolean            = false
 
   val lossBroughtForwardModel: LossBroughtForward =
     LossBroughtForward(
@@ -41,4 +41,5 @@ object LossBroughtForwardFixture {
        |}
      """.stripMargin
   )
+
 }

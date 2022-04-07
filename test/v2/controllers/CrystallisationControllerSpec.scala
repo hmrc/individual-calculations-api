@@ -34,7 +34,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CrystallisationControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockCrystallisationService
@@ -43,8 +43,8 @@ class CrystallisationControllerSpec
     with MockCrystallisationRequestParser
     with MockIdGenerator {
 
-  val nino: String = "AA123456A"
-  val taxYear: String = "2019-20"
+  val nino: String          = "AA123456A"
+  val taxYear: String       = "2019-20"
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
   val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
   val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
@@ -204,4 +204,5 @@ class CrystallisationControllerSpec
       }
     }
   }
+
 }

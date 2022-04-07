@@ -44,6 +44,7 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit {
+
   private case class PayPensionsProfitPart1(incomeReceived: BigInt,
                                             taxableIncome: BigInt,
                                             totalSelfEmploymentProfit: Option[BigInt],
@@ -145,5 +146,6 @@ object PayPensionsProfit {
   implicit val reads: Reads[PayPensionsProfit] = (
     JsPath.read[PayPensionsProfitPart1](formatPt1) and
       JsPath.read[PayPensionsProfitPart2](formatPt2)
-    )(PayPensionsProfit.buildPayPensionsObjects _)
+  )(PayPensionsProfit.buildPayPensionsObjects _)
+
 }

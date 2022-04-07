@@ -21,9 +21,9 @@ import v2.controllers.requestParsers.validators.GetCalculationValidator
 import v2.models.domain.Nino
 import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 
-class GetCalculationParser @Inject()(val validator: GetCalculationValidator)
-  extends RequestParser[GetCalculationRawData, GetCalculationRequest] {
+class GetCalculationParser @Inject() (val validator: GetCalculationValidator) extends RequestParser[GetCalculationRawData, GetCalculationRequest] {
 
   override def requestFor(data: GetCalculationRawData): GetCalculationRequest =
     GetCalculationRequest(Nino(data.nino), data.calculationId)
+
 }

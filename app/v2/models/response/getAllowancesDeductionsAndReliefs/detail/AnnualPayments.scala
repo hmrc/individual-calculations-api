@@ -18,9 +18,7 @@ package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AnnualPayments(grossAnnualPayments: Option[BigDecimal],
-                          reliefClaimed: Option[BigDecimal],
-                          rate: Option[BigDecimal])
+case class AnnualPayments(grossAnnualPayments: Option[BigDecimal], reliefClaimed: Option[BigDecimal], rate: Option[BigDecimal])
 
 object AnnualPayments {
   implicit val format: OFormat[AnnualPayments] = Json.format[AnnualPayments]

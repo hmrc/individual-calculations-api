@@ -17,37 +17,37 @@
 package v2.controllers
 
 import javax.inject.Inject
-import play.api.mvc.{ Action, AnyContent, ControllerComponents, Request }
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v2.controllers.requestParsers.GetCalculationParser
-import v2.handler.{ AuditHandler, RequestDefn, RequestHandler }
+import v2.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v2.hateoas.HateoasFactory
 import v2.models.audit.GenericAuditDetail
 import v2.models.errors._
 import v2.models.hateoas.HateoasWrapper
-import v2.models.request.{ GetCalculationRawData, GetCalculationRequest }
+import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v2.models.response.calculationWrappers.CalculationWrapperOrError
-import v2.models.response.getAllowancesDeductionsAndReliefs.{ AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse }
-import v2.services.{ AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService }
+import v2.models.response.getAllowancesDeductionsAndReliefs.{AllowancesDeductionsAndReliefsHateoasData, AllowancesDeductionsAndReliefsResponse}
+import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
 import scala.concurrent.ExecutionContext
 
-class GetAllowancesDeductionsAndReliefsController @Inject()(authService: EnrolmentsAuthService,
-                                                            lookupService: MtdIdLookupService,
-                                                            parser: GetCalculationParser,
-                                                            service: StandardService,
-                                                            hateoasFactory: HateoasFactory,
-                                                            auditService: AuditService,
-                                                            cc: ControllerComponents,
-                                                            idGenerator: IdGenerator,
-                                                           )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData,
-    GetCalculationRequest,
-    CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],
-    HateoasWrapper[AllowancesDeductionsAndReliefsResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
+class GetAllowancesDeductionsAndReliefsController @Inject() (authService: EnrolmentsAuthService,
+                                                             lookupService: MtdIdLookupService,
+                                                             parser: GetCalculationParser,
+                                                             service: StandardService,
+                                                             hateoasFactory: HateoasFactory,
+                                                             auditService: AuditService,
+                                                             cc: ControllerComponents,
+                                                             idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[
+      GetCalculationRawData,
+      GetCalculationRequest,
+      CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse],
+      HateoasWrapper[AllowancesDeductionsAndReliefsResponse],
+      AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -58,10 +58,9 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(authService: Enrolme
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
-    RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse]](
-      RequestDefn.Get(req.backendCalculationUri))
+  override def requestHandlerFor(playRequest: Request[AnyContent], req: GetCalculationRequest)
+      : RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse], HateoasWrapper[AllowancesDeductionsAndReliefsResponse]] =
+    RequestHandler[CalculationWrapperOrError[AllowancesDeductionsAndReliefsResponse]](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -69,12 +68,12 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(authService: Enrolme
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.ErrorsInCalculation =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, rawResponse.id)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, AllowancesDeductionsAndReliefsHateoasData(req.nino.nino, rawResponse.id)))
 
   def getAllowancesDeductionsAndReliefs(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -83,9 +82,11 @@ class GetAllowancesDeductionsAndReliefsController @Inject()(authService: Enrolme
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
         "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
+        Map("nino" -> nino, "calculationId" -> calculationId),
+        request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
 }

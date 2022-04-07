@@ -36,4 +36,5 @@ trait Validator[A <: RawData] {
         }
     }
   }
+
 }

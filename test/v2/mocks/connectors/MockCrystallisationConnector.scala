@@ -36,5 +36,7 @@ trait MockCrystallisationConnector extends MockFactory {
         .declareCrystallisation(_: CrystallisationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
+
   }
+
 }

@@ -16,7 +16,7 @@
 
 package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.AnnualPaymentsFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.MarriageAllowanceTransferOutFixture._
 import v2.fixtures.getAllowancesDeductionsAndReliefs.detail.PensionContributionsFixture._
@@ -68,4 +68,5 @@ object AllowancesAndDeductionsFixture {
       |}
     """.stripMargin
   )
+
 }

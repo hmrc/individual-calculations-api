@@ -19,15 +19,15 @@ package v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class ResidentialPropertyAndCarriedInterest(
-                                                  gainsIncome: Option[BigDecimal],
-                                                  lossesBroughtForward: Option[BigDecimal],
-                                                  lossesArisingThisYear: Option[BigDecimal],
-                                                  gainsAfterLosses: Option[BigDecimal],
-                                                  annualExemptionAmount: Option[BigDecimal],
-                                                  taxableGains: Option[BigDecimal],
-                                                  cgtTaxBands: Option[Seq[CgtTaxBand]],
-                                                  totalTaxAmount: Option[BigDecimal]
-                                                )
+    gainsIncome: Option[BigDecimal],
+    lossesBroughtForward: Option[BigDecimal],
+    lossesArisingThisYear: Option[BigDecimal],
+    gainsAfterLosses: Option[BigDecimal],
+    annualExemptionAmount: Option[BigDecimal],
+    taxableGains: Option[BigDecimal],
+    cgtTaxBands: Option[Seq[CgtTaxBand]],
+    totalTaxAmount: Option[BigDecimal]
+)
 
 object ResidentialPropertyAndCarriedInterest {
   implicit val format: OFormat[ResidentialPropertyAndCarriedInterest] = Json.format[ResidentialPropertyAndCarriedInterest]

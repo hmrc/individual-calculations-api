@@ -34,4 +34,5 @@ class CarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
       "taxYearClaimMade"
     )
   )
+
 }

@@ -22,7 +22,7 @@ import v2.models.request.GetCalculationRawData
 
 class GetCalculationValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA112233A"
+  private val validNino          = "AA112233A"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val validator = new GetCalculationValidator()
@@ -55,4 +55,5 @@ class GetCalculationValidatorSpec extends UnitSpec {
       }
     }
   }
+
 }

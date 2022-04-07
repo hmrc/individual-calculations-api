@@ -32,4 +32,5 @@ class DividendsSpec extends UnitSpec with JsonErrorValidators {
       "totalForeignDividends"
     )
   )
+
 }

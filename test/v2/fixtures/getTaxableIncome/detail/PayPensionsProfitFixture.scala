@@ -22,28 +22,28 @@ import v2.models.response.getTaxableIncome.detail.PayPensionsProfit
 
 object PayPensionsProfitFixture {
 
-  val incomeReceivedPPP: BigInt = 1
-  val taxableIncomePPP: BigInt = 2
-  val totalSelfEmploymentProfit: Option[BigInt] = Some(3)
-  val totalPropertyProfit: Option[BigInt] = Some(1)
-  val totalFHLPropertyProfit: Option[BigInt] = Some(2)
-  val totalUKOtherPropertyProfit: Option[BigInt] = Some(3)
-  val totalForeignPropertyProfit: Option[BigInt] = Some(1)
-  val totalEeaFhlProfit: Option[BigInt] = Some(4)
-  val totalOccupationalPensionIncome: Option[BigDecimal] = Some(2)
-  val totalStateBenefitsIncome: Option[BigDecimal] = Some(5)
-  val totalBenefitsInKind: Option[BigDecimal] = Some(9)
-  val totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal] = Some(1)
-  val totalEmploymentExpenses: Option[BigDecimal] = Some(4)
-  val totalSeafarersDeduction: Option[BigDecimal] = Some(10)
-  val totalForeignTaxOnForeignEmployment: Option[BigDecimal] = Some(11)
-  val totalEmploymentIncome: Option[BigInt] = Some(2)
-  val totalShareSchemesIncome: Option[BigDecimal] = Some(12)
+  val incomeReceivedPPP: BigInt                                       = 1
+  val taxableIncomePPP: BigInt                                        = 2
+  val totalSelfEmploymentProfit: Option[BigInt]                       = Some(3)
+  val totalPropertyProfit: Option[BigInt]                             = Some(1)
+  val totalFHLPropertyProfit: Option[BigInt]                          = Some(2)
+  val totalUKOtherPropertyProfit: Option[BigInt]                      = Some(3)
+  val totalForeignPropertyProfit: Option[BigInt]                      = Some(1)
+  val totalEeaFhlProfit: Option[BigInt]                               = Some(4)
+  val totalOccupationalPensionIncome: Option[BigDecimal]              = Some(2)
+  val totalStateBenefitsIncome: Option[BigDecimal]                    = Some(5)
+  val totalBenefitsInKind: Option[BigDecimal]                         = Some(9)
+  val totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal]         = Some(1)
+  val totalEmploymentExpenses: Option[BigDecimal]                     = Some(4)
+  val totalSeafarersDeduction: Option[BigDecimal]                     = Some(10)
+  val totalForeignTaxOnForeignEmployment: Option[BigDecimal]          = Some(11)
+  val totalEmploymentIncome: Option[BigInt]                           = Some(2)
+  val totalShareSchemesIncome: Option[BigDecimal]                     = Some(12)
   val totalOverseasPensionsStateBenefitsRoyalties: Option[BigDecimal] = Some(13)
-  val totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal] = Some(14)
-  val totalOverseasIncomeAndGains: Option[BigDecimal] = Some(15)
-  val totalForeignBenefitsAndGifts: Option[BigDecimal] = Some(16)
-  val tipsIncome: Option[BigDecimal] = Some(17)
+  val totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal]     = Some(14)
+  val totalOverseasIncomeAndGains: Option[BigDecimal]                 = Some(15)
+  val totalForeignBenefitsAndGifts: Option[BigDecimal]                = Some(16)
+  val tipsIncome: Option[BigDecimal]                                  = Some(17)
 
   val payPensionsProfitModel: PayPensionsProfit =
     PayPensionsProfit(
@@ -101,4 +101,5 @@ object PayPensionsProfitFixture {
        |}
      """.stripMargin
   )
+
 }

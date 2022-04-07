@@ -45,12 +45,12 @@ object RequestHandler {
 
   def noMapping[Resp]: SuccessMapping[Resp, Resp] = (r: ResponseWrapper[Resp]) => Right(r)
 
-  case class Impl[BackendResp, APIResp] protected[handler](
-      requestDefn: RequestDefn,
-      successCode: SuccessCode,
-      passThroughErrors: Seq[MtdError] = Seq.empty,
-      customErrorMapping: ErrorMapping = PartialFunction.empty,
-      successMapping: SuccessMapping[BackendResp, APIResp])(implicit val reads: Reads[BackendResp])
+  case class Impl[BackendResp, APIResp] protected[handler] (requestDefn: RequestDefn,
+                                                            successCode: SuccessCode,
+                                                            passThroughErrors: Seq[MtdError] = Seq.empty,
+                                                            customErrorMapping: ErrorMapping = PartialFunction.empty,
+                                                            successMapping: SuccessMapping[BackendResp, APIResp])(implicit
+      val reads: Reads[BackendResp])
       extends RequestHandler[BackendResp, APIResp] {
 
     def withPassThroughErrors(errors: MtdError*): Impl[BackendResp, APIResp] =
@@ -75,6 +75,7 @@ object RequestHandler {
 
     def mapSuccessSimple[APIResp2](mapping: APIResp => APIResp2): Impl[BackendResp, APIResp2] =
       mapSuccess(resp => Right(resp.map(mapping)))
+
   }
 
   def apply[Resp: Reads](requestDefn: RequestDefn): Impl[Resp, Resp] = {
@@ -85,11 +86,13 @@ object RequestHandler {
 
     Impl(requestDefn, successCode, successMapping = noMapping)
   }
+
 }
 
 sealed trait RequestDefn
 
 object RequestDefn {
+
   case class Get(uri: String, params: Seq[(String, String)] = Nil) extends RequestDefn {
 
     def withParams(params: (String, String)*): Get =
@@ -100,6 +103,7 @@ object RequestDefn {
 
       copy(params = params)
     }
+
   }
 
   case class Post(uri: String, body: JsValue) extends RequestDefn

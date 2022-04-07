@@ -39,7 +39,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetIncomeTaxAndNicsControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
@@ -48,19 +48,20 @@ class GetIncomeTaxAndNicsControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino = "AA123456A"
+  private val nino          = "AA123456A"
   private val correlationId = "X-123"
 
-  private val rawData = GetCalculationRawData(nino, fixtureCalculationId)
+  private val rawData     = GetCalculationRawData(nino, fixtureCalculationId)
   private val requestData = GetCalculationRequest(Nino(nino), fixtureCalculationId)
 
-  private def uri = s"/$nino/self-assessment/$fixtureCalculationId"
+  private def uri      = s"/$nino/self-assessment/$fixtureCalculationId"
   private def queryUri = "/input/uri"
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
-  val linksJson: JsObject = Json.parse(
-    """
+  val linksJson: JsObject = Json
+    .parse(
+      """
       |{
       |    "links": [
       |      {
@@ -71,7 +72,8 @@ class GetIncomeTaxAndNicsControllerSpec
       |    ]
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -104,9 +106,8 @@ class GetIncomeTaxAndNicsControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, wrappedIncomeTaxAndNicsResponseModel))))
 
         MockHateoasFactory
-            .wrap(incomeTaxAndNicsResponseModel, IncomeTaxAndNicsHateoasData(nino, fixtureCalculationId))
+          .wrap(incomeTaxAndNicsResponseModel, IncomeTaxAndNicsHateoasData(nino, fixtureCalculationId))
           .returns(HateoasWrapper(incomeTaxAndNicsResponseModel, Seq(testHateoasLink)))
-
 
         val result: Future[Result] = controller.getIncomeTaxAndNics(nino, fixtureCalculationId)(fakeGetRequest(queryUri))
 
@@ -116,10 +117,16 @@ class GetIncomeTaxAndNicsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> fixtureCalculationId), None, correlationId,
+          "Individual",
+          None,
+          Map("nino" -> nino, "calculationId" -> fixtureCalculationId),
+          None,
+          correlationId,
           AuditResponse(OK, None, Some(responseBody)))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
-          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+          "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
+          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
+          detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -141,12 +148,20 @@ class GetIncomeTaxAndNicsControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> fixtureCalculationId), None, correlationId,
-          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
-          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated", detail)
+          "Individual",
+          None,
+          Map("nino" -> nino, "calculationId" -> fixtureCalculationId),
+          None,
+          correlationId,
+          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None)
+        )
+        val event: AuditEvent[GenericAuditDetail] = AuditEvent(
+          "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
+          "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
+          detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
+
 }

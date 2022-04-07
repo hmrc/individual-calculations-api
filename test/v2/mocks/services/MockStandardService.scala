@@ -53,5 +53,7 @@ trait MockStandardService extends MockFactory {
         .doService(_: RequestHandler[BackendResp, APIResp])(_: EndpointLogContext, _: ExecutionContext, _: HeaderCarrier, _: String))
         .expects(argAssert(mappingAssertion), *, *, *, *)
     }
+
   }
+
 }

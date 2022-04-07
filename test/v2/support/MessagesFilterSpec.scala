@@ -23,7 +23,7 @@ import v2.models.response.getMessages.{MessagesResponse, Message}
 class MessagesFilterSpec extends UnitSpec {
 
   val filter: MessagesFilter = new MessagesFilter {}
-  val calcId: String = "someCalcId"
+  val calcId: String         = "someCalcId"
 
   val messages: MessagesResponse = MessagesResponse(
     Some(Seq(Message("infoId", "infoMessage"))),
@@ -44,7 +44,8 @@ class MessagesFilterSpec extends UnitSpec {
     "return only warning messages" when {
 
       "provided with a warning filter" in {
-        filter.filter(messages, Seq(MessageType.warning)) shouldBe MessagesResponse(None, Some(Seq(Message("warningId", "warningMessage"))), None, calcId)
+        filter
+          .filter(messages, Seq(MessageType.warning)) shouldBe MessagesResponse(None, Some(Seq(Message("warningId", "warningMessage"))), None, calcId)
       }
     }
 
@@ -100,4 +101,5 @@ class MessagesFilterSpec extends UnitSpec {
       }
     }
   }
+
 }

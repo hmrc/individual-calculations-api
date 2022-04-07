@@ -25,8 +25,8 @@ import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, Intent
 
 class IntentToCrystalliseRequestParserSpec extends UnitSpec {
 
-  val nino: String = "AA123456B"
-  val taxYear: String = "2017-18"
+  val nino: String                   = "AA123456B"
+  val taxYear: String                = "2017-18"
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockIntentToCrystalliseValidator {
@@ -57,8 +57,10 @@ class IntentToCrystalliseRequestParserSpec extends UnitSpec {
         val data: IntentToCrystalliseRawData = IntentToCrystalliseRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(
+          ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
       }
     }
   }
+
 }

@@ -23,7 +23,7 @@ sealed trait CgtTaxBandName
 
 object CgtTaxBandName {
 
-  case object lowerRate extends CgtTaxBandName
+  case object lowerRate  extends CgtTaxBandName
   case object higherRate extends CgtTaxBandName
 
   implicit val formats: Format[CgtTaxBandName] = Enums.format[CgtTaxBandName]

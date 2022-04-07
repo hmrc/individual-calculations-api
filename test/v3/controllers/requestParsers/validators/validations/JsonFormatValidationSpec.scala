@@ -26,7 +26,7 @@ class JsonFormatValidationSpec extends UnitSpec with JsonErrorValidators {
   case class TestDataObject(fieldOne: String, fieldTwo: String)
   case class TestDataWrapper(arrayField: Option[Seq[TestDataObject]])
 
-  implicit val testDataObjectFormat: OFormat[TestDataObject] = Json.format[TestDataObject]
+  implicit val testDataObjectFormat: OFormat[TestDataObject]   = Json.format[TestDataObject]
   implicit val testDataWrapperFormat: OFormat[TestDataWrapper] = Json.format[TestDataWrapper]
 
   "validate" should {
@@ -101,4 +101,5 @@ class JsonFormatValidationSpec extends UnitSpec with JsonErrorValidators {
       }
     }
   }
+
 }

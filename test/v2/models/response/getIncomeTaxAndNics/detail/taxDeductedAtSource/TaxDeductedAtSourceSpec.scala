@@ -36,4 +36,5 @@ class TaxDeductedAtSourceSpec extends UnitSpec with JsonErrorValidators {
       "specialWithholdingTaxOrUkTaxPaid"
     )
   )
+
 }

@@ -34,4 +34,5 @@ class NicBandSpec extends UnitSpec with JsonErrorValidators {
       "apportionedThreshold"
     )
   )
+
 }

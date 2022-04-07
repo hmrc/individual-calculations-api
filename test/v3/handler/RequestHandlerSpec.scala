@@ -28,7 +28,7 @@ import v3.models.outcomes.ResponseWrapper
 class RequestHandlerSpec extends UnitSpec with Inside {
 
   // WLOG
-  val passThroughErrors = List(MtdError("CODE", "error"))
+  val passThroughErrors                = List(MtdError("CODE", "error"))
   val customErrorMapping: ErrorMapping = { case "CODE" => (BAD_REQUEST, MtdError("CODE", "error")) }
 
   "RequestHandler" must {
@@ -40,12 +40,11 @@ class RequestHandlerSpec extends UnitSpec with Inside {
           .mapErrors(customErrorMapping)
           .withPassThroughErrors(passThroughErrors: _*)
 
-      inside(handling) {
-        case RequestHandler.Impl(requestDefn, successCode, passThroughErrors, customErrorMapping, _) =>
-          requestDefn shouldBe RequestDefn.Get("/some/path")
-          successCode shouldBe SuccessCode(ACCEPTED)
-          passThroughErrors shouldBe passThroughErrors
-          customErrorMapping shouldBe customErrorMapping
+      inside(handling) { case RequestHandler.Impl(requestDefn, successCode, passThroughErrors, customErrorMapping, _) =>
+        requestDefn shouldBe RequestDefn.Get("/some/path")
+        successCode shouldBe SuccessCode(ACCEPTED)
+        passThroughErrors shouldBe passThroughErrors
+        customErrorMapping shouldBe customErrorMapping
       }
     }
   }
@@ -55,8 +54,8 @@ class RequestHandlerSpec extends UnitSpec with Inside {
       "map" in {
         val handling =
           RequestHandler[String](RequestDefn.Get("/some/path"))
-            .mapSuccess {
-              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            .mapSuccess { case ResponseWrapper(_, s) =>
+              Right(ResponseWrapper("corrId1", s.length))
             }
 
         handling.successMapping(ResponseWrapper("corrId", "foo")).value shouldBe ResponseWrapper("corrId1", 3)
@@ -67,11 +66,11 @@ class RequestHandlerSpec extends UnitSpec with Inside {
       "map in sequence" in {
         val handling =
           RequestHandler[String](RequestDefn.Get("/some/path"))
-            .mapSuccess {
-              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            .mapSuccess { case ResponseWrapper(_, s) =>
+              Right(ResponseWrapper("corrId1", s.length))
             }
-            .mapSuccess {
-              case ResponseWrapper(_, i) => Right(ResponseWrapper("corrId2", String.valueOf(i)))
+            .mapSuccess { case ResponseWrapper(_, i) =>
+              Right(ResponseWrapper("corrId2", String.valueOf(i)))
             }
 
         handling.successMapping(ResponseWrapper("corrId", "foo")).value shouldBe ResponseWrapper("corrId2", "3")
@@ -82,16 +81,14 @@ class RequestHandlerSpec extends UnitSpec with Inside {
       "map to the first error" in {
         val handling =
           RequestHandler[String](RequestDefn.Get("/some/path"))
-            .mapSuccess {
-              case ResponseWrapper(_, s) => Right(ResponseWrapper("corrId1", s.length))
+            .mapSuccess { case ResponseWrapper(_, s) =>
+              Right(ResponseWrapper("corrId1", s.length))
             }
-            .mapSuccess {
-              case ResponseWrapper(_, _) =>
-                ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST).asLeft[ResponseWrapper[Int]]
+            .mapSuccess { case ResponseWrapper(_, _) =>
+              ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST).asLeft[ResponseWrapper[Int]]
             }
-            .mapSuccess {
-              case ResponseWrapper(_, _) =>
-                ErrorWrapper("corrId2", MtdError("code2", "error2"), None, NOT_FOUND).asLeft[ResponseWrapper[Int]]
+            .mapSuccess { case ResponseWrapper(_, _) =>
+              ErrorWrapper("corrId2", MtdError("code2", "error2"), None, NOT_FOUND).asLeft[ResponseWrapper[Int]]
             }
 
         handling.successMapping(ResponseWrapper("corrId", "foo")).left.value shouldBe
@@ -122,4 +119,5 @@ class RequestHandlerSpec extends UnitSpec with Inside {
         RequestDefn.Get("/some/path", Seq("b" -> "value"))
     }
   }
+
 }

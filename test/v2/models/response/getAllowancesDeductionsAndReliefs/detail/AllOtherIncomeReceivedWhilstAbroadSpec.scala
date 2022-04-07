@@ -29,4 +29,5 @@ class AllOtherIncomeReceivedWhilstAbroadSpec extends UnitSpec with JsonErrorVali
     ),
     optionalProperties = Seq()
   )
+
 }

@@ -32,4 +32,5 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec with JsonErrorValidato
       "overseasPensionContributions"
     )
   )
+
 }

@@ -40,4 +40,5 @@ object CapitalGainsTaxDetailFixture {
        |}
      """.stripMargin
   )
+
 }

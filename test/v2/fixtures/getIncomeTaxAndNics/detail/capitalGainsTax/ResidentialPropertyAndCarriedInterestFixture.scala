@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.CgtTaxBandFixture.
 import v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax.{CgtTaxBandName, ResidentialPropertyAndCarriedInterest}
 
 object ResidentialPropertyAndCarriedInterestFixture {
+
   def residentialPropertyAndCarriedInterestModel: ResidentialPropertyAndCarriedInterest =
     ResidentialPropertyAndCarriedInterest(
       gainsIncome = Some(100.25),
@@ -50,4 +51,5 @@ object ResidentialPropertyAndCarriedInterestFixture {
       |}
      """.stripMargin
   )
+
 }

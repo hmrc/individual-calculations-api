@@ -19,9 +19,7 @@ package v2.models.response.getTaxableIncome.detail.foreignProperty.detail
 import play.api.libs.json._
 import v2.models.response.common.TypeOfClaim
 
-case class ClaimsNotApplied(claimId: String,
-                            taxYearClaimMade: String,
-                            claimType: TypeOfClaim)
+case class ClaimsNotApplied(claimId: String, taxYearClaimMade: String, claimType: TypeOfClaim)
 
 object ClaimsNotApplied {
   implicit val format: OFormat[ClaimsNotApplied] = Json.format[ClaimsNotApplied]

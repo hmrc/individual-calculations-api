@@ -35,4 +35,5 @@ class Class2NicDetailSpec extends UnitSpec with JsonErrorValidators {
       "class2VoluntaryContributions"
     )
   )
+
 }

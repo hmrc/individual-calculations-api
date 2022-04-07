@@ -58,19 +58,19 @@ class EnumsSpec extends UnitSpec with Inspectors {
           """.stripMargin)
 
     "generates reads" in {
-      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
+      forAll(List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         json(value).as[Foo[Enum]] shouldBe Foo(value)
       }
     }
 
     "generates writes" in {
-      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
+      forAll(List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         Json.toJson(Foo(value)) shouldBe json(value)
       }
     }
 
     "allow roundtrip" in {
-      forAll (List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
+      forAll(List(`enum-one`, `enum-two`, `enum-three`)) { value: Enum =>
         val foo = Foo(value)
         Json.toJson(foo).as[Foo[Enum]] shouldBe foo
       }
@@ -142,4 +142,5 @@ class EnumsSpec extends UnitSpec with Inspectors {
         """.stripMargin)
     }
   }
+
 }

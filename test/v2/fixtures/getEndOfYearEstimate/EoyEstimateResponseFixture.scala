@@ -31,14 +31,16 @@ object EoyEstimateResponseFixture {
       id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     )
 
-  val eoyEstimateResponseJson: JsObject = Json.parse(
-    s"""
+  val eoyEstimateResponseJson: JsObject = Json
+    .parse(
+      s"""
        |{
        |  "summary": $eoyEstimateSummaryJson,
        |  "detail": $eoyEstimateDetailJson
        |}
      """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
   val eoyEstimateResponseTopLevelJson: JsValue = Json.parse(
     s"""
@@ -51,4 +53,5 @@ object EoyEstimateResponseFixture {
        |}
      """.stripMargin
   )
+
 }

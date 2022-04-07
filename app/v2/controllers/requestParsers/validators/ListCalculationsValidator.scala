@@ -40,4 +40,5 @@ class ListCalculationsValidator extends Validator[ListCalculationsRawData] {
   override def validate(data: ListCalculationsRawData): List[MtdError] = {
     run(validationSet, data).distinct
   }
+
 }

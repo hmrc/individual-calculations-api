@@ -49,6 +49,7 @@ trait JsonErrorValidators {
       case JsError(jsErrors) => jsErrors
       case JsSuccess(_, _)   => fail("A JSON error was expected")
     }
+
   }
 
   implicit class JsValueOps(json: JsValue) {
@@ -61,6 +62,7 @@ trait JsonErrorValidators {
           valid = x => x
         )
     }
+
   }
 
   def testMandatoryProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
@@ -152,4 +154,5 @@ trait JsonErrorValidators {
       case (path, errs @ _ :: _)                      => fail(s"multiple errors returned for $path but only 1 required : $errs")
     }
   }
+
 }

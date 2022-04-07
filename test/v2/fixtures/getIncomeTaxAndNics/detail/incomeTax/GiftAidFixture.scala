@@ -21,12 +21,12 @@ import v2.models.response.getIncomeTaxAndNics.detail.incomeTax.GiftAid
 
 object GiftAidFixture {
 
-  val grossGiftAidPayments: BigInt = 100
-  val rate: BigDecimal = 200.25
-  val giftAidTax: BigDecimal = 300.25
-  val giftAidTaxReductions: Option[BigDecimal] = Some(400.25)
+  val grossGiftAidPayments: BigInt                                  = 100
+  val rate: BigDecimal                                              = 200.25
+  val giftAidTax: BigDecimal                                        = 300.25
+  val giftAidTaxReductions: Option[BigDecimal]                      = Some(400.25)
   val incomeTaxChargedAfterGiftAidTaxReductions: Option[BigDecimal] = Some(500.25)
-  val giftAidCharge: Option[BigDecimal] = Some(600.25)
+  val giftAidCharge: Option[BigDecimal]                             = Some(600.25)
 
   val giftAidModel: GiftAid =
     GiftAid(
@@ -50,4 +50,5 @@ object GiftAidFixture {
        |}
      """.stripMargin
   )
+
 }

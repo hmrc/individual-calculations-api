@@ -28,7 +28,7 @@ trait BackendResponseMappingSupport {
   self: Logging =>
 
   final def mapBackendErrors[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(
-    backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
+      backendResponseWrapper: ResponseWrapper[BackendError])(implicit logContext: EndpointLogContext): ErrorWrapper = {
 
     val defaultErrorCodeMapping: String => (Int, MtdError) = { code =>
       logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
@@ -65,8 +65,8 @@ trait BackendResponseMappingSupport {
     }
   }
 
-  final def mapDesErrors[D](errorCodeMap: PartialFunction[String, MtdError])(desResponseWrapper: ResponseWrapper[BackendError])(
-    implicit logContext: EndpointLogContext): ErrorWrapper = {
+  final def mapDesErrors[D](errorCodeMap: PartialFunction[String, MtdError])(desResponseWrapper: ResponseWrapper[BackendError])(implicit
+      logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
       logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
@@ -94,8 +94,9 @@ trait BackendResponseMappingSupport {
     }
   }
 
-  def directMap[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(outcome: BackendOutcome[D])(
-      implicit logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
+  def directMap[D](passThroughErrors: Seq[MtdError], errorCodeMap: PartialFunction[String, (Int, MtdError)])(outcome: BackendOutcome[D])(implicit
+      logContext: EndpointLogContext): Either[ErrorWrapper, ResponseWrapper[D]] = {
     outcome.leftMap(mapBackendErrors(passThroughErrors, errorCodeMap))
   }
+
 }

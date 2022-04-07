@@ -31,4 +31,5 @@ class OtherIncomeRfcDetailSpec extends UnitSpec with JsonErrorValidators {
       "broughtFwdResidentialFinancialCostAmount"
     )
   )
+
 }

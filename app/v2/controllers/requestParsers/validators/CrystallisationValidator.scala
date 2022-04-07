@@ -55,4 +55,5 @@ class CrystallisationValidator extends Validator[CrystallisationRawData] {
       CalculationIdValidation.validate(requestBodyData.calculationId)
     )
   }
+
 }

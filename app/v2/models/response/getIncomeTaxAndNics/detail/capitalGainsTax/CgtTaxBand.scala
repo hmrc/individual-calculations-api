@@ -18,10 +18,7 @@ package v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax
 
 import play.api.libs.json.{Json, OFormat}
 
-case class CgtTaxBand(name: CgtTaxBandName,
-                      rate: BigDecimal,
-                      income: BigDecimal,
-                      taxAmount: BigDecimal)
+case class CgtTaxBand(name: CgtTaxBandName, rate: BigDecimal, income: BigDecimal, taxAmount: BigDecimal)
 
 object CgtTaxBand {
   implicit val format: OFormat[CgtTaxBand] = Json.format[CgtTaxBand]

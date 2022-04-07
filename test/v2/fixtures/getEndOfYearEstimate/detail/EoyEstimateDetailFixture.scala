@@ -66,4 +66,5 @@ object EoyEstimateDetailFixture {
        |}
      """.stripMargin
   )
+
 }

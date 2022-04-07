@@ -21,17 +21,17 @@ import v2.models.response.getIncomeTaxAndNics.summary.CapitalGainsTaxSummary
 
 object CapitalGainsTaxSummaryFixture {
 
-  val totalCapitalGainsIncome: BigDecimal = 100.25
-  val annualExemptionAmount: BigDecimal = 200.25
-  val totalTaxableGains: BigDecimal = 300.25
-  val capitalGainsTaxAmount: Option[BigDecimal] = Some(400.25)
-  val adjustments: Option[BigDecimal] = Some(500.25)
-  val adjustedCapitalGainsTax: Option[BigDecimal] = Some(600.25)
-  val foreignTaxCreditRelief: Option[BigDecimal] = Some(700.25)
+  val totalCapitalGainsIncome: BigDecimal          = 100.25
+  val annualExemptionAmount: BigDecimal            = 200.25
+  val totalTaxableGains: BigDecimal                = 300.25
+  val capitalGainsTaxAmount: Option[BigDecimal]    = Some(400.25)
+  val adjustments: Option[BigDecimal]              = Some(500.25)
+  val adjustedCapitalGainsTax: Option[BigDecimal]  = Some(600.25)
+  val foreignTaxCreditRelief: Option[BigDecimal]   = Some(700.25)
   val capitalGainsTaxAfterFTCR: Option[BigDecimal] = Some(800.25)
-  val taxOnGainsAlreadyPaid: Option[BigDecimal] = Some(900.25)
-  val capitalGainsTaxDue: BigDecimal = 1000.25
-  val capitalGainsOverpaid: Option[BigDecimal] = Some(1100.25)
+  val taxOnGainsAlreadyPaid: Option[BigDecimal]    = Some(900.25)
+  val capitalGainsTaxDue: BigDecimal               = 1000.25
+  val capitalGainsOverpaid: Option[BigDecimal]     = Some(1100.25)
 
   val capitalGainsTaxSummaryModel: CapitalGainsTaxSummary = CapitalGainsTaxSummary(
     totalCapitalGainsIncome = totalCapitalGainsIncome,
@@ -47,8 +47,7 @@ object CapitalGainsTaxSummaryFixture {
     capitalGainsOverpaid = capitalGainsOverpaid
   )
 
-  val capitalGainsTaxSummaryJson: JsValue = Json.parse(
-    s"""
+  val capitalGainsTaxSummaryJson: JsValue = Json.parse(s"""
       |{
       |  "totalCapitalGainsIncome": $totalCapitalGainsIncome,
       |  "annualExemptionAmount": $annualExemptionAmount,

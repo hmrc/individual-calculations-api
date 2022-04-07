@@ -23,7 +23,7 @@ import scala.concurrent.Future
 
 class NrsProxyConnectorSpec extends ConnectorSpec {
 
-  val nino: String = "AA111111A"
+  val nino: String          = "AA111111A"
   val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: CrystallisationRequestBody = CrystallisationRequestBody(calculationId)
@@ -47,11 +47,12 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
             url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
             config = dummyHeaderCarrierConfig,
             body = request
-          ).returns(Future.successful((): Unit))
+          )
+          .returns(Future.successful((): Unit))
 
-
-        await(connector.submit(nino, request)) shouldBe (():Unit)
+        await(connector.submit(nino, request)) shouldBe ((): Unit)
       }
     }
   }
+
 }

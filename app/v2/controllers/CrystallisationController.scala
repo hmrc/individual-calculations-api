@@ -34,15 +34,17 @@ import v2.services._
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CrystallisationController @Inject()(val authService: EnrolmentsAuthService,
-                                          val lookupService: MtdIdLookupService,
-                                          requestParser: CrystallisationRequestParser,
-                                          service: CrystallisationService,
-                                          nrsProxyService: NrsProxyService,
-                                          auditService: AuditService,
-                                          cc: ControllerComponents,
-                                          val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
-  extends AuthorisedController(cc) with BaseController with Logging {
+class CrystallisationController @Inject() (val authService: EnrolmentsAuthService,
+                                           val lookupService: MtdIdLookupService,
+                                           requestParser: CrystallisationRequestParser,
+                                           service: CrystallisationService,
+                                           nrsProxyService: NrsProxyService,
+                                           auditService: AuditService,
+                                           cc: ControllerComponents,
+                                           val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends AuthorisedController(cc)
+    with BaseController
+    with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
@@ -52,7 +54,6 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
 
   def declareCrystallisation(nino: String, taxYear: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
-
       implicit val correlationId: String = idGenerator.getCorrelationId
       logger.info(
         s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
@@ -78,8 +79,12 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
           )
 
           auditSubmission(
-            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
-              serviceResponse.correlationId, AuditResponse(httpStatus = NO_CONTENT, response = Right(None))
+            GenericAuditDetail(
+              request.userDetails,
+              Map("nino" -> nino, "taxYear" -> taxYear),
+              Some(request.body),
+              serviceResponse.correlationId,
+              AuditResponse(httpStatus = NO_CONTENT, response = Right(None))
             )
           )
 
@@ -90,14 +95,18 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
 
       result.leftMap { errorWrapper =>
         val resCorrelationId = errorWrapper.correlationId
-        val result = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
+        val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
         logger.warn(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: $resCorrelationId")
 
         auditSubmission(
-          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), Some(request.body),
-            resCorrelationId, AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
+          GenericAuditDetail(
+            request.userDetails,
+            Map("nino" -> nino, "taxYear" -> taxYear),
+            Some(request.body),
+            resCorrelationId,
+            AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
           )
         )
 
@@ -107,23 +116,18 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     (errorWrapper.error: @unchecked) match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError |
-           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-           CalculationIdFormatError | CustomMtdError(RuleIncorrectOrEmptyBodyError.code)
-      => BadRequest(Json.toJson(errorWrapper))
-      case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError |
-        RuleResidencyChangedError | RuleFinalDeclarationReceivedError
-      => Forbidden(Json.toJson(errorWrapper))
-      case RuleIncomeSourcesInvalid | RuleNoIncomeSubmissionsExistError |
-           RuleSubmissionFailed => Forbidden(Json.toJson(errorWrapper))
-      case NotFoundError => NotFound(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
+      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
+          CalculationIdFormatError | CustomMtdError(RuleIncorrectOrEmptyBodyError.code) =>
+        BadRequest(Json.toJson(errorWrapper))
+      case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError | RuleResidencyChangedError | RuleFinalDeclarationReceivedError =>
+        Forbidden(Json.toJson(errorWrapper))
+      case RuleIncomeSourcesInvalid | RuleNoIncomeSubmissionsExistError | RuleSubmissionFailed => Forbidden(Json.toJson(errorWrapper))
+      case NotFoundError                                                                       => NotFound(Json.toJson(errorWrapper))
+      case DownstreamError                                                                     => InternalServerError(Json.toJson(errorWrapper))
     }
   }
 
-  private def auditSubmission(details: GenericAuditDetail)
-                             (implicit hc: HeaderCarrier,
-                              ec: ExecutionContext): Future[AuditResult] = {
+  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
 
     val event: AuditEvent[GenericAuditDetail] = AuditEvent(
       auditType = "SubmitSelfAssessmentCrystallisationDeclaration",
@@ -133,4 +137,5 @@ class CrystallisationController @Inject()(val authService: EnrolmentsAuthService
 
     auditService.auditEvent(event)
   }
+
 }

@@ -54,4 +54,5 @@ class CalculationWrapperOrErrorSpec extends UnitSpec {
       }
     }
   }
+
 }

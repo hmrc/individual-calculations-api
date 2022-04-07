@@ -19,10 +19,7 @@ package v2.models.response.getTaxableIncome.detail.selfEmployment.detail
 import play.api.libs.json._
 import v2.models.response.common.LossType
 
-case class LossBroughtForward(lossType: LossType,
-                              taxYearLossIncurred: String,
-                              currentLossValue: BigDecimal,
-                              mtdLoss: Boolean)
+case class LossBroughtForward(lossType: LossType, taxYearLossIncurred: String, currentLossValue: BigDecimal, mtdLoss: Boolean)
 
 object LossBroughtForward {
   implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]

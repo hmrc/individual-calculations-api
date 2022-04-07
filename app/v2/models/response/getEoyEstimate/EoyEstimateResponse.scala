@@ -29,18 +29,21 @@ case class EoyEstimateResponse(summary: EoyEstimateSummary, detail: EoyEstimateD
 object EoyEstimateResponse extends HateoasLinks {
 
   implicit val writes: OWrites[EoyEstimateResponse] = new OWrites[EoyEstimateResponse] {
+
     def writes(response: EoyEstimateResponse): JsObject =
       Json.obj(
         "summary" -> response.summary,
-        "detail" -> response.detail
+        "detail"  -> response.detail
       )
+
   }
-  implicit val reads: Reads[EoyEstimateResponse] = (
-    (JsPath \ "endOfYearEstimate" \ "summary").read[EoyEstimateSummary] and
-      (JsPath \ "endOfYearEstimate" \ "detail").read[EoyEstimateDetail] and
-      (JsPath \ "metadata" \ "id").read[String])(EoyEstimateResponse.apply _)
+
+  implicit val reads: Reads[EoyEstimateResponse] = ((JsPath \ "endOfYearEstimate" \ "summary").read[EoyEstimateSummary] and
+    (JsPath \ "endOfYearEstimate" \ "detail").read[EoyEstimateDetail] and
+    (JsPath \ "metadata" \ "id").read[String])(EoyEstimateResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[EoyEstimateResponse, EoyEstimateHateoasData] {
+
     override def links(appConfig: AppConfig, data: EoyEstimateHateoasData): Seq[Link] = {
       import data.{calculationId, nino}
       Seq(
@@ -48,6 +51,7 @@ object EoyEstimateResponse extends HateoasLinks {
         getEoyEstimate(appConfig, nino, calculationId, isSelf = true)
       )
     }
+
   }
 
 }

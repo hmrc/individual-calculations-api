@@ -34,7 +34,7 @@ class RetrieveCalculationValidator extends Validator[RetrieveCalculationRawData]
 
   private def ruleValidation: RetrieveCalculationRawData => List[List[MtdError]] = { data =>
     List(
-      TaxYearNotSupportedValidation.validate(data.taxYear),
+      TaxYearNotSupportedValidation.validate(data.taxYear)
     )
   }
 

@@ -20,7 +20,6 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import utils.IdGenerator
 
-
 trait MockIdGenerator extends MockFactory {
 
   val mockIdGenerator: IdGenerator = mock[IdGenerator]
@@ -28,4 +27,5 @@ trait MockIdGenerator extends MockFactory {
   object MockIdGenerator {
     def getCorrelationId: CallHandler[String] = (mockIdGenerator.getCorrelationId _).expects()
   }
+
 }

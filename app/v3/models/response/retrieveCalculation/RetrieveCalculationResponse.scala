@@ -26,10 +26,10 @@ import v3.models.response.retrieveCalculation.messages.Messages
 import v3.models.response.retrieveCalculation.metadata.Metadata
 
 case class RetrieveCalculationResponse(
-                                        metadata: Metadata,
-                                        inputs: Inputs,
-                                        calculation: Option[Calculation],
-                                        messages: Option[Messages]
+    metadata: Metadata,
+    inputs: Inputs,
+    calculation: Option[Calculation],
+    messages: Option[Messages]
 )
 
 object RetrieveCalculationResponse extends HateoasLinks {
@@ -38,10 +38,13 @@ object RetrieveCalculationResponse extends HateoasLinks {
   implicit val writes: OWrites[RetrieveCalculationResponse] = Json.writes[RetrieveCalculationResponse]
 
   implicit object LinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
+
     override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
       Seq()
     }
+
   }
+
 }
 
 case class RetrieveCalculationHateoasData(nino: String, taxYear: String, calculationId: String) extends HateoasData

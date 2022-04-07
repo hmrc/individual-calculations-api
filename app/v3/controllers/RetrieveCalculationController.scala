@@ -31,20 +31,20 @@ import v3.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject()(authService: EnrolmentsAuthService,
-                                              lookupService: MtdIdLookupService,
-                                              retrieveCalculationParser: RetrieveCalculationParser,
-                                              service: StandardService,
-                                              hateoasFactory: HateoasFactory,
-                                              auditService: AuditService,
-                                              cc: ControllerComponents,
-                                              idGenerator: IdGenerator,
-)(implicit val ec: ExecutionContext)
-    extends StandardController[RetrieveCalculationRawData,
-                               RetrieveCalculationRequest,
-                               RetrieveCalculationResponse,
-                               HateoasWrapper[RetrieveCalculationResponse],
-                               AnyContent](authService, lookupService, retrieveCalculationParser, service, auditService, cc, idGenerator) {
+class RetrieveCalculationController @Inject() (authService: EnrolmentsAuthService,
+                                               lookupService: MtdIdLookupService,
+                                               retrieveCalculationParser: RetrieveCalculationParser,
+                                               service: StandardService,
+                                               hateoasFactory: HateoasFactory,
+                                               auditService: AuditService,
+                                               cc: ControllerComponents,
+                                               idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+    extends StandardController[
+      RetrieveCalculationRawData,
+      RetrieveCalculationRequest,
+      RetrieveCalculationResponse,
+      HateoasWrapper[RetrieveCalculationResponse],
+      AnyContent](authService, lookupService, retrieveCalculationParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -80,4 +80,5 @@ class RetrieveCalculationController @Inject()(authService: EnrolmentsAuthService
 
       doHandleRequest(rawData)
     }
+
 }

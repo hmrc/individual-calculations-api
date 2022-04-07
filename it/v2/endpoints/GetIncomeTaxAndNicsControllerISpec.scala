@@ -30,12 +30,13 @@ class GetIncomeTaxAndNicsControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String          = "AA123456A"
     val correlationId: String = "X-123"
-    val calcId: String = fixtureCalculationId
+    val calcId: String        = fixtureCalculationId
 
-    val linksJson: JsObject = Json.parse(
-      s"""
+    val linksJson: JsObject = Json
+      .parse(
+        s"""
          |{
          |   "links":[
          |      {
@@ -51,7 +52,8 @@ class GetIncomeTaxAndNicsControllerISpec extends V2IntegrationBaseSpec {
          |   ]
          |}
         """.stripMargin
-    ).as[JsObject]
+      )
+      .as[JsObject]
 
     def uri: String = s"/$nino/self-assessment/$calcId/income-tax-nics-calculated"
 
@@ -64,6 +66,7 @@ class GetIncomeTaxAndNicsControllerISpec extends V2IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
+
   }
 
   "Calling the get income tax calculation endpoint" should {
@@ -169,4 +172,5 @@ class GetIncomeTaxAndNicsControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

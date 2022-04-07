@@ -73,10 +73,10 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
 
   "LinksFactory" when {
     class Test extends MockAppConfig {
-      val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val hateoasFactory  = new HateoasFactory(mockAppConfig)
+      val nino: String    = "someNino"
       val taxYear: String = "2018-19"
-      val calcId: String = "someCalcId"
+      val calcId: String  = "someCalcId"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
@@ -93,4 +93,5 @@ class IntentToCrystalliseResponseSpec extends UnitSpec {
       }
     }
   }
+
 }

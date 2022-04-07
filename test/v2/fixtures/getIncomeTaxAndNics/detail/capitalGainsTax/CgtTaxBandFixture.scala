@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v2.models.response.getIncomeTaxAndNics.detail.capitalGainsTax.{CgtTaxBand, CgtTaxBandName}
 
 object CgtTaxBandFixture {
+
   def cgtTaxBandModel(name: CgtTaxBandName): CgtTaxBand =
     CgtTaxBand(
       name = name,
@@ -38,4 +39,5 @@ object CgtTaxBandFixture {
       |}
      """.stripMargin
   )
+
 }

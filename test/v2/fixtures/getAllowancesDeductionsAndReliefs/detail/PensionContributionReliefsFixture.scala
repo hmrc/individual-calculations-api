@@ -21,8 +21,8 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.PensionContri
 
 object PensionContributionReliefsFixture {
 
-  val totalPensionContributionReliefs: BigDecimal = 12500.01
-  val regularPensionContributions: Option[BigDecimal] = Some(12501.02)
+  val totalPensionContributionReliefs: BigDecimal        = 12500.01
+  val regularPensionContributions: Option[BigDecimal]    = Some(12501.02)
   val oneOffPensionContributionsPaid: Option[BigDecimal] = Some(12502.03)
 
   val pensionContributionReliefsModel: PensionContributionReliefs =
@@ -41,4 +41,5 @@ object PensionContributionReliefsFixture {
       |}
     """.stripMargin
   )
+
 }

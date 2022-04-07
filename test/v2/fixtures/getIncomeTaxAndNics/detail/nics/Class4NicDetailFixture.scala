@@ -24,7 +24,7 @@ import v2.models.response.getIncomeTaxAndNics.detail.nics.Class4NicDetail
 object Class4NicDetailFixture {
 
   val totalIncomeLiableToClass4Charge: Option[BigInt] = Some(3003)
-  val totalIncomeChargeableToClass4: Option[BigInt] = Some(3004)
+  val totalIncomeChargeableToClass4: Option[BigInt]   = Some(3004)
 
   val class4NicDetailModel: Class4NicDetail =
     Class4NicDetail(
@@ -44,4 +44,5 @@ object Class4NicDetailFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -29,19 +29,21 @@ case class TaxableIncomeResponse(summary: CalculationSummary, detail: Calculatio
 object TaxableIncomeResponse extends HateoasLinks {
 
   implicit val writes: OWrites[TaxableIncomeResponse] = new OWrites[TaxableIncomeResponse] {
+
     def writes(response: TaxableIncomeResponse): JsObject =
       Json.obj(
         "summary" -> response.summary,
-        "detail" -> response.detail
+        "detail"  -> response.detail
       )
+
   }
 
-  implicit val reads: Reads[TaxableIncomeResponse] = (
-    (JsPath \ "taxableIncome" \ "summary").read[CalculationSummary] and
-      (JsPath \ "taxableIncome" \ "detail").read[CalculationDetail] and
-      (JsPath \ "metadata" \ "id").read[String]) (TaxableIncomeResponse.apply _)
+  implicit val reads: Reads[TaxableIncomeResponse] = ((JsPath \ "taxableIncome" \ "summary").read[CalculationSummary] and
+    (JsPath \ "taxableIncome" \ "detail").read[CalculationDetail] and
+    (JsPath \ "metadata" \ "id").read[String])(TaxableIncomeResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[TaxableIncomeResponse, TaxableIncomeHateoasData] {
+
     override def links(appConfig: AppConfig, data: TaxableIncomeHateoasData): Seq[Link] = {
 
       Seq(
@@ -49,6 +51,7 @@ object TaxableIncomeResponse extends HateoasLinks {
         getTaxableIncome(appConfig, data.nino, data.calculationId, isSelf = true)
       )
     }
+
   }
 
 }

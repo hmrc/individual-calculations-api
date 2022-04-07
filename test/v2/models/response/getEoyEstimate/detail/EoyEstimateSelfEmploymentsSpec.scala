@@ -31,4 +31,5 @@ class EoyEstimateSelfEmploymentsSpec extends UnitSpec with JsonErrorValidators {
       "finalised"
     )
   )
+
 }

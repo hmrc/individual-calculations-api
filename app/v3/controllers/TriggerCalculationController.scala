@@ -33,20 +33,20 @@ import v3.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
-                                             lookupService: MtdIdLookupService,
-                                             triggerCalculationParser: TriggerCalculationParser,
-                                             service: StandardService,
-                                             hateoasFactory: HateoasFactory,
-                                             auditService: AuditService,
-                                             cc: ControllerComponents,
-                                             idGenerator: IdGenerator,
-                                            )(implicit val ec: ExecutionContext)
-  extends StandardController[TriggerCalculationRawData,
-    TriggerCalculationRequest,
-    TriggerCalculationResponse,
-    HateoasWrapper[TriggerCalculationResponse],
-    JsValue](authService, lookupService, triggerCalculationParser, service, auditService, cc, idGenerator) {
+class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService,
+                                              lookupService: MtdIdLookupService,
+                                              triggerCalculationParser: TriggerCalculationParser,
+                                              service: StandardService,
+                                              hateoasFactory: HateoasFactory,
+                                              auditService: AuditService,
+                                              cc: ControllerComponents,
+                                              idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+    extends StandardController[
+      TriggerCalculationRawData,
+      TriggerCalculationRequest,
+      TriggerCalculationResponse,
+      HateoasWrapper[TriggerCalculationResponse],
+      JsValue](authService, lookupService, triggerCalculationParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -57,10 +57,10 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
 
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
-  override def requestHandlerFor(playRequest: Request[JsValue],
-                                 req: TriggerCalculationRequest): RequestHandler[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
-    RequestHandler[TriggerCalculationResponse](
-      RequestDefn.Post(playRequest.path, playRequest.body))
+  override def requestHandlerFor(
+      playRequest: Request[JsValue],
+      req: TriggerCalculationRequest): RequestHandler[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
+    RequestHandler[TriggerCalculationResponse](RequestDefn.Post(playRequest.path, playRequest.body))
       .withPassThroughErrors(
         NinoFormatError,
         TaxYearFormatError,
@@ -71,8 +71,7 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
         RuleIncorrectOrEmptyBodyError
       )
       .withRequestSuccessCode(ACCEPTED)
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TriggerCalculationHateoasData(req.nino.nino, rawResponse.id)))
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, TriggerCalculationHateoasData(req.nino.nino, rawResponse.id)))
 
   }
 
@@ -82,9 +81,11 @@ class TriggerCalculationController @Inject()(authService: EnrolmentsAuthService,
     val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withBody(
       "triggerASelfAssessmentTaxCalculation",
       "trigger-a-self-assessment-tax-calculation",
-      Map("nino" -> nino), request
+      Map("nino" -> nino),
+      request
     )
 
     doHandleRequest(rawData, Some(auditHandler))
   }
+
 }

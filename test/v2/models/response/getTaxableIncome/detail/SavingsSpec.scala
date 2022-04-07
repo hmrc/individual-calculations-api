@@ -33,4 +33,5 @@ class SavingsSpec extends UnitSpec with JsonErrorValidators {
       "taxDeducted"
     )
   )
+
 }

@@ -29,4 +29,5 @@ class LumpSumsSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

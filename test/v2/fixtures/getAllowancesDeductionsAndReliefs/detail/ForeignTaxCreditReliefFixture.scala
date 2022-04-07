@@ -21,11 +21,11 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.ForeignTaxCre
 
 object ForeignTaxCreditReliefFixture {
 
-  val customerCalculatedRelief: Option[Boolean] = Some(true)
-  val totalForeignTaxCreditRelief: BigDecimal = 14500.99
-  val foreignTaxCreditReliefOnProperty: Option[BigDecimal] = Some(14501.99)
-  val foreignTaxCreditReliefOnDividends: Option[BigDecimal] = Some(14502.99)
-  val foreignTaxCreditReliefOnSavings: Option[BigDecimal] = Some(14503.99)
+  val customerCalculatedRelief: Option[Boolean]                 = Some(true)
+  val totalForeignTaxCreditRelief: BigDecimal                   = 14500.99
+  val foreignTaxCreditReliefOnProperty: Option[BigDecimal]      = Some(14501.99)
+  val foreignTaxCreditReliefOnDividends: Option[BigDecimal]     = Some(14502.99)
+  val foreignTaxCreditReliefOnSavings: Option[BigDecimal]       = Some(14503.99)
   val foreignTaxCreditReliefOnForeignIncome: Option[BigDecimal] = Some(14504.99)
 
   val foreignTaxCreditReliefModel: ForeignTaxCreditRelief =
@@ -50,4 +50,5 @@ object ForeignTaxCreditReliefFixture {
       |}
     """.stripMargin
   )
+
 }

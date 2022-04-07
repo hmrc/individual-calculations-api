@@ -17,5 +17,5 @@
 package v2.models.response.common
 
 trait DownstreamResponse
-class DownstreamUnit extends DownstreamResponse
+class DownstreamUnit  extends DownstreamResponse
 object DownstreamUnit extends DownstreamUnit

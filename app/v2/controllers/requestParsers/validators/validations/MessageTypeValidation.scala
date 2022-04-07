@@ -22,7 +22,7 @@ object MessageTypeValidation {
 
   val typeOptions: Seq[String] = Seq("info", "warning", "error")
 
-  def validateList(queryParams :Seq[String]): List[MtdError] ={
+  def validateList(queryParams: Seq[String]): List[MtdError] = {
     queryParams.flatMap(param => validate(param)).toList
   }
 

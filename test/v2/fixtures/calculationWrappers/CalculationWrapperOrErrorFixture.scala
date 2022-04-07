@@ -28,10 +28,12 @@ object CalculationWrapperOrErrorFixture {
   case class TestCalculation(value: String, id: String)
 
   object TestCalculation {
+
     implicit val reads: Reads[TestCalculation] = (
       (JsPath \ "calculation" \ "value").read[String] and
         (JsPath \ "metadata" \ "id").read[String]
-      ) (TestCalculation.apply _)
+    )(TestCalculation.apply _)
+
   }
 
   val wrappedCalculation: WrappedCalculation = CalculationWrapper(TestCalculation("someValue", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
@@ -55,7 +57,7 @@ object CalculationWrapperOrErrorFixture {
       |  }
       |}
     """.stripMargin
-    )
+  )
 
   val calculationWrapperJsonWithoutErrors: JsValue = Json.parse(
     """
@@ -124,4 +126,5 @@ object CalculationWrapperOrErrorFixture {
       |}
     """.stripMargin
   )
+
 }

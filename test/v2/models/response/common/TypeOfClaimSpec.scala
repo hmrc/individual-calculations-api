@@ -24,8 +24,9 @@ class TypeOfClaimSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testRoundTrip[TypeOfClaim](
     ("carry-forward", `carry-forward`),
-    ("carry-sideways",`carry-sideways`),
+    ("carry-sideways", `carry-sideways`),
     ("carry-forward-to-carry-sideways", `carry-forward-to-carry-sideways`),
     ("carry-sideways-fhl", `carry-sideways-fhl`)
   )
+
 }

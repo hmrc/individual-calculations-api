@@ -20,7 +20,7 @@ import support.UnitSpec
 
 class IdGeneratorSpec extends UnitSpec {
 
-  val generator = new IdGenerator
+  val generator        = new IdGenerator
   val correlationRegex = "^[A-Za-z0-9\\-]{36}$"
 
   "IdGenerator" should {
@@ -30,4 +30,5 @@ class IdGeneratorSpec extends UnitSpec {
       }
     }
   }
+
 }

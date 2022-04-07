@@ -40,6 +40,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
       def action(nino: String): Action[AnyContent] = authorisedAction(nino).async {
         Future.successful(Ok(Json.obj()))
       }
+
     }
 
     lazy val target = new TestController()
@@ -165,4 +166,5 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
       status(result) shouldBe FORBIDDEN
     }
   }
+
 }

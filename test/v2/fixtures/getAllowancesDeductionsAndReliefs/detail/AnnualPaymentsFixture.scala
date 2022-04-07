@@ -22,8 +22,8 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.AnnualPayment
 object AnnualPaymentsFixture {
 
   val grossAnnualPayments: Option[BigDecimal] = Some(12500.99)
-  val reliefClaimed: Option[BigDecimal] = Some(12501.99)
-  val rate: Option[BigDecimal] = Some(12.99)
+  val reliefClaimed: Option[BigDecimal]       = Some(12501.99)
+  val rate: Option[BigDecimal]                = Some(12.99)
 
   val annualPaymentsModel: AnnualPayments =
     AnnualPayments(
@@ -41,4 +41,5 @@ object AnnualPaymentsFixture {
       |}
     """.stripMargin
   )
+
 }

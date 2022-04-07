@@ -27,8 +27,8 @@ trait BaseConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
 
-  private def downstreamHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
-                                                                                            correlationId: String): HeaderCarrier =
+  private def downstreamHeaderCarrier(
+      additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier =
     HeaderCarrier(
       extraHeaders = hc.extraHeaders ++
         // Contract headers
@@ -44,10 +44,11 @@ trait BaseConnector extends Logging {
   private def urlFrom(uri: String): String =
     if (uri.startsWith("/")) s"${appConfig.downstreamBaseUrl}$uri" else s"${appConfig.downstreamBaseUrl}/$uri"
 
-  def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
-                                                     hc: HeaderCarrier,
-                                                     httpReads: HttpReads[BackendOutcome[T]],
-                                                     correlationId: String): Future[BackendOutcome[T]] = {
+  def post[Body: Writes, T](body: Body, uri: String)(implicit
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      httpReads: HttpReads[BackendOutcome[T]],
+      correlationId: String): Future[BackendOutcome[T]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
       http.POST(urlFrom(uri), body)
@@ -56,14 +57,16 @@ trait BaseConnector extends Logging {
     doPost(downstreamHeaderCarrier())
   }
 
-  def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,
-                                                                        hc: HeaderCarrier,
-                                                                        httpReads: HttpReads[BackendOutcome[T]],
-                                                                        correlationId: String): Future[BackendOutcome[T]] = {
+  def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      httpReads: HttpReads[BackendOutcome[T]],
+      correlationId: String): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
       http.GET(urlFrom(uri), queryParameters)
 
     doGet(downstreamHeaderCarrier())
   }
+
 }

@@ -31,4 +31,5 @@ class PensionSavingsDetailBreakdownSpec extends UnitSpec with JsonErrorValidator
       "chargeableAmount"
     )
   )
+
 }

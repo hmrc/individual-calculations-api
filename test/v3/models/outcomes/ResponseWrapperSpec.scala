@@ -40,7 +40,7 @@ class ResponseWrapperSpec extends UnitSpec {
       }
 
       "wrap an error response correctly" in {
-        val err = ErrorWrapper("id", DownstreamError, None, IM_A_TEAPOT)
+        val err            = ErrorWrapper("id", DownstreamError, None, IM_A_TEAPOT)
         val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
         mappedResponse shouldBe Left(err)
       }
@@ -58,4 +58,5 @@ class ResponseWrapperSpec extends UnitSpec {
       }
     }
   }
+
 }

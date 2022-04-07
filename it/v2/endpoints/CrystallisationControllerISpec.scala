@@ -29,14 +29,14 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
-    val mtdTaxYear: String = "2019-20"
+    val nino: String              = "AA123456A"
+    val mtdTaxYear: String        = "2019-20"
     val downstreamTaxYear: String = "2020"
-    val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-    val requestBody: JsObject = Json.obj("calculationId" -> calculationId)
-    val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+    val calculationId: String     = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+    val requestBody: JsObject     = Json.obj("calculationId" -> calculationId)
+    val correlationId: String     = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-    def uri: String = s"/crystallisation/$nino/$mtdTaxYear/crystallise"
+    def uri: String           = s"/crystallisation/$nino/$mtdTaxYear/crystallise"
     def downstreamUri: String = s"/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
@@ -46,6 +46,7 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
+
   }
 
   "declaring crystallisation for a tax year" should {
@@ -96,11 +97,15 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: String, testRequestBody: JsObject, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestTaxYear: String,
+                                testRequestBody: JsObject,
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String = requestNino
-            override val mtdTaxYear: String = requestTaxYear
+            override val nino: String          = requestNino
+            override val mtdTaxYear: String    = requestTaxYear
             override val requestBody: JsObject = testRequestBody
 
             override def setupStubs(): StubMapping = {
@@ -116,16 +121,16 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
           }
         }
 
-        val validRequestBody: JsObject = Json.obj("calculationId" -> "4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
+        val validRequestBody: JsObject   = Json.obj("calculationId" -> "4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
         val invalidRequestBody: JsObject = Json.obj("calculationId" -> "notValidId")
 
         val input = Seq(
           ("AA1123A", "2017-18", validRequestBody, BAD_REQUEST, NinoFormatError),
           ("AA123456A", "20177", validRequestBody, BAD_REQUEST, TaxYearFormatError),
           ("AA123456A", "2015-16", validRequestBody, BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", "2020-22", validRequestBody,  BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("AA123456A", "2017-18", JsObject.empty,  BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
-          ("AA123456A", "2017-18", invalidRequestBody,  BAD_REQUEST, CalculationIdFormatError)
+          ("AA123456A", "2020-22", validRequestBody, BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("AA123456A", "2017-18", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
+          ("AA123456A", "2017-18", invalidRequestBody, BAD_REQUEST, CalculationIdFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
@@ -178,4 +183,5 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

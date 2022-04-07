@@ -39,7 +39,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ListCalculationsControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockListCalculationsParser
@@ -48,8 +48,8 @@ class ListCalculationsControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino = "AA123456A"
-  private val taxYear= "2017-18"
+  private val nino          = "AA123456A"
+  private val taxYear       = "2017-18"
   private val correlationId = "X-123"
 
   val responseBody: JsValue = Json.parse(
@@ -92,20 +92,21 @@ class ListCalculationsControllerSpec
     ))
 
   val testItemHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-item-relationship")
-  val testHateoasLink: Link = Link(href = "/foo/bar", method = POST, rel = "test-relationship")
+  val testHateoasLink: Link     = Link(href = "/foo/bar", method = POST, rel = "test-relationship")
 
   val hateoasResponse: ListCalculationsResponse[HateoasWrapper[CalculationListItem]] = ListCalculationsResponse(
-    Seq(HateoasWrapper(
-      CalculationListItem(
-        id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        calculationTimestamp = "2019-03-17T09:22:59Z",
-        `type` = CalculationType.inYear,
-        requestedBy = Some(CalculationRequestor.hmrc)
-      ),
-      Seq(testItemHateoasLink)
-    )))
+    Seq(
+      HateoasWrapper(
+        CalculationListItem(
+          id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          calculationTimestamp = "2019-03-17T09:22:59Z",
+          `type` = CalculationType.inYear,
+          requestedBy = Some(CalculationRequestor.hmrc)
+        ),
+        Seq(testItemHateoasLink)
+      )))
 
-  private val rawData = ListCalculationsRawData(nino, Some(taxYear))
+  private val rawData     = ListCalculationsRawData(nino, Some(taxYear))
   private val requestData = ListCalculationsRequest(Nino(nino), taxYear)
 
   private def uri = "/input/uri"
@@ -195,4 +196,5 @@ class ListCalculationsControllerSpec
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
+
 }

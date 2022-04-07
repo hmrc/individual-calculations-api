@@ -30,4 +30,5 @@ object EoyEstimateIncomeSourceSummary {
   object IncomeSourceSummaryWithFinalised {
     implicit val format: OFormat[IncomeSourceSummaryWithFinalised] = Json.format[IncomeSourceSummaryWithFinalised]
   }
+
 }

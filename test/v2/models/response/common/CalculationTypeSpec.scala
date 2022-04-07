@@ -26,4 +26,5 @@ class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     ("inYear", inYear),
     ("crystallisation", crystallisation)
   )
+
 }

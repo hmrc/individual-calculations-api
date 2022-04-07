@@ -53,4 +53,5 @@ class EoyEstimateWrapperOrErrorSpec extends UnitSpec {
       }
     }
   }
+
 }

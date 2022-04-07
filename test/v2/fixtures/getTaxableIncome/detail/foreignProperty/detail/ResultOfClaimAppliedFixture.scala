@@ -22,14 +22,14 @@ import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.ResultO
 
 object ResultOfClaimAppliedFixture {
 
-  val claimId: Option[String] = Some("CCIS12345678901")
+  val claimId: Option[String]            = Some("CCIS12345678901")
   val originatingClaimId: Option[String] = Some("CCIS12345678901")
-  val taxYearClaimMade: String = "2019-20"
-  val claimType: TypeOfClaim = TypeOfClaim.`carry-forward`
-  val mtdLoss: Boolean = true
-  val taxYearLossIncurred: String = "2018-19"
-  val lossAmountUsed: BigInt = 1000
-  val remainingLossValue: BigInt = 4000
+  val taxYearClaimMade: String           = "2019-20"
+  val claimType: TypeOfClaim             = TypeOfClaim.`carry-forward`
+  val mtdLoss: Boolean                   = true
+  val taxYearLossIncurred: String        = "2018-19"
+  val lossAmountUsed: BigInt             = 1000
+  val remainingLossValue: BigInt         = 4000
 
   val resultOfClaimAppliedModel: ResultOfClaimsApplied =
     ResultOfClaimsApplied(
@@ -57,4 +57,5 @@ object ResultOfClaimAppliedFixture {
       |}
     """.stripMargin
   )
+
 }

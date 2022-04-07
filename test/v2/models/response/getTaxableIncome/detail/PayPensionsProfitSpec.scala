@@ -50,4 +50,5 @@ class PayPensionsProfitSpec extends UnitSpec with JsonErrorValidators {
       "businessProfitAndLoss"
     )
   )
+
 }

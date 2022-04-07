@@ -35,15 +35,17 @@ import v2.services.{AuditService, EnrolmentsAuthService, IntentToCrystalliseServ
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthService,
-                                              val lookupService: MtdIdLookupService,
-                                              requestParser: IntentToCrystalliseRequestParser,
-                                              service: IntentToCrystalliseService,
-                                              auditService: AuditService,
-                                              hateoasFactory: HateoasFactory,
-                                              cc: ControllerComponents,
-                                              val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
-  extends AuthorisedController(cc) with BaseController with Logging {
+class IntentToCrystalliseController @Inject() (val authService: EnrolmentsAuthService,
+                                               val lookupService: MtdIdLookupService,
+                                               requestParser: IntentToCrystalliseRequestParser,
+                                               service: IntentToCrystalliseService,
+                                               auditService: AuditService,
+                                               hateoasFactory: HateoasFactory,
+                                               cc: ControllerComponents,
+                                               val idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends AuthorisedController(cc)
+    with BaseController
+    with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
@@ -53,7 +55,6 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
 
   def submitIntentToCrystallise(nino: String, taxYear: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-
       implicit val correlationId: String = idGenerator.getCorrelationId
       logger.info(
         s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
@@ -66,13 +67,15 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
 
       val result =
         for {
-          parsedRequest <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
+          parsedRequest   <- EitherT.fromEither[Future](requestParser.parseRequest(rawData))
           serviceResponse <- EitherT(service.submitIntentToCrystallise(parsedRequest))
           hateoasResponse <- EitherT.fromEither[Future](
-            hateoasFactory.wrap(
-              serviceResponse.responseData,
-              IntentToCrystalliseHateaosData(nino, taxYear, serviceResponse.responseData.calculationId)
-            ).asRight[ErrorWrapper])
+            hateoasFactory
+              .wrap(
+                serviceResponse.responseData,
+                IntentToCrystalliseHateaosData(nino, taxYear, serviceResponse.responseData.calculationId)
+              )
+              .asRight[ErrorWrapper])
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
@@ -80,8 +83,12 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
           )
 
           auditSubmission(
-            GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
-              serviceResponse.correlationId, AuditResponse(httpStatus = OK, response = Right(Some(Json.toJson(hateoasResponse))))
+            GenericAuditDetail(
+              request.userDetails,
+              Map("nino" -> nino, "taxYear" -> taxYear),
+              None,
+              serviceResponse.correlationId,
+              AuditResponse(httpStatus = OK, response = Right(Some(Json.toJson(hateoasResponse))))
             )
           )
 
@@ -92,14 +99,18 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
 
       result.leftMap { errorWrapper =>
         val resCorrelationId = errorWrapper.correlationId
-        val result = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
+        val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
         logger.warn(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: $resCorrelationId")
 
         auditSubmission(
-          GenericAuditDetail(request.userDetails, Map("nino" -> nino, "taxYear" -> taxYear), None,
-            resCorrelationId, AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
+          GenericAuditDetail(
+            request.userDetails,
+            Map("nino" -> nino, "taxYear" -> taxYear),
+            None,
+            resCorrelationId,
+            AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
           )
         )
 
@@ -109,17 +120,14 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     (errorWrapper.error: @unchecked) match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError |
-           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError
-      => BadRequest(Json.toJson(errorWrapper))
+      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError =>
+        BadRequest(Json.toJson(errorWrapper))
       case RuleNoSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
+      case DownstreamError                                                 => InternalServerError(Json.toJson(errorWrapper))
     }
   }
 
-  private def auditSubmission(details: GenericAuditDetail)
-                             (implicit hc: HeaderCarrier,
-                              ec: ExecutionContext): Future[AuditResult] = {
+  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
 
     val event: AuditEvent[GenericAuditDetail] = AuditEvent(
       auditType = "TriggerIntentToCrystalliseSelfAssessmentCalculation",
@@ -129,4 +137,5 @@ class IntentToCrystalliseController @Inject()(val authService: EnrolmentsAuthSer
 
     auditService.auditEvent(event)
   }
+
 }

@@ -22,7 +22,7 @@ import v2.models.response.calculationWrappers.EoyEstimateWrapperOrError
 import v2.models.response.calculationWrappers.EoyEstimateWrapperOrError.EoyEstimateWrapper
 
 object EoyEstimateWrapperOrErrorFixture {
-  
+
   val wrappedEoyEstimateModel: EoyEstimateWrapperOrError = EoyEstimateWrapper(eoyEstimateResponseModel)
 
   val eoyEstimateWrapperJsonWithErrors: JsValue = Json.parse(
@@ -116,4 +116,5 @@ object EoyEstimateWrapperOrErrorFixture {
        |}
      """.stripMargin
   )
+
 }

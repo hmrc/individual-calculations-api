@@ -21,21 +21,21 @@ import v2.models.response.getEoyEstimate.summary.EoyEstimateSummary
 
 object EoyEstimateSummaryFixture {
 
-  val totalEstimatedIncome: Option[BigInt] = Some(1000)
-  val totalTaxableIncome: Option[BigInt] = Some(2000)
-  val incomeTaxAmount: Option[BigDecimal] = Some(3000.98)
-  val nic2: Option[BigDecimal] = Some(4000.98)
-  val nic4: Option[BigDecimal] = Some(5000.98)
-  val totalNicAmount: Option[BigDecimal] = Some(6000.98)
+  val totalEstimatedIncome: Option[BigInt]                 = Some(1000)
+  val totalTaxableIncome: Option[BigInt]                   = Some(2000)
+  val incomeTaxAmount: Option[BigDecimal]                  = Some(3000.98)
+  val nic2: Option[BigDecimal]                             = Some(4000.98)
+  val nic4: Option[BigDecimal]                             = Some(5000.98)
+  val totalNicAmount: Option[BigDecimal]                   = Some(6000.98)
   val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(3000.98)
-  val totalAnnualPaymentsTaxCharged: Option[BigDecimal] = Some(5000.98)
-  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(7000.98)
-  val totalTaxDeducted: Option[BigDecimal] = Some(9000.98)
-  val incomeTaxNicAmount: Option[BigDecimal] = Some(7000.98)
-  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(8000.98)
-  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(9000.98)
-  val cgtAmount: Option[BigDecimal] = Some(9100.98)
-  val incomeTaxNicAndCgtAmount: Option[BigDecimal] = Some(9200.98)
+  val totalAnnualPaymentsTaxCharged: Option[BigDecimal]    = Some(5000.98)
+  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal]   = Some(7000.98)
+  val totalTaxDeducted: Option[BigDecimal]                 = Some(9000.98)
+  val incomeTaxNicAmount: Option[BigDecimal]               = Some(7000.98)
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal]  = Some(8000.98)
+  val saUnderpaymentsCodedOut: Option[BigDecimal]          = Some(9000.98)
+  val cgtAmount: Option[BigDecimal]                        = Some(9100.98)
+  val incomeTaxNicAndCgtAmount: Option[BigDecimal]         = Some(9200.98)
 
   val eoyEstimateSummaryModel: EoyEstimateSummary =
     EoyEstimateSummary(
@@ -77,4 +77,5 @@ object EoyEstimateSummaryFixture {
        |}
     """.stripMargin
   )
+
 }

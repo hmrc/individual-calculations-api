@@ -22,13 +22,13 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.summary.LossCla
 object LossClaimSummaryFixture {
 
   val totalBroughtForwardIncomeTaxLosses: Option[BigDecimal] = Some(1)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigDecimal] = Some(2)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigDecimal]  = Some(2)
   val totalIncomeTaxLossesCarriedForward: Option[BigDecimal] = Some(3)
-  val totalBroughtForwardClass4Losses: Option[BigDecimal] = Some(1)
-  val broughtForwardClass4LossesUsed: Option[BigDecimal] = Some(2)
-  val carrySidewaysClass4LossesUsed: Option[BigDecimal] = Some(2)
-  val totalClass4LossesCarriedForward: Option[BigDecimal] = Some(3)
-  val carrySidewaysIncomeTaxLossesUsed: Option[BigDecimal] = Some(2)
+  val totalBroughtForwardClass4Losses: Option[BigDecimal]    = Some(1)
+  val broughtForwardClass4LossesUsed: Option[BigDecimal]     = Some(2)
+  val carrySidewaysClass4LossesUsed: Option[BigDecimal]      = Some(2)
+  val totalClass4LossesCarriedForward: Option[BigDecimal]    = Some(3)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigDecimal]   = Some(2)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
     LossClaimsSummary(
@@ -56,4 +56,5 @@ object LossClaimSummaryFixture {
        |}
      """.stripMargin
   )
+
 }

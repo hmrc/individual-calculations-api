@@ -21,9 +21,9 @@ import v2.models.response.getEoyEstimate.detail.EoyEstimateUkSavings
 
 object EoyEstimateUkSavingsFixture {
 
-  val savingsAccountId: String = "yW4zuqfGBZGPlpq"
+  val savingsAccountId: String           = "yW4zuqfGBZGPlpq"
   val savingsAccountName: Option[String] = Some("bank & building account 1")
-  val taxableIncome: BigInt = 1001
+  val taxableIncome: BigInt              = 1001
 
   val eoyEstimateUkSavingsModel: EoyEstimateUkSavings =
     EoyEstimateUkSavings(
@@ -41,4 +41,5 @@ object EoyEstimateUkSavingsFixture {
        |}
      """.stripMargin
   )
+
 }

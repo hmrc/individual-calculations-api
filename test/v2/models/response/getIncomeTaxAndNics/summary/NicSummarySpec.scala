@@ -30,4 +30,5 @@ class NicSummarySpec extends UnitSpec with JsonErrorValidators {
       "totalNic"
     )
   )
+
 }

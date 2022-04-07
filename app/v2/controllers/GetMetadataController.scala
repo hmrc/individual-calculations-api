@@ -33,20 +33,22 @@ import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
-                                      lookupService: MtdIdLookupService,
-                                      parser: GetCalculationParser,
-                                      service: StandardService,
-                                      hateoasFactory: HateoasFactory,
-                                      auditService: AuditService,
-                                      cc: ControllerComponents,
-                                      idGenerator: IdGenerator,
-                                     )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData,
-    GetCalculationRequest,
-    MetadataResponse,
-    HateoasWrapper[MetadataResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
+class GetMetadataController @Inject() (authService: EnrolmentsAuthService,
+                                       lookupService: MtdIdLookupService,
+                                       parser: GetCalculationParser,
+                                       service: StandardService,
+                                       hateoasFactory: HateoasFactory,
+                                       auditService: AuditService,
+                                       cc: ControllerComponents,
+                                       idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[GetCalculationRawData, GetCalculationRequest, MetadataResponse, HateoasWrapper[MetadataResponse], AnyContent](
+      authService,
+      lookupService,
+      parser,
+      service,
+      auditService,
+      cc,
+      idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -66,8 +68,14 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
         NotFoundError
       )
       .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse.copy(metadataExistence = None), MetadataHateoasData(req.nino.nino, rawResponse.id,
-          rawResponse.calculationErrorCount, rawResponse.metadataExistence.getOrElse(MetadataExistence()))))
+        hateoasFactory.wrap(
+          rawResponse.copy(metadataExistence = None),
+          MetadataHateoasData(
+            req.nino.nino,
+            rawResponse.id,
+            rawResponse.calculationErrorCount,
+            rawResponse.metadataExistence.getOrElse(MetadataExistence()))
+        ))
 
   def getMetadata(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -76,9 +84,11 @@ class GetMetadataController @Inject()(authService: EnrolmentsAuthService,
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMetadata",
         "retrieve-self-assessment-tax-calculation-metadata",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
+        Map("nino" -> nino, "calculationId" -> calculationId),
+        request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
 }

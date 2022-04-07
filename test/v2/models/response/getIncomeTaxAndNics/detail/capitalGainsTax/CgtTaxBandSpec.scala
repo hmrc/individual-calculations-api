@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.CgtTaxBandFixture.
 import v2.models.utils.JsonErrorValidators
 
 class CgtTaxBandSpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[CgtTaxBand](cgtTaxBandJson(CgtTaxBandName.lowerRate))(
     mandatoryProperties = Seq(
       "name",
@@ -30,4 +31,5 @@ class CgtTaxBandSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

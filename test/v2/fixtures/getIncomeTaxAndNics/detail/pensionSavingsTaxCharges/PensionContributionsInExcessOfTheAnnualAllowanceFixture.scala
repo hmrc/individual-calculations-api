@@ -22,10 +22,10 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 
 object PensionContributionsInExcessOfTheAnnualAllowanceFixture {
 
-  val totalContributions: BigDecimal = 2000.99
-  val totalPensionCharge: BigDecimal = 3000.99
+  val totalContributions: BigDecimal             = 2000.99
+  val totalPensionCharge: BigDecimal             = 3000.99
   val annualAllowanceTaxPaid: Option[BigDecimal] = Some(4000.99)
-  val totalPensionChargeDue: BigDecimal = 5000.99
+  val totalPensionChargeDue: BigDecimal          = 5000.99
 
   val pensionContributionsInExcessOfTheAnnualAllowanceModel: PensionContributionsInExcessOfTheAnnualAllowance =
     PensionContributionsInExcessOfTheAnnualAllowance(
@@ -47,4 +47,5 @@ object PensionContributionsInExcessOfTheAnnualAllowanceFixture {
        |}
      """.stripMargin
   )
+
 }

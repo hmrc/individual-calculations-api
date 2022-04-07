@@ -27,4 +27,5 @@ class MethodSpec extends UnitSpec with EnumJsonSpecSupport {
     ("POST", POST),
     ("DELETE", DELETE)
   )
+
 }

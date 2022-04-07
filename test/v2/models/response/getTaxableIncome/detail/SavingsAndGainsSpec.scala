@@ -37,4 +37,5 @@ class SavingsAndGainsSpec extends UnitSpec with JsonErrorValidators {
       "totalForeignSavingsAndGainsIncome"
     )
   )
+
 }

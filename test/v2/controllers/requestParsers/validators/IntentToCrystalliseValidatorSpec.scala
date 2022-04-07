@@ -22,7 +22,7 @@ import v2.models.request.intentToCrystallise.IntentToCrystalliseRawData
 
 class IntentToCrystalliseValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA123456A"
+  private val validNino    = "AA123456A"
   private val validTaxYear = "2017-18"
 
   val validator = new IntentToCrystalliseValidator()
@@ -58,4 +58,5 @@ class IntentToCrystalliseValidatorSpec extends UnitSpec {
       }
     }
   }
+
 }

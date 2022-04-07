@@ -45,6 +45,7 @@ trait HttpParser extends Logging {
         logger.warn(s"[KnownJsonResponse][validateJson] Unable to parse JSON: $error")
         None
     }
+
   }
 
   def retrieveCorrelationId(response: HttpResponse): String = response.header("X-CorrelationId").getOrElse("")
@@ -57,7 +58,7 @@ trait HttpParser extends Logging {
       (
         __.read[BackendErrorCode] and
           (__ \ "errors").readNullable[List[BackendErrorCode]]
-        ) { (singleError, errors) =>
+      ) { (singleError, errors) =>
         BackendErrors(response.status, singleError :: errors.getOrElse(Nil))
       }
 
@@ -79,7 +80,7 @@ trait HttpParser extends Logging {
   def parseDownstreamErrors(response: HttpResponse): BackendError = {
     val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(response.status, List(err)))
     lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(response.status, errs))
-    lazy val bvrErrors      = response.validateJson(bvrErrorReads).map(errs => OutboundError(response.status, BVRError, Some(errs.map(_.fromDownstream))))
+    lazy val bvrErrors = response.validateJson(bvrErrorReads).map(errs => OutboundError(response.status, BVRError, Some(errs.map(_.fromDownstream))))
     lazy val unableToParseJsonError = {
       logger.warn(s"unable to parse errors from response: ${response.body}")
       OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)
@@ -87,4 +88,5 @@ trait HttpParser extends Logging {
 
     singleError orElse multipleErrors orElse bvrErrors getOrElse unableToParseJsonError
   }
+
 }

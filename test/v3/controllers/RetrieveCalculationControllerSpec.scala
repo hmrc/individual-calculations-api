@@ -184,4 +184,5 @@ class RetrieveCalculationControllerSpec
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
+
 }

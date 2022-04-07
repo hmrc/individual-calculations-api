@@ -29,8 +29,8 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
-    val taxYear: String = "2018-19"
+    val nino: String          = "AA123456A"
+    val taxYear: String       = "2018-19"
     val correlationId: String = "X-123"
 
     def uri: String = s"/$nino/self-assessment"
@@ -45,6 +45,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
     }
+
   }
 
   "Calling the triggerCalculation endpoint" should {
@@ -166,4 +167,5 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
       }
     }
   }
+
 }

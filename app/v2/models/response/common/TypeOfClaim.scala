@@ -23,10 +23,10 @@ sealed trait TypeOfClaim
 
 object TypeOfClaim {
 
-  case object `carry-forward` extends TypeOfClaim
-  case object `carry-sideways` extends TypeOfClaim
+  case object `carry-forward`                   extends TypeOfClaim
+  case object `carry-sideways`                  extends TypeOfClaim
   case object `carry-forward-to-carry-sideways` extends TypeOfClaim
-  case object `carry-sideways-fhl` extends TypeOfClaim
+  case object `carry-sideways-fhl`              extends TypeOfClaim
 
   implicit val formats: Format[TypeOfClaim] = Enums.format[TypeOfClaim]
 }

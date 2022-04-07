@@ -40,4 +40,5 @@ class ForeignPropertySpec extends UnitSpec with JsonErrorValidators {
       "bsas"
     )
   )
+
 }

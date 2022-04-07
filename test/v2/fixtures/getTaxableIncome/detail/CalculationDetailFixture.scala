@@ -46,4 +46,5 @@ object CalculationDetailFixture {
        |}
      """.stripMargin
   )
+
 }

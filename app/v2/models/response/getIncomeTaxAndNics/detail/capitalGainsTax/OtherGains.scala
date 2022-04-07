@@ -27,8 +27,7 @@ case class OtherGains(gainsIncome: Option[BigDecimal],
                       annualExemptionAmount: Option[BigDecimal],
                       taxableGains: Option[BigDecimal],
                       cgtTaxBands: Option[Seq[CgtTaxBand]],
-                      totalTaxAmount: Option[BigDecimal]
-                     )
+                      totalTaxAmount: Option[BigDecimal])
 
 object OtherGains {
   implicit val format: OFormat[OtherGains] = Json.format[OtherGains]

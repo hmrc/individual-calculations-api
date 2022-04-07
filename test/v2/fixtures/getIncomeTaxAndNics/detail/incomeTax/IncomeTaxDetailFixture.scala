@@ -45,4 +45,5 @@ object IncomeTaxDetailFixture {
        |}
      """.stripMargin
   )
+
 }

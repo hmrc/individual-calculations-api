@@ -24,7 +24,7 @@ import v2.models.domain.CrystallisationRequestBody
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+class NrsProxyService @Inject() (val connector: NrsProxyConnector) {
 
   def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
 

@@ -21,9 +21,9 @@ import v2.controllers.requestParsers.validators.GetMessagesValidator
 import v2.models.domain.{MessageType, Nino}
 import v2.models.request.{GetMessagesRawData, GetMessagesRequest}
 
-class GetMessagesParser @Inject()(val validator: GetMessagesValidator)
-  extends RequestParser[GetMessagesRawData, GetMessagesRequest] {
+class GetMessagesParser @Inject() (val validator: GetMessagesValidator) extends RequestParser[GetMessagesRawData, GetMessagesRequest] {
 
   override def requestFor(data: GetMessagesRawData): GetMessagesRequest =
     GetMessagesRequest(Nino(data.nino), data.calculationId, data.queryData.map(param => MessageType.toTypeClass(param)))
+
 }

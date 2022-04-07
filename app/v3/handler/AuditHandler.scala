@@ -21,12 +21,12 @@ import play.api.mvc.AnyContent
 import v3.controllers.UserRequest
 import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
-case class AuditHandler[Details](auditType: String,
-                                 transactionName: String,
-                                 detailFactory: (String, AuditResponse) => Details)(implicit val writes: Writes[Details]) {
+case class AuditHandler[Details](auditType: String, transactionName: String, detailFactory: (String, AuditResponse) => Details)(implicit
+    val writes: Writes[Details]) {
 
   def event(correlationId: String, auditResponse: AuditResponse): AuditEvent[Details] =
     AuditEvent(auditType, transactionName, detailFactory(correlationId, auditResponse))
+
 }
 
 object AuditHandler {
@@ -38,24 +38,17 @@ object AuditHandler {
     auditType,
     transactionName,
     detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
-      GenericAuditDetail(request.userDetails,
-        pathParams,
-        Some(request.body),
-        correlationId,
-        auditResponse)
+      GenericAuditDetail(request.userDetails, pathParams, Some(request.body), correlationId, auditResponse)
   )
 
   def withoutBody(auditType: String,
-               transactionName: String,
-               pathParams: Map[String, String],
-               request: UserRequest[AnyContent]): AuditHandler[GenericAuditDetail] = AuditHandler(
+                  transactionName: String,
+                  pathParams: Map[String, String],
+                  request: UserRequest[AnyContent]): AuditHandler[GenericAuditDetail] = AuditHandler(
     auditType,
     transactionName,
-    detailFactory = (correlationId: String, auditResponse: AuditResponse) =>
-      GenericAuditDetail(request.userDetails,
-        pathParams,
-        None,
-        correlationId,
-        auditResponse)
+    detailFactory =
+      (correlationId: String, auditResponse: AuditResponse) => GenericAuditDetail(request.userDetails, pathParams, None, correlationId, auditResponse)
   )
+
 }

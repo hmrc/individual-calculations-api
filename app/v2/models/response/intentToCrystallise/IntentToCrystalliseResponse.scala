@@ -26,10 +26,11 @@ case class IntentToCrystalliseResponse(calculationId: String) extends Downstream
 
 object IntentToCrystalliseResponse extends HateoasLinks {
 
-  implicit val reads: Reads[IntentToCrystalliseResponse] = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
+  implicit val reads: Reads[IntentToCrystalliseResponse]    = (JsPath \ "id").read[String].map(IntentToCrystalliseResponse.apply)
   implicit val writes: OWrites[IntentToCrystalliseResponse] = Json.writes[IntentToCrystalliseResponse]
 
   implicit object LinksFactory extends HateoasLinksFactory[IntentToCrystalliseResponse, IntentToCrystalliseHateaosData] {
+
     override def links(appConfig: AppConfig, data: IntentToCrystalliseHateaosData): Seq[Link] = {
       import data._
 
@@ -38,6 +39,7 @@ object IntentToCrystalliseResponse extends HateoasLinks {
         crystallise(appConfig, nino, taxYear)
       )
     }
+
   }
 
 }

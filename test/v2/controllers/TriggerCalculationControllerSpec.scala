@@ -40,7 +40,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class TriggerCalculationControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockTriggerCalculationParser
@@ -49,8 +49,8 @@ class TriggerCalculationControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino = "AA123456A"
-  private val taxYear = "2017-18"
+  private val nino          = "AA123456A"
+  private val taxYear       = "2017-18"
   private val correlationId = "X-123"
 
   private case class TaxYearWrapper(taxYear: String)
@@ -78,9 +78,9 @@ class TriggerCalculationControllerSpec
 
   val triggerCalculation: TriggerCalculationRequestBody = TriggerCalculationRequestBody(taxYear)
 
-  val rawData: TriggerCalculationRawData = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
+  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
   val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear)
-  val error: ErrorWrapper = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
+  val error: ErrorWrapper                    = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
@@ -126,11 +126,15 @@ class TriggerCalculationControllerSpec
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
+          "Individual",
+          None,
+          Map("nino" -> nino),
+          Some(Json.toJson(TaxYearWrapper("2017-18"))),
+          correlationId,
           AuditResponse(ACCEPTED, None, Some(json)))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -152,9 +156,15 @@ class TriggerCalculationControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino), Some(Json.toJson(TaxYearWrapper("2017-18"))), correlationId,
-          AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
+          "Individual",
+          None,
+          Map("nino" -> nino),
+          Some(Json.toJson(TaxYearWrapper("2017-18"))),
+          correlationId,
+          AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None)
+        )
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -190,4 +200,5 @@ class TriggerCalculationControllerSpec
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
+
 }

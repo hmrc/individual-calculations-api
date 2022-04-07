@@ -31,4 +31,5 @@ class PensionSavingsTaxChargesSpec extends UnitSpec with JsonErrorValidators {
       "pensionSavingsTaxChargesDetail"
     )
   )
+
 }

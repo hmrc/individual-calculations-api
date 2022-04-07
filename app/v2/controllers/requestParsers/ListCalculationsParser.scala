@@ -22,10 +22,10 @@ import v2.controllers.requestParsers.validators.ListCalculationsValidator
 import v2.models.domain.Nino
 import v2.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator,
-                                       val dateProvider: CurrentDateProvider)
+class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator, val dateProvider: CurrentDateProvider)
     extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
     ListCalculationsRequest(Nino(data.nino), DateUtils.getTaxYear(data.taxYear, dateProvider.getCurrentDate()))
+
 }

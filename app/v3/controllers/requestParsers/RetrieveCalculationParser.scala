@@ -22,10 +22,11 @@ import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest
 
 import javax.inject.Inject
 
-class RetrieveCalculationParser @Inject()(val validator: RetrieveCalculationValidator)
-  extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequest] {
+class RetrieveCalculationParser @Inject() (val validator: RetrieveCalculationValidator)
+    extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequest] {
 
   override protected def requestFor(data: RetrieveCalculationRawData): RetrieveCalculationRequest = {
     RetrieveCalculationRequest(Nino(data.nino), data.taxYear, data.calculationId)
   }
+
 }

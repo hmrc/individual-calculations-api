@@ -32,10 +32,11 @@ object MessageFixture {
       |}
     """.stripMargin
   )
+
 }
 
 object MessagesResponseFixture {
-  val calcId : String = "someCalcId"
+  val calcId: String = "someCalcId"
 
   val err1: Message = Message(id = "err1", text = "text1")
   val err2: Message = Message(id = "err2", text = "text2")
@@ -50,7 +51,8 @@ object MessagesResponseFixture {
     MessagesResponse(
       info = Some(Seq(info1, info2)),
       warnings = Some(Seq(warn1, warn2)),
-      errors = Some(Seq(err1, err2)), calcId
+      errors = Some(Seq(err1, err2)),
+      calcId
     )
 
   val messagesResponseJson: JsValue = Json.parse(
@@ -165,4 +167,5 @@ object MessagesResponseFixture {
       |}
     """.stripMargin
   )
+
 }

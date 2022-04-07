@@ -33,5 +33,7 @@ class MockListCalculationsValidator extends MockFactory {
         .validate(_: ListCalculationsRawData))
         .expects(data)
     }
+
   }
+
 }

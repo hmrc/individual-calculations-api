@@ -34,4 +34,5 @@ class MessageTypeSpec extends UnitSpec {
       }
     }
   }
+
 }

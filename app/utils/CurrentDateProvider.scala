@@ -21,6 +21,6 @@ import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class CurrentDateProvider @Inject()() {
+class CurrentDateProvider @Inject() () {
   def getCurrentDate(): LocalDate = LocalDate.now()
 }

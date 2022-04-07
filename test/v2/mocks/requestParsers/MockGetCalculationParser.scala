@@ -27,8 +27,11 @@ trait MockGetCalculationParser extends MockFactory {
   val mockGetCalculationParser: GetCalculationParser = mock[GetCalculationParser]
 
   object MockGetCalculationParser {
+
     def parse(data: GetCalculationRawData): CallHandler[Either[ErrorWrapper, GetCalculationRequest]] = {
       (mockGetCalculationParser.parseRequest(_: GetCalculationRawData)(_: String)).expects(data, *)
     }
+
   }
+
 }

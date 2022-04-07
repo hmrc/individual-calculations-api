@@ -39,4 +39,5 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
       "saUnderpaymentsCodedOut"
     )
   )
+
 }

@@ -61,4 +61,5 @@ class MessageTypeValidationSpec extends UnitSpec {
     }
 
   }
+
 }

@@ -21,8 +21,8 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.UkProperty
 
 object UkPropertyFixture {
 
-  val amountClaimed: BigDecimal = 12500.99
-  val allowableAmount: BigDecimal = 12501.99
+  val amountClaimed: BigDecimal              = 12500.99
+  val allowableAmount: BigDecimal            = 12501.99
   val carryForwardAmount: Option[BigDecimal] = Some(12502.99)
 
   val ukPropertyModel: UkProperty =
@@ -41,4 +41,5 @@ object UkPropertyFixture {
       |}
     """.stripMargin
   )
+
 }

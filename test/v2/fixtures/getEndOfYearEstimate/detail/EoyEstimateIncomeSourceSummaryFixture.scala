@@ -22,7 +22,7 @@ import v2.models.response.getEoyEstimate.detail.EoyEstimateIncomeSourceSummary
 object EoyEstimateIncomeSourceSummaryFixture {
   import EoyEstimateIncomeSourceSummary._
 
-  val taxableIncome: BigInt = 1400
+  val taxableIncome: BigInt      = 1400
   val finalised: Option[Boolean] = Some(true)
 
   val incomeSourceSummaryModel: IncomeSourceSummary =
@@ -52,4 +52,5 @@ object EoyEstimateIncomeSourceSummaryFixture {
        |}
     """.stripMargin
   )
+
 }
