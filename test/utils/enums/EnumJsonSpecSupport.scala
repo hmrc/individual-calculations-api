@@ -16,7 +16,7 @@
 
 package utils.enums
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, JsString, Json, Reads, Writes}
 import support.UnitSpec
 
 trait EnumJsonSpecSupport {
@@ -34,10 +34,42 @@ trait EnumJsonSpecSupport {
     "JSON format" must {
       "support round trip" in {
         namesAndValues.foreach { case (name, obj) =>
-          val json = Json.parse(s""""$name"""")
+          val json = JsString(name)
 
           Json.toJson(obj) shouldBe json
           json.as[A] shouldBe obj
+        }
+      }
+    }
+
+  /** Tests reads
+    *
+    * @param namesAndValues
+    *   name -> object reads mappings for all the objects in the enumeration under test
+    * @tparam A
+    *   the type of enumeration (sealed trait of objects) being tested
+    */
+  def testReads[A: Reads](namesAndValues: (String, A)*): Unit =
+    "JSON reads" must {
+      "work" in {
+        namesAndValues.foreach { case (name, obj) =>
+          JsString(name).as[A] shouldBe obj
+        }
+      }
+    }
+
+  /** Tests writes
+    *
+    * @param valuesAndNames
+    *   object -> name writes mappings for all the objects in the enumeration under test
+    * @tparam A
+    *   the type of enumeration (sealed trait of objects) being tested
+    */
+  def testWrites[A: Writes](valuesAndNames: (A, String)*): Unit =
+    "JSON writes" must {
+      "work" in {
+        valuesAndNames.foreach { case (obj, name) =>
+          Json.toJson(obj) shouldBe JsString(name)
         }
       }
     }
