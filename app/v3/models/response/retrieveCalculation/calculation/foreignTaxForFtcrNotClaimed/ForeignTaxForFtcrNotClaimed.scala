@@ -16,10 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.foreignTaxForFtcrNotClaimed
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class ForeignTaxForFtcrNotClaimed(foreignTaxOnForeignEmployment: BigDecimal)
 
-object ForeignTaxForFtcrNotClaimed {
-  implicit val format: OFormat[ForeignTaxForFtcrNotClaimed] = Json.format[ForeignTaxForFtcrNotClaimed]
-}
+object ForeignTaxForFtcrNotClaimed extends DataModel[ForeignTaxForFtcrNotClaimed]

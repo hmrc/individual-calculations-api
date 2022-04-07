@@ -16,11 +16,9 @@
 
 package v3.models.response.retrieveCalculation.calculation.shareSchemesIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class ShareSchemesIncome(totalIncome: BigDecimal,
                               shareSchemeDetail: Option[Seq[ShareSchemeDetail]])
 
-object ShareSchemesIncome {
-  implicit val format: OFormat[ShareSchemesIncome] = Json.format[ShareSchemesIncome]
-}
+object ShareSchemesIncome extends DataModel[ShareSchemesIncome]

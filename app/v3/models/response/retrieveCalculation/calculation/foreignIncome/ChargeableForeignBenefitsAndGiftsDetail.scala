@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.foreignIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class ChargeableForeignBenefitsAndGiftsDetail(transactionBenefit: Option[BigDecimal],
                                                    protectedForeignIncomeSourceBenefit: Option[BigDecimal],
@@ -24,6 +24,4 @@ case class ChargeableForeignBenefitsAndGiftsDetail(transactionBenefit: Option[Bi
                                                    benefitReceivedAsASettler: Option[BigDecimal],
                                                    onwardGiftReceivedAsASettler: Option[BigDecimal])
 
-object ChargeableForeignBenefitsAndGiftsDetail {
-  implicit val format: OFormat[ChargeableForeignBenefitsAndGiftsDetail] = Json.format[ChargeableForeignBenefitsAndGiftsDetail]
-}
+object ChargeableForeignBenefitsAndGiftsDetail extends DataModel[ChargeableForeignBenefitsAndGiftsDetail]

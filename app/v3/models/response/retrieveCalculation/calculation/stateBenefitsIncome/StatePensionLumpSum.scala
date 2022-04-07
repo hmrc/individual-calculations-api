@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class StatePensionLumpSum(incomeSourceId: String,
                                amount: BigDecimal,
@@ -24,6 +24,4 @@ case class StatePensionLumpSum(incomeSourceId: String,
                                rate: BigDecimal,
                                source: Option[String])
 
-object StatePensionLumpSum {
-  implicit val format: OFormat[StatePensionLumpSum] = Json.format[StatePensionLumpSum]
-}
+object StatePensionLumpSum extends DataModel[StatePensionLumpSum]

@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.foreignIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class CommonForeignIncome(countryCode: String,
                                grossIncome: Option[BigDecimal],
@@ -24,6 +24,4 @@ case class CommonForeignIncome(countryCode: String,
                                taxDeducted: Option[BigDecimal],
                                foreignTaxCreditRelief: Option[Boolean])
 
-object CommonForeignIncome {
-  implicit val format: OFormat[CommonForeignIncome] = Json.format[CommonForeignIncome]
-}
+object CommonForeignIncome extends DataModel[CommonForeignIncome]

@@ -16,12 +16,10 @@
 
 package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class StateBenefitsIncome(totalStateBenefitsIncome: Option[BigDecimal],
                                totalStateBenefitsTaxPaid: Option[BigDecimal],
                                stateBenefitsDetail: Option[StateBenefitsDetail])
 
-object StateBenefitsIncome {
-  implicit val format: OFormat[StateBenefitsIncome] = Json.format[StateBenefitsIncome]
-}
+object StateBenefitsIncome extends DataModel[StateBenefitsIncome]

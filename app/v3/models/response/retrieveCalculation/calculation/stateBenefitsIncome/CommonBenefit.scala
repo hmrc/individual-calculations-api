@@ -16,12 +16,10 @@
 
 package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class CommonBenefit(incomeSourceId: String,
                          amount: BigDecimal,
                          source: Option[String])
 
-object CommonBenefit {
-  implicit val format: OFormat[CommonBenefit] = Json.format[CommonBenefit]
-}
+object CommonBenefit extends DataModel[CommonBenefit]

@@ -16,10 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.foreignIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class OverseasIncomeAndGains(gainAmount: BigDecimal)
 
-object OverseasIncomeAndGains {
-  implicit val format: OFormat[OverseasIncomeAndGains] = Json.format[OverseasIncomeAndGains]
-}
+object OverseasIncomeAndGains extends DataModel[OverseasIncomeAndGains]
