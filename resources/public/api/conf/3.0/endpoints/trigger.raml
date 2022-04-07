@@ -1,0 +1,28 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatTaxYear
+  - errors.formatFinalDeclaration
+  - errors.ruleTaxYearNotSupported
+  - errors.ruleTaxYearRangeInvalid
+  - errors.ruleNoIncomeSubmissionExists
+  - errors.clientOrAgentNotAuthorised
+  - errors.ruleFinalDeclarationReceived
+  - queryParameters.finalDeclaration
+displayName: Trigger a Self Assessment Tax Calculation [Test Only]
+description: 'This endpoint allows the user to trigger a self assessment tax calculation for a given tax year. It should be called whenever income data is updated through a periodic or annual endpoint. To trigger a final declaration self assessment tax calculation, you must supply the finalDeclaration query parameter as true. <br/> <br/> A National Insurance number and tax year must be provided. The tax calculation process is asynchronous, so it is recommended you wait at least 5 seconds before calling the retrieval endpoint. The result of the calculation can be seen using the “Retrieve a Self Assessment Tax Calculation” endpoint.'
+(annotations.sandboxData): !include ../scenarios/trigger.md
+(annotations.scope): "write:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+responses:
+ 202:
+   body:
+     application/json:
+       type: !include ../schemas/trigger/trigger_response.json
+       example: !include ../examples/trigger/trigger_response.json
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.

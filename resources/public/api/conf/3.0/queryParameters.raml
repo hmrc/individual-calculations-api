@@ -9,14 +9,9 @@ types:
 
 traits:
   taxYear:
-    queryParameters:
-      taxYear:
-        description: 'The tax year the data applies to, for example, 2019-20. <em>Calculations for the current tax year are returned if no tax year is supplied.</em><br/><br/>The start year and end year must not span two tax years. No gaps are allowed, for example, 2019-21 is not valid. The earliest tax year is 2017-18.'
-        example: "2017-18"
-        required: false
-  'type':
-    queryParameters:
-      'type':
-        type: Type
-        description: "The 'type' query parameter allows the messages output to be filtered by type. The type parameter can be supplied more than once; e.g. `?type=info&type=warning`."
-        required: false
+  finalDeclaration:
+      queryParameters:
+        finalDeclaration:
+          type: string
+          description: 'Must be sent as "true" when the user is ready to submit a final declaration. Acceptable values are "true" and "false".'
+          required: false
