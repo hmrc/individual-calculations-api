@@ -18,7 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxChar
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PensionBands(name: PensionBandsName,
+case class PensionBands(name: PensionBandsNameType,
                         rate: BigDecimal,
                         bandLimit: BigInt,
                         apportionedBandLimit: BigInt,
