@@ -44,5 +44,3 @@ object TypeOfStudentPlan {
 
   implicit val format: Format[TypeOfStudentPlan] = Enums.format[TypeOfStudentPlan]
 }
-
-
