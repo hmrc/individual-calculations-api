@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation
+package v3.models.response.retrieveCalculation.calculation.notionalTax
 
 import play.api.libs.json.{Json, OFormat}
 

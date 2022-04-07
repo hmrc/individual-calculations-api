@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation
+package v3.models.response.retrieveCalculation.calculation.pensionContributionReliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class MarriageAllowanceTransferredIn (amount: Option[BigDecimal], rate: Option[BigDecimal])
+case class PensionContributionDetail (regularPensionContributions: Option[BigDecimal],
+                                      oneOffPensionContributionsPaid: Option[BigDecimal])
 
-object MarriageAllowanceTransferredIn {
-  implicit val format: OFormat[MarriageAllowanceTransferredIn] = Json.format[MarriageAllowanceTransferredIn]
+object PensionContributionDetail {
+  implicit val format: OFormat[PensionContributionDetail] = Json.format[PensionContributionDetail]
 }
