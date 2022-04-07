@@ -18,10 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
 import utils.DataModel
 
-case class StatePensionLumpSum(incomeSourceId: String,
-                               amount: BigDecimal,
-                               taxPaid: Option[BigDecimal],
-                               rate: BigDecimal,
-                               source: Option[String])
+case class StatePensionLumpSum(incomeSourceId: String, amount: BigDecimal, taxPaid: Option[BigDecimal], rate: BigDecimal, source: Option[String])
 
 object StatePensionLumpSum extends DataModel[StatePensionLumpSum]

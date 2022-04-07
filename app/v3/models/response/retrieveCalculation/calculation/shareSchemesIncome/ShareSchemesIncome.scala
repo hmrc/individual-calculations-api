@@ -18,7 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.shareSchemesIncome
 
 import utils.DataModel
 
-case class ShareSchemesIncome(totalIncome: BigDecimal,
-                              shareSchemeDetail: Option[Seq[ShareSchemeDetail]])
+case class ShareSchemesIncome(totalIncome: BigDecimal, shareSchemeDetail: Option[Seq[ShareSchemeDetail]])
 
 object ShareSchemesIncome extends DataModel[ShareSchemesIncome]

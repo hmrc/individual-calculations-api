@@ -18,9 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.shareSchemesIncome
 
 import utils.DataModel
 
-case class ShareSchemeDetail(`type`: String,
-                             employerName: Option[String],
-                             employerRef: Option[String],
-                             taxableAmount: BigDecimal)
+case class ShareSchemeDetail(`type`: String, employerName: Option[String], employerRef: Option[String], taxableAmount: BigDecimal)
 
 object ShareSchemeDetail extends DataModel[ShareSchemeDetail]

@@ -18,9 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
 import utils.DataModel
 
-case class CommonBenefitWithTaxPaid(incomeSourceId: String,
-                                    amount: BigDecimal,
-                                    taxPaid: Option[BigDecimal],
-                                    source: Option[String])
+case class CommonBenefitWithTaxPaid(incomeSourceId: String, amount: BigDecimal, taxPaid: Option[BigDecimal], source: Option[String])
 
 object CommonBenefitWithTaxPaid extends DataModel[CommonBenefitWithTaxPaid]
