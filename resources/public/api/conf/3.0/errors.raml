@@ -37,6 +37,17 @@ traits:
                 description: 'The format of the supplied finalDeclaration value is not valid.'
                 value:
                   code: FORMAT_FINAL_DECLARATION
+  formatCalcId:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              formatCalcId:
+                description: 'The format of the supplied Calculation ID is not valid.'
+                value:
+                  code: FORMAT_CALC_ID
   ruleTaxYearNotSupported:
     responses:
       400:
@@ -92,3 +103,14 @@ traits:
                 description: 'Final declaration has already been received.'
                 value:
                   code: RULE_FINAL_DECLARATION_RECEIVED
+  notFound:
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFound:
+                description: 'The supplied income source could not be found.'
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
