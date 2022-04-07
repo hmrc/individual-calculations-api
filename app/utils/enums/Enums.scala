@@ -33,7 +33,10 @@ object Enums {
     implicitly[MkValues[E]].values.map(e => ev.show(e) -> e).toMap
 
   def reads[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Reads[E] =
-    implicitly[Reads[String]].collect(JsonValidationError(s"error.expected.$typeName"))(parser)
+    readsUsing(parser)
+
+  def readsUsing[E: ClassTag](customParser: PartialFunction[String, E]): Reads[E] =
+    implicitly[Reads[String]].collect(JsonValidationError(s"error.expected.$typeName"))(customParser)
 
   def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = Writes[E](e => JsString(ev.show(e)))
 
