@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges
+package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome
 
 import play.api.libs.json.Format
 import utils.enums.Enums
+import v3.models.domain.IncomeSourceType
 
-sealed trait PensionBandsName
-
-object PensionBandsName {
-
-  case object `basic-rate` extends PensionBandsName
-  case object `intermediate-rate` extends PensionBandsName
-  case object `higher-rate` extends PensionBandsName
-  case object `additional-rate` extends PensionBandsName
-
-  implicit val formats: Format[PensionBandsName] = Enums.format[PensionBandsName]
+sealed trait TypeOfCalc{
+  def toIncomeSourceType: IncomeSourceType
 }
 
+object TypeOfCalc {
+
+  case object `foreign-property` extends TypeOfCalc {
+    override def toIncomeSourceType: IncomeSourceType = IncomeSourceType.`15`
+  }
+
+  implicit val format: Format[TypeOfCalc] = Enums.format[TypeOfCalc]
+}
