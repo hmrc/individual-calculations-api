@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome
+package v3.models.response.retrieveCalculation.calculation.studentLoans
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
-import v3.models.domain.IncomeSourceType
 
-sealed trait TypeOfCalc{
-  def toIncomeSourceType: IncomeSourceType
-}
+sealed trait PlanType
 
-object TypeOfCalc {
+object PlanType {
+  case object `plan1` extends PlanType
 
-  case object `foreign-property` extends TypeOfCalc {
-    override def toIncomeSourceType: IncomeSourceType = IncomeSourceType.`15`
+  case object `plan2` extends PlanType
+
+  case object `postgraduate` extends PlanType
+
+  case object `plan4` extends PlanType
+
+  implicit val writes: Writes[PlanType] = Enums.writes[PlanType]
+
+  implicit val reads: Reads[PlanType] = Enums.readsUsing {
+    case "01" => `plan1`
+    case "02" => `plan2`
+    case "03" => `postgraduate`
+    case "04" => `plan4`
   }
-
-  implicit val format: Format[TypeOfCalc] = Enums.format[TypeOfCalc]
 }

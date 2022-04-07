@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.codedOutUnderpayments
+package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
-sealed trait Source
+sealed trait Name
 
-object Source {
+object Name {
+  case object `basic-rate` extends Name
 
-  case object customer extends Source
-  case object `HMRC HELD` extends Source
+  case object `intermediate-rate` extends Name
 
-  implicit val formats: Format[Source] = Enums.format[Source]
+  case object `higher-rate` extends Name
+
+  case object `additional-rate` extends Name
+
+  implicit val writes: Writes[Name] = Enums.writes[Name]
+
+  implicit val reads: Reads[Name] = Enums.readsUsing {
+    case "BRT" => `basic-rate`
+    case "IRT" => `intermediate-rate`
+    case "HRT" => `higher-rate`
+    case "ART" => `additional-rate`
+  }
 }

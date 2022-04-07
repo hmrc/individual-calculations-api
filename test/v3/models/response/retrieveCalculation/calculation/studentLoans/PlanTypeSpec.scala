@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.domain
+package v3.models.response.retrieveCalculation.calculation.studentLoans
 
-import play.api.libs.json.Format
-import utils.enums.Enums
-import v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome.TypeOfCalc
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.retrieveCalculation.calculation.studentLoans.PlanType._
 
-sealed trait IncomeSourceType {
-  def toTypeOfCalc: TypeOfCalc
-}
+class PlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object IncomeSourceType {
+  testReads[PlanType](
+    "01" -> `plan1`,
+    "02" -> `plan2`,
+    "03" -> `postgraduate`,
+    "04" -> `plan4`
+  )
 
-  case object `15` extends IncomeSourceType {
-    override def toTypeOfCalc: TypeOfCalc = TypeOfCalc.`foreign-property`
-  }
-
-  implicit val format: Format[IncomeSourceType] = Enums.format[IncomeSourceType]
+  testWrites[PlanType](
+    `plan1`   -> "plan1",
+    `plan2`  -> "plan2",
+    `postgraduate` -> "postgraduate",
+    `plan4` -> "plan4"
+  )
 }
