@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.incomeSummaryTotals
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class IncomeSummaryTotals(totalSelfEmploymentProfit: Option[BigInt],
                                totalPropertyProfit: Option[BigInt],
@@ -26,6 +26,4 @@ case class IncomeSummaryTotals(totalSelfEmploymentProfit: Option[BigInt],
                                totalEeaFhlProfit: Option[BigInt],
                                totalEmploymentIncome: Option[BigInt])
 
-object IncomeSummaryTotals {
-  implicit val format: OFormat[IncomeSummaryTotals] = Json.format[IncomeSummaryTotals]
-}
+object IncomeSummaryTotals extends DataModel[IncomeSummaryTotals]

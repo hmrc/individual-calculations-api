@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.chargeableEventGainsIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class ChargeableEventGainsIncome(totalOfAllGains: BigInt,
                                       totalGainsWithTaxPaid: Option[BigInt],
@@ -28,6 +28,4 @@ case class ChargeableEventGainsIncome(totalOfAllGains: BigInt,
                                       totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt],
                                       foreignGainsOnLifePoliciesNoTaxPaidDetail: Option[Seq[ForeignGainsOnLifePoliciesNoTaxPaidDetail]])
 
-object ChargeableEventGainsIncome {
-  implicit val format: OFormat[ChargeableEventGainsIncome] = Json.format[ChargeableEventGainsIncome]
-}
+object ChargeableEventGainsIncome extends DataModel[ChargeableEventGainsIncome]

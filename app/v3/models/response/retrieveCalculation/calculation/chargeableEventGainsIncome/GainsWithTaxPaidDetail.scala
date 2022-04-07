@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.chargeableEventGainsIncome
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class GainsWithTaxPaidDetail(`type`: String,
                                   customerReference: Option[String],
@@ -24,6 +24,4 @@ case class GainsWithTaxPaidDetail(`type`: String,
                                   yearsHeld: Option[BigInt],
                                   yearsHeldSinceLastGain: Option[BigInt])
 
-object GainsWithTaxPaidDetail {
-  implicit val format: OFormat[GainsWithTaxPaidDetail] = Json.format[GainsWithTaxPaidDetail]
-}
+object GainsWithTaxPaidDetail  extends DataModel[GainsWithTaxPaidDetail]
