@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package v3.models.response.common
+package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
-sealed trait BandName
+sealed trait IncomeSourceType
 
-object BandName {
+object IncomeSourceType {
+  case object `foreign-property` extends IncomeSourceType
 
-  case object lowerRate extends BandName
-  case object higherRate extends BandName
+  implicit val writes: Writes[IncomeSourceType] = Enums.writes[IncomeSourceType]
 
-  implicit val formats: Format[BandName] = Enums.format[BandName]
+  implicit val reads: Reads[IncomeSourceType] = Enums.readsUsing {
+    case "15" => `foreign-property`
+  }
 }

@@ -19,7 +19,7 @@ package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome
 import play.api.libs.json.{Json, OFormat}
 
 case class ForeignPropertyIncome(incomeSourceId: String,
-                                 incomeSourceType: TypeOfCalc,
+                                 incomeSourceType: IncomeSourceType,
                                  countryCode: String,
                                  totalIncome: Option[BigDecimal],
                                  totalExpenses: Option[BigDecimal],

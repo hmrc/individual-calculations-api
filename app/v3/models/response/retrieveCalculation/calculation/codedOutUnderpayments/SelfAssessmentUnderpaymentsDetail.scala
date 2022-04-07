@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat}
 
 case class SelfAssessmentUnderpaymentsDetail(amount: BigDecimal,
                                              relatedTaxYear: String,
-                                             source: Option[Source],
+                                             source: Option[String],
                                              collectedAmount: Option[BigDecimal],
                                              uncollectedAmount: Option[BigDecimal])
 

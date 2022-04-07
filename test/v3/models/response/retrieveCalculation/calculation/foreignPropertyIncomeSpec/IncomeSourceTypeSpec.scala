@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.codedOutUnderpayments
+package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncomeSpec
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome.IncomeSourceType
+import v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome.IncomeSourceType.`foreign-property`
 
-case class PayeUnderpaymentsDetail(amount: BigDecimal,
-                                   relatedTaxYear: String,
-                                   source: Option[String])
+class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object PayeUnderpaymentsDetail {
-  implicit val format: OFormat[PayeUnderpaymentsDetail] = Json.format[PayeUnderpaymentsDetail]
+  testReads[IncomeSourceType](
+    "15" -> `foreign-property`
+  )
+
+  testWrites[IncomeSourceType](
+    `foreign-property`   -> "foreign-property"
+
+  )
 }
