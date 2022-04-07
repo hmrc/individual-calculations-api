@@ -44,8 +44,3 @@ object StudentLoanPlanType {
 
   implicit val format: json.Format[StudentLoanPlanType] = Enums.format[StudentLoanPlanType]
 }
-
-
-
-
-

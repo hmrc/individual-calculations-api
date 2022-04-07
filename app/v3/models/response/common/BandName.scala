@@ -28,6 +28,3 @@ object BandName {
 
   implicit val formats: Format[BandName] = Enums.format[BandName]
 }
-
-
-
