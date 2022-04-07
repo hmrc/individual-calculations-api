@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation
+package v3.models.response.retrieveCalculation.calculation.royaltyPayments
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PensionContributionDetail (regularPensionContributions: Option[BigDecimal],
-                                      oneOffPensionContributionsPaid: Option[BigDecimal])
+case class RoyaltyPayments (royaltyPaymentsAmount: BigInt,
+                            rate: BigDecimal,
+                            grossRoyaltyPayments: Option[BigInt])
 
-object PensionContributionDetail {
-  implicit val format: OFormat[PensionContributionDetail] = Json.format[PensionContributionDetail]
+object RoyaltyPayments {
+  implicit val format: OFormat[RoyaltyPayments] = Json.format[RoyaltyPayments]
 }
