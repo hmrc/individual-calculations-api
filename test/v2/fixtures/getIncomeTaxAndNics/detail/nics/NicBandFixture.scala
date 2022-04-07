@@ -21,12 +21,12 @@ import v2.models.response.getIncomeTaxAndNics.detail.nics.NicBand
 
 object NicBandFixture {
 
-  val name: String = "name"
-  val rate: BigDecimal = 100.25
-  val threshold: Option[BigInt] = Some(200)
+  val name: String                         = "name"
+  val rate: BigDecimal                     = 100.25
+  val threshold: Option[BigInt]            = Some(200)
   val apportionedThreshold: Option[BigInt] = Some(300)
-  val income: BigInt = 400
-  val amount: BigDecimal = 500.25
+  val income: BigInt                       = 400
+  val amount: BigDecimal                   = 500.25
 
   val nicBandModel: NicBand =
     NicBand(
@@ -50,4 +50,5 @@ object NicBandFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -43,4 +43,5 @@ object TaxableIncomeResponseFixture {
   val taxableIncomeResponseTopLevelJson: JsValue =
     Json.obj("taxableIncome" -> taxableIncomeResponseJson) ++
       metadataResponseTopLevelJsonWithoutErrors.as[JsObject]
+
 }

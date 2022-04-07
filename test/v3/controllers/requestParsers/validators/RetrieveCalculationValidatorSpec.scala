@@ -22,8 +22,8 @@ import v3.models.request.RetrieveCalculationRawData
 
 class RetrieveCalculationValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA123456A"
-  private val validTaxYear = "2017-18"
+  private val validNino          = "AA123456A"
+  private val validTaxYear       = "2017-18"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val validator = new RetrieveCalculationValidator()
@@ -51,26 +51,24 @@ class RetrieveCalculationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(
-          RetrieveCalculationRawData(validNino, "2016-17", validCalculationId)) shouldBe
+        validator.validate(RetrieveCalculationRawData(validNino, "2016-17", validCalculationId)) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
 
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year range is supplied" in {
-        validator.validate(
-          RetrieveCalculationRawData(validNino, "2017-19", validCalculationId)) shouldBe
+        validator.validate(RetrieveCalculationRawData(validNino, "2017-19", validCalculationId)) shouldBe
           List(RuleTaxYearRangeInvalidError)
       }
     }
 
     "return CalculationIdFormatError error" when {
       "an invalid calculation id is supplied" in {
-        validator.validate(
-          RetrieveCalculationRawData(validNino, validTaxYear, "bad id")) shouldBe
+        validator.validate(RetrieveCalculationRawData(validNino, validTaxYear, "bad id")) shouldBe
           List(CalculationIdFormatError)
       }
     }
   }
+
 }

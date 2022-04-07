@@ -21,7 +21,7 @@ import support.UnitSpec
 import v3.mocks.validators.MockRetrieveCalculationValidator
 import v3.models.domain.Nino
 import v3.models.errors._
-import v3.models.request.{ RetrieveCalculationRawData, RetrieveCalculationRequest }
+import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 
 class RetrieveCalculationParserSpec extends UnitSpec {
 
@@ -63,4 +63,5 @@ class RetrieveCalculationParserSpec extends UnitSpec {
       }
     }
   }
+
 }

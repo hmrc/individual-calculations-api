@@ -24,7 +24,7 @@ import v3.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA123456A"
+  private val validNino    = "AA123456A"
   private val validTaxYear = "2017-18"
 
   val validator = new TriggerCalculationValidator()
@@ -52,18 +52,17 @@ class TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(
-          TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "2016-17")))) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "2016-17")))) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
 
     "return IncorrectOrEmptyBodyError error" when {
       "an empty json body is supplied" in {
-        validator.validate(
-          TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj()))) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj()))) shouldBe
           List(RuleIncorrectOrEmptyBodyError)
       }
     }
   }
+
 }

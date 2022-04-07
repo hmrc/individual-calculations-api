@@ -39,7 +39,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetTaxableIncomeControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
@@ -48,16 +48,17 @@ class GetTaxableIncomeControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino = "AA123456A"
-  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val nino          = "AA123456A"
+  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId = "X-123"
-  private val rawData = GetCalculationRawData(nino, calcId)
-  private val requestData = GetCalculationRequest(Nino(nino), calcId)
+  private val rawData       = GetCalculationRawData(nino, calcId)
+  private val requestData   = GetCalculationRequest(Nino(nino), calcId)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
-  val linksJson: JsObject = Json.parse(
-    """
+  val linksJson: JsObject = Json
+    .parse(
+      """
       |{
       |    "links": [
       |      {
@@ -68,9 +69,10 @@ class GetTaxableIncomeControllerSpec
       |    ]
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
-  private def uri = s"/$nino/self-assessment/$calcId"
+  private def uri      = s"/$nino/self-assessment/$calcId"
   private def queryUri = "/input/uri"
 
   trait Test {
@@ -115,10 +117,14 @@ class GetTaxableIncomeControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
+          "Individual",
+          None,
+          Map("nino" -> nino, "calculationId" -> calcId),
+          None,
+          correlationId,
           AuditResponse(OK, None, Some(responseBody)))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome",
-          "retrieve-self-assessment-tax-calculation-taxable-income", detail)
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
@@ -140,12 +146,18 @@ class GetTaxableIncomeControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual", None, Map("nino" -> nino, "calculationId" -> calcId), None, correlationId,
-          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None))
-        val event: AuditEvent[GenericAuditDetail] = AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome",
-          "retrieve-self-assessment-tax-calculation-taxable-income", detail)
+          "Individual",
+          None,
+          Map("nino" -> nino, "calculationId" -> calcId),
+          None,
+          correlationId,
+          AuditResponse(FORBIDDEN, Some(Seq(AuditError(RuleCalculationErrorMessagesExist.code))), None)
+        )
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
+
 }

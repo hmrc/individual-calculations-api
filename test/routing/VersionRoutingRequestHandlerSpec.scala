@@ -36,38 +36,41 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   test =>
 
   implicit private val actorSystem: ActorSystem = ActorSystem("test")
-  val action: DefaultActionBuilder = app.injector.instanceOf[DefaultActionBuilder]
+  val action: DefaultActionBuilder              = app.injector.instanceOf[DefaultActionBuilder]
 
   import play.api.mvc.Handler
   import play.api.routing.sird._
 
   object DefaultHandler extends Handler
-  object V1Handler extends Handler
-  object V2Handler extends Handler
-  object V3Handler extends Handler
+  object V1Handler      extends Handler
+  object V2Handler      extends Handler
+  object V3Handler      extends Handler
 
-  private val defaultRouter = Router.from {
-    case GET(p"") => DefaultHandler
+  private val defaultRouter = Router.from { case GET(p"") =>
+    DefaultHandler
   }
-  private val v1Router      = Router.from {
-    case GET(p"/v1") => V1Handler
+
+  private val v1Router = Router.from { case GET(p"/v1") =>
+    V1Handler
   }
-  private val v2Router      = Router.from {
-    case GET(p"/v2") => V2Handler
+
+  private val v2Router = Router.from { case GET(p"/v2") =>
+    V2Handler
   }
-  private val v3Router = Router.from {
-    case GET(p"/v3") => V3Handler
+
+  private val v3Router = Router.from { case GET(p"/v3") =>
+    V3Handler
   }
 
   private val routingMap = new VersionRoutingMap {
-    override val defaultRouter: Router = test.defaultRouter
+    override val defaultRouter: Router    = test.defaultRouter
     override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
   }
 
   class Test(implicit acceptHeader: Option[String]) {
     val httpConfiguration: HttpConfiguration = HttpConfiguration("context")
-    private val errorHandler      = mock[HttpErrorHandler]
-    private val filters           = mock[HttpFilters]
+    private val errorHandler                 = mock[HttpErrorHandler]
+    private val filters                      = mock[HttpFilters]
     (filters.filters _).stubs().returns(Seq.empty)
 
     MockAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
@@ -83,6 +86,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
         .foldLeft(FakeRequest("GET", path)) { (req, accept) =>
           req.withHeaders((ACCEPT, accept))
         }
+
   }
 
   "Routing requests with no version" should {
@@ -149,12 +153,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     "return 406" in new Test {
 
       val request: RequestHeader = buildRequest("/v2")
-      inside(requestHandler.routeRequest(request)) {
-        case Some(a: EssentialAction) =>
-          val result = a.apply(request)
+      inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+        val result = a.apply(request)
 
-          status(result) shouldBe NOT_ACCEPTABLE
-          contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
+        status(result) shouldBe NOT_ACCEPTABLE
+        contentAsJson(result) shouldBe Json.toJson(InvalidAcceptHeaderError)
       }
     }
   }
@@ -165,12 +168,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     "return 404" in new Test {
       private val request = buildRequest("/v2")
 
-      inside(requestHandler.routeRequest(request)) {
-        case Some(a: EssentialAction) =>
-          val result = a.apply(request)
+      inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+        val result = a.apply(request)
 
-          status(result) shouldBe NOT_FOUND
-          contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
       }
     }
   }
@@ -182,12 +184,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
       "return 404 Not Found" in new Test {
 
         private val request = buildRequest("/v2")
-        inside(requestHandler.routeRequest(request)) {
-          case Some(a:EssentialAction) =>
-            val result = a.apply(request)
+        inside(requestHandler.routeRequest(request)) { case Some(a: EssentialAction) =>
+          val result = a.apply(request)
 
-            status(result) shouldBe NOT_FOUND
-            contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
+          status(result) shouldBe NOT_FOUND
+          contentAsJson(result) shouldBe Json.toJson(UnsupportedVersionError)
 
         }
       }

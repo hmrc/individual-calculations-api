@@ -29,7 +29,7 @@ object AuthStub extends WireMockMethods {
     "key" -> "HMRC-MTD-IT",
     "identifiers" -> Json.arr(
       Json.obj(
-        "key" -> "MTDITID",
+        "key"   -> "MTDITID",
         "value" -> "1234567890"
       )
     )
@@ -51,7 +51,7 @@ object AuthStub extends WireMockMethods {
   }
 
   private def successfulAuthResponse(enrolments: JsObject*): JsObject = {
-    Json.obj("authorisedEnrolments" -> enrolments,
-      "affinityGroup" -> "Individual")
+    Json.obj("authorisedEnrolments" -> enrolments, "affinityGroup" -> "Individual")
   }
+
 }

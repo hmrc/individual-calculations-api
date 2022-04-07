@@ -22,7 +22,7 @@ import v2.models.response.getTaxableIncome.detail.ukPropertyNonFhl.detail.Defaul
 object DefaultCarriedForwardLossFixture {
 
   val taxYearLossIncurred: String = "2018-19"
-  val currentLossValue: BigInt = 2000
+  val currentLossValue: BigInt    = 2000
 
   val defaultCarriedForwardLossModel: DefaultCarriedForwardLoss =
     DefaultCarriedForwardLoss(
@@ -38,4 +38,5 @@ object DefaultCarriedForwardLossFixture {
       |}
     """.stripMargin
   )
+
 }

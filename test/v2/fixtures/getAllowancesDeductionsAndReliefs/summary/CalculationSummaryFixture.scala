@@ -22,7 +22,7 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationS
 object CalculationSummaryFixture {
 
   val totalAllowancesAndDeductions: Option[BigInt] = Some(1)
-  val totalReliefs: Option[BigDecimal] = Some(1000.25)
+  val totalReliefs: Option[BigDecimal]             = Some(1000.25)
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
@@ -30,12 +30,15 @@ object CalculationSummaryFixture {
       totalReliefs = totalReliefs
     )
 
-  val calculationSummaryJson: JsObject = Json.parse(
-    s"""
+  val calculationSummaryJson: JsObject = Json
+    .parse(
+      s"""
       |{
       |  "totalAllowancesAndDeductions": ${totalAllowancesAndDeductions.get},
       |  "totalReliefs": ${totalReliefs.get}
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
+
 }

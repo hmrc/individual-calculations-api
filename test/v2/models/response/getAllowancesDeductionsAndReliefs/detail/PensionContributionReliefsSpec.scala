@@ -29,4 +29,5 @@ class PensionContributionReliefsSpec extends UnitSpec with JsonErrorValidators {
       "oneOffPensionContributionsPaid"
     )
   )
+
 }

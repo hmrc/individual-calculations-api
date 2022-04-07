@@ -21,9 +21,9 @@ import v2.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.DefaultCa
 
 object DefaultCarriedForwardLossFixture {
 
-  val incomeSourceId: String = "AAIS12345678904"
+  val incomeSourceId: String      = "AAIS12345678904"
   val taxYearLossIncurred: String = "2044-45"
-  val currentLossValue: BigInt = 49177
+  val currentLossValue: BigInt    = 49177
 
   val defaultCarriedForwardLossModel: DefaultCarriedForwardLoss =
     DefaultCarriedForwardLoss(
@@ -39,4 +39,5 @@ object DefaultCarriedForwardLossFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -20,10 +20,10 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{ WSRequest, WSResponse }
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
 import v3.models.errors._
-import v3.stubs.{ AuditStub, AuthStub, BackendStub, MtdIdLookupStub }
+import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
 
@@ -45,6 +45,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
     }
+
   }
 
   "Calling the retrieveCalculation endpoint" should {
@@ -162,4 +163,5 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
       }
     }
   }
+
 }

@@ -21,10 +21,10 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Sh
 
 object ShortServiceRefundBandsFixture {
 
-  val name: String = "lowerBand"
-  val rate: BigDecimal = 40.25
-  val bandLimit: BigInt = 1000
-  val apportionedBandLimit: BigInt = 2000
+  val name: String                         = "lowerBand"
+  val rate: BigDecimal                     = 40.25
+  val bandLimit: BigInt                    = 1000
+  val apportionedBandLimit: BigInt         = 2000
   val shortServiceRefundAmount: BigDecimal = 200.23
   val shortServiceRefundCharge: BigDecimal = 300.25
 
@@ -50,4 +50,5 @@ object ShortServiceRefundBandsFixture {
        |}
      """.stripMargin
   )
+
 }

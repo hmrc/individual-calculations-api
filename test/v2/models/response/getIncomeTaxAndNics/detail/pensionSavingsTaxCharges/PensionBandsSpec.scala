@@ -33,4 +33,5 @@ class PensionBandsSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

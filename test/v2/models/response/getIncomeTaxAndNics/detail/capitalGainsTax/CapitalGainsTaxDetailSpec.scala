@@ -30,4 +30,5 @@ class CapitalGainsTaxDetailSpec extends UnitSpec with JsonErrorValidators {
       "otherGains"
     )
   )
+
 }

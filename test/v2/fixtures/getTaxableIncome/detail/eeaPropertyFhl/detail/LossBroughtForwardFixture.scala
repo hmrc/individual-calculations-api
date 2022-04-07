@@ -22,8 +22,8 @@ import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.LossBrou
 object LossBroughtForwardFixture {
 
   val taxYearLossIncurred: String = "2054-55"
-  val currentLossValue: BigInt = 673350334
-  val mtdLoss: Boolean = false
+  val currentLossValue: BigInt    = 673350334
+  val mtdLoss: Boolean            = false
 
   val lossBroughtForwardModel: LossBroughtForward =
     LossBroughtForward(
@@ -41,4 +41,5 @@ object LossBroughtForwardFixture {
        |}
     """.stripMargin
   )
+
 }

@@ -35,4 +35,5 @@ class AuditResponseSpec extends UnitSpec {
       }
     }
   }
+
 }

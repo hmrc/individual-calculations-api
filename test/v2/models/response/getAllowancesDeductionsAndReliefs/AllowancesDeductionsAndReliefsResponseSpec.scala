@@ -45,7 +45,7 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino = "someNino"
+      val nino           = "someNino"
       val calcId: String = "calcId"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -63,4 +63,5 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
       }
     }
   }
+
 }

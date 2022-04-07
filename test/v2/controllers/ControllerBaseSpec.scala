@@ -28,7 +28,7 @@ import v2.models.outcomes.ResponseWrapper
 import v2.support.BackendResponseMappingSupport
 
 class ControllerBaseSpec
-  extends UnitSpec
+    extends UnitSpec
     with Status
     with MimeTypes
     with HeaderNames
@@ -50,8 +50,8 @@ class ControllerBaseSpec
 
   def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
 
-  def errorMappingCheck[BackendResp, APIResp](backendCode: String, backendStatus: Int, mtdError: MtdError, status: Int)(
-      implicit endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit =
+  def errorMappingCheck[BackendResp, APIResp](backendCode: String, backendStatus: Int, mtdError: MtdError, status: Int)(implicit
+      endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit =
     (requestHandling: RequestHandler[BackendResp, APIResp]) => {
 
       val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
@@ -61,12 +61,13 @@ class ControllerBaseSpec
         requiredError
     }
 
-  def allChecks[BackendResp, APIResp](params: (String, Int, MtdError, Int)*)(
-      implicit endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit = { requestHandling =>
+  def allChecks[BackendResp, APIResp](params: (String, Int, MtdError, Int)*)(implicit
+      endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit = { requestHandling =>
     params
-      .map {
-        case (backendCode, backendStatus, mtdError, status) => errorMappingCheck[BackendResp, APIResp](backendCode, backendStatus, mtdError, status)
+      .map { case (backendCode, backendStatus, mtdError, status) =>
+        errorMappingCheck[BackendResp, APIResp](backendCode, backendStatus, mtdError, status)
       }
       .foreach(check => check(requestHandling))
   }
+
 }

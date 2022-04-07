@@ -29,10 +29,13 @@ trait MockNrsProxyService extends MockFactory {
   val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
 
   object MockNrsProxyService {
+
     def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
-      (mockNrsProxyService.submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
+      (mockNrsProxyService
+        .submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
         .expects(nino, *, *, *)
     }
+
   }
 
 }

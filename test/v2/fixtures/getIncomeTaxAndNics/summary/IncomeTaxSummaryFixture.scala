@@ -21,15 +21,15 @@ import v2.models.response.getIncomeTaxAndNics.summary.IncomeTaxSummary
 
 object IncomeTaxSummaryFixture {
 
-  val incomeTaxCharged: BigDecimal = 2000.00
-  val incomeTaxDueAfterReliefs: Option[BigDecimal] = Some(1525.22)
-  val incomeTaxDueAfterGiftAid: Option[BigDecimal] = Some(120.10)
-  val totalNotionalTax: Option[BigDecimal] = Some(130.10)
-  val totalPensionSavingsTaxCharges: Option[BigDecimal] = Some(140.10)
-  val statePensionLumpSumCharges: Option[BigDecimal] = Some(150.10)
+  val incomeTaxCharged: BigDecimal                       = 2000.00
+  val incomeTaxDueAfterReliefs: Option[BigDecimal]       = Some(1525.22)
+  val incomeTaxDueAfterGiftAid: Option[BigDecimal]       = Some(120.10)
+  val totalNotionalTax: Option[BigDecimal]               = Some(130.10)
+  val totalPensionSavingsTaxCharges: Option[BigDecimal]  = Some(140.10)
+  val statePensionLumpSumCharges: Option[BigDecimal]     = Some(150.10)
   val incomeTaxDueAfterTaxReductions: Option[BigDecimal] = Some(160.10)
-  val totalIncomeTaxDue: Option[BigDecimal] = Some(170.10)
-  val payeUnderpaymentsCodedOut: Option[BigDecimal] = Some(180)
+  val totalIncomeTaxDue: Option[BigDecimal]              = Some(170.10)
+  val payeUnderpaymentsCodedOut: Option[BigDecimal]      = Some(180)
 
   val incomeTaxSummaryModel: IncomeTaxSummary =
     IncomeTaxSummary(
@@ -59,4 +59,5 @@ object IncomeTaxSummaryFixture {
        |}
     """.stripMargin
   )
+
 }

@@ -21,8 +21,8 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.OtherIncomeRf
 
 object OtherIncomeRfcDetailFixture {
 
-  val countryCode: String = "FRA"
-  val residentialFinancialCostAmount: Option[BigDecimal] = Some(10001.99)
+  val countryCode: String                                          = "FRA"
+  val residentialFinancialCostAmount: Option[BigDecimal]           = Some(10001.99)
   val broughtFwdResidentialFinancialCostAmount: Option[BigDecimal] = Some(10002.99)
 
   val otherIncomeRfcDetailModel: OtherIncomeRfcDetail =
@@ -41,4 +41,5 @@ object OtherIncomeRfcDetailFixture {
       |}
     """.stripMargin
   )
+
 }

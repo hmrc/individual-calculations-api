@@ -19,8 +19,8 @@ package v2.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.{ JsValue, Json }
-import play.api.libs.ws.{ EmptyBody, WSRequest, WSResponse }
+import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import support.V2IntegrationBaseSpec
 import v2.models.errors._
 import v2.stubs._
@@ -75,6 +75,7 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
+
   }
 
   "submitting an intent to crystallise" should {
@@ -168,4 +169,5 @@ class IntentToCrystalliseControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

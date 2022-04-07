@@ -30,4 +30,5 @@ class ClaimsNotAppliedSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

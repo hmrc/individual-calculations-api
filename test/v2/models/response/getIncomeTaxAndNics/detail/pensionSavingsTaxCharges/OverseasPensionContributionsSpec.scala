@@ -33,4 +33,5 @@ class OverseasPensionContributionsSpec extends UnitSpec with JsonErrorValidators
       "shortServiceRefundBands"
     )
   )
+
 }

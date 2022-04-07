@@ -17,17 +17,19 @@
 package support
 
 trait V3IntegrationBaseSpec extends IntegrationBaseSpec {
+
   override def servicesConfig: Map[String, String] = Map(
-    "microservice.services.downstream.host" -> mockHost,
-    "microservice.services.downstream.port" -> mockPort,
+    "microservice.services.downstream.host"              -> mockHost,
+    "microservice.services.downstream.port"              -> mockPort,
     "microservice.services.individual-calculations.host" -> mockHost,
     "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host" -> mockHost,
-    "microservice.services.mtd-id-lookup.port" -> mockPort,
-    "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort,
-    "feature-switch.version-2.enabled" -> "false",
-    "feature-switch.version-3.enabled" -> "true"
+    "microservice.services.mtd-id-lookup.host"           -> mockHost,
+    "microservice.services.mtd-id-lookup.port"           -> mockPort,
+    "microservice.services.auth.host"                    -> mockHost,
+    "microservice.services.auth.port"                    -> mockPort,
+    "auditing.consumer.baseUri.port"                     -> mockPort,
+    "feature-switch.version-2.enabled"                   -> "false",
+    "feature-switch.version-3.enabled"                   -> "true"
   )
+
 }

@@ -18,9 +18,7 @@ package v2.models.response.getIncomeTaxAndNics.summary
 
 import play.api.libs.json._
 
-case class NicSummary(class2NicsAmount: Option[BigDecimal],
-                      class4NicsAmount: Option[BigDecimal],
-                      totalNic: Option[BigDecimal])
+case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
 
 object NicSummary {
   implicit val format: OFormat[NicSummary] = Json.format[NicSummary]

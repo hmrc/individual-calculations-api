@@ -37,4 +37,5 @@ object NicDetailFixture {
        |}
      """.stripMargin
   )
+
 }

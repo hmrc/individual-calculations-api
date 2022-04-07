@@ -25,7 +25,7 @@ class NinoValidationSpec extends UnitSpec {
     "return no errors" when {
       "when a valid NINO is supplied" in {
 
-        val validNino = "AA123456A"
+        val validNino        = "AA123456A"
         val validationResult = NinoValidation.validate(validNino)
         validationResult.isEmpty shouldBe true
 
@@ -35,7 +35,7 @@ class NinoValidationSpec extends UnitSpec {
     "return an error" when {
       "when an invalid NINO is supplied" in {
 
-        val invalidNino = "AA123456ABCBBCBCBC"
+        val invalidNino      = "AA123456ABCBBCBCBC"
         val validationResult = NinoValidation.validate(invalidNino)
         validationResult.isEmpty shouldBe false
         validationResult.length shouldBe 1
@@ -44,4 +44,5 @@ class NinoValidationSpec extends UnitSpec {
       }
     }
   }
+
 }

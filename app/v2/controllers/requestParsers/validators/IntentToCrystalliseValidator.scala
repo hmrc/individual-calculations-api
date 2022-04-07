@@ -40,4 +40,5 @@ class IntentToCrystalliseValidator extends Validator[IntentToCrystalliseRawData]
       TaxYearNotSupportedValidation.validate(data.taxYear)
     )
   }
+
 }

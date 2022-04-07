@@ -32,13 +32,13 @@ import v2.support.BackendResponseMappingSupport
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnector) extends BackendResponseMappingSupport with Logging {
+class IntentToCrystalliseService @Inject() (connector: IntentToCrystalliseConnector) extends BackendResponseMappingSupport with Logging {
 
-  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    logContext: EndpointLogContext,
-    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
+  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      logContext: EndpointLogContext,
+      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[IntentToCrystalliseResponse]]] = {
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.submitIntentToCrystallise(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
@@ -49,13 +49,14 @@ class IntentToCrystalliseService @Inject()(connector: IntentToCrystalliseConnect
 
   private def downstreamErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_NINO" -> NinoFormatError,
-      "INVALID_TAX_YEAR" -> TaxYearFormatError,
+      "INVALID_NINO"            -> NinoFormatError,
+      "INVALID_TAX_YEAR"        -> TaxYearFormatError,
       "INVALID_TAX_CRYSTALLISE" -> DownstreamError,
-      "INVALID_REQUEST" -> DownstreamError,
-      "NO_SUBMISSION_EXIST" -> RuleNoSubmissionsExistError,
-      "CONFLICT" -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR" -> DownstreamError,
-      "SERVICE_UNAVAILABLE" -> DownstreamError
+      "INVALID_REQUEST"         -> DownstreamError,
+      "NO_SUBMISSION_EXIST"     -> RuleNoSubmissionsExistError,
+      "CONFLICT"                -> RuleFinalDeclarationReceivedError,
+      "SERVER_ERROR"            -> DownstreamError,
+      "SERVICE_UNAVAILABLE"     -> DownstreamError
     )
+
 }

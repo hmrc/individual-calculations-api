@@ -16,7 +16,7 @@
 
 package v2.fixtures.getAllowancesDeductionsAndReliefs.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.MarriageAllowanceTransferOut
 
 object MarriageAllowanceTransferOutFixture {
@@ -34,4 +34,5 @@ object MarriageAllowanceTransferOutFixture {
                   |  "transferredOutAmount": 1002.99
                   |}
     """.stripMargin)
+
 }

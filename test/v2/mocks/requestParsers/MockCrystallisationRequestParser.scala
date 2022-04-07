@@ -33,5 +33,7 @@ trait MockCrystallisationRequestParser extends MockFactory {
         .parseRequest(_: CrystallisationRawData)(_: String))
         .expects(data, *)
     }
+
   }
+
 }

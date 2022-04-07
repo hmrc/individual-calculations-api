@@ -26,32 +26,34 @@ import scala.concurrent.Future
 
 class BaseConnectorSpec extends ConnectorSpec {
 
-  //WLOG
+  // WLOG
   case class Result(value: Int)
 
-  //WLOG
-  val body: String = "body"
+  // WLOG
+  val body: String                                   = "body"
   val outcome: Either[Nothing, ResponseWrapper[Any]] = Right(ResponseWrapper(correlationId, Result(2)))
 
-  val url: String = "some/url?param=value"
+  val url: String         = "some/url?param=value"
   val absoluteUrl: String = s"$baseUrl/$url"
 
   implicit val httpReads: HttpReads[BackendOutcome[Result]] = mock[HttpReads[BackendOutcome[Result]]]
 
   class Test extends MockHttpClient with MockAppConfig {
+
     val connector: BaseConnector = new BaseConnector {
-      val http: HttpClient = mockHttpClient
+      val http: HttpClient     = mockHttpClient
       val appConfig: AppConfig = mockAppConfig
     }
+
   }
 
   "BaseConnector" when {
     "making a HTTP request to DES" must {
       val requiredHeaders: Seq[(String, String)] = Seq(
-        "Environment" -> "downstream-environment",
-        "Authorization" -> "Bearer downstream-token",
-        "User-Agent" -> "individual-calculations-api",
-        "CorrelationId" -> correlationId,
+        "Environment"       -> "downstream-environment",
+        "Authorization"     -> "Bearer downstream-token",
+        "User-Agent"        -> "individual-calculations-api",
+        "CorrelationId"     -> correlationId,
         "Gov-Test-Scenario" -> "DEFAULT"
       )
 
@@ -63,9 +65,9 @@ class BaseConnectorSpec extends ConnectorSpec {
 
       "exclude all `otherHeaders` when no external service header allow-list is found" should {
         val requiredHeaders: Seq[(String, String)] = Seq(
-          "Environment" -> "downstream-environment",
+          "Environment"   -> "downstream-environment",
           "Authorization" -> "Bearer downstream-token",
-          "User-Agent" -> "individual-calculations-api",
+          "User-Agent"    -> "individual-calculations-api",
           "CorrelationId" -> correlationId
         )
 
@@ -84,19 +86,19 @@ class BaseConnectorSpec extends ConnectorSpec {
   }
 
   def downstreamTestHttpMethods(config: HeaderCarrier.Config,
-                         requiredHeaders: Seq[(String, String)],
-                         excludedHeaders: Seq[(String, String)],
-                         downstreamEnvironmentHeaders: Option[Seq[String]]): Unit = {
+                                requiredHeaders: Seq[(String, String)],
+                                excludedHeaders: Seq[(String, String)],
+                                downstreamEnvironmentHeaders: Option[Seq[String]]): Unit = {
 
     "complete the request successfully with the required headers" when {
 
       "DownstreamPost" in new Test {
         class DownstreamResult(override val value: Int) extends Result(value) with DownstreamResponse
 
-        val downstreamUrl: Uri[DownstreamResult] = Uri[DownstreamResult](url)
+        val downstreamUrl: Uri[DownstreamResult]                            = Uri[DownstreamResult](url)
         implicit val httpReads: HttpReads[BackendOutcome[DownstreamResult]] = mock[HttpReads[BackendOutcome[DownstreamResult]]]
 
-        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        implicit val hc: HeaderCarrier                 = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockAppConfig.downstreamBaseUrl returns baseUrl
@@ -113,8 +115,7 @@ class BaseConnectorSpec extends ConnectorSpec {
     }
   }
 
-  def backendTestHttpMethods(config: HeaderCarrier.Config,
-                             requiredHeaders: Seq[(String, String)]): Unit = {
+  def backendTestHttpMethods(config: HeaderCarrier.Config, requiredHeaders: Seq[(String, String)]): Unit = {
 
     "complete the request successfully with the required headers" when {
       implicit val hc: HeaderCarrier = HeaderCarrier().withExtraHeaders(headers = "Authorization" -> "Bearer user-token")
@@ -140,4 +141,5 @@ class BaseConnectorSpec extends ConnectorSpec {
       }
     }
   }
+
 }

@@ -30,4 +30,5 @@ object Versions {
 
   private def getFrom(headers: Seq[(String, String)]): Option[String] =
     headers.collectFirst { case (ACCEPT, versionRegex(ver)) => ver }
+
 }

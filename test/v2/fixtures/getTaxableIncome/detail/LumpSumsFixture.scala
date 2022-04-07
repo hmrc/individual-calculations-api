@@ -22,7 +22,7 @@ import v2.models.response.getTaxableIncome.detail.LumpSums
 object LumpSumsFixture {
 
   val incomeReceived: BigInt = 100
-  val taxableIncome: BigInt = 200
+  val taxableIncome: BigInt  = 200
 
   val lumpSumsModel: LumpSums =
     LumpSums(
@@ -38,4 +38,5 @@ object LumpSumsFixture {
        |}
      """.stripMargin
   )
+
 }

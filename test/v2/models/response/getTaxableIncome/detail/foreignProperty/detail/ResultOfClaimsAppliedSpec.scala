@@ -36,4 +36,5 @@ class ResultOfClaimsAppliedSpec extends UnitSpec with JsonErrorValidators {
       "originatingClaimId"
     )
   )
+
 }

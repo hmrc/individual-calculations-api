@@ -30,4 +30,5 @@ class EmptyJsonBodySpec extends UnitSpec {
       }
     }
   }
+
 }

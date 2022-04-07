@@ -31,12 +31,13 @@ class GetEoyEstimateControllerISpec extends V2IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
+    val nino: String          = "AA123456A"
     val correlationId: String = "X-123"
-    val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calcId: String        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    val linksJson: JsObject = Json.parse(
-      s"""
+    val linksJson: JsObject = Json
+      .parse(
+        s"""
          |{
          |   "links":[
          |      {
@@ -52,7 +53,8 @@ class GetEoyEstimateControllerISpec extends V2IntegrationBaseSpec {
          |   ]
          |}
        """.stripMargin
-    ).as[JsObject]
+      )
+      .as[JsObject]
 
     def backendUrl: String = s"/$nino/self-assessment/$calcId"
 
@@ -125,7 +127,7 @@ class GetEoyEstimateControllerISpec extends V2IntegrationBaseSpec {
         def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String = requestNino
+            override val nino: String   = requestNino
             override val calcId: String = requestCalcId
 
             override def setupStubs(): StubMapping = {
@@ -188,4 +190,5 @@ class GetEoyEstimateControllerISpec extends V2IntegrationBaseSpec {
       }
     }
   }
+
 }

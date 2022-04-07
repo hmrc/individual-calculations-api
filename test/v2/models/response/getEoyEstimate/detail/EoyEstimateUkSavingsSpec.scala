@@ -31,4 +31,5 @@ class EoyEstimateUkSavingsSpec extends UnitSpec with JsonErrorValidators {
       "savingsAccountName"
     )
   )
+
 }

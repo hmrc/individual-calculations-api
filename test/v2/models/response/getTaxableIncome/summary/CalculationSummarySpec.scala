@@ -29,4 +29,5 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

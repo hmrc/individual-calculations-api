@@ -46,4 +46,5 @@ object LossClaimsDetailFixture {
        |}
      """.stripMargin
   )
+
 }

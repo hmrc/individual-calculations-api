@@ -42,14 +42,14 @@ trait BaseConnector extends Logging {
   private[connectors] def headerCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = hc
     .withExtraHeaders(headers = "CorrelationId" -> correlationId)
 
-  private def downstreamHeaderCarrier(additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier,
-                                                                                     correlationId: String): HeaderCarrier =
+  private def downstreamHeaderCarrier(
+      additionalHeaders: Seq[String] = Seq("Content-Type"))(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier =
     HeaderCarrier(
       extraHeaders = hc.extraHeaders ++
         // Contract headers
         Seq(
           "Authorization" -> s"Bearer ${appConfig.downstreamToken}",
-          "Environment" -> appConfig.downstreamEnv,
+          "Environment"   -> appConfig.downstreamEnv,
           "CorrelationId" -> correlationId
         ) ++
         // Other headers (i.e Gov-Test-Scenario, Content-Type)
@@ -59,10 +59,11 @@ trait BaseConnector extends Logging {
   private def urlFrom(uri: String): String =
     if (uri.startsWith("/")) s"${appConfig.backendBaseUrl}$uri" else s"${appConfig.backendBaseUrl}/$uri"
 
-  def post[Body: Writes, T](body: Body, uri: String)(implicit ec: ExecutionContext,
-                                                     hc: HeaderCarrier,
-                                                     httpReads: HttpReads[BackendOutcome[T]],
-                                                     correlationId: String): Future[BackendOutcome[T]] = {
+  def post[Body: Writes, T](body: Body, uri: String)(implicit
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      httpReads: HttpReads[BackendOutcome[T]],
+      correlationId: String): Future[BackendOutcome[T]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] = {
       http.POST(urlFrom(uri), body)
@@ -71,10 +72,11 @@ trait BaseConnector extends Logging {
     doPost(headerCarrier(hc, correlationId))
   }
 
-  def downstreamPost[Body: Writes, Resp <: DownstreamResponse](body: Body, uri: Uri[Resp])(implicit ec: ExecutionContext,
-                                                                             hc: HeaderCarrier,
-                                                                             httpReads: HttpReads[BackendOutcome[Resp]],
-                                                                             correlationId: String): Future[BackendOutcome[Resp]] = {
+  def downstreamPost[Body: Writes, Resp <: DownstreamResponse](body: Body, uri: Uri[Resp])(implicit
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      httpReads: HttpReads[BackendOutcome[Resp]],
+      correlationId: String): Future[BackendOutcome[Resp]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
       http.POST(s"${appConfig.downstreamBaseUrl}/${uri.value}", body)
@@ -83,14 +85,16 @@ trait BaseConnector extends Logging {
     doPost(downstreamHeaderCarrier())
   }
 
-  def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit ec: ExecutionContext,
-                                                                        hc: HeaderCarrier,
-                                                                        httpReads: HttpReads[BackendOutcome[T]],
-                                                                        correlationId: String): Future[BackendOutcome[T]] = {
+  def get[T](uri: String, queryParameters: Seq[(String, String)] = Nil)(implicit
+      ec: ExecutionContext,
+      hc: HeaderCarrier,
+      httpReads: HttpReads[BackendOutcome[T]],
+      correlationId: String): Future[BackendOutcome[T]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[BackendOutcome[T]] =
       http.GET(urlFrom(uri), queryParameters)
 
     doGet(headerCarrier(hc, correlationId))
   }
+
 }

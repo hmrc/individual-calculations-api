@@ -23,7 +23,7 @@ object CalculationIdValidation {
 
   def validate(calculationId: String): List[MtdError] = calculationId match {
     case _ if calculationId matches calculationIdRegex => NoValidationErrors
-    case _ => List(CalculationIdFormatError)
+    case _                                             => List(CalculationIdFormatError)
   }
 
 }

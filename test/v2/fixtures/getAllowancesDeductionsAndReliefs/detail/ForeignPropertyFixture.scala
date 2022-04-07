@@ -38,4 +38,5 @@ object ForeignPropertyFixture {
       |}
     """.stripMargin
   )
+
 }

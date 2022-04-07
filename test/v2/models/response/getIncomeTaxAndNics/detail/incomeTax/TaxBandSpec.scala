@@ -33,4 +33,5 @@ class TaxBandSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

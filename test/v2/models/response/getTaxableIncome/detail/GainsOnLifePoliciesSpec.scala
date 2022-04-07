@@ -32,4 +32,5 @@ class GainsOnLifePoliciesSpec extends UnitSpec with JsonErrorValidators {
       "totalForeignGainsOnLifePoliciesWithTaxPaid"
     )
   )
+
 }

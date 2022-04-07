@@ -19,9 +19,7 @@ package v2.models.response.getTaxableIncome.detail.selfEmployment.detail
 import play.api.libs.json.{Format, Json}
 import v2.models.hateoas.Link
 
-case class BusinessSourceAdjustableSummary(bsasId: String,
-                                           applied: Boolean,
-                                           links: Option[Seq[Link]])
+case class BusinessSourceAdjustableSummary(bsasId: String, applied: Boolean, links: Option[Seq[Link]])
 
 object BusinessSourceAdjustableSummary {
 

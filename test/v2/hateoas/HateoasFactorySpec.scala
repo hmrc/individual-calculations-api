@@ -76,4 +76,5 @@ class HateoasFactorySpec extends UnitSpec with MockAppConfig {
         HateoasWrapper(ListResponse(Seq(HateoasWrapper(response, Seq(Link("context/id/X", GET, "item"))))), Seq(Link("context/id", GET, "rel")))
     }
   }
+
 }

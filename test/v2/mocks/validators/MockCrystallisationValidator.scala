@@ -33,5 +33,7 @@ trait MockCrystallisationValidator extends MockFactory {
         .validate(_: CrystallisationRawData))
         .expects(data)
     }
+
   }
+
 }

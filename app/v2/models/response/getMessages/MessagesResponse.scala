@@ -29,25 +29,24 @@ object Message {
   implicit val format: OFormat[Message] = Json.format[Message]
 }
 
-case class MessagesResponse(info: Option[Seq[Message]],
-                            warnings: Option[Seq[Message]],
-                            errors: Option[Seq[Message]],
-                            id: String) {
+case class MessagesResponse(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]], id: String) {
 
   val hasMessages: Boolean = this match {
     case MessagesResponse(None, None, None, _) => false
-    case _ => true
+    case _                                     => true
   }
+
 }
 
 object MessagesResponse extends HateoasLinks {
 
   implicit val writes: OWrites[MessagesResponse] = new OWrites[MessagesResponse] {
-    def writes(response: MessagesResponse) : JsObject =
 
+    def writes(response: MessagesResponse): JsObject =
       response.info.fold(Json.obj())(a => Json.obj("info" -> a)) ++
-      response.warnings.fold(Json.obj())(a => Json.obj("warnings" -> a)) ++
-      response.errors.fold(Json.obj())(a => Json.obj("errors" -> a))
+        response.warnings.fold(Json.obj())(a => Json.obj("warnings" -> a)) ++
+        response.errors.fold(Json.obj())(a => Json.obj("errors" -> a))
+
   }
 
   implicit val reads: Reads[MessagesResponse] = (
@@ -55,9 +54,10 @@ object MessagesResponse extends HateoasLinks {
       (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]] and
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]] and
       (__ \ "metadata" \ "id").read[String]
-    ) (MessagesResponse.apply _)
+  )(MessagesResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[MessagesResponse, MessagesHateoasData] {
+
     override def links(appConfig: AppConfig, data: MessagesHateoasData): Seq[Link] = {
       import data.{id, nino}
       Seq(
@@ -65,7 +65,9 @@ object MessagesResponse extends HateoasLinks {
         getMessages(appConfig, nino, id, isSelf = true)
       )
     }
+
   }
+
 }
 
 case class MessagesHateoasData(nino: String, id: String) extends HateoasData

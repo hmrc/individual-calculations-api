@@ -23,7 +23,7 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 object PensionSchemeUnauthorisedPaymentsFixture {
 
   val totalChargeableAmount: Option[BigDecimal] = Some(2000.99)
-  val totalTaxPaid: Option[BigDecimal] = Some(2500.99)
+  val totalTaxPaid: Option[BigDecimal]          = Some(2500.99)
 
   val pensionSchemeUnauthorisedPaymentsModel: PensionSchemeUnauthorisedPayments =
     PensionSchemeUnauthorisedPayments(
@@ -43,4 +43,5 @@ object PensionSchemeUnauthorisedPaymentsFixture {
        |}
      """.stripMargin
   )
+
 }

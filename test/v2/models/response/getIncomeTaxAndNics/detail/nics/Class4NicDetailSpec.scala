@@ -31,4 +31,5 @@ class Class4NicDetailSpec extends UnitSpec with JsonErrorValidators {
       "class4NicBands"
     )
   )
+
 }

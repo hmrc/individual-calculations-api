@@ -21,20 +21,20 @@ import play.api.libs.json.{Reads, _}
 import support.UnitSpec
 import utils.NestedJsonReads._
 
-
 class NestedJsonReadsSpec extends UnitSpec {
 
   case class Test(param: String, param3: Option[String])
 
   object Test {
+
     implicit val reads: Reads[Test] = (
       (JsPath \ "a" \ "b" \ "c").read[String] and
         (__ \ "a" \ "c" \ "e").readNestedNullable[String]
-      ) (Test.apply _)
+    )(Test.apply _)
+
   }
 
-  val firstOutput: JsValue = Json.parse(
-    """{
+  val firstOutput: JsValue = Json.parse("""{
       | "a" : {
       |   "b" : {
       |     "c" : "string"
@@ -44,7 +44,6 @@ class NestedJsonReadsSpec extends UnitSpec {
       |   }
       |  }
       |}""".stripMargin)
-
 
   "Valid Json" should {
 
@@ -60,9 +59,7 @@ class NestedJsonReadsSpec extends UnitSpec {
     }
   }
 
-
-  val secondOutput: JsValue = Json.parse(
-    """{
+  val secondOutput: JsValue = Json.parse("""{
       | "a" : {
       |   "b" : {
       |     "c" : "string"
@@ -80,8 +77,7 @@ class NestedJsonReadsSpec extends UnitSpec {
     }
   }
 
-  val thirdOutput: JsValue = Json.parse(
-    """{
+  val thirdOutput: JsValue = Json.parse("""{
       | "a" : {
       |   "b" : {
       |     "c" : "string"
@@ -98,10 +94,5 @@ class NestedJsonReadsSpec extends UnitSpec {
       thirdOutput.validate[Test] shouldBe a[JsError]
     }
   }
-
-
-
-
-
 
 }

@@ -35,12 +35,14 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        MockAppConfig.featureSwitch returns None anyNumberOfTimes()
+        MockAppConfig.featureSwitch returns None anyNumberOfTimes ()
         MockAppConfig.apiStatus(status = "2.0") returns "BETA"
-        MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes()
+        MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes ()
         MockAppConfig.apiStatus(status = "3.0") returns "BETA"
-        MockAppConfig.endpointsEnabled(version = "3") returns true anyNumberOfTimes()
-        MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = true, authValidationEnabled = true) anyNumberOfTimes()
+        MockAppConfig.endpointsEnabled(version = "3") returns true anyNumberOfTimes ()
+        MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(
+          definitionEnabled = true,
+          authValidationEnabled = true) anyNumberOfTimes ()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(
@@ -64,10 +66,14 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
-                version = VERSION_2, status = APIStatus.BETA, endpointsEnabled = true
+                version = VERSION_2,
+                status = APIStatus.BETA,
+                endpointsEnabled = true
               ),
               APIVersion(
-                version = VERSION_3, status = APIStatus.BETA, endpointsEnabled = true
+                version = VERSION_3,
+                status = APIStatus.BETA,
+                endpointsEnabled = true
               )
             ),
             requiresTrust = None
@@ -81,14 +87,13 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     Seq(
       (true, ConfidenceLevel.L200),
       (false, ConfidenceLevel.L50)
-    ).foreach {
-      case (definitionEnabled, cl) =>
-        s"confidence-level-check.definition.enabled is $definitionEnabled in config" should {
-          s"return $cl" in new Test {
-            MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = definitionEnabled, authValidationEnabled = true)
-            apiDefinitionFactory.confidenceLevel shouldBe cl
-          }
+    ).foreach { case (definitionEnabled, cl) =>
+      s"confidence-level-check.definition.enabled is $definitionEnabled in config" should {
+        s"return $cl" in new Test {
+          MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = definitionEnabled, authValidationEnabled = true)
+          apiDefinitionFactory.confidenceLevel shouldBe cl
         }
+      }
     }
   }
 
@@ -107,4 +112,5 @@ class ApiDefinitionFactorySpec extends UnitSpec {
       }
     }
   }
+
 }

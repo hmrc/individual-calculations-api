@@ -22,9 +22,9 @@ import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.ClaimsN
 
 object ClaimsNotAppliedFixture {
 
-  val claimId: String = "CCIS12345678901"
+  val claimId: String          = "CCIS12345678901"
   val taxYearClaimMade: String = "2019-20"
-  val claimType: TypeOfClaim = TypeOfClaim.`carry-forward`
+  val claimType: TypeOfClaim   = TypeOfClaim.`carry-forward`
 
   val claimsNotAppliedModel: ClaimsNotApplied =
     ClaimsNotApplied(
@@ -42,4 +42,5 @@ object ClaimsNotAppliedFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -21,9 +21,9 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 
 object PensionSavingsDetailBreakdownFixture {
 
-  val amount: Option[BigDecimal] = Some(2000.99)
-  val taxPaid: Option[BigDecimal] = Some(3000.99)
-  val rate: Option[BigDecimal] = Some(20.25)
+  val amount: Option[BigDecimal]           = Some(2000.99)
+  val taxPaid: Option[BigDecimal]          = Some(3000.99)
+  val rate: Option[BigDecimal]             = Some(20.25)
   val chargeableAmount: Option[BigDecimal] = Some(4000.99)
 
   val pensionSavingsDetailBreakdownModel: PensionSavingsDetailBreakdown =
@@ -44,4 +44,5 @@ object PensionSavingsDetailBreakdownFixture {
        |}
      """.stripMargin
   )
+
 }

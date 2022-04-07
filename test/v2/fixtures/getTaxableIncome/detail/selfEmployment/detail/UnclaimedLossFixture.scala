@@ -23,8 +23,8 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.Unclaime
 object UnclaimedLossFixture {
 
   val taxYearLossIncurred: String = "2051-52"
-  val typeOfLoss: LossType = LossType.INCOME
-  val currentLossValue: BigInt = 71438847594L
+  val typeOfLoss: LossType        = LossType.INCOME
+  val currentLossValue: BigInt    = 71438847594L
 
   val unclaimedLossModel: UnclaimedLoss =
     UnclaimedLoss(
@@ -42,4 +42,5 @@ object UnclaimedLossFixture {
        |}
     """.stripMargin
   )
+
 }

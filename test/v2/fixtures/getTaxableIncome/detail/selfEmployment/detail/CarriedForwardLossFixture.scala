@@ -22,11 +22,11 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.CarriedF
 
 object CarriedForwardLossFixture {
 
-  val claimId: Option[String] = Some("CCIS12345678911")
+  val claimId: Option[String]          = Some("CCIS12345678911")
   val taxYearClaimMade: Option[String] = Some("2047-48")
-  val taxYearLossIncurred: String = "2045-46"
-  val currentLossValue: BigInt = 49177438626L
-  val lossType: LossType = LossType.INCOME
+  val taxYearLossIncurred: String      = "2045-46"
+  val currentLossValue: BigInt         = 49177438626L
+  val lossType: LossType               = LossType.INCOME
 
   val carriedForwardLossModel: CarriedForwardLoss =
     CarriedForwardLoss(
@@ -50,4 +50,5 @@ object CarriedForwardLossFixture {
       |}
     """.stripMargin
   )
+
 }

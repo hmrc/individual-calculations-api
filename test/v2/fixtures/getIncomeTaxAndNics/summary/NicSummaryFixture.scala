@@ -23,7 +23,7 @@ object NicSummaryFixture {
 
   val class2NicsAmount: Option[BigDecimal] = Some(100.25)
   val class4NicsAmount: Option[BigDecimal] = Some(200.25)
-  val totalNic: Option[BigDecimal] = Some(300.25)
+  val totalNic: Option[BigDecimal]         = Some(300.25)
 
   val nicSummaryModel: NicSummary =
     NicSummary(
@@ -41,4 +41,5 @@ object NicSummaryFixture {
       |}
     """.stripMargin
   )
+
 }

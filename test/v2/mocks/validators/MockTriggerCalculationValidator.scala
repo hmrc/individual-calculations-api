@@ -33,5 +33,7 @@ class MockTriggerCalculationValidator extends MockFactory {
         .validate(_: TriggerCalculationRawData))
         .expects(data)
     }
+
   }
+
 }

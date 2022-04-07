@@ -22,10 +22,10 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Ov
 
 object OverseasPensionContributionsFixture {
 
-  val totalShortServiceRefund: BigDecimal = 2000.99
-  val totalShortServiceRefundCharge: BigDecimal = 3000.99
+  val totalShortServiceRefund: BigDecimal           = 2000.99
+  val totalShortServiceRefundCharge: BigDecimal     = 3000.99
   val shortServiceRefundTaxPaid: Option[BigDecimal] = Some(4000.99)
-  val totalShortServiceRefundChargeDue: BigDecimal = 5000.99
+  val totalShortServiceRefundChargeDue: BigDecimal  = 5000.99
 
   val overseasPensionContributionsModel: OverseasPensionContributions =
     OverseasPensionContributions(
@@ -47,4 +47,5 @@ object OverseasPensionContributionsFixture {
        |}
      """.stripMargin
   )
+
 }

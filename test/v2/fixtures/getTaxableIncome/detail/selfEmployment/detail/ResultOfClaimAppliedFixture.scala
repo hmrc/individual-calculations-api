@@ -22,13 +22,13 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.ResultOf
 
 object ResultOfClaimAppliedFixture {
 
-  val claimId: Option[String] = Some("CCIS12345678901")
-  val taxYearClaimMade: String = "2039-40"
-  val mtdLoss: Boolean = true
+  val claimId: Option[String]     = Some("CCIS12345678901")
+  val taxYearClaimMade: String    = "2039-40"
+  val mtdLoss: Boolean            = true
   val taxYearLossIncurred: String = "2051-52"
-  val lossAmountUsed: Long = 64613077921L
-  val remainingLossValue: Long = 72548288090L
-  val lossType: LossType = LossType.INCOME
+  val lossAmountUsed: Long        = 64613077921L
+  val remainingLossValue: Long    = 72548288090L
+  val lossType: LossType          = LossType.INCOME
 
   val resultOfClaimAppliedModel: ResultOfClaimApplied =
     ResultOfClaimApplied(
@@ -38,7 +38,8 @@ object ResultOfClaimAppliedFixture {
       mtdLoss = mtdLoss,
       taxYearLossIncurred = taxYearLossIncurred,
       lossAmountUsed = lossAmountUsed,
-      remainingLossValue = remainingLossValue, lossType
+      remainingLossValue = remainingLossValue,
+      lossType
     )
 
   val resultOfClaimAppliedJson: JsValue = Json.parse(
@@ -55,4 +56,5 @@ object ResultOfClaimAppliedFixture {
        |}
      """.stripMargin
   )
+
 }

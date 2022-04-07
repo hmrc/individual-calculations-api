@@ -29,4 +29,5 @@ class NicDetailSpec extends UnitSpec with JsonErrorValidators {
       "class4Nics"
     )
   )
+
 }

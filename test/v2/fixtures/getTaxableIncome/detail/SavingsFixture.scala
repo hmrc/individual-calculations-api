@@ -21,10 +21,10 @@ import v2.models.response.getTaxableIncome.detail.Savings
 
 object SavingsFixture {
 
-  val incomeSourceId: String = "anId"
-  val incomeSourceName: String = "aName"
-  val grossIncome: BigDecimal = 300.1
-  val netIncome: Option[BigDecimal] = Some(12.3)
+  val incomeSourceId: String          = "anId"
+  val incomeSourceName: String        = "aName"
+  val grossIncome: BigDecimal         = 300.1
+  val netIncome: Option[BigDecimal]   = Some(12.3)
   val taxDeducted: Option[BigDecimal] = Some(456.3)
 
   val savingsModel: Savings =
@@ -47,4 +47,5 @@ object SavingsFixture {
       |}
     """.stripMargin
   )
+
 }

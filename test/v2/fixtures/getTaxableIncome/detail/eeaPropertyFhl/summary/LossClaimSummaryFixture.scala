@@ -21,9 +21,9 @@ import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.summary.LossCla
 
 object LossClaimSummaryFixture {
 
-  val lossForCSFHL: Option[BigInt] = Some(1000)
+  val lossForCSFHL: Option[BigInt]                       = Some(1000)
   val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1000)
   val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1000)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
@@ -44,4 +44,5 @@ object LossClaimSummaryFixture {
        |}
      """.stripMargin
   )
+
 }

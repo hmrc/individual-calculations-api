@@ -16,9 +16,9 @@
 
 package v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl
 
-import play.api.libs.json.{ JsValue, Json }
-import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{ lossClaimsDetailJson, lossClaimsDetailModel }
-import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{ lossClaimSummaryJson, lossClaimsSummaryModel }
+import play.api.libs.json.{JsValue, Json}
+import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.detail.LossClaimsDetailFixture.{lossClaimsDetailJson, lossClaimsDetailModel}
+import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.summary.LossClaimSummaryFixture.{lossClaimSummaryJson, lossClaimsSummaryModel}
 import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhl
 import v2.models.response.getTaxableIncome.detail.eeaPropertyFhl.detail.BusinessSourceAdjustableSummary
 
@@ -80,4 +80,5 @@ object EeaPropertyFhlFixture {
        |}
      """.stripMargin
   )
+
 }

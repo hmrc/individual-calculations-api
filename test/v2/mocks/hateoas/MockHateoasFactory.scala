@@ -41,5 +41,7 @@ trait MockHateoasFactory extends MockFactory {
         .wrapList(_: A[I], _: D)(_: Functor[A], _: HateoasListLinksFactory[A, I, D]))
         .expects(a, data, *, *)
     }
+
   }
+
 }

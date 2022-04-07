@@ -19,8 +19,8 @@ package v2.models.response.getAllowancesDeductionsAndReliefs
 import config.AppConfig
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v2.hateoas.{ HateoasLinks, HateoasLinksFactory }
-import v2.models.hateoas.{ HateoasData, Link }
+import v2.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v2.models.hateoas.{HateoasData, Link}
 import v2.models.response.getAllowancesDeductionsAndReliefs.detail.CalculationDetail
 import v2.models.response.getAllowancesDeductionsAndReliefs.summary.CalculationSummary
 
@@ -35,19 +35,23 @@ object AllowancesDeductionsAndReliefsResponse extends HateoasLinks {
         "summary" -> response.summary,
         "detail"  -> response.detail
       )
+
   }
+
   implicit val reads: Reads[AllowancesDeductionsAndReliefsResponse] =
     ((JsPath \ "allowancesDeductionsAndReliefs" \ "summary").read[CalculationSummary] and
       (JsPath \ "allowancesDeductionsAndReliefs" \ "detail").read[CalculationDetail] and
       (JsPath \ "metadata" \ "id").read[String])(AllowancesDeductionsAndReliefsResponse.apply _)
 
   implicit object LinksFactory extends HateoasLinksFactory[AllowancesDeductionsAndReliefsResponse, AllowancesDeductionsAndReliefsHateoasData] {
+
     override def links(appConfig: AppConfig, data: AllowancesDeductionsAndReliefsHateoasData): Seq[Link] = {
       Seq(
         getMetadata(appConfig, data.nino, data.calculationId, isSelf = false),
         getAllowances(appConfig, data.nino, data.calculationId, isSelf = true)
       )
     }
+
   }
 
 }

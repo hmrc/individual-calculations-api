@@ -34,20 +34,20 @@ import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class GetTaxableIncomeController @Inject()(authService: EnrolmentsAuthService,
-                                           lookupService: MtdIdLookupService,
-                                           parser: GetCalculationParser,
-                                           service: StandardService,
-                                           hateoasFactory: HateoasFactory,
-                                           auditService: AuditService,
-                                           cc: ControllerComponents,
-                                           idGenerator: IdGenerator,
-                                          )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData,
-    GetCalculationRequest,
-    CalculationWrapperOrError[TaxableIncomeResponse],
-    HateoasWrapper[TaxableIncomeResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
+class GetTaxableIncomeController @Inject() (authService: EnrolmentsAuthService,
+                                            lookupService: MtdIdLookupService,
+                                            parser: GetCalculationParser,
+                                            service: StandardService,
+                                            hateoasFactory: HateoasFactory,
+                                            auditService: AuditService,
+                                            cc: ControllerComponents,
+                                            idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[
+      GetCalculationRawData,
+      GetCalculationRequest,
+      CalculationWrapperOrError[TaxableIncomeResponse],
+      HateoasWrapper[TaxableIncomeResponse],
+      AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -58,10 +58,10 @@ class GetTaxableIncomeController @Inject()(authService: EnrolmentsAuthService,
 
   override val successCode: StandardHttpParser.SuccessCode = SuccessCode(OK)
 
-  override def requestHandlerFor(playRequest: Request[AnyContent],
-                                 req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
-    RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse]](
-      RequestDefn.Get(req.backendCalculationUri))
+  override def requestHandlerFor(
+      playRequest: Request[AnyContent],
+      req: GetCalculationRequest): RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse], HateoasWrapper[TaxableIncomeResponse]] =
+    RequestHandler[CalculationWrapperOrError[TaxableIncomeResponse]](RequestDefn.Get(req.backendCalculationUri))
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
@@ -69,13 +69,12 @@ class GetTaxableIncomeController @Inject()(authService: EnrolmentsAuthService,
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither[TaxableIncomeResponse] {
-          case CalculationWrapperOrError.ErrorsInCalculation => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case CalculationWrapperOrError.ErrorsInCalculation =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
           case CalculationWrapperOrError.CalculationWrapper(calc) => Right(calc)
         }
       }
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, rawResponse.id))
-      )
+      .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, TaxableIncomeHateoasData(req.nino.nino, rawResponse.id)))
 
   def getTaxableIncome(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -84,9 +83,11 @@ class GetTaxableIncomeController @Inject()(authService: EnrolmentsAuthService,
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationTaxableIncome",
         "retrieve-self-assessment-tax-calculation-taxable-income",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
+        Map("nino" -> nino, "calculationId" -> calculationId),
+        request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
 }

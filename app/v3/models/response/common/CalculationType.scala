@@ -23,7 +23,7 @@ sealed trait CalculationType
 
 object CalculationType {
 
-  case object inYear extends CalculationType
+  case object inYear          extends CalculationType
   case object crystallisation extends CalculationType
 
   implicit val format: Format[CalculationType] = Enums.format[CalculationType]

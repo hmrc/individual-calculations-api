@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.ResidentialPropert
 import v2.models.utils.JsonErrorValidators
 
 class ResidentialPropertyAndCarriedInterestSpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[ResidentialPropertyAndCarriedInterest](residentialPropertyAndCarriedInterestJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
@@ -34,4 +35,5 @@ class ResidentialPropertyAndCarriedInterestSpec extends UnitSpec with JsonErrorV
       "totalTaxAmount"
     )
   )
+
 }

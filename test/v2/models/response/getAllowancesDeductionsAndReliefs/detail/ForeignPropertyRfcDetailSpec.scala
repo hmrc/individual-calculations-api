@@ -32,4 +32,5 @@ class ForeignPropertyRfcDetailSpec extends UnitSpec with JsonErrorValidators {
       "carryForwardAmount"
     )
   )
+
 }

@@ -26,16 +26,18 @@ trait NestedJsonReads {
   type ServiceResponse[T, E] = Future[Either[T, E]]
 
   implicit class JsPathOps(jsPath: JsPath) {
+
     def readNestedNullable[T](implicit rds: Reads[T]): Reads[Option[T]] = Reads[Option[T]] { json =>
       applyTillLastNested(json).fold(
         jsErr => jsErr,
-        jsRes => jsRes.fold(
-          invalid = _ => JsSuccess(None),
-          valid = {
-            case JsNull => JsSuccess(None)
-            case js => rds.reads(js).repath(jsPath).map(Some(_))
-          }
-        )
+        jsRes =>
+          jsRes.fold(
+            invalid = _ => JsSuccess(None),
+            valid = {
+              case JsNull => JsSuccess(None)
+              case js     => rds.reads(js).repath(jsPath).map(Some(_))
+            }
+          )
       )
     }
 
@@ -44,21 +46,25 @@ trait NestedJsonReads {
       @tailrec
       def step(pathNodes: List[PathNode], json: JsValue): Either[JsError, JsResult[JsValue]] = pathNodes match {
         case Nil => Left(singleJsError("error.path.empty"))
-        case node :: Nil => node(json) match {
-          case Nil => Right(singleJsError("error.path.missing"))
-          case js :: Nil => Right(JsSuccess(js))
-          case _ :: _ => Right(singleJsError("error.path.result.multiple"))
-        }
-        case head :: tail => head(json) match {
-          case Nil => Right(singleJsError("error.path.missing"))
-          case js :: Nil => step(tail, js)
-          case _ :: _ => Left(singleJsError("error.path.result.multiple"))
-        }
+        case node :: Nil =>
+          node(json) match {
+            case Nil       => Right(singleJsError("error.path.missing"))
+            case js :: Nil => Right(JsSuccess(js))
+            case _ :: _    => Right(singleJsError("error.path.result.multiple"))
+          }
+        case head :: tail =>
+          head(json) match {
+            case Nil       => Right(singleJsError("error.path.missing"))
+            case js :: Nil => step(tail, js)
+            case _ :: _    => Left(singleJsError("error.path.result.multiple"))
+          }
       }
 
       step(jsPath.path, json)
     }
+
   }
+
 }
 
 object NestedJsonReads extends NestedJsonReads

@@ -26,7 +26,7 @@ import v2.models.outcomes.ResponseWrapper
 class BackendResponseMappingSupportSpec extends UnitSpec {
 
   implicit val logContext: EndpointLogContext = EndpointLogContext("ctrl", "ep")
-  val mapping: BackendResponseMappingSupport = new BackendResponseMappingSupport with Logging {}
+  val mapping: BackendResponseMappingSupport  = new BackendResponseMappingSupport with Logging {}
 
   val correlationId: String = "someCorrelationId"
 
@@ -42,7 +42,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
 
   // WLOG
   val backendStatus: Int = 455
-  val mtdStatus: Int = 466
+  val mtdStatus: Int     = 466
 
   val passThroughErrors = List(ErrorPassthrough)
 
@@ -52,10 +52,10 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
     case "DS"   => (INTERNAL_SERVER_ERROR, DownstreamError)
   }
 
-  val downstreamErrorCodeMap : PartialFunction[String, MtdError] = {
+  val downstreamErrorCodeMap: PartialFunction[String, MtdError] = {
     case "ERR1" => Error1
     case "ERR2" => Error2
-    case "DS" => DownstreamError
+    case "DS"   => DownstreamError
   }
 
   "mapping backend errors" when {
@@ -105,9 +105,9 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
       "the error code is not in the map provided or passed through" must {
         "default main error to DownstreamError ignore other errors" in {
           mapping.mapBackendErrors(passThroughErrors, errorCodeMap)(
-            ResponseWrapper(correlationId,
-              BackendErrors(backendStatus,
-                List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
+            ResponseWrapper(
+              correlationId,
+              BackendErrors(backendStatus, List(BackendErrorCode("ERR1"), BackendErrorCode("PASS_THROUGH"), BackendErrorCode("UNKNOWN"))))) shouldBe
             ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
@@ -154,7 +154,7 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
         "default to DownstreamError and wrap" in {
           val error: BackendError = BackendErrors.single(INTERNAL_SERVER_ERROR, BackendErrorCode("UNKNOWN"))
 
-          mapping.mapDownstreamErrors (downstreamErrorCodeMap)(ResponseWrapper(correlationId, error)) shouldBe
+          mapping.mapDownstreamErrors(downstreamErrorCodeMap)(ResponseWrapper(correlationId, error)) shouldBe
             ErrorWrapper(correlationId, DownstreamError, None, INTERNAL_SERVER_ERROR)
         }
       }
@@ -198,9 +198,11 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapDownstreamErrors(downstreamErrorCodeMap)(ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
+        mapping.mapDownstreamErrors(downstreamErrorCodeMap)(
+          ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
           ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)), BAD_REQUEST)
       }
     }
   }
+
 }

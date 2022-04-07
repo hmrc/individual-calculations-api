@@ -30,4 +30,5 @@ class Class4LossesSpec extends UnitSpec with JsonErrorValidators {
       "totalClass4LossesCarriedForward"
     )
   )
+
 }

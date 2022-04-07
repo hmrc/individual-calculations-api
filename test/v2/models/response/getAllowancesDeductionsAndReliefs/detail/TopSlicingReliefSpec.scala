@@ -28,4 +28,5 @@ class TopSlicingReliefSpec extends UnitSpec with JsonErrorValidators {
       "amount"
     )
   )
+
 }

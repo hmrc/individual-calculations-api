@@ -31,4 +31,5 @@ class UkPropertySpec extends UnitSpec with JsonErrorValidators {
       "carryForwardAmount"
     )
   )
+
 }

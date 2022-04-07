@@ -58,7 +58,7 @@ class ListCalculationsResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -83,4 +83,5 @@ class ListCalculationsResponseSpec extends UnitSpec {
       }
     }
   }
+
 }

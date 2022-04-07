@@ -21,10 +21,11 @@ import v3.controllers.requestParsers.validators.TriggerCalculationValidator
 import v3.models.domain.{Nino, TriggerCalculationRequestBody}
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
-class TriggerCalculationParser @Inject()(val validator: TriggerCalculationValidator)
-  extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
+class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
+    extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
 
   override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
     TriggerCalculationRequest(Nino(data.nino), data.body.json.as[TriggerCalculationRequestBody].taxYear)
   }
+
 }

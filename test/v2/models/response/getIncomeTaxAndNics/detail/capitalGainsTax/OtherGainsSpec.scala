@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.OtherGainsFixture.
 import v2.models.utils.JsonErrorValidators
 
 class OtherGainsSpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[OtherGains](otherGainsJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
@@ -36,4 +37,5 @@ class OtherGainsSpec extends UnitSpec with JsonErrorValidators {
       "totalTaxAmount"
     )
   )
+
 }

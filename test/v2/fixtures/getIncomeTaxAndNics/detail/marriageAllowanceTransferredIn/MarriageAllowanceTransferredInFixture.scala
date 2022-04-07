@@ -35,4 +35,5 @@ object MarriageAllowanceTransferredInFixture {
        |}
        |""".stripMargin
   )
+
 }

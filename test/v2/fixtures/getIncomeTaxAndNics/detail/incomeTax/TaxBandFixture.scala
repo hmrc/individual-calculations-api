@@ -21,12 +21,12 @@ import v2.models.response.getIncomeTaxAndNics.detail.incomeTax.TaxBand
 
 object TaxBandFixture {
 
-  val name: String = "name"
-  val rate: BigDecimal = 100.25
-  val bandLimit: BigInt = 4000
+  val name: String                 = "name"
+  val rate: BigDecimal             = 100.25
+  val bandLimit: BigInt            = 4000
   val apportionedBandLimit: BigInt = 5000
-  val income: BigInt = 6000
-  val taxAmount: BigDecimal = 700.25
+  val income: BigInt               = 6000
+  val taxAmount: BigDecimal        = 700.25
 
   val taxBandModel: TaxBand =
     TaxBand(
@@ -74,4 +74,5 @@ object TaxBandFixture {
        |}
      """.stripMargin
   )
+
 }

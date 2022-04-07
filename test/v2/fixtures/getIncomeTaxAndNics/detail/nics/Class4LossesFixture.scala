@@ -21,8 +21,8 @@ import v2.models.response.getIncomeTaxAndNics.detail.nics.Class4Losses
 
 object Class4LossesFixture {
 
-  val totalClass4LossesAvailable: Option[BigInt] = Some(3001)
-  val totalClass4LossesUsed: Option[BigInt] = Some(3002)
+  val totalClass4LossesAvailable: Option[BigInt]      = Some(3001)
+  val totalClass4LossesUsed: Option[BigInt]           = Some(3002)
   val totalClass4LossesCarriedForward: Option[BigInt] = Some(3003)
 
   val class4LossesModel: Class4Losses =
@@ -41,4 +41,5 @@ object Class4LossesFixture {
        |}
      """.stripMargin
   )
+
 }

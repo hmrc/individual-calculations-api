@@ -28,4 +28,5 @@ object TaxYearNotSupportedValidation extends FixedConfig {
 
     if (downstreamTaxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
   }
+
 }

@@ -34,20 +34,20 @@ import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Sta
 
 import scala.concurrent.ExecutionContext
 
-class GetEoyEstimateController @Inject()(authService: EnrolmentsAuthService,
-                                         lookupService: MtdIdLookupService,
-                                         parser: GetCalculationParser,
-                                         service: StandardService,
-                                         hateoasFactory: HateoasFactory,
-                                         auditService: AuditService,
-                                         cc: ControllerComponents,
-                                         idGenerator: IdGenerator,
-                                        )(implicit ec: ExecutionContext)
-  extends StandardController[GetCalculationRawData,
-    GetCalculationRequest,
-    EoyEstimateWrapperOrError,
-    HateoasWrapper[EoyEstimateResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
+class GetEoyEstimateController @Inject() (authService: EnrolmentsAuthService,
+                                          lookupService: MtdIdLookupService,
+                                          parser: GetCalculationParser,
+                                          service: StandardService,
+                                          hateoasFactory: HateoasFactory,
+                                          auditService: AuditService,
+                                          cc: ControllerComponents,
+                                          idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[
+      GetCalculationRawData,
+      GetCalculationRequest,
+      EoyEstimateWrapperOrError,
+      HateoasWrapper[EoyEstimateResponse],
+      AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator) {
   controller =>
 
   override implicit val endpointLogContext: EndpointLogContext =
@@ -68,8 +68,10 @@ class GetEoyEstimateController @Inject()(authService: EnrolmentsAuthService,
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {
-          case EoyEstimateWrapperOrError.EoyErrorMessages => Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
-          case EoyEstimateWrapperOrError.EoyCrystallisedError => Left(ErrorWrapper(responseWrapper.correlationId, EndOfYearEstimateNotPresentError, None, NOT_FOUND))
+          case EoyEstimateWrapperOrError.EoyErrorMessages =>
+            Left(ErrorWrapper(responseWrapper.correlationId, RuleCalculationErrorMessagesExist, None, FORBIDDEN))
+          case EoyEstimateWrapperOrError.EoyCrystallisedError =>
+            Left(ErrorWrapper(responseWrapper.correlationId, EndOfYearEstimateNotPresentError, None, NOT_FOUND))
           case EoyEstimateWrapperOrError.EoyEstimateWrapper(calc) => Right(calc)
         }
       }
@@ -83,9 +85,11 @@ class GetEoyEstimateController @Inject()(authService: EnrolmentsAuthService,
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationEndOfYearEstimate",
         "retrieve-self-assessment-tax-calculation-end-of-year-estimate",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
+        Map("nino" -> nino, "calculationId" -> calculationId),
+        request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
 }

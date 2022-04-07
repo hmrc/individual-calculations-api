@@ -30,4 +30,5 @@ class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
       "dividends"
     )
   )
+
 }

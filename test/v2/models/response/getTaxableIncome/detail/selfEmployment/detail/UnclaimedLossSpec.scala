@@ -30,4 +30,5 @@ class UnclaimedLossSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

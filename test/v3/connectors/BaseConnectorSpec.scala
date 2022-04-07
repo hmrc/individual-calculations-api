@@ -17,8 +17,8 @@
 package v3.connectors
 
 import config.AppConfig
-import mocks.{ MockAppConfig, MockHttpClient }
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpReads, HttpClient }
+import mocks.{MockAppConfig, MockHttpClient}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpClient}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.response.common.DownstreamResponse
 
@@ -26,10 +26,10 @@ import scala.concurrent.Future
 
 class BaseConnectorSpec extends ConnectorSpec {
 
-  //WLOG
+  // WLOG
   case class Result(value: Int)
 
-  //WLOG
+  // WLOG
   val body: String                                   = "body"
   val outcome: Either[Nothing, ResponseWrapper[Any]] = Right(ResponseWrapper(correlationId, Result(2)))
 
@@ -44,6 +44,7 @@ class BaseConnectorSpec extends ConnectorSpec {
       val http: HttpClient     = mockHttpClient
       val appConfig: AppConfig = mockAppConfig
     }
+
   }
 
   "BaseConnector" when {
@@ -146,4 +147,5 @@ class BaseConnectorSpec extends ConnectorSpec {
       }
     }
   }
+
 }

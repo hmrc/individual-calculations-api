@@ -21,12 +21,12 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 
 object PensionBandsFixture {
 
-  val name: String = "BRT"
-  val rate: BigDecimal = 30.25
-  val bandLimit: BigInt = 2000
-  val apportionedBandLimit: BigInt = 3000
+  val name: String                   = "BRT"
+  val rate: BigDecimal               = 30.25
+  val bandLimit: BigInt              = 2000
+  val apportionedBandLimit: BigInt   = 3000
   val contributionAmount: BigDecimal = 400.23
-  val pensionCharge: BigDecimal = 500.25
+  val pensionCharge: BigDecimal      = 500.25
 
   val pensionBandsModel: PensionBands =
     PensionBands(
@@ -50,4 +50,5 @@ object PensionBandsFixture {
        |}
      """.stripMargin
   )
+
 }

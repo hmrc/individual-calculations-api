@@ -22,9 +22,9 @@ import v2.models.response.getTaxableIncome.detail.selfEmployment.detail.ClaimNot
 
 object ClaimNotAppliedFixture {
 
-  val claimId: String = "CCIS12345678912"
+  val claimId: String          = "CCIS12345678912"
   val taxYearClaimMade: String = "2046-47"
-  val claimType: TypeOfClaim= TypeOfClaim.`carry-forward`
+  val claimType: TypeOfClaim   = TypeOfClaim.`carry-forward`
 
   val claimNotAppliedModel: ClaimNotApplied =
     ClaimNotApplied(
@@ -42,4 +42,5 @@ object ClaimNotAppliedFixture {
        |}
      """.stripMargin
   )
+
 }

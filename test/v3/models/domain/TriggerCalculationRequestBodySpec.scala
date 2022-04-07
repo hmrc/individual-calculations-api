@@ -44,4 +44,5 @@ class TriggerCalculationRequestBodySpec extends UnitSpec {
       }
     }
   }
+
 }

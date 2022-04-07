@@ -19,7 +19,7 @@ package v2.models.response.getTaxableIncome.detail.selfEmployment.detail
 import play.api.libs.json._
 import v2.models.response.common.LossType
 
-case class UnclaimedLoss(taxYearLossIncurred: String, currentLossValue: BigInt,lossType: LossType)
+case class UnclaimedLoss(taxYearLossIncurred: String, currentLossValue: BigInt, lossType: LossType)
 
 object UnclaimedLoss {
   implicit val format: OFormat[UnclaimedLoss] = Json.format[UnclaimedLoss]

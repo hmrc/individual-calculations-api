@@ -22,7 +22,7 @@ import v2.models.response.getTaxableIncome.summary.CalculationSummary
 object CalculationSummaryFixture {
 
   val totalIncomeReceivedFromAllSources: BigInt = 100
-  val totalTaxableIncome: BigInt = 200
+  val totalTaxableIncome: BigInt                = 200
 
   val calculationSummaryModel: CalculationSummary =
     CalculationSummary(
@@ -38,4 +38,5 @@ object CalculationSummaryFixture {
        |}
     """.stripMargin
   )
+
 }

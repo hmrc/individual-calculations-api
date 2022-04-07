@@ -18,8 +18,7 @@ package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ForeignProperty(totalForeignPropertyAllowableAmount: BigDecimal,
-                           foreignPropertyRfcDetail: Seq[ForeignPropertyRfcDetail])
+case class ForeignProperty(totalForeignPropertyAllowableAmount: BigDecimal, foreignPropertyRfcDetail: Seq[ForeignPropertyRfcDetail])
 
 object ForeignProperty {
   implicit val format: OFormat[ForeignProperty] = Json.format[ForeignProperty]

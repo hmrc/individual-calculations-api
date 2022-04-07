@@ -36,20 +36,22 @@ import v2.support.MessagesFilter
 
 import scala.concurrent.ExecutionContext
 
-class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
-                                      lookupService: MtdIdLookupService,
-                                      parser: GetMessagesParser,
-                                      service: StandardService,
-                                      hateoasFactory: HateoasFactory,
-                                      auditService: AuditService,
-                                      cc: ControllerComponents,
-                                      idGenerator: IdGenerator,
-                                     )(implicit ec: ExecutionContext)
-  extends StandardController[GetMessagesRawData,
-    GetMessagesRequest,
-    MessagesResponse,
-    HateoasWrapper[MessagesResponse],
-    AnyContent](authService, lookupService, parser, service, auditService, cc, idGenerator)
+class GetMessagesController @Inject() (authService: EnrolmentsAuthService,
+                                       lookupService: MtdIdLookupService,
+                                       parser: GetMessagesParser,
+                                       service: StandardService,
+                                       hateoasFactory: HateoasFactory,
+                                       auditService: AuditService,
+                                       cc: ControllerComponents,
+                                       idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[GetMessagesRawData, GetMessagesRequest, MessagesResponse, HateoasWrapper[MessagesResponse], AnyContent](
+      authService,
+      lookupService,
+      parser,
+      service,
+      auditService,
+      cc,
+      idGenerator)
     with MessagesFilter {
   controller =>
 
@@ -74,7 +76,7 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
       .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, rawResponse.id)))
 
   def filterMessages(queries: Seq[MessageType])(
-    messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {
+      messagesResponse: ResponseWrapper[MessagesResponse]): Either[ErrorWrapper, ResponseWrapper[MessagesResponse]] = {
     val filteredResponse = messagesResponse.map(messages => filter(messages, queries))
     if (filteredResponse.responseData.hasMessages) {
       Right(filteredResponse)
@@ -90,9 +92,11 @@ class GetMessagesController @Inject()(authService: EnrolmentsAuthService,
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "retrieveSelfAssessmentTaxCalculationMessages",
         "retrieve-self-assessment-tax-calculation-messages",
-        Map("nino" -> nino, "calculationId" -> calculationId), request
+        Map("nino" -> nino, "calculationId" -> calculationId),
+        request
       )
 
       doHandleRequest(rawData, Some(auditHandler))
     }
+
 }

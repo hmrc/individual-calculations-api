@@ -24,20 +24,19 @@ import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.Busines
 
 object ForeignPropertyFixture {
 
-  val totalIncome: Option[BigDecimal] = Some(2000.98)
-  val totalExpenses: Option[BigDecimal] = Some(2000.98)
-  val netProfit: Option[BigDecimal] = Some(2000.98)
-  val netLoss: Option[BigDecimal] = Some(2000.98)
-  val totalAdditions: Option[BigDecimal] = Some(2000.98)
-  val totalDeductions: Option[BigDecimal] = Some(2000.98)
-  val accountingAdjustments: Option[BigDecimal] = Some(-2000.98)
-  val adjustedIncomeTaxLoss: Option[BigInt] = Some(2000)
-  val taxableProfit: Option[BigInt] = Some(2000)
+  val totalIncome: Option[BigDecimal]                            = Some(2000.98)
+  val totalExpenses: Option[BigDecimal]                          = Some(2000.98)
+  val netProfit: Option[BigDecimal]                              = Some(2000.98)
+  val netLoss: Option[BigDecimal]                                = Some(2000.98)
+  val totalAdditions: Option[BigDecimal]                         = Some(2000.98)
+  val totalDeductions: Option[BigDecimal]                        = Some(2000.98)
+  val accountingAdjustments: Option[BigDecimal]                  = Some(-2000.98)
+  val adjustedIncomeTaxLoss: Option[BigInt]                      = Some(2000)
+  val taxableProfit: Option[BigInt]                              = Some(2000)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2000)
-  val bsas: BusinessSourceAdjustableSummary = BusinessSourceAdjustableSummary(
-    bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9",
-    applied = true,
-    links = None)
+
+  val bsas: BusinessSourceAdjustableSummary =
+    BusinessSourceAdjustableSummary(bsasId = "a54ba782-5ef4-47f4-ab72-495406665ca9", applied = true, links = None)
 
   val foreignPropertyModel: ForeignProperty =
     ForeignProperty(
@@ -84,4 +83,5 @@ object ForeignPropertyFixture {
        |}
      """.stripMargin
   )
+
 }

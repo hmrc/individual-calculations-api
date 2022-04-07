@@ -21,10 +21,10 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 
 object PensionSchemeOverseasTransfersFixture {
 
-  val transferCharge: Option[BigDecimal] = Some(2000.99)
+  val transferCharge: Option[BigDecimal]        = Some(2000.99)
   val transferChargeTaxPaid: Option[BigDecimal] = Some(3000.99)
-  val rate: Option[BigDecimal] = Some(20.25)
-  val chargeableAmount: Option[BigDecimal] = Some(4000.99)
+  val rate: Option[BigDecimal]                  = Some(20.25)
+  val chargeableAmount: Option[BigDecimal]      = Some(4000.99)
 
   val pensionSchemeOverseasTransfersModel: PensionSchemeOverseasTransfers =
     PensionSchemeOverseasTransfers(
@@ -44,4 +44,5 @@ object PensionSchemeOverseasTransfersFixture {
        |}
      """.stripMargin
   )
+
 }

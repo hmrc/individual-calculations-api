@@ -43,7 +43,7 @@ class EoyEstimateResponseSpec extends UnitSpec {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       val calcId: String = "someCalcId"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -61,4 +61,5 @@ class EoyEstimateResponseSpec extends UnitSpec {
       }
     }
   }
+
 }

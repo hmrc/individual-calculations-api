@@ -33,4 +33,5 @@ class DownstreamTaxYearSpec extends UnitSpec {
       }
     }
   }
+
 }

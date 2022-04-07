@@ -33,20 +33,20 @@ import v2.services._
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsController @Inject()(authService: EnrolmentsAuthService,
-                                           lookupService: MtdIdLookupService,
-                                           listCalculationsParser: ListCalculationsParser,
-                                           service: StandardService,
-                                           hateoasFactory: HateoasFactory,
-                                           auditService: AuditService,
-                                           cc: ControllerComponents,
-                                           idGenerator: IdGenerator,
-                                          )(implicit ec: ExecutionContext)
-  extends StandardController[ListCalculationsRawData,
-    ListCalculationsRequest,
-    ListCalculationsResponse[CalculationListItem],
-    HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]],
-    AnyContent](authService, lookupService, listCalculationsParser, service, auditService, cc, idGenerator) {
+class ListCalculationsController @Inject() (authService: EnrolmentsAuthService,
+                                            lookupService: MtdIdLookupService,
+                                            listCalculationsParser: ListCalculationsParser,
+                                            service: StandardService,
+                                            hateoasFactory: HateoasFactory,
+                                            auditService: AuditService,
+                                            cc: ControllerComponents,
+                                            idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+    extends StandardController[
+      ListCalculationsRawData,
+      ListCalculationsRequest,
+      ListCalculationsResponse[CalculationListItem],
+      HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]],
+      AnyContent](authService, lookupService, listCalculationsParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -57,9 +57,8 @@ class ListCalculationsController @Inject()(authService: EnrolmentsAuthService,
 
   override val successCode: SuccessCode = SuccessCode(OK)
 
-  override def requestHandlerFor(
-                                  playRequest: Request[AnyContent],
-                                  req: ListCalculationsRequest): RequestHandler[ListCalculationsResponse[CalculationListItem],
+  override def requestHandlerFor(playRequest: Request[AnyContent], req: ListCalculationsRequest): RequestHandler[
+    ListCalculationsResponse[CalculationListItem],
     HateoasWrapper[ListCalculationsResponse[HateoasWrapper[CalculationListItem]]]] = {
     RequestHandler[ListCalculationsResponse[CalculationListItem]](
       RequestDefn
@@ -86,9 +85,10 @@ class ListCalculationsController @Inject()(authService: EnrolmentsAuthService,
       doHandleRequest(rawData)
     }
 
-  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]]):
-  Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[CalculationListItem]]] =
+  private def notFoundErrorWhenEmpty(responseWrapper: ResponseWrapper[ListCalculationsResponse[CalculationListItem]])
+      : Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[CalculationListItem]]] =
     responseWrapper.toErrorWhen {
       case response if response.calculations.isEmpty => ErrorWrapper(responseWrapper.correlationId, NotFoundError, None, NOT_FOUND)
     }
+
 }

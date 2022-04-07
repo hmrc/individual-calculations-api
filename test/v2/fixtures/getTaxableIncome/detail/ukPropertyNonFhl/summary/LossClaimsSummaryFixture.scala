@@ -21,10 +21,10 @@ import v2.models.response.getTaxableIncome.detail.ukPropertyNonFhl.summary.LossC
 
 object LossClaimsSummaryFixture {
 
-  val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1001)
-  val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1002)
-  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
+  val totalBroughtForwardIncomeTaxLosses: Option[BigInt]             = Some(1000)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]              = Some(1001)
+  val totalIncomeTaxLossesCarriedForward: Option[BigInt]             = Some(1002)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt]               = Some(1003)
   val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1003)
 
   val lossClaimsSummaryModel: LossClaimsSummary =
@@ -47,4 +47,5 @@ object LossClaimsSummaryFixture {
       |}
     """.stripMargin
   )
+
 }

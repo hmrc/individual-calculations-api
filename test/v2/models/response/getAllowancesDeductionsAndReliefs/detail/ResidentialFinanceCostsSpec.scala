@@ -36,4 +36,5 @@ class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
       "allOtherIncomeReceivedWhilstAbroad"
     )
   )
+
 }

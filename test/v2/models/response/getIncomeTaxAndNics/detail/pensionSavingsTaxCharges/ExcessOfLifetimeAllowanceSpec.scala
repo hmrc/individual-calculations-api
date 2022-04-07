@@ -31,4 +31,5 @@ class ExcessOfLifetimeAllowanceSpec extends UnitSpec with JsonErrorValidators {
       "benefitInExcessOfLifetimeAllowance"
     )
   )
+
 }

@@ -23,13 +23,13 @@ import v2.models.response.getTaxableIncome.detail.SavingsAndGains
 
 object SavingsAndGainsFixture {
 
-  val incomeReceivedSAG: BigInt = 392
-  val taxableIncomeSAG: BigInt = 3920
-  val totalOfAllGains: BigInt = 4000
-  val totalUkSavingsAndSecurities: Option[BigInt] = Some(4500)
-  val totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt] = Some(5000)
+  val incomeReceivedSAG: BigInt                                = 392
+  val taxableIncomeSAG: BigInt                                 = 3920
+  val totalOfAllGains: BigInt                                  = 4000
+  val totalUkSavingsAndSecurities: Option[BigInt]              = Some(4500)
+  val totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt]      = Some(5000)
   val totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt] = Some(5500)
-  val totalForeignSavingsAndGainsIncome: Option[BigInt] = Some(6000)
+  val totalForeignSavingsAndGainsIncome: Option[BigInt]        = Some(6000)
 
   val savingsAndGainsModel: SavingsAndGains =
     SavingsAndGains(
@@ -59,4 +59,5 @@ object SavingsAndGainsFixture {
        |}
      """.stripMargin
   )
+
 }

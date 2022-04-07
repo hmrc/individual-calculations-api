@@ -32,4 +32,5 @@ class LossClaimsDetailSpec extends UnitSpec with JsonErrorValidators {
       "claimsNotApplied"
     )
   )
+
 }

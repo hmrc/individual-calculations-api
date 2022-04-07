@@ -32,17 +32,19 @@ trait MockAppConfig extends MockFactory {
     def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
 
     // DES Config
-    def downstreamBaseUrl: CallHandler[String] = (mockAppConfig.downstreamBaseUrl _: () => String).expects()
-    def downstreamToken: CallHandler[String] = (mockAppConfig.downstreamToken _).expects()
-    def downstreamEnvironment: CallHandler[String] = (mockAppConfig.downstreamEnv _).expects()
+    def downstreamBaseUrl: CallHandler[String]                         = (mockAppConfig.downstreamBaseUrl _: () => String).expects()
+    def downstreamToken: CallHandler[String]                           = (mockAppConfig.downstreamToken _).expects()
+    def downstreamEnvironment: CallHandler[String]                     = (mockAppConfig.downstreamEnv _).expects()
     def downstreamEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (mockAppConfig.downstreamEnvironmentHeaders _).expects()
 
     // API Config
-    def featureSwitch: CallHandler[Option[Configuration]] = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()
-    def apiGatewayContext: CallHandler[String] = (mockAppConfig.apiGatewayContext _: () => String).expects()
-    def apiStatus(status: String): CallHandler[String] = (mockAppConfig.apiStatus: String => String).expects(status)
+    def featureSwitch: CallHandler[Option[Configuration]]       = (mockAppConfig.featureSwitch _: () => Option[Configuration]).expects()
+    def apiGatewayContext: CallHandler[String]                  = (mockAppConfig.apiGatewayContext _: () => String).expects()
+    def apiStatus(status: String): CallHandler[String]          = (mockAppConfig.apiStatus: String => String).expects(status)
     def endpointsEnabled(version: String): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled: String => Boolean).expects(version)
-    def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] = (mockAppConfig.confidenceLevelConfig _: () => ConfidenceLevelConfig).expects()
+
+    def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] =
+      (mockAppConfig.confidenceLevelConfig _: () => ConfidenceLevelConfig).expects()
 
     // NRS Config
     def mtdNrsProxyBaseUrl: CallHandler[String] = (mockAppConfig.mtdNrsProxyBaseUrl _).expects()

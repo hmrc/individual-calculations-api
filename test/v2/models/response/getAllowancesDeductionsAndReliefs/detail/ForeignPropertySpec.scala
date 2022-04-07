@@ -29,4 +29,5 @@ class ForeignPropertySpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

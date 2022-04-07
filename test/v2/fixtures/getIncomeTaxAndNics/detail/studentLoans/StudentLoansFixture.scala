@@ -21,14 +21,14 @@ import v2.models.response.getIncomeTaxAndNics.detail.studentLoans.StudentLoans
 
 object StudentLoansFixture {
 
-  val planType: String = "01"
-  val studentLoanTotalIncomeAmount: BigDecimal = 2000.99
-  val studentLoanChargeableIncomeAmount: BigDecimal = 3000.99
-  val studentLoanRepaymentAmount: BigDecimal = 4000.99
+  val planType: String                                        = "01"
+  val studentLoanTotalIncomeAmount: BigDecimal                = 2000.99
+  val studentLoanChargeableIncomeAmount: BigDecimal           = 3000.99
+  val studentLoanRepaymentAmount: BigDecimal                  = 4000.99
   val studentLoanDeductionsFromEmployment: Option[BigDecimal] = Some(5000.99)
-  val studentLoanRepaymentAmountNetOfDeductions: BigDecimal = 6000.99
-  val studentLoanApportionedIncomeThreshold: BigInt = 7000
-  val studentLoanRate: BigDecimal = 50.99
+  val studentLoanRepaymentAmountNetOfDeductions: BigDecimal   = 6000.99
+  val studentLoanApportionedIncomeThreshold: BigInt           = 7000
+  val studentLoanRate: BigDecimal                             = 50.99
 
   val studentLoansModel: StudentLoans =
     StudentLoans(
@@ -56,4 +56,5 @@ object StudentLoansFixture {
        |}
      """.stripMargin
   )
+
 }

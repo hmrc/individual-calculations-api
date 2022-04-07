@@ -18,14 +18,14 @@ package v3.models.hateoas
 
 object RelType {
 
-  val TRIGGER = "trigger"
-  val METADATA = "metadata"
-  val INCOME_TAX = "income-tax-and-nics-calculated"
+  val TRIGGER        = "trigger"
+  val METADATA       = "metadata"
+  val INCOME_TAX     = "income-tax-and-nics-calculated"
   val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE = "end-of-year-estimate"
-  val MESSAGES = "messages"
-  val CRYSTALLISE = "crystallise"
+  val ALLOWANCES     = "allowances-deductions-reliefs"
+  val EOY_ESTIMATE   = "end-of-year-estimate"
+  val MESSAGES       = "messages"
+  val CRYSTALLISE    = "crystallise"
 
   val SELF = "self"
 }

@@ -31,4 +31,5 @@ class IncomeTypeBreakdownSpec extends UnitSpec with JsonErrorValidators {
       "taxBands"
     )
   )
+
 }

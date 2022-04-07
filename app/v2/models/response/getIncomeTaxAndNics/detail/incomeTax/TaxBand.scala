@@ -18,12 +18,7 @@ package v2.models.response.getIncomeTaxAndNics.detail.incomeTax
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigInt,
-                   apportionedBandLimit: BigInt,
-                   income: BigInt,
-                   taxAmount: BigDecimal)
+case class TaxBand(name: String, rate: BigDecimal, bandLimit: BigInt, apportionedBandLimit: BigInt, income: BigInt, taxAmount: BigDecimal)
 
 object TaxBand {
   implicit val format: OFormat[TaxBand] = Json.format[TaxBand]

@@ -42,4 +42,5 @@ class LinkSpec extends UnitSpec {
       }
     }
   }
+
 }

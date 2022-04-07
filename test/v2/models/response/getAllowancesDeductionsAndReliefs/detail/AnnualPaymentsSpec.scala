@@ -30,4 +30,5 @@ class AnnualPaymentsSpec extends UnitSpec with JsonErrorValidators {
       "rate"
     )
   )
+
 }

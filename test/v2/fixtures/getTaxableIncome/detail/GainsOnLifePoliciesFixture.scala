@@ -21,9 +21,9 @@ import v2.models.response.getTaxableIncome.detail.GainsOnLifePolicies
 
 object GainsOnLifePoliciesFixture {
 
-  val incomeReceived: BigInt = 100
-  val taxableIncome: BigInt = 200
-  val totalUkGainsWithTaxPaid: Option[BigInt] = Some(300)
+  val incomeReceived: BigInt                                     = 100
+  val taxableIncome: BigInt                                      = 200
+  val totalUkGainsWithTaxPaid: Option[BigInt]                    = Some(300)
   val totalForeignGainsOnLifePoliciesWithTaxPaid: Option[BigInt] = Some(400)
 
   val gainsOnLifePoliciesModel: GainsOnLifePolicies =
@@ -44,4 +44,5 @@ object GainsOnLifePoliciesFixture {
        |}
      """.stripMargin
   )
+
 }

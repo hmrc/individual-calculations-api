@@ -20,7 +20,7 @@ import play.api.http.HeaderNames.ACCEPT
 import play.api.test.FakeRequest
 import support.UnitSpec
 
-class VersionSpec extends UnitSpec{
+class VersionSpec extends UnitSpec {
 
   "Versions" when {
     "retrieved from a request header" must {
@@ -29,4 +29,5 @@ class VersionSpec extends UnitSpec{
       }
     }
   }
- }
+
+}

@@ -33,5 +33,7 @@ trait MockRetrieveCalculationValidator extends MockFactory {
         .validate(_: RetrieveCalculationRawData))
         .expects(data)
     }
+
   }
+
 }

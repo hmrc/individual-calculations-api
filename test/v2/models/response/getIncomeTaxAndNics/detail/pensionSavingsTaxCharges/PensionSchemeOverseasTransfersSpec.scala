@@ -31,4 +31,5 @@ class PensionSchemeOverseasTransfersSpec extends UnitSpec with JsonErrorValidato
       "chargeableAmount"
     )
   )
+
 }

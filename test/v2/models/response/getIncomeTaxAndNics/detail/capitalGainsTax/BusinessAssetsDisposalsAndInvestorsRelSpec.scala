@@ -21,6 +21,7 @@ import v2.fixtures.getIncomeTaxAndNics.detail.capitalGainsTax.BusinessAssetsDisp
 import v2.models.utils.JsonErrorValidators
 
 class BusinessAssetsDisposalsAndInvestorsRelSpec extends UnitSpec with JsonErrorValidators {
+
   testJsonProperties[BusinessAssetsDisposalsAndInvestorsRel](businessAssetsDisposalsAndInvestorsRelJson)(
     mandatoryProperties = Seq(),
     optionalProperties = Seq(
@@ -34,4 +35,5 @@ class BusinessAssetsDisposalsAndInvestorsRelSpec extends UnitSpec with JsonError
       "taxAmount"
     )
   )
+
 }

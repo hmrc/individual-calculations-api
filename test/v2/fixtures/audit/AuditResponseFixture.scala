@@ -23,7 +23,7 @@ import v2.models.audit.{AuditError, AuditResponse}
 object AuditResponseFixture {
 
   val auditErrors: Seq[AuditError] = Seq(AuditError(errorCode = "FORMAT_NINO"), AuditError(errorCode = "FORMAT_TAX_YEAR"))
-  val body: JsValue = Json.parse("""{ "aField" : "aValue" }""")
+  val body: JsValue                = Json.parse("""{ "aField" : "aValue" }""")
 
   val auditResponseModelWithBody: AuditResponse =
     AuditResponse(
@@ -61,4 +61,5 @@ object AuditResponseFixture {
        |}
      """.stripMargin
   )
+
 }

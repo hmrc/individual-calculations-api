@@ -42,4 +42,5 @@ class EoyEstimateSummarySpec extends UnitSpec with JsonErrorValidators {
       "incomeTaxNicAndCgtAmount"
     )
   )
+
 }

@@ -39,4 +39,5 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
       "marriageAllowanceTransferOut"
     )
   )
+
 }

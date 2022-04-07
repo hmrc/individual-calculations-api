@@ -28,15 +28,15 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 class AuthISpec extends V3IntegrationBaseSpec {
 
   private trait Test {
-    val nino: String  = "AA123456A"
-    val taxYear: String = "2017-18"
-    val data: String = "someData"
+    val nino: String          = "AA123456A"
+    val taxYear: String       = "2017-18"
+    val data: String          = "someData"
     val correlationId: String = "X-123"
 
-    def uri: String = s"/$nino/self-assessment"
+    def uri: String        = s"/$nino/self-assessment"
     def backendUrl: String = uri
 
-    val responseBody: JsValue =  Json.parse(
+    val responseBody: JsValue = Json.parse(
       """
         |{
         | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -58,6 +58,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
     }
+
   }
 
   "Calling the sample endpoint" when {

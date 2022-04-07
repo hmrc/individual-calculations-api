@@ -31,4 +31,5 @@ class PensionContributionsSpec extends UnitSpec with JsonErrorValidators {
       "overseasPensionSchemeContributions"
     )
   )
+
 }

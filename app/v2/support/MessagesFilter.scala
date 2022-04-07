@@ -22,26 +22,28 @@ import v2.models.response.getMessages.MessagesResponse
 import scala.annotation.tailrec
 
 trait MessagesFilter {
+
   def filter(calculationMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
 
     def filterMessages(filteredMessages: MessagesResponse, typeQuery: MessageType): MessagesResponse = {
       typeQuery match {
-        case MessageType.error => filteredMessages.copy(errors = calculationMessages.errors)
+        case MessageType.error   => filteredMessages.copy(errors = calculationMessages.errors)
         case MessageType.warning => filteredMessages.copy(warnings = calculationMessages.warnings)
-        case MessageType.info => filteredMessages.copy(info = calculationMessages.info)
-        case _ => filteredMessages
+        case MessageType.info    => filteredMessages.copy(info = calculationMessages.info)
+        case _                   => filteredMessages
       }
     }
 
     @tailrec
     def filterLoop(filteredMessages: MessagesResponse, typeQueries: Seq[MessageType]): MessagesResponse = {
       typeQueries.toList match {
-        case Nil => calculationMessages
-        case query :: Nil => filterMessages(filteredMessages, query)
+        case Nil           => calculationMessages
+        case query :: Nil  => filterMessages(filteredMessages, query)
         case query :: tail => filterLoop(filterMessages(filteredMessages, query), tail)
       }
     }
 
     filterLoop(MessagesResponse(None, None, None, calculationMessages.id), typeQueries)
   }
+
 }

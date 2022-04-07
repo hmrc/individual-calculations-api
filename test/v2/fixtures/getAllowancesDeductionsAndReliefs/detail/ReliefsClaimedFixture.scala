@@ -21,12 +21,11 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.ReliefsClaime
 
 object ReliefsClaimedFixture {
 
-  val `type`: String = "nonDeductibleLoanInterest"
-  val amountClaimed: Option[BigDecimal] = Some(12503.03)
+  val `type`: String                      = "nonDeductibleLoanInterest"
+  val amountClaimed: Option[BigDecimal]   = Some(12503.03)
   val allowableAmount: Option[BigDecimal] = Some(12503.99)
-  val amountUsed: Option[BigDecimal] = Some(12503.99)
-  val rate: Option[BigDecimal] = Some(13.99)
-
+  val amountUsed: Option[BigDecimal]      = Some(12503.99)
+  val rate: Option[BigDecimal]            = Some(13.99)
 
   val reliefsClaimedModel: ReliefsClaimed =
     ReliefsClaimed(
@@ -48,4 +47,5 @@ object ReliefsClaimedFixture {
       |}
     """.stripMargin
   )
+
 }

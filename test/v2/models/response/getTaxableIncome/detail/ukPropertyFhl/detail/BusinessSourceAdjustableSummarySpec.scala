@@ -29,4 +29,5 @@ class BusinessSourceAdjustableSummarySpec extends UnitSpec with JsonErrorValidat
     ),
     optionalProperties = Seq()
   )
+
 }

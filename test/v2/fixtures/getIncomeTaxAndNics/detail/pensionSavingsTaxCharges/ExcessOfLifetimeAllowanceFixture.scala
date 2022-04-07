@@ -23,7 +23,7 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Ex
 object ExcessOfLifetimeAllowanceFixture {
 
   val totalChargeableAmount: Option[BigDecimal] = Some(1000.99)
-  val totalTaxPaid: Option[BigDecimal] = Some(1500.99)
+  val totalTaxPaid: Option[BigDecimal]          = Some(1500.99)
 
   val excessOfLifetimeAllowanceModel: ExcessOfLifetimeAllowance =
     ExcessOfLifetimeAllowance(
@@ -43,4 +43,5 @@ object ExcessOfLifetimeAllowanceFixture {
        |}
      """.stripMargin
   )
+
 }

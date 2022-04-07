@@ -63,4 +63,5 @@ class FeatureSwitchSpec extends UnitSpec {
       }
     }
   }
+
 }

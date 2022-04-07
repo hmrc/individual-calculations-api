@@ -27,8 +27,11 @@ trait MockTriggerCalculationParser extends MockFactory {
   val mockTriggerCalculationParser: TriggerCalculationParser = mock[TriggerCalculationParser]
 
   object MockTriggerCalculationParser {
+
     def parse(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequest]] = {
       (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)(_: String)).expects(data, *)
     }
+
   }
+
 }

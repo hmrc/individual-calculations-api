@@ -25,8 +25,8 @@ import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationParserSpec extends UnitSpec {
 
-  val nino: String = "AA111111A"
-  val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val nino: String                   = "AA111111A"
+  val calculationId: String          = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockGetCalculationValidator {
@@ -53,12 +53,14 @@ class GetCalculationParserSpec extends UnitSpec {
     }
   }
 
-  "multiple validation errors" should{
-    "return the errors" in new Test{
-      val data: GetCalculationRawData = GetCalculationRawData("AA111111F","f2fb30e5-4ab6-4a29-b3c1-c7264")
+  "multiple validation errors" should {
+    "return the errors" in new Test {
+      val data: GetCalculationRawData = GetCalculationRawData("AA111111F", "f2fb30e5-4ab6-4a29-b3c1-c7264")
       MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError))
 
-      parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError,CalculationIdFormatError)), BAD_REQUEST))
+      parser.parseRequest(data) shouldBe Left(
+        ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError)), BAD_REQUEST))
     }
   }
+
 }

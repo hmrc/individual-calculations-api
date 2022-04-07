@@ -21,9 +21,9 @@ import v2.models.response.getTaxableIncome.detail.Dividends
 
 object DividendsFixture {
 
-  val incomeReceived: BigInt = 100
-  val taxableIncome: BigInt = 200
-  val totalUkDividends: Option[BigInt] = Some(300)
+  val incomeReceived: BigInt                = 100
+  val taxableIncome: BigInt                 = 200
+  val totalUkDividends: Option[BigInt]      = Some(300)
   val totalForeignDividends: Option[BigInt] = Some(400)
 
   val dividendsModel: Dividends =
@@ -44,4 +44,5 @@ object DividendsFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -44,4 +44,5 @@ class CrystallisationRequestBodySpec extends UnitSpec {
       }
     }
   }
+
 }

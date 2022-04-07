@@ -44,4 +44,5 @@ object LossClaimsDetailFixture extends UnitSpec {
        |}
      """.stripMargin
   )
+
 }

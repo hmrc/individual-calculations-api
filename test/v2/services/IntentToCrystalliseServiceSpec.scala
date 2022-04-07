@@ -28,15 +28,16 @@ import scala.concurrent.Future
 class IntentToCrystalliseServiceSpec extends ServiceSpec {
 
   trait Test extends MockIntentToCrystalliseConnector {
+
     val service: IntentToCrystalliseService = new IntentToCrystalliseService(
       connector = mockIntentToCrystalliseConnector
     )
+
   }
 
   "IntentToCrystalliseService" when {
-    val nino: String = "AA112233A"
+    val nino: String    = "AA112233A"
     val taxYear: String = "2019-20"
-
 
     val request: IntentToCrystalliseRequest = IntentToCrystalliseRequest(
       nino = Nino(nino),
@@ -51,7 +52,8 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, response))
 
-        MockIntentToCrystalliseConnector.submitIntent(request)
+        MockIntentToCrystalliseConnector
+          .submitIntent(request)
           .returns(Future.successful(outcome))
 
         await(service.submitIntentToCrystallise(request)) shouldBe outcome
@@ -62,8 +64,10 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
         def serviceError(downstreamErrorCode: String, error: MtdError, downstreamErrorStatus: Int): Unit =
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
-            MockIntentToCrystalliseConnector.submitIntent(request)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
+            MockIntentToCrystalliseConnector
+              .submitIntent(request)
+              .returns(Future.successful(
+                Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
 
             await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, downstreamErrorStatus))
           }
@@ -83,4 +87,5 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
       }
     }
   }
+
 }

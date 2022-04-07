@@ -28,4 +28,5 @@ object AuditResponse {
       case Right(body) => AuditResponse(httpStatus, None, body)
       case Left(errs)  => AuditResponse(httpStatus, Some(errs), None)
     }
+
 }

@@ -18,7 +18,7 @@ package v3.models.response.retrieveCalculation.metadata
 
 import play.api.libs.json.{Json, OWrites, Reads}
 
-case class Metadata (field: String)
+case class Metadata(field: String)
 
 object Metadata {
   implicit val reads: Reads[Metadata] = Json.reads[Metadata]

@@ -22,9 +22,9 @@ import v2.models.response.listCalculations.{CalculationListItem, ListCalculation
 
 object CalculationListItemFixture {
 
-  val id: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  val calculationTimestamp: String = "2019-03-17T09:22:59Z"
-  val `type`: CalculationType = CalculationType.inYear
+  val id: String                                = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val calculationTimestamp: String              = "2019-03-17T09:22:59Z"
+  val `type`: CalculationType                   = CalculationType.inYear
   val requestedBy: Option[CalculationRequestor] = Some(CalculationRequestor.hmrc)
 
   val calculationListItemModel: CalculationListItem =
@@ -45,6 +45,7 @@ object CalculationListItemFixture {
        |}
      """.stripMargin
   )
+
 }
 
 object ListCalculationsFixture {
@@ -78,4 +79,5 @@ object ListCalculationsFixture {
       |}
     """.stripMargin
   )
+
 }

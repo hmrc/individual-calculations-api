@@ -20,7 +20,7 @@ import java.time.LocalDate
 
 import support.UnitSpec
 
-class DateUtilsSpec extends UnitSpec{
+class DateUtilsSpec extends UnitSpec {
 
   "getTaxYear" should {
     "return a tax year" when {
@@ -37,4 +37,5 @@ class DateUtilsSpec extends UnitSpec{
       }
     }
   }
+
 }

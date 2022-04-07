@@ -55,7 +55,7 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       val calcId: String = "id"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -73,4 +73,5 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
       }
     }
   }
+
 }

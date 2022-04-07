@@ -33,5 +33,7 @@ class MockGetCalculationValidator extends MockFactory {
         .validate(_: GetCalculationRawData))
         .expects(data)
     }
+
   }
+
 }

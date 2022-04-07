@@ -39,4 +39,5 @@ class UkPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
       "bsas"
     )
   )
+
 }

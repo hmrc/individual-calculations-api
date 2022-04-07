@@ -33,8 +33,10 @@ trait MockIntentToCrystalliseConnector extends MockFactory {
 
     def submitIntent(request: IntentToCrystalliseRequest): CallHandler[Future[BackendOutcome[IntentToCrystalliseResponse]]] = {
       (mockIntentToCrystalliseConnector
-        .submitIntentToCrystallise(_: IntentToCrystalliseRequest)(_: HeaderCarrier, _: ExecutionContext,  _: String))
+        .submitIntentToCrystallise(_: IntentToCrystalliseRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
+
   }
+
 }

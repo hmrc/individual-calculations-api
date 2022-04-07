@@ -22,7 +22,7 @@ import v2.models.request.ListCalculationsRawData
 
 class ListCalculationsValidatorSpec extends UnitSpec {
 
-  private val validNino = "AA123456A"
+  private val validNino    = "AA123456A"
   private val validTaxYear = "2017-18"
 
   val validator = new ListCalculationsValidator()
@@ -54,8 +54,7 @@ class ListCalculationsValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(
-          ListCalculationsRawData(validNino, Some("2016-17"))) shouldBe
+        validator.validate(ListCalculationsRawData(validNino, Some("2016-17"))) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
@@ -67,4 +66,5 @@ class ListCalculationsValidatorSpec extends UnitSpec {
       }
     }
   }
+
 }

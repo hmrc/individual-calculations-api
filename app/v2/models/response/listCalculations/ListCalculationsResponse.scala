@@ -23,10 +23,7 @@ import v2.hateoas.{HateoasLinks, HateoasListLinksFactory}
 import v2.models.hateoas.{HateoasData, Link}
 import v2.models.response.common.{CalculationRequestor, CalculationType}
 
-case class CalculationListItem(id: String,
-                               calculationTimestamp: String,
-                               `type`: CalculationType,
-                               requestedBy: Option[CalculationRequestor])
+case class CalculationListItem(id: String, calculationTimestamp: String, `type`: CalculationType, requestedBy: Option[CalculationRequestor])
 
 object CalculationListItem {
   implicit val format: OFormat[CalculationListItem] = Json.format[CalculationListItem]
@@ -37,9 +34,10 @@ case class ListCalculationsResponse[I](calculations: Seq[I])
 object ListCalculationsResponse extends HateoasLinks {
 
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = Json.writes[ListCalculationsResponse[I]]
-  implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = Json.reads
+  implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]]     = Json.reads
 
   implicit object LinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, CalculationListItem, ListCalculationsHateoasData] {
+
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] = {
       import data.nino
       Seq(list(appConfig, nino), trigger(appConfig, nino))
@@ -50,12 +48,15 @@ object ListCalculationsResponse extends HateoasLinks {
       import item.id
       Seq(getMetadata(appConfig, nino, id, isSelf = true))
     }
+
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
+
     override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] = {
       ListCalculationsResponse(fa.calculations.map(f))
     }
+
   }
 
 }

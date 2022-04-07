@@ -22,6 +22,7 @@ import v2.models.hateoas.Method._
 import v2.models.hateoas.RelType._
 
 trait HateoasLinks {
+
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 

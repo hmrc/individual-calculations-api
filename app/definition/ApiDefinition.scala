@@ -33,11 +33,11 @@ sealed trait APIStatus
 object APIStatus {
 
   case object ALPHA extends APIStatus
-  case object BETA extends APIStatus
+  case object BETA  extends APIStatus
 
-  case object STABLE extends APIStatus
+  case object STABLE     extends APIStatus
   case object DEPRECATED extends APIStatus
-  case object RETIRED extends APIStatus
+  case object RETIRED    extends APIStatus
 
   implicit val formatAPIStatus: Format[APIStatus] = Enums.format[APIStatus]
 
@@ -70,6 +70,7 @@ case class APIDefinition(name: String,
   private def uniqueVersions: Boolean = {
     !versions.map(_.version).groupBy(identity).mapValues(_.size).exists(_._2 > 1)
   }
+
 }
 
 object APIDefinition {

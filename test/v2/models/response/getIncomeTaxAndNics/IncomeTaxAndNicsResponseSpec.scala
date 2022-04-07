@@ -43,7 +43,7 @@ class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
   "LinksFactory" when {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
+      val nino: String   = "someNino"
       val calcId: String = "calcId"
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
@@ -61,4 +61,5 @@ class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
       }
     }
   }
+
 }

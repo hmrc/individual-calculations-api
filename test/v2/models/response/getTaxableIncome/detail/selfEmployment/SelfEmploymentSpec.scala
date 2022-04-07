@@ -43,4 +43,5 @@ class SelfEmploymentSpec extends UnitSpec with JsonErrorValidators {
       "bsas"
     )
   )
+
 }

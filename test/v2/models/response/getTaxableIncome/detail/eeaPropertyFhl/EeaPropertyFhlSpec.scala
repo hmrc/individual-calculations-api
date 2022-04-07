@@ -39,4 +39,5 @@ class EeaPropertyFhlSpec extends UnitSpec with JsonErrorValidators {
       "bsas"
     )
   )
+
 }

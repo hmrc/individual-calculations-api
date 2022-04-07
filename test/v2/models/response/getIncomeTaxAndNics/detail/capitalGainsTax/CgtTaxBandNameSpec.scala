@@ -26,4 +26,5 @@ class CgtTaxBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
     ("lowerRate", lowerRate),
     ("higherRate", higherRate)
   )
+
 }

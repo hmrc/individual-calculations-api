@@ -31,4 +31,5 @@ class PensionSchemeUnauthorisedPaymentsSpec extends UnitSpec with JsonErrorValid
       "pensionSchemeUnauthorisedPaymentsNonSurcharge"
     )
   )
+
 }

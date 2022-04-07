@@ -33,5 +33,7 @@ class MockGetMessagesValidator extends MockFactory {
         .validate(_: GetMessagesRawData))
         .expects(data)
     }
+
   }
+
 }

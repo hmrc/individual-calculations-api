@@ -20,6 +20,6 @@ import play.api.libs.json._
 
 case class CalculationSummary(totalIncomeReceivedFromAllSources: BigInt, totalTaxableIncome: BigInt)
 
-object CalculationSummary{
+object CalculationSummary {
   implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
 }

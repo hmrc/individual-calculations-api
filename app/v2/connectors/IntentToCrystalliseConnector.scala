@@ -26,17 +26,16 @@ import v2.models.response.intentToCrystallise.IntentToCrystalliseResponse
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
-                                             val appConfig: AppConfig) extends BaseConnector {
+class IntentToCrystalliseConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseConnector {
 
-  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    correlationId: String): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
+  def submitIntentToCrystallise(request: IntentToCrystalliseRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[BackendOutcome[IntentToCrystalliseResponse]] = {
 
     import v2.connectors.httpparsers.StandardHttpParser._
 
-    val nino: String = request.nino.nino
+    val nino: String    = request.nino.nino
     val taxYear: String = request.taxYear.value
 
     downstreamPost(
@@ -44,4 +43,5 @@ class IntentToCrystalliseConnector @Inject()(val http: HttpClient,
       body = EmptyJsonBody
     )
   }
+
 }

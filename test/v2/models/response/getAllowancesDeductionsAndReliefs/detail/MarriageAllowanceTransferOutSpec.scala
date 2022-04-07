@@ -42,4 +42,5 @@ class MarriageAllowanceTransferOutSpec extends UnitSpec with JsonErrorValidators
       Json.toJson(marriageAllowanceTransferOutModel) shouldBe marriageAllowanceTransferOutJson
     }
   }
+
 }

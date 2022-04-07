@@ -33,4 +33,5 @@ class ShortServiceRefundBandsSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

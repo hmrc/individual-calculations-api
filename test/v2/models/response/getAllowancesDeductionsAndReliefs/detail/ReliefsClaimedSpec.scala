@@ -33,4 +33,5 @@ class ReliefsClaimedSpec extends UnitSpec with JsonErrorValidators {
       "rate"
     )
   )
+
 }

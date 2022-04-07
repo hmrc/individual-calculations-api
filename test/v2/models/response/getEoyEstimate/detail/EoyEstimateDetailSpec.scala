@@ -41,4 +41,5 @@ class EoyEstimateDetailSpec extends UnitSpec with JsonErrorValidators {
       "foreignPension"
     )
   )
+
 }

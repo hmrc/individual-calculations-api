@@ -31,4 +31,5 @@ class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators {
     ),
     optionalProperties = Seq()
   )
+
 }

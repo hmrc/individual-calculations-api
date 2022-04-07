@@ -24,9 +24,8 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 @Singleton
-class DocumentationController @Inject()(selfAssessmentApiDefinition: ApiDefinitionFactory,
-                                        cc: ControllerComponents, assets: Assets)
-  extends BackendController(cc) {
+class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinitionFactory, cc: ControllerComponents, assets: Assets)
+    extends BackendController(cc) {
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))
@@ -35,4 +34,5 @@ class DocumentationController @Inject()(selfAssessmentApiDefinition: ApiDefiniti
   def raml(version: String, file: String): Action[AnyContent] = {
     assets.at(s"/public/api/conf/$version", file)
   }
+
 }

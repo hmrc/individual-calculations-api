@@ -24,10 +24,10 @@ import v2.models.response.getAllowancesDeductionsAndReliefs.detail.ResidentialFi
 
 object ResidentialFinanceCostsFixture {
 
-  val adjustedTotalIncome: BigDecimal = 10500.99
-  val totalAllowableAmount: Option[BigDecimal] = Some(10501.99)
-  val relievableAmount: BigDecimal = 10502.99
-  val rate: BigDecimal = 12.99
+  val adjustedTotalIncome: BigDecimal                = 10500.99
+  val totalAllowableAmount: Option[BigDecimal]       = Some(10501.99)
+  val relievableAmount: BigDecimal                   = 10502.99
+  val rate: BigDecimal                               = 12.99
   val totalResidentialFinanceCostsRelief: BigDecimal = 10503.99
 
   val residentialFinanceCostsModel: ResidentialFinanceCosts =
@@ -56,4 +56,5 @@ object ResidentialFinanceCostsFixture {
       |}
     """.stripMargin
   )
+
 }

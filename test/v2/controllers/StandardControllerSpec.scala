@@ -37,7 +37,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class StandardControllerSpec
-  extends ControllerBaseSpec
+    extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockStandardService
@@ -61,21 +61,23 @@ class StandardControllerSpec
   val mockParser: RequestParser[Raw, RequestData] = mock[RequestParser[Raw, RequestData]]
 
   object MockParser {
+
     def parse(data: Raw): CallHandler[Either[ErrorWrapper, RequestData]] = {
       (mockParser.parseRequest(_: Raw)(_: String)).expects(data, *)
     }
+
   }
 
   trait Test extends MockEnrolmentsAuthService with MockMtdIdLookupService {
-    def uri: String = "/input/uri"
-    val correlationId = "X-123"
-    val nino: String = "nino"
-    val rawData: Raw = Raw("data")
+    def uri: String              = "/input/uri"
+    val correlationId            = "X-123"
+    val nino: String             = "nino"
+    val rawData: Raw             = Raw("data")
     val requestData: RequestData = RequestData("data")
 
-    val response: BackendResp = BackendResp("data")
+    val response: BackendResp   = BackendResp("data")
     val mappedResponse: APIResp = APIResp("dataMapped")
-    val requestDefn: Get = Get("url")
+    val requestDefn: Get        = Get("url")
 
     val hc: HeaderCarrier = HeaderCarrier()
 
@@ -111,11 +113,13 @@ class StandardControllerSpec
           val rawData = Raw(nino)
           doHandleRequest(rawData)(request)
         }
+
     }
 
     val controller = new TestController
 
     val controllerWithAudit: TestController = new TestController {
+
       override def handleRequest(nino: String): Action[AnyContent] =
         authorisedAction(nino).async { implicit request =>
           val rawData = Raw(nino)
@@ -129,7 +133,9 @@ class StandardControllerSpec
 
           doHandleRequest(rawData, Some(auditHandling))(request)
         }
+
     }
+
   }
 
   "handleRequest" when {
@@ -165,8 +171,8 @@ class StandardControllerSpec
         val responseBody: JsValue = Json.toJson(mappedResponse)
         contentAsJson(result) shouldBe responseBody
 
-        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, Map(), None, "X-123",
-          AuditResponse(200, None, Some(Json.parse("""{"data":"dataMapped"}"""))))
+        val detail: GenericAuditDetail =
+          GenericAuditDetail("Individual", None, Map(), None, "X-123", AuditResponse(200, None, Some(Json.parse("""{"data":"dataMapped"}"""))))
 
         val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -229,12 +235,18 @@ class StandardControllerSpec
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail: GenericAuditDetail = GenericAuditDetail("Individual",None,Map(),None,"X-123",
-          AuditResponse(404,Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))),None))
+        val detail: GenericAuditDetail = GenericAuditDetail(
+          "Individual",
+          None,
+          Map(),
+          None,
+          "X-123",
+          AuditResponse(404, Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))), None))
 
         val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
   }
+
 }

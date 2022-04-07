@@ -33,4 +33,5 @@ class PensionContributionsInExcessOfTheAnnualAllowanceSpec extends UnitSpec with
       "pensionBands"
     )
   )
+
 }

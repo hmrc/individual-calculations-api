@@ -29,4 +29,5 @@ class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
       "reliefs"
     )
   )
+
 }

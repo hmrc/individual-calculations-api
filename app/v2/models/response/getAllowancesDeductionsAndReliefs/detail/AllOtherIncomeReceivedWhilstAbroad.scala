@@ -18,8 +18,7 @@ package v2.models.response.getAllowancesDeductionsAndReliefs.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AllOtherIncomeReceivedWhilstAbroad(totalOtherIncomeAllowableAmount: BigDecimal,
-                                              otherIncomeRfcDetail: Seq[OtherIncomeRfcDetail])
+case class AllOtherIncomeReceivedWhilstAbroad(totalOtherIncomeAllowableAmount: BigDecimal, otherIncomeRfcDetail: Seq[OtherIncomeRfcDetail])
 
 object AllOtherIncomeReceivedWhilstAbroad {
   implicit val format: OFormat[AllOtherIncomeReceivedWhilstAbroad] = Json.format[AllOtherIncomeReceivedWhilstAbroad]

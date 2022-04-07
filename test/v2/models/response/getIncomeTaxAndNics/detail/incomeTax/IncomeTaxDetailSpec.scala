@@ -33,4 +33,5 @@ class IncomeTaxDetailSpec extends UnitSpec with JsonErrorValidators {
       "giftAid"
     )
   )
+
 }

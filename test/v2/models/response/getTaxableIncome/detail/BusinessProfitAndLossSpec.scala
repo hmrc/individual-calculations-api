@@ -32,4 +32,5 @@ class BusinessProfitAndLossSpec extends UnitSpec with JsonErrorValidators {
       "foreignProperty"
     )
   )
+
 }

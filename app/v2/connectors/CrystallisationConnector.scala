@@ -26,18 +26,17 @@ import v2.models.response.common.DownstreamUnit
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CrystallisationConnector @Inject()(val http: HttpClient,
-                                         val appConfig: AppConfig) extends BaseConnector {
+class CrystallisationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseConnector {
 
-  def declareCrystallisation(request: CrystallisationRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    correlationId: String): Future[BackendOutcome[DownstreamUnit]] = {
+  def declareCrystallisation(request: CrystallisationRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[BackendOutcome[DownstreamUnit]] = {
 
     import v2.connectors.httpparsers.StandardHttpParser._
 
-    val nino: String = request.nino.nino
-    val taxYear: String = request.taxYear.value
+    val nino: String          = request.nino.nino
+    val taxYear: String       = request.taxYear.value
     val calculationId: String = request.calculationId
 
     downstreamPost(
@@ -45,4 +44,5 @@ class CrystallisationConnector @Inject()(val http: HttpClient,
       body = EmptyJsonBody
     )
   }
+
 }

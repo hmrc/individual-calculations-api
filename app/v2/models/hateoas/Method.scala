@@ -23,8 +23,8 @@ sealed trait Method
 
 object Method {
 
-  case object GET extends Method
-  case object POST extends Method
+  case object GET    extends Method
+  case object POST   extends Method
   case object DELETE extends Method
 
   implicit val format: Format[Method] = Enums.format[Method]

@@ -24,7 +24,7 @@ import v2.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
 import scala.language.higherKinds
 
-class HateoasFactory @Inject()(appConfig: AppConfig) {
+class HateoasFactory @Inject() (appConfig: AppConfig) {
 
   def wrap[A, D <: HateoasData](payload: A, data: D)(implicit lf: HateoasLinksFactory[A, D]): HateoasWrapper[A] = {
     val links = lf.links(appConfig, data)
@@ -37,6 +37,7 @@ class HateoasFactory @Inject()(appConfig: AppConfig) {
 
     HateoasWrapper(hateoasList, lf.links(appConfig, data))
   }
+
 }
 
 trait HateoasLinksFactory[A, D] {

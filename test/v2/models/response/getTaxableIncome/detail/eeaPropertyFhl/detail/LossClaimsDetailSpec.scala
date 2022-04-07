@@ -30,4 +30,5 @@ class LossClaimsDetailSpec extends UnitSpec with JsonErrorValidators {
       "defaultCarriedForwardLosses"
     )
   )
+
 }

@@ -22,8 +22,8 @@ import v2.models.response.getIncomeTaxAndNics.detail.pensionSavingsTaxCharges.Pe
 
 object PensionSavingsTaxChargesFixture {
 
-  val totalPensionCharges: Option[BigDecimal] = Some(2000.99)
-  val totalTaxPaid: Option[BigDecimal] = Some(3000.99)
+  val totalPensionCharges: Option[BigDecimal]    = Some(2000.99)
+  val totalTaxPaid: Option[BigDecimal]           = Some(3000.99)
   val totalPensionChargesDue: Option[BigDecimal] = Some(4000.99)
 
   val pensionSavingsTaxChargesModel: PensionSavingsTaxCharges =
@@ -44,4 +44,5 @@ object PensionSavingsTaxChargesFixture {
        |}
      """.stripMargin
   )
+
 }

@@ -31,4 +31,5 @@ class UkSecuritiesSpec extends UnitSpec with JsonErrorValidators {
       "taxDeducted"
     )
   )
+
 }

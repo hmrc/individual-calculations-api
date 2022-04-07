@@ -18,11 +18,11 @@ package v2.models.response.calculationWrappers
 
 import play.api.libs.json.{JsPath, Reads}
 
-/**
-  * ADT representing either a wrapper for a successful calculation result, or an indication that there are
-  * calculation errors (according to the error count in the metadata portion of the received JSON).
+/** ADT representing either a wrapper for a successful calculation result, or an indication that there are calculation errors (according to the error
+  * count in the metadata portion of the received JSON).
   *
-  * @tparam A the type of calculation wrapped when there are no errors
+  * @tparam A
+  *   the type of calculation wrapped when there are no errors
   */
 sealed trait CalculationWrapperOrError[+A]
 
@@ -35,7 +35,7 @@ object CalculationWrapperOrError {
   // from within the JSON as it is received from the backend microservice.
   implicit def reads[A: Reads]: Reads[CalculationWrapperOrError[A]] = {
 
-     (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault(0).flatMap { errCount =>
+    (JsPath \ "metadata" \ "calculationErrorCount").readWithDefault(0).flatMap { errCount =>
       if (errCount > 0) {
         Reads.pure[CalculationWrapperOrError[A]](ErrorsInCalculation)
       } else {
@@ -43,4 +43,5 @@ object CalculationWrapperOrError {
       }
     }
   }
+
 }
