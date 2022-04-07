@@ -17,15 +17,11 @@
 package v3.connectors
 
 import config.AppConfig
-import play.api.libs.json.{ Json, Writes }
-import play.api.mvc.Result
-import play.api.mvc.Results.InternalServerError
-import uk.gov.hmrc.http.{ HeaderCarrier, HttpClient, HttpReads }
+import play.api.libs.json.Writes
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import utils.Logging
-import v3.controllers.EndpointLogContext
-import v3.models.errors.{ DownstreamError, ErrorWrapper }
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 trait BaseConnector extends Logging {
   val http: HttpClient
