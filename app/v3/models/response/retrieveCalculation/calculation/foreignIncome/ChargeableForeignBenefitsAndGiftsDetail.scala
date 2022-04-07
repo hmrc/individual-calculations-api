@@ -17,7 +17,6 @@
 package v3.models.response.retrieveCalculation.calculation.foreignIncome
 
 import play.api.libs.json.{Json, OFormat}
-import v3.models.response.retrieveCalculation.calculation.shareSchemesIncome.ShareSchemesIncome
 
 case class ChargeableForeignBenefitsAndGiftsDetail(transactionBenefit: Option[BigDecimal],
                                                    protectedForeignIncomeSourceBenefit: Option[BigDecimal],

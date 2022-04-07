@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 case class CommonBenefitWithTaxPaid(incomeSourceId: String,
                                     amount: BigDecimal,
                                     taxPaid: Option[BigDecimal],
-                                    source: Option[Source])
+                                    source: Option[String])
 
 object CommonBenefitWithTaxPaid {
   implicit val format: OFormat[CommonBenefitWithTaxPaid] = Json.format[CommonBenefitWithTaxPaid]

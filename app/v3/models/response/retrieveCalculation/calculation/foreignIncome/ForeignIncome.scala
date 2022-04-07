@@ -24,7 +24,7 @@ case class ForeignIncome(chargeableOverseasPensionsStateBenefitsRoyalties: Optio
                          allOtherIncomeReceivedWhilstAbroadDetail: Option[Seq[CommonForeignIncome]],
                          overseasIncomeAndGains: Option[OverseasIncomeAndGains],
                          totalForeignBenefitsAndGifts: Option[BigDecimal],
-                         chargeableForeignBenefitsAndGiftsDetail: Object)
+                         chargeableForeignBenefitsAndGiftsDetail: Option[ChargeableForeignBenefitsAndGiftsDetail])
 
 object ForeignIncome {
   implicit val format: OFormat[ForeignIncome] = Json.format[ForeignIncome]

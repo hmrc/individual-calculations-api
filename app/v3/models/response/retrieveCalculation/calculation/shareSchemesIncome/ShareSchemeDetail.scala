@@ -17,9 +17,8 @@
 package v3.models.response.retrieveCalculation.calculation.shareSchemesIncome
 
 import play.api.libs.json.{Json, OFormat}
-import v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome.CommonBenefit
 
-case class ShareSchemeDetail(`type`: TypeOfShareScheme,
+case class ShareSchemeDetail(`type`: String,
                              employerName: Option[String],
                              employerRef: Option[String],
                              taxableAmount: BigDecimal)

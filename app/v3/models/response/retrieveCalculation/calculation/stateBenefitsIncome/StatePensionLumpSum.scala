@@ -22,7 +22,7 @@ case class StatePensionLumpSum(incomeSourceId: String,
                                amount: BigDecimal,
                                taxPaid: Option[BigDecimal],
                                rate: BigDecimal,
-                               source: Option[Source])
+                               source: Option[String])
 
 object StatePensionLumpSum {
   implicit val format: OFormat[StatePensionLumpSum] = Json.format[StatePensionLumpSum]
