@@ -16,12 +16,10 @@
 
 package v3.models.response.retrieveCalculation.calculation.royaltyPayments
 
-import play.api.libs.json.{Json, OFormat}
+import utils.DataModel
 
 case class RoyaltyPayments (royaltyPaymentsAmount: BigInt,
                             rate: BigDecimal,
                             grossRoyaltyPayments: Option[BigInt])
 
-object RoyaltyPayments {
-  implicit val format: OFormat[RoyaltyPayments] = Json.format[RoyaltyPayments]
-}
+object RoyaltyPayments extends DataModel[RoyaltyPayments]

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.pensionContributionReliefs
+package utils
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
 
-case class PensionContributionDetail (regularPensionContributions: Option[BigDecimal],
-                                      oneOffPensionContributionsPaid: Option[BigDecimal])
-
-object PensionContributionDetail  extends DataModel[PensionContributionDetail]
+trait DataModel[I] {
+  implicit val format: OFormat[I] = Json.format[I]
+}
