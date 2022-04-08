@@ -16,8 +16,12 @@
 
 package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
+import utils.DataModel
+
 case class SavingsAndGainsIncome(totalChargeableSavingsAndGains: Option[BigInt],
                                  totalUkSavingsAndGains: Option[BigInt],
                                  ukSavingsAndGainsIncome: Option[Seq[UkSavingsAndGainsIncome]],
                                  chargeableForeignSavingsAndGains: Option[BigInt],
                                  foreignSavingsAndGainsIncome: Option[Seq[ForeignSavingsAndGainsIncome]])
+
+object SavingsAndGainsIncome extends DataModel[SavingsAndGainsIncome]

@@ -16,6 +16,10 @@
 
 package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
+import utils.DataModel
+
 case class OtherDividends(typeOfDividend: Option[String],
                           customerReference: Option[String],
                           grossAmount: Option[BigDecimal])
+
+object OtherDividends extends DataModel[OtherDividends]

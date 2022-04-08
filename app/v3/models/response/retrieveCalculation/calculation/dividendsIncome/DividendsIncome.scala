@@ -16,6 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
+import utils.DataModel
+
 case class DividendsIncome(totalChargeableDividends: Option[BigInt],
                            totalUkDividends: Option[BigInt],
                            ukDividends: Option[UkDividends],
@@ -23,3 +25,5 @@ case class DividendsIncome(totalChargeableDividends: Option[BigInt],
                            chargeableForeignDividends: Option[BigInt],
                            foreignDividends: Option[Seq[CommonForeignDividend]],
                            dividendIncomeReceivedWhilstAbroad: Option[Seq[CommonForeignDividend]])
+
+object DividendsIncome extends DataModel[DividendsIncome]
