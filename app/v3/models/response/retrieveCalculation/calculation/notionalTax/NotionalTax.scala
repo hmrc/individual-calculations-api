@@ -16,8 +16,10 @@
 
 package v3.models.response.retrieveCalculation.calculation.notionalTax
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
 
-case class NotionalTax (chargeableGains: Option[BigDecimal])
+case class NotionalTax(chargeableGains: Option[BigDecimal])
 
-object NotionalTax  extends DataModel[NotionalTax]
+object NotionalTax {
+  implicit val format: OFormat[NotionalTax] = Json.format
+}
