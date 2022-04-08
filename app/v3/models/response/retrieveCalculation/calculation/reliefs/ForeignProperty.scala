@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
 case class ForeignProperty(totalForeignPropertyAllowableAmount: BigDecimal,
                            foreignPropertyRfcDetail: Seq[ForeignPropertyRfcDetail])
 
 
-object ForeignProperty {
-  implicit val format: Format[ForeignProperty] = Json.format
-}
+object ForeignProperty extends DataModel[ForeignProperty]

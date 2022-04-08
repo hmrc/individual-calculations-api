@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-case class ForeignTaxCreditRelief()
+import utils.DataModel
+
+case class ReliefsClaimed(`type`: String,
+                          amountClaimed: Option[BigDecimal],
+                          allowableAmount: Option[BigDecimal],
+                          amountUsed: Option[BigDecimal],
+                          rate: Option[BigDecimal],
+                          reliefsClaimedDetail: Option[ReliefsClaimedDetail]
+                         )
+
+
+object ReliefsClaimed  extends DataModel[ReliefsClaimed]

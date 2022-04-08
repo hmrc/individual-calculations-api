@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
 case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    totalAllowableAmount: Option[BigDecimal],
@@ -28,6 +28,4 @@ case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    allOtherIncomeReceivedWhilstAbroad: Option[AllOtherIncomeReceivedWhilstAbroad]
                                   )
 
-object ResidentialFinanceCosts {
-  implicit val format: Format[ResidentialFinanceCosts] = Json.format
-}
+object ResidentialFinanceCosts extends DataModel[ResidentialFinanceCosts]

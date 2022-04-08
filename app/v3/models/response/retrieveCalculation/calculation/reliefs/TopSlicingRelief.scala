@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.AllowancesAndDeductions
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
-case class AnnuityPayments(reliefClaimed: Option[BigDecimal],
-                           rate: Option[BigDecimal])
+case class TopSlicingRelief(amount: Option[BigDecimal])
 
 
-object AnnuityPayments {
-  implicit val format: Format[AnnuityPayments] = Json.format
-}
+object TopSlicingRelief extends DataModel[TopSlicingRelief]

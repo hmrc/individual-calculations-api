@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.AllowancesAndDeductions
+package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductions
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
 case class MarriageAllowanceTransferOut(personalAllowanceBeforeTransferOut: BigDecimal,
-                                        transferredOutAmount: Option[BigDecimal])
+                                        transferredOutAmount: BigDecimal)
 
-object MarriageAllowanceTransferOut {
-  implicit val format: Format[MarriageAllowanceTransferOut] = Json.format
-}
+object MarriageAllowanceTransferOut extends DataModel[MarriageAllowanceTransferOut]
