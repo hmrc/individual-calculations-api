@@ -27,19 +27,19 @@ class TaxYearNotSupportedValidationSpec extends UnitSpec {
   "validate" should {
     "return no errors" when {
       "a tax year greater than minimum is supplied" in {
-        val validationResult = TaxYearNotSupportedValidation.validate(taxYear = "2020-21")
+        val validationResult = TaxYearNotSupportedValidation.validate("2020-21")
         validationResult shouldBe empty
       }
 
       "a tax year equal to minimum is supplied" in {
-        val validationResult = TaxYearNotSupportedValidation.validate(taxYear = "2017-18")
+        val validationResult = TaxYearNotSupportedValidation.validate("2017-18")
         validationResult shouldBe empty
       }
     }
 
     "return the given error" when {
       "a tax year is below the minimum is supplied" in {
-        val validationResult = TaxYearNotSupportedValidation.validate(taxYear = "2015-16")
+        val validationResult = TaxYearNotSupportedValidation.validate("2015-16")
         validationResult shouldBe List(RuleTaxYearNotSupportedError)
       }
     }
