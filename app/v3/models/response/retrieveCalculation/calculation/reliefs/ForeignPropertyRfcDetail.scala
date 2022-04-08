@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
-case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                   reliefsClaimed: Option[Seq[ReliefsClaimed]],
-                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   topSlicingRelief: Option[TopSlicingRelief])
+case class ForeignPropertyRfcDetail(countryCode: String,
+                                    amountClaimed: BigInt,
+                                    allowableAmount: BigDecimal,
+                                    carryForwardAmount: Option[BigDecimal])
 
 
-object Reliefs {
-  implicit val format: Format[Reliefs] = Json.format
-}
+object ForeignPropertyRfcDetail extends DataModel[ForeignPropertyRfcDetail]

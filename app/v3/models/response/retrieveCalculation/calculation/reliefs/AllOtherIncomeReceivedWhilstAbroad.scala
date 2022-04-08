@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-case class ReliefsClaimed(`type`: String,
-                          amountClaimed: Option[BigDecimal],
-                          allowableAmount: Option[BigDecimal],
-                          amountUsed: Option[BigDecimal],
-                          rate: Option[BigDecimal],
-                          reliefsClaimedDetail: Option[ReliefsClaimedDetail]
-                         )
+import play.api.libs.json.{Format, Json}
+
+case class AllOtherIncomeReceivedWhilstAbroad(totalOtherIncomeAllowableAmount: BigDecimal,
+                                              otherIncomeRfcDetail: Seq[OtherIncomeRfcDetail])
 
 
+object AllOtherIncomeReceivedWhilstAbroad {
+  implicit val format: Format[AllOtherIncomeReceivedWhilstAbroad] = Json.format
+}

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.AllowancesAndDeductions
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
-case class PensionContributionsDetail(retirementAnnuityPayments: Option[BigDecimal],
-                                      paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
-                                      overseasPensionSchemeContributions: Option[BigDecimal])
+case class UkProperty(amountClaimed: BigInt,
+                      allowableAmount: BigDecimal,
+                      carryForwardAmount: Option[BigDecimal]
+                     )
 
-object PensionContributionsDetail {
-  implicit val format: Format[PensionContributionsDetail] = Json.format
-}
+
+object UkProperty extends DataModel[UkProperty]

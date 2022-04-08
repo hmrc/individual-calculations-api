@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductions
 
-import play.api.libs.json.{Format, Json}
+import utils.DataModel
 
-case class UkProperty(amountClaimed: BigInt,
-                      allowableAmount: BigDecimal,
-                      carryForwardAmount: Option[BigDecimal]
-                     )
+case class AnnuityPayments(reliefClaimed: Option[BigDecimal],
+                           rate: Option[BigDecimal])
 
 
-object UkProperty {
-  implicit val format: Format[UkProperty] = Json.format
-}
+object AnnuityPayments extends DataModel[AnnuityPayments]

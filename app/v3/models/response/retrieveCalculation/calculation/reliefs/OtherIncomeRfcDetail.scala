@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-case class TopSlicingRelief()
+import utils.DataModel
+
+case class OtherIncomeRfcDetail(countryCode: String,
+                                residentialFinancialCostAmount: Option[BigDecimal],
+                                broughtFwdResidentialFinancialCostAmount: Option[BigDecimal])
+
+
+object OtherIncomeRfcDetail extends DataModel[OtherIncomeRfcDetail]
