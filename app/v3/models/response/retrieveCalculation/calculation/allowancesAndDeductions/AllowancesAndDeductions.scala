@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.AllowancesAndDeductions
+package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductions
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}

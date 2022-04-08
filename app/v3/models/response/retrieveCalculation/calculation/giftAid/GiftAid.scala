@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.Reliefs
+package v3.models.response.retrieveCalculation.calculation.giftAid
 
-case class ReliefsClaimedDetail(amountClaimed: Option[BigDecimal],
-                                uniqueInvestmentRef: Option[String],
-                                name: Option[String],
-                                socialEnterpriseName: Option[String],
-                                companyName: Option[String],
-                                deficiencyReliefType: Option[String],
-                                customerReference: Option[String])
+import utils.DataModel
 
-object ReliefsClaimedDetail extends DataModel[ReliefsClaimedDetail]
+case class GiftAid(grossGiftAidPayments: BigInt,
+                   rate: BigDecimal,
+                   giftAidTax: BigDecimal,
+                   giftAidTaxReductions: Option[BigDecimal],
+                   incomeTaxChargedAfterGiftAidTaxReductions: Option[BigDecimal],
+                   giftAidCharge: Option[BigDecimal])
+
+
+object GiftAid  extends DataModel[GiftAid]
