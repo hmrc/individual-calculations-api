@@ -143,6 +143,16 @@ class EnumsSpec extends UnitSpec with Inspectors {
       }
     }
 
+    "allow restricted reads (e.g. when only a subset of values is permitted)" in {
+      implicit val customReads: Reads[Enum] = Enums.readsRestricted(`enum-one`, `enum-three`)
+
+      forAll(List("enum-one" -> `enum-one`, "enum-three" -> `enum-three`)) { case (name, value) =>
+        JsString(name).as[Enum](customReads) shouldBe value
+      }
+
+      JsString("enum-two").validate[Enum](customReads) shouldBe JsError(__, JsonValidationError("error.expected.Enum"))
+    }
+
     "only work for sealed trait singletons (objects)" in {
       assertTypeError("""
         |      sealed trait NotEnum
