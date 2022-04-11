@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-package v3.models.response.common
+package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges
 
-trait DownstreamResponse
-class DownstreamUnit  extends DownstreamResponse
-object DownstreamUnit extends DownstreamUnit
+import play.api.libs.json.{Json, OFormat}
+
+case class PensionSchemeOverseasTransfers(transferCharge: Option[BigDecimal],
+                                          transferChargeTaxPaid: Option[BigDecimal],
+                                          rate: Option[BigDecimal],
+                                          chargeableAmount: Option[BigDecimal])
+
+object PensionSchemeOverseasTransfers {
+  implicit val format: OFormat[PensionSchemeOverseasTransfers] = Json.format[PensionSchemeOverseasTransfers]
+}

@@ -16,7 +16,7 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json.{JsObject, JsResult, JsValue, Json, OFormat, Reads, Writes}
 import utils.enums.Enums
 
 sealed trait IncomeSourceType
@@ -70,4 +70,8 @@ object IncomeSourceType {
     case "98" => `charitable-giving`
   }
 
+  def formatRestricted(types: IncomeSourceType*): OFormat[IncomeSourceType] = new OFormat[IncomeSourceType] {
+    override def writes(o: IncomeSourceType): JsObject = Json.toJsObject(o)(writes)
+    override def reads(json: JsValue): JsResult[IncomeSourceType] = json.validate[IncomeSourceType](Enums.readsRestricted(types :_*))
+  }
 }
