@@ -21,5 +21,5 @@ import play.api.libs.json.{Json, OFormat}
 case class ShareSchemeDetail(`type`: String, employerName: Option[String], employerRef: Option[String], taxableAmount: BigDecimal)
 
 object ShareSchemeDetail {
-  implicit val format: OFormat[ShareSchemesIncome] = Json.format[ShareSchemesIncome]
+  implicit val format: OFormat[ShareSchemeDetail] = Json.format[ShareSchemeDetail]
 }
