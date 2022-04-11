@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
 
 case class StateBenefitsDetail(incapacityBenefit: Option[Seq[CommonBenefitWithTaxPaid]],
                                statePension: Option[Seq[CommonBenefit]],
@@ -26,4 +26,6 @@ case class StateBenefitsDetail(incapacityBenefit: Option[Seq[CommonBenefitWithTa
                                bereavementAllowance: Option[Seq[CommonBenefit]],
                                otherStateBenefits: Option[Seq[CommonBenefit]])
 
-object StateBenefitsDetail extends DataModel[StateBenefitsDetail]
+object StateBenefitsDetail {
+  implicit val format: OFormat[StateBenefitsDetail] = Json.format[StateBenefitsDetail]
+}
