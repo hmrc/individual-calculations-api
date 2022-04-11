@@ -22,7 +22,7 @@ import support.UnitSpec
 case class SomeModel(taxYear: TaxYear)
 
 object SomeModel {
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
   implicit val format: OFormat[SomeModel]     = Json.format[SomeModel]
 }
 
