@@ -43,9 +43,12 @@ object TaxYear {
   def fromDownstream(taxYear: String): TaxYear =
     TaxYear(taxYear)
 
-  val fromDownstreamReads: Reads[TaxYear] = implicitly[Reads[String]].map(fromDownstream)
+  def fromDownstreamInt(taxYear: Int): TaxYear =
+    TaxYear(taxYear.toString)
+
+  val fromDownstreamIntReads: Reads[TaxYear] = implicitly[Reads[Int]].map(fromDownstreamInt)
 
   val toMtdWrites: Writes[TaxYear] = implicitly[Writes[String]].contramap(_.toMtd)
 
-  val downstreamToMtdFormat: Format[TaxYear] = Format(fromDownstreamReads, toMtdWrites)
+  val downstreamIntToMtdFormat: Format[TaxYear] = Format(fromDownstreamIntReads, toMtdWrites)
 }
