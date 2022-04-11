@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.chargeableEventGainsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Format, Json}
 
 case class GainsWithNoTaxPaidAndVoidedIsaDetail(`type`: String,
                                                 customerReference: Option[String],
@@ -25,4 +25,6 @@ case class GainsWithNoTaxPaidAndVoidedIsaDetail(`type`: String,
                                                 yearsHeldSinceLastGain: Option[BigInt],
                                                 voidedIsaTaxPaid: Option[BigDecimal])
 
-object GainsWithNoTaxPaidAndVoidedIsaDetail extends DataModel[GainsWithNoTaxPaidAndVoidedIsaDetail]
+object GainsWithNoTaxPaidAndVoidedIsaDetail {
+  implicit val format: Format[GainsWithNoTaxPaidAndVoidedIsaDetail] = Json.format[GainsWithNoTaxPaidAndVoidedIsaDetail]
+}

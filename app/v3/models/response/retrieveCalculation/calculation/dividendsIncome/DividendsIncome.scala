@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Format, Json}
 
 case class DividendsIncome(totalChargeableDividends: Option[BigInt],
                            totalUkDividends: Option[BigInt],
@@ -26,4 +26,6 @@ case class DividendsIncome(totalChargeableDividends: Option[BigInt],
                            foreignDividends: Option[Seq[CommonForeignDividend]],
                            dividendIncomeReceivedWhilstAbroad: Option[Seq[CommonForeignDividend]])
 
-object DividendsIncome extends DataModel[DividendsIncome]
+object DividendsIncome {
+  implicit val format: Format[DividendsIncome] = Json.format[DividendsIncome]
+}

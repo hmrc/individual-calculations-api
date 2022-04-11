@@ -16,10 +16,12 @@
 
 package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Format, Json}
 
 case class OtherDividends(typeOfDividend: Option[String],
                           customerReference: Option[String],
                           grossAmount: Option[BigDecimal])
 
-object OtherDividends extends DataModel[OtherDividends]
+object OtherDividends {
+  implicit val format: Format[OtherDividends] = Json.format[OtherDividends]
+}

@@ -16,11 +16,13 @@
 
 package v3.models.response.retrieveCalculation.calculation.chargeableEventGainsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Format, Json}
 
 case class ForeignGainsOnLifePoliciesTaxPaidDetail(customerReference: Option[String],
                                                    gainAmount: Option[BigDecimal],
                                                    taxPaidAmount: Option[BigDecimal],
                                                    yearsHeld: Option[BigInt])
 
-object ForeignGainsOnLifePoliciesTaxPaidDetail extends DataModel[ForeignGainsOnLifePoliciesTaxPaidDetail]
+object ForeignGainsOnLifePoliciesTaxPaidDetail {
+  implicit val format: Format[ForeignGainsOnLifePoliciesTaxPaidDetail] = Json.format[ForeignGainsOnLifePoliciesTaxPaidDetail]
+}

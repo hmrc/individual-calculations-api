@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
-import utils.DataModel
+import play.api.libs.json.{Format, Json}
 
 case class SavingsAndGainsIncome(totalChargeableSavingsAndGains: Option[BigInt],
                                  totalUkSavingsAndGains: Option[BigInt],
@@ -24,4 +24,6 @@ case class SavingsAndGainsIncome(totalChargeableSavingsAndGains: Option[BigInt],
                                  chargeableForeignSavingsAndGains: Option[BigInt],
                                  foreignSavingsAndGainsIncome: Option[Seq[ForeignSavingsAndGainsIncome]])
 
-object SavingsAndGainsIncome extends DataModel[SavingsAndGainsIncome]
+object SavingsAndGainsIncome {
+  implicit val format: Format[SavingsAndGainsIncome] = Json.format[SavingsAndGainsIncome]
+}
