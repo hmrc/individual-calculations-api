@@ -16,16 +16,30 @@
 
 package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.Json
+import support.UnitSpec
 import v3.models.response.common.IncomeSourceType
+import v3.models.utils.JsonErrorValidators
 
-case class UkSavingsAndGainsIncome(incomeSourceId: Option[String],
-                                   incomeSourceType: IncomeSourceType,
-                                   incomeSourceName: Option[String],
-                                   grossIncome: BigDecimal,
-                                   netIncome: Option[BigDecimal],
-                                   taxDeducted: Option[BigDecimal])
+class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
 
-object UkSavingsAndGainsIncome {
-  implicit val format: Format[UkSavingsAndGainsIncome] = Json.format[UkSavingsAndGainsIncome]
+  val model = UkSavingsAndGainsIncome(
+    "testId",
+    IncomeSourceType.`uk-savings-and-gains`,
+  "")
+
+  "reads" when {
+    "passed valid JSON" should {
+      "return a valid model" in {
+        foreignIncomeTaxCreditRelief shouldBe json.as[ForeignIncomeTaxCreditRelief]
+      }
+    }
+  }
+  "writes" when {
+    "passed valid model" should {
+      "return valid JSON" in {
+        Json.toJson(foreignIncomeTaxCreditRelief) shouldBe json
+      }
+    }
+  }
 }

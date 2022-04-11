@@ -70,7 +70,6 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `capital-gains-tax`         -> "capital-gains-tax",
     `charitable-giving`         -> "charitable-giving"
   )
-
   "formatRestricted" when {
     "reads" should {
       "work when the provided IncomeSourceType is in the list" in {
