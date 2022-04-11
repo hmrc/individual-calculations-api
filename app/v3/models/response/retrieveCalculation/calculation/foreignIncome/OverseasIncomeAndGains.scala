@@ -20,7 +20,6 @@ import play.api.libs.json.{Json, OFormat}
 
 case class OverseasIncomeAndGains(gainAmount: BigDecimal)
 
-
 object OverseasIncomeAndGains {
   implicit val format: OFormat[OverseasIncomeAndGains] = Json.format[OverseasIncomeAndGains]
 }
