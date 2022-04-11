@@ -17,8 +17,9 @@
 package v3.models.response.retrieveCalculation.calculation.studentLoans
 
 import play.api.libs.json.{Json, OFormat}
+import v3.models.response.common.StudentLoanPlanType
 
-case class StudentLoans(planType: PlanType,
+case class StudentLoans(planType: StudentLoanPlanType,
                         studentLoanTotalIncomeAmount: BigDecimal,
                         studentLoanChargeableIncomeAmount: BigDecimal,
                         studentLoanRepaymentAmount: BigDecimal,

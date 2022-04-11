@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.studentLoans
+package v3.models.response.common
 
 import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
-sealed trait PlanType
+sealed trait StudentLoanPlanType
 
-object PlanType {
-  case object `plan1` extends PlanType
+object StudentLoanPlanType {
+  case object `plan1` extends StudentLoanPlanType
+  case object `plan2` extends StudentLoanPlanType
+  case object `postgraduate` extends StudentLoanPlanType
+  case object `plan4` extends StudentLoanPlanType
 
-  case object `plan2` extends PlanType
+  implicit val writes: Writes[StudentLoanPlanType] = Enums.writes[StudentLoanPlanType]
 
-  case object `postgraduate` extends PlanType
-
-  case object `plan4` extends PlanType
-
-  implicit val writes: Writes[PlanType] = Enums.writes[PlanType]
-
-  implicit val reads: Reads[PlanType] = Enums.readsUsing {
+  implicit val reads: Reads[StudentLoanPlanType] = Enums.readsUsing {
     case "01" => `plan1`
     case "02" => `plan2`
     case "03" => `postgraduate`
