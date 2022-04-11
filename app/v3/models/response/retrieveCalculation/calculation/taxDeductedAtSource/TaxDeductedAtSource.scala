@@ -29,7 +29,6 @@ case class TaxDeductedAtSource(bbsi: Option[BigDecimal],
                                specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal],
                                inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal])
 
-
 object TaxDeductedAtSource {
   implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
 }

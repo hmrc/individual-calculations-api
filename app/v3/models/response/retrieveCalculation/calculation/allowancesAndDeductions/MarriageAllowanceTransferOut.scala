@@ -18,7 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductio
 
 import play.api.libs.json.{Json, OFormat}
 
-
 case class MarriageAllowanceTransferOut(personalAllowanceBeforeTransferOut: BigDecimal,
                                         transferredOutAmount: BigDecimal)
 

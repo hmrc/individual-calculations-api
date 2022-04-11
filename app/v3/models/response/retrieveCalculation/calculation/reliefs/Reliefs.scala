@@ -18,12 +18,10 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-
 case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
                    topSlicingRelief: Option[TopSlicingRelief])
-
 
 object Reliefs extends {
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]

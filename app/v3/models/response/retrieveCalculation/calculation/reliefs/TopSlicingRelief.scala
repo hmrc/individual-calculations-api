@@ -18,9 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-
 case class TopSlicingRelief(amount: Option[BigDecimal])
-
 
 object TopSlicingRelief {
   implicit val format: OFormat[TopSlicingRelief] = Json.format[TopSlicingRelief]

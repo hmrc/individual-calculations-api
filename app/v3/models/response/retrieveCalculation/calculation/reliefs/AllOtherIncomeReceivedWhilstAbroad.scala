@@ -21,7 +21,6 @@ import play.api.libs.json.{Format, Json}
 case class AllOtherIncomeReceivedWhilstAbroad(totalOtherIncomeAllowableAmount: BigDecimal,
                                               otherIncomeRfcDetail: Seq[OtherIncomeRfcDetail])
 
-
 object AllOtherIncomeReceivedWhilstAbroad {
-  implicit val format: Format[AllOtherIncomeReceivedWhilstAbroad] = Json.format
+  implicit val format: Format[AllOtherIncomeReceivedWhilstAbroad] = Json.format[AllOtherIncomeReceivedWhilstAbroad]
 }
