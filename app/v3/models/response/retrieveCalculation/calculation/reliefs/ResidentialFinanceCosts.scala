@@ -18,7 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-
 case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    totalAllowableAmount: Option[BigDecimal],
                                    relievableAmount: BigDecimal,
@@ -26,8 +25,7 @@ case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    totalResidentialFinanceCostsRelief: BigDecimal,
                                    ukProperty: Option[UkProperty],
                                    foreignProperty: Option[ForeignProperty],
-                                   allOtherIncomeReceivedWhilstAbroad: Option[AllOtherIncomeReceivedWhilstAbroad]
-                                  )
+                                   allOtherIncomeReceivedWhilstAbroad: Option[AllOtherIncomeReceivedWhilstAbroad])
 
 object ResidentialFinanceCosts {
   implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]

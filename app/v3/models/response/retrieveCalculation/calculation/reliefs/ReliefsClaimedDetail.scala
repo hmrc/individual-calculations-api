@@ -18,7 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-
 case class ReliefsClaimedDetail(amountClaimed: Option[BigDecimal],
                                 uniqueInvestmentRef: Option[String],
                                 name: Option[String],

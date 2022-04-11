@@ -32,28 +32,24 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    grossAnnuityPayments: Option[BigDecimal],
                                    annuityPayments: Option[AnnuityPayments],
                                    pensionContributions: Option[BigDecimal],
-                                   pensionContributionsDetail: Option[PensionContributionsDetail]
-                                  )
-
+                                   pensionContributionsDetail: Option[PensionContributionsDetail])
 
 object AllowancesAndDeductions {
-
   implicit val reads: Reads[AllowancesAndDeductions] = Json.reads[AllowancesAndDeductions]
-
   implicit val writes: Writes[AllowancesAndDeductions] = (
     (JsPath \ "personalAllowance").writeNullable[BigInt] and
-    (JsPath \ "marriageAllowanceTransferOut").writeNullable[MarriageAllowanceTransferOut] and
-    (JsPath \ "reducedPersonalAllowance").writeNullable[BigInt] and
-    (JsPath \ "giftOfInvestmentsAndPropertyToCharity").writeNullable[BigInt] and
-    (JsPath \ "blindPersonsAllowance").writeNullable[BigInt] and
-    (JsPath \ "lossesAppliedToGeneralIncome").writeNullable[BigInt] and
-    (JsPath \ "cgtLossSetAgainstInYearGeneralIncome").writeNullable[BigInt] and
-    (JsPath \ "qualifyingLoanInterestFromInvestments").writeNullable[BigDecimal] and
-    (JsPath \ "post-cessationTradeReceipts").writeNullable[BigDecimal] and
-    (JsPath \ "paymentsToTradeUnionsForDeathBenefits").writeNullable[BigDecimal] and
-    (JsPath \ "grossAnnuityPayments").writeNullable[BigDecimal] and
-    (JsPath \ "annuityPayments").writeNullable[AnnuityPayments] and
-    (JsPath \ "pensionContributions").writeNullable[BigDecimal] and
-    (JsPath \ "pensionContributionsDetail").writeNullable[PensionContributionsDetail]
-    )(unlift(AllowancesAndDeductions.unapply))
+      (JsPath \ "marriageAllowanceTransferOut").writeNullable[MarriageAllowanceTransferOut] and
+      (JsPath \ "reducedPersonalAllowance").writeNullable[BigInt] and
+      (JsPath \ "giftOfInvestmentsAndPropertyToCharity").writeNullable[BigInt] and
+      (JsPath \ "blindPersonsAllowance").writeNullable[BigInt] and
+      (JsPath \ "lossesAppliedToGeneralIncome").writeNullable[BigInt] and
+      (JsPath \ "cgtLossSetAgainstInYearGeneralIncome").writeNullable[BigInt] and
+      (JsPath \ "qualifyingLoanInterestFromInvestments").writeNullable[BigDecimal] and
+      (JsPath \ "post-cessationTradeReceipts").writeNullable[BigDecimal] and
+      (JsPath \ "paymentsToTradeUnionsForDeathBenefits").writeNullable[BigDecimal] and
+      (JsPath \ "grossAnnuityPayments").writeNullable[BigDecimal] and
+      (JsPath \ "annuityPayments").writeNullable[AnnuityPayments] and
+      (JsPath \ "pensionContributions").writeNullable[BigDecimal] and
+      (JsPath \ "pensionContributionsDetail").writeNullable[PensionContributionsDetail]
+    ) (unlift(AllowancesAndDeductions.unapply))
 }
