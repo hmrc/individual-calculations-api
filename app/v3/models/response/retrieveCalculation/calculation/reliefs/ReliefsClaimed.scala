@@ -16,7 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class ReliefsClaimed(`type`: String,
                           amountClaimed: Option[BigDecimal],
@@ -27,4 +28,6 @@ case class ReliefsClaimed(`type`: String,
                          )
 
 
-object ReliefsClaimed  extends DataModel[ReliefsClaimed]
+object ReliefsClaimed {
+  implicit val format: OFormat[ReliefsClaimed] = Json.format[ReliefsClaimed]
+}

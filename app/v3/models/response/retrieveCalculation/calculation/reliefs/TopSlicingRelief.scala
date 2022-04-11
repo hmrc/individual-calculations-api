@@ -16,9 +16,12 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class TopSlicingRelief(amount: Option[BigDecimal])
 
 
-object TopSlicingRelief extends DataModel[TopSlicingRelief]
+object TopSlicingRelief {
+  implicit val format: OFormat[TopSlicingRelief] = Json.format[TopSlicingRelief]
+}

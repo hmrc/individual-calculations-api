@@ -31,6 +31,7 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
                                    grossAnnuityPayments: Option[BigDecimal],
                                    annuityPayments: Option[AnnuityPayments],
+                                   pensionContributions: Option[BigDecimal],
                                    pensionContributionsDetail: Option[PensionContributionsDetail]
                                   )
 
@@ -52,6 +53,7 @@ object AllowancesAndDeductions {
     (JsPath \ "paymentsToTradeUnionsForDeathBenefits").writeNullable[BigDecimal] and
     (JsPath \ "grossAnnuityPayments").writeNullable[BigDecimal] and
     (JsPath \ "annuityPayments").writeNullable[AnnuityPayments] and
+    (JsPath \ "pensionContributions").writeNullable[BigDecimal] and
     (JsPath \ "pensionContributionsDetail").writeNullable[PensionContributionsDetail]
     )(unlift(AllowancesAndDeductions.unapply))
 }

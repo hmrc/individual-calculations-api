@@ -18,8 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductio
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
 
-class AllowancesAndDeductionsSpec extends UnitSpec {
+class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
 
   val model: AllowancesAndDeductions =
     AllowancesAndDeductions(
@@ -43,6 +44,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec {
           Some(1001.99),
           Some(1001.99)
         )),
+      Some(1001.99),
       Some(
         PensionContributionsDetail(
           Some(1001.99),
@@ -53,62 +55,62 @@ class AllowancesAndDeductionsSpec extends UnitSpec {
 
   val mtdJson: JsValue = Json.parse(
     """
-      |    "allowancesAndDeductions": {
+      |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
-      |        "personalAllowanceBeforeTransferOut": 5000.99,
-      |        "transferredOutAmount": 5000.99
+      |        "personalAllowanceBeforeTransferOut": 1001.99,
+      |        "transferredOutAmount": 1001.99
       |      },
       |      "reducedPersonalAllowance": 12500,
       |      "giftOfInvestmentsAndPropertyToCharity": 12500,
       |      "blindPersonsAllowance": 12500,
       |      "lossesAppliedToGeneralIncome": 12500,
       |      "cgtLossSetAgainstInYearGeneralIncome": 12500,
-      |      "qualifyingLoanInterestFromInvestments": 5000.99,
-      |      "postCessationTradeReceipts": 5000.99,
-      |      "paymentsToTradeUnionsForDeathBenefits": 5000.99,
-      |      "grossAnnuityPayments": 5000.99,
+      |      "qualifyingLoanInterestFromInvestments": 1001.99,
+      |      "postCessationTradeReceipts": 1001.99,
+      |      "paymentsToTradeUnionsForDeathBenefits": 1001.99,
+      |      "grossAnnuityPayments": 1001.99,
       |      "annuityPayments": {
-      |        "reliefClaimed": 5000.99,
-      |        "rate": 20
+      |        "reliefClaimed": 1001.99,
+      |        "rate": 1001.99
       |      },
-      |      "pensionContributions": 5000.99,
+      |      "pensionContributions": 1001.99,
       |      "pensionContributionsDetail": {
-      |        "retirementAnnuityPayments": 5000.99,
-      |        "paymentToEmployersSchemeNoTaxRelief": 5000.99,
-      |        "overseasPensionSchemeContributions": 5000.99
+      |        "retirementAnnuityPayments": 1001.99,
+      |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
+      |        "overseasPensionSchemeContributions": 1001.99
       |      }
-      |    }
+      |}
       |""".stripMargin)
 
   val ifsJson: JsValue = Json.parse(
     """
-      |    "allowancesAndDeductions": {
+      |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
-      |        "personalAllowanceBeforeTransferOut": 5000.99,
-      |        "transferredOutAmount": 5000.99
+      |        "personalAllowanceBeforeTransferOut": 1001.99,
+      |        "transferredOutAmount": 1001.99
       |      },
       |      "reducedPersonalAllowance": 12500,
       |      "giftOfInvestmentsAndPropertyToCharity": 12500,
       |      "blindPersonsAllowance": 12500,
       |      "lossesAppliedToGeneralIncome": 12500,
       |      "cgtLossSetAgainstInYearGeneralIncome": 12500,
-      |      "qualifyingLoanInterestFromInvestments": 5000.99,
-      |      "post-cessationTradeReceipts": 5000.99,
-      |      "paymentsToTradeUnionsForDeathBenefits": 5000.99,
-      |      "grossAnnuityPayments": 5000.99,
+      |      "qualifyingLoanInterestFromInvestments": 1001.99,
+      |      "post-cessationTradeReceipts": 1001.99,
+      |      "paymentsToTradeUnionsForDeathBenefits": 1001.99,
+      |      "grossAnnuityPayments": 1001.99,
       |      "annuityPayments": {
-      |        "reliefClaimed": 5000.99,
-      |        "rate": 20
+      |        "reliefClaimed": 1001.99,
+      |        "rate": 1001.99
       |      },
-      |      "pensionContributions": 5000.99,
+      |      "pensionContributions": 1001.99,
       |      "pensionContributionsDetail": {
-      |        "retirementAnnuityPayments": 5000.99,
-      |        "paymentToEmployersSchemeNoTaxRelief": 5000.99,
-      |        "overseasPensionSchemeContributions": 5000.99
+      |        "retirementAnnuityPayments": 1001.99,
+      |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
+      |        "overseasPensionSchemeContributions": 1001.99
       |      }
-      |    }
+      |}
       |""".stripMargin)
 
   "reads" when {
