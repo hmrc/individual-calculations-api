@@ -16,7 +16,15 @@
 
 package v3.models.domain
 
+import play.api.libs.json.{Format, Json, OFormat}
 import support.UnitSpec
+
+case class SomeModel(taxYear: TaxYear)
+
+object SomeModel {
+  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamToMtdFormat
+  implicit val format: OFormat[SomeModel]     = Json.format[SomeModel]
+}
 
 class TaxYearSpec extends UnitSpec {
 
@@ -46,6 +54,29 @@ class TaxYearSpec extends UnitSpec {
         "allow the MTD tax year to be extracted" in {
           TaxYear.fromDownstream("2019").toMtd shouldBe "2018-19"
         }
+      }
+    }
+
+    "de-serialized from downstream JSON" must {
+      "convert correctly" in {
+        Json
+          .parse("""
+            |{
+            | "taxYear": 2020
+            |}
+            |""".stripMargin)
+          .as[SomeModel] shouldBe SomeModel(TaxYear.fromDownstream("2020"))
+      }
+    }
+
+    "serialized to MTD JSON" must {
+      "convert correctly" in {
+        Json.toJson(SomeModel(TaxYear.fromDownstream("2020"))) shouldBe
+          Json.parse("""
+                       |{
+                       | "taxYear": "2019-20"
+                       |}
+                       |""".stripMargin)
       }
     }
   }
