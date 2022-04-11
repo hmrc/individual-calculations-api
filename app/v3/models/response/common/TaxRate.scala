@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.studentLoans
+package v3.models.response.common
 
-import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v3.models.response.retrieveCalculation.calculation.studentLoans.PlanType._
+import play.api.libs.json.{Reads, Writes}
+import utils.enums.Enums
 
-class PlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+sealed trait TaxRate
 
-  testReads[PlanType](
-    "01" -> `plan1`,
-    "02" -> `plan2`,
-    "03" -> `postgraduate`,
-    "04" -> `plan4`
-  )
+object TaxRate {
+  case object `basic-rate` extends TaxRate
+  case object `intermediate-rate` extends TaxRate
+  case object `higher-rate` extends TaxRate
+  case object `additional-rate` extends TaxRate
 
-  testWrites[PlanType](
-    `plan1`   -> "plan1",
-    `plan2`  -> "plan2",
-    `postgraduate` -> "postgraduate",
-    `plan4` -> "plan4"
-  )
+  implicit val writes: Writes[TaxRate] = Enums.writes[TaxRate]
+
+  implicit val reads: Reads[TaxRate] = Enums.readsUsing {
+    case "BRT" => `basic-rate`
+    case "IRT" => `intermediate-rate`
+    case "HRT" => `higher-rate`
+    case "ART" => `additional-rate`
+  }
 }

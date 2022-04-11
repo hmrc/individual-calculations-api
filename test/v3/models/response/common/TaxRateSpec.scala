@@ -16,6 +16,23 @@
 
 package v3.models.response.common
 
-trait DownstreamResponse
-class DownstreamUnit  extends DownstreamResponse
-object DownstreamUnit extends DownstreamUnit
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges.TaxRate._
+
+class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
+
+  testReads[TaxRate](
+    "BRT" -> `basic-rate`,
+    "IRT" -> `intermediate-rate`,
+    "HRT" -> `higher-rate`,
+    "ART" -> `additional-rate`
+  )
+
+  testWrites[TaxRate](
+    `basic-rate`   -> "basic-rate",
+    `intermediate-rate`  -> "intermediate-rate",
+    `higher-rate` -> "higher-rate",
+    `additional-rate` -> "additional-rate"
+  )
+}

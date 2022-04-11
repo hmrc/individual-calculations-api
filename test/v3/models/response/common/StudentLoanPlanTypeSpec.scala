@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxChargesSpec
+package v3.models.response.common
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges.Name
-import v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges.Name._
+import StudentLoanPlanType._
 
-class NameSpec extends UnitSpec with EnumJsonSpecSupport {
+class StudentLoanPlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  testReads[Name](
-    "BRT" -> `basic-rate`,
-    "IRT" -> `intermediate-rate`,
-    "HRT" -> `higher-rate`,
-    "ART" -> `additional-rate`
+  testReads[StudentLoanPlanType](
+    "01" -> `plan1`,
+    "02" -> `plan2`,
+    "03" -> `postgraduate`,
+    "04" -> `plan4`
   )
 
-  testWrites[Name](
-    `basic-rate`   -> "basic-rate",
-    `intermediate-rate`  -> "intermediate-rate",
-    `higher-rate` -> "higher-rate",
-    `additional-rate` -> "additional-rate"
+  testWrites[StudentLoanPlanType](
+    `plan1`   -> "plan1",
+    `plan2`  -> "plan2",
+    `postgraduate` -> "postgraduate",
+    `plan4` -> "plan4"
   )
 }

@@ -17,6 +17,8 @@
 package v3.models.response.retrieveCalculation.calculation.foreignPropertyIncome
 
 import play.api.libs.json.{Json, OFormat}
+import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.`foreign-property`
 
 case class ForeignPropertyIncome(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,
@@ -31,5 +33,6 @@ case class ForeignPropertyIncome(incomeSourceId: String,
                                  adjustedIncomeTaxLoss: Option[BigDecimal])
 
 object ForeignPropertyIncome {
+  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-property`)
   implicit val format: OFormat[ForeignPropertyIncome] = Json.format[ForeignPropertyIncome]
 }
