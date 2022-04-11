@@ -27,7 +27,7 @@ case class AnnualAdjustment(incomeSourceId: String,
                             applied: Boolean)
 
 object AnnualAdjustment {
-  implicit val incomeSourceTypeReads: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
+  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
   implicit val format: OFormat[AnnualAdjustment] = Json.format[AnnualAdjustment]

@@ -16,8 +16,7 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
-import play.api.libs.json.{Json, OFormat, Reads}
-import utils.enums.Enums
+import play.api.libs.json.{Json, OFormat}
 import v3.models.domain.TaxYear
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
@@ -32,7 +31,7 @@ case class LossBroughtForward(lossId: Option[String],
                               mtdLoss: Option[Boolean])
 
 object LossBroughtForward {
-  implicit val incomeSourceTypeReads: Reads[IncomeSourceType] = Enums.readsRestricted(
+  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
   implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]

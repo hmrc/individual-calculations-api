@@ -33,7 +33,7 @@ case class BusinessIncomeSource(incomeSourceId: String,
                                 submissionPeriods: Option[Seq[SubmissionPeriod]])
 
 case object BusinessIncomeSource {
-  implicit val incomeSourceTypeReads: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
+  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
   implicit val format: OFormat[BusinessIncomeSource] = Json.format[BusinessIncomeSource]
