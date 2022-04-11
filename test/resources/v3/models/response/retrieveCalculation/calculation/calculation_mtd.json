@@ -1,7 +1,7 @@
 {
   "metadata": {
     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    "taxYear": 2018,
+    "taxYear": "2017-18",
     "requestedBy": "customer",
     "requestedTimestamp": "2019-02-15T09:35:15.000Z",
     "calculationReason": "customerRequest",
