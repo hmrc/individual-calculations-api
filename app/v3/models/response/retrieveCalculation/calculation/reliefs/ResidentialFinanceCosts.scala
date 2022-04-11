@@ -16,7 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    totalAllowableAmount: Option[BigDecimal],
@@ -28,4 +29,6 @@ case class ResidentialFinanceCosts(adjustedTotalIncome: BigDecimal,
                                    allOtherIncomeReceivedWhilstAbroad: Option[AllOtherIncomeReceivedWhilstAbroad]
                                   )
 
-object ResidentialFinanceCosts extends DataModel[ResidentialFinanceCosts]
+object ResidentialFinanceCosts {
+  implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+}

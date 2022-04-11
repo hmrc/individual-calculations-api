@@ -16,10 +16,12 @@
 
 package v3.models.response.retrieveCalculation.calculation.allowancesAndDeductions
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
 
 case class PensionContributionsDetail(retirementAnnuityPayments: Option[BigDecimal],
                                       paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
                                       overseasPensionSchemeContributions: Option[BigDecimal])
 
-object PensionContributionsDetail extends DataModel[PensionContributionsDetail]
+object PensionContributionsDetail {
+  implicit val format: OFormat[PensionContributionsDetail] = Json.format[PensionContributionsDetail]
+}

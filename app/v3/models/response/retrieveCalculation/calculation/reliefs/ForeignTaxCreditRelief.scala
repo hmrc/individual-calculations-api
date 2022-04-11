@@ -16,7 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class ForeignTaxCreditRelief(customerCalculatedRelief: Option[Boolean],
                                   totalForeignTaxCreditRelief: BigDecimal,
@@ -27,4 +28,6 @@ case class ForeignTaxCreditRelief(customerCalculatedRelief: Option[Boolean],
                                   foreignTaxCreditReliefDetail: Option[Seq[ForeignTaxCreditReliefDetail]])
 
 
-object ForeignTaxCreditRelief  extends DataModel[ForeignTaxCreditRelief]
+object ForeignTaxCreditRelief {
+  implicit val format: OFormat[ForeignTaxCreditRelief] = Json.format[ForeignTaxCreditRelief]
+}
