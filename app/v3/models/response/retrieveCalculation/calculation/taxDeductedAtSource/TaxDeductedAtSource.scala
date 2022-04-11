@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.taxDeductedAtSource
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
 
 case class TaxDeductedAtSource(bbsi: Option[BigDecimal],
                                ukLandAndProperty: Option[BigDecimal],
@@ -30,4 +30,6 @@ case class TaxDeductedAtSource(bbsi: Option[BigDecimal],
                                inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal])
 
 
-object TaxDeductedAtSource  extends DataModel[TaxDeductedAtSource]
+object TaxDeductedAtSource {
+  implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
+}

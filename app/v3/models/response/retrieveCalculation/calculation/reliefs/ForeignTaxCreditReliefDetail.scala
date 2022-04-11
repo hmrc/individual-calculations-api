@@ -16,9 +16,11 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+import v3.models.response.common.IncomeSourceType
 
-case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[String],
+
+case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[IncomeSourceType],
                                         incomeSourceId: Option[String],
                                         countryCode: String,
                                         foreignIncome: BigDecimal,
@@ -31,4 +33,6 @@ case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[String],
 
 
 
-object ForeignTaxCreditReliefDetail  extends DataModel[ForeignTaxCreditReliefDetail]
+object ForeignTaxCreditReliefDetail {
+  implicit val format: OFormat[ForeignTaxCreditReliefDetail] = Json.format[ForeignTaxCreditReliefDetail]
+}

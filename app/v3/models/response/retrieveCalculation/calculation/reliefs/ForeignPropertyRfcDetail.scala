@@ -16,7 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class ForeignPropertyRfcDetail(countryCode: String,
                                     amountClaimed: BigInt,
@@ -24,4 +25,6 @@ case class ForeignPropertyRfcDetail(countryCode: String,
                                     carryForwardAmount: Option[BigDecimal])
 
 
-object ForeignPropertyRfcDetail extends DataModel[ForeignPropertyRfcDetail]
+object ForeignPropertyRfcDetail {
+  implicit val format: OFormat[ForeignPropertyRfcDetail] = Json.format[ForeignPropertyRfcDetail]
+}

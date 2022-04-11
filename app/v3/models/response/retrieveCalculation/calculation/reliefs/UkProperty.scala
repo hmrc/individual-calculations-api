@@ -16,7 +16,8 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import utils.DataModel
+import play.api.libs.json.{Json, OFormat}
+
 
 case class UkProperty(amountClaimed: BigInt,
                       allowableAmount: BigDecimal,
@@ -24,4 +25,6 @@ case class UkProperty(amountClaimed: BigInt,
                      )
 
 
-object UkProperty extends DataModel[UkProperty]
+object UkProperty {
+  implicit val format: OFormat[UkProperty] = Json.format[UkProperty]
+}
