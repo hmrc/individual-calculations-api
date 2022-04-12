@@ -16,6 +16,60 @@
 
 package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
-class CommonForeignDividendSpec {
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import v3.models.response.common.IncomeSourceType
+import v3.models.utils.JsonErrorValidators
 
+class CommonForeignDividendSpec extends UnitSpec with JsonErrorValidators {
+
+  val model: CommonForeignDividend = CommonForeignDividend(
+    Some(IncomeSourceType.`foreign-dividends`),
+    "GER",
+    Some(5000.99),
+    Some(5000.99),
+    Some(5000.99),
+    Some(true)
+  )
+
+  val downstreamJson: JsValue = Json.parse(
+    """
+      |{
+      |  "incomeSourceType": "07",
+      |  "countryCode": "GER",
+      |  "grossIncome": 5000.99,
+      |  "netIncome": 5000.99,
+      |  "taxDeducted": 5000.99,
+      |  "foreignTaxCreditRelief": true
+      |}
+      |""".stripMargin
+  )
+
+  val mtdJson: JsValue = Json.parse(
+    """
+      |{
+      |  "incomeSourceType": "foreign-dividends",
+      |  "countryCode": "GER",
+      |  "grossIncome": 5000.99,
+      |  "netIncome": 5000.99,
+      |  "taxDeducted": 5000.99,
+      |  "foreignTaxCreditRelief": true
+      |}
+      |""".stripMargin
+  )
+
+  "reads" when {
+    "passed valid JSON" should {
+      "return a valid model" in {
+        model shouldBe downstreamJson.as[CommonForeignDividend]
+      }
+    }
+  }
+  "writes" when {
+    "passed valid model" should {
+      "return valid JSON" in {
+        Json.toJson(model) shouldBe mtdJson
+      }
+    }
+  }
 }

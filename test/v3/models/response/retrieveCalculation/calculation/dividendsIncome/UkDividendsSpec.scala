@@ -14,33 +14,29 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
+package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v3.models.response.common.IncomeSourceType
 import v3.models.utils.JsonErrorValidators
 
-class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
+class UkDividendsSpec extends UnitSpec with JsonErrorValidators {
 
-  val model: UkSavingsAndGainsIncome = UkSavingsAndGainsIncome(
+  val model: UkDividends = UkDividends(
     Some("000000000000210"),
-    IncomeSourceType.`uk-savings-and-gains`,
-    Some("My Savings Account 1"),
-    99.99,
-    Some(99.99),
-    Some(99.99)
+    Some(IncomeSourceType.`uk-dividends`),
+    Some(5000),
+    Some(5000)
   )
 
   val downstreamJson: JsValue = Json.parse(
     """
       |{
-      |    "incomeSourceId":"000000000000210",
-      |    "incomeSourceType":"09",
-      |    "incomeSourceName":"My Savings Account 1",
-      |    "grossIncome":99.99,
-      |    "netIncome":99.99,
-      |    "taxDeducted":99.99
+      |  "incomeSourceId": "000000000000210",
+      |  "incomeSourceType": "10",
+      |  "dividends": 5000,
+      |  "otherUkDividends": 5000
       |}
       |""".stripMargin
   )
@@ -48,12 +44,10 @@ class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |   "incomeSourceId":"000000000000210",
-      |   "incomeSourceType":"uk-savings-and-gains",
-      |   "incomeSourceName":"My Savings Account 1",
-      |   "grossIncome":99.99,
-      |   "netIncome":99.99,
-      |   "taxDeducted":99.99
+      |  "incomeSourceId": "000000000000210",
+      |  "incomeSourceType": "uk-dividends",
+      |  "dividends": 5000,
+      |  "otherUkDividends": 5000
       |}
       |""".stripMargin
   )
@@ -61,7 +55,7 @@ class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[UkSavingsAndGainsIncome]
+        model shouldBe downstreamJson.as[UkDividends]
       }
     }
   }

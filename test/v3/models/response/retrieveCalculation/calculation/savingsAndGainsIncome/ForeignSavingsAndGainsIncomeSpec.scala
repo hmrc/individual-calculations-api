@@ -21,26 +21,26 @@ import support.UnitSpec
 import v3.models.response.common.IncomeSourceType
 import v3.models.utils.JsonErrorValidators
 
-class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
+class ForeignSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
 
-  val model: UkSavingsAndGainsIncome = UkSavingsAndGainsIncome(
-    Some("000000000000210"),
-    IncomeSourceType.`uk-savings-and-gains`,
-    Some("My Savings Account 1"),
-    99.99,
-    Some(99.99),
-    Some(99.99)
+  val model: ForeignSavingsAndGainsIncome = ForeignSavingsAndGainsIncome(
+    IncomeSourceType.`foreign-savings`,
+    Some("GER"),
+    Some(5000.99),
+    Some(5000.99),
+    Some(5000.99),
+    Some(true)
   )
 
   val downstreamJson: JsValue = Json.parse(
     """
       |{
-      |    "incomeSourceId":"000000000000210",
-      |    "incomeSourceType":"09",
-      |    "incomeSourceName":"My Savings Account 1",
-      |    "grossIncome":99.99,
-      |    "netIncome":99.99,
-      |    "taxDeducted":99.99
+      |  "incomeSourceType": "16",
+      |  "countryCode": "GER",
+      |  "grossIncome": 5000.99,
+      |  "netIncome": 5000.99,
+      |  "taxDeducted": 5000.99,
+      |  "foreignTaxCreditRelief": true
       |}
       |""".stripMargin
   )
@@ -48,12 +48,12 @@ class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |   "incomeSourceId":"000000000000210",
-      |   "incomeSourceType":"uk-savings-and-gains",
-      |   "incomeSourceName":"My Savings Account 1",
-      |   "grossIncome":99.99,
-      |   "netIncome":99.99,
-      |   "taxDeducted":99.99
+      |  "incomeSourceType": "foreign-savings",
+      |  "countryCode": "GER",
+      |  "grossIncome": 5000.99,
+      |  "netIncome": 5000.99,
+      |  "taxDeducted": 5000.99,
+      |  "foreignTaxCreditRelief": true
       |}
       |""".stripMargin
   )
@@ -61,7 +61,7 @@ class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators{
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[UkSavingsAndGainsIncome]
+        model shouldBe downstreamJson.as[ForeignSavingsAndGainsIncome]
       }
     }
   }

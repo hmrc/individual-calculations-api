@@ -16,6 +16,111 @@
 
 package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
-class SavingsAndGainsIncomeSpec {
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import v3.models.response.common.IncomeSourceType
+import v3.models.utils.JsonErrorValidators
 
+class SavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
+
+  val ukModel: UkSavingsAndGainsIncome = UkSavingsAndGainsIncome(
+    Some("000000000000210"),
+    IncomeSourceType.`uk-savings-and-gains`,
+    Some("My Savings Account 1"),
+    5000.99,
+    Some(5000.99),
+    Some(5000.99)
+  )
+
+  val foreignModel: ForeignSavingsAndGainsIncome = ForeignSavingsAndGainsIncome(
+    IncomeSourceType.`foreign-savings`,
+    Some("GER"),
+    Some(5000.99),
+    Some(5000.99),
+    Some(5000.99),
+    Some(true)
+  )
+
+  val model: SavingsAndGainsIncome = SavingsAndGainsIncome(
+    Some(100),
+    Some(100),
+    Some(Seq(ukModel)),
+    Some(100),
+    Some(Seq(foreignModel))
+  )
+
+  val downstreamJson: JsValue = Json.parse(
+    """
+      |{
+      |  "totalChargeableSavingsAndGains": 100,
+      |  "totalUkSavingsAndGains": 100,
+      |  "ukSavingsAndGainsIncome": [
+      |    {
+      |      "incomeSourceId": "000000000000210",
+      |      "incomeSourceType": "09",
+      |      "incomeSourceName": "My Savings Account 1",
+      |      "grossIncome": 5000.99,
+      |      "netIncome": 5000.99,
+      |      "taxDeducted": 5000.99
+      |    }
+      |  ],
+      |  "chargeableForeignSavingsAndGains": 100,
+      |  "foreignSavingsAndGainsIncome": [
+      |    {
+      |      "incomeSourceType": "16",
+      |      "countryCode": "GER",
+      |      "grossIncome": 5000.99,
+      |      "netIncome": 5000.99,
+      |      "taxDeducted": 5000.99,
+      |      "foreignTaxCreditRelief": true
+      |    }
+      |  ]
+      |}
+      |""".stripMargin
+  )
+
+  val mtdJson: JsValue = Json.parse(
+    """
+      |{
+      |  "totalChargeableSavingsAndGains": 100,
+      |  "totalUkSavingsAndGains": 100,
+      |  "ukSavingsAndGainsIncome": [
+      |    {
+      |      "incomeSourceId": "000000000000210",
+      |      "incomeSourceType": "uk-savings-and-gains",
+      |      "incomeSourceName": "My Savings Account 1",
+      |      "grossIncome": 5000.99,
+      |      "netIncome": 5000.99,
+      |      "taxDeducted": 5000.99
+      |    }
+      |  ],
+      |  "chargeableForeignSavingsAndGains": 100,
+      |  "foreignSavingsAndGainsIncome": [
+      |    {
+      |      "incomeSourceType": "foreign-savings",
+      |      "countryCode": "GER",
+      |      "grossIncome": 5000.99,
+      |      "netIncome": 5000.99,
+      |      "taxDeducted": 5000.99,
+      |      "foreignTaxCreditRelief": true
+      |    }
+      |  ]
+      |}
+      |""".stripMargin
+  )
+
+  "reads" when {
+    "passed valid JSON" should {
+      "return a valid model" in {
+        model shouldBe downstreamJson.as[SavingsAndGainsIncome]
+      }
+    }
+  }
+  "writes" when {
+    "passed valid model" should {
+      "return valid JSON" in {
+        Json.toJson(model) shouldBe mtdJson
+      }
+    }
+  }
 }
