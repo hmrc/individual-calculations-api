@@ -16,7 +16,7 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.{JsObject, JsResult, JsValue, Json, OFormat, Reads, Writes}
+import play.api.libs.json._
 import utils.enums.Enums
 
 sealed trait IncomeSourceType
@@ -44,7 +44,7 @@ object IncomeSourceType {
   case object `capital-gains-tax`         extends IncomeSourceType
   case object `charitable-giving`         extends IncomeSourceType
 
-  implicit val writes: Writes[IncomeSourceType] = Enums.writes[IncomeSourceType]
+  implicit val incomeSourceTypeWrites: Writes[IncomeSourceType] = Enums.writes[IncomeSourceType]
 
   implicit val reads: Reads[IncomeSourceType] = Enums.readsUsing {
     case "01" => `self-employment`
@@ -70,8 +70,9 @@ object IncomeSourceType {
     case "98" => `charitable-giving`
   }
 
-  def formatRestricted(types: IncomeSourceType*): OFormat[IncomeSourceType] = new OFormat[IncomeSourceType] {
-    override def writes(o: IncomeSourceType): JsObject = Json.toJsObject(o)(writes)
-    override def reads(json: JsValue): JsResult[IncomeSourceType] = json.validate[IncomeSourceType](Enums.readsRestricted(types :_*))
+  def formatRestricted(types: IncomeSourceType*): Format[IncomeSourceType] = new Format[IncomeSourceType] {
+    override def writes(o: IncomeSourceType): JsString            = Json.toJson(o)(incomeSourceTypeWrites).as[JsString]
+    override def reads(json: JsValue): JsResult[IncomeSourceType] = json.validate[IncomeSourceType](Enums.readsRestricted(types: _*))
   }
+
 }

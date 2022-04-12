@@ -16,17 +16,20 @@
 
 package v3.models.response.common
 
-import cats.Show
-import play.api.libs.json._
-import utils.enums.Enums
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import LossType._
 
-sealed trait LossType
+class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object LossType {
+  testReads[LossType](
+    "income"     -> income,
+    "class4nics" -> class4nics
+  )
 
-  case object income     extends LossType
-  case object class4nics extends LossType
+  testWrites[LossType](
+    income     -> "income",
+    class4nics -> "class4nics"
+  )
 
-  implicit val show: Show[LossType]     = Show.show(_.toString.toLowerCase)
-  implicit val format: Format[LossType] = Enums.format[LossType]
 }

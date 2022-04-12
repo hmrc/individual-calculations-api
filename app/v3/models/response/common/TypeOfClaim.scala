@@ -16,17 +16,34 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.Format
+import play.api.libs.json._
 import utils.enums.Enums
 
 sealed trait TypeOfClaim
 
 object TypeOfClaim {
 
-  case object `carry-forward`                   extends TypeOfClaim
-  case object `carry-sideways`                  extends TypeOfClaim
-  case object `carry-forward-to-carry-sideways` extends TypeOfClaim
-  case object `carry-sideways-fhl`              extends TypeOfClaim
+  case object `carry-forward`                                  extends TypeOfClaim
+  case object `carry-sideways`                                 extends TypeOfClaim
+  case object `carry-forward-to-carry-sideways-general-income` extends TypeOfClaim
+  case object `carry-sideways-fhl`                             extends TypeOfClaim
+  case object `carry-backwards`                                extends TypeOfClaim
+  case object `carry-backwards-general-income`                 extends TypeOfClaim
 
-  implicit val formats: Format[TypeOfClaim] = Enums.format[TypeOfClaim]
+  implicit val typeOfClaimWrites: Writes[TypeOfClaim] = Enums.writes[TypeOfClaim]
+
+  implicit val reads: Reads[TypeOfClaim] = Enums.readsUsing {
+    case "CF"     => `carry-forward`
+    case "CSGI"   => `carry-sideways`
+    case "CFCSGI" => `carry-forward-to-carry-sideways-general-income`
+    case "CSFHL"  => `carry-sideways-fhl`
+    case "CB"     => `carry-backwards`
+    case "CBGI"   => `carry-backwards-general-income`
+  }
+
+  def formatRestricted(types: TypeOfClaim*): Format[TypeOfClaim] = new Format[TypeOfClaim] {
+    override def writes(o: TypeOfClaim): JsString            = Json.toJson(o)(typeOfClaimWrites).as[JsString]
+    override def reads(json: JsValue): JsResult[TypeOfClaim] = json.validate[TypeOfClaim](Enums.readsRestricted(types: _*))
+  }
+
 }
