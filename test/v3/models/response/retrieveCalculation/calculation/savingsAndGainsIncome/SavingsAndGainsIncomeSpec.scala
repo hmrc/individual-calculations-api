@@ -33,7 +33,7 @@ class SavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
   )
 
   val foreignModel: ForeignSavingsAndGainsIncome = ForeignSavingsAndGainsIncome(
-    IncomeSourceType.`foreign-savings`,
+    IncomeSourceType.`foreign-savings-and-gains`,
     Some("GER"),
     Some(5000.99),
     Some(5000.99),
@@ -97,7 +97,7 @@ class SavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
       |  "chargeableForeignSavingsAndGains": 100,
       |  "foreignSavingsAndGainsIncome": [
       |    {
-      |      "incomeSourceType": "foreign-savings",
+      |      "incomeSourceType": "foreign-savings-and-gains",
       |      "countryCode": "GER",
       |      "grossIncome": 5000.99,
       |      "netIncome": 5000.99,

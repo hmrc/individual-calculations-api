@@ -18,6 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.`foreign-savings-and-gains`
 
 case class ForeignSavingsAndGainsIncome(incomeSourceType: IncomeSourceType,
                                         countryCode: Option[String],
@@ -27,5 +28,6 @@ case class ForeignSavingsAndGainsIncome(incomeSourceType: IncomeSourceType,
                                         foreignTaxCreditRelief: Option[Boolean])
 
 object ForeignSavingsAndGainsIncome {
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-savings-and-gains`)
   implicit val format: Format[ForeignSavingsAndGainsIncome] = Json.format[ForeignSavingsAndGainsIncome]
 }

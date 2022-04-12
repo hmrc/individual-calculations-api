@@ -18,6 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.{`uk-savings-and-gains`, `uk-securities`}
 
 case class UkSavingsAndGainsIncome(incomeSourceId: Option[String],
                                    incomeSourceType: IncomeSourceType,
@@ -27,5 +28,6 @@ case class UkSavingsAndGainsIncome(incomeSourceId: Option[String],
                                    taxDeducted: Option[BigDecimal])
 
 object UkSavingsAndGainsIncome {
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`uk-savings-and-gains`, `uk-securities`)
   implicit val format: Format[UkSavingsAndGainsIncome] = Json.format[UkSavingsAndGainsIncome]
 }

@@ -18,13 +18,13 @@ package v3.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.`foreign-savings-and-gains`
 import v3.models.utils.JsonErrorValidators
 
 class ForeignSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
 
   val model: ForeignSavingsAndGainsIncome = ForeignSavingsAndGainsIncome(
-    IncomeSourceType.`foreign-savings`,
+    `foreign-savings-and-gains`,
     Some("GER"),
     Some(5000.99),
     Some(5000.99),
@@ -48,7 +48,7 @@ class ForeignSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |  "incomeSourceType": "foreign-savings",
+      |  "incomeSourceType": "foreign-savings-and-gains",
       |  "countryCode": "GER",
       |  "grossIncome": 5000.99,
       |  "netIncome": 5000.99,
