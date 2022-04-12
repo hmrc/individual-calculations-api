@@ -18,7 +18,7 @@ package v3.models.response.common
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges.TaxRate._
+import v3.models.response.common.TaxRate._
 
 class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
 
@@ -30,9 +30,10 @@ class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
   )
 
   testWrites[TaxRate](
-    `basic-rate`   -> "basic-rate",
-    `intermediate-rate`  -> "intermediate-rate",
-    `higher-rate` -> "higher-rate",
-    `additional-rate` -> "additional-rate"
+    `basic-rate`        -> "basic-rate",
+    `intermediate-rate` -> "intermediate-rate",
+    `higher-rate`       -> "higher-rate",
+    `additional-rate`   -> "additional-rate"
   )
+
 }
