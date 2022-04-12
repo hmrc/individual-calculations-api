@@ -116,14 +116,14 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe mtdJson.as[AllowancesAndDeductions]
+        model shouldBe ifsJson.as[AllowancesAndDeductions]
       }
     }
   }
   "writes" when {
     "passed valid model" should {
       "return valid json" in {
-        Json.toJson(model) shouldBe ifsJson
+        Json.toJson(model) shouldBe mtdJson
       }
     }
   }

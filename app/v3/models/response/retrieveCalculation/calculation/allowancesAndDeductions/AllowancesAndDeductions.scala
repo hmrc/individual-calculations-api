@@ -35,21 +35,23 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    pensionContributionsDetail: Option[PensionContributionsDetail])
 
 object AllowancesAndDeductions {
-  implicit val reads: Reads[AllowancesAndDeductions] = Json.reads[AllowancesAndDeductions]
-  implicit val writes: Writes[AllowancesAndDeductions] = (
-    (JsPath \ "personalAllowance").writeNullable[BigInt] and
-      (JsPath \ "marriageAllowanceTransferOut").writeNullable[MarriageAllowanceTransferOut] and
-      (JsPath \ "reducedPersonalAllowance").writeNullable[BigInt] and
-      (JsPath \ "giftOfInvestmentsAndPropertyToCharity").writeNullable[BigInt] and
-      (JsPath \ "blindPersonsAllowance").writeNullable[BigInt] and
-      (JsPath \ "lossesAppliedToGeneralIncome").writeNullable[BigInt] and
-      (JsPath \ "cgtLossSetAgainstInYearGeneralIncome").writeNullable[BigInt] and
-      (JsPath \ "qualifyingLoanInterestFromInvestments").writeNullable[BigDecimal] and
-      (JsPath \ "post-cessationTradeReceipts").writeNullable[BigDecimal] and
-      (JsPath \ "paymentsToTradeUnionsForDeathBenefits").writeNullable[BigDecimal] and
-      (JsPath \ "grossAnnuityPayments").writeNullable[BigDecimal] and
-      (JsPath \ "annuityPayments").writeNullable[AnnuityPayments] and
-      (JsPath \ "pensionContributions").writeNullable[BigDecimal] and
-      (JsPath \ "pensionContributionsDetail").writeNullable[PensionContributionsDetail]
-    ) (unlift(AllowancesAndDeductions.unapply))
+  implicit val reads: Reads[AllowancesAndDeductions] = (
+    (JsPath \ "personalAllowance").readNullable[BigInt] and
+      (JsPath \ "marriageAllowanceTransferOut").readNullable[MarriageAllowanceTransferOut] and
+      (JsPath \ "reducedPersonalAllowance").readNullable[BigInt] and
+      (JsPath \ "giftOfInvestmentsAndPropertyToCharity").readNullable[BigInt] and
+      (JsPath \ "blindPersonsAllowance").readNullable[BigInt] and
+      (JsPath \ "lossesAppliedToGeneralIncome").readNullable[BigInt] and
+      (JsPath \ "cgtLossSetAgainstInYearGeneralIncome").readNullable[BigInt] and
+      (JsPath \ "qualifyingLoanInterestFromInvestments").readNullable[BigDecimal] and
+      (JsPath \ "post-cessationTradeReceipts").readNullable[BigDecimal] and
+      (JsPath \ "paymentsToTradeUnionsForDeathBenefits").readNullable[BigDecimal] and
+      (JsPath \ "grossAnnuityPayments").readNullable[BigDecimal] and
+      (JsPath \ "annuityPayments").readNullable[AnnuityPayments] and
+      (JsPath \ "pensionContributions").readNullable[BigDecimal] and
+      (JsPath \ "pensionContributionsDetail").readNullable[PensionContributionsDetail]
+    ) (AllowancesAndDeductions.apply _)
+
+  implicit val writes: Writes[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]
+
 }
