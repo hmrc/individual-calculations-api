@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
 
@@ -32,13 +32,15 @@ case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[IncomeSourceTyp
                                         employmentLumpSum: Option[Boolean])
 
 object ForeignTaxCreditReliefDetail {
-  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] =
+
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] =
     IncomeSourceType.formatRestricted(
       `foreign-dividends`,
       `foreign-property`,
       `foreign-savings-and-gains`,
       `other-income`,
       `foreign-pension`
-      )
+    )
+
   implicit val format: OFormat[ForeignTaxCreditReliefDetail] = Json.format[ForeignTaxCreditReliefDetail]
 }

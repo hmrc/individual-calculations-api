@@ -19,6 +19,7 @@ package v3.models.response.common
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import IncomeSourceType._
+import play.api.libs.json.{JsResultException, JsString, Json}
 
 class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
@@ -69,5 +70,25 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `capital-gains-tax`         -> "capital-gains-tax",
     `charitable-giving`         -> "charitable-giving"
   )
+
+  "formatRestricted" when {
+    "reads" should {
+      "work when the provided IncomeSourceType is in the list" in {
+        JsString("01").as[IncomeSourceType](IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`)) shouldBe IncomeSourceType.`self-employment`
+      }
+      "fail when the provided IncomeSourceType is not in the list" in {
+        val exception = intercept[JsResultException] {
+          JsString("02").as[IncomeSourceType](IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`))
+        }
+        exception.errors.head._2.head.message shouldBe "error.expected.IncomeSourceType"
+      }
+    }
+    "writes" should {
+      "work" in {
+        Json.toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes) shouldBe
+          JsString("self-employment")
+      }
+    }
+  }
 
 }
