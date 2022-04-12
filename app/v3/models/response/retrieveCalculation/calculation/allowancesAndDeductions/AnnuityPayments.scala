@@ -22,7 +22,6 @@ import play.api.libs.json.{Json, OFormat}
 case class AnnuityPayments(reliefClaimed: Option[BigDecimal],
                            rate: Option[BigDecimal])
 
-
 object AnnuityPayments {
   implicit val format: OFormat[AnnuityPayments] = Json.format[AnnuityPayments]
 }
