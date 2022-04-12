@@ -18,6 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.`foreign-dividends`
 
 case class CommonForeignDividend(incomeSourceType: Option[IncomeSourceType],
                                  countryCode: String,
@@ -27,5 +28,6 @@ case class CommonForeignDividend(incomeSourceType: Option[IncomeSourceType],
                                  foreignTaxCreditRelief: Option[Boolean])
 
 object CommonForeignDividend {
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-dividends`)
   implicit val format: Format[CommonForeignDividend] = Json.format[CommonForeignDividend]
 }

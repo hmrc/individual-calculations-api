@@ -18,6 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType.`uk-dividends`
 
 case class UkDividends(incomeSourceId: Option[String],
                        incomeSourceType: Option[IncomeSourceType],
@@ -25,5 +26,6 @@ case class UkDividends(incomeSourceId: Option[String],
                        otherUkDividends: Option[BigInt])
 
 object UkDividends {
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`uk-dividends`)
   implicit val format: Format[UkDividends] = Json.format[UkDividends]
 }
