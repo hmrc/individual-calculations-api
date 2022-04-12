@@ -39,14 +39,14 @@ object Metadata {
 
   implicit val reads: Reads[Metadata] = (
     (JsPath \ "calculationId").read[String] and
-      (JsPath \ "taxYear").read[TaxYear](TaxYear.fromDownstreamReads) and
+      (JsPath \ "taxYear").read[TaxYear] and
       (JsPath \ "requestedBy").read[String] and
       (JsPath \ "requestedTimestamp").readNullable[String] and
       (JsPath \ "calculationReason").read[String] and
       (JsPath \ "calculationTimestamp").readNullable[String] and
       (JsPath \ "calculationType").read[CalculationType] and
-      (JsPath \ "intentToCrystallise").readWithDefault(false) and
-      (JsPath \ "crystallised").readWithDefault(false)[Boolean] and
+      (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
+      (JsPath \ "crystallised").readWithDefault[Boolean](false) and
       (JsPath \ "crystallisationTimestamp").readNullable[String] and
       (JsPath \ "periodFrom").read[String] and
       (JsPath \ "periodTo").read[String]
