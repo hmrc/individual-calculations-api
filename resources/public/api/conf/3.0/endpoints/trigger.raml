@@ -11,7 +11,7 @@ is:
   - errors.clientOrAgentNotAuthorised
   - errors.ruleFinalDeclarationReceived
   - queryParameters.finalDeclaration
-displayName: Trigger a Self Assessment Tax Calculation [Test Only]
+displayName: Trigger a Self Assessment Tax Calculation [test only]
 description: 'This endpoint allows the user to trigger a self assessment tax calculation for a given tax year. It should be called whenever income data is updated through a periodic or annual endpoint. To trigger a final declaration self assessment tax calculation, you must supply the finalDeclaration query parameter as true. <br/> <br/> A National Insurance number and tax year must be provided. The tax calculation process is asynchronous, so it is recommended you wait at least 5 seconds before calling the retrieval endpoint. The result of the calculation can be seen using the “Retrieve a Self Assessment Tax Calculation” endpoint.'
 (annotations.sandboxData): !include ../scenarios/trigger.md
 (annotations.scope): "write:self-assessment"
