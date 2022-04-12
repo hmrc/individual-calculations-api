@@ -24,7 +24,6 @@ case class ForeignPropertyRfcDetail(countryCode: String,
                                     allowableAmount: BigDecimal,
                                     carryForwardAmount: Option[BigDecimal])
 
-
 object ForeignPropertyRfcDetail {
   implicit val format: OFormat[ForeignPropertyRfcDetail] = Json.format[ForeignPropertyRfcDetail]
 }
