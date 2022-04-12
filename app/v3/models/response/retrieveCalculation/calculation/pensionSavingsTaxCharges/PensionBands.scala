@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package v3.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges
 
-import config.FixedConfig
-import v3.models.domain.TaxYear
-import v3.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import play.api.libs.json.{Json, OFormat}
+import v3.models.response.common.TaxRate
 
-object TaxYearNotSupportedValidation extends FixedConfig {
+case class PensionBands(name: TaxRate,
+                        rate: BigDecimal,
+                        bandLimit: BigInt,
+                        apportionedBandLimit: BigInt,
+                        contributionAmount: BigDecimal,
+                        pensionCharge: BigDecimal)
 
-  // @param taxYear In format YYYY-YY
-  def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
-
-    if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
-  }
-
+object PensionBands {
+  implicit val format: OFormat[PensionBands] = Json.format[PensionBands]
 }

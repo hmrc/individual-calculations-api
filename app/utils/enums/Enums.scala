@@ -36,11 +36,16 @@ object Enums {
     readsUsing(parser)
 
   def readsUsing[E: ClassTag](customParser: PartialFunction[String, E]): Reads[E] =
-    implicitly[Reads[String]].collect(JsonValidationError(s"error.expected.$typeName"))(customParser)
+    implicitly[Reads[String]].collect(readsError)(customParser)
+
+  def readsRestricted[E: Reads: ClassTag](es: E*): Reads[E] =
+    implicitly[Reads[E]].filter(readsError)(es.contains(_))
 
   def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = Writes[E](e => JsString(ev.show(e)))
 
   def format[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Format[E] =
     Format(reads, writes)
+
+  private def readsError[E: ClassTag] = JsonValidationError(s"error.expected.$typeName")
 
 }

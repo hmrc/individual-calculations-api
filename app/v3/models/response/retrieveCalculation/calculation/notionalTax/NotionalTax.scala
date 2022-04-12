@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package v3.models.response.common
+package v3.models.response.retrieveCalculation.calculation.notionalTax
 
-trait DownstreamResponse
-class DownstreamUnit  extends DownstreamResponse
-object DownstreamUnit extends DownstreamUnit
+import play.api.libs.json.{Json, OFormat}
+
+case class NotionalTax(chargeableGains: Option[BigDecimal])
+
+object NotionalTax {
+  implicit val format: OFormat[NotionalTax] = Json.format
+}

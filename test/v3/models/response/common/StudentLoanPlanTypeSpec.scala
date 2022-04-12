@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package v3.models.response.common
 
-import config.FixedConfig
-import v3.models.domain.TaxYear
-import v3.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import StudentLoanPlanType._
 
-object TaxYearNotSupportedValidation extends FixedConfig {
+class StudentLoanPlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  // @param taxYear In format YYYY-YY
-  def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
+  testReads[StudentLoanPlanType](
+    "01" -> `plan1`,
+    "02" -> `plan2`,
+    "03" -> `postgraduate`,
+    "04" -> `plan4`
+  )
 
-    if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
-  }
-
+  testWrites[StudentLoanPlanType](
+    `plan1`   -> "plan1",
+    `plan2`  -> "plan2",
+    `postgraduate` -> "postgraduate",
+    `plan4` -> "plan4"
+  )
 }

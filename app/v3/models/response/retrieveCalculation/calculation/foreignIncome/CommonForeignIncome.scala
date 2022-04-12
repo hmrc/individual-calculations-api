@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package v3.models.response.retrieveCalculation.calculation.foreignIncome
 
-import config.FixedConfig
-import v3.models.domain.TaxYear
-import v3.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import play.api.libs.json.{Json, OFormat}
 
-object TaxYearNotSupportedValidation extends FixedConfig {
+case class CommonForeignIncome(countryCode: String,
+                               grossIncome: Option[BigDecimal],
+                               netIncome: Option[BigDecimal],
+                               taxDeducted: Option[BigDecimal],
+                               foreignTaxCreditRelief: Option[Boolean])
 
-  // @param taxYear In format YYYY-YY
-  def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
-
-    if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
-  }
-
+object CommonForeignIncome {
+  implicit val format: OFormat[CommonForeignIncome] = Json.format[CommonForeignIncome]
 }

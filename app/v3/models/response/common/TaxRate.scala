@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package v3.models.response.common
 
-import config.FixedConfig
-import v3.models.domain.TaxYear
-import v3.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import play.api.libs.json.{Reads, Writes}
+import utils.enums.Enums
 
-object TaxYearNotSupportedValidation extends FixedConfig {
+sealed trait TaxRate
 
-  // @param taxYear In format YYYY-YY
-  def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
+object TaxRate {
+  case object `basic-rate` extends TaxRate
+  case object `intermediate-rate` extends TaxRate
+  case object `higher-rate` extends TaxRate
+  case object `additional-rate` extends TaxRate
 
-    if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
+  implicit val writes: Writes[TaxRate] = Enums.writes[TaxRate]
+
+  implicit val reads: Reads[TaxRate] = Enums.readsUsing {
+    case "BRT" => `basic-rate`
+    case "IRT" => `intermediate-rate`
+    case "HRT" => `higher-rate`
+    case "ART" => `additional-rate`
   }
-
 }

@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package v3.models.domain
+package v3.models.response.common
 
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.common.TaxRate._
 
-class DesTaxYearSpec extends UnitSpec {
+class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  "DesTaxYear" when {
-    "toString" should {
-      "produce the correct String" in {
-        DesTaxYear("2019").toString shouldBe "2019"
-      }
-    }
+  testReads[TaxRate](
+    "BRT" -> `basic-rate`,
+    "IRT" -> `intermediate-rate`,
+    "HRT" -> `higher-rate`,
+    "ART" -> `additional-rate`
+  )
 
-    "fromMtd" should {
-      "produce the correct String" in {
-        DesTaxYear.fromMtd("2019-20") shouldBe DesTaxYear("2020")
-      }
-    }
-  }
+  testWrites[TaxRate](
+    `basic-rate`        -> "basic-rate",
+    `intermediate-rate` -> "intermediate-rate",
+    `higher-rate`       -> "higher-rate",
+    `additional-rate`   -> "additional-rate"
+  )
 
 }

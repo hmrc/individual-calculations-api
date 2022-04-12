@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package v3.models.response.retrieveCalculation.calculation.stateBenefitsIncome
 
-import config.FixedConfig
-import v3.models.domain.TaxYear
-import v3.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import play.api.libs.json.{Json, OFormat}
 
-object TaxYearNotSupportedValidation extends FixedConfig {
+case class StateBenefitsIncome(totalStateBenefitsIncome: Option[BigDecimal],
+                               totalStateBenefitsTaxPaid: Option[BigDecimal],
+                               stateBenefitsDetail: Option[StateBenefitsDetail])
 
-  // @param taxYear In format YYYY-YY
-  def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
-
-    if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
-  }
-
+object StateBenefitsIncome {
+  implicit val format: OFormat[StateBenefitsIncome] = Json.format[StateBenefitsIncome]
 }
