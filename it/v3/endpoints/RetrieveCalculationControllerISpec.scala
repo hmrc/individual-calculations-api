@@ -19,7 +19,7 @@ package v3.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
 import v3.models.errors._
@@ -51,12 +51,17 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
   "Calling the retrieveCalculation endpoint" should {
 
     "return a 200 status code" when {
-
-      val successBody = Json.parse(
+      val successBody: JsValue = Json.parse(
         """
           |{
           |  "metadata" : {
-          |    "field": ""
+          |    "calculationId": "",
+          |    "taxYear": 2017,
+          |    "requestedBy": "",
+          |    "calculationReason": "",
+          |    "calculationType": "inYear",
+          |    "periodFrom": "",
+          |    "periodTo": ""
           |  },
           |  "inputs" : {
           |    "personalInformation": {
@@ -69,7 +74,32 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "field": ""
           |  },
           |  "messages" : {
+          |  }
+          |}
+        """.stripMargin
+      )
+
+      val mtdBody: JsValue = Json.parse(
+        """
+          |{
+          |  "metadata" : {
+          |    "calculationId": "",
+          |    "taxYear": "2016-17",
+          |    "requestedBy": "",
+          |    "calculationReason": "",
+          |    "calculationType": "inYear",
+          |    "intentToSubmitFinalDeclaration": false,
+          |    "finalDeclaration": false,
+          |    "periodFrom": "",
+          |    "periodTo": ""
+          |  },
+          |  "inputs" : {
           |    "field": ""
+          |  },
+          |  "calculation" : {
+          |    "field": ""
+          |  },
+          |  "messages" : {
           |  }
           |}
         """.stripMargin
@@ -87,7 +117,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
+        response.json shouldBe mtdBody
       }
     }
 

@@ -81,10 +81,12 @@ class RetrieveCalculationControllerSpec
       |{
       |  "metadata" : {
       |    "calculationId": "",
-      |    "taxYear": 2017,
+      |    "taxYear": "2017-18",
       |    "requestedBy": "",
       |    "calculationReason": "",
       |    "calculationType": "inYear",
+      |    "intentToSubmitFinalDeclaration": false,
+      |    "finalDeclaration": false,
       |    "periodFrom": "",
       |    "periodTo": ""
       |  },
