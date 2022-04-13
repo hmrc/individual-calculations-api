@@ -1,0 +1,34 @@
+is:
+  - headers.acceptJson
+  - headers.contentTypeJson
+  - headers.testScenarioHeader
+  - errors.formatNino
+  - errors.formatTaxYear
+  - errors.formatCalculationId
+  - errors.ruleTaxYearRangeInvalid
+  - errors.ruleTaxYearNotSupported
+  - errors.ruleIncomeSourcesChanged
+  - errors.ruleRecentSubmissionsExist
+  - errors.ruleResidencyChanged
+  - errors.ruleFinalDeclarationReceived
+  - errors.ruleIncomeSourcesInvalid
+  - errors.ruleNoIncomeSubmissionExists
+  - errors.ruleSubmissionFailed
+  - errors.notFound
+displayName: Submit a Self Assessment Final Declaration [test only]
+description: This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. A National Insurance number, tax year and calculation ID must be provided.
+(annotations.sandboxData): !include ../scenarios/submitFinalDeclaration.md
+(annotations.scope): "write:self-assessment"
+securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
+body:
+ application/json:
+  example: "N/A"
+responses:
+ 200:
+   body:
+     application/json:
+      example: "N/A"
+   headers:
+      X-CorrelationId:
+        example: c75f40a6-a3df-4429-a697-471eeec46435
+        description: Unique ID for operation tracking <br> String, 36 characters.
