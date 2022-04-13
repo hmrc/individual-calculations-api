@@ -20,7 +20,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsNull, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
@@ -30,10 +30,9 @@ class AuthISpec extends V3IntegrationBaseSpec {
   private trait Test {
     val nino: String          = "AA123456A"
     val taxYear: String       = "2017-18"
-    val data: String          = "someData"
     val correlationId: String = "X-123"
 
-    def uri: String        = s"/$nino/self-assessment"
+    def uri: String        = s"/$nino/self-assessment/$taxYear/"
     def backendUrl: String = uri
 
     val responseBody: JsValue = Json.parse(
@@ -73,7 +72,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().post(JsNull))
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -88,7 +87,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, responseBody)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().post(JsNull))
         response.status shouldBe Status.ACCEPTED
       }
     }
@@ -104,7 +103,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().post(JsNull))
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -120,7 +119,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().post(JsNull))
         response.status shouldBe Status.FORBIDDEN
       }
     }

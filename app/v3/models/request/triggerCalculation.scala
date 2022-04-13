@@ -16,9 +16,8 @@
 
 package v3.models.request
 
-import play.api.mvc.AnyContentAsJson
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 
-case class TriggerCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+case class TriggerCalculationRawData(nino: String, taxYear: String, finalDeclaration: Boolean) extends RawData
 
-case class TriggerCalculationRequest(nino: Nino, taxYear: String)
+case class TriggerCalculationRequest(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)

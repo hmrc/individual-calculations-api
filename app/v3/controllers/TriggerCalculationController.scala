@@ -16,8 +16,6 @@
 
 package v3.controllers
 
-import javax.inject.Inject
-import play.api.libs.json.JsValue
 import play.api.mvc._
 import utils.IdGenerator
 import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -31,6 +29,7 @@ import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v3.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v3.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService,
@@ -46,7 +45,7 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
       TriggerCalculationRequest,
       TriggerCalculationResponse,
       HateoasWrapper[TriggerCalculationResponse],
-      JsValue](authService, lookupService, triggerCalculationParser, service, auditService, cc, idGenerator) {
+      AnyContent](authService, lookupService, triggerCalculationParser, service, auditService, cc, idGenerator) {
   controller =>
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -58,9 +57,9 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
   override val successCode: SuccessCode = SuccessCode(ACCEPTED)
 
   override def requestHandlerFor(
-      playRequest: Request[JsValue],
+      playRequest: Request[AnyContent],
       req: TriggerCalculationRequest): RequestHandler[TriggerCalculationResponse, HateoasWrapper[TriggerCalculationResponse]] = {
-    RequestHandler[TriggerCalculationResponse](RequestDefn.Post(playRequest.path, playRequest.body))
+    RequestHandler[TriggerCalculationResponse](RequestDefn.Post(playRequest.path))
       .withPassThroughErrors(
         NinoFormatError,
         TaxYearFormatError,
@@ -75,17 +74,18 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
 
   }
 
-  def triggerCalculation(nino: String): Action[JsValue] = authorisedAction(nino).async(parse.json) { implicit request =>
-    val rawData = TriggerCalculationRawData(nino, AnyContentAsJson(request.body))
+  def triggerCalculation(nino: String, taxYear: String, finalDeclaration: Boolean): Action[AnyContent] = authorisedAction(nino).async {
+    implicit request =>
+      val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)
 
-    val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withBody(
-      "triggerASelfAssessmentTaxCalculation",
-      "trigger-a-self-assessment-tax-calculation",
-      Map("nino" -> nino),
-      request
-    )
+      val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
+        "triggerASelfAssessmentTaxCalculation",
+        "trigger-a-self-assessment-tax-calculation",
+        Map("nino" -> nino),
+        request
+      )
 
-    doHandleRequest(rawData, Some(auditHandler))
+      doHandleRequest(rawData, Some(auditHandler))
   }
 
 }

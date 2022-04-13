@@ -19,7 +19,7 @@ package v3.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsNull, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
 import v3.models.errors._
@@ -33,13 +33,14 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
     val taxYear: String       = "2018-19"
     val correlationId: String = "X-123"
 
-    def uri: String = s"/$nino/self-assessment"
+    def uri: String = s"/$nino/self-assessment/$taxYear/"
 
     def backendUrl: String = uri
 
     def setupStubs(): StubMapping
 
-    def request: WSRequest = {
+    def request(nino: String, taxYear: String): WSRequest = {
+      val uri = s"/$nino/self-assessment/$taxYear/"
 
       setupStubs()
       buildRequest(uri)
@@ -75,7 +76,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, successBody)
         }
 
-        val response: WSResponse = await(request.post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request(nino, "2018-19").post(JsNull))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -84,7 +85,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
     }
 
     "return the correct error code" when {
-      def validationErrorTest(requestNino: String, requestBody: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+      def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new Test {
 
           override val nino: String = requestNino
@@ -95,7 +96,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
             MtdIdLookupStub.ninoFound(requestNino)
           }
 
-          val response: WSResponse = await(request.post(Json.parse(requestBody)))
+          val response: WSResponse = await(request(nino, requestTaxYear).post(JsNull))
           response.status shouldBe expectedStatus
           response.json shouldBe Json.toJson(expectedBody)
           response.header("Content-Type") shouldBe Some("application/json")
@@ -103,27 +104,13 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
       }
 
       val input = Seq(
-        ("AA1123A", """{"taxYear" : "2017-18"}""", BAD_REQUEST, NinoFormatError),
-        ("AA123456A", """{"taxYear" : "20177"}""", BAD_REQUEST, TaxYearFormatError),
-        ("AA123456A", """{"taxYear" : "2015-16"}""", BAD_REQUEST, RuleTaxYearNotSupportedError),
-        ("AA123456A", """{"taxYear" : "2020-22"}""", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-        ("AA123456A", """{"invalid" : "2017-18"}""", BAD_REQUEST, RuleIncorrectOrEmptyBodyError)
+        ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
+        ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
+        ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+        ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
       input.foreach(args => (validationErrorTest _).tupled(args))
-
-      "validation fails due to an empty json body" in new Test {
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-        }
-
-        val response: WSResponse = await(request.post(Json.obj()))
-        response.status shouldBe BAD_REQUEST
-        response.json shouldBe Json.toJson(RuleIncorrectOrEmptyBodyError)
-        response.header("Content-Type") shouldBe Some("application/json")
-      }
 
       "the backend returns a service error" when {
 
@@ -145,7 +132,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
               BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.post(Json.parse("""{"taxYear" : "2018-19"}""")))
+            val response: WSResponse = await(request(nino, "2018-19").post(JsNull))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
