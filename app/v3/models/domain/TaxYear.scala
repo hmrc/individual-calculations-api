@@ -19,7 +19,7 @@ package v3.models.domain
 import play.api.libs.json.{Format, Reads, Writes}
 
 /** Opaque representation of a tax year
-  */
+ */
 case class TaxYear(private val value: String) extends AnyVal {
   def toDownstream: String = value
 
@@ -35,8 +35,8 @@ case class TaxYear(private val value: String) extends AnyVal {
 object TaxYear {
 
   /** @param taxYear
-    *   tax year in MTD format (e.g. 2017-18)
-    */
+   *   tax year in MTD format (e.g. 2017-18)
+   */
   def fromMtd(taxYear: String): TaxYear =
     TaxYear(taxYear.take(2) + taxYear.drop(5))
 
