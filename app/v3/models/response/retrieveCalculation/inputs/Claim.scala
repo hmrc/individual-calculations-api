@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
 import v3.models.response.common.IncomeSourceType._
 import v3.models.response.common.{ClaimType, IncomeSourceType}
@@ -31,7 +31,7 @@ case class Claim(claimId: Option[String],
                  sequence: Option[Int])
 
 object Claim extends {
-  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
   implicit val format: OFormat[Claim] = Json.format[Claim]

@@ -58,13 +58,17 @@ class RetrieveCalculationControllerSpec
 
   // This is a filler model to make the branch compile
   val inputsModel: Inputs = Inputs(
-    PersonalInformation("", None, "", None, None, None, None, None),
+    PersonalInformation("", None, "UK", None, None, None, None, None),
     IncomeSources(None, None),
     None, None, None, None, None, None, None
   )
 
-  val response: RetrieveCalculationResponse =
-    RetrieveCalculationResponse(metadata = Metadata(""), inputs = inputsModel, calculation = Some(Calculation("")), messages = Some(Messages("")))
+  val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = Metadata(""),
+    inputs = inputsModel,
+    calculation = Some(Calculation("")),
+    messages = Some(Messages(""))
+  )
 
   val json: JsValue = Json.parse(
     """
@@ -73,7 +77,11 @@ class RetrieveCalculationControllerSpec
       |    "field": ""
       |  },
       |  "inputs" : {
-      |    "field": ""
+      |    "personalInformation": {
+      |       "identifier": "",
+      |       "taxRegime": "UK"
+      |    },
+      |    "incomeSources": {}
       |  },
       |  "calculation" : {
       |    "field": ""

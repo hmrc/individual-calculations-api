@@ -18,14 +18,14 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, LossType, TypeOfClaim}
+import v3.models.response.common.{ClaimType, IncomeSourceType, LossType}
 
 case class CarriedForwardLoss(
     claimId: Option[String],
     originatingClaimId: Option[String],
     incomeSourceId: String,
     incomeSourceType: IncomeSourceType,
-    claimType: TypeOfClaim,
+    claimType: ClaimType,
     taxYearClaimMade: Option[TaxYear],
     taxYearLossIncurred: TaxYear,
     currentLossValue: BigInt,
@@ -33,7 +33,6 @@ case class CarriedForwardLoss(
 )
 
 object CarriedForwardLoss {
-
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property-non-fhl`,
@@ -42,17 +41,5 @@ object CarriedForwardLoss {
     IncomeSourceType.`foreign-property`
   )
 
-  implicit val typeOfClaimFormat: Format[TypeOfClaim] = TypeOfClaim.formatRestricted(
-    TypeOfClaim.`carry-forward`,
-    TypeOfClaim.`carry-sideways`,
-    TypeOfClaim.`carry-forward-to-carry-sideways-general-income`,
-    TypeOfClaim.`carry-sideways-fhl`,
-    TypeOfClaim.`carry-backwards`,
-    TypeOfClaim.`carry-backwards-general-income`
-  )
-
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
-
   implicit val format: OFormat[CarriedForwardLoss] = Json.format[CarriedForwardLoss]
-
 }

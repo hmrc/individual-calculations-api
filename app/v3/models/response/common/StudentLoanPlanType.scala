@@ -23,17 +23,17 @@ sealed trait StudentLoanPlanType
 
 object StudentLoanPlanType {
 
-  case object `plan-1` extends StudentLoanPlanType
-  case object `plan-2` extends StudentLoanPlanType
+  case object `plan1` extends StudentLoanPlanType
+  case object `plan2` extends StudentLoanPlanType
   case object `postgraduate` extends StudentLoanPlanType
-  case object `plan-4` extends StudentLoanPlanType
+  case object `plan4` extends StudentLoanPlanType
 
   implicit val writes: Writes[StudentLoanPlanType] = Enums.writes[StudentLoanPlanType]
 
   implicit val reads: Reads[StudentLoanPlanType] = Enums.readsUsing{
-    case "01" => `plan-1`
-    case "02" => `plan-2`
+    case "01" => `plan1`
+    case "02" => `plan2`
     case "03" => `postgraduate`
-    case "04" => `plan-4`
+    case "04" => `plan4`
   }
 }

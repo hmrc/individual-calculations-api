@@ -18,14 +18,14 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, TypeOfClaim}
+import v3.models.response.common.{IncomeSourceType, ClaimType}
 
 case class ClaimNotApplied(
     claimId: String,
     incomeSourceId: String,
     incomeSourceType: IncomeSourceType,
     taxYearClaimMade: TaxYear,
-    claimType: TypeOfClaim
+    claimType: ClaimType
 )
 
 object ClaimNotApplied {
@@ -36,17 +36,6 @@ object ClaimNotApplied {
     IncomeSourceType.`uk-property-fhl`,
     IncomeSourceType.`foreign-property`
   )
-
-  implicit val typeOfClaimFormat: Format[TypeOfClaim] = TypeOfClaim.formatRestricted(
-    TypeOfClaim.`carry-forward`,
-    TypeOfClaim.`carry-sideways`,
-    TypeOfClaim.`carry-forward-to-carry-sideways-general-income`,
-    TypeOfClaim.`carry-sideways-fhl`,
-    TypeOfClaim.`carry-backwards`,
-    TypeOfClaim.`carry-backwards-general-income`
-  )
-
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
 
   implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
 }

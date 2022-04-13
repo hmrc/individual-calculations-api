@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
 
@@ -30,7 +30,7 @@ case class NonBusinessIncomeSource(incomeSourceId: Option[String],
                                    latestReceivedDateTime: Option[String])
 
 case object NonBusinessIncomeSource {
-  implicit val incomeSourceTypeFormat: OFormat[IncomeSourceType] = IncomeSourceType.formatRestricted(
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `employments`, `foreign-dividends`, `uk-savings-and-gains`, `uk-dividends`, `state-benefits`, `share-schemes`,
     `foreign-savings-and-gains`, `other-dividends`, `uk-securities`, `other-income`,`foreign-pension`,
     `non-paye-income`,`capital-gains-tax`, `charitable-giving`
