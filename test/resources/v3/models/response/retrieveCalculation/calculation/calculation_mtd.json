@@ -82,7 +82,7 @@
         "lossType": "income",
         "taxYearLossIncurred": "2017-18",
         "currentLossValue": 12500,
-        "mtdLoss": true
+        "mtdLoss": false
       }
     ],
     "claims": [
