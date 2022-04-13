@@ -61,7 +61,7 @@ class CommonForeignDividendSpec extends UnitSpec with JsonErrorValidators {
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[CommonForeignDividend]
+        downstreamJson.as[CommonForeignDividend] shouldBe model
       }
     }
   }

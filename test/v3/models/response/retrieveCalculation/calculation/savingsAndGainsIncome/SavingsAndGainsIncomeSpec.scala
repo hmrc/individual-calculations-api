@@ -112,7 +112,7 @@ class SavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[SavingsAndGainsIncome]
+        downstreamJson.as[SavingsAndGainsIncome] shouldBe model
       }
     }
   }

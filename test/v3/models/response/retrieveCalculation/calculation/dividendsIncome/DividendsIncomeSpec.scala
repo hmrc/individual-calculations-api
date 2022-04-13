@@ -144,7 +144,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators{
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[DividendsIncome]
+        downstreamJson.as[DividendsIncome] shouldBe model
       }
     }
   }

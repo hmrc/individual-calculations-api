@@ -55,7 +55,7 @@ class UkDividendsSpec extends UnitSpec with JsonErrorValidators {
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe downstreamJson.as[UkDividends]
+        downstreamJson.as[UkDividends] shouldBe model
       }
     }
   }
