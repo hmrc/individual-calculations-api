@@ -18,47 +18,25 @@ package v3.models.response.common
 
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import TypeOfClaim._
-import play.api.libs.json.{JsResultException, JsString, Json}
+import ClaimType._
 
-class TypeOfClaimSpec extends UnitSpec with EnumJsonSpecSupport {
+class ClaimTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  testReads[TypeOfClaim](
+  testReads[ClaimType](
     "CF"     -> `carry-forward`,
     "CSGI"   -> `carry-sideways`,
-    "CFCSGI" -> `carry-forward-to-carry-sideways-general-income`,
+    "CFCSGI" -> `carry-forward-to-carry-sideways`,
     "CSFHL"  -> `carry-sideways-fhl`,
     "CB"     -> `carry-backwards`,
     "CBGI"   -> `carry-backwards-general-income`
   )
 
-  testWrites[TypeOfClaim](
+  testWrites[ClaimType](
     `carry-forward`                                  -> "carry-forward",
     `carry-sideways`                                 -> "carry-sideways",
-    `carry-forward-to-carry-sideways-general-income` -> "carry-forward-to-carry-sideways-general-income",
+    `carry-forward-to-carry-sideways` -> "carry-forward-to-carry-sideways",
     `carry-sideways-fhl`                             -> "carry-sideways-fhl",
     `carry-backwards`                                -> "carry-backwards",
     `carry-backwards-general-income`                 -> "carry-backwards-general-income"
   )
-
-  "formatRestricted" when {
-    "reads" should {
-      "work when the provided IncomeSourceType is in the list" in {
-        JsString("CF").as[TypeOfClaim](TypeOfClaim.formatRestricted(TypeOfClaim.`carry-forward`)) shouldBe TypeOfClaim.`carry-forward`
-      }
-      "fail when the provided IncomeSourceType is not in the list" in {
-        val exception = intercept[JsResultException] {
-          JsString("CSGI").as[TypeOfClaim](TypeOfClaim.formatRestricted(TypeOfClaim.`carry-forward`))
-        }
-        exception.errors.head._2.head.message shouldBe "error.expected.TypeOfClaim"
-      }
-    }
-    "writes" should {
-      "work" in {
-        Json.toJson(TypeOfClaim.`carry-forward`)(TypeOfClaim.formatRestricted(TypeOfClaim.`carry-forward`).writes) shouldBe
-          JsString("carry-forward")
-      }
-    }
-  }
-
 }

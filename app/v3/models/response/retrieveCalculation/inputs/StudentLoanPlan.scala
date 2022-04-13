@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package v2.models.domain
+package v3.models.response.retrieveCalculation.inputs
 
-import support.UnitSpec
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v3.models.response.common.StudentLoanPlanType
 
-class DownstreamTaxYearSpec extends UnitSpec {
+case class StudentLoanPlan(planType: StudentLoanPlanType)
 
-  "DownstreamTaxYear" when {
-    "toString" should {
-      "produce the correct String" in {
-        DownstreamTaxYear("2019").toString shouldBe "2019"
-      }
-    }
-
-    "fromMtd" should {
-      "produce the correct String" in {
-        DownstreamTaxYear.fromMtd("2019-20") shouldBe DownstreamTaxYear("2020")
-      }
-    }
-  }
-
+object StudentLoanPlan {
+  implicit val writes: OWrites[StudentLoanPlan] = Json.writes[StudentLoanPlan]
+  implicit val reads: Reads[StudentLoanPlan] = (JsPath \ "planType").read[StudentLoanPlanType].map(StudentLoanPlan(_))
 }

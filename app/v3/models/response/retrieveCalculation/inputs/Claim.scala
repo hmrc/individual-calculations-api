@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
+package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, ClaimType}
+import v3.models.response.common.IncomeSourceType._
+import v3.models.response.common.{ClaimType, IncomeSourceType}
 
-case class ClaimNotApplied(
-    claimId: String,
-    incomeSourceId: String,
-    incomeSourceType: IncomeSourceType,
-    taxYearClaimMade: TaxYear,
-    claimType: ClaimType
-)
+case class Claim(claimId: Option[String],
+                 originatingClaimId: Option[String],
+                 incomeSourceId: String,
+                 incomeSourceType: IncomeSourceType,
+                 submissionTimestamp: Option[String],
+                 taxYearClaimMade: TaxYear,
+                 claimType: ClaimType,
+                 sequence: Option[Int])
 
-object ClaimNotApplied {
+object Claim extends {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    IncomeSourceType.`self-employment`,
-    IncomeSourceType.`uk-property-non-fhl`,
-    IncomeSourceType.`foreign-property-fhl-eea`,
-    IncomeSourceType.`uk-property-fhl`,
-    IncomeSourceType.`foreign-property`
+    `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
-
-  implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
+  implicit val format: OFormat[Claim] = Json.format[Claim]
 }

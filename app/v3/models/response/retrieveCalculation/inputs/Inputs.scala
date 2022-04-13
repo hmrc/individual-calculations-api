@@ -16,12 +16,30 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
-case class Inputs(field: String)
+case class Inputs(personalInformation: PersonalInformation,
+                  incomeSources: IncomeSources,
+                  annualAdjustments: Option[Seq[AnnualAdjustment]],
+                  lossesBroughtForward: Option[Seq[LossBroughtForward]],
+                  claims: Option[Seq[Claim]],
+                  constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], //This field name has been changed from downstream.
+                  allowancesReliefsAndDeductions: Option[Seq[AllowancesReliefsAndDeductions]],
+                  pensionContributionAndCharges: Option[Seq[PensionContributionAndCharges]],
+                  other: Option[Seq[Other]])
 
 object Inputs {
-  implicit val reads: Reads[Inputs] = Json.reads[Inputs]
-
   implicit val writes: OWrites[Inputs] = Json.writes[Inputs]
+  implicit val reads: Reads[Inputs] = (
+    (JsPath \ "personalInformation").read[PersonalInformation] and
+      (JsPath \ "incomeSources").read[IncomeSources] and
+      (JsPath \ "annualAdjustments").readNullable[Seq[AnnualAdjustment]] and
+      (JsPath \ "lossesBroughtForward").readNullable[Seq[LossBroughtForward]] and
+      (JsPath \ "claims").readNullable[Seq[Claim]] and
+      (JsPath \ "cis").readNullable[Seq[ConstructionIndustryScheme]] and
+      (JsPath \ "allowancesReliefsAndDeductions").readNullable[Seq[AllowancesReliefsAndDeductions]] and
+      (JsPath \ "pensionContributionAndCharges").readNullable[Seq[PensionContributionAndCharges]] and
+      (JsPath \ "other").readNullable[Seq[Other]]
+    ) (Inputs.apply _)
 }

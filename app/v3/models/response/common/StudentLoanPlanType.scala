@@ -16,12 +16,13 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json.{Writes, Reads}
 import utils.enums.Enums
 
 sealed trait StudentLoanPlanType
 
 object StudentLoanPlanType {
+
   case object `plan1` extends StudentLoanPlanType
   case object `plan2` extends StudentLoanPlanType
   case object `postgraduate` extends StudentLoanPlanType
@@ -29,7 +30,7 @@ object StudentLoanPlanType {
 
   implicit val writes: Writes[StudentLoanPlanType] = Enums.writes[StudentLoanPlanType]
 
-  implicit val reads: Reads[StudentLoanPlanType] = Enums.readsUsing {
+  implicit val reads: Reads[StudentLoanPlanType] = Enums.readsUsing{
     case "01" => `plan1`
     case "02" => `plan2`
     case "03" => `postgraduate`

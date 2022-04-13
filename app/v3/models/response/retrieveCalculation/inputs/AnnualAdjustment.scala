@@ -14,28 +14,21 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
+package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Format, Json, OFormat}
-import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, ClaimType}
+import v3.models.response.common.IncomeSourceType
+import v3.models.response.common.IncomeSourceType._
 
-case class ClaimNotApplied(
-    claimId: String,
-    incomeSourceId: String,
-    incomeSourceType: IncomeSourceType,
-    taxYearClaimMade: TaxYear,
-    claimType: ClaimType
-)
+case class AnnualAdjustment(incomeSourceId: String,
+                            incomeSourceType: IncomeSourceType,
+                            ascId: String,
+                            receivedDateTime: String,
+                            applied: Boolean)
 
-object ClaimNotApplied {
+object AnnualAdjustment {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    IncomeSourceType.`self-employment`,
-    IncomeSourceType.`uk-property-non-fhl`,
-    IncomeSourceType.`foreign-property-fhl-eea`,
-    IncomeSourceType.`uk-property-fhl`,
-    IncomeSourceType.`foreign-property`
+    `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
   )
-
-  implicit val format: OFormat[ClaimNotApplied] = Json.format[ClaimNotApplied]
+  implicit val format: OFormat[AnnualAdjustment] = Json.format[AnnualAdjustment]
 }

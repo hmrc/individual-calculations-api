@@ -16,8 +16,9 @@
 
 package v2.services
 
+import common.models.domain.DownstreamTaxYear
 import v2.mocks.connectors.MockCrystallisationConnector
-import v2.models.domain.{DownstreamTaxYear, Nino}
+import v2.models.domain.Nino
 import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest

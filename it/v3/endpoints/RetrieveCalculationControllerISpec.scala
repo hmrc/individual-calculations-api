@@ -59,7 +59,11 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "field": ""
           |  },
           |  "inputs" : {
-          |    "field": ""
+          |    "personalInformation": {
+          |       "identifier": "",
+          |       "taxRegime": "UK"
+          |    },
+          |    "incomeSources": {}
           |  },
           |  "calculation" : {
           |    "field": ""
