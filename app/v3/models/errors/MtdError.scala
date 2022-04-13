@@ -64,6 +64,12 @@ object TypeFormatError
       message = "The provided type value is invalid"
     )
 
+object FormatFinalDeclaration
+    extends MtdError(
+      code = "FORMAT_FINAL_DECLARATION",
+      message = "The provided finalDeclaration is invalid"
+    )
+
 // Specific Not Found Errors
 object NoMessagesExistError
     extends MtdError(
