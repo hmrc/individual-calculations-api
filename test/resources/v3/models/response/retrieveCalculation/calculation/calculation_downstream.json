@@ -369,7 +369,7 @@
         "studentLoanDeductionsFromEmployment": 5004.99,
         "studentLoanRepaymentAmountNetOfDeductions": 5005.99,
         "studentLoanApportionedIncomeThreshold": 12500,
-        "studentLoanrate": 20.01,
+        "studentLoanRate": 20.01,
         "payeIncomeForStudentLoan": 5006.99,
         "nonPayeIncomeForStudentLoan": 5007.99
       }
@@ -379,8 +379,10 @@
       "payeUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
-          "source": "customer"
+          "relatedTaxYear": "2018",
+          "source": "customer",
+          "collectedAmount": 5001.99,
+          "uncollectedAmount": 5002.99
         }
       ],
       "totalSelfAssessmentUnderpayments": 5000.99,
@@ -1006,7 +1008,7 @@
           "incomeSourceType": "01",
           "taxYearClaimMade": 2017,
           "claimType": "CF",
-          "mtdLoss": true,
+          "mtdLoss": false,
           "taxYearLossIncurred": 2018,
           "lossAmountUsed": 12501,
           "remainingLossValue": 12502,

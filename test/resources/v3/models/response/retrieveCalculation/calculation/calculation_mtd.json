@@ -6,7 +6,7 @@
     "requestedTimestamp": "2019-02-15T09:35:15.000Z",
     "calculationReason": "customerRequest",
     "calculationTimestamp": "2019-02-15T09:35:15.094Z",
-    "calculationType": "???",
+    "calculationType": "endOfYear",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
     "finalDeclarationTimestamp": "2019-02-15T09:35:15.094Z",
@@ -21,7 +21,7 @@
       "statePensionAgeDate": "2050-04-06",
       "studentLoanPlan": [
         {
-          "planType": "plan-1"
+          "planType": "plan1"
         }
       ],
       "class2VoluntaryContributions": true,
@@ -362,14 +362,14 @@
     },
     "studentLoans": [
       {
-        "planType": "plan-1",
+        "planType": "plan1",
         "studentLoanTotalIncomeAmount": 5001.99,
         "studentLoanChargeableIncomeAmount": 5002.99,
         "studentLoanRepaymentAmount": 5003.99,
         "studentLoanDeductionsFromEmployment": 5004.99,
         "studentLoanRepaymentAmountNetOfDeductions": 5005.99,
         "studentLoanApportionedIncomeThreshold": 12500,
-        "studentLoanRate": 20,
+        "studentLoanRate": 20.01,
         "payeIncomeForStudentLoan": 5006.99,
         "nonPayeIncomeForStudentLoan": 5007.99
       }
@@ -379,8 +379,10 @@
       "payeUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
-          "source": "customer"
+          "relatedTaxYear": "2017-18",
+          "source": "customer",
+          "collectedAmount": 5001.99,
+          "uncollectedAmount": 5002.99
         }
       ],
       "totalSelfAssessmentUnderpayments": 5000.99,
@@ -696,7 +698,7 @@
       "ukSavingsAndGainsIncome": [
         {
           "incomeSourceId": "000000000000210",
-          "incomeSourceType": "uk-savings",
+          "incomeSourceType": "uk-savings-and-gains",
           "incomeSourceName": "My Savings Account 1",
           "grossIncome": 5001.99,
           "netIncome": 5002.99,
@@ -706,7 +708,7 @@
       "chargeableForeignSavingsAndGains": 12500,
       "foreignSavingsAndGainsIncome": [
         {
-          "incomeSourceType": "foreign-savings",
+          "incomeSourceType": "foreign-savings-and-gains",
           "countryCode": "GER",
           "grossIncome": 5001.99,
           "netIncome": 5002.99,
@@ -974,7 +976,7 @@
       "incomeSource": [
         {
           "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-Employment",
+          "incomeSourceType": "self-employment",
           "incomeSourceName": "string",
           "taxableIncome": 12500,
           "finalised": true
@@ -1005,7 +1007,7 @@
           "incomeSourceType": "self-employment",
           "taxYearClaimMade": "2016-17",
           "claimType": "carry-forward",
-          "mtdLoss": true,
+          "mtdLoss": false,
           "taxYearLossIncurred": "2017-18",
           "lossAmountUsed": 12501,
           "remainingLossValue": 12502,
