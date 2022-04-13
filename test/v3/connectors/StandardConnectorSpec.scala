@@ -25,13 +25,14 @@ import v3.models.errors.{BackendErrorCode, BackendErrors}
 
 import scala.concurrent.Future
 
+// FIXME REMOVEME
 class StandardConnectorSpec extends ConnectorSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
-    MockAppConfig.downstreamBaseUrl returns baseUrl
-    MockAppConfig.downstreamToken returns "Bearer downstream-token"
-    MockAppConfig.downstreamEnvironment returns "downstream-environment"
-    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "Bearer downstream-token"
+    MockAppConfig.desEnvironment returns "downstream-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
 
     val connector: StandardConnector = new StandardConnector(mockAppConfig, mockHttpClient)
   }
@@ -61,8 +62,8 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
-            config = dummyHeaderCarrierConfig,
+            parameters = queryParams,
+            config = dummyDesHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )
           .returns(Future.successful(expected))
@@ -79,7 +80,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .post(
             url = s"$baseUrl/some/uri",
-            config = dummyHeaderCarrierConfig,
+            config = dummyDesHeaderCarrierConfig,
             body = body,
             requiredHeaders = requiredBackendHeaders
           )
@@ -97,8 +98,8 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
-            config = dummyHeaderCarrierConfig,
+            parameters = queryParams,
+            config = dummyDesHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )
           .returns(Future.successful(expected))
@@ -113,8 +114,8 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
-            config = dummyHeaderCarrierConfig,
+            parameters = queryParams,
+            config = dummyDesHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )
           .returns(Future.failed(new Exception("unexpected exception")))

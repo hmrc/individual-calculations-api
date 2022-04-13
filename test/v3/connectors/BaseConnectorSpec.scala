@@ -61,7 +61,7 @@ class BaseConnectorSpec extends ConnectorSpec {
         "AnotherHeader" -> "HeaderValue"
       )
 
-      downstreamTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, excludedHeaders, Some(allowedDownstreamHeaders))
+      downstreamTestHttpMethods(dummyDesHeaderCarrierConfig, requiredHeaders, excludedHeaders, Some(allowedDesHeaders))
 
       "exclude all `otherHeaders` when no external service header allow-list is found" should {
         val requiredHeaders: Seq[(String, String)] = Seq(
@@ -71,7 +71,7 @@ class BaseConnectorSpec extends ConnectorSpec {
           "CorrelationId" -> correlationId
         )
 
-        downstreamTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders, otherHeaders, None)
+        downstreamTestHttpMethods(dummyDesHeaderCarrierConfig, requiredHeaders, otherHeaders, None)
       }
     }
 
@@ -81,7 +81,7 @@ class BaseConnectorSpec extends ConnectorSpec {
         "CorrelationId" -> correlationId
       )
 
-      backendTestHttpMethods(dummyHeaderCarrierConfig, requiredHeaders)
+      backendTestHttpMethods(dummyDesHeaderCarrierConfig, requiredHeaders)
     }
   }
 
@@ -101,10 +101,10 @@ class BaseConnectorSpec extends ConnectorSpec {
         implicit val hc: HeaderCarrier                 = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
 
-        MockAppConfig.downstreamBaseUrl returns baseUrl
-        MockAppConfig.downstreamToken returns "downstream-token"
-        MockAppConfig.downstreamEnvironment returns "downstream-environment"
-        MockAppConfig.downstreamEnvironmentHeaders returns downstreamEnvironmentHeaders
+        MockAppConfig.desBaseUrl returns baseUrl
+        MockAppConfig.desToken returns "downstream-token"
+        MockAppConfig.desEnvironment returns "downstream-environment"
+        MockAppConfig.desEnvironmentHeaders returns downstreamEnvironmentHeaders
 
         MockedHttpClient
           .post(absoluteUrl, config, body, requiredHeadersPost, excludedHeaders)
@@ -121,23 +121,23 @@ class BaseConnectorSpec extends ConnectorSpec {
       implicit val hc: HeaderCarrier = HeaderCarrier().withExtraHeaders(headers = "Authorization" -> "Bearer user-token")
 
       "Get" in new Test {
-        MockAppConfig.downstreamBaseUrl returns baseUrl
-        MockAppConfig.downstreamToken returns "Bearer downstream-token"
-        MockAppConfig.downstreamEnvironment returns "downstream-environment"
-        MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+        MockAppConfig.desBaseUrl returns baseUrl
+        MockAppConfig.desToken returns "Bearer downstream-token"
+        MockAppConfig.desEnvironment returns "downstream-environment"
+        MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
 
         MockedHttpClient
-          .get(absoluteUrl, Seq(("key", "value")), config, requiredHeaders)
+          .get(absoluteUrl, config = config, parameters = Seq(("key", "value")), requiredHeaders = requiredHeaders)
           .returns(Future.successful(outcome))
 
         await(connector.get(url, Seq(("key", "value")))) shouldBe outcome
       }
 
       "Post" in new Test {
-        MockAppConfig.downstreamBaseUrl returns baseUrl
-        MockAppConfig.downstreamToken returns "Bearer downstream-token"
-        MockAppConfig.downstreamEnvironment returns "downstream-environment"
-        MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+        MockAppConfig.desBaseUrl returns baseUrl
+        MockAppConfig.desToken returns "Bearer downstream-token"
+        MockAppConfig.desEnvironment returns "downstream-environment"
+        MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
 
         MockedHttpClient
           .post(absoluteUrl, config, body, requiredHeaders)

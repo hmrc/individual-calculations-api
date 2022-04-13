@@ -23,6 +23,7 @@ import utils.Logging
 
 import scala.concurrent.{ExecutionContext, Future}
 
+// FIXME REMOVEME
 trait BaseConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
@@ -33,16 +34,16 @@ trait BaseConnector extends Logging {
       extraHeaders = hc.extraHeaders ++
         // Contract headers
         Seq(
-          "Authorization" -> s"Bearer ${appConfig.downstreamToken}",
-          "Environment"   -> appConfig.downstreamEnv,
+          "Authorization" -> s"Bearer ${appConfig.desToken}",
+          "Environment"   -> appConfig.desEnv,
           "CorrelationId" -> correlationId
         ) ++
         // Other headers (i.e Gov-Test-Scenario, Content-Type)
-        hc.headers(additionalHeaders ++ appConfig.downstreamEnvironmentHeaders.getOrElse(Seq.empty))
+        hc.headers(additionalHeaders ++ appConfig.desEnvironmentHeaders.getOrElse(Seq.empty))
     )
 
   private def urlFrom(uri: String): String =
-    if (uri.startsWith("/")) s"${appConfig.downstreamBaseUrl}$uri" else s"${appConfig.downstreamBaseUrl}/$uri"
+    if (uri.startsWith("/")) s"${appConfig.desBaseUrl}$uri" else s"${appConfig.desBaseUrl}/$uri"
 
   def post[Body: Writes, T](body: Body, uri: String)(implicit
       ec: ExecutionContext,

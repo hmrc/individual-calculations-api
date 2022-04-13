@@ -23,5 +23,8 @@ package object connectors {
 
   type MtdIdLookupOutcome = Either[MtdError, String]
 
+  // FIXME REMOVEME
   type BackendOutcome[A] = Either[ResponseWrapper[BackendError], ResponseWrapper[A]]
+
+  type DownstreamOutcome[A] = Either[ResponseWrapper[BackendError], ResponseWrapper[A]]
 }
