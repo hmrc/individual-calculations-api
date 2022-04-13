@@ -16,7 +16,6 @@
 
 package v2.models.domain
 
-import common.models.domain.DownstreamTaxYear
 import support.UnitSpec
 
 class DownstreamTaxYearSpec extends UnitSpec {

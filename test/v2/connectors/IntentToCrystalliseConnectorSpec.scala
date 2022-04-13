@@ -16,10 +16,9 @@
 
 package v2.connectors
 
-import common.models.domain.DownstreamTaxYear
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.models.domain.{EmptyJsonBody, Nino}
+import v2.models.domain.{DownstreamTaxYear, EmptyJsonBody, Nino}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.intentToCrystallise.IntentToCrystalliseRequest
 import v2.models.response.intentToCrystallise.IntentToCrystalliseResponse

@@ -23,7 +23,7 @@ case class ReliefsClaimed(`type`: String,
                           allowableAmount: Option[BigDecimal],
                           amountUsed: Option[BigDecimal],
                           rate: Option[BigDecimal],
-                          reliefsClaimedDetail: Option[ReliefsClaimedDetail])
+                          reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
 
 object ReliefsClaimed {
   implicit val format: OFormat[ReliefsClaimed] = Json.format[ReliefsClaimed]

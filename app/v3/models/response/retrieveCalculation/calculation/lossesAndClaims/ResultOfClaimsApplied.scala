@@ -18,7 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, LossType, ClaimType}
+import v3.models.response.common.{ClaimType, IncomeSourceType}
 
 case class ResultOfClaimsApplied(
     claimId: Option[String],
@@ -31,7 +31,7 @@ case class ResultOfClaimsApplied(
     taxYearLossIncurred: TaxYear,
     lossAmountUsed: BigInt,
     remainingLossValue: BigInt,
-    lossType: Option[LossType]
+    lossType: Option[String]
 )
 
 object ResultOfClaimsApplied {

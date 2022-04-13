@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package v3.models.response.common
+package v3.models.response.retrieveCalculation
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import play.api.libs.json.{JsValue, Json}
 
-sealed trait CalculationRequestor
+trait CalculationFixture {
 
-object CalculationRequestor {
+  val calculationMtdJson: JsValue =
+    Json.parse(getClass.getResourceAsStream("calculation_mtd.json"))
 
-  case object customer extends CalculationRequestor
-  case object hmrc     extends CalculationRequestor
-  case object agent    extends CalculationRequestor
+  val calculationDownstreamJson: JsValue =
+    Json.parse(getClass.getResourceAsStream("calculation_downstream.json"))
 
-  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }

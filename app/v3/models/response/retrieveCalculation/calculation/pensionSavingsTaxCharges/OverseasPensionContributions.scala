@@ -22,7 +22,7 @@ case class OverseasPensionContributions(totalShortServiceRefund: BigDecimal,
                                         totalShortServiceRefundCharge: BigDecimal,
                                         shortServiceRefundTaxPaid: Option[BigDecimal],
                                         totalShortServiceRefundChargeDue: BigDecimal,
-                                        shortServiceRefundBands: Option[ShortServiceRefundBands])
+                                        shortServiceRefundBands: Option[Seq[ShortServiceRefundBands]])
 
 object OverseasPensionContributions {
   implicit val format: OFormat[OverseasPensionContributions] = Json.format[OverseasPensionContributions]

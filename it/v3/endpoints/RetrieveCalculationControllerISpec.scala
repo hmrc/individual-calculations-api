@@ -70,11 +70,8 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    },
           |    "incomeSources": {}
           |  },
-          |  "calculation" : {
-          |    "field": ""
-          |  },
-          |  "messages" : {
-          |  }
+          |  "calculation" : {},
+          |  "messages" : {}
           |}
         """.stripMargin
       )
@@ -100,11 +97,8 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    },
           |    "incomeSources": {}
           |  },
-          |  "calculation" : {
-          |    "field": ""
-          |  },
-          |  "messages" : {
-          |  }
+          |  "calculation" : {},
+          |  "messages" : {}
           |}
         """.stripMargin
       )

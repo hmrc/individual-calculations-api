@@ -16,8 +16,8 @@
 
 package v2.controllers.requestParsers.validators.validations
 
-import common.models.domain.DownstreamTaxYear
 import config.FixedConfig
+import v2.models.domain.DownstreamTaxYear
 import v2.models.errors.{MtdError, RuleTaxYearNotSupportedError}
 
 object TaxYearNotSupportedValidation extends FixedConfig {

@@ -19,7 +19,7 @@ package v3.models.response.retrieveCalculation.inputs
 import play.api.libs.json.{Json, OFormat}
 
 case class PensionContributionAndCharges(`type`: String,
-                                         submittedTimestamp: Option[String],
+                                         submissionTimestamp: Option[String],
                                          startDate: Option[String],
                                          endDate: Option[String],
                                          source: Option[String])

@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation
+package v3.models.response.retrieveCalculation
 
 import play.api.libs.json.Json
 import support.UnitSpec
 import v3.models.utils.JsonErrorValidators
 
-class CalculationSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
+class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
 
-  "Calculation" must {
+  "RetrieveCalculationResponse" must {
     "allow conversion from downstream JSON to MTD JSON" when {
-      "JSON contains every field" ignore { // FIXME reinstate test
-        val model = calculationDownstreamJson.as[Calculation]
+      "JSON contains every field" in {
+        val model = calculationDownstreamJson.as[RetrieveCalculationResponse]
         Json.toJson(model) shouldBe calculationMtdJson
       }
     }
 
-    // FIXME uncomment
-//    "have the correct fields optional" when {
-//      testJsonAllPropertiesOptionalExcept[Calculation](calculationDownstreamJson)("metadata", "inputs")
-//    }
+    "have the correct fields optional" when {
+      testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
+    }
   }
 
 }

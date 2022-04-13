@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package common.models.domain
+package v3.models.response.common
 
-/**
- * Represents a tax year for Downstream
- *
- * @param value the tax year string (where 2018 represents 2017-18)
- */
-case class DownstreamTaxYear(value: String) extends AnyVal {
-  override def toString: String = value
-}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.common.CalculationType._
 
-object DownstreamTaxYear {
+class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  /**
-   * @param taxYear tax year in MTD format (e.g. 2017-18)
-   */
-  def fromMtd(taxYear: String): DownstreamTaxYear =
-    DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
+  testReads[CalculationType](
+    "inYear" -> `inYear`,
+    "crystallisation" -> `endOfYear`,
+    "biss" -> `biss`,
+    "POA" -> `POA`,
+  )
 
-  def fromDownstreamIntToString(taxYear: Int): String =
-    (taxYear - 1) + "-" + taxYear.toString.drop(2)
+  testWrites[CalculationType](
+    `inYear` -> "inYear",
+    `endOfYear` -> "endOfYear",
+    `biss` -> "biss",
+    `POA` -> "POA"
+  )
+
 }

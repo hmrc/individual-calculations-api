@@ -61,18 +61,62 @@ class RetrieveCalculationControllerSpec
   val inputsModel: Inputs = Inputs(
     PersonalInformation("", None, "UK", None, None, None, None, None),
     IncomeSources(None, None),
-    None, None, None, None, None, None, None
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
   )
 
   val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
-      calculationId = "", taxYear = TaxYear("2018"), requestedBy = "", requestedTimestamp = None,
-      calculationReason = "", calculationTimestamp = None, calculationType = `inYear`,
-      intentToSubmitFinalDeclaration = false, finalDeclaration = false, finalDeclarationTimestamp = None,
-      periodFrom = "", periodTo = ""
+      calculationId = "",
+      taxYear = TaxYear("2018"),
+      requestedBy = "",
+      requestedTimestamp = None,
+      calculationReason = "",
+      calculationTimestamp = None,
+      calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false,
+      finalDeclaration = false,
+      finalDeclarationTimestamp = None,
+      periodFrom = "",
+      periodTo = ""
     ),
     inputs = inputsModel,
-    calculation = Some(Calculation("")),
+    calculation = Some(
+      Calculation(
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None
+      )),
     messages = Some(Messages(None, None, None))
   )
 
@@ -97,9 +141,7 @@ class RetrieveCalculationControllerSpec
       |    },
       |    "incomeSources": {}
       |  },
-      |  "calculation" : {
-      |    "field": ""
-      |  },
+      |  "calculation" : {},
       |  "messages" : {
       |  },
       |  "links" : [
