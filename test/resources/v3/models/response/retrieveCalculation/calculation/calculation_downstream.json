@@ -379,10 +379,8 @@
       "payeUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "2018",
-          "source": "customer",
-          "collectedAmount": 5001.99,
-          "uncollectedAmount": 5002.99
+          "relatedTaxYear": "2017-18",
+          "source": "customer"
         }
       ],
       "totalSelfAssessmentUnderpayments": 5000.99,
@@ -391,9 +389,11 @@
       "selfAssessmentUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
+          "relatedTaxYear": "2017-18",
           "saAccountingSystem": "ETMP",
-          "source": "customer"
+          "source": "customer",
+          "collectedAmount": 5001.99,
+          "uncollectedAmount": 5002.99
         }
       ]
     },

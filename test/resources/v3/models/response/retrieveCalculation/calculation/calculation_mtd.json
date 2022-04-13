@@ -380,9 +380,7 @@
         {
           "amount": 5000.99,
           "relatedTaxYear": "2017-18",
-          "source": "customer",
-          "collectedAmount": 5001.99,
-          "uncollectedAmount": 5002.99
+          "source": "customer"
         }
       ],
       "totalSelfAssessmentUnderpayments": 5000.99,
@@ -391,8 +389,10 @@
       "selfAssessmentUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
-          "source": "customer"
+          "relatedTaxYear": "2017-18",
+          "source": "customer",
+          "collectedAmount": 5001.99,
+          "uncollectedAmount": 5002.99
         }
       ]
     },
