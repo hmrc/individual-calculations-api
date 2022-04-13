@@ -67,12 +67,6 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     "X-Session-Id"
   )
 
-  // FIXME REMOVEME
-  val requiredBackendHeaders: Seq[(String, String)] = Seq(
-    "Authorization" -> "Bearer user-token",
-    "CorrelationId" -> correlationId
-  )
-
   val requiredDesHeaders: Seq[(String, String)] = Seq(
     "Environment"   -> "des-environment",
     "Authorization" -> s"Bearer des-token"

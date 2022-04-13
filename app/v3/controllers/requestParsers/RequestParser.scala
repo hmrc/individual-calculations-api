@@ -16,7 +16,6 @@
 
 package v3.controllers.requestParsers
 
-import play.api.http.Status._
 import utils.Logging
 import v3.controllers.requestParsers.validators.Validator
 import v3.models.errors.{BadRequestError, ErrorWrapper}
@@ -39,12 +38,12 @@ trait RequestParser[Raw <: RawData, Request] extends Logging {
         logger.warn(
           "[RequestParser][parseRequest] " +
             s"Validation failed with ${err.code} error for the request with CorrelationId: $correlationId")
-        Left(ErrorWrapper(correlationId, err, None, BAD_REQUEST))
+        Left(ErrorWrapper(correlationId, err, None))
       case errs =>
         logger.warn(
           "[RequestParser][parseRequest] " +
             s"Validation failed with ${errs.map(_.code).mkString(",")} error for the request with CorrelationId: $correlationId")
-        Left(ErrorWrapper(correlationId, BadRequestError, Some(errs), BAD_REQUEST))
+        Left(ErrorWrapper(correlationId, BadRequestError, Some(errs)))
     }
   }
 
