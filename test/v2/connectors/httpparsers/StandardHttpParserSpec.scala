@@ -163,11 +163,11 @@ class StandardHttpParserSpec extends UnitSpec {
     }
   }
 
-  "The generic HTTP parser (from DES)" when {
+  "The generic HTTP parser (from DOWNSTREAM)" when {
     "no status code is specified" must {
       val httpReads: HttpReads[BackendOutcome[SomeDownstreamModel]] = implicitly
 
-      "return a Right DES response containing the model object if the response json corresponds to a model object" in {
+      "return a Right DOWNSTREAM response containing the model object if the response json corresponds to a model object" in {
         val httpResponse = HttpResponse(OK, expectedJson.toString(), getCorrelationIdMap(isDownstreamResponse = true))
 
         httpReads.read(method, url, httpResponse) shouldBe Right(downstreamResponse)
@@ -227,7 +227,7 @@ class StandardHttpParserSpec extends UnitSpec {
     }
   }
 
-  "The generic HTTP parser for empty response (from DES)" when {
+  "The generic HTTP parser for empty response (from DOWNSTREAM)" when {
     "no status code is specified" must {
       val httpReads: HttpReads[BackendOutcome[DownstreamUnit]] = implicitly
 

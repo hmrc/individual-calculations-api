@@ -25,12 +25,13 @@ import v3.handler.{RequestDefn, RequestHandler}
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.hateoas.Method.GET
 import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v3.models.response.common.CalculationType.`inYear`
 import v3.models.response.retrieveCalculation.calculation.Calculation
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.messages.Messages
@@ -64,17 +65,28 @@ class RetrieveCalculationControllerSpec
   )
 
   val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
-    metadata = Metadata(""),
+    metadata = Metadata(
+      calculationId = "", taxYear = TaxYear("2017-18"), requestedBy = "", requestedTimestamp = None,
+      calculationReason = "", calculationTimestamp = None, calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false, finalDeclaration = false, finalDeclarationTimestamp = None,
+      periodFrom = "", periodTo = ""
+    ),
     inputs = inputsModel,
     calculation = Some(Calculation("")),
-    messages = Some(Messages(""))
+    messages = Some(Messages(None, None, None))
   )
 
   val json: JsValue = Json.parse(
     """
       |{
       |  "metadata" : {
-      |    "field": ""
+      |    "calculationId": "",
+      |    "taxYear": 2017,
+      |    "requestedBy": "",
+      |    "calculationReason": "",
+      |    "calculationType": "inYear",
+      |    "periodFrom": "",
+      |    "periodTo": ""
       |  },
       |  "inputs" : {
       |    "personalInformation": {
@@ -87,7 +99,6 @@ class RetrieveCalculationControllerSpec
       |    "field": ""
       |  },
       |  "messages" : {
-      |    "field": ""
       |  },
       |  "links" : [
       |    {

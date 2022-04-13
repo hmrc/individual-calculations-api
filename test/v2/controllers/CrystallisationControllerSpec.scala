@@ -29,7 +29,7 @@ import v2.models.domain.CrystallisationRequestBody
 import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
-import v2.models.response.common.DesUnit
+import v2.models.response.common.DownstreamUnit
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -109,7 +109,7 @@ class CrystallisationControllerSpec
 
         MockCrystallisationService
           .submitIntent(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, DesUnit))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, DownstreamUnit))))
 
         MockNrsProxyService
           .submit(nino, crystallisationRequestBody)

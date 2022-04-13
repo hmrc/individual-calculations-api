@@ -39,7 +39,7 @@ class BackendErrorCodeSpec extends UnitSpec {
 
     "fromDes" should {
       "create an MtdError from a DES error" in {
-        BackendErrorCode("CODE").fromDes shouldBe MtdError("CODE", "")
+        BackendErrorCode("CODE").fromDownstream shouldBe MtdError("CODE", "")
       }
     }
   }

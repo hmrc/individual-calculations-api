@@ -60,13 +60,13 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
 
       "map errors according to spec" when {
 
-        def serviceError(desErrorCode: String, error: MtdError, desErrorStatus: Int): Unit =
-          s"a $desErrorCode error is returned from the service" in new Test {
+        def serviceError(downstreamErrorCode: String, error: MtdError, downstreamErrorStatus: Int): Unit =
+          s"a $downstreamErrorCode error is returned from the service" in new Test {
 
             MockIntentToCrystalliseConnector.submitIntent(request)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(desErrorStatus, BackendErrorCode(desErrorCode))))))
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
 
-            await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, desErrorStatus))
+            await(service.submitIntentToCrystallise(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, downstreamErrorStatus))
           }
 
         val input = Seq(

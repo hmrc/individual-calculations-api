@@ -59,7 +59,7 @@ trait HttpParser extends Logging {
   def parseErrors(response: HttpResponse): BackendError = {
     val singleError         = response.validateJson[BackendErrorCode].map(err => BackendErrors(response.status, List(err)))
     lazy val multipleErrors = response.validateJson(multipleErrorReads).map(errs => BackendErrors(response.status, errs))
-    lazy val bvrErrors      = response.validateJson(bvrErrorReads).map(errs => OutboundError(response.status, BVRError, Some(errs.map(_.fromDes))))
+    lazy val bvrErrors      = response.validateJson(bvrErrorReads).map(errs => OutboundError(response.status, BVRError, Some(errs.map(_.fromDownstream))))
     lazy val unableToParseJsonError = {
       logger.warn(s"unable to parse errors from response: ${response.body}")
       OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)

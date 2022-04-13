@@ -31,7 +31,7 @@ trait MockAppConfig extends MockFactory {
     // Backend Config
     def backendBaseUrl: CallHandler[String] = (mockAppConfig.backendBaseUrl _: () => String).expects()
 
-    // DES Config
+    // DOWNSTREAM Config
     def downstreamBaseUrl: CallHandler[String]                         = (mockAppConfig.downstreamBaseUrl _: () => String).expects()
     def downstreamToken: CallHandler[String]                           = (mockAppConfig.downstreamToken _).expects()
     def downstreamEnvironment: CallHandler[String]                     = (mockAppConfig.downstreamEnv _).expects()
