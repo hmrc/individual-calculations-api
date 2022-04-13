@@ -28,25 +28,16 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 class AuthISpec extends V3IntegrationBaseSpec {
 
   private trait Test {
-    val nino: String          = "AA123456A"
-    val taxYear: String       = "2017-18"
-    val data: String          = "someData"
-    val correlationId: String = "X-123"
+    val nino: String  = "AA123456A"
+    val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment"
-    def backendUrl: String = uri
+    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
+    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
     val responseBody: JsValue = Json.parse(
       """
         |{
-        | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        | "links":[
-        |   {
-        |   "href":"/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |   "method":"GET",
-        |   "rel":"self"
-        |     }
-        |   ]
+        | "todo": "extend CalculationFixture and use the downstream json when feature branch merged in"
         |}
        """.stripMargin
     )
@@ -73,7 +64,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -85,11 +76,11 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, responseBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, responseBody)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
-        response.status shouldBe Status.ACCEPTED
+        val response: WSResponse = await(request().get())
+        response.status shouldBe Status.OK
       }
     }
 
@@ -104,7 +95,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -120,7 +111,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }

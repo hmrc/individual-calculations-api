@@ -44,10 +44,10 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.downstreamBaseUrl returns baseUrl
-    MockAppConfig.downstreamToken returns "downstream-token"
-    MockAppConfig.downstreamEnvironment returns "downstream-environment"
-    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "downstream-token"
+    MockAppConfig.desEnvironment returns "downstream-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDownstreamHeaders)
   }
 
   "CrystallisationConnector" when {

@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package v3.services
+package v3.models.errors
 
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.connectors.NrsProxyConnector
-import v3.models.domain.CrystallisationRequestBody
+import play.api.libs.json.{Json, Reads}
 
-import scala.concurrent.{ExecutionContext, Future}
-
-@Singleton
-class NrsProxyService @Inject() (val connector: NrsProxyConnector) {
-
-  def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
-
-    connector.submit(nino, body)
-  }
-
+case class DesErrorCode(code: String) {
+  def toMtd: MtdError = MtdError(code = code, message = "")
 }
+
+object DesErrorCode {
+  implicit val reads: Reads[DesErrorCode] = Json.reads[DesErrorCode]
+}
+
+sealed trait DesError
+
+case class DesErrors(errors: List[DesErrorCode]) extends DesError
+
+object DesErrors {
+  def single(error: DesErrorCode): DesErrors = DesErrors(List(error))
+}
+
+case class OutboundError(error: MtdError, errors: Option[Seq[MtdError]] = None) extends DesError

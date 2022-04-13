@@ -17,35 +17,18 @@
 package v3.controllers
 
 import play.api.mvc._
-import utils.IdGenerator
-import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
-import v3.controllers.requestParsers.RetrieveCalculationParser
-import v3.handler.{RequestDefn, RequestHandler}
-import v3.hateoas.HateoasFactory
-import v3.models.errors._
-import v3.models.hateoas.HateoasWrapper
-import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
-import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
-import v3.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
+import utils.Logging
+import v3.services.{EnrolmentsAuthService, MtdIdLookupService}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject() (authService: EnrolmentsAuthService,
-                                               lookupService: MtdIdLookupService,
-                                               retrieveCalculationParser: RetrieveCalculationParser,
-                                               service: StandardService,
-                                               hateoasFactory: HateoasFactory,
-                                               auditService: AuditService,
-                                               cc: ControllerComponents,
-                                               idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
-    extends StandardController[
-      RetrieveCalculationRawData,
-      RetrieveCalculationRequest,
-      RetrieveCalculationResponse,
-      HateoasWrapper[RetrieveCalculationResponse],
-      AnyContent](authService, lookupService, retrieveCalculationParser, service, auditService, cc, idGenerator) {
-  controller =>
+class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
+                                               val lookupService: MtdIdLookupService,
+                                               cc: ControllerComponents)(implicit val ec: ExecutionContext)
+    extends AuthorisedController(cc)
+    with BaseController
+    with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
@@ -53,32 +36,9 @@ class RetrieveCalculationController @Inject() (authService: EnrolmentsAuthServic
       endpointName = "retrieveCalculation"
     )
 
-  override val successCode: SuccessCode = SuccessCode(OK)
-
-  override def requestHandlerFor(
-      playRequest: Request[AnyContent],
-      req: RetrieveCalculationRequest): RequestHandler[RetrieveCalculationResponse, HateoasWrapper[RetrieveCalculationResponse]] = {
-    RequestHandler[RetrieveCalculationResponse](RequestDefn.Get(req.backendCalculationUri))
-      .mapErrors {
-        case "INVALID_TAXABLE_ENTITY_ID" => (BAD_REQUEST, NinoFormatError)
-        case "INVALID_CALCULATION_ID"    => (BAD_REQUEST, CalculationIdFormatError)
-        case "INVALID_CORRELATIONID"     => (INTERNAL_SERVER_ERROR, DownstreamError)
-        case "INVALID_CONSUMERID"        => (INTERNAL_SERVER_ERROR, DownstreamError)
-        case "NO_DATA_FOUND"             => (NOT_FOUND, NotFoundError)
-        case "SERVER_ERROR"              => (INTERNAL_SERVER_ERROR, DownstreamError)
-        case "SERVICE_UNAVAILABLE"       => (INTERNAL_SERVER_ERROR, DownstreamError)
-      }
-      .withRequestSuccessCode(OK)
-      .mapSuccessSimple(rawResponse =>
-        hateoasFactory.wrap(rawResponse, RetrieveCalculationHateoasData(req.nino.nino, req.taxYear, req.calculationId)))
-
-  }
-
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
-      val rawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
-
-      doHandleRequest(rawData)
+    authorisedAction(nino) { _ =>
+      Ok("TODO")
     }
 
 }

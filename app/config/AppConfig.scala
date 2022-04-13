@@ -30,10 +30,16 @@ trait AppConfig {
   def backendBaseUrl: String
 
   // DES Config
-  def downstreamBaseUrl: String
-  def downstreamEnv: String
-  def downstreamToken: String
-  def downstreamEnvironmentHeaders: Option[Seq[String]]
+  def desBaseUrl: String
+  def desEnv: String
+  def desToken: String
+  def desEnvironmentHeaders: Option[Seq[String]]
+
+  // IFS Config
+  def ifsBaseUrl: String
+  def ifsEnv: String
+  def ifsToken: String
+  def ifsEnvironmentHeaders: Option[Seq[String]]
 
   // API Config
   def apiGatewayContext: String
@@ -55,12 +61,16 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   val backendBaseUrl: String = config.baseUrl("individual-calculations")
 
   // DES Config
-  val downstreamBaseUrl: String = config.baseUrl("downstream")
-  val downstreamEnv: String     = config.getString("microservice.services.downstream.env")
-  val downstreamToken: String   = config.getString("microservice.services.downstream.token")
+  val desBaseUrl: String                         = config.baseUrl("des")
+  val desEnv: String                             = config.getString("microservice.services.des.env")
+  val desToken: String                           = config.getString("microservice.services.des.token")
+  val desEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.des.environmentHeaders")
 
-  val downstreamEnvironmentHeaders: Option[Seq[String]] =
-    configuration.getOptional[Seq[String]]("microservice.services.downstream.environmentHeaders")
+  // IFS Config
+  val ifsBaseUrl: String                         = config.baseUrl("ifs")
+  val ifsEnv: String                             = config.getString("microservice.services.ifs.env")
+  val ifsToken: String                           = config.getString("microservice.services.ifs.token")
+  val ifsEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.ifs.environmentHeaders")
 
   // API Config
   val apiGatewayContext: String                    = config.getString("api.gateway.context")
