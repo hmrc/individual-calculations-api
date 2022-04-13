@@ -25,11 +25,10 @@ import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 class TriggerCalculationParserSpec extends UnitSpec {
 
-  val nino             = "AA123456B"
-  val taxYear          = "2017-18"
-  val finalDeclaration = true
-
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  val nino: String                   = "AA123456B"
+  val taxYear: String                = "2017-18"
+  val finalDeclaration: String       = "true"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockTriggerCalculationValidator {
     lazy val parser = new TriggerCalculationParser(mockValidator)
@@ -41,7 +40,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, Some(finalDeclaration))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration))
+        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = true))
       }
     }
 

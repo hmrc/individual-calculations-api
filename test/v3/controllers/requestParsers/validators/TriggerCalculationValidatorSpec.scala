@@ -17,44 +17,57 @@
 package v3.controllers.requestParsers.validators
 
 import support.UnitSpec
-import v3.models.errors.{NinoFormatError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import v3.models.errors.{FinalDeclarationFormatError, NinoFormatError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import v3.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidatorSpec extends UnitSpec {
 
-  val validNino        = "AA123456A"
-  val validTaxYear     = "2017-18"
-  val finalDeclaration = Option(true)
+  private val validNino             = "AA123456A"
+  private val validTaxYear          = "2017-18"
+  private val validFinalDeclaration = "true"
 
   val validator = new TriggerCalculationValidator()
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, validTaxYear, finalDeclaration)) shouldBe empty
+        validator.validate(TriggerCalculationRawData(validNino, validTaxYear, Some(validFinalDeclaration))) shouldBe List()
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(TriggerCalculationRawData("A12344A", validTaxYear, finalDeclaration)) shouldBe
+        validator.validate(TriggerCalculationRawData("A12344A", validTaxYear, Some(validFinalDeclaration))) shouldBe
           List(NinoFormatError)
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, "20178", finalDeclaration)) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, "20178", Some(validFinalDeclaration))) shouldBe
           List(TaxYearFormatError)
+      }
+    }
+
+    "return RuleTaxYearRangeInvalid error" when {
+      "a tax year with a range higher than 1 is supplied" in {
+        validator.validate(TriggerCalculationRawData(validNino, "2019-21", Some(validFinalDeclaration))) shouldBe
+          List(RuleTaxYearRangeInvalidError)
       }
     }
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, "2016-17", finalDeclaration)) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, "2016-17", Some(validFinalDeclaration))) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
-  }
 
+    "return FinalDeclarationFormatError error" when {
+      "an invalid final declaration is supplied" in {
+        validator.validate(TriggerCalculationRawData(validNino, validTaxYear, Some("error"))) shouldBe
+          List(FinalDeclarationFormatError)
+      }
+    }
+  }
 }

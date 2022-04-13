@@ -16,7 +16,7 @@
 
 package v3.controllers.requestParsers.validators
 
-import v3.controllers.requestParsers.validators.validations.{NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
+import v3.controllers.requestParsers.validators.validations._
 import v3.models.errors.MtdError
 import v3.models.request.TriggerCalculationRawData
 
@@ -27,7 +27,8 @@ class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {
   private def parserValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
     List(
       NinoValidation.validate(data.nino),
-      TaxYearValidation.validate(data.taxYear)
+      TaxYearValidation.validate(data.taxYear),
+      FinalDeclarationValidation.validateOptional(data.finalDeclaration)
     )
   }
 

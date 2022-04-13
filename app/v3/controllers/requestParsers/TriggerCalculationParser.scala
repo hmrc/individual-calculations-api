@@ -19,7 +19,6 @@ package v3.controllers.requestParsers
 import v3.controllers.requestParsers.validators.TriggerCalculationValidator
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
-
 import javax.inject.Inject
 
 class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
