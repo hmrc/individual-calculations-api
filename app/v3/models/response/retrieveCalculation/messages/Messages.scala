@@ -16,12 +16,16 @@
 
 package v3.models.response.retrieveCalculation.messages
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.json.{Json, OFormat}
 
-case class Messages(field: String)
+
+case class Message(id: String, text: String)
+
+case class Messages(info: Option[Seq[Message]],
+                    warnings: Option[Seq[Message]],
+                    errors: Option[Seq[Message]])
 
 object Messages {
-  implicit val reads: Reads[Messages] = Json.reads[Messages]
-
-  implicit val writes: OWrites[Messages] = Json.writes[Messages]
+  implicit val messageFormat: OFormat[Message] = Json.format[Message]
+  implicit val messagesFormat: OFormat[Messages] = Json.format[Messages]
 }

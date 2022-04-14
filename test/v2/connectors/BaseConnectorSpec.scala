@@ -48,7 +48,7 @@ class BaseConnectorSpec extends ConnectorSpec {
   }
 
   "BaseConnector" when {
-    "making a HTTP request to DES" must {
+    "making a HTTP request to DOWNSTREAM" must {
       val requiredHeaders: Seq[(String, String)] = Seq(
         "Environment"       -> "downstream-environment",
         "Authorization"     -> "Bearer downstream-token",

@@ -29,16 +29,14 @@ import scala.concurrent.Future
 class CrystallisationServiceSpec extends ServiceSpec {
 
   trait Test extends MockCrystallisationConnector {
-
     val service: CrystallisationService = new CrystallisationService(
       connector = mockCrystallisationConnector
     )
-
   }
 
   "CrystallisationService" when {
-    val nino: String          = "AA112233A"
-    val taxYear: String       = "2019-20"
+    val nino: String = "AA112233A"
+    val taxYear: String = "2019-20"
     val calculationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
     val request: CrystallisationRequest = CrystallisationRequest(
@@ -51,8 +49,7 @@ class CrystallisationServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, DownstreamUnit))
 
-        MockCrystallisationConnector
-          .submitIntent(request)
+        MockCrystallisationConnector.submitIntent(request)
           .returns(Future.successful(outcome))
 
         await(service.declareCrystallisation(request)) shouldBe outcome
@@ -63,10 +60,8 @@ class CrystallisationServiceSpec extends ServiceSpec {
         def serviceError(downstreamErrorCode: String, error: MtdError, downstreamErrorStatus: Int): Unit =
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
-            MockCrystallisationConnector
-              .submitIntent(request)
-              .returns(Future.successful(
-                Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
+            MockCrystallisationConnector.submitIntent(request)
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
 
             await(service.declareCrystallisation(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, downstreamErrorStatus))
           }
@@ -92,5 +87,4 @@ class CrystallisationServiceSpec extends ServiceSpec {
       }
     }
   }
-
 }

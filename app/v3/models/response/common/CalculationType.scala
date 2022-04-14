@@ -16,15 +16,24 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.Format
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
 sealed trait CalculationType
 
 object CalculationType {
 
-  case object inYear          extends CalculationType
-  case object crystallisation extends CalculationType
+  case object `inYear` extends CalculationType
+  case object `endOfYear` extends CalculationType
+  case object `biss` extends CalculationType
+  case object `POA` extends CalculationType
 
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
+  implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
+
+  implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType]{
+    case "inYear" => `inYear`
+    case "crystallisation" => `endOfYear`
+    case "biss" => `biss`
+    case "POA" => `POA`
+  }
 }
