@@ -25,7 +25,10 @@ import javax.inject.Inject
 class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
     extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
 
+  private val defaultFinalDeclaration = false
+
   override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
-    TriggerCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.finalDeclaration)
+    TriggerCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.finalDeclaration.getOrElse(defaultFinalDeclaration))
   }
+
 }

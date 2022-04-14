@@ -76,7 +76,7 @@ class TriggerCalculationControllerSpec
     """.stripMargin
   )
 
-  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, taxYear.toMtd, finalDeclaration)
+  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, taxYear.toMtd, Some(finalDeclaration))
   val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration)
   val error: ErrorWrapper                    = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
@@ -119,19 +119,14 @@ class TriggerCalculationControllerSpec
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] =
-          controller.triggerCalculation(nino, taxYear.toMtd, finalDeclaration)(fakePostRequest(uri))
+          controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
         status(result) shouldBe ACCEPTED
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual",
-          None,
-          Map("nino" -> nino),
-          None,
-          correlationId,
-          AuditResponse(ACCEPTED, None, Some(json)))
+        val detail: GenericAuditDetail =
+          GenericAuditDetail("Individual", None, Map("nino" -> nino), None, correlationId, AuditResponse(ACCEPTED, None, Some(json)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -148,7 +143,7 @@ class TriggerCalculationControllerSpec
           .doService(RequestDefn.Post(uri, JsNull), ACCEPTED)
           .returns(Future.successful(Left(error)))
 
-        val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, finalDeclaration)(fakePostRequest(uri))
+        val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
@@ -194,7 +189,7 @@ class TriggerCalculationControllerSpec
         .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
-      val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, finalDeclaration)(fakePostRequest(uri))
+      val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

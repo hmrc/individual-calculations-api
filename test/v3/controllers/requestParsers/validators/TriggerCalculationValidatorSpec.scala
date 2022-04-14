@@ -24,7 +24,7 @@ class TriggerCalculationValidatorSpec extends UnitSpec {
 
   val validNino        = "AA123456A"
   val validTaxYear     = "2017-18"
-  val finalDeclaration = true
+  val finalDeclaration = Option(true)
 
   val validator = new TriggerCalculationValidator()
 

@@ -18,6 +18,6 @@ package v3.models.request
 
 import v3.models.domain.{Nino, TaxYear}
 
-case class TriggerCalculationRawData(nino: String, taxYear: String, finalDeclaration: Boolean) extends RawData
+case class TriggerCalculationRawData(nino: String, taxYear: String, finalDeclaration: Option[Boolean]) extends RawData
 
 case class TriggerCalculationRequest(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)
