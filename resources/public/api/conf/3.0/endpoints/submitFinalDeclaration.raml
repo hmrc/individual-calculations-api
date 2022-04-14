@@ -14,6 +14,7 @@ is:
   - errors.ruleIncomeSourcesInvalid
   - errors.ruleNoIncomeSubmissionExists
   - errors.ruleSubmissionFailed
+  - errors.clientOrAgentNotAuthorised
   - errors.notFound
 displayName: Submit a Self Assessment Final Declaration [test only]
 description: This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. A National Insurance number, tax year and calculation ID must be provided.
@@ -24,7 +25,7 @@ body:
  application/json:
   example: "N/A"
 responses:
- 200:
+ 204:
    body:
      application/json:
       example: "N/A"
