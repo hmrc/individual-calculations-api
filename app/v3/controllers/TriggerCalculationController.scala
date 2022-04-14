@@ -74,7 +74,7 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
 
   }
 
-  def triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[Boolean]): Action[AnyContent] = authorisedAction(nino).async {
+  def triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String]): Action[AnyContent] = authorisedAction(nino).async {
     implicit request =>
       val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)
 

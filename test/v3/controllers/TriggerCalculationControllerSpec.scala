@@ -50,7 +50,7 @@ class TriggerCalculationControllerSpec
 
   private val nino             = "AA123456A"
   private val taxYear          = TaxYear.fromMtd("2017-18")
-  private val finalDeclaration = true
+  private val finalDeclaration = "true"
   private val correlationId    = "X-123"
 
   private case class TaxYearWrapper(taxYear: String)
@@ -77,7 +77,7 @@ class TriggerCalculationControllerSpec
   )
 
   val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, taxYear.toMtd, Some(finalDeclaration))
-  val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration)
+  val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration.toBoolean)
   val error: ErrorWrapper                    = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
