@@ -70,6 +70,17 @@ traits:
                 description: 'Tax year range invalid. A tax year range of one year is required.'
                 value:
                   code: RULE_TAX_YEAR_RANGE_INVALID
+  formatCalculationId:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              formatCalculationId:
+                description: 'Invalid Calculation ID.'
+                value:
+                  code: FORMAT_CALCULATION_ID
   ruleNoIncomeSubmissionExists:
     responses:
       403:
@@ -103,6 +114,61 @@ traits:
                 description: 'Final declaration has already been received.'
                 value:
                   code: RULE_FINAL_DECLARATION_RECEIVED
+  ruleIncomeSourcesChanged:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleIncomeSourcesChanged:
+                description: 'Information relating to your income sources changed. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                value:
+                  code: RULE_INCOME_SOURCES_CHANGED
+  ruleRecentSubmissionsExist:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleRecentSubmissionsExist:
+                description: 'More recent submissions exist. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                value:
+                  code: RULE_RECENT_SUBMISSIONS_EXIST
+  ruleResidencyChanged:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleResidencyChanged:
+                description: 'Your residency has changed. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                value:
+                  code: RULE_RESIDENCY_CHANGED
+  ruleIncomeSourcesInvalid:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleIncomeSourcesInvalid:
+                description: 'There are no valid income sources.'
+                value:
+                  code: RULE_INCOME_SOURCES_INVALID
+  ruleSubmissionFailed:
+    responses:
+      403:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleSubmissionFailed:
+                description: 'The submission cannot be completed due to validation failures.'
+                value:
+                  code: RULE_SUBMISSION_FAILED
   notFound:
     responses:
       404:

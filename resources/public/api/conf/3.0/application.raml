@@ -47,3 +47,8 @@ documentation:
           uriParameters:
             calculationId: !include pathParameters/calculationId.raml
           get: !include endpoints/retrieve.raml
+          /final-declaration:
+            (annotations.group):
+              name: Final Declaration
+              description: !include docs/group_finalDeclaration.md
+            post: !include endpoints/submitFinalDeclaration.raml
