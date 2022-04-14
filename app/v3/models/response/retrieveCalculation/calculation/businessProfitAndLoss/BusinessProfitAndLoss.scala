@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,17 @@
 
 package v3.models.response.retrieveCalculation.calculation.businessProfitAndLoss
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
 import v3.models.response.common.IncomeSourceType
+//import play.api.libs.functional.syntax._
+//import utils.enums.Enums
+import v3.models.response.common.IncomeSourceType.{
+  `foreign-property-fhl-eea`,
+  `foreign-property`,
+  `self-employment`,
+  `uk-property-fhl`,
+  `uk-property-non-fhl`
+}
 
 case class BusinessProfitAndLoss(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,
@@ -41,10 +50,207 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                  class4Loss: Option[BigInt],
                                  totalBroughtForwardClass4Losses: Option[BigInt],
                                  carrySidewaysClass4LossesUsed: Option[BigInt],
-                                 totalClass4LossesCarriedForward: Option[BigInt]
-                                )
+                                 totalClass4LossesCarriedForward: Option[BigInt])
 
 object BusinessProfitAndLoss {
 
-  implicit val format: Format[BusinessProfitAndLoss]  = Json.format[BusinessProfitAndLoss]
+  implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
+    `self-employment`,
+    `uk-property-non-fhl`,
+    `foreign-property-fhl-eea`,
+    `uk-property-fhl`,
+    `foreign-property`
+  )
+
+  implicit val reads: Reads[BusinessProfitAndLoss] = for {
+    incomeSourceId                                 <- (JsPath \ "incomeSourceId").read[String]
+    incomeSourceType                               <- (JsPath \ "incomeSourceType").read[IncomeSourceType]
+    incomeSourceName                               <- (JsPath \ "incomeSourceName").readNullable[String]
+    totalIncome                                    <- (JsPath \ "totalIncome").readNullable[BigDecimal]
+    totalExpenses                                  <- (JsPath \ "totalExpenses").readNullable[BigDecimal]
+    netProfit                                      <- (JsPath \ "netProfit").readNullable[BigDecimal]
+    netLoss                                        <- (JsPath \ "netLoss").readNullable[BigDecimal]
+    totalAdditions                                 <- (JsPath \ "totalAdditions").readNullable[BigDecimal]
+    totalDeductions                                <- (JsPath \ "totalDeductions").readNullable[BigDecimal]
+    accountingAdjustments                          <- (JsPath \ "accountingAdjustments").readNullable[BigDecimal]
+    taxableProfit                                  <- (JsPath \ "taxableProfit").readNullable[BigInt]
+    adjustedIncomeTaxLoss                          <- (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt]
+    totalBroughtForwardIncomeTaxLosses             <- (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt]
+    lossForCSFHL                                   <- (JsPath \ "lossForCSFHL").readNullable[BigInt]
+    broughtForwardIncomeTaxLossesUsed              <- (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt]
+    taxableProfitAfterIncomeTaxLossesDeduction     <- (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt]
+    carrySidewaysIncomeTaxLossesUsed               <- (JsPath \ "carrySidewaysIncomeTaxLossesUsed").readNullable[BigInt]
+    broughtForwardCarrySidewaysIncomeTaxLossesUsed <- (JsPath \ "broughtForwardCarrySidewaysIncomeTaxLossesUsed").readNullable[BigInt]
+    totalIncomeTaxLossesCarriedForward             <- (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
+    class4Loss                                     <- (JsPath \ "class4Loss").readNullable[BigInt]
+    totalBroughtForwardClass4Losses                <- (JsPath \ "totalBroughtForwardClass4Losses").readNullable[BigInt]
+    carrySidewaysClass4LossesUsed                  <- (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt]
+    totalClass4LossesCarriedForward                <- (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
+
+  } yield {
+    BusinessProfitAndLoss(
+      incomeSourceId = incomeSourceId,
+      incomeSourceType = incomeSourceType,
+      incomeSourceName = incomeSourceName,
+      totalIncome = totalIncome,
+      totalExpenses = totalExpenses,
+      netProfit = netProfit,
+      netLoss = netLoss,
+      totalAdditions = totalAdditions,
+      totalDeductions = totalDeductions,
+      accountingAdjustments = accountingAdjustments,
+      taxableProfit = taxableProfit,
+      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
+      totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
+      lossForCSFHL = lossForCSFHL,
+      broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
+      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
+      broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed,
+      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+      class4Loss = class4Loss,
+      totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
+      carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
+      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
+    )
+  }
+
+  implicit val writes: OWrites[BusinessProfitAndLoss] = (o: BusinessProfitAndLoss) => {
+    JsObject(
+      Map(
+        "incomeSourceId"                                 -> Json.toJson(o.incomeSourceId),
+        "incomeSourceType"                               -> Json.toJson(o.incomeSourceType),
+        "incomeSourceName"                               -> Json.toJson(o.incomeSourceName),
+        "totalIncome"                                    -> Json.toJson(o.totalIncome),
+        "totalExpenses"                                  -> Json.toJson(o.totalExpenses),
+        "netProfit"                                      -> Json.toJson(o.netProfit),
+        "netLoss"                                        -> Json.toJson(o.netLoss),
+        "totalAdditions"                                 -> Json.toJson(o.totalAdditions),
+        "totalDeductions"                                -> Json.toJson(o.totalDeductions),
+        "accountingAdjustments"                          -> Json.toJson(o.accountingAdjustments),
+        "taxableProfit"                                  -> Json.toJson(o.taxableProfit),
+        "adjustedIncomeTaxLoss"                          -> Json.toJson(o.adjustedIncomeTaxLoss),
+        "totalBroughtForwardIncomeTaxLosses"             -> Json.toJson(o.totalBroughtForwardIncomeTaxLosses),
+        "lossForCSFHL"                                   -> Json.toJson(o.lossForCSFHL),
+        "broughtForwardIncomeTaxLossesUsed"              -> Json.toJson(o.broughtForwardIncomeTaxLossesUsed),
+        "taxableProfitAfterIncomeTaxLossesDeduction"     -> Json.toJson(o.taxableProfitAfterIncomeTaxLossesDeduction),
+        "carrySidewaysIncomeTaxLossesUsed"               -> Json.toJson(o.carrySidewaysIncomeTaxLossesUsed),
+        "broughtForwardCarrySidewaysIncomeTaxLossesUsed" -> Json.toJson(o.broughtForwardCarrySidewaysIncomeTaxLossesUsed),
+        "totalIncomeTaxLossesCarriedForward"             -> Json.toJson(o.totalIncomeTaxLossesCarriedForward),
+        "class4Loss"                                     -> Json.toJson(o.class4Loss),
+        "totalBroughtForwardClass4Losses"                -> Json.toJson(o.totalBroughtForwardClass4Losses),
+        "carrySidewaysClass4LossesUsed"                  -> Json.toJson(o.carrySidewaysClass4LossesUsed),
+        "totalClass4LossesCarriedForward"                -> Json.toJson(o.totalClass4LossesCarriedForward)
+      ).filterNot { case (_, value) =>
+        value == JsNull
+      }
+    )
+  }
+  //  case class BusinessProfitAndLossPart1(incomeSourceId: String,
+  //                                        incomeSourceType: IncomeSourceType,
+  //                                        incomeSourceName: Option[String],
+  //                                        totalIncome: Option[BigDecimal],
+  //                                        totalExpenses: Option[BigDecimal],
+  //                                        netProfit: Option[BigDecimal],
+  //                                        netLoss: Option[BigDecimal],
+  //                                        totalAdditions: Option[BigDecimal],
+  //                                        totalDeductions: Option[BigDecimal],
+  //                                        accountingAdjustments: Option[BigDecimal],
+  //                                        taxableProfit: Option[BigInt],
+  //                                        adjustedIncomeTaxLoss: Option[BigInt],
+  //                                        totalBroughtForwardIncomeTaxLosses: Option[BigInt]
+  //                                       )
+  //
+  //  case class BusinessProfitAndLossPart2(
+  //                                        lossForCSFHL: Option[BigInt],
+  //                                        broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+  //                                        taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
+  //                                        carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
+  //                                        broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt],
+  //                                        totalIncomeTaxLossesCarriedForward: Option[BigInt],
+  //                                        class4Loss: Option[BigInt],
+  //                                        totalBroughtForwardClass4Losses: Option[BigInt],
+  //                                        carrySidewaysClass4LossesUsed: Option[BigInt],
+  //                                        totalClass4LossesCarriedForward: Option[BigInt]
+  //                                       )
+  //
+  //  private val formatPt1: OFormat[BusinessProfitAndLossPart1] = Json.format[BusinessProfitAndLossPart1]
+  //  private val formatPt2: OFormat[BusinessProfitAndLossPart2] = Json.format[BusinessProfitAndLossPart2]
+  //
+  //  private def buildProfitsAndLossObject(part1: BusinessProfitAndLossPart1, part2: BusinessProfitAndLossPart2): BusinessProfitAndLoss = {
+  //    import part1._
+  //    import part2._
+  //
+  //    BusinessProfitAndLoss(
+  //      incomeSourceId = incomeSourceId,
+  //      incomeSourceType = incomeSourceType,
+  //      incomeSourceName = incomeSourceName,
+  //      totalIncome = totalIncome,
+  //      totalExpenses = totalExpenses,
+  //      netProfit = netProfit,
+  //      netLoss = netLoss,
+  //      totalAdditions = totalAdditions,
+  //      totalDeductions = totalDeductions,
+  //      accountingAdjustments = accountingAdjustments,
+  //      taxableProfit = taxableProfit,
+  //      adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
+  //      totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
+  //      lossForCSFHL = lossForCSFHL,
+  //      broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+  //      taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
+  //      carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
+  //      broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed,
+  //      totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+  //      class4Loss = class4Loss,
+  //      totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
+  //      carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
+  //      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
+  //    )
+  //  }
+  //
+  //
+  //  private def splitProfitsAndLossObject(o: BusinessProfitAndLoss): (BusinessProfitAndLossPart1, BusinessProfitAndLossPart2) = {
+  //    import o._
+  //
+  //    (
+  //      BusinessProfitAndLossPart1(
+  //        incomeSourceId = incomeSourceId,
+  //        incomeSourceType = incomeSourceType,
+  //        incomeSourceName = incomeSourceName,
+  //        totalIncome = totalIncome,
+  //        totalExpenses = totalExpenses,
+  //        netProfit = netProfit,
+  //        netLoss = netLoss,
+  //        totalAdditions = totalAdditions,
+  //        totalDeductions = totalDeductions,
+  //        accountingAdjustments = accountingAdjustments,
+  //        taxableProfit = taxableProfit,
+  //        adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
+  //        totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses
+  //      ),
+  //      BusinessProfitAndLossPart2(
+  //        lossForCSFHL = lossForCSFHL,
+  //        broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
+  //        taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
+  //        carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
+  //        broughtForwardCarrySidewaysIncomeTaxLossesUsed = broughtForwardCarrySidewaysIncomeTaxLossesUsed,
+  //        totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
+  //        class4Loss = class4Loss,
+  //        totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
+  //        carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
+  //        totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
+  //      )
+  //    )
+  //  }
+  //
+  //  implicit val writes: OWrites[BusinessProfitAndLoss] = (o: BusinessProfitAndLoss) => {
+  //    val splitData = BusinessProfitAndLoss.splitProfitsAndLossObject(o)
+  //    Json.toJsObject(splitData._1)(formatPt1) ++ Json.toJsObject(splitData._2)(formatPt2)
+  //  }
+  //
+  //  implicit val reads: Reads[BusinessProfitAndLoss] = (
+  //    JsPath.read[BusinessProfitAndLossPart1](formatPt1) and
+  //      JsPath.read[BusinessProfitAndLossPart2](formatPt2)
+  //    )(BusinessProfitAndLoss.buildProfitsAndLossObject _)
+
 }
