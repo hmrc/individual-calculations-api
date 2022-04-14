@@ -29,7 +29,10 @@ case class EmploymentAndPensionsIncomeDetail( incomeSourceId: Option[BigDecimal]
                                               dateEmploymentEnded: Option[String],
                                               taxablePayToDate: Option[BigDecimal],
                                               totalTaxToDate: Option[BigDecimal],
-                                              disguisedRemuneration: Option[Boolean]
+                                              disguisedRemuneration: Option[Boolean],
+                                              lumpSums: Option[LumpSums],
+                                              studentLoans: Option[StudentLoans],
+                                              benefitsInKind: Option[BenefitsInKind]
                                             )
 
 object EmploymentAndPensionsIncomeDetail {

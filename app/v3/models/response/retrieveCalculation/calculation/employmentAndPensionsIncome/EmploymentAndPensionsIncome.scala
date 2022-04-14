@@ -22,10 +22,7 @@ case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Opti
                                        totalOccupationalPensionIncome: Option[BigDecimal],
                                        totalBenefitsInKind: Option[BigDecimal],
                                        tipsIncome: Option[BigDecimal],
-                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]],
-                                       lumpSums: Option[LumpSums],
-                                       studentLoans: Option[StudentLoans],
-                                       benefitsInKind: Option[BenefitsInKind]
+                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]
                                       )
 
 object EmploymentAndPensionsIncome {
