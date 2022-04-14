@@ -19,7 +19,7 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.Source
 
-case class EmploymentAndPensionsIncomeDetail( incomeSourceId: Option[BigDecimal],
+case class EmploymentAndPensionsIncomeDetail( incomeSourceId: Option[String],
                                               source: Option[Source],
                                               occupationalPension: Option[Boolean],
                                               employerRef: Option[String],

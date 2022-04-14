@@ -19,7 +19,7 @@ package v3.models.response.retrieveCalculation.calculation.seafarersDeductions
 import play.api.libs.json.{Format, Json}
 
 case class SeafarersDeductions(totalSeafarersDeduction: BigDecimal,
-                               seafarersDeductionDetail: SeafarersDeductionDetail)
+                               seafarersDeductionDetail: Seq[SeafarersDeductionDetail])
 
 object SeafarersDeductions {
 
