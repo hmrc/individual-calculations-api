@@ -66,7 +66,7 @@ class RetrieveCalculationControllerSpec
 
   val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
-      calculationId = "", taxYear = TaxYear("2017-18"), requestedBy = "", requestedTimestamp = None,
+      calculationId = "", taxYear = TaxYear("2018"), requestedBy = "", requestedTimestamp = None,
       calculationReason = "", calculationTimestamp = None, calculationType = `inYear`,
       intentToSubmitFinalDeclaration = false, finalDeclaration = false, finalDeclarationTimestamp = None,
       periodFrom = "", periodTo = ""
