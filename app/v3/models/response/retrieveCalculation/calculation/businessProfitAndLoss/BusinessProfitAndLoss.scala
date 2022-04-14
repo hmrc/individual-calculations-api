@@ -18,8 +18,6 @@ package v3.models.response.retrieveCalculation.calculation.businessProfitAndLoss
 
 import play.api.libs.json._
 import v3.models.response.common.IncomeSourceType
-//import play.api.libs.functional.syntax._
-//import utils.enums.Enums
 import v3.models.response.common.IncomeSourceType.{
   `foreign-property-fhl-eea`,
   `foreign-property`,
@@ -49,6 +47,7 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                  totalIncomeTaxLossesCarriedForward: Option[BigInt],
                                  class4Loss: Option[BigInt],
                                  totalBroughtForwardClass4Losses: Option[BigInt],
+                                 broughtForwardClass4LossesUsed: Option[BigInt],
                                  carrySidewaysClass4LossesUsed: Option[BigInt],
                                  totalClass4LossesCarriedForward: Option[BigInt])
 
@@ -84,6 +83,7 @@ object BusinessProfitAndLoss {
     totalIncomeTaxLossesCarriedForward             <- (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
     class4Loss                                     <- (JsPath \ "class4Loss").readNullable[BigInt]
     totalBroughtForwardClass4Losses                <- (JsPath \ "totalBroughtForwardClass4Losses").readNullable[BigInt]
+    broughtForwardClass4LossesUsed                 <- (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt]
     carrySidewaysClass4LossesUsed                  <- (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt]
     totalClass4LossesCarriedForward                <- (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
 
@@ -110,6 +110,7 @@ object BusinessProfitAndLoss {
       totalIncomeTaxLossesCarriedForward = totalIncomeTaxLossesCarriedForward,
       class4Loss = class4Loss,
       totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
+      broughtForwardClass4LossesUsed = broughtForwardClass4LossesUsed,
       carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
       totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
     )
@@ -139,6 +140,7 @@ object BusinessProfitAndLoss {
         "totalIncomeTaxLossesCarriedForward"             -> Json.toJson(o.totalIncomeTaxLossesCarriedForward),
         "class4Loss"                                     -> Json.toJson(o.class4Loss),
         "totalBroughtForwardClass4Losses"                -> Json.toJson(o.totalBroughtForwardClass4Losses),
+        "broughtForwardClass4LossesUsed"                 -> Json.toJson(o.broughtForwardClass4LossesUsed),
         "carrySidewaysClass4LossesUsed"                  -> Json.toJson(o.carrySidewaysClass4LossesUsed),
         "totalClass4LossesCarriedForward"                -> Json.toJson(o.totalClass4LossesCarriedForward)
       ).filterNot { case (_, value) =>
@@ -146,4 +148,5 @@ object BusinessProfitAndLoss {
       }
     )
   }
+
 }
