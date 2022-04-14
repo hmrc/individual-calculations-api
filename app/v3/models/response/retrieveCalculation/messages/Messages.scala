@@ -19,7 +19,7 @@ package v3.models.response.retrieveCalculation.messages
 import play.api.libs.json.{Json, OFormat}
 
 
-case class Message(id: String, message: String)
+case class Message(id: String, text: String)
 
 case class Messages(info: Option[Seq[Message]],
                     warnings: Option[Seq[Message]],
