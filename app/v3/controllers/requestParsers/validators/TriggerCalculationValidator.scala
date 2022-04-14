@@ -16,31 +16,23 @@
 
 package v3.controllers.requestParsers.validators
 
-import v3.controllers.requestParsers.validators.validations.{JsonFormatValidation, NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
-import v3.models.domain.TriggerCalculationRequestBody
+import v3.controllers.requestParsers.validators.validations.{NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import v3.models.errors.MtdError
 import v3.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {
 
-  private val validationSet = List(parserValidation, jsonFormatValidation, bodyFormatValidation, bodyRuleValidation)
+  private val validationSet = List(parserValidation, ruleValidation)
 
   private def parserValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    List(NinoValidation.validate(data.nino))
+    List(
+      NinoValidation.validate(data.nino),
+      TaxYearValidation.validate(data.taxYear)
+    )
   }
 
-  private def jsonFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    List(JsonFormatValidation.validate[TriggerCalculationRequestBody](data.body.json))
-  }
-
-  private def bodyFormatValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    val req = data.body.json.as[TriggerCalculationRequestBody]
-    List(TaxYearValidation.validate(req.taxYear))
-  }
-
-  private def bodyRuleValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
-    val req = data.body.json.as[TriggerCalculationRequestBody]
-    List(TaxYearNotSupportedValidation.validate(req.taxYear))
+  private def ruleValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
+    List(TaxYearNotSupportedValidation.validate(data.taxYear))
   }
 
   override def validate(data: TriggerCalculationRawData): List[MtdError] = run(validationSet, data).distinct

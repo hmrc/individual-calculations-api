@@ -17,7 +17,7 @@
 package v3.handler
 
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Reads}
+import play.api.libs.json.{JsNull, JsValue, Reads}
 import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v3.handler.RequestDefn.{Get, Post}
 import v3.handler.RequestHandler.{ErrorMapping, SuccessMapping}
@@ -106,6 +106,5 @@ object RequestDefn {
 
   }
 
-  case class Post(uri: String, body: JsValue) extends RequestDefn
-
+  case class Post(uri: String, body: JsValue = JsNull) extends RequestDefn
 }

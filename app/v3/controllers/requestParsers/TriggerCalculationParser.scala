@@ -16,16 +16,19 @@
 
 package v3.controllers.requestParsers
 
-import javax.inject.Inject
 import v3.controllers.requestParsers.validators.TriggerCalculationValidator
-import v3.models.domain.{Nino, TriggerCalculationRequestBody}
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+
+import javax.inject.Inject
 
 class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
     extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
 
+  private val defaultFinalDeclaration = false
+
   override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
-    TriggerCalculationRequest(Nino(data.nino), data.body.json.as[TriggerCalculationRequestBody].taxYear)
+    TriggerCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.finalDeclaration.getOrElse(defaultFinalDeclaration))
   }
 
 }

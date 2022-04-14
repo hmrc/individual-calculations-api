@@ -17,20 +17,19 @@
 package v3.controllers
 
 import mocks.MockIdGenerator
-import play.api.libs.json.{Format, JsValue, Json}
-import play.api.mvc.{AnyContentAsJson, Result}
+import play.api.libs.json._
+import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v3.handler.{RequestDefn, RequestHandler}
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v3.models.domain.Nino
 import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v3.models.domain.TriggerCalculationRequestBody
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
-import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.hateoas.Method.GET
+import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v3.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
@@ -49,9 +48,10 @@ class TriggerCalculationControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino          = "AA123456A"
-  private val taxYear       = "2017-18"
-  private val correlationId = "X-123"
+  private val nino             = "AA123456A"
+  private val taxYear          = TaxYear.fromMtd("2017-18")
+  private val finalDeclaration = true
+  private val correlationId    = "X-123"
 
   private case class TaxYearWrapper(taxYear: String)
 
@@ -76,15 +76,13 @@ class TriggerCalculationControllerSpec
     """.stripMargin
   )
 
-  val triggerCalculation: TriggerCalculationRequestBody = TriggerCalculationRequestBody(taxYear)
-
-  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, AnyContentAsJson(Json.toJson(triggerCalculation)))
-  val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear)
+  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, taxYear.toMtd, Some(finalDeclaration))
+  val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration)
   val error: ErrorWrapper                    = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
 
-  private def uri = "/"
+  private def uri = s"/$nino/self-assessment/${taxYear.toMtd}/"
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -113,26 +111,22 @@ class TriggerCalculationControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
+          .doService(RequestDefn.Post(uri, JsNull), ACCEPTED)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
           .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
-        val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
+        val result: Future[Result] =
+          controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
         status(result) shouldBe ACCEPTED
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-        val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual",
-          None,
-          Map("nino" -> nino),
-          Some(Json.toJson(TaxYearWrapper("2017-18"))),
-          correlationId,
-          AuditResponse(ACCEPTED, None, Some(json)))
+        val detail: GenericAuditDetail =
+          GenericAuditDetail("Individual", None, Map("nino" -> nino), None, correlationId, AuditResponse(ACCEPTED, None, Some(json)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
@@ -146,10 +140,10 @@ class TriggerCalculationControllerSpec
           .returns(Right(requestData))
 
         MockStandardService
-          .doService(RequestDefn.Post(uri, Json.toJson(triggerCalculation)), ACCEPTED)
+          .doService(RequestDefn.Post(uri, JsNull), ACCEPTED)
           .returns(Future.successful(Left(error)))
 
-        val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
+        val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
         status(result) shouldBe FORBIDDEN
         contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
@@ -159,7 +153,7 @@ class TriggerCalculationControllerSpec
           "Individual",
           None,
           Map("nino" -> nino),
-          Some(Json.toJson(TaxYearWrapper("2017-18"))),
+          None,
           correlationId,
           AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None)
         )
@@ -195,7 +189,7 @@ class TriggerCalculationControllerSpec
         .wrap(response, TriggerCalculationHateoasData(nino, "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"))
         .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
-      val result: Future[Result] = controller.triggerCalculation(nino)(fakePostRequest(Json.toJson(triggerCalculation)))
+      val result: Future[Result] = controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
 
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }

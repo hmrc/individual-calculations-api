@@ -16,51 +16,43 @@
 
 package v3.controllers.requestParsers.validators
 
-import play.api.libs.json.Json
-import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
-import v3.models.errors.{NinoFormatError, RuleIncorrectOrEmptyBodyError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import v3.models.errors.{NinoFormatError, RuleTaxYearNotSupportedError, TaxYearFormatError}
 import v3.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidatorSpec extends UnitSpec {
 
-  private val validNino    = "AA123456A"
-  private val validTaxYear = "2017-18"
+  val validNino        = "AA123456A"
+  val validTaxYear     = "2017-18"
+  val finalDeclaration = Option(true)
 
   val validator = new TriggerCalculationValidator()
 
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> validTaxYear)))) shouldBe empty
+        validator.validate(TriggerCalculationRawData(validNino, validTaxYear, finalDeclaration)) shouldBe empty
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(TriggerCalculationRawData("A12344A", AnyContentAsJson(Json.obj("taxYear" -> validTaxYear)))) shouldBe
+        validator.validate(TriggerCalculationRawData("A12344A", validTaxYear, finalDeclaration)) shouldBe
           List(NinoFormatError)
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "20178")))) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, "20178", finalDeclaration)) shouldBe
           List(TaxYearFormatError)
       }
     }
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj("taxYear" -> "2016-17")))) shouldBe
+        validator.validate(TriggerCalculationRawData(validNino, "2016-17", finalDeclaration)) shouldBe
           List(RuleTaxYearNotSupportedError)
-      }
-    }
-
-    "return IncorrectOrEmptyBodyError error" when {
-      "an empty json body is supplied" in {
-        validator.validate(TriggerCalculationRawData(validNino, AnyContentAsJson(Json.obj()))) shouldBe
-          List(RuleIncorrectOrEmptyBodyError)
       }
     }
   }
