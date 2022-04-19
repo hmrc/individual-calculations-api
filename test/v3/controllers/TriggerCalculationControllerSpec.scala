@@ -76,7 +76,9 @@ class TriggerCalculationControllerSpec
     """.stripMargin
   )
 
-  val rawData: TriggerCalculationRawData     = TriggerCalculationRawData(nino, taxYear.toMtd, Some(finalDeclaration))
+  val rawDataWithFinalDeclaration            = TriggerCalculationRawData(nino, taxYear.toMtd, Some(finalDeclaration))
+  val rawDataWithFinalDeclarationFalse       = TriggerCalculationRawData(nino, taxYear.toMtd, Some(false))
+  val rawDataWithFinalDeclarationUndefined   = TriggerCalculationRawData(nino, taxYear.toMtd, None)
   val requestData: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration)
   val error: ErrorWrapper                    = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
 
@@ -105,7 +107,8 @@ class TriggerCalculationControllerSpec
 
   "handleRequest" should {
     "return ACCEPTED with list of calculations" when {
-      "happy path" in new Test {
+
+      def happyPath(rawData: TriggerCalculationRawData, controller: TriggerCalculationController): Unit = {
         MockTriggerCalculationParser
           .parse(rawData)
           .returns(Right(requestData))
@@ -119,24 +122,38 @@ class TriggerCalculationControllerSpec
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] =
-          controller.triggerCalculation(nino, taxYear.toMtd, Some(finalDeclaration))(fakePostRequest(uri))
+          controller.triggerCalculation(nino, taxYear.toMtd, rawData.finalDeclaration)(fakePostRequest(uri))
 
         status(result) shouldBe ACCEPTED
         contentAsJson(result) shouldBe json
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
+        val auditValues = Map("nino" -> nino, "taxYear" -> taxYear.toMtd, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}")
         val detail: GenericAuditDetail =
-          GenericAuditDetail("Individual", None, Map("nino" -> nino), None, correlationId, AuditResponse(ACCEPTED, None, Some(json)))
+          GenericAuditDetail("Individual", None, auditValues, None, correlationId, AuditResponse(ACCEPTED, None, Some(json)))
+
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
+      }
+
+      "happy path with final declaration" in new Test {
+        happyPath(rawDataWithFinalDeclaration, controller)
+      }
+
+      "happy path with final declaration as false" in new Test {
+        happyPath(rawDataWithFinalDeclarationFalse, controller)
+      }
+
+      "happy path with final declaration undefined" in new Test {
+        happyPath(rawDataWithFinalDeclarationUndefined, controller)
       }
     }
 
     "return FORBIDDEN with the correct error message" when {
       "no income submissions exist" in new Test {
         MockTriggerCalculationParser
-          .parse(rawData)
+          .parse(rawDataWithFinalDeclaration)
           .returns(Right(requestData))
 
         MockStandardService
@@ -149,10 +166,11 @@ class TriggerCalculationControllerSpec
         contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
+        val auditValues = Map("nino" -> nino, "taxYear" -> taxYear.toMtd, "finalDeclaration" -> "true")
         val detail: GenericAuditDetail = GenericAuditDetail(
           "Individual",
           None,
-          Map("nino" -> nino),
+          auditValues,
           None,
           correlationId,
           AuditResponse(FORBIDDEN, Some(List(AuditError(RuleNoIncomeSubmissionsExistError.code))), None)
@@ -165,7 +183,7 @@ class TriggerCalculationControllerSpec
 
     "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
       MockTriggerCalculationParser
-        .parse(rawData)
+        .parse(rawDataWithFinalDeclaration)
         .returns(Right(requestData))
 
       import controller.endpointLogContext
