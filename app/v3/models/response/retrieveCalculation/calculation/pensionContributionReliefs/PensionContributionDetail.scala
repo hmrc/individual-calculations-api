@@ -18,9 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.pensionContributionRe
 
 import play.api.libs.json.{Json, OFormat}
 
-
-case class PensionContributionDetail (regularPensionContributions: Option[BigDecimal],
-                                      oneOffPensionContributionsPaid: Option[BigDecimal])
+case class PensionContributionDetail(regularPensionContributions: Option[BigDecimal], oneOffPensionContributionsPaid: Option[BigDecimal])
 
 object PensionContributionDetail {
   implicit val format: OFormat[PensionContributionDetail] = Json.format[PensionContributionDetail]

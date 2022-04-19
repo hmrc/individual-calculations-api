@@ -18,10 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.seafarersDeductions
 
 import play.api.libs.json.{Format, Json}
 
-case class SeafarersDeductionDetail(nameOfShip: String,
-                                    amountDeducted: BigDecimal)
+case class SeafarersDeductionDetail(nameOfShip: String, amountDeducted: BigDecimal)
 
 object SeafarersDeductionDetail {
 
-  implicit val format: Format[SeafarersDeductionDetail]  = Json.format[SeafarersDeductionDetail]
+  implicit val format: Format[SeafarersDeductionDetail] = Json.format[SeafarersDeductionDetail]
 }

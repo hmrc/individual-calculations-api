@@ -22,5 +22,5 @@ case class RedundancyCompensationPaymentsUnderExemption(amount: Option[BigDecima
 
 object RedundancyCompensationPaymentsUnderExemption {
 
-  implicit val format: Format[RedundancyCompensationPaymentsUnderExemption]  = Json.format[RedundancyCompensationPaymentsUnderExemption]
+  implicit val format: Format[RedundancyCompensationPaymentsUnderExemption] = Json.format[RedundancyCompensationPaymentsUnderExemption]
 }

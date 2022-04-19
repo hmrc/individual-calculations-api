@@ -18,13 +18,13 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Json, OFormat}
 
-case class LossesAndClaims (
-                             resultOfClaimsApplied: Option[Seq[ResultOfClaimsApplied]],
-                             unclaimedLosses: Option[Seq[UnclaimedLoss]],
-                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
-                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
-                             claimsNotApplied: Option[Seq[ClaimNotApplied]],
-                           )
+case class LossesAndClaims(
+    resultOfClaimsApplied: Option[Seq[ResultOfClaimsApplied]],
+    unclaimedLosses: Option[Seq[UnclaimedLoss]],
+    carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
+    defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
+    claimsNotApplied: Option[Seq[ClaimNotApplied]]
+)
 
 object LossesAndClaims {
   implicit val format: OFormat[LossesAndClaims] = Json.format

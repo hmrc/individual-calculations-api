@@ -23,7 +23,7 @@ sealed trait Source
 
 object Source {
 
-  case object `customer` extends Source
+  case object `customer`  extends Source
   case object `HMRC HELD` extends Source
 
   implicit val format: Format[Source] = Enums.format[Source]

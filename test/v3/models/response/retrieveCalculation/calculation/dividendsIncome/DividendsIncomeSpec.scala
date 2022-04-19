@@ -21,7 +21,7 @@ import support.UnitSpec
 import v3.models.response.common.IncomeSourceType
 import v3.models.utils.JsonErrorValidators
 
-class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators{
+class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
 
   val ukModel: UkDividends = UkDividends(
     Some("000000000000210"),
@@ -148,6 +148,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators{
       }
     }
   }
+
   "writes" when {
     "passed valid model" should {
       "return valid JSON" in {
@@ -155,4 +156,5 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators{
       }
     }
   }
+
 }

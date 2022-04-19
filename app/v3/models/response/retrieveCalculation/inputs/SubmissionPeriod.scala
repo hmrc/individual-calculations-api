@@ -18,10 +18,7 @@ package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class SubmissionPeriod(periodId: Option[String],
-                            startDate: String,
-                            endDate: String,
-                            receivedDateTime: String)
+case class SubmissionPeriod(periodId: Option[String], startDate: String, endDate: String, receivedDateTime: String)
 
 object SubmissionPeriod {
   implicit val format: OFormat[SubmissionPeriod] = Json.format[SubmissionPeriod]

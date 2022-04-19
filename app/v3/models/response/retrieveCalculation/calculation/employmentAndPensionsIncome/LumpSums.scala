@@ -18,11 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 
 import play.api.libs.json.{Format, Json}
 
-case class LumpSums(totalLumpSum: BigDecimal,
-                    totalTaxPaid: Option[BigDecimal],
-                    lumpSumsDetail: LumpSumsDetail)
+case class LumpSums(totalLumpSum: BigDecimal, totalTaxPaid: Option[BigDecimal], lumpSumsDetail: LumpSumsDetail)
 
 object LumpSums {
 
-  implicit val format: Format[LumpSums]  = Json.format[LumpSums]
+  implicit val format: Format[LumpSums] = Json.format[LumpSums]
 }

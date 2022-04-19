@@ -29,5 +29,5 @@ case class CommonForeignDividend(incomeSourceType: Option[IncomeSourceType],
 
 object CommonForeignDividend {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-dividends`)
-  implicit val format: Format[CommonForeignDividend] = Json.format[CommonForeignDividend]
+  implicit val format: Format[CommonForeignDividend]            = Json.format[CommonForeignDividend]
 }

@@ -63,7 +63,7 @@ class CarriedForwardLossSpec extends UnitSpec {
        |  "lossType": "income"
        |}
        |""".stripMargin)
-  
+
   case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType, downstreamClaimType: String, claimType: ClaimType)
 
   val testData: Seq[Test] = Seq[Test](
@@ -77,7 +77,6 @@ class CarriedForwardLossSpec extends UnitSpec {
 
   "reads" should {
     "successfully read in a model" when {
-
 
       testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType, downstreamClaimType, claimType) =>
         s"provided downstream type of claim $downstreamClaimType" in {

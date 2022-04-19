@@ -18,10 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 
 import play.api.libs.json.{Format, Json}
 
-case class BenefitsInKind(totalBenefitsInKindReceived: Option[BigDecimal],
-                          benefitsInKindDetail: Option[BenefitsInKindDetail])
+case class BenefitsInKind(totalBenefitsInKindReceived: Option[BigDecimal], benefitsInKindDetail: Option[BenefitsInKindDetail])
 
 object BenefitsInKind {
 
-  implicit val format: Format[BenefitsInKind]  = Json.format[BenefitsInKind]
+  implicit val format: Format[BenefitsInKind] = Json.format[BenefitsInKind]
 }

@@ -23,5 +23,5 @@ case class StudentLoanPlan(planType: StudentLoanPlanType)
 
 object StudentLoanPlan {
   implicit val writes: OWrites[StudentLoanPlan] = Json.writes[StudentLoanPlan]
-  implicit val reads: Reads[StudentLoanPlan] = (JsPath \ "planType").read[StudentLoanPlanType].map(StudentLoanPlan(_))
+  implicit val reads: Reads[StudentLoanPlan]    = (JsPath \ "planType").read[StudentLoanPlanType].map(StudentLoanPlan(_))
 }

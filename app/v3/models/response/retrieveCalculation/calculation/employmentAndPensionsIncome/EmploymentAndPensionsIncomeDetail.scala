@@ -19,23 +19,22 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 import play.api.libs.json.{Format, Json}
 import v3.models.response.common.Source
 
-case class EmploymentAndPensionsIncomeDetail( incomeSourceId: Option[String],
-                                              source: Option[Source],
-                                              occupationalPension: Option[Boolean],
-                                              employerRef: Option[String],
-                                              employerName: Option[String],
-                                              payrollId: Option[String],
-                                              startDate: Option[String],
-                                              dateEmploymentEnded: Option[String],
-                                              taxablePayToDate: Option[BigDecimal],
-                                              totalTaxToDate: Option[BigDecimal],
-                                              disguisedRemuneration: Option[Boolean],
-                                              lumpSums: Option[LumpSums],
-                                              studentLoans: Option[StudentLoans],
-                                              benefitsInKind: Option[BenefitsInKind]
-                                            )
+case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
+                                             source: Option[Source],
+                                             occupationalPension: Option[Boolean],
+                                             employerRef: Option[String],
+                                             employerName: Option[String],
+                                             payrollId: Option[String],
+                                             startDate: Option[String],
+                                             dateEmploymentEnded: Option[String],
+                                             taxablePayToDate: Option[BigDecimal],
+                                             totalTaxToDate: Option[BigDecimal],
+                                             disguisedRemuneration: Option[Boolean],
+                                             lumpSums: Option[LumpSums],
+                                             studentLoans: Option[StudentLoans],
+                                             benefitsInKind: Option[BenefitsInKind])
 
 object EmploymentAndPensionsIncomeDetail {
 
-  implicit val format: Format[EmploymentAndPensionsIncomeDetail]  = Json.format[EmploymentAndPensionsIncomeDetail]
+  implicit val format: Format[EmploymentAndPensionsIncomeDetail] = Json.format[EmploymentAndPensionsIncomeDetail]
 }

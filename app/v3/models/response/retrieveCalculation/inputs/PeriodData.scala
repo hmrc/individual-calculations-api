@@ -18,11 +18,7 @@ package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PeriodData(deductionFromDate: String,
-                      deductionToDate: String,
-                      submissionTimestamp: String,
-                      source: String,
-                      deductionAmount: BigDecimal)
+case class PeriodData(deductionFromDate: String, deductionToDate: String, submissionTimestamp: String, source: String, deductionAmount: BigDecimal)
 
 object PeriodData {
   implicit val format: OFormat[PeriodData] = Json.format[PeriodData]

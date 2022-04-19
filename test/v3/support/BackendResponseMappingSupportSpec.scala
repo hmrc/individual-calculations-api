@@ -198,7 +198,8 @@ class BackendResponseMappingSupportSpec extends UnitSpec {
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapDesErrors(downstreamErrorCodeMap)(ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
+        mapping.mapDesErrors(downstreamErrorCodeMap)(
+          ResponseWrapper(correlationId, OutboundError(BAD_REQUEST, ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
           ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)), BAD_REQUEST)
       }
     }

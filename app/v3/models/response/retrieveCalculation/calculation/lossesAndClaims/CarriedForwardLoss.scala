@@ -33,6 +33,7 @@ case class CarriedForwardLoss(
 )
 
 object CarriedForwardLoss {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property-non-fhl`,

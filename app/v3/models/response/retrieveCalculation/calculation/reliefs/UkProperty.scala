@@ -18,9 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class UkProperty(amountClaimed: BigInt,
-                      allowableAmount: BigDecimal,
-                      carryForwardAmount: Option[BigDecimal])
+case class UkProperty(amountClaimed: BigInt, allowableAmount: BigDecimal, carryForwardAmount: Option[BigDecimal])
 
 object UkProperty {
   implicit val format: OFormat[UkProperty] = Json.format[UkProperty]

@@ -18,9 +18,7 @@ package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ConstructionIndustryScheme(employerRef: String,
-                                      contractorName: Option[String],
-                                      periodData: Seq[PeriodData])
+case class ConstructionIndustryScheme(employerRef: String, contractorName: Option[String], periodData: Seq[PeriodData])
 
 object ConstructionIndustryScheme {
   implicit val format: OFormat[ConstructionIndustryScheme] = Json.format[ConstructionIndustryScheme]

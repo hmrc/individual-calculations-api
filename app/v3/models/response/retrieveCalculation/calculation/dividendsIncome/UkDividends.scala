@@ -27,5 +27,5 @@ case class UkDividends(incomeSourceId: Option[String],
 
 object UkDividends {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`uk-dividends`)
-  implicit val format: Format[UkDividends] = Json.format[UkDividends]
+  implicit val format: Format[UkDividends]                      = Json.format[UkDividends]
 }
