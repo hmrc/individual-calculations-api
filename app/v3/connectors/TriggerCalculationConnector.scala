@@ -18,38 +18,32 @@ package v3.connectors
 
 import config.AppConfig
 import org.apache.commons.lang3.BooleanUtils
-import play.api.libs.json.{JsObject, Json, Reads}
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.DesUri
 import v3.connectors.httpparsers.StandardHttpParser._
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.request.TriggerCalculationRequest
+import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-// FIXME REMOVE WHEN MODELS AVAILABLE
-case class TriggerResponse(id: String)
-
-object TriggerResponse {
-  implicit val reads: Reads[TriggerResponse] = Json.reads
-}
-
 @Singleton
 class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def triggerCalculation(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)(implicit
+  def triggerCalculation(request: TriggerCalculationRequest)(implicit
       hc: HeaderCarrier,
       ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[TriggerResponse]] = {
+      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
-    val ninoString        = nino.value
-    val downstreamTaxYear = taxYear.toDownstream
-    val crystallize       = BooleanUtils.toStringTrueFalse(finalDeclaration)
+    val ninoString        = request.nino.value
+    val downstreamTaxYear = request.taxYear.toDownstream
+    val crystallize       = BooleanUtils.toStringTrueFalse(request.finalDeclaration)
 
     // Note using empty JSON object ({}) which works for v2 tax calc...
     post(
       body = JsObject.empty,
-      uri = DesUri[TriggerResponse](s"income-tax/nino/$ninoString/taxYear/$downstreamTaxYear/tax-calculation?crystallise=$crystallize")
+      uri = DesUri[TriggerCalculationResponse](s"income-tax/nino/$ninoString/taxYear/$downstreamTaxYear/tax-calculation?crystallise=$crystallize")
     )
 
   }

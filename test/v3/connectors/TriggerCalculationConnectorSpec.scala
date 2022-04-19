@@ -20,16 +20,18 @@ import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.Json
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.outcomes.ResponseWrapper
+import v3.models.request.TriggerCalculationRequest
+import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.Future
 
 class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
-  val ninoString: String        = "AA123456A"
-  val nino: Nino                = Nino(ninoString)
-  val downstreamTaxYear         = "2019"
-  val taxYear: TaxYear          = TaxYear.fromDownstream(downstreamTaxYear)
-  val response: TriggerResponse = TriggerResponse("someCalcId")
+  val ninoString: String                   = "AA123456A"
+  val nino: Nino                           = Nino(ninoString)
+  val downstreamTaxYear                    = "2019"
+  val taxYear: TaxYear                     = TaxYear.fromDownstream(downstreamTaxYear)
+  val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 
   class Test extends MockHttpClient with MockAppConfig {
 
@@ -55,7 +57,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, response))
+        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, taxYear, finalDeclaration)
+        val outcome                            = Right(ResponseWrapper(correlationId, response))
 
         MockedHttpClient
           .post(
@@ -66,7 +69,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           )
           .returns(Future.successful(outcome))
 
-        await(connector.triggerCalculation(nino, taxYear, finalDeclaration)) shouldBe outcome
+        await(connector.triggerCalculation(request)) shouldBe outcome
       }
   }
 
