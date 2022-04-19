@@ -28,11 +28,7 @@ class ControllerBaseSpec extends UnitSpec with Status with MimeTypes with Header
 
   lazy val cc: ControllerComponents = stubControllerComponents()
 
-  lazy val fakeGetRequest: FakeRequest[AnyContentAsEmpty.type] = fakeRequest.withHeaders(
-    HeaderNames.AUTHORIZATION -> "Bearer Token"
-  )
-
-  def fakeGetRequest(url: String): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", url).withHeaders(
+  val fakeGetRequest: FakeRequest[AnyContentAsEmpty.type] = fakeRequest.withHeaders(
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
 

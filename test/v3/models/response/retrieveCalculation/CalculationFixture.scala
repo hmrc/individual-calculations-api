@@ -17,13 +17,47 @@
 package v3.models.response.retrieveCalculation
 
 import play.api.libs.json.{JsValue, Json}
+import v3.models.domain.TaxYear
+import v3.models.response.common.CalculationType.`inYear`
+import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
+import v3.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
 
   val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("calculation_mtd.json"))
+    Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_mtd.json"))
 
   val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("calculation_downstream.json"))
+    Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_downstream.json"))
+
+  val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = Metadata(
+      calculationId = "",
+      taxYear = TaxYear.fromDownstream("2018"),
+      requestedBy = "",
+      requestedTimestamp = None,
+      calculationReason = "",
+      calculationTimestamp = None,
+      calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false,
+      finalDeclaration = false,
+      finalDeclarationTimestamp = None,
+      periodFrom = "",
+      periodTo = ""
+    ),
+    inputs = Inputs(
+      PersonalInformation("", None, "UK", None, None, None, None, None),
+      IncomeSources(None, None),
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None
+    ),
+    calculation = None,
+    messages = None
+  )
 
 }

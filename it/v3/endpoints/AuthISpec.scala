@@ -20,12 +20,12 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
+import v3.models.response.retrieveCalculation.CalculationFixture
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class AuthISpec extends V3IntegrationBaseSpec {
+class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
     val nino: String  = "AA123456A"
@@ -33,14 +33,6 @@ class AuthISpec extends V3IntegrationBaseSpec {
 
     def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
     def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
-
-    val responseBody: JsValue = Json.parse(
-      """
-        |{
-        | "todo": "extend CalculationFixture and use the downstream json when feature branch merged in"
-        |}
-       """.stripMargin
-    )
 
     def setupStubs(): StubMapping
 
@@ -76,7 +68,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, responseBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, calculationDownstreamJson)
         }
 
         val response: WSResponse = await(request().get())

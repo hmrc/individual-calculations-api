@@ -16,11 +16,21 @@
 
 package v3.controllers
 
+import play.api.libs.json.Json
 import play.api.mvc.Result
+import play.api.mvc.Results.InternalServerError
 import utils.Logging
+import v3.models.errors.{DownstreamError, ErrorWrapper}
 
 trait BaseController {
   self: Logging =>
+
+  protected def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
+    logger.error(
+      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+        s"Unhandled error: $errorWrapper")
+    InternalServerError(Json.toJson(DownstreamError))
+  }
 
   implicit class Response(result: Result) {
 
@@ -28,8 +38,7 @@ trait BaseController {
 
       val newHeaders: Seq[(String, String)] = responseHeaders ++ Seq(
         "X-CorrelationId"        -> correlationId,
-        "X-Content-Type-Options" -> "nosniff",
-        "Content-Type"           -> "application/json"
+        "X-Content-Type-Options" -> "nosniff"
       )
 
       result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
