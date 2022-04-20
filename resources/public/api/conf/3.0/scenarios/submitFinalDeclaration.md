@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <td><p>FINAL_DECLARATION_RECEIVED</p></td>
-            <td><p>Simulates the scenario where a crystallisation declaration has already been received</p></td>
+            <td><p>Simulates the scenario where a final declaration has already been received</p></td>
         </tr>
         <tr>
             <td><p>INCOME_SOURCES_INVALID</p></td>

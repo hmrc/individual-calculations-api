@@ -66,7 +66,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
         val input = Seq(
           ("INVALID_NINO", NinoFormatError),
           ("INVALID_TAX_YEAR", TaxYearFormatError),
-          ("INVALID_TAX_CRYSTALLISE", FormatFinalDeclaration),
+          ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
           ("INVALID_REQUEST", DownstreamError),
           ("NO_SUBMISSION_EXIST", RuleNoSubmissionsExistError),
           ("CONFLICT", RuleFinalDeclarationReceivedError),

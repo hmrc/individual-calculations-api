@@ -64,7 +64,7 @@ object TypeFormatError
       message = "The provided type value is invalid"
     )
 
-object FormatFinalDeclaration
+object FinalDeclarationFormatError
     extends MtdError(
       code = "FORMAT_FINAL_DECLARATION",
       message = "The provided finalDeclaration is invalid"
