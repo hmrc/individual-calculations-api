@@ -81,7 +81,7 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
       val auditHandler: AuditHandler[GenericAuditDetail] = AuditHandler.withoutBody(
         "triggerASelfAssessmentTaxCalculation",
         "trigger-a-self-assessment-tax-calculation",
-        Map("nino" -> nino),
+        Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
         request
       )
 

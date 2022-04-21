@@ -33,14 +33,13 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
     val taxYear: String       = "2018-19"
     val correlationId: String = "X-123"
 
-    def uri: String = s"/$nino/self-assessment/$taxYear/"
-
-    def backendUrl: String = uri
+    val backendUrl: String = s"/$nino/self-assessment/$taxYear/"
 
     def setupStubs(): StubMapping
 
-    def request(nino: String, taxYear: String): WSRequest = {
-      val uri = s"/$nino/self-assessment/$taxYear/"
+    def request(nino: String, taxYear: String, maybeFinalDeclaration: Option[Boolean]): WSRequest = {
+      val suffix = maybeFinalDeclaration.map(d => s"?finalDeclaration=$d").getOrElse("")
+      val uri    = s"/$nino/self-assessment/$taxYear/$suffix"
 
       setupStubs()
       buildRequest(uri)
@@ -76,7 +75,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, successBody)
         }
 
-        val response: WSResponse = await(request(nino, "2018-19").post(JsNull))
+        val response: WSResponse = await(request(nino, "2018-19", maybeFinalDeclaration = Some(true)).post(JsNull))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -96,7 +95,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
             MtdIdLookupStub.ninoFound(requestNino)
           }
 
-          val response: WSResponse = await(request(nino, requestTaxYear).post(JsNull))
+          val response: WSResponse = await(request(nino, requestTaxYear, maybeFinalDeclaration = Some(true)).post(JsNull))
           response.status shouldBe expectedStatus
           response.json shouldBe Json.toJson(expectedBody)
           response.header("Content-Type") shouldBe Some("application/json")
@@ -132,7 +131,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
               BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request(nino, "2018-19").post(JsNull))
+            val response: WSResponse = await(request(nino, "2018-19", maybeFinalDeclaration = Some(true)).post(JsNull))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
