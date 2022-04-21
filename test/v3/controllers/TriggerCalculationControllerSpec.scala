@@ -48,8 +48,8 @@ class TriggerCalculationControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino    = "AA123456A"
-  private val taxYear = TaxYear.fromMtd("2017-18")
+  private val nino          = "AA123456A"
+  private val taxYear       = TaxYear.fromMtd("2017-18")
   private val correlationId = "X-123"
 
   private case class TaxYearWrapper(taxYear: String)
