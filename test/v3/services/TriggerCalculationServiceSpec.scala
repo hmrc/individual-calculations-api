@@ -68,7 +68,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("INVALID_TAX_YEAR", TaxYearFormatError),
           ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
           ("INVALID_REQUEST", DownstreamError),
-          ("NO_SUBMISSION_EXIST", RuleNoSubmissionsExistError),
+          ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
           ("CONFLICT", RuleFinalDeclarationReceivedError),
           ("SERVER_ERROR", DownstreamError),
           ("SERVICE_UNAVAILABLE", DownstreamError)
