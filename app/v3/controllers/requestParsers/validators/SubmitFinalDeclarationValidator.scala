@@ -18,23 +18,23 @@ package v3.controllers.requestParsers.validators
 
 import v3.controllers.requestParsers.validators.validations._
 import v3.models.errors.MtdError
-import v3.models.request.TriggerCalculationRawData
+import v3.models.request.SubmitFinalDeclarationRawData
 
-class TriggerCalculationValidator extends Validator[TriggerCalculationRawData] {
+class SubmitFinalDeclarationValidator extends Validator[SubmitFinalDeclarationRawData] {
 
   private val validationSet = List(parserValidation, ruleValidation)
 
-  private def parserValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
+  private def parserValidation: SubmitFinalDeclarationRawData => List[List[MtdError]] = { data =>
     List(
       NinoValidation.validate(data.nino),
       TaxYearValidation.validate(data.taxYear),
-      FinalDeclarationValidation.validateOptional(data.finalDeclaration)
+      CalculationIdValidation.validate(data.calculationId)
     )
   }
 
-  private def ruleValidation: TriggerCalculationRawData => List[List[MtdError]] = { data =>
+  private def ruleValidation: SubmitFinalDeclarationRawData => List[List[MtdError]] = { data =>
     List(TaxYearNotSupportedValidation.validate(data.taxYear))
   }
 
-  override def validate(data: TriggerCalculationRawData): List[MtdError] = run(validationSet, data).distinct
+  override def validate(data: SubmitFinalDeclarationRawData): List[MtdError] = run(validationSet, data).distinct
 }

@@ -16,37 +16,38 @@
 
 package v3.controllers.requestParsers
 
-import play.api.http.Status._
+import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
-import v3.mocks.validators.MockTriggerCalculationValidator
+import v3.mocks.validators.MockSubmitFinalDeclarationTriggerValidator
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
-import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
-class TriggerCalculationParserSpec extends UnitSpec {
+class SubmitFinalDeclarationParserSpec extends UnitSpec {
+  
+  val nino     = "AA123456B"
+  val taxYear  = "2017-18"
+  val calcId   = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  val nino: String                   = "AA123456B"
-  val taxYear: String                = "2017-18"
-  val finalDeclaration: String       = "true"
-  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-  trait Test extends MockTriggerCalculationValidator {
-    lazy val parser = new TriggerCalculationParser(mockValidator)
+  trait Test extends MockSubmitFinalDeclarationTriggerValidator {
+    lazy val parser = new SubmitFinalDeclarationParser(mockValidator)
   }
 
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, Some(finalDeclaration))
+        val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = true))
+        parser.parseRequest(data) shouldBe Right(SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calcId))
       }
     }
 
     "single validation error" should {
       "return the error" in new Test {
-        val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, Some(finalDeclaration))
+        val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
@@ -55,7 +56,7 @@ class TriggerCalculationParserSpec extends UnitSpec {
 
     "multiple validation errors" should {
       "return the errors" in new Test {
-        val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, Some(finalDeclaration))
+        val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe
@@ -65,3 +66,4 @@ class TriggerCalculationParserSpec extends UnitSpec {
   }
 
 }
+
