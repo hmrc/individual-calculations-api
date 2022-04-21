@@ -18,10 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.employmentExpenses
 
 import play.api.libs.json.{Format, Json}
 
-case class EmploymentExpenses(totalEmploymentExpenses: Option[BigDecimal],
-                              employmentExpensesDetail: Option[EmploymentExpensesDetail])
+case class EmploymentExpenses(totalEmploymentExpenses: Option[BigDecimal], employmentExpensesDetail: Option[EmploymentExpensesDetail])
 
 object EmploymentExpenses {
 
-  implicit val format: Format[EmploymentExpenses]  = Json.format[EmploymentExpenses]
+  implicit val format: Format[EmploymentExpenses] = Json.format[EmploymentExpenses]
 }

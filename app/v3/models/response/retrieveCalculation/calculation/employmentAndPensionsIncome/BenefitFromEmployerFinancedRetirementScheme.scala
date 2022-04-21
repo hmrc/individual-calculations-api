@@ -25,5 +25,5 @@ case class BenefitFromEmployerFinancedRetirementScheme(amount: Option[BigDecimal
 
 object BenefitFromEmployerFinancedRetirementScheme {
 
-  implicit val format: Format[BenefitFromEmployerFinancedRetirementScheme]  = Json.format[BenefitFromEmployerFinancedRetirementScheme]
+  implicit val format: Format[BenefitFromEmployerFinancedRetirementScheme] = Json.format[BenefitFromEmployerFinancedRetirementScheme]
 }

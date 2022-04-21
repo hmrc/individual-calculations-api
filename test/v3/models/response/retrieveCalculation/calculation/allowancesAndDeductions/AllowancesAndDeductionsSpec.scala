@@ -53,8 +53,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
         ))
     )
 
-  val mtdJson: JsValue = Json.parse(
-    """
+  val mtdJson: JsValue = Json.parse("""
       |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
@@ -83,8 +82,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |}
       |""".stripMargin)
 
-  val ifsJson: JsValue = Json.parse(
-    """
+  val ifsJson: JsValue = Json.parse("""
       |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
@@ -120,6 +118,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       }
     }
   }
+
   "writes" when {
     "passed valid model" should {
       "return valid json" in {
@@ -127,4 +126,5 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       }
     }
   }
+
 }

@@ -25,5 +25,5 @@ case class LumpSumsDetail(taxableLumpSumsAndCertainIncome: Option[TaxableLumpSum
 
 object LumpSumsDetail {
 
-  implicit val format: Format[LumpSumsDetail]  = Json.format[LumpSumsDetail]
+  implicit val format: Format[LumpSumsDetail] = Json.format[LumpSumsDetail]
 }

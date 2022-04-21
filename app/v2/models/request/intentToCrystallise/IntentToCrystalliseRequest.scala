@@ -16,7 +16,6 @@
 
 package v2.models.request.intentToCrystallise
 
-import common.models.domain.DownstreamTaxYear
-import v2.models.domain.Nino
+import v2.models.domain.{DownstreamTaxYear, Nino}
 
 case class IntentToCrystalliseRequest(nino: Nino, taxYear: DownstreamTaxYear)

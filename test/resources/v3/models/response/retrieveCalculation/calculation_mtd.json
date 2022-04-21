@@ -232,7 +232,7 @@
             "countryCode": "str",
             "foreignIncome": 5001.99,
             "foreignTax": 5002.99,
-            "dtaRate": 20.01,
+            "dtaRate": 20,
             "dtaAmount": 5003.99,
             "ukLiabilityOnIncome": 5004.99,
             "foreignTaxCredit": 5005.99,

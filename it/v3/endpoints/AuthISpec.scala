@@ -20,36 +20,19 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
+import v3.models.response.retrieveCalculation.CalculationFixture
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class AuthISpec extends V3IntegrationBaseSpec {
+class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
-    val nino: String          = "AA123456A"
-    val taxYear: String       = "2017-18"
-    val data: String          = "someData"
-    val correlationId: String = "X-123"
+    val nino: String  = "AA123456A"
+    val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment"
-    def backendUrl: String = uri
-
-    val responseBody: JsValue = Json.parse(
-      """
-        |{
-        | "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        | "links":[
-        |   {
-        |   "href":"/individuals/calculations/AA123456A/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |   "method":"GET",
-        |   "rel":"self"
-        |     }
-        |   ]
-        |}
-       """.stripMargin
-    )
+    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
+    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
@@ -73,7 +56,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -85,11 +68,11 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map(), ACCEPTED, responseBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, calculationDownstreamJson)
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
-        response.status shouldBe Status.ACCEPTED
+        val response: WSResponse = await(request().get())
+        response.status shouldBe Status.OK
       }
     }
 
@@ -104,7 +87,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -120,7 +103,7 @@ class AuthISpec extends V3IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().post(Json.parse("""{"taxYear" : "2018-19"}""")))
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }

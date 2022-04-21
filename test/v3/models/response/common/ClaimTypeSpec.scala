@@ -32,11 +32,12 @@ class ClaimTypeSpec extends UnitSpec with EnumJsonSpecSupport {
   )
 
   testWrites[ClaimType](
-    `carry-forward`                                  -> "carry-forward",
-    `carry-sideways`                                 -> "carry-sideways",
+    `carry-forward`                   -> "carry-forward",
+    `carry-sideways`                  -> "carry-sideways",
     `carry-forward-to-carry-sideways` -> "carry-forward-to-carry-sideways",
-    `carry-sideways-fhl`                             -> "carry-sideways-fhl",
-    `carry-backwards`                                -> "carry-backwards",
-    `carry-backwards-general-income`                 -> "carry-backwards-general-income"
+    `carry-sideways-fhl`              -> "carry-sideways-fhl",
+    `carry-backwards`                 -> "carry-backwards",
+    `carry-backwards-general-income`  -> "carry-backwards-general-income"
   )
+
 }

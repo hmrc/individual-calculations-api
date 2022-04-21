@@ -70,10 +70,12 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `capital-gains-tax`         -> "capital-gains-tax",
     `charitable-giving`         -> "charitable-giving"
   )
+
   "formatRestricted" when {
     "reads" should {
       "work when the provided IncomeSourceType is in the list" in {
-        JsString("01").as[IncomeSourceType](IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`)) shouldBe IncomeSourceType.`self-employment`
+        JsString("01").as[IncomeSourceType](
+          IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`)) shouldBe IncomeSourceType.`self-employment`
       }
       "fail when the provided IncomeSourceType is not in the list" in {
         val exception = intercept[JsResultException] {

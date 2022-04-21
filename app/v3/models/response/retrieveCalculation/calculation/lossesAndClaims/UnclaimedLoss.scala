@@ -18,14 +18,14 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, LossType}
+import v3.models.response.common.IncomeSourceType
 
 case class UnclaimedLoss(
     incomeSourceId: Option[String],
     incomeSourceType: IncomeSourceType,
     taxYearLossIncurred: TaxYear,
     currentLossValue: BigInt,
-    lossType: Option[LossType]
+    lossType: Option[String]
 )
 
 object UnclaimedLoss {

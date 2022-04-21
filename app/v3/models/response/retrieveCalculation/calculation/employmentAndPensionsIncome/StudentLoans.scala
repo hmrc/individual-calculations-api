@@ -18,10 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 
 import play.api.libs.json.{Format, Json}
 
-case class StudentLoans(uglDeductionAmount: Option[BigDecimal],
-                        pglDeductionAmount: Option[BigDecimal])
+case class StudentLoans(uglDeductionAmount: Option[BigDecimal], pglDeductionAmount: Option[BigDecimal])
 
 object StudentLoans {
 
-  implicit val format: Format[StudentLoans]  = Json.format[StudentLoans]
+  implicit val format: Format[StudentLoans] = Json.format[StudentLoans]
 }

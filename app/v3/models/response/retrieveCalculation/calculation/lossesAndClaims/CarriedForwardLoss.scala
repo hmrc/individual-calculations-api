@@ -18,7 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.domain.TaxYear
-import v3.models.response.common.{ClaimType, IncomeSourceType, LossType}
+import v3.models.response.common.{ClaimType, IncomeSourceType}
 
 case class CarriedForwardLoss(
     claimId: Option[String],
@@ -29,10 +29,11 @@ case class CarriedForwardLoss(
     taxYearClaimMade: Option[TaxYear],
     taxYearLossIncurred: TaxYear,
     currentLossValue: BigInt,
-    lossType: Option[LossType]
+    lossType: Option[String]
 )
 
 object CarriedForwardLoss {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property-non-fhl`,

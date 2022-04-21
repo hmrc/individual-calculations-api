@@ -51,4 +51,5 @@ object Metadata {
       (JsPath \ "periodFrom").read[String] and
       (JsPath \ "periodTo").read[String]
   )(Metadata.apply _)
+
 }

@@ -22,10 +22,9 @@ case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Opti
                                        totalOccupationalPensionIncome: Option[BigDecimal],
                                        totalBenefitsInKind: Option[BigDecimal],
                                        tipsIncome: Option[BigDecimal],
-                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]
-                                      )
+                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]])
 
 object EmploymentAndPensionsIncome {
 
-  implicit val format: Format[EmploymentAndPensionsIncome]  = Json.format[EmploymentAndPensionsIncome]
+  implicit val format: Format[EmploymentAndPensionsIncome] = Json.format[EmploymentAndPensionsIncome]
 }

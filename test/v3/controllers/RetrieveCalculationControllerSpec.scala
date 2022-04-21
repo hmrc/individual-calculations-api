@@ -20,11 +20,9 @@ import mocks.MockIdGenerator
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
-import v3.handler.{RequestDefn, RequestHandler}
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
-import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
+import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockRetrieveCalculationService}
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.hateoas.Method.GET
@@ -37,7 +35,6 @@ import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, Per
 import v3.models.response.retrieveCalculation.messages.Messages
 import v3.models.response.retrieveCalculation.metadata.Metadata
 import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
-import v3.support.BackendResponseMappingSupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,7 +45,7 @@ class RetrieveCalculationControllerSpec
     with MockMtdIdLookupService
     with MockRetrieveCalculationParser
     with MockHateoasFactory
-    with MockStandardService
+    with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator {
 
@@ -61,18 +58,62 @@ class RetrieveCalculationControllerSpec
   val inputsModel: Inputs = Inputs(
     PersonalInformation("", None, "UK", None, None, None, None, None),
     IncomeSources(None, None),
-    None, None, None, None, None, None, None
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
   )
 
   val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
-      calculationId = "", taxYear = TaxYear("2018"), requestedBy = "", requestedTimestamp = None,
-      calculationReason = "", calculationTimestamp = None, calculationType = `inYear`,
-      intentToSubmitFinalDeclaration = false, finalDeclaration = false, finalDeclarationTimestamp = None,
-      periodFrom = "", periodTo = ""
+      calculationId = "",
+      taxYear = TaxYear("2018"),
+      requestedBy = "",
+      requestedTimestamp = None,
+      calculationReason = "",
+      calculationTimestamp = None,
+      calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false,
+      finalDeclaration = false,
+      finalDeclarationTimestamp = None,
+      periodFrom = "",
+      periodTo = ""
     ),
     inputs = inputsModel,
-    calculation = Some(Calculation("")),
+    calculation = Some(
+      Calculation(
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None
+      )),
     messages = Some(Messages(None, None, None))
   )
 
@@ -97,9 +138,7 @@ class RetrieveCalculationControllerSpec
       |    },
       |    "incomeSources": {}
       |  },
-      |  "calculation" : {
-      |    "field": ""
-      |  },
+      |  "calculation" : {},
       |  "messages" : {
       |  },
       |  "links" : [
@@ -115,11 +154,9 @@ class RetrieveCalculationControllerSpec
 
   val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), taxYear, calculationId)
-  val error: ErrorWrapper                     = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None, FORBIDDEN)
+  val error: ErrorWrapper                     = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
-
-  private def uri = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
@@ -128,9 +165,8 @@ class RetrieveCalculationControllerSpec
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       retrieveCalculationParser = mockRetrieveCalculationParser,
-      service = mockStandardService,
+      service = mockService,
       cc = cc,
-      auditService = mockAuditService,
       hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator
     )
@@ -141,21 +177,21 @@ class RetrieveCalculationControllerSpec
   }
 
   "handleRequest" should {
-    "return ACCEPTED with list of calculations" when {
+    "return OK with the calculation" when {
       "happy path" in new Test {
         MockRetrieveCalculationParser
           .parse(rawData)
           .returns(Right(requestData))
 
-        MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
           .wrap(response, RetrieveCalculationHateoasData(nino, taxYear, calculationId))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
-        val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest(""))
+        val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe json
@@ -163,53 +199,56 @@ class RetrieveCalculationControllerSpec
       }
     }
 
-    "return FORBIDDEN with the correct error message" when {
-      "no income submissions exist" in new Test {
-        MockRetrieveCalculationParser
-          .parse(rawData)
-          .returns(Right(requestData))
+    "return the error as per spec" when {
+      "parser errors occur" must {
+        def errorsFromParserTester(error: MtdError, expectedStatus: Int): Unit = {
+          s"a ${error.code} error is returned from the parser" in new Test {
+            MockRetrieveCalculationParser.parse(rawData) returns Left(ErrorWrapper(correlationId, error, None))
 
-        MockStandardService
-          .doService(RequestDefn.Get(uri), OK)
-          .returns(Future.successful(Left(error)))
+            val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest)
 
-        val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest(""))
+            contentAsJson(result) shouldBe Json.toJson(error)
+            status(result) shouldBe expectedStatus
+            header("X-CorrelationId", result) shouldBe Some(correlationId)
+          }
+        }
 
-        status(result) shouldBe FORBIDDEN
-        contentAsJson(result) shouldBe Json.toJson(RuleNoIncomeSubmissionsExistError)
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
-      }
-    }
-
-    "map service error mapping according to spec" in new Test with BackendResponseMappingSupport with Logging {
-      MockRetrieveCalculationParser
-        .parse(rawData)
-        .returns(Right(requestData))
-
-      import controller.endpointLogContext
-
-      val mappingChecks: RequestHandler[RetrieveCalculationResponse, RetrieveCalculationResponse] => Unit =
-        allChecks[RetrieveCalculationResponse, RetrieveCalculationResponse](
-          ("INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
-          ("INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
-          ("INVALID_CORRELATIONID", BAD_REQUEST, DownstreamError, INTERNAL_SERVER_ERROR),
-          ("INVALID_CONSUMERID", BAD_REQUEST, DownstreamError, INTERNAL_SERVER_ERROR),
-          ("NO_DATA_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
-          ("SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR),
-          ("SERVICE_UNAVAILABLE", SERVICE_UNAVAILABLE, DownstreamError, INTERNAL_SERVER_ERROR)
+        val input = Seq(
+          (BadRequestError, BAD_REQUEST),
+          (NinoFormatError, BAD_REQUEST),
+          (CalculationIdFormatError, BAD_REQUEST),
+          (TaxYearFormatError, BAD_REQUEST),
+          (RuleTaxYearNotSupportedError, BAD_REQUEST),
+          (RuleTaxYearRangeInvalidError, BAD_REQUEST)
         )
 
-      MockStandardService
-        .doServiceWithMappings(mappingChecks)
-        .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+        input.foreach(args => (errorsFromParserTester _).tupled(args))
+      }
 
-      MockHateoasFactory
-        .wrap(response, RetrieveCalculationHateoasData(nino, taxYear, calculationId))
-        .returns(HateoasWrapper(response, Seq(testHateoasLink)))
+      "service errors occur" must {
+        def serviceErrors(mtdError: MtdError, expectedStatus: Int): Unit = {
+          s"a $mtdError error is returned from the service" in new Test {
+            MockRetrieveCalculationParser.parse(rawData) returns Right(requestData)
 
-      val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest(""))
+            MockRetrieveCalculationService.retrieveCalculation(requestData) returns Future.successful(Left(ErrorWrapper(correlationId, mtdError)))
 
-      header("X-CorrelationId", result) shouldBe Some(correlationId)
+            val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest)
+
+            contentAsJson(result) shouldBe Json.toJson(mtdError)
+            status(result) shouldBe expectedStatus
+            header("X-CorrelationId", result) shouldBe Some(correlationId)
+          }
+        }
+
+        val input = Seq(
+          (NinoFormatError, BAD_REQUEST),
+          (CalculationIdFormatError, BAD_REQUEST),
+          (NotFoundError, NOT_FOUND),
+          (DownstreamError, INTERNAL_SERVER_ERROR)
+        )
+
+        input.foreach(args => (serviceErrors _).tupled(args))
+      }
     }
   }
 

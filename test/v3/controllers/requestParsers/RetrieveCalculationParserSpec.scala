@@ -16,7 +16,6 @@
 
 package v3.controllers.requestParsers
 
-import play.api.http.Status._
 import support.UnitSpec
 import v3.mocks.validators.MockRetrieveCalculationValidator
 import v3.models.domain.Nino
@@ -49,7 +48,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         val data: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None))
       }
     }
 
@@ -59,7 +58,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe
-          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
+          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
       }
     }
   }

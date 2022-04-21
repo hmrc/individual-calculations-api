@@ -32,13 +32,12 @@ object ClaimType {
   implicit val writes: Writes[ClaimType] = Enums.writes[ClaimType]
 
   implicit val reads: Reads[ClaimType] = Enums.readsUsing {
-    case "CF" => `carry-forward`
-    case "CSGI" => `carry-sideways`
+    case "CF"     => `carry-forward`
+    case "CSGI"   => `carry-sideways`
     case "CFCSGI" => `carry-forward-to-carry-sideways`
-    case "CSFHL" => `carry-sideways-fhl`
-    case "CB" => `carry-backwards`
-    case "CBGI" => `carry-backwards-general-income`
+    case "CSFHL"  => `carry-sideways-fhl`
+    case "CB"     => `carry-backwards`
+    case "CBGI"   => `carry-backwards-general-income`
   }
+
 }
-
-

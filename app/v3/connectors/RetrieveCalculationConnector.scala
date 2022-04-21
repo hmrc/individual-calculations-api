@@ -17,26 +17,29 @@
 package v3.connectors
 
 import config.AppConfig
-import javax.inject.Inject
-import play.api.libs.json.Reads
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.httpparsers.StandardHttpParser._
-import v3.handler.RequestDefn
-import v3.handler.RequestDefn.{Get, Post}
+import v3.connectors.DownstreamUri.IfsUri
+import v3.models.request.RetrieveCalculationRequest
+import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import v3.connectors.httpparsers.StandardHttpParser._
 
-class StandardConnector @Inject() (val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {
+@Singleton
+class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def doRequest[Resp: Reads](request: RequestDefn)(implicit
+  def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
       hc: HeaderCarrier,
       ec: ExecutionContext,
-      successCode: SuccessCode,
-      correlationId: String): Future[BackendOutcome[Resp]] = {
-    request match {
-      case Get(uri, params) => get(uri, params)
-      case Post(uri, body)  => post(body, uri)
-    }
+      correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
+
+    val nino          = request.nino.nino
+    val calculationId = request.calculationId
+
+    get(
+      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/$nino/$calculationId")
+    )
   }
 
 }

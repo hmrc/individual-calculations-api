@@ -23,8 +23,7 @@ import v3.models.response.common.IncomeSourceType
 
 class DefaultCarriedForwardLossSpec extends UnitSpec {
 
-  def downstreamJson(incomeSourceType: String): JsValue = Json.parse(
-    s"""
+  def downstreamJson(incomeSourceType: String): JsValue = Json.parse(s"""
        |{
        |  "incomeSourceId": "123456789012345",
        |  "incomeSourceType": "$incomeSourceType",
@@ -41,8 +40,7 @@ class DefaultCarriedForwardLossSpec extends UnitSpec {
       currentLossValue = BigInt(456)
     )
 
-  def mtdJson(incomeSourceType: IncomeSourceType): JsValue = Json.parse(
-    s"""
+  def mtdJson(incomeSourceType: IncomeSourceType): JsValue = Json.parse(s"""
        |{
        |  "incomeSourceId": "123456789012345",
        |  "incomeSourceType": "$incomeSourceType",
@@ -51,8 +49,7 @@ class DefaultCarriedForwardLossSpec extends UnitSpec {
        |}
        |""".stripMargin)
 
-  case class Test(downstreamIncomeSourceType: String,
-                  incomeSourceType: IncomeSourceType)
+  case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType)
 
   val testData: Seq[Test] = Seq[Test](
     Test("01", IncomeSourceType.`self-employment`),

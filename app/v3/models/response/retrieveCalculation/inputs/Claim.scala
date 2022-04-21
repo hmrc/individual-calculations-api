@@ -31,8 +31,14 @@ case class Claim(claimId: Option[String],
                  sequence: Option[Int])
 
 object Claim extends {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
+    `self-employment`,
+    `uk-property-non-fhl`,
+    `uk-property-fhl`,
+    `foreign-property-fhl-eea`,
+    `foreign-property`
   )
+
   implicit val format: OFormat[Claim] = Json.format[Claim]
 }

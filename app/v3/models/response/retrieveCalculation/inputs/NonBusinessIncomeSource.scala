@@ -30,10 +30,23 @@ case class NonBusinessIncomeSource(incomeSourceId: Option[String],
                                    latestReceivedDateTime: Option[String])
 
 case object NonBusinessIncomeSource {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    `employments`, `foreign-dividends`, `uk-savings-and-gains`, `uk-dividends`, `state-benefits`, `share-schemes`,
-    `foreign-savings-and-gains`, `other-dividends`, `uk-securities`, `other-income`,`foreign-pension`,
-    `non-paye-income`,`capital-gains-tax`, `charitable-giving`
+    `employments`,
+    `foreign-dividends`,
+    `uk-savings-and-gains`,
+    `uk-dividends`,
+    `state-benefits`,
+    `share-schemes`,
+    `foreign-savings-and-gains`,
+    `other-dividends`,
+    `uk-securities`,
+    `other-income`,
+    `foreign-pension`,
+    `non-paye-income`,
+    `capital-gains-tax`,
+    `charitable-giving`
   )
+
   implicit val format: OFormat[NonBusinessIncomeSource] = Json.format[NonBusinessIncomeSource]
 }

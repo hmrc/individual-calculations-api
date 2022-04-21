@@ -30,9 +30,10 @@ class StudentLoanPlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
   )
 
   testWrites[StudentLoanPlanType](
-    `plan1`   -> "plan1",
-    `plan2`  -> "plan2",
+    `plan1`        -> "plan1",
+    `plan2`        -> "plan2",
     `postgraduate` -> "postgraduate",
-    `plan4` -> "plan4"
+    `plan4`        -> "plan4"
   )
+
 }

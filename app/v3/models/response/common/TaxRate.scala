@@ -22,10 +22,10 @@ import utils.enums.Enums
 sealed trait TaxRate
 
 object TaxRate {
-  case object `basic-rate` extends TaxRate
+  case object `basic-rate`        extends TaxRate
   case object `intermediate-rate` extends TaxRate
-  case object `higher-rate` extends TaxRate
-  case object `additional-rate` extends TaxRate
+  case object `higher-rate`       extends TaxRate
+  case object `additional-rate`   extends TaxRate
 
   implicit val writes: Writes[TaxRate] = Enums.writes[TaxRate]
 
@@ -35,4 +35,5 @@ object TaxRate {
     case "HRT" => `higher-rate`
     case "ART" => `additional-rate`
   }
+
 }

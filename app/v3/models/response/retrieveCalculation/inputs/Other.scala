@@ -18,8 +18,7 @@ package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Other(`type`: String,
-                 submittedOn: Option[String])
+case class Other(`type`: String, submittedOn: Option[String])
 
 object Other {
   implicit val format: OFormat[Other] = Json.format[Other]

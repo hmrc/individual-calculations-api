@@ -14,21 +14,26 @@
  * limitations under the License.
  */
 
-package v3.services
+package v2.models.domain
 
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.connectors.NrsProxyConnector
-import v3.models.domain.CrystallisationRequestBody
+/** Represents a tax year for Downstream
+  *
+  * @param value
+  *   the tax year string (where 2018 represents 2017-18)
+  */
+case class DownstreamTaxYear(value: String) extends AnyVal {
+  override def toString: String = value
+}
 
-import scala.concurrent.{ExecutionContext, Future}
+object DownstreamTaxYear {
 
-@Singleton
-class NrsProxyService @Inject() (val connector: NrsProxyConnector) {
+  /** @param taxYear
+    *   tax year in MTD format (e.g. 2017-18)
+    */
+  def fromMtd(taxYear: String): DownstreamTaxYear =
+    DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
 
-  def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
-
-    connector.submit(nino, body)
-  }
+  def fromDownstreamIntToString(taxYear: Int): String =
+    (taxYear - 1) + "-" + taxYear.toString.drop(2)
 
 }

@@ -18,12 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.employmentAndPensions
 
 import play.api.libs.json.{Format, Json}
 
-case class TaxableLumpSumsAndCertainIncome(amount: Option[BigDecimal],
-                                           taxPaid: Option[BigDecimal],
-                                           taxTakenOffInEmployment: Option[Boolean]
-                                          )
+case class TaxableLumpSumsAndCertainIncome(amount: Option[BigDecimal], taxPaid: Option[BigDecimal], taxTakenOffInEmployment: Option[Boolean])
 
 object TaxableLumpSumsAndCertainIncome {
 
-  implicit val format: Format[TaxableLumpSumsAndCertainIncome]  = Json.format[TaxableLumpSumsAndCertainIncome]
+  implicit val format: Format[TaxableLumpSumsAndCertainIncome] = Json.format[TaxableLumpSumsAndCertainIncome]
 }

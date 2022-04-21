@@ -24,13 +24,14 @@ case class Inputs(personalInformation: PersonalInformation,
                   annualAdjustments: Option[Seq[AnnualAdjustment]],
                   lossesBroughtForward: Option[Seq[LossBroughtForward]],
                   claims: Option[Seq[Claim]],
-                  constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], //This field name has been changed from downstream.
+                  constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], // This field name has been changed from downstream.
                   allowancesReliefsAndDeductions: Option[Seq[AllowancesReliefsAndDeductions]],
                   pensionContributionAndCharges: Option[Seq[PensionContributionAndCharges]],
                   other: Option[Seq[Other]])
 
 object Inputs {
   implicit val writes: OWrites[Inputs] = Json.writes[Inputs]
+
   implicit val reads: Reads[Inputs] = (
     (JsPath \ "personalInformation").read[PersonalInformation] and
       (JsPath \ "incomeSources").read[IncomeSources] and
@@ -41,5 +42,6 @@ object Inputs {
       (JsPath \ "allowancesReliefsAndDeductions").readNullable[Seq[AllowancesReliefsAndDeductions]] and
       (JsPath \ "pensionContributionAndCharges").readNullable[Seq[PensionContributionAndCharges]] and
       (JsPath \ "other").readNullable[Seq[Other]]
-    ) (Inputs.apply _)
+  )(Inputs.apply _)
+
 }

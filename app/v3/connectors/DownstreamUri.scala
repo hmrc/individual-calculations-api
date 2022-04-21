@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v3.models.domain
+package v3.connectors
 
-import play.api.libs.json.{Json, OFormat}
+sealed trait DownstreamUri[Resp] {
+  val value: String
+}
 
-case class CrystallisationRequestBody(calculationId: String)
-
-object CrystallisationRequestBody {
-  implicit val format: OFormat[CrystallisationRequestBody] = Json.format[CrystallisationRequestBody]
+object DownstreamUri {
+  final case class DesUri[Resp](value: String) extends DownstreamUri[Resp]
+  final case class IfsUri[Resp](value: String) extends DownstreamUri[Resp]
 }

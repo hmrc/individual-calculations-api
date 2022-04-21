@@ -58,7 +58,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
+            parameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )
@@ -94,7 +94,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
+            parameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )
@@ -110,7 +110,7 @@ class StandardConnectorSpec extends ConnectorSpec {
         MockedHttpClient
           .get(
             url = s"$baseUrl/some/uri",
-            queryParameters = queryParams,
+            parameters = queryParams,
             config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredBackendHeaders
           )

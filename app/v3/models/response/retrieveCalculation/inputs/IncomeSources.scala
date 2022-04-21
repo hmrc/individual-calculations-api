@@ -18,8 +18,7 @@ package v3.models.response.retrieveCalculation.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]],
-                         nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]])
+case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]], nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]])
 
 object IncomeSources {
   implicit val format: OFormat[IncomeSources] = Json.format[IncomeSources]

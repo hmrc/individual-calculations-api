@@ -20,15 +20,17 @@ import play.api.libs.json.{Format, Json, OFormat}
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
 
-case class AnnualAdjustment(incomeSourceId: String,
-                            incomeSourceType: IncomeSourceType,
-                            ascId: String,
-                            receivedDateTime: String,
-                            applied: Boolean)
+case class AnnualAdjustment(incomeSourceId: String, incomeSourceType: IncomeSourceType, ascId: String, receivedDateTime: String, applied: Boolean)
 
 object AnnualAdjustment {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
+    `self-employment`,
+    `uk-property-non-fhl`,
+    `uk-property-fhl`,
+    `foreign-property-fhl-eea`,
+    `foreign-property`
   )
+
   implicit val format: OFormat[AnnualAdjustment] = Json.format[AnnualAdjustment]
 }

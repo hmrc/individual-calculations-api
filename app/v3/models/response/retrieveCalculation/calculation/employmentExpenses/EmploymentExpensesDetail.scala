@@ -25,10 +25,9 @@ case class EmploymentExpensesDetail(businessTravelCosts: Option[BigDecimal],
                                     hotelAndMealExpenses: Option[BigDecimal],
                                     otherAndCapitalAllowances: Option[BigDecimal],
                                     vehicleExpenses: Option[BigDecimal],
-                                    mileageAllowanceRelief: Option[BigDecimal]
-                                   )
+                                    mileageAllowanceRelief: Option[BigDecimal])
 
 object EmploymentExpensesDetail {
 
-  implicit val format: Format[EmploymentExpensesDetail]  = Json.format[EmploymentExpensesDetail]
+  implicit val format: Format[EmploymentExpensesDetail] = Json.format[EmploymentExpensesDetail]
 }

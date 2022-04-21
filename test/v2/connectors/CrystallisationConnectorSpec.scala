@@ -16,10 +16,9 @@
 
 package v2.connectors
 
-import common.models.domain.DownstreamTaxYear
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.models.domain.{EmptyJsonBody, Nino}
+import v2.models.domain.{DownstreamTaxYear, EmptyJsonBody, Nino}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.crystallisation.CrystallisationRequest
 import v2.models.response.common.DownstreamUnit
@@ -45,10 +44,10 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.downstreamBaseUrl returns baseUrl
-    MockAppConfig.downstreamToken returns "downstream-token"
-    MockAppConfig.downstreamEnvironment returns "downstream-environment"
-    MockAppConfig.downstreamEnvironmentHeaders returns Some(allowedDownstreamHeaders)
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "downstream-token"
+    MockAppConfig.desEnvironment returns "downstream-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDownstreamHeaders)
   }
 
   "CrystallisationConnector" when {
@@ -56,7 +55,7 @@ class CrystallisationConnectorSpec extends ConnectorSpec {
       "return a success upon HttpClient success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, DownstreamUnit))
 
-        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        implicit val hc: HeaderCarrier                    = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredDesHeadersPost: Seq[(String, String)] = requiredDownstreamHeaders ++ Seq("Content-Type" -> "application/json")
 
         MockedHttpClient

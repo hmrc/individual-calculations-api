@@ -31,8 +31,14 @@ case class LossBroughtForward(lossId: Option[String],
                               mtdLoss: Option[Boolean])
 
 object LossBroughtForward {
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
-    `self-employment`, `uk-property-non-fhl`,`uk-property-fhl`, `foreign-property-fhl-eea`, `foreign-property`
+    `self-employment`,
+    `uk-property-non-fhl`,
+    `uk-property-fhl`,
+    `foreign-property-fhl-eea`,
+    `foreign-property`
   )
+
   implicit val format: OFormat[LossBroughtForward] = Json.format[LossBroughtForward]
 }
