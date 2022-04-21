@@ -19,7 +19,7 @@ package v3.controllers.requestParsers
 import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import v3.mocks.validators.MockSubmitFinalDeclarationTriggerValidator
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
@@ -41,7 +41,7 @@ class SubmitFinalDeclarationParserSpec extends UnitSpec {
         val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(SubmitFinalDeclarationRequest(Nino(nino), taxYear, calcId))
+        parser.parseRequest(data) shouldBe Right(SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calcId))
       }
     }
 
