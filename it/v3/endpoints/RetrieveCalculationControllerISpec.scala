@@ -16,16 +16,10 @@
 
 package v3.endpoints
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.HeaderNames.ACCEPT
-import play.api.http.Status._
-import play.api.libs.json.Json
-import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
-import v3.models.errors._
-import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
+  /*
 
   private trait Test {
 
@@ -163,5 +157,6 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
       }
     }
   }
+   */
 
 }

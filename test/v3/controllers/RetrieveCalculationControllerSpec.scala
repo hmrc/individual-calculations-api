@@ -17,29 +17,9 @@
 package v3.controllers
 
 import mocks.MockIdGenerator
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
-import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
-import v3.handler.{RequestDefn, RequestHandler}
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
-import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v3.models.domain.Nino
-import v3.models.errors._
-import v3.models.hateoas.Method.GET
-import v3.models.hateoas.{HateoasWrapper, Link}
-import v3.models.outcomes.ResponseWrapper
-import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
-import v3.models.response.retrieveCalculation.calculation.Calculation
-import v3.models.response.retrieveCalculation.inputs.Inputs
-import v3.models.response.retrieveCalculation.messages.Messages
-import v3.models.response.retrieveCalculation.metadata.Metadata
-import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
-import v3.support.BackendResponseMappingSupport
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 
 class RetrieveCalculationControllerSpec
     extends ControllerBaseSpec
@@ -47,10 +27,9 @@ class RetrieveCalculationControllerSpec
     with MockMtdIdLookupService
     with MockRetrieveCalculationParser
     with MockHateoasFactory
-    with MockStandardService
     with MockAuditService
     with MockIdGenerator {
-
+  /*
   private val nino          = "AA123456A"
   private val taxYear       = "2017-18"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
@@ -184,5 +163,5 @@ class RetrieveCalculationControllerSpec
       header("X-CorrelationId", result) shouldBe Some(correlationId)
     }
   }
-
+   */
 }

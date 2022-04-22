@@ -21,20 +21,8 @@ import play.api.mvc.{AnyContentAsEmpty, ControllerComponents}
 import play.api.test.Helpers.stubControllerComponents
 import play.api.test.{FakeRequest, ResultExtractors}
 import support.UnitSpec
-import utils.Logging
-import v3.handler.RequestHandler
-import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
-import v3.support.BackendResponseMappingSupport
 
-class ControllerBaseSpec
-    extends UnitSpec
-    with Status
-    with MimeTypes
-    with HeaderNames
-    with ResultExtractors
-    with BackendResponseMappingSupport
-    with Logging {
+class ControllerBaseSpec extends UnitSpec with Status with MimeTypes with HeaderNames with ResultExtractors {
 
   implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
@@ -50,25 +38,5 @@ class ControllerBaseSpec
 
   def fakePostRequest[T](uri: String, body: T): FakeRequest[T]          = FakeRequest("POST", uri).withBody(body)
   def fakePostRequest(uri: String): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("POST", uri)
-
-  def errorMappingCheck[BackendResp, APIResp](backendCode: String, backendStatus: Int, mtdError: MtdError, status: Int)(implicit
-      endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit =
-    (requestHandling: RequestHandler[BackendResp, APIResp]) => {
-
-      val inputResponse = ResponseWrapper("ignoredCorrelationId", BackendErrors.single(backendStatus, BackendErrorCode(backendCode)))
-      val requiredError = ErrorWrapper("ignoredCorrelationId", mtdError, None, status)
-
-      mapBackendErrors(requestHandling.passThroughErrors, requestHandling.customErrorMapping)(inputResponse) shouldBe
-        requiredError
-    }
-
-  def allChecks[BackendResp, APIResp](params: (String, Int, MtdError, Int)*)(implicit
-      endpointLogContext: EndpointLogContext): RequestHandler[BackendResp, APIResp] => Unit = { requestHandling =>
-    params
-      .map { case (backendCode, backendStatus, mtdError, status) =>
-        errorMappingCheck[BackendResp, APIResp](backendCode, backendStatus, mtdError, status)
-      }
-      .foreach(check => check(requestHandling))
-  }
 
 }
