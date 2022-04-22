@@ -19,23 +19,23 @@ package v3.connectors
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.models.domain.EmptyJsonBody
+import v3.models.domain.{EmptyJsonBody, TaxYear}
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseConnector {
+class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest) (implicit
     hc: HeaderCarrier,
     ec: ExecutionContext,
-    correlationId: String): Future[BackendOutcome[Unit]] = {
+    correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import  v3.connectors.httpparsers.StandardHttpParser._
 
-    val nino: String          = request.nino.nino
-    val taxYear: String       = request.taxYear
+    val nino: String          = request.nino.value
+    val taxYear: TaxYear      = request.taxYear
     val calculationId: String = request.calculationId
 
     post(

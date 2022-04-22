@@ -25,12 +25,12 @@ import v3.controllers.EndpointLogContext
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
-import v3.support.BackendResponseMappingSupport
+import v3.support.DownstreamResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BackendResponseMappingSupport with Logging {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends DownstreamResponseMappingSupport with Logging {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
     hc: HeaderCarrier,
