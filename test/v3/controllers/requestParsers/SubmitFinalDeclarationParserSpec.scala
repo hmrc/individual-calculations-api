@@ -16,7 +16,6 @@
 
 package v3.controllers.requestParsers
 
-import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import v3.mocks.validators.MockSubmitFinalDeclarationTriggerValidator
 import v3.models.domain.{Nino, TaxYear}
@@ -24,10 +23,10 @@ import v3.models.errors._
 import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
 class SubmitFinalDeclarationParserSpec extends UnitSpec {
-  
-  val nino     = "AA123456B"
-  val taxYear  = "2017-18"
-  val calcId   = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+
+  val nino    = "AA123456B"
+  val taxYear = "2017-18"
+  val calcId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
@@ -50,7 +49,7 @@ class SubmitFinalDeclarationParserSpec extends UnitSpec {
         val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None))
       }
     }
 
@@ -60,10 +59,9 @@ class SubmitFinalDeclarationParserSpec extends UnitSpec {
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe
-          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST))
+          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
       }
     }
   }
 
 }
-
