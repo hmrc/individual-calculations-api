@@ -17,7 +17,7 @@
 package v3.services
 
 import v3.mocks.connectors.MockSubmitFinalDeclarationConnector
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
@@ -35,7 +35,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
   "SubmitFinalDeclarationService" when {
     val nino: String          = "AA112233A"
-    val taxYear: String       = "2019-20"
+    val taxYear: TaxYear       = TaxYear("2019-20")
     val calculationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
     val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
@@ -58,7 +58,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
     "map errors according to spec" when {
 
-      def serviceError(downstreamErrorCode: String, error: MtdError, downstreamErrorStatus: Int): Unit =
+      def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
         s"a $downstreamErrorCode error is returned from the service" in new Test {
 
           MockSubmitFinalDeclarationConnector
@@ -66,26 +66,26 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
             .returns(Future.successful(
               Left(ResponseWrapper(
                 correlationId,
-                BackendErrors.single(downstreamErrorStatus, BackendErrorCode(downstreamErrorCode))))))
+                DesErrors.single(DesErrorCode(downstreamErrorCode))))))
 
-          await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error, None, downstreamErrorStatus))
+          await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
       val input = Seq(
-        ("INVALID_IDTYPE", DownstreamError, BAD_REQUEST),
-        ("INVALID_IDVALUE", NinoFormatError, BAD_REQUEST),
-        ("INVALID_TAXYEAR", TaxYearFormatError, BAD_REQUEST),
-        ("INVALID_CALCID", CalculationIdFormatError, BAD_REQUEST),
-        ("NOT_FOUND", NotFoundError, NOT_FOUND),
-        ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError, CONFLICT),
-        ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError, CONFLICT),
-        ("RESIDENCY_CHANGED", RuleResidencyChangedError, CONFLICT),
-        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalid, UNPROCESSABLE_ENTITY),
-        ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError, UNPROCESSABLE_ENTITY),
-        ("BUSINESS_VALIDATION", RuleSubmissionFailed, UNPROCESSABLE_ENTITY),
-        ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError, CONFLICT),
-        ("SERVER_ERROR", DownstreamError, INTERNAL_SERVER_ERROR),
-        ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE)
+        ("INVALID_IDTYPE", DownstreamError),
+        ("INVALID_IDVALUE", NinoFormatError),
+        ("INVALID_TAXYEAR", TaxYearFormatError),
+        ("INVALID_CALCID", CalculationIdFormatError),
+        ("NOT_FOUND", NotFoundError),
+        ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
+        ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
+        ("RESIDENCY_CHANGED", RuleResidencyChangedError),
+        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalid),
+        ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
+        ("BUSINESS_VALIDATION", RuleSubmissionFailed),
+        ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
+        ("SERVER_ERROR", DownstreamError),
+        ("SERVICE_UNAVAILABLE", DownstreamError)
       )
 
       input.foreach(args => (serviceError _).tupled(args))

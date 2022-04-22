@@ -17,11 +17,12 @@
 package v3.connectors
 
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.models.domain.{EmptyJsonBody, TaxYear}
+import v3.connectors.DownstreamUri.DesUri
+import v3.models.domain.EmptyJsonBody
 import v3.models.request.SubmitFinalDeclarationRequest
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -32,15 +33,15 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
     ec: ExecutionContext,
     correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import  v3.connectors.httpparsers.StandardHttpParser._
+    import v3.connectors.httpparsers.StandardHttpParser._
 
     val nino: String          = request.nino.value
-    val taxYear: TaxYear      = request.taxYear
+    val taxYear: String      = request.taxYear.toDownstream
     val calculationId: String = request.calculationId
 
     post(
       body = EmptyJsonBody,
-      uri = s"/income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise"
+      uri = DesUri(s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise")
     )
   }
 }
