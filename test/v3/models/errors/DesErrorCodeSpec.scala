@@ -16,31 +16,23 @@
 
 package v3.models.errors
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
 
-class BackendErrorCodeSpec extends UnitSpec {
+class DesErrorCodeSpec extends UnitSpec {
 
-  val backendErrorCodeJson: JsValue = Json.parse(
-    """
-      |{
-      |   "code": "CODE",
-      |   "reason": "ignored"
-      |}
-    """.stripMargin
-  )
+  "reads" should {
+    val json = Json.parse(
+      """
+        |{
+        |   "code": "CODE",
+        |   "reason": "ignored"
+        |}
+      """.stripMargin
+    )
 
-  "BackendErrorCode" when {
-    "read from valid JSON" should {
-      "produce the expected BackendErrorCode object" in {
-        backendErrorCodeJson.as[BackendErrorCode] shouldBe BackendErrorCode("CODE")
-      }
-    }
-
-    "fromDes" should {
-      "create an MtdError from a DES error" in {
-        BackendErrorCode("CODE").fromDes shouldBe MtdError("CODE", "")
-      }
+    "generate the correct error code" in {
+      json.as[DesErrorCode] shouldBe DesErrorCode("CODE")
     }
   }
 

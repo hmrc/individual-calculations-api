@@ -16,7 +16,6 @@
 
 package v3.controllers.requestParsers
 
-import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import v3.controllers.requestParsers.validators.Validator
 import v3.models.domain.Nino
@@ -55,7 +54,7 @@ class RequestParserSpec extends UnitSpec {
     "return a single error" when {
       "the validator returns a single error" in new Test {
         lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError)
-        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None, BAD_REQUEST))
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None))
       }
     }
 
@@ -63,7 +62,7 @@ class RequestParserSpec extends UnitSpec {
       "the validator returns multiple errors" in new Test {
         lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
         parser.parseRequest(Raw(nino)) shouldBe Left(
-          ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError)), BAD_REQUEST))
+          ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError))))
       }
     }
   }

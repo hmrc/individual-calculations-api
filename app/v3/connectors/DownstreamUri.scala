@@ -16,4 +16,11 @@
 
 package v3.connectors
 
-case class Uri[Resp](value: String)
+sealed trait DownstreamUri[Resp] {
+  val value: String
+}
+
+object DownstreamUri {
+  final case class DesUri[Resp](value: String) extends DownstreamUri[Resp]
+  final case class IfsUri[Resp](value: String) extends DownstreamUri[Resp]
+}

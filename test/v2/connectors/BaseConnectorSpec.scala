@@ -101,10 +101,10 @@ class BaseConnectorSpec extends ConnectorSpec {
         implicit val hc: HeaderCarrier                 = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredHeadersPost: Seq[(String, String)] = requiredHeaders ++ Seq("Content-Type" -> "application/json")
 
-        MockAppConfig.downstreamBaseUrl returns baseUrl
-        MockAppConfig.downstreamToken returns "downstream-token"
-        MockAppConfig.downstreamEnvironment returns "downstream-environment"
-        MockAppConfig.downstreamEnvironmentHeaders returns downstreamEnvironmentHeaders
+        MockAppConfig.desBaseUrl returns baseUrl
+        MockAppConfig.desToken returns "downstream-token"
+        MockAppConfig.desEnvironment returns "downstream-environment"
+        MockAppConfig.desEnvironmentHeaders returns downstreamEnvironmentHeaders
 
         MockedHttpClient
           .post(absoluteUrl, config, body, requiredHeadersPost, excludedHeaders)
@@ -124,7 +124,7 @@ class BaseConnectorSpec extends ConnectorSpec {
         MockAppConfig.backendBaseUrl returns baseUrl
 
         MockedHttpClient
-          .get(absoluteUrl, Seq(("key", "value")), config, requiredHeaders)
+          .get(absoluteUrl, config = config, parameters = Seq(("key", "value")), requiredHeaders = requiredHeaders)
           .returns(Future.successful(outcome))
 
         await(connector.get(url, Seq(("key", "value")))) shouldBe outcome
