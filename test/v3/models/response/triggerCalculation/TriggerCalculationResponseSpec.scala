@@ -20,8 +20,7 @@ import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v3.hateoas.HateoasFactory
-import v3.models.hateoas.{HateoasWrapper, Link}
-import v3.models.hateoas.Method.GET
+import v3.models.hateoas.HateoasWrapper
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 
@@ -61,7 +60,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
         hateoasFactory.wrap(triggerCalculationResponseModel, TriggerCalculationHateoasData(nino, "calcId")) shouldBe
           HateoasWrapper(
             triggerCalculationResponseModel,
-            Seq(Link(s"/individuals/calculations/$nino/self-assessment/calcId", GET, "self"))
+            Seq()
           )
       }
     }

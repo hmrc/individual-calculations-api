@@ -40,11 +40,34 @@ object RetrieveCalculationResponse extends HateoasLinks {
   implicit object LinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
-      Seq()
+      import data._
+      val intentToSubmitFinalDeclaration: Boolean = response.metadata.intentToSubmitFinalDeclaration
+
+      val finalDeclaration: Boolean = response.metadata.finalDeclaration
+
+      val responseHasErrors: Boolean = {
+        for {
+          messages <- response.messages
+          errors   <- messages.errors
+        } yield {
+          errors.nonEmpty
+        }
+      }.getOrElse(false)
+
+      if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
+        Seq(retrieve(appConfig, nino, taxYear, calculationId), submitFinalDeclaration(appConfig, nino, taxYear, calculationId))
+      } else {
+        Seq(retrieve(appConfig, nino, taxYear, calculationId))
+      }
     }
 
   }
 
 }
 
-case class RetrieveCalculationHateoasData(nino: String, taxYear: String, calculationId: String) extends HateoasData
+case class RetrieveCalculationHateoasData(
+    nino: String,
+    taxYear: String,
+    calculationId: String,
+    response: RetrieveCalculationResponse
+) extends HateoasData

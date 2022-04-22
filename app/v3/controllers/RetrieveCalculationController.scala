@@ -63,7 +63,10 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           response      <- EitherT(service.retrieveCalculation(parsedRequest))
           hateoasResponse <- EitherT.fromEither[Future](
             hateoasFactory
-              .wrap(response.responseData, RetrieveCalculationHateoasData(nino = nino, taxYear = taxYear, calculationId = calculationId))
+              .wrap(
+                response.responseData,
+                RetrieveCalculationHateoasData(nino = nino, taxYear = taxYear, calculationId = calculationId, response = response.responseData)
+              )
               .asRight[ErrorWrapper]
           )
         } yield {
