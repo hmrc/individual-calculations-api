@@ -48,12 +48,12 @@ trait BaseConnector extends Logging {
       extraHeaders = hc.extraHeaders ++
         // Contract headers
         Seq(
-          "Authorization" -> s"Bearer ${appConfig.downstreamToken}",
-          "Environment"   -> appConfig.downstreamEnv,
+          "Authorization" -> s"Bearer ${appConfig.desToken}",
+          "Environment"   -> appConfig.desEnv,
           "CorrelationId" -> correlationId
         ) ++
         // Other headers (i.e Gov-Test-Scenario, Content-Type)
-        hc.headers(additionalHeaders ++ appConfig.downstreamEnvironmentHeaders.getOrElse(Seq.empty))
+        hc.headers(additionalHeaders ++ appConfig.desEnvironmentHeaders.getOrElse(Seq.empty))
     )
 
   private def urlFrom(uri: String): String =
@@ -79,7 +79,7 @@ trait BaseConnector extends Logging {
       correlationId: String): Future[BackendOutcome[Resp]] = {
 
     def doPost(implicit hc: HeaderCarrier): Future[BackendOutcome[Resp]] = {
-      http.POST(s"${appConfig.downstreamBaseUrl}/${uri.value}", body)
+      http.POST(s"${appConfig.desBaseUrl}/${uri.value}", body)
     }
 
     doPost(downstreamHeaderCarrier())

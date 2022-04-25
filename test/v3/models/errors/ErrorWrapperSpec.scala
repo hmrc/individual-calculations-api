@@ -16,17 +16,15 @@
 
 package v3.models.errors
 
-import play.api.http.Status._
 import play.api.libs.json.Json
 import support.UnitSpec
-import v3.models.audit.AuditError
 
 class ErrorWrapperSpec extends UnitSpec {
 
-  val correlationId: String = "X-123"
+  val correlationId = "X-123"
 
   "Rendering a error response with one error" should {
-    val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty), BAD_REQUEST)
+    val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty))
 
     val json = Json.parse(
       """
@@ -43,7 +41,7 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "Rendering a error response with one error and an empty sequence of errors" should {
-    val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty), BAD_REQUEST)
+    val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty))
 
     val json = Json.parse(
       """
@@ -61,16 +59,14 @@ class ErrorWrapperSpec extends UnitSpec {
 
   "Rendering a error response with two errors" should {
     val error = ErrorWrapper(
-      correlationId = correlationId,
-      error = BadRequestError,
-      errors = Some(
+      correlationId,
+      BadRequestError,
+      Some(
         Seq(
           NinoFormatError,
           TaxYearFormatError
         )
-      ),
-      statusCode = BAD_REQUEST
-    )
+      ))
 
     val json = Json.parse(
       """
@@ -93,21 +89,6 @@ class ErrorWrapperSpec extends UnitSpec {
 
     "generate the correct JSON" in {
       Json.toJson(error) shouldBe json
-    }
-  }
-
-  "rendering an audit error" should {
-    "render correctly" when {
-      "there is one error" in {
-        val errorWrapper = ErrorWrapper(correlationId, BadRequestError, None, BAD_REQUEST)
-
-        errorWrapper.auditErrors shouldBe Seq(AuditError(BadRequestError.code))
-      }
-      "there are multiple errors" in {
-        val errorWrapper = ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)), BAD_REQUEST)
-
-        errorWrapper.auditErrors shouldBe Seq(AuditError(NinoFormatError.code), AuditError(TaxYearFormatError.code))
-      }
     }
   }
 

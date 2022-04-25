@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.messages
+package v3.models.errors
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.json.{Json, Reads}
 
-case class Messages(field: String)
-
-object Messages {
-  implicit val reads: Reads[Messages] = Json.reads[Messages]
-
-  implicit val writes: OWrites[Messages] = Json.writes[Messages]
+case class DesErrorCode(code: String) {
+  def toMtd: MtdError = MtdError(code = code, message = "")
 }
+
+object DesErrorCode {
+  implicit val reads: Reads[DesErrorCode] = Json.reads[DesErrorCode]
+}
+
+sealed trait DesError
+
+case class DesErrors(errors: List[DesErrorCode]) extends DesError
+
+object DesErrors {
+  def single(error: DesErrorCode): DesErrors = DesErrors(List(error))
+}
+
+case class OutboundError(error: MtdError, errors: Option[Seq[MtdError]] = None) extends DesError

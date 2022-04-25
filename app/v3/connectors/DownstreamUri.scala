@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.inputs
+package v3.connectors
 
-import play.api.libs.json.{Json, OWrites, Reads}
+sealed trait DownstreamUri[Resp] {
+  val value: String
+}
 
-case class Inputs(field: String)
-
-object Inputs {
-  implicit val reads: Reads[Inputs] = Json.reads[Inputs]
-
-  implicit val writes: OWrites[Inputs] = Json.writes[Inputs]
+object DownstreamUri {
+  final case class DesUri[Resp](value: String) extends DownstreamUri[Resp]
+  final case class IfsUri[Resp](value: String) extends DownstreamUri[Resp]
 }

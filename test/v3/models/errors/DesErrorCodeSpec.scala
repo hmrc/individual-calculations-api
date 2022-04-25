@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package v3.models.response.common
+package v3.models.errors
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import play.api.libs.json.Json
+import support.UnitSpec
 
-sealed trait TypeOfClaim
+class DesErrorCodeSpec extends UnitSpec {
 
-object TypeOfClaim {
+  "reads" should {
+    val json = Json.parse(
+      """
+        |{
+        |   "code": "CODE",
+        |   "reason": "ignored"
+        |}
+      """.stripMargin
+    )
 
-  case object `carry-forward`                   extends TypeOfClaim
-  case object `carry-sideways`                  extends TypeOfClaim
-  case object `carry-forward-to-carry-sideways` extends TypeOfClaim
-  case object `carry-sideways-fhl`              extends TypeOfClaim
+    "generate the correct error code" in {
+      json.as[DesErrorCode] shouldBe DesErrorCode("CODE")
+    }
+  }
 
-  implicit val formats: Format[TypeOfClaim] = Enums.format[TypeOfClaim]
 }

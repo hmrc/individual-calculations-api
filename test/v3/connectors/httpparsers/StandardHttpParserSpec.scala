@@ -17,32 +17,102 @@
 package v3.connectors.httpparsers
 
 import play.api.http.Status._
-import play.api.libs.json.{JsObject, JsValue, Json, Reads}
+import play.api.libs.json.{JsValue, Json, Reads}
 import support.UnitSpec
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import v3.connectors.BackendOutcome
+import v3.connectors.DownstreamOutcome
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 
+// WLOG if Reads tested elsewhere
+case class SomeModel(data: String)
+
+object SomeModel {
+  implicit val reads: Reads[SomeModel] = Json.reads
+}
+
 class StandardHttpParserSpec extends UnitSpec {
+
+  val method = "POST"
+  val url    = "test-url"
+
+  val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   import v3.connectors.httpparsers.StandardHttpParser._
 
-  // WLOG if Reads tested elsewhere
-  case class SomeModel(data: String)
+  val httpReads: HttpReads[DownstreamOutcome[Unit]] = implicitly
 
-  object SomeModel {
-    implicit val reads: Reads[SomeModel] = Json.reads
+  val data                            = "someData"
+  val downstreamExpectedJson: JsValue = Json.obj("data" -> data)
+
+  val downstreamModel: SomeModel                     = SomeModel(data)
+  val downstreamResponse: ResponseWrapper[SomeModel] = ResponseWrapper(correlationId, downstreamModel)
+
+  "The generic HTTP parser" when {
+    "no status code is specified" must {
+      val httpReads: HttpReads[DownstreamOutcome[SomeModel]] = implicitly
+
+      "return a Right downstream response containing the model object if the response json corresponds to a model object" in {
+        val httpResponse = HttpResponse(OK, downstreamExpectedJson, Map("CorrelationId" -> Seq(correlationId)))
+
+        httpReads.read(method, url, httpResponse) shouldBe Right(downstreamResponse)
+      }
+
+      "return an outbound error if a model object cannot be read from the response json" in {
+        val badFieldTypeJson: JsValue = Json.obj("incomeSourceId" -> 1234, "incomeSourceName" -> 1234)
+        val httpResponse              = HttpResponse(OK, badFieldTypeJson, Map("CorrelationId" -> Seq(correlationId)))
+        val expected                  = ResponseWrapper(correlationId, OutboundError(DownstreamError))
+
+        httpReads.read(method, url, httpResponse) shouldBe Left(expected)
+      }
+
+      handleErrorsCorrectly(httpReads)
+      handleInternalErrorsCorrectly(httpReads)
+      handleUnexpectedResponse(httpReads)
+      handleBvrsCorrectly(httpReads)
+    }
+
+    "a success code is specified" must {
+      "use that status code for success" in {
+        implicit val successCode: SuccessCode                  = SuccessCode(PARTIAL_CONTENT)
+        val httpReads: HttpReads[DownstreamOutcome[SomeModel]] = implicitly
+
+        val httpResponse = HttpResponse(PARTIAL_CONTENT, downstreamExpectedJson, Map("CorrelationId" -> Seq(correlationId)))
+
+        httpReads.read(method, url, httpResponse) shouldBe Right(downstreamResponse)
+      }
+    }
   }
 
-  val method: String        = "POST"
-  val url: String           = "test-url"
-  val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
-  val data: String          = "someData"
-  val expectedJson: JsValue = Json.obj("data" -> data)
+  "The generic HTTP parser for empty response" when {
+    "no status code is specified" must {
+      val httpReads: HttpReads[DownstreamOutcome[Unit]] = implicitly
 
-  val mtdModel: SomeModel                     = SomeModel(data)
-  val mtdResponse: ResponseWrapper[SomeModel] = ResponseWrapper(correlationId, mtdModel)
+      "receiving a 204 response" should {
+        "return a Right ResponseWrapper with the correct correlationId and no responseData" in {
+          val httpResponse = HttpResponse(NO_CONTENT, "", Map("CorrelationId" -> Seq(correlationId)))
+
+          httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
+        }
+      }
+
+      handleErrorsCorrectly(httpReads)
+      handleInternalErrorsCorrectly(httpReads)
+      handleUnexpectedResponse(httpReads)
+      handleBvrsCorrectly(httpReads)
+    }
+
+    "a success code is specified" must {
+      implicit val successCode: SuccessCode             = SuccessCode(PARTIAL_CONTENT)
+      val httpReads: HttpReads[DownstreamOutcome[Unit]] = implicitly
+
+      "use that status code for success" in {
+        val httpResponse = HttpResponse(PARTIAL_CONTENT, "", Map("CorrelationId" -> Seq(correlationId)))
+
+        httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
+      }
+    }
+  }
 
   val singleErrorJson: JsValue = Json.parse(
     """
@@ -70,23 +140,6 @@ class StandardHttpParserSpec extends UnitSpec {
     """.stripMargin
   )
 
-  val missingPrimaryErrorJson: JsValue = Json.parse(
-    """
-      |{
-      |   "errors": [
-      |       {
-      |           "code": "CODE 1",
-      |           "reason": "MESSAGE 1"
-      |       },
-      |       {
-      |           "code": "CODE 2",
-      |           "reason": "MESSAGE 2"
-      |       }
-      |   ]
-      |}
-    """.stripMargin
-  )
-
   val malformedErrorJson: JsValue = Json.parse(
     """
       |{
@@ -96,148 +149,65 @@ class StandardHttpParserSpec extends UnitSpec {
     """.stripMargin
   )
 
-  def getCorrelationIdMap(isDesResponse: Boolean): Map[String, Seq[String]] =
-    if (isDesResponse) Map("CorrelationId" -> Seq(correlationId)) else Map("X-CorrelationId" -> Seq(correlationId))
+  private def handleErrorsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit =
+    Seq(BAD_REQUEST, NOT_FOUND, FORBIDDEN, CONFLICT).foreach(responseCode =>
+      s"receiving a $responseCode response" should {
+        "be able to parse a single error" in {
+          val httpResponse = HttpResponse(responseCode, singleErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-  "The generic HTTP parser (from DES)" when {
-    "no status code is specified" must {
-      val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
-
-      "return a Right DES response containing the model object if the response json corresponds to a model object" in {
-        val httpResponse = HttpResponse(OK, expectedJson.toString(), getCorrelationIdMap(isDesResponse = true))
-
-        httpReads.read(method, url, httpResponse) shouldBe Right(mtdResponse)
-      }
-
-      "return an outbound error if a model object cannot be read from the response json" in {
-        val badFieldTypeJson: JsValue = Json.obj("incomeSourceId" -> 1234, "incomeSourceName" -> 1234)
-        val httpResponse              = HttpResponse(OK, badFieldTypeJson.toString(), getCorrelationIdMap(isDesResponse = true))
-        val expected                  = ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError))
-
-        httpReads.read(method, url, httpResponse) shouldBe Left(expected)
-      }
-
-      handleErrorsCorrectly(httpReads, isDesResponse = true)
-      handleInternalErrorsCorrectly(httpReads, isDesResponse = true)
-      handleUnexpectedResponse(httpReads, isDesResponse = true)
-      handleBvrsCorrectly(httpReads)
-    }
-
-    "a success code is specified" must {
-      "use that status code for success" in {
-        implicit val successCode: SuccessCode               = SuccessCode(PARTIAL_CONTENT)
-        val httpReads: HttpReads[BackendOutcome[SomeModel]] = implicitly
-        val httpResponse = HttpResponse(PARTIAL_CONTENT, expectedJson.toString(), getCorrelationIdMap(isDesResponse = true))
-
-        httpReads.read(method, url, httpResponse) shouldBe Right(mtdResponse)
-      }
-    }
-  }
-
-  "The generic HTTP parser for empty response (from DES)" when {
-    "no status code is specified" must {
-      val httpReads: HttpReads[BackendOutcome[Unit]] = implicitly
-
-      "receiving a 204 response" should {
-        "return a Right backend response with the correct correlationId and no responseData" in {
-          val httpResponse = HttpResponse(NO_CONTENT, JsObject.empty, getCorrelationIdMap(isDesResponse = true))
-
-          httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
-        }
-      }
-
-      handleErrorsCorrectly(httpReads, isDesResponse = true)
-      handleInternalErrorsCorrectly(httpReads, isDesResponse = true)
-      handleUnexpectedResponse(httpReads, isDesResponse = true)
-    }
-
-    "a success code is specified" must {
-      implicit val successCode: SuccessCode          = SuccessCode(PARTIAL_CONTENT)
-      val httpReads: HttpReads[BackendOutcome[Unit]] = implicitly
-
-      "use that status code for success" in {
-        val httpResponse = HttpResponse(PARTIAL_CONTENT, JsObject.empty, getCorrelationIdMap(isDesResponse = true))
-
-        httpReads.read(method, url, httpResponse) shouldBe Right(ResponseWrapper(correlationId, ()))
-      }
-    }
-  }
-
-  private def handleErrorsCorrectly[A](httpReads: HttpReads[BackendOutcome[A]], isDesResponse: Boolean): Unit =
-    Seq(BAD_REQUEST, NOT_FOUND, FORBIDDEN, CONFLICT).foreach(statusCode =>
-      s"receiving a $statusCode response" should {
-        "be able to parse a single error with the same status code" in {
-          val httpResponse = HttpResponse(statusCode, singleErrorJson.toString(), getCorrelationIdMap(isDesResponse))
-
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, BackendErrors.single(statusCode, BackendErrorCode("CODE"))))
+          httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode("CODE"))))
         }
 
-        "be able to parse multiple errors with the same status code" in {
-          val getMultipleErrorsJson: String = multipleErrorsJson.toString()
-          val httpResponse                  = HttpResponse(statusCode, getMultipleErrorsJson, getCorrelationIdMap(isDesResponse))
+        "be able to parse multiple errors" in {
+          val httpResponse = HttpResponse(responseCode, multipleErrorsJson, Map("CorrelationId" -> Seq(correlationId)))
 
-          val errors: List[BackendErrorCode] = List(BackendErrorCode("CODE"), BackendErrorCode("CODE 1"), BackendErrorCode("CODE 2"))
-          val getMultipleErrorsResponse: List[BackendErrorCode] = if (isDesResponse) errors.tail else errors
-
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, BackendErrors(statusCode, getMultipleErrorsResponse)))
+          httpReads.read(method, url, httpResponse) shouldBe {
+            Left(ResponseWrapper(correlationId, DesErrors(List(DesErrorCode("CODE 1"), DesErrorCode("CODE 2")))))
+          }
         }
 
-        "return an outbound 500 DownstreamError when errors are returned without a primary error" in {
-          val httpResponse = HttpResponse(statusCode, missingPrimaryErrorJson.toString(), getCorrelationIdMap(isDesResponse))
+        "return an outbound error when the error returned doesn't match the Error model" in {
+          val httpResponse = HttpResponse(responseCode, malformedErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
-        }
-
-        "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-          val httpResponse = HttpResponse(statusCode, malformedErrorJson.toString(), getCorrelationIdMap(isDesResponse))
-
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
+          httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
         }
       })
 
-  private def handleInternalErrorsCorrectly[A](httpReads: HttpReads[BackendOutcome[A]], isDesResponse: Boolean): Unit =
+  private def handleInternalErrorsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit =
     Seq(INTERNAL_SERVER_ERROR, SERVICE_UNAVAILABLE).foreach(responseCode =>
       s"receiving a $responseCode response" should {
-        "return an outbound 500 DownstreamError when the error returned matches the Error model" in {
-          val httpResponse = HttpResponse(responseCode, singleErrorJson.toString(), getCorrelationIdMap(isDesResponse))
+        "return an outbound error when the error returned matches the Error model" in {
+          val httpResponse = HttpResponse(responseCode, singleErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
+          httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
         }
 
-        "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-          val httpResponse = HttpResponse(responseCode, malformedErrorJson.toString(), getCorrelationIdMap(isDesResponse))
+        "return an outbound error when the error returned doesn't match the Error model" in {
+          val httpResponse = HttpResponse(responseCode, malformedErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-          httpReads.read(method, url, httpResponse) shouldBe Left(
-            ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
+          httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
         }
       })
 
-  private def handleUnexpectedResponse[A](httpReads: HttpReads[BackendOutcome[A]], isDesResponse: Boolean): Unit =
+  private def handleUnexpectedResponse[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit =
     "receiving an unexpected response" should {
       val responseCode = 499
+      "return an outbound error when the error returned matches the Error model" in {
+        val httpResponse = HttpResponse(responseCode, singleErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-      "return an outbound 500 DownstreamError when the error returned matches the Error model" in {
-        val httpResponse = HttpResponse(responseCode, singleErrorJson.toString(), getCorrelationIdMap(isDesResponse))
-
-        httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
+        httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
       }
 
-      "return an outbound 500 DownstreamError when the error returned doesn't match the Error model" in {
-        val httpResponse = HttpResponse(responseCode, malformedErrorJson.toString(), getCorrelationIdMap(isDesResponse))
+      "return an outbound error when the error returned doesn't match the Error model" in {
+        val httpResponse = HttpResponse(responseCode, malformedErrorJson, Map("CorrelationId" -> Seq(correlationId)))
 
-        httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(INTERNAL_SERVER_ERROR, DownstreamError)))
+        httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
       }
     }
 
-  private def handleBvrsCorrectly[A](httpReads: HttpReads[BackendOutcome[A]]): Unit = {
+  private def handleBvrsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
 
-    val singleBvrJson: JsValue = Json.parse(
-      """
+    val singleBvrJson = Json.parse("""
         |{
         |   "bvrfailureResponseElement": {
         |     "validationRuleFailures": [
@@ -250,15 +220,14 @@ class StandardHttpParserSpec extends UnitSpec {
         |     ]
         |   }
         |}
-      """.stripMargin
-    )
+      """.stripMargin)
 
     s"receiving a response with a bvr errors" should {
       "return an outbound BUSINESS_ERROR error containing the BVR ids" in {
-        val httpResponse          = HttpResponse(BAD_REQUEST, singleBvrJson.toString(), Map("CorrelationId" -> Seq(correlationId)))
-        val errors: OutboundError = OutboundError(BAD_REQUEST, BVRError, Some(Seq(MtdError("BVR1", ""), MtdError("BVR2", ""))))
+        val httpResponse = HttpResponse(BAD_REQUEST, singleBvrJson, Map("CorrelationId" -> Seq(correlationId)))
 
-        httpReads.read(method, url, httpResponse) shouldBe Left(ResponseWrapper(correlationId, errors))
+        httpReads.read(method, url, httpResponse) shouldBe
+          Left(ResponseWrapper(correlationId, OutboundError(BVRError, Some(Seq(MtdError("BVR1", ""), MtdError("BVR2", ""))))))
       }
     }
   }

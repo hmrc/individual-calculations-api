@@ -23,44 +23,58 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext
 
 trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
-  lazy val baseUrl = "http://test-BaseUrl"
+
+  lazy val baseUrl                   = "http://test-BaseUrl"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   val otherHeaders: Seq[(String, String)] = Seq(
     "Gov-Test-Scenario" -> "DEFAULT",
     "AnotherHeader"     -> "HeaderValue"
   )
 
-  implicit val hc: HeaderCarrier     = HeaderCarrier(otherHeaders = otherHeaders)
-  implicit val ec: ExecutionContext  = scala.concurrent.ExecutionContext.global
-  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val hc: HeaderCarrier    = HeaderCarrier(otherHeaders = otherHeaders)
+  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
 
-  val dummyHeaderCarrierConfig: HeaderCarrier.Config =
+  val dummyDesHeaderCarrierConfig: HeaderCarrier.Config =
     HeaderCarrier.Config(
       Seq("^not-test-BaseUrl?$".r),
       Seq.empty[String],
       Some("individual-calculations-api")
     )
 
-  val requiredDownstreamHeaders: Seq[(String, String)] = Seq(
-    "Authorization"     -> "Bearer downstream-token",
-    "Environment"       -> "downstream-environment",
-    "User-Agent"        -> "individual-calculations-api",
-    "CorrelationId"     -> correlationId,
-    "Gov-Test-Scenario" -> "DEFAULT"
-  )
+  val dummyIfsHeaderCarrierConfig: HeaderCarrier.Config =
+    HeaderCarrier.Config(
+      Seq("^not-test-BaseUrl?$".r),
+      Seq.empty[String],
+      Some("individual-calculations-api")
+    )
 
-  val requiredBackendHeaders: Seq[(String, String)] = Seq(
-    "Authorization" -> "Bearer user-token",
-    "CorrelationId" -> correlationId
-  )
-
-  val allowedDownstreamHeaders: Seq[String] = Seq(
+  val allowedDesHeaders: Seq[String] = Seq(
     "Accept",
     "Gov-Test-Scenario",
     "Content-Type",
     "Location",
     "X-Request-Timestamp",
     "X-Session-Id"
+  )
+
+  val allowedIfsHeaders: Seq[String] = Seq(
+    "Accept",
+    "Gov-Test-Scenario",
+    "Content-Type",
+    "Location",
+    "X-Request-Timestamp",
+    "X-Session-Id"
+  )
+
+  val requiredDesHeaders: Seq[(String, String)] = Seq(
+    "Environment"   -> "des-environment",
+    "Authorization" -> s"Bearer des-token"
+  )
+
+  val requiredIfsHeaders: Seq[(String, String)] = Seq(
+    "Environment"   -> "ifs-environment",
+    "Authorization" -> s"Bearer ifs-token"
   )
 
 }

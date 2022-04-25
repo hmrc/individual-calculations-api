@@ -85,14 +85,14 @@ class RequestHandlerSpec extends UnitSpec with Inside {
               Right(ResponseWrapper("corrId1", s.length))
             }
             .mapSuccess { case ResponseWrapper(_, _) =>
-              ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST).asLeft[ResponseWrapper[Int]]
+              ErrorWrapper("corrId1", MtdError("code1", "error1"), None).asLeft[ResponseWrapper[Int]]
             }
             .mapSuccess { case ResponseWrapper(_, _) =>
-              ErrorWrapper("corrId2", MtdError("code2", "error2"), None, NOT_FOUND).asLeft[ResponseWrapper[Int]]
+              ErrorWrapper("corrId2", MtdError("code2", "error2"), None).asLeft[ResponseWrapper[Int]]
             }
 
         handling.successMapping(ResponseWrapper("corrId", "foo")).left.value shouldBe
-          ErrorWrapper("corrId1", MtdError("code1", "error1"), None, BAD_REQUEST)
+          ErrorWrapper("corrId1", MtdError("code1", "error1"), None)
       }
     }
 
