@@ -1,13 +1,34 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "###TODO###",
+  "description": "Retrieve a Self Assessment Tax Calculation",
   "type": "object",
   "properties": {
-    "###TODO###": {
-      "description": "Other properties",
-      "type": "string"
-    }
-  },
-  "additionalProperties": false,
-  "required": []
+    "summary": {
+      "title": "royaltyPayments",
+      "type": "object",
+      "description": "Object representing any loyalty payments in the retrieved tax calculation.",
+      "properties": {
+        "royaltyPaymentsAmount": {
+          "description": "The total amount of tax charged on royalty payments. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "example": "2000"
+        },
+        "rate": {
+          "description": "The rate of the royalty payment. This value must be between 0 and 99.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "10.12"
+        },
+        "grossRoyaltyPayments": {
+          "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
+          "type": "number",
+          "example": "2000"
+        },
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "royaltyPaymentsAmount",
+      "rate"
+    ]
+  }
 }
