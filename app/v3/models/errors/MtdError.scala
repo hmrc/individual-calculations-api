@@ -108,7 +108,7 @@ object RuleNoIncomeSubmissionsExistError
       message = "No income submissions exist for the tax year"
     )
 
-object RuleCalculationErrorMessagesExist
+object RuleCalculationErrorMessagesExistError
     extends MtdError(
       code = "RULE_CALCULATION_ERROR_MESSAGES_EXIST",
       message = "Calculation error messages exist for the supplied calculation ID"
@@ -120,7 +120,7 @@ object RuleNoSubmissionsExistError
       message = "No periodic or annual income data has been submitted"
     )
 
-object RuleSubmissionFailed
+object RuleSubmissionFailedError
     extends MtdError(
       code = "RULE_SUBMISSION_FAILED",
       message = "The submission cannot be completed due to validation failures"
@@ -138,7 +138,7 @@ object RuleIncomeSourcesChangedError
       message = "Income sources data has changed. Perform intent to crystallise"
     )
 
-object RuleIncomeSourcesInvalid
+object RuleIncomeSourcesInvalidError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_INVALID",
       message = "No valid income sources could be found"
