@@ -1,13 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "###TODO###",
+  "description": "Retrieve a Self Assessment Tax Calculation Messages",
   "type": "object",
   "properties": {
-    "###TODO###": {
-      "description": "Other properties",
-      "type": "string"
+    "messages": {
+      "title": "messages",
+      "type": "object",
+
     }
-  },
+
+    },
   "additionalProperties": false,
   "required": []
 }
