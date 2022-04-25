@@ -1,13 +1,24 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "###TODO###",
+  "description": "Retrieve a Self Assessment Tax Calculation",
   "type": "object",
   "properties": {
-    "###TODO###": {
-      "description": "Other properties",
-      "type": "string"
+    "metadata": {
+      "$ref": "retrieve/metadata.json"
+    },
+    "inputs": {
+      "$ref": "retrieve/inputs.json"
+    },
+    "calculation": {
+      "$ref": "retrieve/calculation.json"
+    },
+    "messages": {
+      "$ref": "retrieve/messages.json"
     }
   },
-  "additionalProperties": false,
-  "required": []
+  "required": [
+    "metadata",
+    "inputs"
+  ],
+  "additionalProperties": "false"
 }
