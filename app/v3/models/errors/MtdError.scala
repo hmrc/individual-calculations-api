@@ -54,8 +54,8 @@ object TaxYearFormatError
 
 object CalculationIdFormatError
     extends MtdError(
-      code = "FORMAT_CALC_ID",
-      message = "The provided Calculation ID is invalid"
+      code = "FORMAT_CALCULATION_ID",
+      message = "The provided calculationId is invalid"
     )
 
 object TypeFormatError
@@ -87,7 +87,7 @@ object EndOfYearEstimateNotPresentError
 object RuleTaxYearNotSupportedError
     extends MtdError(
       code = "RULE_TAX_YEAR_NOT_SUPPORTED",
-      message = "Tax year not supported, because it precedes the earliest allowable tax year"
+      message = "The specified tax year is not supported. The tax year specified is before the minimum tax year value"
     )
 
 object RuleIncorrectOrEmptyBodyError
@@ -129,13 +129,13 @@ object RuleSubmissionFailedError
 object RuleFinalDeclarationReceivedError
     extends MtdError(
       code = "RULE_FINAL_DECLARATION_RECEIVED",
-      message = "Crystallisation declaration has already been received"
+      message = "A final declaration has already been received"
     )
 
 object RuleIncomeSourcesChangedError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_CHANGED",
-      message = "Income sources data has changed. Perform intent to crystallise"
+      message = "Income sources data has changed. Perform an Intent to submit a final declaration"
     )
 
 object RuleIncomeSourcesInvalidError
@@ -147,13 +147,13 @@ object RuleIncomeSourcesInvalidError
 object RuleRecentSubmissionsExistError
     extends MtdError(
       code = "RULE_RECENT_SUBMISSIONS_EXIST",
-      message = "More recent submissions exist. Perform intent to crystallise"
+      message = "More recent submissions exist. Perform an Intent to submit a final declaration"
     )
 
 object RuleResidencyChangedError
     extends MtdError(
       code = "RULE_RESIDENCY_CHANGED",
-      message = "Residency has changed. Perform intent to crystallise"
+      message = "Residency has changed. Perform an Intent to submit a final declaration"
     )
 
 // Standard Errors
