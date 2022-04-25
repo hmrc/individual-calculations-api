@@ -17,13 +17,13 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          },
-          "additionalProperties": false
+          }
         },
         "required": [
           "id",
           "text"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
     "warnings": {
@@ -39,13 +39,13 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          },
-          "additionalProperties": false
+          }
         },
         "required": [
           "id",
           "text"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
     "errors": {
@@ -61,13 +61,13 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          },
-          "additionalProperties": false
+          }
         },
         "required": [
           "id",
           "text"
-        ]
+        ],
+        "additionalProperties": false
       }
     }
   }
