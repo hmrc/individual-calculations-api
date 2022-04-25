@@ -22,13 +22,13 @@
           "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
           "type": "number",
           "example": "2000"
-        },
-        "additionalProperties": false
+        }
       }
     },
     "required": [
       "royaltyPaymentsAmount",
       "rate"
-    ]
+    ],
+    "additionalProperties": false
   }
 }
