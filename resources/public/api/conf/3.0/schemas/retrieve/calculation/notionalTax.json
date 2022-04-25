@@ -3,7 +3,7 @@
   "description": "Retrieve a Self Assessment Tax Calculation",
   "type": "object",
   "properties": {
-    "summary": {
+    "notionalTax": {
       "title": "notionalTax",
       "type": "object",
       "description": "Object containing notional tax amounts for the retrieved tax calculation.",
