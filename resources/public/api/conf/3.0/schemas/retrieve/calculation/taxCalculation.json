@@ -4,10 +4,66 @@
   "type": "object",
   "properties": {
     "###TODO###": {
-      "description": "Other properties",
-      "type": "string"
+      "description": "###TODO### example using complex definitions for repeated use",
+      "$ref": "#/definitions/taxBand"
     }
   },
   "additionalProperties": false,
-  "required": []
+  "required": [],
+  "definitions": {
+    "taxBand": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the tax band.",
+          "type": "string",
+          "enum": [
+            "savings-starter-rate",
+            "allowance-awarded at-basic-rate",
+            "allowance-awarded-at-higher-rate",
+            "allowance-awarded-at-additional-rate",
+            "starter-rate",
+            "basic-rate",
+            "intermediate-rate",
+            "higher-rate",
+            "additional-rate"
+          ]
+        },
+        "rate": {
+          "description": "Tax band rate. The value must be between 0 and 99.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2.99%"
+        },
+        "bandLimit": {
+          "description": "Tax band limit. The value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "example": "5000"
+        },
+        "apportionedBandLimit": {
+          "description": "Apportioned tax band limit. The value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "example": "5000"
+        },
+        "income": {
+          "description": "Income amount. The value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "example": "14567"
+        },
+        "taxAmount": {
+          "description": "Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places. ",
+          "type": "number",
+          "example": "5000.99"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "rate",
+        "bandLimit",
+        "apportionedBandLimit",
+        "income",
+        "taxAmount"
+      ]
+    }
+  }
 }
