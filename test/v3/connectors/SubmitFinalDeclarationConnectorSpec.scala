@@ -17,19 +17,18 @@
 package v3.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.http.HeaderCarrier
 import v3.models.domain.{EmptyJsonBody, Nino, TaxYear}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.Future
 
-
 class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
-  val nino: String           = "AA111111A"
-  val taxYear: TaxYear        =  TaxYear("2021-22")
-  val calculationId: String  = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+  val nino: String              = "AA111111A"
+  val taxYear: TaxYear          = TaxYear.fromMtd("2021-22")
+  val downstreamTaxYear: String = "2022"
+  val calculationId: String     = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
     Nino(nino),
@@ -54,12 +53,11 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
     "return a success response" in new Test {
       val outcome = Right(ResponseWrapper(correlationId, {}))
 
-      implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
       val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
 
       MockedHttpClient
         .post(
-          url = s"$baseUrl/income-tax/calculation/nino/$nino/${taxYear.toDownstream}/$calculationId/crystallise",
+          url = s"$baseUrl/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise",
           config = dummyDesHeaderCarrierConfig,
           body = EmptyJsonBody,
           requiredHeaders = requiredDesHeadersPost,
@@ -70,4 +68,5 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
       await(connector.submitFinalDeclaration(request)) shouldBe outcome
     }
   }
+
 }

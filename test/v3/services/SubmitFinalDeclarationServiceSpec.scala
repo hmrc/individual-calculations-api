@@ -31,11 +31,12 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
     val service: SubmitFinalDeclarationService = new SubmitFinalDeclarationService(
       mockSubmitFinalDeclarationConnector
     )
+
   }
 
   "SubmitFinalDeclarationService" when {
     val nino: String          = "AA112233A"
-    val taxYear: TaxYear       = TaxYear("2019-20")
+    val taxYear: TaxYear      = TaxYear.fromMtd("2019-20")
     val calculationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
     val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
@@ -63,10 +64,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
-            .returns(Future.successful(
-              Left(ResponseWrapper(
-                correlationId,
-                DesErrors.single(DesErrorCode(downstreamErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))))
 
           await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
@@ -91,4 +89,5 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       input.foreach(args => (serviceError _).tupled(args))
     }
   }
+
 }
