@@ -17,7 +17,8 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          }
+          },
+          "additionalProperties": false
         },
         "required": [
           "id",
@@ -38,7 +39,8 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          }
+          },
+          "additionalProperties": false
         },
         "required": [
           "id",
@@ -59,14 +61,14 @@
           "text": {
             "description": "The message text.",
             "type": "string"
-          }
+          },
+          "additionalProperties": false
         },
         "required": [
           "id",
           "text"
         ]
       }
-    },
-    "additionalProperties": false
+    }
   }
 }
