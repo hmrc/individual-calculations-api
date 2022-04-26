@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Retrieve a Self Assessment Tax Calculation Messages",
-  "description": "Retrieve a Self Assessment Tax Calculation Messages",
+  "description": "Object containing messages associated with the retrieved tax calculation.",
   "type": "object",
   "properties": {
     "info": {
