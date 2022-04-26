@@ -24,11 +24,11 @@
       "minimum": 0,
       "maximum": 99999999999,
       "example": "2000"
-    },
-    "required": [
-      "royaltyPaymentsAmount",
-      "rate"
-    ]
+    }
   },
+  "required": [
+    "royaltyPaymentsAmount",
+    "rate"
+  ],
   "additionalProperties": false
 }
