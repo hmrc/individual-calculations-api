@@ -24,16 +24,14 @@ class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[CalculationType](
     "inYear"          -> `inYear`,
-    "crystallisation" -> `endOfYear`,
-    "biss"            -> `biss`,
-    "POA"             -> `POA`
+    "crystallisation" -> `finalDeclaration`,
+    "biss"            -> `biss`
   )
 
   testWrites[CalculationType](
-    `inYear`    -> "inYear",
-    `endOfYear` -> "endOfYear",
-    `biss`      -> "biss",
-    `POA`       -> "POA"
+    `inYear`           -> "inYear",
+    `finalDeclaration` -> "finalDeclaration",
+    `biss`             -> "biss"
   )
 
 }
