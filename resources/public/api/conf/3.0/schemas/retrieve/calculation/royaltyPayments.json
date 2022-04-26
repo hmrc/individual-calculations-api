@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Retrieve a Self Assessment Tax Calculation",
+  "title": "Retrieve a Self Assessment Tax Calculation",
+  "description": "This endpoint allows the developer to retrieve all the tax calculation data for a given NINO and Calculation ID.",
   "type": "object",
   "properties": {
-    "summary": {
-      "title": "royaltyPayments",
+    "royaltyPayments": {
       "type": "object",
       "description": "Object representing any loyalty payments in the retrieved tax calculation.",
       "properties": {
@@ -28,7 +28,7 @@
     "required": [
       "royaltyPaymentsAmount",
       "rate"
-    ],
-    "additionalProperties": false
-  }
+    ]
+  },
+  "additionalProperties": false
 }

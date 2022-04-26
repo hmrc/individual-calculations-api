@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Retrieve a Self Assessment Tax Calculation",
+  "title": "Retrieve a Self Assessment Tax Calculation",
+  "description": "This endpoint allows the developer to retrieve all the tax calculation data for a given NINO and Calculation ID.",
   "type": "object",
   "properties": {
     "notionalTax": {
-      "title": "notionalTax",
       "type": "object",
       "description": "Object containing notional tax amounts for the retrieved tax calculation.",
       "properties": {
@@ -12,9 +12,9 @@
           "description": "The chargeable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "example": "2000.58"
-        },
-        "additionalProperties": false
-      }
+        }
+      },
+      "additionalProperties": false
     }
   }
 }
