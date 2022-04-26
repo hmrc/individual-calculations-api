@@ -72,7 +72,7 @@
           "example": "2000.98"
         },
         "mileageAllowanceRelief": {
-          "description": "Total Mileage Allowance Relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total Mileage Allowance Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "multipleOf": 0.01,
           "minimum": 0,
@@ -80,10 +80,8 @@
           "example": "2000.98"
         }
       },
-      "additionalProperties": false,
-      "required": []
+      "additionalProperties": false
     }
   },
-  "additionalProperties": false,
-  "required": []
+  "additionalProperties": false
 }
