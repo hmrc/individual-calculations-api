@@ -1,29 +1,29 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Retrieve a Self Assessment Tax Calculation",
-  "description": "Retrieve a Self Assessment Tax Calculation",
+  "description": "Object representing any loyalty payments in the retrieved tax calculation.",
   "type": "object",
   "properties": {
-    "royaltyPayments": {
-      "type": "object",
-      "description": "Object representing any loyalty payments in the retrieved tax calculation.",
-      "properties": {
-        "royaltyPaymentsAmount": {
-          "description": "The total amount of tax charged on royalty payments. This value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
-          "example": "2000"
-        },
-        "rate": {
-          "description": "The rate of the royalty payment. This value must be between 0 and 99.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "10.12"
-        },
-        "grossRoyaltyPayments": {
-          "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
-          "example": "2000"
-        }
-      }
+    "royaltyPaymentsAmount": {
+      "description": "The total amount of tax charged on royalty payments. This value must be between 0 and 99999999999. No decimals.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "2000"
+    },
+    "rate": {
+      "description": "The rate of the royalty payment. This value must be between 0 and 99.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99.99,
+      "example": "10.12"
+    },
+    "grossRoyaltyPayments": {
+      "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "2000"
     },
     "required": [
       "royaltyPaymentsAmount",
