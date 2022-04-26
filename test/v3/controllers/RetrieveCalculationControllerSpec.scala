@@ -188,7 +188,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, RetrieveCalculationHateoasData(nino, taxYear, calculationId))
+          .wrap(response, RetrieveCalculationHateoasData(nino, taxYear, calculationId, response))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeGetRequest)

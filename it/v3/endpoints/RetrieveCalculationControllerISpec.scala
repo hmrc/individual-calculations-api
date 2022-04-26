@@ -51,8 +51,8 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
   "Calling the retrieveCalculation endpoint" should {
 
     "return a 200 status code" when {
-      val successBody: JsValue = Json.parse(
-        """
+      def successBody(canBeFinalised: Boolean): JsValue = Json.parse(
+        s"""
           |{
           |  "metadata" : {
           |    "calculationId": "",
@@ -60,6 +60,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "requestedBy": "",
           |    "calculationReason": "",
           |    "calculationType": "inYear",
+          |    ${if(canBeFinalised) """"intentToCrystallise": true,""" else ""}
           |    "periodFrom": "",
           |    "periodTo": ""
           |  },
@@ -76,8 +77,8 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         """.stripMargin
       )
 
-      val mtdBody: JsValue = Json.parse(
-        """
+      def mtdBody(canBeFinalised: Boolean): JsValue = Json.parse(
+        s"""
           |{
           |  "metadata" : {
           |    "calculationId": "",
@@ -85,7 +86,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "requestedBy": "",
           |    "calculationReason": "",
           |    "calculationType": "inYear",
-          |    "intentToSubmitFinalDeclaration": false,
+          |    "intentToSubmitFinalDeclaration": $canBeFinalised,
           |    "finalDeclaration": false,
           |    "periodFrom": "",
           |    "periodTo": ""
@@ -98,7 +99,25 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "incomeSources": {}
           |  },
           |  "calculation" : {},
-          |  "messages" : {}
+          |  "messages" : {},
+          |  "links": [
+          |    {
+          |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |      "rel": "self",
+          |      "method": "GET"
+          |    }${if (canBeFinalised) {
+            s"""
+             |,
+             |{
+             |  "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
+             |  "rel": "submit-final-declaration",
+             |  "method": "POST"
+             |}
+             |""".stripMargin
+          } else {
+            ""
+          }}
+          |  ]
           |}
         """.stripMargin
       )
@@ -108,14 +127,29 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = false))
         }
 
         val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe mtdBody
+        response.json shouldBe mtdBody(canBeFinalised = false)
+      }
+
+      "a valid request is made and the response can be finalised" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = true))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe mtdBody(canBeFinalised = true)
       }
     }
 

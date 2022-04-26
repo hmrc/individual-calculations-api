@@ -30,8 +30,7 @@ object TriggerCalculationResponse extends HateoasLinks {
   implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] = {
-      import data.{id, nino}
-      Seq(getMetadata(appConfig, nino, id, isSelf = true))
+      Seq()
     }
 
   }

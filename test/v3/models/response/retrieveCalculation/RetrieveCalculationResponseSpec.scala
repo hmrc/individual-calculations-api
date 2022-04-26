@@ -16,8 +16,17 @@
 
 package v3.models.response.retrieveCalculation
 
+import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
+import v3.hateoas.HateoasFactory
+import v3.models.domain.TaxYear
+import v3.models.hateoas.{HateoasWrapper, Link}
+import v3.models.hateoas.Method.{GET, POST}
+import v3.models.response.common.CalculationType
+import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
+import v3.models.response.retrieveCalculation.messages.{Message, Messages}
+import v3.models.response.retrieveCalculation.metadata.Metadata
 import v3.models.utils.JsonErrorValidators
 
 class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
@@ -32,6 +41,184 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
 
     "have the correct fields optional" when {
       testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
+    }
+  }
+
+  "LinksFactory" should {
+
+    trait Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino           = "AA999999A"
+      val taxYear        = "2021-22"
+      val calculationId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes
+    }
+
+    def retrieveCalculationResponse(intentToSubmitFinalDeclaration: Boolean,
+                                    finalDeclaration: Boolean,
+                                    messages: Option[Messages]): RetrieveCalculationResponse =
+      RetrieveCalculationResponse(
+        metadata = Metadata(
+          "",
+          TaxYear(""),
+          "",
+          None,
+          "",
+          None,
+          CalculationType.`inYear`,
+          intentToSubmitFinalDeclaration = intentToSubmitFinalDeclaration,
+          finalDeclaration = finalDeclaration,
+          None,
+          "",
+          ""
+        ),
+        inputs = Inputs(
+          PersonalInformation("", None, "", None, None, None, None, None),
+          IncomeSources(None, None),
+          None,
+          None,
+          None,
+          None,
+          None,
+          None,
+          None),
+        calculation = None,
+        messages = messages
+      )
+
+    "return both retrieve and submit links" when {
+      "intentToSubmitFinalDeclaration is true, finalDeclaration is false, messages is not present" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = true,
+          finalDeclaration = false,
+          messages = None
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+          )
+        )
+      }
+      "intentToSubmitFinalDeclaration is true, finalDeclaration is false, errors array is not present" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = true,
+          finalDeclaration = false,
+          messages = Some(Messages(None, None, None))
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+          )
+        )
+      }
+      "intentToSubmitFinalDeclaration is true, finalDeclaration is false, errors array is present but empty" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = true,
+          finalDeclaration = false,
+          messages = Some(Messages(None, None, Some(Seq())))
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+          )
+        )
+      }
+    }
+
+    "return only a retrieve link" when {
+      "intentToSubmitFinalDeclaration is false" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = false,
+          finalDeclaration = false,
+          messages = None
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+          )
+        )
+      }
+      "finalDeclaration is true" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = true,
+          finalDeclaration = true,
+          messages = None
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+          )
+        )
+      }
+      "errors array is present and contains errors" in new Test {
+        private val model = retrieveCalculationResponse(
+          intentToSubmitFinalDeclaration = true,
+          finalDeclaration = false,
+          messages = Some(Messages(None, None, Some(Seq(Message("", "")))))
+        )
+
+        hateoasFactory.wrap(
+          model,
+          RetrieveCalculationHateoasData(
+            nino = nino,
+            taxYear = taxYear,
+            calculationId = calculationId,
+            response = model
+          )) shouldBe HateoasWrapper(
+          model,
+          Seq(
+            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+          )
+        )
+      }
     }
   }
 
