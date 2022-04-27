@@ -42,6 +42,7 @@
   "required": [],
   "definitions": {
     "payeUnderpaymentsDetail": {
+      "description": "Array containing details for PAYE-related underpayments in the retrieved tax calculation.",
       "type": "array",
       "items": {
         "type": "object",
@@ -70,6 +71,7 @@
       }
     },
     "selfAssessmentUnderpaymentsDetail": {
+      "description": "Array containing details about Self Assessment related underpayments in the retrieved tax calculation.",
       "type": "array",
       "items": {
         "type": "object",
