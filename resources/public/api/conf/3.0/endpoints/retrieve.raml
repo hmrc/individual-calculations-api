@@ -2,15 +2,15 @@ is:
   - headers.acceptJson
   - headers.testScenarioHeader
   - errors.formatNino
-  - errors.formatTaxYear
   - errors.formatCalcId
+  - errors.formatTaxYear
   - errors.ruleTaxYearNotSupported
   - errors.ruleTaxYearRangeInvalid
   - errors.clientOrAgentNotAuthorised
   - errors.notFound
 displayName: Retrieve a Self Assessment Tax Calculation [test only]
 description: 'This endpoint allows the developer to retrieve all the tax calculation data for a given NINO and Calculation ID.'
-#(annotations.sandboxData): !include ../scenarios/retrieve.md
+(annotations.sandboxData): !include ../scenarios/retrieve.md
 (annotations.scope): "read:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "read:self-assessment" ] } ]
 responses:
