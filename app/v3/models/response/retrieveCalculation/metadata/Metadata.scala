@@ -17,7 +17,7 @@
 package v3.models.response.retrieveCalculation.metadata
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.{Format, JsPath, Json, OWrites, Reads}
 import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType
 
@@ -35,6 +35,9 @@ case class Metadata(calculationId: String,
                     periodTo: String)
 
 object Metadata {
+
+  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+
   implicit val writes: OWrites[Metadata] = Json.writes[Metadata]
 
   implicit val reads: Reads[Metadata] = (

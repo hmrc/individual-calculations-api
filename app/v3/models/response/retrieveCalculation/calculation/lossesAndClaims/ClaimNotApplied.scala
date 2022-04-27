@@ -30,6 +30,8 @@ case class ClaimNotApplied(
 
 object ClaimNotApplied {
 
+  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property-non-fhl`,

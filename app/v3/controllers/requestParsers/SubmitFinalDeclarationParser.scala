@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package v3.models.request
+package v3.controllers.requestParsers
 
+import javax.inject.Inject
+import v3.controllers.requestParsers.validators.SubmitFinalDeclarationValidator
 import v3.models.domain.{Nino, TaxYear}
+import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
-case class TriggerCalculationRawData(nino: String, taxYear: String, finalDeclaration: Option[String]) extends RawData
+class SubmitFinalDeclarationParser @Inject() (val validator: SubmitFinalDeclarationValidator)
+    extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest] {
 
-case class TriggerCalculationRequest(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)
+  override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequest = {
+    SubmitFinalDeclarationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.calculationId)
+  }
+
+}

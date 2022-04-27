@@ -45,10 +45,10 @@ class ResultOfClaimsAppliedSpec extends UnitSpec {
       originatingClaimId = Some("123456789012346"),
       incomeSourceId = "123456789012347",
       incomeSourceType = incomeSourceType,
-      taxYearClaimMade = TaxYear("2020"),
+      taxYearClaimMade = TaxYear.fromDownstream("2020"),
       claimType = claimType,
       mtdLoss = Some(false),
-      taxYearLossIncurred = TaxYear("2019"),
+      taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       lossAmountUsed = BigInt(123),
       remainingLossValue = BigInt(456),
       lossType = Some("income")

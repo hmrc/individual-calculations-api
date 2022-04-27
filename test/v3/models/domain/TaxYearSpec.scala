@@ -57,14 +57,27 @@ class TaxYearSpec extends UnitSpec {
       }
     }
 
+    "constructed directly" must {
+      "not compile" in {
+        """new TaxYear("2021-22")""" shouldNot compile
+      }
+    }
+
+    "compared with equals" must {
+      "have equality based on content" in {
+        TaxYear.fromMtd("2021-22") shouldBe TaxYear.fromDownstream("2022")
+        TaxYear.fromMtd("2021-22") should not be TaxYear.fromDownstream("2021")
+      }
+    }
+
     "de-serialized from downstream JSON" must {
       "convert correctly" in {
         Json
           .parse("""
-            |{
-            | "taxYear": 2020
-            |}
-            |""".stripMargin)
+                   |{
+                   | "taxYear": 2020
+                   |}
+                   |""".stripMargin)
           .as[SomeModel] shouldBe SomeModel(TaxYear.fromDownstream("2020"))
       }
     }

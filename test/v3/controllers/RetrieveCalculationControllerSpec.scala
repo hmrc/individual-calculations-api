@@ -70,7 +70,7 @@ class RetrieveCalculationControllerSpec
   val response: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
       calculationId = "",
-      taxYear = TaxYear("2018"),
+      taxYear = TaxYear.fromDownstream("2018"),
       requestedBy = "",
       requestedTimestamp = None,
       calculationReason = "",
@@ -248,6 +248,41 @@ class RetrieveCalculationControllerSpec
         )
 
         input.foreach(args => (serviceErrors _).tupled(args))
+      }
+
+      "return a DownstreamError" when {
+        object TestError
+          extends MtdError(
+            code = "TEST_ERROR",
+            message = "This is a test error"
+          )
+        "the parser returns an unexpected error" in new Test {
+          MockRetrieveCalculationParser
+            .parse(rawData)
+            .returns(Left(ErrorWrapper(correlationId, TestError, None)))
+
+          val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+          contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+          header("X-CorrelationId", result) shouldBe Some(correlationId)
+        }
+
+        "the service returns an unexpected error" in new Test {
+          MockRetrieveCalculationParser
+            .parse(rawData)
+            .returns(Right(requestData))
+
+          MockRetrieveCalculationService
+            .retrieveCalculation(requestData)
+            .returns(Future.successful(Left(ErrorWrapper(correlationId, TestError))))
+
+          val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+          contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+          header("X-CorrelationId", result) shouldBe Some(correlationId)
+        }
       }
     }
   }

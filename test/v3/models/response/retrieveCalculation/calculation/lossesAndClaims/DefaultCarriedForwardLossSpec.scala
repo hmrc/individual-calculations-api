@@ -36,7 +36,7 @@ class DefaultCarriedForwardLossSpec extends UnitSpec {
     DefaultCarriedForwardLoss(
       incomeSourceId = "123456789012345",
       incomeSourceType = incomeSourceType,
-      taxYearLossIncurred = TaxYear("2019"),
+      taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       currentLossValue = BigInt(456)
     )
 

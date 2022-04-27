@@ -38,7 +38,7 @@ class ClaimNotAppliedSpec extends UnitSpec {
       claimId = "123456789012345",
       incomeSourceId = "123456789012347",
       incomeSourceType = incomeSourceType,
-      taxYearClaimMade = TaxYear("2020"),
+      taxYearClaimMade = TaxYear.fromDownstream("2020"),
       claimType = claimType
     )
 

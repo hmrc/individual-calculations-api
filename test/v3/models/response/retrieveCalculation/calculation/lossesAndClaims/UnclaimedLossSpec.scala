@@ -37,7 +37,7 @@ class UnclaimedLossSpec extends UnitSpec {
     UnclaimedLoss(
       incomeSourceId = Some("123456789012345"),
       incomeSourceType = incomeSourceType,
-      taxYearLossIncurred = TaxYear("2020"),
+      taxYearLossIncurred = TaxYear.fromDownstream("2020"),
       currentLossValue = BigInt(456),
       lossType = Some("income")
     )

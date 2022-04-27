@@ -44,8 +44,8 @@ class CarriedForwardLossSpec extends UnitSpec {
       incomeSourceId = "123456789012347",
       incomeSourceType = incomeSourceType,
       claimType = claimType,
-      taxYearClaimMade = Some(TaxYear("2020")),
-      taxYearLossIncurred = TaxYear("2019"),
+      taxYearClaimMade = Some(TaxYear.fromDownstream("2020")),
+      taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       currentLossValue = BigInt(456),
       lossType = Some("income")
     )

@@ -32,6 +32,8 @@ case class LossBroughtForward(lossId: Option[String],
 
 object LossBroughtForward {
 
+  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,
     `uk-property-non-fhl`,

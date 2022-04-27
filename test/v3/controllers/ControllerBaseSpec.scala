@@ -32,6 +32,7 @@ class ControllerBaseSpec extends UnitSpec with Status with MimeTypes with Header
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
 
-  def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
+  def fakePostRequest[T](uri: String, body: T): FakeRequest[T]          = FakeRequest("POST", uri).withBody(body)
+  def fakePostRequest(uri: String): FakeRequest[AnyContentAsEmpty.type] = FakeRequest("POST", uri)
 
 }
