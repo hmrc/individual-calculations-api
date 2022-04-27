@@ -1,11 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "metadata": {
     "description": "Object containing top-level metadata information about the retrieved tax calculation.",
     "type": "object",
     "properties": {
       "calculationId": {
-        "description": "The unique identifier of the calculation. Must conform to the regular expression:",
+        "description": "The unique identifier of the calculation.",
         "type": "string",
         "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
         "example": "717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4"
@@ -13,7 +12,7 @@
       "taxYear": {
         "description": "The tax year in which the calculation was performed. Must conform to the regular expression:",
         "type": "string",
-        "pattern": "^2[0-9]{3}-[0-9]{2}$",
+        "id": "tax-year",
         "example": "2022-23"
       },
       "requestedBy": {
@@ -26,9 +25,8 @@
         ]
       },
       "requestedTimestamp": {
-        "description": "The timestamp of when the calculation was requested in ISO 8601 UTC format:",
+        "description": "The timestamp of when the calculation was requested in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
         "type": "string",
-        "format": "YYYY-MM-DDThh:mm:ssZ",
         "example": "2019-02-15T09:35:15Z"
       },
       "calculationReason": {
@@ -92,9 +90,8 @@
         ]
       },
       "calculationTimestamp": {
-        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format:",
+        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
         "type": "string",
-        "format": "YYYY-MM-DDThh:mm:ssZ",
         "example": "2019-02-15T09:35:15:094Z"
       },
       "calculationType": {
@@ -108,23 +105,22 @@
       "intentToSubmitFinalDeclaration": {
         "description": "A boolean to indicate whether the calculation can be used to make a final declaration. The value must be true or false.",
         "type": "boolean",
-        "exaample": "true"
+        "example": "true"
       },
       "finalDeclaration": {
         "description": "A boolean to indicate whether the calculation has been used to make a final declaration. The value must be true or false.",
         "type": "boolean",
-        "exaample": "false"
+        "example": "false"
       },
       "finalDeclarationTimestamp": {
-        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format:",
+        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
         "type": "string",
-        "format": "YYYY-MM-DDThh:mm:ssZ",
         "example": "2019-02-15T09:35:15:094Z"
       },
       "periodFrom": {
         "description": "This defines the earliest date from which the calculation was performed. This will be the accounting period start date (for self-employments) or the tax year start date, whichever occurs first for the income sources supplied. Must conform to the format:",
         "type": "string",
-        "format": "YYYY-MM-DD",
+        "id": "full-date",
         "example": "2020-01-01"
       },
       "periodTo": {
@@ -146,8 +142,4 @@
       "periodFrom",
       "periodTo"
     ]
-  },
-  "required": [
-    "metadata"
-  ]
-}
+  }
