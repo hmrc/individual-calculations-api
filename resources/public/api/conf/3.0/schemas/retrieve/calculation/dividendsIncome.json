@@ -11,7 +11,7 @@
     "totalUkDividends": {
       "description": "Total UK dividends. This value must be between 0 and 99999999999. No decimals.",
       "type": "number",
-      "example": ""
+      "example": "5000"
     },
     "ukDividends": {
       "description": "An object detailing UK dividends.",
