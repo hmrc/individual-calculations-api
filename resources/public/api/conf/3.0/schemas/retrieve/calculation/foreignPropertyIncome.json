@@ -19,16 +19,82 @@
           "foreign-property"
         ]
       },
-      "broughtForwardClass4LossesUsed": {
-        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+      "countryCode": {
+        "description": "A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3.",
+        "type": "string",
+        "pattern": "^[A-Z]{3}$",
+        "example": "FRA"
+      },
+      "totalIncome": {
+        "description": "The total income for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
         "type": "number",
-        "multipleOf": 1,
+        "multipleOf": 0.01,
         "minimum": 0,
-        "maximum": 99999999999,
-        "example": 160
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalExpenses": {
+        "description": "The total income for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "netProfit": {
+        "description": "The net profit for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "netLoss": {
+        "description": "The net loss for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalAdditions": {
+        "description": "The total additions to the net profit (or deductions from the net loss) for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalDeductions": {
+        "description": "The total deductions from the net loss (or additions to the net profit) for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "taxableProfit": {
+        "description": "The taxable profit after all additions and deductions have been applied for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "adjustedIncomeTaxLoss": {
+        "description": "The adjusted Income Tax loss after all additions and deductions have been applied for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
       }
     },
-    "required": []
+    "required": [
+      "incomeSourceId",
+      "incomeSourceType",
+      "countryCode"
+    ]
   },
   "additionalProperties": false
 }
