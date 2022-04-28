@@ -4,7 +4,7 @@
   "type": "object",
   "properties": {
     "foreignTaxOnForeignEmployment": {
-      "description": "Amount of foreign tax on foreign employment. This value must be between 0 and 99999999999.99 up to 2 decimal places ",
+      "description": "Amount of foreign tax on foreign employment. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "multipleOf": 0.01,
       "minimum": 0,
