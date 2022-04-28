@@ -113,7 +113,7 @@
               "rate": {
                 "description": "Tar rate of tax paid on state pension lump sum. This value must be between 0 and 99.99 up to 2 decimal places.",
                 "type": "number",
-                "example": "5007.99"
+                "example": "4.85"
               },
               "source": {
                 "description": "The source of the data.",
