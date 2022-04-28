@@ -252,10 +252,10 @@ class RetrieveCalculationControllerSpec
 
       "return a DownstreamError" when {
         object TestError
-          extends MtdError(
-            code = "TEST_ERROR",
-            message = "This is a test error"
-          )
+            extends MtdError(
+              code = "TEST_ERROR",
+              message = "This is a test error"
+            )
         "the parser returns an unexpected error" in new Test {
           MockRetrieveCalculationParser
             .parse(rawData)

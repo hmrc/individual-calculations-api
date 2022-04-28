@@ -39,6 +39,4 @@ trait HateoasLinks {
   def submitFinalDeclaration(appConfig: AppConfig, nino: String, taxYear: String, calculationId: String): Link =
     Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear/$calculationId/final-declaration", method = POST, rel = SUBMIT_FINAL_DECLARATION)
 
-
-
 }

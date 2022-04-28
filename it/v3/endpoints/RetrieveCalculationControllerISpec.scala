@@ -60,7 +60,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |    "requestedBy": "",
           |    "calculationReason": "",
           |    "calculationType": "inYear",
-          |    ${if(canBeFinalised) """"intentToCrystallise": true,""" else ""}
+          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
           |    "periodFrom": "",
           |    "periodTo": ""
           |  },

@@ -28,7 +28,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture {
 
-  private val nino = Nino("AA123456A")
+  private val nino          = Nino("AA123456A")
   private val taxYear       = "2019-20"
   private val calculationId = "someCalcId"
 

@@ -35,7 +35,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
   }
 
   "SubmitFinalDeclarationService" when {
-    val nino: Nino = Nino("AA123456A")
+    val nino: Nino            = Nino("AA123456A")
     val taxYear: TaxYear      = TaxYear.fromMtd("2019-20")
     val calculationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 

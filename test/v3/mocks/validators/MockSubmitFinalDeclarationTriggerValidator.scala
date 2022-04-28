@@ -35,4 +35,5 @@ trait MockSubmitFinalDeclarationTriggerValidator extends MockFactory {
     }
 
   }
+
 }
