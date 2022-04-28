@@ -180,3 +180,14 @@ traits:
                 description: 'The supplied income source could not be found.'
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
+  notFoundList:
+      responses:
+        404:
+          body:
+            application/json:
+              type: types.errorResponse
+              examples:
+                notFoundList:
+                  description: 'No tax calculations can be found for the supplied NINO and tax year.'
+                  value:
+                    code: MATCHING_RESOURCE_NOT_FOUND

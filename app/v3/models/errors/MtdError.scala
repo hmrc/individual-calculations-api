@@ -54,8 +54,8 @@ object TaxYearFormatError
 
 object CalculationIdFormatError
     extends MtdError(
-      code = "FORMAT_CALC_ID",
-      message = "The provided Calculation ID is invalid"
+      code = "FORMAT_CALCULATION_ID",
+      message = "The provided calculationId is invalid"
     )
 
 object TypeFormatError
@@ -87,7 +87,7 @@ object EndOfYearEstimateNotPresentError
 object RuleTaxYearNotSupportedError
     extends MtdError(
       code = "RULE_TAX_YEAR_NOT_SUPPORTED",
-      message = "Tax year not supported, because it precedes the earliest allowable tax year"
+      message = "The specified tax year is not supported. The tax year specified is before the minimum tax year value"
     )
 
 object RuleIncorrectOrEmptyBodyError
@@ -108,7 +108,7 @@ object RuleNoIncomeSubmissionsExistError
       message = "No income submissions exist for the tax year"
     )
 
-object RuleCalculationErrorMessagesExist
+object RuleCalculationErrorMessagesExistError
     extends MtdError(
       code = "RULE_CALCULATION_ERROR_MESSAGES_EXIST",
       message = "Calculation error messages exist for the supplied calculation ID"
@@ -120,7 +120,7 @@ object RuleNoSubmissionsExistError
       message = "No periodic or annual income data has been submitted"
     )
 
-object RuleSubmissionFailed
+object RuleSubmissionFailedError
     extends MtdError(
       code = "RULE_SUBMISSION_FAILED",
       message = "The submission cannot be completed due to validation failures"
@@ -129,16 +129,16 @@ object RuleSubmissionFailed
 object RuleFinalDeclarationReceivedError
     extends MtdError(
       code = "RULE_FINAL_DECLARATION_RECEIVED",
-      message = "Crystallisation declaration has already been received"
+      message = "A final declaration has already been received"
     )
 
 object RuleIncomeSourcesChangedError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_CHANGED",
-      message = "Income sources data has changed. Perform intent to crystallise"
+      message = "Income sources data has changed. Perform an Intent to submit a final declaration"
     )
 
-object RuleIncomeSourcesInvalid
+object RuleIncomeSourcesInvalidError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_INVALID",
       message = "No valid income sources could be found"
@@ -147,13 +147,13 @@ object RuleIncomeSourcesInvalid
 object RuleRecentSubmissionsExistError
     extends MtdError(
       code = "RULE_RECENT_SUBMISSIONS_EXIST",
-      message = "More recent submissions exist. Perform intent to crystallise"
+      message = "More recent submissions exist. Perform an Intent to submit a final declaration"
     )
 
 object RuleResidencyChangedError
     extends MtdError(
       code = "RULE_RESIDENCY_CHANGED",
-      message = "Residency has changed. Perform intent to crystallise"
+      message = "Residency has changed. Perform an Intent to submit a final declaration"
     )
 
 // Standard Errors

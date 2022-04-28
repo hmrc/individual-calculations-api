@@ -78,9 +78,9 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
         ("RESIDENCY_CHANGED", RuleResidencyChangedError),
-        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalid),
+        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError),
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
-        ("BUSINESS_VALIDATION", RuleSubmissionFailed),
+        ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
         ("SERVER_ERROR", DownstreamError),
         ("SERVICE_UNAVAILABLE", DownstreamError)

@@ -39,6 +39,7 @@ documentation:
       (annotations.group):
         name: Self Assessment
         description: !include docs/group_selfAssessment.md
+      get: !include endpoints/list.raml
       /{taxYear}:
         uriParameters:
           taxYear: !include pathParameters/taxYearMinimum2018.raml

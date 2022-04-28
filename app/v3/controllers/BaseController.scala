@@ -18,13 +18,23 @@ package v3.controllers
 
 import cats.data.EitherT
 import cats.implicits._
+import play.api.libs.json.Json
 import play.api.mvc.Result
+import play.api.mvc.Results.InternalServerError
 import utils.Logging
+import v3.models.errors.{DownstreamError, ErrorWrapper}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 trait BaseController {
   self: Logging =>
+
+  protected def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
+    logger.error(
+      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+        s"Unhandled error: $errorWrapper")
+    InternalServerError(Json.toJson(DownstreamError))
+  }
 
   implicit class Response(result: Result) {
 
