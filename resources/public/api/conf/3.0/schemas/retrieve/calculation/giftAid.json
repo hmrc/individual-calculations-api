@@ -5,7 +5,7 @@
   "properties": {
     "grossGiftAidPayments": {
       "description": "The total amount of Gift Aid payments made for the tax year. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "2000"
     },
     "rate": {
