@@ -16,20 +16,20 @@
 
 package v3.models.response.retrieveCalculation.calculation.taxCalculation
 
-import play.api.libs.json.{Reads, Writes}
-import utils.enums.Enums
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.retrieveCalculation.calculation.taxCalculation.CgtBandName._
 
-sealed trait CgtBandName
+class CgtBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object CgtBandName {
-  case object `lower-rate`                   extends CgtBandName
-  case object `higher-rate`                  extends CgtBandName
+  testReads[CgtBandName](
+    "lowerRate"  -> `lower-rate`,
+    "higherRate" -> `higher-rate`
+  )
 
-  implicit val writes: Writes[CgtBandName] = Enums.writes[CgtBandName]
-
-  implicit val reads: Reads[CgtBandName] = Enums.readsUsing {
-    case "lowerRate"     => `lower-rate`
-    case "higherRate"   => `higher-rate`
-  }
+  testWrites[CgtBandName](
+    `lower-rate`  -> "lower-rate",
+    `higher-rate` -> "higher-rate"
+  )
 
 }

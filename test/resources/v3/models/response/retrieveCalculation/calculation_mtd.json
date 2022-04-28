@@ -6,7 +6,7 @@
     "requestedTimestamp": "2019-02-15T09:35:15.000Z",
     "calculationReason": "customerRequest",
     "calculationTimestamp": "2019-02-15T09:35:15.094Z",
-    "calculationType": "endOfYear",
+    "calculationType": "finalDeclaration",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
     "finalDeclarationTimestamp": "2019-02-15T09:35:15.094Z",
@@ -924,7 +924,7 @@
           "taxableGains": 5000.99,
           "cgtTaxBands": [
             {
-              "name": "lowerRate",
+              "name": "lower-rate",
               "rate": 20.01,
               "income": 5000.99,
               "taxAmount": 5000.99
@@ -943,7 +943,7 @@
           "taxableGains": 5000.99,
           "cgtTaxBands": [
             {
-              "name": "lowerRate",
+              "name": "lower-rate",
               "rate": 20.01,
               "income": 5000.99,
               "taxAmount": 5000.99

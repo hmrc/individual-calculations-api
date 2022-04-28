@@ -158,7 +158,7 @@
       "taxableGains": 5000.99,
       "cgtTaxBands": [
         {
-          "name": "lowerRate",
+          "name": "lower-rate",
           "rate": 20,
           "income": 5000.99,
           "taxAmount": 5000.99
@@ -177,7 +177,7 @@
       "taxableGains": 5000.99,
       "cgtTaxBands": [
         {
-          "name": "lowerRate",
+          "name": "lower-rate",
           "rate": 20,
           "income": 5000.99,
           "taxAmount": 5000.99
