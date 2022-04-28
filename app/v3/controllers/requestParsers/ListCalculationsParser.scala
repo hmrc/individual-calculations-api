@@ -16,6 +16,19 @@
 
 package v3.controllers.requestParsers
 
-class ListCalculationsParser {
+import v3.controllers.requestParsers.validators.ListCalculationsValidator
+import v3.models.domain.{Nino, TaxYear}
+import v3.models.request._
+
+import javax.inject.{Inject, Singleton}
+
+@Singleton
+class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
+  extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+
+  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = ListCalculationsRequest(
+    Nino(data.nino),
+    data.taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
+  )
 
 }

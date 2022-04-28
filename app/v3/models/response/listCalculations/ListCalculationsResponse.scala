@@ -18,17 +18,33 @@ package v3.models.response.listCalculations
 
 import config.AppConfig
 import play.api.libs.json.{Json, OFormat}
-import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
-import v3.models.hateoas.{HateoasData, Link}
+import v3.hateoas.{HateoasLinks, HateoasListLinksFactory}
+import v3.models.hateoas
+import v3.models.hateoas.HateoasData
 
-case class ListCalculationsResponse()
+case class ListCalculationsResponse[I](calculations: Seq[I])
 
 object ListCalculationsResponse extends HateoasLinks {
-  implicit val format: OFormat[ListCalculationsResponse] = Json.format[ListCalculationsResponse]
+  type ListCalculations = ListCalculationsResponse[Calculation]
 
-  implicit object LinksFactory extends HateoasLinksFactory[ListCalculationsResponse, ListCalculationsHateoasData] {
-    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] = Seq()
+  implicit val format: OFormat[ListCalculations] = Json.format[ListCalculations]
+
+  implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
+    override def itemLinks(appConfig: AppConfig,
+                           data: ListCalculationsHateoasData,
+                           item: Calculation): Seq[hateoas.Link] = Seq(
+        retrieve(appConfig, data.nino, data.taxYear, item.calculationId)
+    )
+
+    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[hateoas.Link] = {
+      import data._
+      Seq(
+        trigger(appConfig, nino, taxYear),
+        list(appConfig, nino)
+      )
+    }
   }
+
 }
 
 case class ListCalculationsHateoasData(nino: String, taxYear: String) extends HateoasData

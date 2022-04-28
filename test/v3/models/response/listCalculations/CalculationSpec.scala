@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators
+package v3.models.response.listCalculations
 
-import v3.models.errors.MtdError
-import v3.models.request.ListCalculationsRawData
+import support.UnitSpec
 
-class ListCalculationsValidator extends Validator[ListCalculationsRawData] {
-  override def validate(data: ListCalculationsRawData): List[MtdError] = ???
+class CalculationSpec extends UnitSpec {
+
 }

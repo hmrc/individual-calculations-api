@@ -16,6 +16,20 @@
 
 package v3.connectors
 
-class ListCalculationsConnector {
+import config.AppConfig
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import v3.models.request.ListCalculationsRequest
+import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
+
+@Singleton
+class ListCalculationsConnector @Inject()(val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+
+  def list(request: ListCalculationsRequest)(
+    implicit hc: HeaderCarrier,
+    ec: ExecutionContext,
+    correlationId: String
+  ): DownstreamOutcome[ListCalculations] = ???
 }

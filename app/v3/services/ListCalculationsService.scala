@@ -16,6 +16,22 @@
 
 package v3.services
 
-class ListCalculationsService {
+import uk.gov.hmrc.http.HeaderCarrier
+import v3.connectors.ListCalculationsConnector
+import v3.controllers.EndpointLogContext
+import v3.models.request.ListCalculationsRequest
+import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
+
+@Singleton
+class ListCalculationsService @Inject()(connector: ListCalculationsConnector) {
+
+  def list(request: ListCalculationsRequest)(
+    implicit hc: HeaderCarrier,
+    ec: ExecutionContext,
+    logContext: EndpointLogContext,
+    correlationId: String
+  ): ServiceOutcome[ListCalculations] = ???
 }

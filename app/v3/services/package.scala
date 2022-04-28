@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators
+package v3
 
-import v3.models.errors.MtdError
-import v3.models.request.ListCalculationsRawData
+import v3.models.errors.ErrorWrapper
+import v3.models.outcomes.ResponseWrapper
 
-class ListCalculationsValidator extends Validator[ListCalculationsRawData] {
-  override def validate(data: ListCalculationsRawData): List[MtdError] = ???
+import scala.concurrent.Future
+
+package object services {
+  type ServiceOutcome[I] = Future[Either[ErrorWrapper, ResponseWrapper[I]]]
 }
