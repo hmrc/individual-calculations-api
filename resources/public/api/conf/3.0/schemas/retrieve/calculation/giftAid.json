@@ -3,9 +3,6 @@
   "description": "Object representing gift aid payments and tax due for the retrieved tax calculation.",
   "type": "object",
   "properties": {
-    "giftAid": {
-      "type": "object",
-      "description": "Object representing gift aid payments and tax due for the retrieved tax calculation.",
       "properties": {
         "grossGiftAidPayments": {
           "description": "The total amount of Gift Aid payments made for the tax year. This value must be between 0 and 99999999999. No decimals.",
