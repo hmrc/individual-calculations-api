@@ -1,13 +1,34 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "###TODO###",
-  "type": "object",
-  "properties": {
-    "###TODO###": {
-      "description": "Other properties",
-      "type": "string"
-    }
+  "description": "Array containing a breakdown of the income received for foreign property by country code for the retrieved tax calculation.",
+  "type": "array",
+  "items": {
+    "properties": {
+      "incomeSourceId": {
+        "title": "incomeSourceId",
+        "description": "The unique identifier of the income source.",
+        "type": "string",
+        "pattern": "^[A-Za-z0-9]{15}$",
+        "example": "XAIS12345678910"
+      },
+      "incomeSourceType": {
+        "title": "incomeSourceType",
+        "description": "The income source type.",
+        "type": "string",
+        "enum": [
+          "foreign-property"
+        ]
+      },
+      "broughtForwardClass4LossesUsed": {
+        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+        "type": "number",
+        "multipleOf": 1,
+        "minimum": 0,
+        "maximum": 99999999999,
+        "example": 160
+      }
+    },
+    "required": []
   },
-  "additionalProperties": false,
-  "required": []
+  "additionalProperties": false
 }
