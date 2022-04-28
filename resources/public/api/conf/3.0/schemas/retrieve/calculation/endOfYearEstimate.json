@@ -6,52 +6,55 @@
     "incomeSource": {
       "description": "Array detailing related income sources.",
       "type": "array",
-      "properties": {
-        "incomeSourceId": {
-          "description": "The unique identifier of the income source. Must conform to the regular expression:\n^[A-Za-z0-9]{15}$ \n\nOR\n\n^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-          "type": "string",
-          "example": "XAIS12345678910"
-        },
-        "incomeSourceType": {
-          "description": "A list of income source types.",
-          "enum": [
-            "self-employment",
-            "uk-property-non-fhl",
-            "foreign-property-fhl-eea",
-            "uk-property-fhl",
-            "employments",
-            "foreign-income",
-            "foreign-dividends",
-            "uk-savings-and-gains",
-            "uk-dividends",
-            "state-benefits",
-            "gains-on-life-policies",
-            "share-schemes",
-            "foreign-property",
-            "foreign-savings-and-gains",
-            "other-dividends",
-            "uk-securities",
-            "other-income",
-            "foreign-pension",
-            "non-paye-income",
-            "capital-gains-tax",
-            "charitable-giving"
-          ],
-          "type": "string"
-        },
-        "incomeSourceName": {
-          "description": "Income source name.",
-          "type": "string"
-        },
-        "taxableIncome": {
-          "description": "Estimated taxable income. The value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
-          "example": "5000"
-        },
-        "finalised": {
-          "description": "A boolean indicating whether income source has been finalised for the tax year (only applies to self-employment and UK property income types). The value must be true or false.",
-          "type": "boolean",
-          "example": "false"
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source. Must conform to the regular expression:\n^[A-Za-z0-9]{15}$ \n\nOR\n\n^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "type": "string",
+            "example": "XAIS12345678910"
+          },
+          "incomeSourceType": {
+            "description": "A list of income source types.",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "foreign-property-fhl-eea",
+              "uk-property-fhl",
+              "employments",
+              "foreign-income",
+              "foreign-dividends",
+              "uk-savings-and-gains",
+              "uk-dividends",
+              "state-benefits",
+              "gains-on-life-policies",
+              "share-schemes",
+              "foreign-property",
+              "foreign-savings-and-gains",
+              "other-dividends",
+              "uk-securities",
+              "other-income",
+              "foreign-pension",
+              "non-paye-income",
+              "capital-gains-tax",
+              "charitable-giving"
+            ],
+            "type": "string"
+          },
+          "incomeSourceName": {
+            "description": "Income source name.",
+            "type": "string"
+          },
+          "taxableIncome": {
+            "description": "Estimated taxable income. The value must be between 0 and 99999999999. No decimals.",
+            "type": "number",
+            "example": "5000"
+          },
+          "finalised": {
+            "description": "A boolean indicating whether income source has been finalised for the tax year (only applies to self-employment and UK property income types). The value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          }
         }
       },
       "additionalProperties": false,
