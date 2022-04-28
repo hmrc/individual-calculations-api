@@ -19,18 +19,18 @@ package v3.controllers.requestParsers
 import v3.controllers.requestParsers.validators.TriggerCalculationValidator
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+
 import javax.inject.Inject
 
 class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
     extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
 
   override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
-    val finalDeclaration: Boolean = data.finalDeclaration match {
-      case Some(value) => value.toBoolean
-      case None        => false
-    }
+    val nino             = Nino(data.nino)
+    val taxYear          = TaxYear.fromMtd(data.taxYear)
+    val finalDeclaration = data.finalDeclaration.exists(_.toBoolean)
 
-    TriggerCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), finalDeclaration)
+    TriggerCalculationRequest(nino, taxYear, finalDeclaration)
   }
 
 }

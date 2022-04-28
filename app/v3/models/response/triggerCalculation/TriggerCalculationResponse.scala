@@ -17,25 +17,24 @@
 package v3.models.response.triggerCalculation
 
 import config.AppConfig
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v3.models.hateoas.{HateoasData, Link}
 
-case class TriggerCalculationResponse(id: String)
+case class TriggerCalculationResponse(calculationId: String)
 
 object TriggerCalculationResponse extends HateoasLinks {
 
-  implicit val format: OFormat[TriggerCalculationResponse] = Json.format[TriggerCalculationResponse]
+  implicit val downstreamReads: Reads[TriggerCalculationResponse] = ((JsPath \ "id").read[String].map(TriggerCalculationResponse.apply))
+  implicit val vendorWrites: OWrites[TriggerCalculationResponse]  = Json.writes[TriggerCalculationResponse]
 
   implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
-    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] = {
-      import data.{id, nino}
-      Seq(getMetadata(appConfig, nino, id, isSelf = true))
-    }
+    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
+      Seq(trigger(appConfig, data.nino, data.taxYear, finalDeclaration = data.finalDeclaration))
 
   }
 
 }
 
-case class TriggerCalculationHateoasData(nino: String, id: String) extends HateoasData
+case class TriggerCalculationHateoasData(nino: String, taxYear: String, finalDeclaration: Boolean) extends HateoasData
