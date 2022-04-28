@@ -67,7 +67,7 @@
           },
           "lossAmountUsed": {
             "description": "Loss amount used. The value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "multipleOf": 1,
             "minimum": 0,
             "maximum": 99999999999,
@@ -75,7 +75,7 @@
           },
           "remainingLossValue": {
             "description": "Remaining loss value. The value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "multipleOf": 1,
             "minimum": 0,
             "maximum": 99999999999,
@@ -132,7 +132,7 @@
           },
           "currentLossValue": {
             "description": "Current loss value. The value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "multipleOf": 1,
             "minimum": 0,
             "maximum": 99999999999,
@@ -214,7 +214,7 @@
           },
           "currentLossValue": {
             "description": "Current loss value. The value must be between 0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "multipleOf": 1,
             "minimum": 0,
             "maximum": 99999999999,
@@ -269,7 +269,7 @@
           },
           "currentLossValue": {
             "description": "The tax year in which the loss was incurred.",
-            "type": "number",
+            "type": "integer",
             "multipleOf": 1,
             "minimum": 0,
             "maximum": 99999999999,
