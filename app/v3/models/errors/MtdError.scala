@@ -129,7 +129,7 @@ object RuleSubmissionFailedError
 object RuleFinalDeclarationReceivedError
     extends MtdError(
       code = "RULE_FINAL_DECLARATION_RECEIVED",
-      message = "A final declaration has already been received"
+      message = "Final declaration has already been received"
     )
 
 object RuleIncomeSourcesChangedError
