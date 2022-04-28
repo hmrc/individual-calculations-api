@@ -10,9 +10,9 @@
         "example": "717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4"
       },
       "taxYear": {
+        "id": "tax-year",
         "description": "The tax year in which the calculation was performed. Must conform to the regular expression:",
         "type": "string",
-        "id": "tax-year",
         "example": "2022-23"
       },
       "requestedBy": {
@@ -118,9 +118,9 @@
         "example": "2019-02-15T09:35:15:094Z"
       },
       "periodFrom": {
+        "id": "full-date",
         "description": "This defines the earliest date from which the calculation was performed. This will be the accounting period start date (for self-employments) or the tax year start date, whichever occurs first for the income sources supplied. Must conform to the format:",
         "type": "string",
-        "id": "full-date",
         "example": "2020-01-01"
       },
       "periodTo": {
