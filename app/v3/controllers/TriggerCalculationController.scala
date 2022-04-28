@@ -119,14 +119,6 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
     }
   }
 
-  // TODO move this to BaseController - but will also need to move AuditError etc to 'api' top-level package:
-  private def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
-    logger.error(
-      s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-        s"Unhandled error: $errorWrapper")
-    InternalServerError(Json.toJson(DownstreamError))
-  }
-
   private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
     val event = AuditEvent(
       auditType = "TriggerCalculation",
