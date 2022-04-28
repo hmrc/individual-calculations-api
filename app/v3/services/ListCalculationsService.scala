@@ -16,22 +16,40 @@
 
 package v3.services
 
+import cats.data.EitherT
 import uk.gov.hmrc.http.HeaderCarrier
+import utils.Logging
 import v3.connectors.ListCalculationsConnector
 import v3.controllers.EndpointLogContext
+import v3.models.errors.{MtdError, _}
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
+import v3.support.DownstreamResponseMappingSupport
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsService @Inject()(connector: ListCalculationsConnector) {
+class ListCalculationsService @Inject()(connector: ListCalculationsConnector)
+  extends DownstreamResponseMappingSupport
+  with Logging {
 
-  def list(request: ListCalculationsRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    logContext: EndpointLogContext,
-    correlationId: String
-  ): ServiceOutcome[ListCalculations] = ???
+  def list(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
+                                             ec: ExecutionContext,
+                                             logContext: EndpointLogContext,
+                                             correlationId: String): ServiceOutcome[ListCalculations] = {
+    val result = for {
+      responseWrapper <- EitherT(connector.list(request)).leftMap(mapDesErrors(mappingToMtdError))
+    } yield responseWrapper
+
+    result.value
+  }
+
+  private val mappingToMtdError: Map[String, MtdError] = Map(
+    "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+    "INVALID_TAXYEAR" -> TaxYearFormatError,
+    "NOT_FOUND" -> NotFoundError,
+    "SERVER_ERROR" -> DownstreamError,
+    "SERVICE_UNAVAILABLE" -> DownstreamError
+  )
 }

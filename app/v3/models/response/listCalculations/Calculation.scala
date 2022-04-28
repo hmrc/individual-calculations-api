@@ -16,10 +16,33 @@
 
 package v3.models.response.listCalculations
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v3.models.domain.TaxYear
+import v3.models.response.common.CalculationType
 
-case class Calculation(calculationId: String)
+case class Calculation(calculationId: String,
+                       calculationTimestamp: String,
+                       calculationType: CalculationType,
+                       requestedBy: Option[String],
+                       taxYear: Option[TaxYear],
+                       totalIncomeTaxAndNicsDue: BigDecimal,
+                       intentToSubmitFinalDeclaration: Option[Boolean],
+                       finalDeclaration: Option[Boolean],
+                       finalDeclarationTimestamp: Option[String])
 
 object Calculation {
-  implicit val format: OFormat[Calculation] = Json.format[Calculation]
+  implicit val writes: OWrites[Calculation] = Json.writes[Calculation]
+
+  implicit val reads: Reads[Calculation] =
+    ((JsPath \ "calculationId").read[String] and
+      (JsPath \ "calculationTimestamp").read[String] and
+      (JsPath \ "calculationType").read[CalculationType] and
+      (JsPath \ "requestedBy").readNullable[String] and
+      (JsPath \ "year").readNullable[Int].map(_.map(TaxYear.fromDownstreamInt)) and
+      (JsPath \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
+      (JsPath \ "intentToCrystallise").readNullable[Boolean] and
+      (JsPath \ "crystallised").readNullable[Boolean] and
+      (JsPath \ "crystallisationTimestamp").readNullable[String]
+      ) (Calculation.apply _)
 }
