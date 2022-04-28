@@ -26,17 +26,36 @@ trait HateoasLinks {
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
+  private def baseCrystallisationUri(appConfig: AppConfig, nino: String, taxYear: String): String =
+    s"/${appConfig.apiGatewayContext}/crystallisation/$nino/$taxYear"
+
   // API resource links
+
   def trigger(appConfig: AppConfig, nino: String, taxYear: String, finalDeclaration: Boolean): Link =
     Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear?finalDeclaration=$finalDeclaration", method = POST, rel = TRIGGER)
 
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseSaUri(appConfig, nino), method = GET, rel = SELF)
 
-  def retrieve(appConfig: AppConfig, nino: String, taxYear: String, calculationId: String): Link =
-    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear/$calculationId", method = GET, rel = SELF)
+  def getMetadata(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId", method = GET, rel = if (isSelf) SELF else METADATA)
 
-  def submitFinalDeclaration(appConfig: AppConfig, nino: String, taxYear: String, calculationId: String): Link =
-    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear/$calculationId/final-declaration", method = POST, rel = SUBMIT_FINAL_DECLARATION)
+  def getIncomeTax(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/income-tax-nics-calculated", method = GET, rel = if (isSelf) SELF else INCOME_TAX)
+
+  def getTaxableIncome(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/taxable-income", method = GET, rel = if (isSelf) SELF else TAXABLE_INCOME)
+
+  def getAllowances(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/allowances-deductions-reliefs", method = GET, rel = if (isSelf) SELF else ALLOWANCES)
+
+  def getEoyEstimate(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/end-of-year-estimate", method = GET, rel = if (isSelf) SELF else EOY_ESTIMATE)
+
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/messages", method = GET, rel = if (isSelf) SELF else MESSAGES)
+
+  def crystallise(appConfig: AppConfig, nino: String, taxYear: String): Link =
+    Link(href = baseCrystallisationUri(appConfig, nino, taxYear) + "/crystallise", method = POST, rel = CRYSTALLISE)
 
 }
