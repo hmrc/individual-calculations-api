@@ -11,7 +11,7 @@
       },
       "taxYear": {
         "id": "tax-year",
-        "description": "The tax year in which the calculation was performed. Must conform to the regular expression:",
+        "description": "The tax year in which the calculation was performed.",
         "type": "string",
         "example": "2022-23"
       },
@@ -119,14 +119,14 @@
       },
       "periodFrom": {
         "id": "full-date",
-        "description": "This defines the earliest date from which the calculation was performed. This will be the accounting period start date (for self-employments) or the tax year start date, whichever occurs first for the income sources supplied. Must conform to the format:",
+        "description": "This defines the earliest date from which the calculation was performed. This will be the accounting period start date (for self-employments) or the tax year start date, whichever occurs first for the income sources supplied.",
         "type": "string",
         "example": "2020-01-01"
       },
       "periodTo": {
-        "description": "This defines the latest date to which the calculation was performed and will be the point in the year to which income has been submitted. Must conform to the format:",
+        "id": "full-date",
+        "description": "This defines the latest date to which the calculation was performed and will be the point in the year to which income has been submitted.",
         "type": "string",
-        "format": "YYYY-MM-DD",
         "example": "2020-01-01"
       }
     },
