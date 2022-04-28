@@ -16,17 +16,17 @@
 
 package v3.services
 
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import support.UnitSpec
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.EndpointLogContext
+import v3.connectors.NrsProxyConnector
 
-import scala.concurrent.ExecutionContext
+import javax.inject.{Inject, Singleton}
 
-trait ServiceSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
+@Singleton
+class NrsProxyService @Inject() (val connector: NrsProxyConnector) {
 
-  implicit val hc: HeaderCarrier      = HeaderCarrier()
-  implicit val ec: ExecutionContext   = scala.concurrent.ExecutionContext.global
-  implicit val lc: EndpointLogContext = EndpointLogContext("testController", "testEndpoint")
-  implicit val correlationId: String  = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
+    connector.submit(nino, notableEvent, body)
+  }
+
 }

@@ -17,7 +17,7 @@
 package v3.services
 
 import v3.mocks.connectors.MockTriggerCalculationConnector
-import v3.models.domain.TaxYear
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.TriggerCalculationRequest
@@ -26,6 +26,8 @@ import v3.models.response.triggerCalculation.TriggerCalculationResponse
 import scala.concurrent.Future
 
 class TriggerCalculationServiceSpec extends ServiceSpec {
+
+  val nino: Nino = Nino("AA123456A")
 
   val taxYear: TaxYear = TaxYear.fromDownstream("2020")
 

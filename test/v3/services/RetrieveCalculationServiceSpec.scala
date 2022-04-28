@@ -18,6 +18,7 @@ package v3.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.connectors.MockRetrieveCalculationConnector
+import v3.models.domain.Nino
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
@@ -27,6 +28,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture {
 
+  private val nino = Nino("AA123456A")
   private val taxYear       = "2019-20"
   private val calculationId = "someCalcId"
 

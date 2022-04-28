@@ -17,6 +17,7 @@
 package v3.services
 
 import v3.mocks.connectors.MockMtdIdLookupConnector
+import v3.models.domain.Nino
 import v3.models.errors.{DownstreamError, NinoFormatError, UnauthorisedError}
 
 import scala.concurrent.Future
@@ -27,6 +28,7 @@ class MtdIdLookupServiceSpec extends ServiceSpec {
     lazy val target = new MtdIdLookupService(mockMtdIdLookupConnector)
   }
 
+  val nino: Nino = Nino("AA123456A")
   val invalidNino: String = "INVALID_NINO"
 
   "calling .getMtdId" when {

@@ -16,17 +16,23 @@
 
 package v3.services
 
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import support.UnitSpec
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.EndpointLogContext
+import v3.fixtures.nrs.NrsFixture
+import v3.mocks.connectors.MockNrsProxyConnector
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
-trait ServiceSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
+class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
 
-  implicit val hc: HeaderCarrier      = HeaderCarrier()
-  implicit val ec: ExecutionContext   = scala.concurrent.ExecutionContext.global
-  implicit val lc: EndpointLogContext = EndpointLogContext("testController", "testEndpoint")
-  implicit val correlationId: String  = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  val service = new NrsProxyService(mockNrsProxyConnector)
+
+  "NrsProxyService" when {
+    "submitting asynchronously" should {
+      "forward to the connector" in {
+        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+
+        service.submitAsync(nino, event, body)
+      }
+    }
+  }
+
 }

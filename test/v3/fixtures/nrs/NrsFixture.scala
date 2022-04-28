@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package v3.services
+package v3.fixtures.nrs
 
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import support.UnitSpec
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.EndpointLogContext
+import play.api.libs.json.{JsValue, Json}
 
-import scala.concurrent.ExecutionContext
+trait NrsFixture {
+  val nino: String = "AA111111A"
+  val event        = "some-event"
 
-trait ServiceSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
-
-  implicit val hc: HeaderCarrier      = HeaderCarrier()
-  implicit val ec: ExecutionContext   = scala.concurrent.ExecutionContext.global
-  implicit val lc: EndpointLogContext = EndpointLogContext("testController", "testEndpoint")
-  implicit val correlationId: String  = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  val body: JsValue = Json.parse("""{"a": "A", "b": 1 }""")
 }
