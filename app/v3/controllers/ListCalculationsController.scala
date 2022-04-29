@@ -16,21 +16,30 @@
 
 package v3.controllers
 
-import play.api.mvc.ControllerComponents
+import cats.data.EitherT
+import cats.implicits._
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.mvc.Http.MimeTypes
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.ListCalculationsParser
+import v3.hateoas.HateoasFactory
+import v3.models.errors.{ErrorWrapper, _}
+import v3.models.request.ListCalculationsRawData
+import v3.models.response.listCalculations.ListCalculationsHateoasData
 import v3.services.{EnrolmentsAuthService, ListCalculationsService, MtdIdLookupService}
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListCalculationsController @Inject()(val authService: EnrolmentsAuthService,
                                            val lookupService: MtdIdLookupService,
                                            parser: ListCalculationsParser,
                                            service: ListCalculationsService,
+                                           hateoasFactory: HateoasFactory,
                                            cc: ControllerComponents,
-                                           idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                           val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -39,5 +48,50 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
       endpointName = "list"
     )
 
-  def list(nino: String, taxYear: Option[String]) = ???
+  def list(nino: String, taxYear: Option[String]): Action[AnyContent] =
+    authorisedAction(nino).async{ implicit request =>
+
+      implicit val correlationId: String = idGenerator.getCorrelationId
+      logger.info(
+        message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
+          s"with correlationId : $correlationId")
+
+      val rawData = ListCalculationsRawData(nino, taxYear)
+      val result =
+        for {
+          parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
+          serviceResponse <- EitherT(service.list(parsedRequest))
+          vendorResponse <- EitherT.fromEither[Future](
+            hateoasFactory
+              .wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear.get))
+              .asRight[ErrorWrapper])
+        } yield {
+          logger.info(
+            s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+              s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
+
+          Ok(Json.toJson(vendorResponse))
+            .withApiHeaders(serviceResponse.correlationId)
+            .as(MimeTypes.JSON)
+        }
+
+      result.leftMap { errorWrapper =>
+        val resCorrelationId = errorWrapper.correlationId
+        val result = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
+        logger.warn(
+          s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+            s"Error response received with CorrelationId: $resCorrelationId")
+
+        result
+      }.merge
+    }
+
+  private def errorResult(errorWrapper: ErrorWrapper) = {
+    (errorWrapper.error: @unchecked) match {
+      case BadRequestError | NinoFormatError | TaxYearFormatError |
+           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError => BadRequest(Json.toJson(errorWrapper))
+      case NotFoundError => NotFound(Json.toJson(errorWrapper))
+      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
+    }
+  }
 }
