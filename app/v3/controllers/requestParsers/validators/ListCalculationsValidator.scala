@@ -16,9 +16,26 @@
 
 package v3.controllers.requestParsers.validators
 
+import v3.controllers.requestParsers.validators.validations.{NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import v3.models.errors.MtdError
 import v3.models.request.ListCalculationsRawData
 
 class ListCalculationsValidator extends Validator[ListCalculationsRawData] {
-  override def validate(data: ListCalculationsRawData): List[MtdError] = ???
+
+  private val validationSet = List(parserValidation, ruleValidation)
+
+  private def parserValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
+    List(
+      NinoValidation.validate(data.nino),
+      data.taxYear.fold(List.empty[MtdError])(taxYear => TaxYearValidation.validate(taxYear))
+    )
+  }
+
+  private def ruleValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
+    List(
+      data.taxYear.fold(List.empty[MtdError])(taxYear => TaxYearNotSupportedValidation.validate(taxYear))
+    )
+  }
+
+  override def validate(data: ListCalculationsRawData): List[MtdError] = run(validationSet, data).distinct
 }
