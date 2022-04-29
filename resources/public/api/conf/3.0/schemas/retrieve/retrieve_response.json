@@ -30,14 +30,17 @@
             "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
             "type": "string",
             "enum": [
-              "self"
+              "self",
+              "trigger",
+              "submit-final-declaration"
             ]
           },
           "method": {
             "description": "The HTTP method type for the endpoint",
             "type": "string",
             "enum": [
-              "GET"
+              "GET",
+              "POST"
             ]
           }
         },
