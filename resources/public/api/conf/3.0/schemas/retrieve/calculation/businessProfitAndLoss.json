@@ -43,7 +43,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "netProfit": {
       "title": "netProfit",
@@ -52,7 +52,7 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "netLoss": {
       "title": "netLoss",
@@ -61,7 +61,7 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "totalAdditions": {
       "title": "totalAdditions",
@@ -70,7 +70,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "totalDeductions": {
       "title": "totalDeductions",
@@ -79,7 +79,7 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "accountingAdjustments": {
       "title": "accountingAdjustments",
@@ -88,7 +88,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": 160
+      "example": "160"
     },
     "taxableProfit": {
       "title": "taxableProfit",
@@ -97,7 +97,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "adjustedIncomeTaxLoss": {
       "title": "adjustedIncomeTaxLoss",
@@ -106,7 +106,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "totalBroughtForwardIncomeTaxLosses": {
       "title": "totalBroughtForwardIncomeTaxLosses",
@@ -115,7 +115,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "lossForCSFHL": {
       "title": "lossForCSFHL",
@@ -124,7 +124,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "broughtForwardIncomeTaxLossesUsed": {
       "title": "broughtForwardIncomeTaxLossesUsed",
@@ -133,7 +133,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "taxableProfitAfterIncomeTaxLossesDeduction": {
       "title": "taxableProfitAfterIncomeTaxLossesDeduction",
@@ -142,7 +142,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "carrySidewaysIncomeTaxLossesUsed": {
       "title": "carrySidewaysIncomeTaxLossesUsed",
@@ -151,7 +151,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
       "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
@@ -160,7 +160,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "totalIncomeTaxLossesCarriedForward": {
       "title": "totalIncomeTaxLossesCarriedForward",
@@ -169,7 +169,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "class4Loss": {
       "title": "class4Loss",
@@ -178,7 +178,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "totalBroughtForwardClass4Losses": {
       "title": "totalBroughtForwardClass4Losses",
@@ -187,7 +187,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "broughtForwardClass4LossesUsed": {
       "title": "broughtForwardClass4LossesUsed",
@@ -196,7 +196,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "carrySidewaysClass4LossesUsed": {
       "title": "carrySidewaysClass4LossesUsed",
@@ -205,7 +205,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     },
     "totalClass4LossesCarriedForward": {
       "title": "totalClass4LossesCarriedForward",
@@ -214,7 +214,7 @@
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 160
+      "example": "160"
     }
   },
   "additionalProperties": false,
