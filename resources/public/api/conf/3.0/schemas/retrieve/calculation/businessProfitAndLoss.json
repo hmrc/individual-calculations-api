@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "A statement summarising the profit and loss position for business income sources. The enum in the incomeSourceTypes will determine the business type. When the type is Self Employment totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
+  "description": "A statement summarising the profit and loss position for business income sources. The enum in the incomeSourceTypes will determine the business type. When the type is \"self-employment\" totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
   "type": "object",
   "properties": {
     "incomeSourceId": {
