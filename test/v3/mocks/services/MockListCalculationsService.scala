@@ -16,6 +16,26 @@
 
 package v3.mocks.services
 
-trait MockListCalculationsService {
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import uk.gov.hmrc.http.HeaderCarrier
+import v3.controllers.EndpointLogContext
+import v3.models.errors.ErrorWrapper
+import v3.models.outcomes.ResponseWrapper
+import v3.models.request.ListCalculationsRequest
+import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
+import v3.services.ListCalculationsService
 
+import scala.concurrent.{ExecutionContext, Future}
+
+trait MockListCalculationsService extends MockFactory {
+  val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
+
+  object MockSubmitFinalDeclarationService {
+    def list[I](requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculations]]]] = {
+      (mockListCalculationsService
+        .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
+        .expects(requestData, *, *, *, *)
+    }
+  }
 }

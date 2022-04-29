@@ -16,6 +16,23 @@
 
 package v3.mocks.connectors
 
-trait MockListCalculationsConnector {
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import uk.gov.hmrc.http.HeaderCarrier
+import v3.connectors.{DownstreamOutcome, ListCalculationsConnector}
+import v3.models.request.ListCalculationsRequest
+import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
+import scala.concurrent.{ExecutionContext, Future}
+
+trait MockListCalculationsConnector extends MockFactory {
+  val mockListCalculationsConnector: ListCalculationsConnector = mock[ListCalculationsConnector]
+
+  object MockSListCalculationsConnector {
+    def list[I](request: ListCalculationsRequest): CallHandler[Future[DownstreamOutcome[ListCalculations]]] = {
+      (mockListCalculationsConnector
+        .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(request, *, *, *)
+    }
+  }
 }

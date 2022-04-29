@@ -16,6 +16,20 @@
 
 package v3.mocks.requestParsers
 
-trait MockListCalculationsParser {
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import v3.controllers.requestParsers.ListCalculationsParser
+import v3.models.errors.ErrorWrapper
+import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
+trait MockListCalculationsParser extends MockFactory {
+  val mockListCalculationsParser: ListCalculationsParser = mock[ListCalculationsParser]
+
+  object MockListCalculationsParser {
+    def parse(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequest]] = {
+      (mockListCalculationsParser
+        .parseRequest(_: ListCalculationsRawData)(_: String))
+        .expects(data, *)
+    }
+  }
 }
