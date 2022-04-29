@@ -16,6 +16,39 @@
 
 package v3.controllers.requestParsers.validators
 
-class ListCalculationsValidatorSpec {
+import support.UnitSpec
+import v3.models.errors._
+import v3.models.request.ListCalculationsRawData
 
+class ListCalculationsValidatorSpec extends UnitSpec {
+
+  val validator: ListCalculationsValidator = new ListCalculationsValidator
+
+  "ListCalculationsValidator" when {
+    "valid parameters are supplied" must {
+      "return an empty list" in {
+        validator.validate(ListCalculationsRawData("AA111111A", Some("2018-19"))) shouldBe Nil
+      }
+    }
+
+    "invalid parameters are supplied" should {
+      val params: Seq[(String, Option[String], Seq[MtdError])] = Seq(
+        ("AA111111", None, Seq(NinoFormatError)),
+        ("AA111111A", Some("2018"), Seq(TaxYearFormatError)),
+        ("AA111111A", Some("2018-20"), Seq(RuleTaxYearRangeInvalidError)),
+        ("AA111111", Some("2018-20"), Seq(NinoFormatError, RuleTaxYearRangeInvalidError)),
+        ("AA111111A", Some("2012-13"), Seq(RuleTaxYearNotSupportedError))
+      )
+
+      params.foreach(args => (doValidationErrorCheck _).tupled(args))
+    }
+
+    def doValidationErrorCheck(nino: String, taxYear: Option[String], errorResult: Seq[MtdError]): Unit = {
+      s"return the expected errors: $errorResult" when {
+        s"when nino: $nino, and taxYear: $taxYear parameters are supplied" in {
+          validator.validate(ListCalculationsRawData(nino, taxYear)) shouldBe errorResult
+        }
+      }
+    }
+  }
 }

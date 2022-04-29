@@ -18,14 +18,14 @@ package v3.mocks.validators
 
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
-import v3.controllers.requestParsers.validators.{ListCalculationsValidator, RetrieveCalculationValidator}
+import v3.controllers.requestParsers.validators.ListCalculationsValidator
 import v3.models.errors.MtdError
-import v3.models.request.{ListCalculationsRawData, RetrieveCalculationRawData}
+import v3.models.request.ListCalculationsRawData
 
 trait MockListCalculationsValidator extends MockFactory {
   val mockListCalculationsValidator: ListCalculationsValidator = mock[ListCalculationsValidator]
 
-  object MockValidator {
+  object MockListCalculationsValidator {
     def validate(data: ListCalculationsRawData): CallHandler1[ListCalculationsRawData, List[MtdError]] = {
       (mockListCalculationsValidator
         .validate(_: ListCalculationsRawData))

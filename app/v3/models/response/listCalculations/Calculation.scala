@@ -39,7 +39,7 @@ object Calculation {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
-      (JsPath \ "year").readNullable[Int].map(_.map(TaxYear.fromDownstreamInt)) and
+      (JsPath \ "year").readNullable[TaxYear] and
       (JsPath \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and

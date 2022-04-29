@@ -42,11 +42,10 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
-  implicit val endpointLogContext: EndpointLogContext =
-    EndpointLogContext(
-      controllerName = "ListCalculationsController",
-      endpointName = "list"
-    )
+  implicit val endpointLogContext: EndpointLogContext = EndpointLogContext(
+    controllerName = "ListCalculationsController",
+    endpointName = "list"
+  )
 
   def list(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async{ implicit request =>
@@ -54,7 +53,8 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
       implicit val correlationId: String = idGenerator.getCorrelationId
       logger.info(
         message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
-          s"with correlationId : $correlationId")
+          s"with correlationId : $correlationId"
+      )
 
       val rawData = ListCalculationsRawData(nino, taxYear)
       val result =
