@@ -110,7 +110,7 @@
     },
     "totalBroughtForwardIncomeTaxLosses": {
       "title": "totalBroughtForwardIncomeTaxLosses",
-      "description": "The total sum of Income Tax losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
+      "description": "The total sum of Income Tax losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
       "type": "number",
       "multipleOf": 1,
       "minimum": 0,
