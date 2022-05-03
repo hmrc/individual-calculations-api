@@ -55,9 +55,16 @@ object RetrieveCalculationResponse extends HateoasLinks {
       }.getOrElse(false)
 
       if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
-        Seq(retrieve(appConfig, nino, taxYear, calculationId), submitFinalDeclaration(appConfig, nino, taxYear, calculationId))
+        Seq(
+          trigger(appConfig, nino, taxYear),
+          retrieve(appConfig, nino, taxYear, calculationId),
+          submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
+        )
       } else {
-        Seq(retrieve(appConfig, nino, taxYear, calculationId))
+        Seq(
+          trigger(appConfig, nino, taxYear),
+          retrieve(appConfig, nino, taxYear, calculationId)
+        )
       }
     }
 

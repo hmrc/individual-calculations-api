@@ -102,6 +102,11 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           |  "messages" : {},
           |  "links": [
           |    {
+          |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19",
+          |      "rel": "trigger",
+          |      "method": "POST"
+          |    },
+          |    {
           |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           |      "rel": "self",
           |      "method": "GET"

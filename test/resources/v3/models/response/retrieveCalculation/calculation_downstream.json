@@ -26,7 +26,7 @@
       ],
       "class2VoluntaryContributions": true,
       "marriageAllowance": "transferor",
-      "uniqueTaxpayerReference": "string"
+      "uniqueTaxpayerReference": "1234567890"
     },
     "incomeSources": {
       "businessIncomeSources": [
@@ -180,7 +180,7 @@
           "totalForeignPropertyAllowableAmount": 5000.99,
           "foreignPropertyRfcDetail": [
             {
-              "countryCode": "str",
+              "countryCode": "FRA",
               "amountClaimed": 12500,
               "allowableAmount": 5000.99,
               "carryForwardAmount": 5000.99
@@ -191,7 +191,7 @@
           "totalOtherIncomeAllowableAmount": 5000.99,
           "otherIncomeRfcDetail": [
             {
-              "countryCode": "str",
+              "countryCode": "FRA",
               "residentialFinancialCostAmount": 5000.99,
               "broughtFwdResidentialFinancialCostAmount": 5000.99
             }
@@ -229,7 +229,7 @@
           {
             "incomeSourceType": "15",
             "incomeSourceId": "000000000000210",
-            "countryCode": "str",
+            "countryCode": "FRA",
             "foreignIncome": 5001.99,
             "foreignTax": 5002.99,
             "dtaRate": 20,
@@ -401,7 +401,7 @@
       {
         "incomeSourceId": "000000000000210",
         "incomeSourceType": "15",
-        "countryCode": "str",
+        "countryCode": "FRA",
         "totalIncome": 5001.99,
         "totalExpenses": 5002.99,
         "netProfit": 5003.99,
@@ -623,7 +623,7 @@
       "chargeableOverseasPensionsStateBenefitsRoyalties": 5000.99,
       "overseasPensionsStateBenefitsRoyaltiesDetail": [
         {
-          "countryCode": "str",
+          "countryCode": "FRA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -633,7 +633,7 @@
       "chargeableAllOtherIncomeReceivedWhilstAbroad": 5000.99,
       "allOtherIncomeReceivedWhilstAbroadDetail": [
         {
-          "countryCode": "str",
+          "countryCode": "FRA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
