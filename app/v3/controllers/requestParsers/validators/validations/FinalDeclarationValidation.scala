@@ -24,7 +24,7 @@ object FinalDeclarationValidation {
 
   def validateOptional(finalDeclaration: Option[String]): List[MtdError] = {
     finalDeclaration match {
-      case None => NoValidationErrors
+      case None        => NoValidationErrors
       case Some(value) => validate(value)
     }
   }

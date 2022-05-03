@@ -18,11 +18,11 @@ package v3.mocks.connectors
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 import v3.connectors.NrsProxyConnector
-import v3.models.domain.CrystallisationRequestBody
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 trait MockNrsProxyConnector extends MockFactory {
 
@@ -30,11 +30,10 @@ trait MockNrsProxyConnector extends MockFactory {
 
   object MockNrsProxyConnector {
 
-    def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
+    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
       (mockNrsProxyConnector
-        .submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(nino, *, *, *)
-    }
+        .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
+        .expects(nino, notableEvent, body, *)
 
   }
 

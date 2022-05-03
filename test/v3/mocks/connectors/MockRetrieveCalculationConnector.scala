@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package v3.mocks.services
+package v3.mocks.connectors
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.models.domain.CrystallisationRequestBody
-import v3.services.NrsProxyService
+import v3.connectors.{DownstreamOutcome, RetrieveCalculationConnector}
+import v3.models.request.RetrieveCalculationRequest
+import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockNrsProxyService extends MockFactory {
+trait MockRetrieveCalculationConnector extends MockFactory {
 
-  val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
+  val mockConnector: RetrieveCalculationConnector = mock[RetrieveCalculationConnector]
 
-  object MockNrsProxyService {
+  object MockRetrieveCalculationConnector {
 
-    def submit(nino: String, body: CrystallisationRequestBody): CallHandler[Future[Unit]] = {
-      (mockNrsProxyService
-        .submit(_: String, _: CrystallisationRequestBody)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(nino, *, *, *)
+    def retrieveCalculation(request: RetrieveCalculationRequest): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]] = {
+      (mockConnector
+        .retrieveCalculation(_: RetrieveCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(request, *, *, *)
     }
 
   }

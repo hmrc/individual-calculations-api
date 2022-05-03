@@ -131,6 +131,28 @@ class EnumsSpec extends UnitSpec with Inspectors {
       badJson.validate[Foo[Enum]] shouldBe JsError(__ \ "someField", JsonValidationError("error.expected.jsstring"))
     }
 
+    "allow custom reads (e.g. to allow conversion)" in {
+      implicit val customReads: Reads[Enum] = Enums.readsUsing {
+        case "1" => `enum-one`
+        case "2" => `enum-two`
+        case "3" => `enum-three`
+      }
+
+      forAll(List("1" -> `enum-one`, "2" -> `enum-two`, "3" -> `enum-three`)) { case (name, value) =>
+        JsString(name).as[Enum](customReads) shouldBe value
+      }
+    }
+
+    "allow restricted reads (e.g. when only a subset of values is permitted)" in {
+      implicit val customReads: Reads[Enum] = Enums.readsRestricted(`enum-one`, `enum-three`)
+
+      forAll(List("enum-one" -> `enum-one`, "enum-three" -> `enum-three`)) { case (name, value) =>
+        JsString(name).as[Enum](customReads) shouldBe value
+      }
+
+      JsString("enum-two").validate[Enum](customReads) shouldBe JsError(__, JsonValidationError("error.expected.Enum"))
+    }
+
     "only work for sealed trait singletons (objects)" in {
       assertTypeError("""
         |      sealed trait NotEnum

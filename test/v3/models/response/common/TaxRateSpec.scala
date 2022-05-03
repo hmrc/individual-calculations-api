@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-package v3.models.domain
+package v3.models.response.common
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v3.models.response.common.TaxRate._
 
-case class CrystallisationRequestBody(calculationId: String)
+class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object CrystallisationRequestBody {
-  implicit val format: OFormat[CrystallisationRequestBody] = Json.format[CrystallisationRequestBody]
+  testReads[TaxRate](
+    "BRT" -> `basic-rate`,
+    "IRT" -> `intermediate-rate`,
+    "HRT" -> `higher-rate`,
+    "ART" -> `additional-rate`
+  )
+
+  testWrites[TaxRate](
+    `basic-rate`        -> "basic-rate",
+    `intermediate-rate` -> "intermediate-rate",
+    `higher-rate`       -> "higher-rate",
+    `additional-rate`   -> "additional-rate"
+  )
+
 }

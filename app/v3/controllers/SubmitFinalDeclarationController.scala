@@ -78,11 +78,11 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
           CalculationIdFormatError =>
         BadRequest(Json.toJson(errorWrapper))
       case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError | RuleResidencyChangedError | RuleFinalDeclarationReceivedError |
-           RuleIncomeSourcesInvalidError | RuleNoIncomeSubmissionsExistError | RuleSubmissionFailedError =>
+          RuleIncomeSourcesInvalidError | RuleNoIncomeSubmissionsExistError | RuleSubmissionFailedError =>
         Forbidden(Json.toJson(errorWrapper))
       case NotFoundError   => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-      case _ => unhandledError(errorWrapper)
+      case _               => unhandledError(errorWrapper)
     }
 
 }

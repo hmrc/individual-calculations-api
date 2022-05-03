@@ -17,16 +17,15 @@
 package v3.connectors
 
 import mocks.{MockAppConfig, MockHttpClient}
-import v3.models.domain.CrystallisationRequestBody
+import play.api.libs.json.{JsValue, Json}
 
 import scala.concurrent.Future
 
 class NrsProxyConnectorSpec extends ConnectorSpec {
 
-  val nino: String          = "AA111111A"
-  val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-
-  val request: CrystallisationRequestBody = CrystallisationRequestBody(calculationId)
+  val nino: String         = "AA111111A"
+  val notableEvent: String = "test-event"
+  val body: JsValue        = Json.obj("field" -> "value")
 
   class Test extends MockHttpClient with MockAppConfig {
 
@@ -38,20 +37,19 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
     MockAppConfig.mtdNrsProxyBaseUrl returns baseUrl
   }
 
-  "NrsProxyConnector" when {
-    "submit with valid data" should {
-      "be successful" in new Test {
+  "submit" should {
+    "return a success response" in new Test {
+      val outcome = Right(())
 
-        MockedHttpClient
-          .post(
-            url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
-            config = dummyDesHeaderCarrierConfig,
-            body = request
-          )
-          .returns(Future.successful((): Unit))
+      MockedHttpClient
+        .post(
+          url = s"$baseUrl/mtd-api-nrs-proxy/$nino/$notableEvent",
+          config = dummyDesHeaderCarrierConfig,
+          body = body
+        )
+        .returns(Future.successful(Right(())))
 
-        await(connector.submit(nino, request)) shouldBe ((): Unit)
-      }
+      await(connector.submit(nino, notableEvent, body)) shouldBe outcome
     }
   }
 

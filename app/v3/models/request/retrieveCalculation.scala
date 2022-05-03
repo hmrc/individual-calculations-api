@@ -20,6 +20,4 @@ import v3.models.domain.Nino
 
 case class RetrieveCalculationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 
-case class RetrieveCalculationRequest(nino: Nino, taxYear: String, calculationId: String) {
-  def backendCalculationUri: String = s"/income-tax/view/calculations/liability/${nino.nino}/$calculationId"
-}
+case class RetrieveCalculationRequest(nino: Nino, taxYear: String, calculationId: String)

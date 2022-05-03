@@ -22,9 +22,9 @@ import v3.models.request.SubmitFinalDeclarationRawData
 
 class SubmitFinalDeclarationValidatorSpec extends UnitSpec {
 
-  val validNino        = "AA123456A"
-  val validTaxYear     = "2017-18"
-  val calcId           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val validNino    = "AA123456A"
+  val validTaxYear = "2017-18"
+  val calcId       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   val validator = new SubmitFinalDeclarationValidator()
 
@@ -48,30 +48,28 @@ class SubmitFinalDeclarationValidatorSpec extends UnitSpec {
           List(CalculationIdFormatError)
       }
 
-    "return TaxYearFormatError error" when {
-      "an invalid tax year is supplied" in {
-        validator.validate(SubmitFinalDeclarationRawData(validNino, "20178", calcId)) shouldBe
-          List(TaxYearFormatError)
-      }
-    }
-
-    "return RuleTaxYearRangeInvalidError error" when {
-      "an invalid tax year is supplied" in {
-        validator.validate(SubmitFinalDeclarationRawData(validNino, "2016-18", calcId)) shouldBe
-          List(RuleTaxYearRangeInvalidError)
+      "return TaxYearFormatError error" when {
+        "an invalid tax year is supplied" in {
+          validator.validate(SubmitFinalDeclarationRawData(validNino, "20178", calcId)) shouldBe
+            List(TaxYearFormatError)
         }
       }
 
+      "return RuleTaxYearRangeInvalidError error" when {
+        "an invalid tax year is supplied" in {
+          validator.validate(SubmitFinalDeclarationRawData(validNino, "2016-18", calcId)) shouldBe
+            List(RuleTaxYearRangeInvalidError)
+        }
+      }
 
-    "return RuleTaxYearNotSupportedError error" when {
-      "an out of range tax year is supplied" in {
-        validator.validate(SubmitFinalDeclarationRawData(validNino, "2016-17", calcId)) shouldBe
-          List(RuleTaxYearNotSupportedError)
+      "return RuleTaxYearNotSupportedError error" when {
+        "an out of range tax year is supplied" in {
+          validator.validate(SubmitFinalDeclarationRawData(validNino, "2016-17", calcId)) shouldBe
+            List(RuleTaxYearNotSupportedError)
+        }
       }
     }
+
   }
-
-}
-
 
 }
