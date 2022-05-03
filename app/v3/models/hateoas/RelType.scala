@@ -21,6 +21,6 @@ object RelType {
   val TRIGGER                  = "trigger"
   val SUBMIT_FINAL_DECLARATION = "submit-final-declaration"
 
-  val LIST     = "list"
-  val RETRIEVE = "retrieve-tax-calculation"
+  val LIST = "list"
+  val SELF = "self"
 }

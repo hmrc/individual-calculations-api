@@ -71,7 +71,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           |   {
           |     "href":"/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           |     "method":"GET",
-          |     "rel":"retrieve-tax-calculation"
+          |     "rel":"self"
           |   }
           | ]
           |}

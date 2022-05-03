@@ -23,7 +23,7 @@ import v3.models.hateoas.RelType._
 
 class LinkSpec extends UnitSpec {
 
-  val linkModel: Link = Link(href = "aRef", method = GET, rel = RETRIEVE)
+  val linkModel: Link = Link(href = "aRef", method = GET, rel = SELF)
 
   val linkJson: JsValue = Json.parse(
     """
