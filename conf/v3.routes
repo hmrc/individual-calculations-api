@@ -1,3 +1,5 @@
-POST        /:nino/self-assessment/:taxYear/:calculationId/final-declaration        v3.controllers.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String)
+POST        /:nino/self-assessment/:taxYear                                    v3.controllers.TriggerCalculationController.triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String])
 
-GET         /:nino/self-assessment/:taxYear/:calculationId        v3.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
+POST        /:nino/self-assessment/:taxYear/:calculationId/final-declaration   v3.controllers.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String)
+
+GET         /:nino/self-assessment/:taxYear/:calculationId                     v3.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)

@@ -27,11 +27,12 @@ trait HateoasLinks {
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
   // API resource links
-  def trigger(appConfig: AppConfig, nino: String, taxYear: String): Link =
-    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear", method = POST, rel = TRIGGER)
+
+  def trigger(appConfig: AppConfig, nino: String, taxYear: String, finalDeclaration: Boolean): Link =
+    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear?finalDeclaration=$finalDeclaration", method = POST, rel = TRIGGER)
 
   def list(appConfig: AppConfig, nino: String): Link =
-    Link(href = baseSaUri(appConfig, nino), method = GET, rel = SELF)
+    Link(href = baseSaUri(appConfig, nino), method = GET, rel = LIST)
 
   def retrieve(appConfig: AppConfig, nino: String, taxYear: String, calculationId: String): Link =
     Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear/$calculationId", method = GET, rel = SELF)

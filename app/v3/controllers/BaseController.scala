@@ -16,11 +16,15 @@
 
 package v3.controllers
 
+import cats.data.EitherT
+import cats.implicits._
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import utils.Logging
 import v3.models.errors.{DownstreamError, ErrorWrapper}
+
+import scala.concurrent.{ExecutionContext, Future}
 
 trait BaseController {
   self: Logging =>
@@ -46,4 +50,7 @@ trait BaseController {
 
   }
 
+  protected def wrap[A, B](b: Future[Either[A, B]]): EitherT[Future, A, B] = EitherT(b)
+
+  protected def wrap[A, B](b: Either[A, B])(implicit ec: ExecutionContext): EitherT[Future, A, B] = EitherT.fromEither[Future](b)
 }

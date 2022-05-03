@@ -14,23 +14,24 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers
+package v3.mocks.requestParsers
 
-import v3.controllers.requestParsers.validators.TriggerCalculationValidator
-import v3.models.domain.{Nino, TaxYear}
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import v3.controllers.requestParsers.TriggerCalculationParser
+import v3.models.errors.ErrorWrapper
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
-import javax.inject.Inject
+trait MockTriggerCalculationParser extends MockFactory {
 
-class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
-    extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
+  val mockTriggerCalculationParser: TriggerCalculationParser = mock[TriggerCalculationParser]
 
-  override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
-    val nino             = Nino(data.nino)
-    val taxYear          = TaxYear.fromMtd(data.taxYear)
-    val finalDeclaration = data.finalDeclaration.exists(_.toBoolean)
+  object MockTriggerCalculationParser {
 
-    TriggerCalculationRequest(nino, taxYear, finalDeclaration)
+    def parse(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequest]] = {
+      (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)(_: String)).expects(data, *)
+    }
+
   }
 
 }
