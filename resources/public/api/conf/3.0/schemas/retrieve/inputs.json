@@ -143,7 +143,7 @@
             "description": "Business income source type.",
             "$ref": "#/definitions/incomeSourceType"
           },
-          "ascId": {
+          "bsasId": {
             "description": "The unique identifier of the annual adjustment.",
             "type": "string",
             "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
@@ -162,7 +162,7 @@
         "required": [
           "incomeSourceId",
           "incomeSourceType",
-          "ascId",
+          "bsasId",
           "receivedDateTime",
           "applied"
         ]

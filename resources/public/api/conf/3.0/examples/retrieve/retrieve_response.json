@@ -68,7 +68,7 @@
       {
         "incomeSourceId": "XAIS12345678910",
         "incomeSourceType": "self-employment",
-        "ascId": "123a456b-789c-1d23-845e-678b9d1bd2ab",
+        "bsasId": "123a456b-789c-1d23-845e-678b9d1bd2ab",
         "receivedDateTime": "2021-12-02T15:25:48Z",
         "applied": true
       }
