@@ -34,8 +34,15 @@ trait MockSubmitFinalDeclarationService extends MockFactory {
   object MockSubmitFinalDeclarationService {
 
     def submitIntent(requestData: SubmitFinalDeclarationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
-      (mockSubmitFinalDeclarationService
-        .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
+      (
+        mockSubmitFinalDeclarationService
+          .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(
+            _: HeaderCarrier,
+            _: ExecutionContext,
+            _: EndpointLogContext,
+            _: String
+          )
+        )
         .expects(requestData, *, *, *, *)
     }
 

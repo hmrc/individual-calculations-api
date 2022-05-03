@@ -45,4 +45,5 @@ class FinalDeclarationValidationSpec extends UnitSpec {
       }
     }
   }
+
 }

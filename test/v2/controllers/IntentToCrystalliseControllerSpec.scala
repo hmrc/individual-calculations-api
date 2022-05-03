@@ -24,9 +24,8 @@ import v2.hateoas.HateoasLinks
 import v2.mocks.hateoas.MockHateoasFactory
 import v2.mocks.requestParsers.MockIntentToCrystalliseRequestParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockIntentToCrystalliseService, MockMtdIdLookupService}
-import v2.models.domain.Nino
+import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v2.models.domain.DownstreamTaxYear
 import v2.models.errors._
 import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.outcomes.ResponseWrapper

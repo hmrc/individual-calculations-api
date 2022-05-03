@@ -28,15 +28,15 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def submitFinalDeclaration(request: SubmitFinalDeclarationRequest) (implicit
-    hc: HeaderCarrier,
-    ec: ExecutionContext,
-    correlationId: String): Future[DownstreamOutcome[Unit]] = {
+  def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import v3.connectors.httpparsers.StandardHttpParser._
 
     val nino: String          = request.nino.value
-    val taxYear: String      = request.taxYear.toDownstream
+    val taxYear: String       = request.taxYear.toDownstream
     val calculationId: String = request.calculationId
 
     post(
@@ -44,4 +44,5 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       uri = DesUri(s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise")
     )
   }
+
 }

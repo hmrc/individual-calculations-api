@@ -70,4 +70,5 @@ class TriggerCalculationValidatorSpec extends UnitSpec {
       }
     }
   }
+
 }

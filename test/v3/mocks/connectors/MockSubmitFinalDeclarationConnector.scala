@@ -37,4 +37,5 @@ trait MockSubmitFinalDeclarationConnector extends MockFactory {
     }
 
   }
+
 }

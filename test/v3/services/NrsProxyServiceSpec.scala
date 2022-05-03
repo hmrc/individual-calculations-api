@@ -16,30 +16,23 @@
 
 package v3.services
 
+import v3.fixtures.nrs.NrsFixture
 import v3.mocks.connectors.MockNrsProxyConnector
-import v3.models.domain.CrystallisationRequestBody
 
 import scala.concurrent.Future
 
-class NrsProxyServiceSpec extends ServiceSpec {
+class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
 
-  trait Test extends MockNrsProxyConnector {
-    lazy val service = new NrsProxyService(mockNrsProxyConnector)
-  }
+  val service = new NrsProxyService(mockNrsProxyConnector)
 
-  "NrsProxyService" should {
-    "call the Nrs Proxy connector" when {
-      "the connector is valid" in new Test {
+  "NrsProxyService" when {
+    "submitting asynchronously" should {
+      "forward to the connector" in {
+        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
 
-        MockNrsProxyConnector
-          .submit(nino.toString, CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))
-          .returns(Future.successful((): Unit))
-
-        await(service.submit(nino.toString, CrystallisationRequestBody("4557ecb5-fd32-48cc-81f5-e6acd1099f3c"))) shouldBe ((): Unit)
-
+        service.submitAsync(nino, event, body)
       }
     }
-
   }
 
 }

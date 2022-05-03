@@ -16,19 +16,17 @@
 
 package v3.services
 
-import javax.inject.{Inject, Singleton}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.connectors.NrsProxyConnector
-import v3.models.domain.CrystallisationRequestBody
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class NrsProxyService @Inject() (val connector: NrsProxyConnector) {
 
-  def submit(nino: String, body: CrystallisationRequestBody)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Unit] = {
-
-    connector.submit(nino, body)
+  def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
+    connector.submit(nino, notableEvent, body)
   }
 
 }

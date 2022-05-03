@@ -18,14 +18,8 @@ package v3.models.hateoas
 
 object RelType {
 
-  val TRIGGER        = "trigger"
-  val METADATA       = "metadata"
-  val INCOME_TAX     = "income-tax-and-nics-calculated"
-  val TAXABLE_INCOME = "taxable-income"
-  val ALLOWANCES     = "allowances-deductions-reliefs"
-  val EOY_ESTIMATE   = "end-of-year-estimate"
-  val MESSAGES       = "messages"
-  val CRYSTALLISE    = "crystallise"
+  val TRIGGER                  = "trigger"
+  val SUBMIT_FINAL_DECLARATION = "submit-final-declaration"
 
   val LIST     = "list"
   val RETRIEVE = "retrieve-tax-calculation"

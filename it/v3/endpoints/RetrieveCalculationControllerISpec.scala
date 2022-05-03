@@ -16,10 +16,16 @@
 
 package v3.endpoints
 
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.HeaderNames.ACCEPT
+import play.api.http.Status._
+import play.api.libs.json.{JsValue, Json}
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
+import v3.models.errors._
+import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
-  /*
 
   private trait Test {
 
@@ -45,22 +51,73 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
   "Calling the retrieveCalculation endpoint" should {
 
     "return a 200 status code" when {
-
-      val successBody = Json.parse(
-        """
+      def successBody(canBeFinalised: Boolean): JsValue = Json.parse(
+        s"""
           |{
           |  "metadata" : {
-          |    "field": ""
+          |    "calculationId": "",
+          |    "taxYear": 2017,
+          |    "requestedBy": "",
+          |    "calculationReason": "",
+          |    "calculationType": "inYear",
+          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
+          |    "periodFrom": "",
+          |    "periodTo": ""
           |  },
           |  "inputs" : {
-          |    "field": ""
+          |    "personalInformation": {
+          |       "identifier": "",
+          |       "taxRegime": "UK"
+          |    },
+          |    "incomeSources": {}
           |  },
-          |  "calculation" : {
-          |    "field": ""
+          |  "calculation" : {},
+          |  "messages" : {}
+          |}
+        """.stripMargin
+      )
+
+      def mtdBody(canBeFinalised: Boolean): JsValue = Json.parse(
+        s"""
+          |{
+          |  "metadata" : {
+          |    "calculationId": "",
+          |    "taxYear": "2016-17",
+          |    "requestedBy": "",
+          |    "calculationReason": "",
+          |    "calculationType": "inYear",
+          |    "intentToSubmitFinalDeclaration": $canBeFinalised,
+          |    "finalDeclaration": false,
+          |    "periodFrom": "",
+          |    "periodTo": ""
           |  },
-          |  "messages" : {
-          |    "field": ""
-          |  }
+          |  "inputs" : {
+          |    "personalInformation": {
+          |       "identifier": "",
+          |       "taxRegime": "UK"
+          |    },
+          |    "incomeSources": {}
+          |  },
+          |  "calculation" : {},
+          |  "messages" : {},
+          |  "links": [
+          |    {
+          |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |      "rel": "self",
+          |      "method": "GET"
+          |    }${if (canBeFinalised) {
+            s"""
+             |,
+             |{
+             |  "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
+             |  "rel": "submit-final-declaration",
+             |  "method": "POST"
+             |}
+             |""".stripMargin
+          } else {
+            ""
+          }}
+          |  ]
           |}
         """.stripMargin
       )
@@ -70,14 +127,29 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = false))
         }
 
         val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
+        response.json shouldBe mtdBody(canBeFinalised = false)
+      }
+
+      "a valid request is made and the response can be finalised" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = true))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe mtdBody(canBeFinalised = true)
       }
     }
 
@@ -157,6 +229,5 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
       }
     }
   }
-   */
 
 }

@@ -33,10 +33,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends DownstreamResponseMappingSupport with Logging {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
-    hc: HeaderCarrier,
-    ec: ExecutionContext,
-    logContext: EndpointLogContext,
-    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      logContext: EndpointLogContext,
+      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
 
     val result = for {
       downstreamResponseWrapper <- EitherT(connector.submitFinalDeclaration(request)).leftMap(mapDesErrors(downstreamErrorMap))
@@ -62,4 +62,5 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "SERVER_ERROR"                 -> DownstreamError,
       "SERVICE_UNAVAILABLE"          -> DownstreamError
     )
+
 }

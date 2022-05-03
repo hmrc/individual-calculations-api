@@ -110,6 +110,24 @@ trait JsonErrorValidators {
     }
   }
 
+  def testJsonAllPropertiesOptionalExcept[A: Reads](json: JsValue)(mandatoryProperties: String*): Unit = {
+    val optionalProperties = json.as[JsObject].fields.map(_._1).filterNot(field => mandatoryProperties.contains(field))
+
+    testJsonProperties(json)(mandatoryProperties, optionalProperties)
+  }
+
+  def testJsonAllPropertiesOptional[A: Reads](json: JsValue): Unit =
+    testJsonAllPropertiesOptionalExcept(json)()
+
+  def testJsonAllPropertiesMandatoryExcept[A: Reads](json: JsValue)(optionalProperties: String*): Unit = {
+    val mandatoryProperties = json.as[JsObject].fields.map(_._1).filterNot(field => optionalProperties.contains(field))
+
+    testJsonProperties(json)(mandatoryProperties, optionalProperties)
+  }
+
+  def testJsonAllPropertiesMandatory[A: Reads](json: JsValue): Unit =
+    testJsonAllPropertiesMandatoryExcept(json)()
+
   def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)(implicit rds: Reads[T]): Unit = {
 
     val jsPath = path.split("/").filterNot(_ == "").foldLeft(JsPath())(_ \ _)
