@@ -76,7 +76,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
             triggerCalculationResponseModel,
             Seq(
               Link(s"/individuals/calculations/$nino/self-assessment", GET, "list"),
-              Link(s"/individuals/calculations/$nino/self-assessment/$taxYear/$calculationId", GET, "retrieve-tax-calculation")
+              Link(s"/individuals/calculations/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
             )
           )
       }

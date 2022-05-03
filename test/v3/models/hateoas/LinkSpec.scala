@@ -30,7 +30,7 @@ class LinkSpec extends UnitSpec {
       |{
       |  "href" : "aRef",
       |  "method" : "GET",
-      |  "rel" : "retrieve-tax-calculation"
+      |  "rel" : "self"
       |}
     """.stripMargin
   )
