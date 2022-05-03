@@ -56,5 +56,5 @@
     "metadata",
     "inputs"
   ],
-  "additionalProperties": "false"
+  "additionalProperties": false
 }

@@ -54,7 +54,7 @@
       "nonBusinessIncomeSources": [
         {
           "incomeSourceId": "XAIS12345678910",
-          "incomeSourceType": "09",
+          "incomeSourceType": "uk-savings-and-gains",
           "incomeSourceName": "Savings Account 1",
           "startDate": "2018-04-06",
           "endDate": "2019-04-05",
@@ -180,7 +180,7 @@
           "totalForeignPropertyAllowableAmount": 5000.99,
           "foreignPropertyRfcDetail": [
             {
-              "countryCode": "str",
+              "countryCode": "GER",
               "amountClaimed": 12500,
               "allowableAmount": 5000.99,
               "carryForwardAmount": 5000.99
@@ -191,7 +191,7 @@
           "totalOtherIncomeAllowableAmount": 5000.99,
           "otherIncomeRfcDetail": [
             {
-              "countryCode": "str",
+              "countryCode": "FRA",
               "residentialFinancialCostAmount": 5000.99,
               "broughtFwdResidentialFinancialCostAmount": 5000.99
             }
@@ -229,7 +229,7 @@
           {
             "incomeSourceType": "foreign-dividends",
             "incomeSourceId": "000000000000210",
-            "countryCode": "str",
+            "countryCode": "FRA",
             "foreignIncome": 5000.99,
             "foreignTax": 5000.99,
             "dtaRate": 20,
@@ -390,7 +390,6 @@
         {
           "amount": 5000.99,
           "relatedTaxYear": "string",
-          "saAccountingSystem": "ETMP",
           "source": "customer"
         }
       ]
@@ -399,7 +398,7 @@
       {
         "incomeSourceId": "000000000000210",
         "incomeSourceType": "foreign-property",
-        "countryCode": "str",
+        "countryCode": "USA",
         "totalIncome": 5000.99,
         "totalExpenses": 5000.99,
         "netProfit": 5000.99,
@@ -445,7 +444,7 @@
       "tipsIncome": 5000.99,
       "employmentAndPensionsIncomeDetail": [
         {
-          "incomeSourceId": "string",
+          "incomeSourceId": "XAIS12345678910",
           "source": "customer",
           "occupationalPension": true,
           "employerRef": "123/AA12345",
@@ -552,7 +551,7 @@
       "stateBenefitsDetail": {
         "incapacityBenefit": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "taxPaid": 5000.99,
             "source": "customer"
@@ -560,14 +559,14 @@
         ],
         "statePension": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "source": "customer"
           }
         ],
         "statePensionLumpSum": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "taxPaid": 5000.99,
             "rate": 20,
@@ -576,7 +575,7 @@
         ],
         "employmentSupportAllowance": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "taxPaid": -99999999999.99,
             "source": "customer"
@@ -584,7 +583,7 @@
         ],
         "jobSeekersAllowance": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "taxPaid": -99999999999.99,
             "source": "customer"
@@ -592,19 +591,19 @@
         ],
         "bereavementAllowance": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "source": "customer"
           }
         ],
         "otherStateBenefits": [
           {
-            "incomeSourceId": "string",
+            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
             "amount": 5000.99,
             "source": "customer"
           }
         ]
-      }
+  }
     },
     "shareSchemesIncome": {
       "totalIncome": 5000.99,
@@ -621,7 +620,7 @@
       "chargeableOverseasPensionsStateBenefitsRoyalties": 5000.99,
       "overseasPensionsStateBenefitsRoyaltiesDetail": [
         {
-          "countryCode": "str",
+          "countryCode": "FRA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -631,7 +630,7 @@
       "chargeableAllOtherIncomeReceivedWhilstAbroad": 5000.99,
       "allOtherIncomeReceivedWhilstAbroadDetail": [
         {
-          "countryCode": "str",
+          "countryCode": "FRA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -968,7 +967,7 @@
       "cgtTaxDue": 5000.99,
       "totalIncomeTaxAndNicsAndCgtDue": 5000.99,
       "incomeTaxNicDueThisPeriod": -99999999999.99,
-      "cgtDueThisPeriod": -99999999999.99,
+      "cgtDueThisPeriod": 99999999999.99,
       "totalIncomeTaxAndNicsAndCgtDueThisPeriod": 5000.99
     },
     "endOfYearEstimate": {
@@ -1029,7 +1028,7 @@
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
           "claimType": "carry-forward",
-          "taxYearClaimMade": 2018,
+          "taxYearClaimMade": "2017-18",
           "taxYearLossIncurred": "2017-18",
           "currentLossValue": 12500,
           "lossType": "income"

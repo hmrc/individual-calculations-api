@@ -27,7 +27,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of Incapacity Benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -65,7 +65,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of state pension. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -98,7 +98,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of state pension lump sum. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -142,7 +142,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of Employment Support Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -180,7 +180,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of Job Seekers Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -217,7 +217,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of Bereavement Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -250,7 +250,7 @@
                 "description": "The unique identifier of the income source.",
                 "type": "string",
                 "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
-                "example": "XAIS12345678910"
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
               },
               "amount": {
                 "description": "The amount of other state benefits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
