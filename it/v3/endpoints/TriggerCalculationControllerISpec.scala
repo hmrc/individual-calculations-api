@@ -64,11 +64,16 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
           | "links":[
           |   {
-          |   "href":"/individuals/calculations/AA123456A/self-assessment/2018-19?finalDeclaration=true",
-          |   "method":"POST",
-          |   "rel":"trigger"
-          |     }
-          |   ]
+          |     "href":"/individuals/calculations/AA123456A/self-assessment",
+          |     "method":"GET",
+          |     "rel":"list"
+          |   },
+          |   {
+          |     "href":"/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |     "method":"GET",
+          |     "rel":"retrieve-tax-calculation"
+          |   }
+          | ]
           |}
         """.stripMargin
       )

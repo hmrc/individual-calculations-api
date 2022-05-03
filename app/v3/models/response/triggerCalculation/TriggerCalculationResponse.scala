@@ -31,10 +31,13 @@ object TriggerCalculationResponse extends HateoasLinks {
   implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
-      Seq(trigger(appConfig, data.nino, data.taxYear, finalDeclaration = data.finalDeclaration))
+      Seq(
+        list(appConfig, data.nino),
+        retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
+      )
 
   }
 
 }
 
-case class TriggerCalculationHateoasData(nino: String, taxYear: String, finalDeclaration: Boolean) extends HateoasData
+case class TriggerCalculationHateoasData(nino: String, taxYear: String, finalDeclaration: Boolean, calculationId: String) extends HateoasData

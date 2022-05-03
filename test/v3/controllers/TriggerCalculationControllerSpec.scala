@@ -49,14 +49,15 @@ class TriggerCalculationControllerSpec
   private val taxYear             = TaxYear.fromMtd("2017-18")
   private val rawTaxYear          = taxYear.toMtd
   private val rawFinalDeclaration = Some("true")
+  private val calculationId       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId       = "X-123"
 
-  val response: TriggerCalculationResponse = TriggerCalculationResponse("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
+  val response: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
 
   val json: JsValue = Json.parse(
-    """
+    s"""
       |{
-      |  "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |  "calculationId" : "$calculationId",
       |  "links" : [
       |      {
       |      "href":"/foo/bar",
@@ -120,7 +121,7 @@ class TriggerCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, TriggerCalculationHateoasData(nino, rawTaxYear, finalDeclaration = requestData.finalDeclaration))
+          .wrap(response, TriggerCalculationHateoasData(nino, rawTaxYear, finalDeclaration = requestData.finalDeclaration, calculationId))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] =

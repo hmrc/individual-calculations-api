@@ -64,7 +64,9 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
           serviceResponse <- wrap(service.triggerCalculation(parsedRequest))
           vendorResponse <- wrap(
             hateoasFactory
-              .wrap(serviceResponse.responseData, TriggerCalculationHateoasData(nino, taxYear, parsedRequest.finalDeclaration))
+              .wrap(
+                serviceResponse.responseData,
+                TriggerCalculationHateoasData(nino, taxYear, parsedRequest.finalDeclaration, serviceResponse.responseData.calculationId))
               .asRight[ErrorWrapper])
 
         } yield {

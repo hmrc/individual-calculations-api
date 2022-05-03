@@ -27,5 +27,6 @@ object RelType {
   val MESSAGES       = "messages"
   val CRYSTALLISE    = "crystallise"
 
-  val SELF = "self"
+  val LIST     = "list"
+  val RETRIEVE = "retrieve-tax-calculation"
 }
