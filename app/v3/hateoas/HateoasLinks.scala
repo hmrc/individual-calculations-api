@@ -28,8 +28,8 @@ trait HateoasLinks {
 
   // API resource links
 
-  def trigger(appConfig: AppConfig, nino: String, taxYear: String, finalDeclaration: Boolean): Link =
-    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear?finalDeclaration=$finalDeclaration", method = POST, rel = TRIGGER)
+  def trigger(appConfig: AppConfig, nino: String, taxYear: String): Link =
+    Link(href = s"${baseSaUri(appConfig, nino)}/$taxYear", method = POST, rel = TRIGGER)
 
   def list(appConfig: AppConfig, nino: String): Link =
     Link(href = baseSaUri(appConfig, nino), method = GET, rel = LIST)
