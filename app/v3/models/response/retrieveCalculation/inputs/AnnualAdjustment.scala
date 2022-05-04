@@ -16,11 +16,12 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
-import play.api.libs.json.{Format, Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
 
-case class AnnualAdjustment(incomeSourceId: String, incomeSourceType: IncomeSourceType, ascId: String, receivedDateTime: String, applied: Boolean)
+case class AnnualAdjustment(incomeSourceId: String, incomeSourceType: IncomeSourceType, bsasId: String, receivedDateTime: String, applied: Boolean)
 
 object AnnualAdjustment {
 
@@ -32,5 +33,13 @@ object AnnualAdjustment {
     `foreign-property`
   )
 
-  implicit val format: OFormat[AnnualAdjustment] = Json.format[AnnualAdjustment]
+  implicit val reads: Reads[AnnualAdjustment] = (
+    (JsPath \ "incomeSourceId").read[String] and
+      (JsPath \ "incomeSourceType").read[IncomeSourceType](incomeSourceTypeFormat) and
+      (JsPath \ "ascId").read[String] and
+      (JsPath \ "receivedDateTime").read[String] and
+      (JsPath \ "applied").read[Boolean]
+  )(AnnualAdjustment.apply _)
+
+  implicit val writes: OWrites[AnnualAdjustment] = Json.writes
 }
