@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait MockListCalculationsService extends MockFactory {
   val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
 
-  object MockSubmitFinalDeclarationService {
+  object MockListCalculationsService {
     def list[I](requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculations]]]] = {
       (mockListCalculationsService
         .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))

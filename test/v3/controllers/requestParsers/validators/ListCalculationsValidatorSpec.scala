@@ -21,7 +21,6 @@ import v3.models.errors._
 import v3.models.request.ListCalculationsRawData
 
 class ListCalculationsValidatorSpec extends UnitSpec {
-
   val validator: ListCalculationsValidator = new ListCalculationsValidator
 
   "ListCalculationsValidator" when {

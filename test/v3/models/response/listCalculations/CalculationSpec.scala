@@ -16,8 +16,54 @@
 
 package v3.models.response.listCalculations
 
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v3.fixtures.ListCalculationsFixture
 
-class CalculationSpec extends UnitSpec {
+class CalculationSpec extends UnitSpec with ListCalculationsFixture {
+  val downstreamJson: JsValue = Json.parse(
+    """
+      |{
+      |   "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
+      |   "calculationTimestamp":"2021-07-12T07:51:43.112Z",
+      |   "calculationType":"crystallisation",
+      |   "requestedBy":"customer",
+      |   "year":2021,
+      |   "fromDate":"2021-01-01",
+      |   "toDate":"2021-12-31",
+      |   "totalIncomeTaxAndNicsDue":10000.12,
+      |   "intentToCrystallise":true,
+      |   "crystallised":true,
+      |   "crystallisationTimestamp":"2021-07-13T07:51:43.112Z"
+      |}
+    """.stripMargin)
 
+  val mtdJson: JsValue = Json.parse(
+    """
+      |{
+      |   "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
+      |   "calculationTimestamp":"2021-07-12T07:51:43.112Z",
+      |   "calculationType":"finalDeclaration",
+      |   "requestedBy":"customer",
+      |   "taxYear":"2020-21",
+      |   "totalIncomeTaxAndNicsDue":10000.12,
+      |   "intentToSubmitFinalDeclaration":true,
+      |   "finalDeclaration":true,
+      |   "finalDeclarationTimestamp":"2021-07-13T07:51:43.112Z"
+      |}
+    """.stripMargin)
+
+  "Calculation" when {
+    "read from downstream JSON" must {
+      "return the expected data model" in {
+        downstreamJson.as[Calculation] shouldBe listCalculationsResponseModel
+      }
+    }
+
+    "written to MTD JSON" must {
+      "produce the expected JSON body" in {
+        Json.toJson(listCalculationsResponseModel) shouldBe mtdJson
+      }
+    }
+  }
 }

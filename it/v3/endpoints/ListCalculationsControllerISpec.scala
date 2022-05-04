@@ -16,8 +16,137 @@
 
 package v3.endpoints
 
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.HeaderNames.ACCEPT
+import play.api.http.Status._
+//import play.api.libs.json.Json
+import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
+import v3.fixtures.ListCalculationsFixture
+//import v3.models.errors._
+import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class ListCalculationsControllerISpec extends V3IntegrationBaseSpec {
+class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
 
+  private trait Test {
+    val nino: String = "AA123456A"
+    val taxYear: Option[String] = None
+
+    def uri: String = s"/$nino/self-assessment"
+    def backendUrl: String = uri
+    def setupStubs(): StubMapping
+
+    def request: WSRequest = {
+      val queryParams: Seq[(String, String)] =
+        Seq("taxYear" -> taxYear)
+          .collect { case (k, Some(v)) => (k, v) }
+
+      setupStubs()
+      buildRequest(uri)
+        .addQueryStringParameters(queryParams: _*)
+        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
+    }
+  }
+
+  "Calling the list calculations endpoint" should {
+    "return a 200 status code" when {
+      "valid request is made with a tax year" in new Test {
+        override val taxYear: Option[String] = Some("2018-19")
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map("taxYear" -> "2018"), OK, listCalculationsDownstreamJson)
+        }
+
+        val response: WSResponse = await(request.get)
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+      }
+
+      /*"valid request is made without a tax year" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, listCalculationsDownstreamJson)
+        }
+
+        val response: WSResponse = await(request.get)
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+      }*/
+    }
+
+    /*"return error according to spec" when {
+      "validation error" when {
+        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"validation fails with ${expectedBody.code} error" in new Test {
+            override val nino: String            = requestNino
+            override val taxYear: Option[String] = Some(requestTaxYear)
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+            }
+
+            val response: WSResponse = await(request.get)
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
+          }
+        }
+
+        val input = Seq(
+          ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+        )
+
+        input.foreach(args => (validationErrorTest _).tupled(args))
+      }
+
+      "backend service error" when {
+        def errorBody(code: String): String =
+          s"""
+             |{
+             |  "code": "$code",
+             |  "message": "backend message"
+             |}
+           """.stripMargin
+
+        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $backendCode error and status $backendStatus" in new Test {
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+            }
+
+            val response: WSResponse = await(request.get)
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
+          }
+        }
+
+        val input = Seq(
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)
+        )
+
+        input.foreach(args => (serviceErrorTest _).tupled(args))
+      }
+    }*/
+  }
 }

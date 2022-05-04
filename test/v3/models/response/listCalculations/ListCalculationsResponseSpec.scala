@@ -16,8 +16,59 @@
 
 package v3.models.response.listCalculations
 
+import mocks.MockAppConfig
+import play.api.libs.json.Json
 import support.UnitSpec
+import v3.fixtures.ListCalculationsFixture
+import v3.hateoas.HateoasFactory
+import v3.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 
-class ListCalculationsResponseSpec extends UnitSpec {
+class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture {
+  "ListCalculationsResponse" when {
+    "read from downstream JSON" must {
+      "return the expected data model" in {
+        listCalculationsDownstreamJson.as[ListCalculationsResponse[Calculation]] shouldBe listCalculationsResponseModel
+      }
+    }
 
+    "written to MTD JSON" must {
+      "produce the expected JSON body" in {
+        Json.toJson(listCalculationsResponseModel) shouldBe listCalculationsMtdJson
+      }
+    }
+  }
+
+  "HateoasFactory" must {
+    trait Test extends MockAppConfig {
+      val hateoasFactory = new HateoasFactory(mockAppConfig)
+      val nino: String = "someNino"
+      val calcId: String = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
+      val taxYear: Option[String] = Some("2020-21")
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+    }
+    "wrap response correctly when tax year is defined" in new Test {
+      hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)) shouldBe
+        HateoasWrapper(
+          payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationModel, Seq(
+            Link(
+              href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}/$calcId",
+              rel = RelType.SELF,
+              method = Method.GET
+            )
+          )))),
+          links = Seq(
+            Link(
+              href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}",
+              rel = RelType.TRIGGER,
+              method = Method.POST
+            ),
+            Link(
+              href = "/individuals/calculations/someNino/self-assessment",
+              rel = RelType.SELF,
+              method = Method.GET
+            )
+          )
+        )
+    }
+  }
 }

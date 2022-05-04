@@ -63,8 +63,9 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
           serviceResponse <- EitherT(service.list(parsedRequest))
           vendorResponse <- EitherT.fromEither[Future](
             hateoasFactory
-              .wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear.get))
-              .asRight[ErrorWrapper])
+              .wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear))
+              .asRight[ErrorWrapper]
+          )
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
