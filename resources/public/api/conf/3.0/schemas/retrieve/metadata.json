@@ -97,9 +97,9 @@
       "calculationType": {
         "description": "The type of calculation performed. Limited to the following possible values:",
         "type": "string",
-        "enum": [
-          "inYear - Cannot be used for a final declaration.",
-          "finalDeclaration - Can be used when submitting a final declaration."
+        "oneOf": [
+          {"enum":  ["inYear"], "description": "Cannot be used for a final declaration."},
+          {"enum":  ["finalDeclaration"], "description": "Can be used when submitting a final declaration."}
         ]
       },
       "intentToSubmitFinalDeclaration": {

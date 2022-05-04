@@ -29,8 +29,7 @@
           "example": "2000.58"
         }
       },
-      "additionalProperties": false,
-      "required": []
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,

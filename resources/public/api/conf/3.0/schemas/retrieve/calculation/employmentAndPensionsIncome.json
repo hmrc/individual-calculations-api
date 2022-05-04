@@ -105,417 +105,413 @@
           "disguisedRemuneration": {
             "description": "Indicates whether this is disguised remuneration.",
             "type": "boolean"
+          },
+          "lumpSums": {
+            "description": "Object containing any lump sums relating to pension or employment income.",
+            "type": "object",
+            "properties": {
+              "totalLumpSum": {
+                "description": "Total lump sum. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "multipleOf": 0.01,
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "example": "2000.98"
+              },
+              "totalTaxPaid": {
+                "description": "Total tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "multipleOf": 0.01,
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "example": "2000.98"
+              },
+              "lumpSumsDetail": {
+                "description": "Object detailing any lump sums relating to pension or employment income.",
+                "type": "object",
+                "properties": {
+                  "taxableLumpSumsAndCertainIncome": {
+                    "description": "Object detailing any taxable lump sums and certain income.",
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "description": "The amount from lump sums and certain income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxPaid": {
+                        "description": "Tax paid on lump sums and certain income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxTakenOffInEmployment": {
+                        "description": "A boolean to identify whether tax was taken off in employment.",
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "benefitFromEmployerFinancedRetirementScheme": {
+                    "description": "Object detailing any benefits received from employer financed retirement schemes.",
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "description": "The amount from benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "exemptAmount": {
+                        "description": "The exempt amount from benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxPaid": {
+                        "description": "Tax paid on benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxTakenOffInEmployment": {
+                        "description": "A boolean to identify whether tax was taken off in employment.",
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "redundancyCompensationPaymentsOverExemption": {
+                    "description": "Object detailing any redundancy compensation payments over exemption.",
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "description": "The amount from Redundancy Compensation Payments Over Exemption. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxPaid": {
+                        "description": "Tax Paid on Redundancy Compensation Payments Over Exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      },
+                      "taxTakenOffInEmployment": {
+                        "description": "A boolean to identify whether tax was taken off in employment.",
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "redundancyCompensationPaymentsUnderExemption": {
+                    "description": "Object detailing any redundancy compensation payments under exemption",
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "description": "The amount of Redundancy Compensation Payments Under Exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                        "type": "number",
+                        "multipleOf": 0.01,
+                        "minimum": 0,
+                        "maximum": 99999999999.99,
+                        "example": "2000.98"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "totalLumpSum",
+              "lumpSumsDetail"
+            ]
+          },
+          "studentLoans": {
+            "description": "Object detailing any amounts relating to undergraduate and postgraduate student loans.",
+            "type": "object",
+            "properties": {
+              "uglDeductionAmount": {
+                "description": "Student Loan Undergraduate deduction amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "multipleOf": 0.01,
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "example": "2000.98"
+              },
+              "pglDeductionAmount": {
+                "description": "Student Loan Postgraduate deduction Amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "multipleOf": 0.01,
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "example": "2000.98"
+              }
+            },
+            "additionalProperties": false
+          },
+          "benefitsInKind": {
+            "description": "Object containing information about any received benefits in kind.",
+            "type": "object",
+            "properties": {
+              "totalBenefitsInKindReceived": {
+                "description": "Total benefits in kind received. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "multipleOf": 0.01,
+                "minimum": 0,
+                "maximum": 99999999999.99,
+                "example": "2000.98"
+              },
+              "benefitsInKindDetail": {
+                "description": "Object detailing any received benefits in kind.",
+                "type": "object",
+                "properties": {
+                  "apportionedAccommodation": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedAssets": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedAssetTransfer": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedBeneficialLoan": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedCar": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedCarFuel": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedEducationalServices": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedEntertaining": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedExpenses": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedMedicalInsurance": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedTelephone": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedService": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedTaxableExpenses": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedVan": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedVanFuel": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedMileage": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedNonQualifyingRelocationExpenses": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedNurseryPlaces": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedOtherItems": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedPaymentsOnEmployeesBehalf": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedPersonalIncidentalExpenses": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedQualifyingRelocationExpenses": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedEmployerProvidedProfessionalSubscriptions": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedEmployerProvidedServices": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedIncomeTaxPaidByDirector": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedTravelAndSubsistence": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedVouchersAndCreditCards": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  },
+                  "apportionedNonCash": {
+                    "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "maximum": 99999999999.99,
+                    "example": "2000.98"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false
       }
-    },
-    "lumpSums": {
-      "description": "Object containing any lump sums relating to pension or employment income.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "totalLumpSum": {
-            "description": "Total lump sum. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "type": "number",
-            "multipleOf": 0.01,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "example": "2000.98"
-          },
-          "totalTaxPaid": {
-            "description": "Total tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "type": "number",
-            "multipleOf": 0.01,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "example": "2000.98"
-          },
-          "lumpSumsDetail": {
-            "description": "Object detailing any lump sums relating to pension or employment income.",
-            "type": "object",
-            "properties": {
-              "taxableLumpSumsAndCertainIncome": {
-                "description": "Object detailing any taxable lump sums and certain income.",
-                "type": "object",
-                "properties": {
-                  "amount": {
-                    "description": "The amount from lump sums and certain income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxPaid": {
-                    "description": "Tax paid on lump sums and certain income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxTakenOffInEmployment": {
-                    "description": "A boolean to identify whether tax was taken off in employment.",
-                    "type": "boolean"
-                  }
-                }
-              },
-              "benefitFromEmployerFinancedRetirementScheme": {
-                "description": "Object detailing any benefits received from employer financed retirement schemes.",
-                "type": "object",
-                "properties": {
-                  "amount": {
-                    "description": "The amount from benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "exemptAmount": {
-                    "description": "The exempt amount from benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxPaid": {
-                    "description": "Tax paid on benefits from employment finance retirement scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxTakenOffInEmployment": {
-                    "description": "A boolean to identify whether tax was taken off in employment.",
-                    "type": "boolean"
-                  }
-                }
-              },
-              "redundancyCompensationPaymentsOverExemption": {
-                "description": "Object detailing any redundancy compensation payments over exemption.",
-                "type": "object",
-                "properties": {
-                  "amount": {
-                    "description": "The amount from Redundancy Compensation Payments Over Exemption. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxPaid": {
-                    "description": "Tax Paid on Redundancy Compensation Payments Over Exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  },
-                  "taxTakenOffInEmployment": {
-                    "description": "A boolean to identify whether tax was taken off in employment.",
-                    "type": "boolean"
-                  }
-                }
-              },
-              "redundancyCompensationPaymentsUnderExemption": {
-                "description": "Object detailing any redundancy compensation payments under exemption",
-                "type": "object",
-                "properties": {
-                  "amount": {
-                    "description": "The amount of Redundancy Compensation Payments Under Exemption. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                    "type": "number",
-                    "multipleOf": 0.01,
-                    "minimum": 0,
-                    "maximum": 99999999999.99,
-                    "example": "2000.98"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "totalLumpSum",
-          "lumpSumsDetail"
-        ]
-      }
-    },
-    "studentLoans": {
-      "description": "Object detailing any amounts relating to undergraduate and postgraduate student loans.",
-      "type": "object",
-      "properties": {
-        "uglDeductionAmount": {
-          "description": "Student Loan Undergraduate deduction amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "multipleOf": 0.01,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "2000.98"
-        },
-        "pglDeductionAmount": {
-          "description": "Student Loan Postgraduate deduction Amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "multipleOf": 0.01,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "2000.98"
-        }
-      },
-      "additionalProperties": false
-    },
-    "benefitsInKind": {
-      "description": "Object containing information about any received benefits in kind.",
-      "type": "object",
-      "properties": {
-        "totalBenefitsInKindReceived": {
-          "description": "Total benefits in kind received. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "multipleOf": 0.01,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "2000.98"
-        },
-        "benefitsInKindDetail": {
-          "description": "Object detailing any received benefits in kind.",
-          "type": "object",
-          "properties": {
-            "apportionedAccommodation": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedAssets": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedAssetTransfer": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedBeneficialLoan": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedCar": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedCarFuel": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedEducationalServices": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedEntertaining": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedExpenses": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedMedicalInsurance": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedTelephone": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedService": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedTaxableExpenses": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedVan": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedVanFuel": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedMileage": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedNonQualifyingRelocationExpenses": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedNurseryPlaces": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedOtherItems": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedPaymentsOnEmployeesBehalf": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedPersonalIncidentalExpenses": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedQualifyingRelocationExpenses": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedEmployerProvidedProfessionalSubscriptions": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedEmployerProvidedServices": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedIncomeTaxPaidByDirector": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedTravelAndSubsistence": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedVouchersAndCreditCards": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            },
-            "apportionedNonCash": {
-              "description": "Apportioned benefit amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-              "type": "number",
-              "multipleOf": 0.01,
-              "minimum": 0,
-              "maximum": 99999999999.99,
-              "example": "2000.98"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "additionalProperties": false
     }
   },
-  "additionalProperties": false,
-  "required": []
+  "additionalProperties": false
 }

@@ -87,6 +87,5 @@
       "$ref": "calculation/lossesAndClaims.json"
     }
   },
-  "required": [],
-  "additionalProperties": "false"
+  "additionalProperties": false
 }

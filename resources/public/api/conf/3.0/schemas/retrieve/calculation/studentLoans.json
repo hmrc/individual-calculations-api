@@ -86,7 +86,7 @@
   "definitions": {
     "planType": {
       "description": "The repayment plan type.",
-      "type": "enum",
+      "type": "string",
       "enum": [
         "plan1",
         "plan2",
