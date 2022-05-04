@@ -16,7 +16,6 @@
 
 package v2.controllers
 
-import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser
@@ -25,12 +24,13 @@ import v2.controllers.requestParsers.GetCalculationParser
 import v2.handler.{AuditHandler, RequestDefn, RequestHandler}
 import v2.hateoas.HateoasFactory
 import v2.models.audit.GenericAuditDetail
-import v2.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError}
+import v2.models.errors.{CalculationIdFormatError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError}
 import v2.models.hateoas.HateoasWrapper
 import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v2.models.response.getMetadata.{MetadataExistence, MetadataHateoasData, MetadataResponse}
 import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class GetMetadataController @Inject() (authService: EnrolmentsAuthService,
@@ -65,7 +65,8 @@ class GetMetadataController @Inject() (authService: EnrolmentsAuthService,
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccessSimple(rawResponse =>
         hateoasFactory.wrap(

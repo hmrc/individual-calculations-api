@@ -83,7 +83,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
         ("SERVER_ERROR", DownstreamError),
-        ("SERVICE_UNAVAILABLE", DownstreamError)
+        ("SERVICE_UNAVAILABLE", DownstreamError),
+        ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
       input.foreach(args => (serviceError _).tupled(args))

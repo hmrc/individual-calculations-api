@@ -193,7 +193,8 @@ class GetMetadataControllerSpec
         ("FORMAT_NINO", BAD_REQUEST, NinoFormatError, BAD_REQUEST),
         ("FORMAT_CALC_ID", BAD_REQUEST, CalculationIdFormatError, BAD_REQUEST),
         ("MATCHING_RESOURCE_NOT_FOUND", NOT_FOUND, NotFoundError, NOT_FOUND),
-        ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR)
+        ("INTERNAL_SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError, INTERNAL_SERVER_ERROR),
+        ("RULE_INCORRECT_GOV_TEST_SCENARIO", BAD_REQUEST, RuleIncorrectGovTestScenarioError, BAD_REQUEST)
       )
 
       MockStandardService

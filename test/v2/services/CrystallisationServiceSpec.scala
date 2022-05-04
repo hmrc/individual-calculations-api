@@ -84,7 +84,8 @@ class CrystallisationServiceSpec extends ServiceSpec {
           ("BUSINESS_VALIDATION", RuleSubmissionFailed, UNPROCESSABLE_ENTITY),
           ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError, CONFLICT),
           ("SERVER_ERROR", DownstreamError, INTERNAL_SERVER_ERROR),
-          ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE)
+          ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE),
+          ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError, BAD_REQUEST)
         )
 
         input.foreach(args => (serviceError _).tupled(args))

@@ -75,7 +75,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   private def errorResult(errorWrapper: ErrorWrapper) =
     errorWrapper.error match {
       case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-          CalculationIdFormatError =>
+          CalculationIdFormatError | RuleIncorrectGovTestScenarioError =>
         BadRequest(Json.toJson(errorWrapper))
       case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError | RuleResidencyChangedError | RuleFinalDeclarationReceivedError |
           RuleIncomeSourcesInvalidError | RuleNoIncomeSubmissionsExistError | RuleSubmissionFailedError =>

@@ -227,7 +227,8 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_CONSUMERID", INTERNAL_SERVER_ERROR, DownstreamError),
           (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))

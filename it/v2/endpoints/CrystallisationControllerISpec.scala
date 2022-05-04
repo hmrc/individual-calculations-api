@@ -176,7 +176,8 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
           (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", FORBIDDEN, RuleSubmissionFailed),
           (CONFLICT, "FINAL_DECLARATION_RECEIVED", FORBIDDEN, RuleFinalDeclarationReceivedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))

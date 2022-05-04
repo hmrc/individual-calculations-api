@@ -65,7 +65,8 @@ class GetIncomeTaxAndNicsController @Inject() (authService: EnrolmentsAuthServic
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {

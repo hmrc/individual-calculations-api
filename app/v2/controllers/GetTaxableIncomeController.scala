@@ -65,7 +65,8 @@ class GetTaxableIncomeController @Inject() (authService: EnrolmentsAuthService,
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither[TaxableIncomeResponse] {

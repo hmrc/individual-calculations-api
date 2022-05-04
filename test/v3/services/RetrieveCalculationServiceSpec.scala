@@ -71,7 +71,8 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
         ("INVALID_CONSUMERID", DownstreamError),
         ("NO_DATA_FOUND", NotFoundError),
         ("SERVER_ERROR", DownstreamError),
-        ("SERVICE_UNAVAILABLE", DownstreamError)
+        ("SERVICE_UNAVAILABLE", DownstreamError),
+        ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
       input.foreach(args => (serviceError _).tupled(args))
