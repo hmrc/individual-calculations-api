@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "A statement summarising the profit and loss position for business income sources. The enum in the incomeSourceTypes will determine the business type. When the type is \"self-employment\" totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
+  "description": "An array of objects summarising the profit and loss position for business income sources. The enum in the incomeSourceType will determine the business type.\n\nWhen the incomeSourceType is \"self-employment\", totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
   "type": "array",
   "items": {
     "type": "object",
@@ -36,7 +36,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "totalExpenses": {
         "title": "totalExpenses",
@@ -45,7 +45,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "netProfit": {
         "title": "netProfit",
@@ -54,7 +54,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "netLoss": {
         "title": "netLoss",
@@ -63,7 +63,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "totalAdditions": {
         "title": "totalAdditions",
@@ -72,7 +72,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "totalDeductions": {
         "title": "totalDeductions",
@@ -81,7 +81,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "accountingAdjustments": {
         "title": "accountingAdjustments",
@@ -90,7 +90,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "5000.99"
       },
       "taxableProfit": {
         "title": "taxableProfit",
