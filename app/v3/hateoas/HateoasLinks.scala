@@ -37,10 +37,10 @@ trait HateoasLinks {
     rel = TRIGGER
   )
 
-  def list(appConfig: AppConfig, nino: String): Link = Link(
+  def list(appConfig: AppConfig, nino: String, isSelf: Boolean): Link = Link(
     href = baseSaUri(appConfig, nino),
     method = GET,
-    rel = SELF
+    rel = if (isSelf) SELF else LIST
   )
 
   def retrieve(appConfig: AppConfig, nino: String, taxYear: String, calculationId: String): Link = Link(

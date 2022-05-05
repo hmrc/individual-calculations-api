@@ -42,7 +42,7 @@ object ListCalculationsResponse extends HateoasLinks {
       import data._
       Seq(
         trigger(appConfig, nino, taxYear.getOrElse("????-??")), //There is a standing question about the tax year here.
-        list(appConfig, nino)
+        list(appConfig, nino, isSelf = true)
       )
     }
   }
