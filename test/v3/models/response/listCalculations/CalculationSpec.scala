@@ -56,13 +56,13 @@ class CalculationSpec extends UnitSpec with ListCalculationsFixture {
   "Calculation" when {
     "read from downstream JSON" must {
       "return the expected data model" in {
-        downstreamJson.as[Calculation] shouldBe listCalculationsResponseModel
+        downstreamJson.as[Calculation] shouldBe calculationModel
       }
     }
 
     "written to MTD JSON" must {
       "produce the expected JSON body" in {
-        Json.toJson(listCalculationsResponseModel) shouldBe mtdJson
+        Json.toJson(calculationModel) shouldBe mtdJson
       }
     }
   }

@@ -19,11 +19,11 @@ package v3.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-//import play.api.libs.json.Json
+import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.V3IntegrationBaseSpec
 import v3.fixtures.ListCalculationsFixture
-//import v3.models.errors._
+import v3.models.errors._
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
@@ -33,7 +33,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
     val taxYear: Option[String] = None
 
     def uri: String = s"/$nino/self-assessment"
-    def backendUrl: String = uri
+    def backendUrl: String = s"/income-tax/list-of-calculation-results/$nino"
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
@@ -57,7 +57,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map("taxYear" -> "2018"), OK, listCalculationsDownstreamJson)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -66,7 +66,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
       }
 
-      /*"valid request is made without a tax year" in new Test {
+      "valid request is made without a tax year" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -78,10 +78,10 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
-      }*/
+      }
     }
 
-    /*"return error according to spec" when {
+    "return error according to spec" when {
       "validation error" when {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
@@ -147,6 +147,6 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
 
         input.foreach(args => (serviceErrorTest _).tupled(args))
       }
-    }*/
+    }
   }
 }
