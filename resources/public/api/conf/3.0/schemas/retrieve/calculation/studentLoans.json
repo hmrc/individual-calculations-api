@@ -6,7 +6,8 @@
     "type": "object",
     "properties": {
       "planType": {
-        "$ref": "#/definitions/planType"
+        "description": "The repayment plan type.",
+        "$ref": "../common_defs.json#/definitions/studentLoanPlanType"
       },
       "studentLoanTotalIncomeAmount": {
         "description": "The total income used in the student loan calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -82,17 +83,5 @@
       "studentLoanApportionedIncomeThreshold",
       "studentLoanRate"
     ]
-  },
-  "definitions": {
-    "planType": {
-      "description": "The repayment plan type.",
-      "type": "string",
-      "enum": [
-        "plan1",
-        "plan2",
-        "postgraduate",
-        "plan4"
-      ]
-    }
   }
 }

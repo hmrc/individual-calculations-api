@@ -96,8 +96,7 @@
         "type": "object",
         "properties": {
           "planType": {
-            "description": "Student Loan plan type.",
-            "$ref": "#/definitions/studentLoanPlanType"
+            "$ref": "common_defs.json#/definitions/studentLoanPlanType"
           }
         },
         "additionalProperties": false,
@@ -105,16 +104,6 @@
           "planType"
         ]
       }
-    },
-    "studentLoanPlanType": {
-      "description": "Student Loan plan type.",
-      "type": "string",
-      "enum": [
-        "plan1",
-        "plan2",
-        "postgraduate",
-        "plan4"
-      ]
     },
     "incomeSources": {
       "description": "Object containing the income sources used in the retrieved tax calculation.",
@@ -141,7 +130,7 @@
           },
           "incomeSourceType": {
             "description": "Business income source type.",
-            "$ref": "#/definitions/incomeSourceType"
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "bsasId": {
             "description": "The unique identifier of the annual adjustment.",
@@ -184,7 +173,7 @@
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "$ref": "#/definitions/incomeSourceType"
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "submissionTimestamp": {
             "description": "The date and time the loss was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
@@ -192,7 +181,7 @@
           },
           "lossType": {
             "description": "The type of loss.",
-            "$ref": "#/definitions/lossType"
+            "$ref": "common_defs.json#/definitions/lossType"
           },
           "taxYearLossIncurred": {
             "description": "The tax year that the loss was incurred.",
@@ -236,7 +225,7 @@
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "$ref": "#/definitions/incomeSourceType"
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "submissionTimestamp": {
             "description": "The date and time the claim was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
@@ -248,7 +237,7 @@
           },
           "claimType": {
             "description": "The type of claim made.",
-            "$ref": "#/definitions/claimType"
+            "$ref": "common_defs.json#/definitions/claimType"
           },
           "sequence": {
             "description": "The order in which this claim is to be used for a carry-sideways claim. It must be an integer in the range 1 to 99. The sequence must start with 1 and have no gaps.",
@@ -444,7 +433,7 @@
           },
           "incomeSourceType": {
             "description": "Business income source type.",
-            "$ref": "#/definitions/incomeSourceType"
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "incomeSourceName": {
             "description": "The name of the income source.",
@@ -579,16 +568,6 @@
       "pattern": "^[A-Za-z0-9]{15}$",
       "example": "XAIS12345678910"
     },
-    "incomeSourceType": {
-      "type": "string",
-      "enum": [
-        "self-employment",
-        "uk-property-non-fhl",
-        "uk-property-fhl",
-        "foreign-property",
-        "foreign-property-fhl-eea"
-      ]
-    },
     "nonBusinessIncomeSourceType": {
       "type": "string",
       "enum": [
@@ -656,24 +635,6 @@
       "minimum": 0,
       "maximum": 99999999999.99,
       "example": "5000.99"
-    },
-    "lossType": {
-      "type": "string",
-      "enum": [
-        "income",
-        "class4nics"
-      ]
-    },
-    "claimType": {
-      "type": "string",
-      "enum": [
-        "carry-forward",
-        "carry-sideways",
-        "carry-forward-to-carry-sideways",
-        "carry-sideways-fhl",
-        "carry-backwards",
-        "carry-backwards-general-income"
-      ]
     }
   }
 }

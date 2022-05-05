@@ -48,12 +48,7 @@
             "example": "XAIS12345678910"
           },
           "source": {
-            "description": "The source of the data.",
-            "type": "string",
-            "enum": [
-              "customer",
-              "HMRC HELD"
-            ]
+            "$ref": "../common_defs.json#/definitions/dataSource"
           },
           "occupationalPension": {
             "description": "A boolean to identify whether the occupational pension is true or false.",
