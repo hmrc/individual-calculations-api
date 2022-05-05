@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about income received from share schemes in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalIncome": {
+      "description": "The total income used in the calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "2000.98"
+    },
+    "shareSchemeDetail": {
+      "description": "Array detailing share schemes income.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of share scheme.",
+            "type": "string",
+            "enum": [
+              "shareOption",
+              "sharesAwardedOrReceived"
+            ]
+          },
+          "employerName": {
+            "description": "The name of the employer the employee worked for.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9 \\-,.&'/]{1,105}$",
+            "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+          },
+          "employerRef": {
+            "description": "A unique identifier, the employer reference number.",
+            "type": "string",
+            "pattern": "^[0-9]{3}\\/[^ ].{0,9}$",
+            "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+          },
+          "taxableAmount": {
+            "description": "Taxable amount for the share scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "multipleOf": 0.01,
+            "minimum": 0,
+            "maximum": 99999999999.99,
+            "example": "2000.98"
+          }
+        },
+        "required": [
+          "type",
+          "taxableAmount"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "totalIncome"
+  ]
+}
