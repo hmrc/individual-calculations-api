@@ -9,6 +9,11 @@ types:
 
 traits:
   taxYear:
+    queryParameters:
+        taxYear:
+          description: 'The tax year the data applies to, for example, 2021-22. The start year and end year must not span two tax years. The minimum tax year is 2017-18. No gaps are allowed, for example, 2020-22 is not valid.'
+          example: "2017-18"
+          required: false
   finalDeclaration:
       queryParameters:
         finalDeclaration:
