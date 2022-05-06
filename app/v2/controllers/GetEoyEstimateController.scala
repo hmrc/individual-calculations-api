@@ -64,7 +64,8 @@ class GetEoyEstimateController @Inject() (authService: EnrolmentsAuthService,
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {

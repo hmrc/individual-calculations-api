@@ -70,7 +70,8 @@ class GetMessagesController @Inject() (authService: EnrolmentsAuthService,
         NinoFormatError,
         CalculationIdFormatError,
         TypeFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess(filterMessages(req.queryData))
       .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, MessagesHateoasData(req.nino.nino, rawResponse.id)))

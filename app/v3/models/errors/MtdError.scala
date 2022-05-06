@@ -193,6 +193,13 @@ object InvalidBodyTypeError
       message = "Expecting text/json or application/json body"
     )
 
+//Stub errors
+object RuleIncorrectGovTestScenarioError
+    extends MtdError(
+      code = "RULE_INCORRECT_GOV_TEST_SCENARIO",
+      message = "The Gov-Test-Scenario was not found"
+    )
+
 // Authorisation Errors
 object UnauthorisedError
     extends MtdError(

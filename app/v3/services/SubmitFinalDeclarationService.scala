@@ -17,6 +17,7 @@
 package v3.services
 
 import cats.data.EitherT
+
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
@@ -60,7 +61,8 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "BUSINESS_VALIDATION"          -> RuleSubmissionFailedError,
       "FINAL_DECLARATION_RECEIVED"   -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR"                 -> DownstreamError,
-      "SERVICE_UNAVAILABLE"          -> DownstreamError
+      "SERVICE_UNAVAILABLE"          -> DownstreamError,
+      "UNMATCHED_STUB_ERROR"         -> RuleIncorrectGovTestScenarioError
     )
 
 }

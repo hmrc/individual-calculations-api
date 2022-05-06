@@ -54,7 +54,8 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
     "INVALID_CONSUMERID"        -> DownstreamError,
     "NO_DATA_FOUND"             -> NotFoundError,
     "SERVER_ERROR"              -> DownstreamError,
-    "SERVICE_UNAVAILABLE"       -> DownstreamError
+    "SERVICE_UNAVAILABLE"       -> DownstreamError,
+    "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
   )
 
 }

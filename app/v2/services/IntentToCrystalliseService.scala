@@ -56,7 +56,8 @@ class IntentToCrystalliseService @Inject() (connector: IntentToCrystalliseConnec
       "NO_SUBMISSION_EXIST"     -> RuleNoSubmissionsExistError,
       "CONFLICT"                -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR"            -> DownstreamError,
-      "SERVICE_UNAVAILABLE"     -> DownstreamError
+      "SERVICE_UNAVAILABLE"     -> DownstreamError,
+      "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
     )
 
 }

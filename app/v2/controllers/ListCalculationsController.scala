@@ -70,7 +70,8 @@ class ListCalculationsController @Inject() (authService: EnrolmentsAuthService,
         RuleTaxYearNotSupportedError,
         RuleTaxYearRangeInvalidError,
         NotFoundError,
-        DownstreamError
+        DownstreamError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess(notFoundErrorWhenEmpty)
       .mapSuccessSimple { rawResponse =>

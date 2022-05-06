@@ -61,7 +61,8 @@ class CrystallisationService @Inject() (connector: CrystallisationConnector) ext
       "BUSINESS_VALIDATION"          -> RuleSubmissionFailed,
       "FINAL_DECLARATION_RECEIVED"   -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR"                 -> DownstreamError,
-      "SERVICE_UNAVAILABLE"          -> DownstreamError
+      "SERVICE_UNAVAILABLE"          -> DownstreamError,
+      "UNMATCHED_STUB_ERROR"         -> RuleIncorrectGovTestScenarioError
     )
 
 }

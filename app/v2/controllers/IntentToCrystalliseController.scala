@@ -18,7 +18,6 @@ package v2.controllers
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.Inject
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import play.mvc.Http.MimeTypes
@@ -33,6 +32,7 @@ import v2.models.request.intentToCrystallise.IntentToCrystalliseRawData
 import v2.models.response.intentToCrystallise.IntentToCrystalliseHateaosData
 import v2.services.{AuditService, EnrolmentsAuthService, IntentToCrystalliseService, MtdIdLookupService}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IntentToCrystalliseController @Inject() (val authService: EnrolmentsAuthService,
@@ -120,7 +120,8 @@ class IntentToCrystalliseController @Inject() (val authService: EnrolmentsAuthSe
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     (errorWrapper.error: @unchecked) match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError =>
+      case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
+          RuleIncorrectGovTestScenarioError =>
         BadRequest(Json.toJson(errorWrapper))
       case RuleNoSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
       case DownstreamError                                                 => InternalServerError(Json.toJson(errorWrapper))

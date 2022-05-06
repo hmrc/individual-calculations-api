@@ -80,7 +80,8 @@ class IntentToCrystalliseServiceSpec extends ServiceSpec {
           ("NO_SUBMISSION_EXIST", RuleNoSubmissionsExistError, FORBIDDEN),
           ("CONFLICT", RuleFinalDeclarationReceivedError, CONFLICT),
           ("SERVER_ERROR", DownstreamError, INTERNAL_SERVER_ERROR),
-          ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE)
+          ("SERVICE_UNAVAILABLE", DownstreamError, SERVICE_UNAVAILABLE),
+          ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError, BAD_REQUEST)
         )
 
         input.foreach(args => (serviceError _).tupled(args))

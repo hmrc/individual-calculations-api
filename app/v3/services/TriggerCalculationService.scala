@@ -54,7 +54,8 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
     "NO_SUBMISSION_EXIST"     -> RuleNoIncomeSubmissionsExistError,
     "CONFLICT"                -> RuleFinalDeclarationReceivedError,
     "SERVER_ERROR"            -> DownstreamError,
-    "SERVICE_UNAVAILABLE"     -> DownstreamError
+    "SERVICE_UNAVAILABLE"     -> DownstreamError,
+    "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
   )
 
 }

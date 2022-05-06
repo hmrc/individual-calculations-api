@@ -110,14 +110,12 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     errorWrapper.error match {
-      case NinoFormatError | TaxYearFormatError                                  => BadRequest(Json.toJson(errorWrapper))
-      case RuleTaxYearNotSupportedError | RuleTaxYearRangeInvalidError           => BadRequest(Json.toJson(errorWrapper))
-      case FinalDeclarationFormatError                                           => BadRequest(Json.toJson(errorWrapper))
+      case NinoFormatError | TaxYearFormatError | RuleTaxYearNotSupportedError | RuleTaxYearRangeInvalidError | FinalDeclarationFormatError |
+          BadRequestError | RuleIncorrectGovTestScenarioError =>
+        BadRequest(Json.toJson(errorWrapper))
       case RuleNoIncomeSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
-
-      case BadRequestError => BadRequest(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-      case _               => unhandledError(errorWrapper)
+      case DownstreamError                                                       => InternalServerError(Json.toJson(errorWrapper))
+      case _                                                                     => unhandledError(errorWrapper)
     }
   }
 

@@ -92,7 +92,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
   private def errorResult(errorWrapper: ErrorWrapper) =
     errorWrapper.error match {
       case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-          CalculationIdFormatError =>
+          CalculationIdFormatError | RuleIncorrectGovTestScenarioError =>
         BadRequest(Json.toJson(errorWrapper))
       case NotFoundError   => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))

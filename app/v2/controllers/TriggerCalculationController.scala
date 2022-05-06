@@ -16,7 +16,6 @@
 
 package v2.controllers
 
-import javax.inject.Inject
 import play.api.libs.json.JsValue
 import play.api.mvc._
 import utils.IdGenerator
@@ -31,6 +30,7 @@ import v2.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v2.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService,
@@ -68,7 +68,8 @@ class TriggerCalculationController @Inject() (authService: EnrolmentsAuthService
         RuleTaxYearRangeInvalidError,
         DownstreamError,
         RuleNoIncomeSubmissionsExistError,
-        RuleIncorrectOrEmptyBodyError
+        RuleIncorrectOrEmptyBodyError,
+        RuleIncorrectGovTestScenarioError
       )
       .withRequestSuccessCode(ACCEPTED)
       .mapSuccessSimple(rawResponse => hateoasFactory.wrap(rawResponse, TriggerCalculationHateoasData(req.nino.nino, rawResponse.id)))

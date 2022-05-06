@@ -73,7 +73,8 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
           ("CONFLICT", RuleFinalDeclarationReceivedError),
           ("SERVER_ERROR", DownstreamError),
-          ("SERVICE_UNAVAILABLE", DownstreamError)
+          ("SERVICE_UNAVAILABLE", DownstreamError),
+          ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
         )
 
         input.foreach(args => (serviceError _).tupled(args))

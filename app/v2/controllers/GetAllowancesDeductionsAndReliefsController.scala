@@ -64,7 +64,8 @@ class GetAllowancesDeductionsAndReliefsController @Inject() (authService: Enrolm
       .withPassThroughErrors(
         NinoFormatError,
         CalculationIdFormatError,
-        NotFoundError
+        NotFoundError,
+        RuleIncorrectGovTestScenarioError
       )
       .mapSuccess { responseWrapper =>
         responseWrapper.mapToEither {

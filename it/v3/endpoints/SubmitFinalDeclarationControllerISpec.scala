@@ -143,7 +143,8 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
           (UNPROCESSABLE_ENTITY, "INCOME_SUBMISSIONS_NOT_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", FORBIDDEN, RuleSubmissionFailedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError)
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
         input.foreach(args => (serviceErrorTest _).tupled(args))
