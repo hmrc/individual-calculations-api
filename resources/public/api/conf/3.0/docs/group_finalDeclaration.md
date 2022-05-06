@@ -1,4 +1,3 @@
-**Final Declaration**
 Final declaration was previously called crystallisation
 
 These resources allow software packages to make a final declaration regarding a customer’s end of year position for a tax year.
