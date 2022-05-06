@@ -25,14 +25,14 @@ case class TriggerCalculationResponse(calculationId: String)
 
 object TriggerCalculationResponse extends HateoasLinks {
 
-  implicit val downstreamReads: Reads[TriggerCalculationResponse] = ((JsPath \ "id").read[String].map(TriggerCalculationResponse.apply))
+  implicit val downstreamReads: Reads[TriggerCalculationResponse] = (JsPath \ "id").read[String].map(TriggerCalculationResponse.apply)
   implicit val vendorWrites: OWrites[TriggerCalculationResponse]  = Json.writes[TriggerCalculationResponse]
 
   implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
       Seq(
-        list(appConfig, data.nino),
+        list(appConfig, data.nino, isSelf = false),
         retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
       )
 
