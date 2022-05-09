@@ -21,6 +21,7 @@ import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.fixtures.ListCalculationsFixture
 import v3.models.errors._
@@ -29,10 +30,10 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
 
   private trait Test {
-    val nino: String = "AA123456A"
+    val nino: String            = "AA123456A"
     val taxYear: Option[String] = None
 
-    def uri: String = s"/$nino/self-assessment"
+    def uri: String        = s"/$nino/self-assessment"
     def backendUrl: String = s"/income-tax/list-of-calculation-results/$nino"
     def setupStubs(): StubMapping
 
@@ -44,8 +45,12 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
       setupStubs()
       buildRequest(uri)
         .addQueryStringParameters(queryParams: _*)
-        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
+        .withHttpHeaders(
+          (ACCEPT, "application/vnd.hmrc.3.0+json"),
+          (AUTHORIZATION, "Bearer 123")
+        )
     }
+
   }
 
   "Calling the list calculations endpoint" should {
@@ -149,4 +154,5 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
       }
     }
   }
+
 }

@@ -21,6 +21,7 @@ import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
 import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.models.response.retrieveCalculation.CalculationFixture
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
@@ -39,7 +40,10 @@ class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
     def request(): WSRequest = {
       setupStubs()
       buildRequest(uri)
-        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
+        .withHttpHeaders(
+          (ACCEPT, "application/vnd.hmrc.3.0+json"),
+          (AUTHORIZATION, "Bearer 123")
+        )
     }
 
   }
