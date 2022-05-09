@@ -24,8 +24,11 @@ import v3.controllers.requestParsers.SubmitFinalDeclarationParser
 import v3.models.errors._
 import v3.models.request.SubmitFinalDeclarationRawData
 import v3.services._
-
 import javax.inject.{Inject, Singleton}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditResult
+import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -34,6 +37,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   parser: SubmitFinalDeclarationParser,
                                                   service: SubmitFinalDeclarationService,
                                                   cc: ControllerComponents,
+                                                  auditService: AuditService,
                                                   idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
@@ -58,6 +62,16 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
 
+          auditSubmission(
+            GenericAuditDetail(
+              userDetails = request.userDetails,
+              pathParams = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+              requestBody = None,
+              `X-CorrelationId` = serviceResponse.correlationId,
+              auditResponse = AuditResponse(httpStatus = NO_CONTENT, response = Right(None))
+            )
+          )
+
           NoContent.withApiHeaders(serviceResponse.correlationId)
         }
 
@@ -68,6 +82,17 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
         logger.warn(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: $resCorrelationId")
+
+        auditSubmission(
+          GenericAuditDetail(
+            userDetails = request.userDetails,
+            pathParams = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+            requestBody = None,
+            `X-CorrelationId` = resCorrelationId,
+            auditResponse = AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
+          )
+        )
+
         result
       }.merge
     }
@@ -84,5 +109,15 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
       case _               => unhandledError(errorWrapper)
     }
+
+  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
+    val event = AuditEvent(
+      auditType = "SubmitAFinalDeclaration",
+      transactionName = "Submit-A-Final-Declaration",
+      detail = details
+    )
+
+    auditService.auditEvent(event)
+  }
 
 }
