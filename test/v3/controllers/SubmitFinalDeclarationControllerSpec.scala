@@ -22,6 +22,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v3.mocks.services._
+import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
@@ -44,6 +45,14 @@ class SubmitFinalDeclarationControllerSpec
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
   private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
+  private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
+    val auditValues   = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
+    val auditResponse = AuditResponse(responseStatus, Some(List(AuditError(error.code))), None)
+    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId, auditResponse)
+
+    AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)
+  }
+
   trait Test {
     val hc: HeaderCarrier = HeaderCarrier()
 
@@ -53,6 +62,7 @@ class SubmitFinalDeclarationControllerSpec
       parser = mockSubmitFinalDeclarationParser,
       service = mockSubmitFinalDeclarationService,
       cc = cc,
+      auditService = mockAuditService,
       idGenerator = mockIdGenerator
     )
 
@@ -80,6 +90,14 @@ class SubmitFinalDeclarationControllerSpec
           controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
         status(result) shouldBe NO_CONTENT
         header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+        val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
+        val detail: GenericAuditDetail =
+          GenericAuditDetail("Individual", None, auditValues, None, correlationId, AuditResponse(NO_CONTENT, None, None))
+
+        val event: AuditEvent[GenericAuditDetail] =
+          AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)
+        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -98,6 +116,8 @@ class SubmitFinalDeclarationControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once
           }
         }
 
@@ -130,6 +150,8 @@ class SubmitFinalDeclarationControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
+
+            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, mtdError)).once
           }
         }
 
