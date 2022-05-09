@@ -62,6 +62,7 @@ trait BaseDownstreamConnector {
         Seq(
           "Authorization" -> s"Bearer ${appConfig.ifsToken}",
           "Environment"   -> appConfig.ifsEnv,
+          "consumerId"    -> "MDTP",
           "CorrelationId" -> correlationId
         ) ++
         additionalHeaders ++
