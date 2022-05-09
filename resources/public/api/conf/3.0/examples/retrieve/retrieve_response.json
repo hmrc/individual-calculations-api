@@ -1,22 +1,22 @@
 {
   "metadata": {
     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    "taxYear": "2017-18",
+    "taxYear": "2021-22",
     "requestedBy": "customer",
-    "requestedTimestamp": "2019-02-15T09:35:15.094Z",
+    "requestedTimestamp": "2021-02-15T09:35:15.094Z",
     "calculationReason": "customerRequest",
-    "calculationTimestamp": "2019-02-15T09:35:15.094Z",
+    "calculationTimestamp": "2021-08-15T09:35:15.094Z",
     "calculationType": "finalDeclaration",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
-    "finalDeclarationTimestamp": "2019-02-15T09:35:15.094Z",
-    "periodFrom": "2018-04-06",
-    "periodTo": "2019-04-05"
+    "finalDeclarationTimestamp": "2021-02-15T09:35:15.094Z",
+    "periodFrom": "2021-04-06",
+    "periodTo": "2022-04-05"
   },
   "inputs": {
     "personalInformation": {
       "identifier": "VO123456A",
-      "dateOfBirth": "2018-04-06",
+      "dateOfBirth": "1988-08-27",
       "taxRegime": "UK",
       "statePensionAgeDate": "2050-04-06",
       "studentLoanPlan": [
@@ -31,68 +31,68 @@
     "incomeSources": {
       "businessIncomeSources": [
         {
-          "incomeSourceId": "XAIS12345678910",
+          "incomeSourceId": "XBIS12345678910",
           "incomeSourceType": "self-employment",
-          "incomeSourceName": "Savings Account",
-          "accountingPeriodStartDate": "2018-04-06",
-          "accountingPeriodEndDate": "2019-04-05",
+          "incomeSourceName": "Self-Employment Business One",
+          "accountingPeriodStartDate": "2021-04-06",
+          "accountingPeriodEndDate": "2022-04-05",
           "source": "MTD-SA",
-          "latestPeriodEndDate": "2021-12-02",
-          "latestReceivedDateTime": "2021-12-02T15:25:48Z",
+          "latestPeriodEndDate": "2022-04-05",
+          "latestReceivedDateTime": "2022-12-02T15:25:48.475Z",
           "finalised": true,
-          "finalisationTimestamp": "2019-02-15T09:35:15.094Z",
+          "finalisationTimestamp": "2022-02-15T09:35:15.094Z",
           "submissionPeriods": [
             {
               "periodId": "001",
-              "startDate": "2018-04-06",
-              "endDate": "2019-04-05",
-              "receivedDateTime": "2019-02-15T09:35:04.843Z"
+              "startDate": "2021-04-06",
+              "endDate": "2022-07-05",
+              "receivedDateTime": "2022-02-15T09:35:04.843Z"
             }
           ]
         }
       ],
       "nonBusinessIncomeSources": [
         {
-          "incomeSourceId": "XAIS12345678910",
+          "incomeSourceId": "XPIS12345678910",
           "incomeSourceType": "uk-savings-and-gains",
-          "incomeSourceName": "Savings Account 1",
-          "startDate": "2018-04-06",
-          "endDate": "2019-04-05",
+          "incomeSourceName": "Savings Account One",
+          "startDate": "2021-04-06",
+          "endDate": "2022-04-05",
           "source": "MTD-SA",
           "periodId": "001",
-          "latestReceivedDateTime": "2019-08-01T13:02:09.775Z"
+          "latestReceivedDateTime": "2022-08-01T13:02:09.775Z"
         }
       ]
     },
     "annualAdjustments": [
       {
-        "incomeSourceId": "XAIS12345678910",
+        "incomeSourceId": "XBIS12345678910",
         "incomeSourceType": "self-employment",
         "bsasId": "123a456b-789c-1d23-845e-678b9d1bd2ab",
-        "receivedDateTime": "2021-12-02T15:25:48Z",
+        "receivedDateTime": "2022-12-02T15:25:48.475Z",
         "applied": true
       }
     ],
     "lossesBroughtForward": [
       {
         "lossId": "0yriP9QrW2jTa6n",
-        "incomeSourceId": "XAIS12345678910",
+        "incomeSourceId": "XBIS12345678910",
         "incomeSourceType": "self-employment",
-        "submissionTimestamp": "2021-12-02T15:25:48Z",
+        "submissionTimestamp": "2022-12-02T15:25:48.475Z",
         "lossType": "income",
-        "taxYearLossIncurred": "2017-18",
+        "taxYearLossIncurred": "2020-21",
         "currentLossValue": 12500,
-        "mtdLoss": true
+        "mtdLoss": false
       }
     ],
     "claims": [
       {
         "claimId": "0vayS9JrW2jTa6n",
-        "originatingClaimId": "0vayS9JrW2jTa6n",
+        "originatingClaimId": "1vayS9JrW2jTa6p",
         "incomeSourceId": "000000000000210",
         "incomeSourceType": "self-employment",
-        "submissionTimestamp": "2021-12-02T15:25:48Z",
-        "taxYearClaimMade": "2017-18",
+        "submissionTimestamp": "2022-12-02T15:25:48.475Z",
+        "taxYearClaimMade": "2021-22",
         "claimType": "carry-forward",
         "sequence": 1
       }
@@ -103,9 +103,9 @@
         "contractorName": "Jones Limited",
         "periodData": [
           {
-            "deductionFromDate": "2021-12-02",
+            "deductionFromDate": "2021-11-02",
             "deductionToDate": "2021-12-02",
-            "submissionTimestamp": "2021-12-02T15:25:48Z",
+            "submissionTimestamp": "2021-12-10T15:25:48.475Z",
             "source": "contractor",
             "deductionAmount": 5000.99
           }
@@ -115,8 +115,8 @@
     "allowancesReliefsAndDeductions": [
       {
         "type": "investmentReliefs",
-        "submittedTimestamp": "2021-12-02T15:25:48Z",
-        "startDate": "2021-12-02",
+        "submittedTimestamp": "2021-12-10T15:25:48.475Z",
+        "startDate": "2021-11-02",
         "endDate": "2021-12-02",
         "source": "MTD-SA"
       }
@@ -124,8 +124,8 @@
     "pensionContributionAndCharges": [
       {
         "type": "pensionReliefs",
-        "submissionTimestamp": "2021-12-02T15:25:48Z",
-        "startDate": "2021-12-02",
+        "submissionTimestamp": "2021-12-10T15:25:48.475Z",
+        "startDate": "2021-11-02",
         "endDate": "2021-12-02",
         "source": "customer"
       }
@@ -133,7 +133,7 @@
     "other": [
       {
         "type": "codingOut",
-        "submittedOn": "2021-12-02T15:25:48Z"
+        "submittedOn": "2021-12-04T15:25:48.475Z"
       }
     ]
   },
@@ -155,7 +155,7 @@
       "grossAnnuityPayments": 5000.99,
       "annuityPayments": {
         "reliefClaimed": 5000.99,
-        "rate": 20
+        "rate": 20.99
       },
       "pensionContributions": 5000.99,
       "pensionContributionsDetail": {
@@ -169,7 +169,7 @@
         "adjustedTotalIncome": 5000.99,
         "totalAllowableAmount": 5000.99,
         "relievableAmount": 5000.99,
-        "rate": 20,
+        "rate": 20.99,
         "totalResidentialFinanceCostsRelief": 5000.99,
         "ukProperty": {
           "amountClaimed": 12500,
@@ -180,7 +180,7 @@
           "totalForeignPropertyAllowableAmount": 5000.99,
           "foreignPropertyRfcDetail": [
             {
-              "countryCode": "GER",
+              "countryCode": "FRA",
               "amountClaimed": 12500,
               "allowableAmount": 5000.99,
               "carryForwardAmount": 5000.99
@@ -204,16 +204,16 @@
           "amountClaimed": 5000.99,
           "allowableAmount": 5000.99,
           "amountUsed": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "reliefsClaimedDetail": [
             {
               "amountClaimed": 5000.99,
-              "uniqueInvestmentRef": "string",
-              "name": "string",
-              "socialEnterpriseName": "string",
-              "companyName": "string",
+              "uniqueInvestmentRef": "BAO123456A",
+              "name": "VCT fund",
+              "socialEnterpriseName": "SE Inc",
+              "companyName": "Goldman Sachs",
               "deficiencyReliefType": "lifeInsurance",
-              "customerReference": "string"
+              "customerReference": "INPOLY123A"
             }
           ]
         }
@@ -228,11 +228,11 @@
         "foreignTaxCreditReliefDetail": [
           {
             "incomeSourceType": "foreign-dividends",
-            "incomeSourceId": "000000000000210",
+            "incomeSourceId": "XFIS12345678910",
             "countryCode": "FRA",
             "foreignIncome": 5000.99,
             "foreignTax": 5000.99,
-            "dtaRate": 20,
+            "dtaRate": 20.99,
             "dtaAmount": 5000.99,
             "ukLiabilityOnIncome": 5000.99,
             "foreignTaxCredit": 5000.99,
@@ -258,7 +258,7 @@
     },
     "giftAid": {
       "grossGiftAidPayments": 12500,
-      "rate": 20,
+      "rate": 20.99,
       "giftAidTax": 5000.99,
       "giftAidTaxReductions": 5000.99,
       "incomeTaxChargedAfterGiftAidTaxReductions": 5000.99,
@@ -266,7 +266,7 @@
     },
     "royaltyPayments": {
       "royaltyPaymentsAmount": 12500,
-      "rate": 20,
+      "rate": 20.99,
       "grossRoyaltyPayments": 12500
     },
     "notionalTax": {
@@ -274,7 +274,7 @@
     },
     "marriageAllowanceTransferredIn": {
       "amount": 5000.99,
-      "rate": 20
+      "rate": 20.99
     },
     "pensionContributionReliefs": {
       "totalPensionContributionReliefs": 5000.99,
@@ -294,13 +294,13 @@
           "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
             "amount": 5000.99,
             "taxPaid": 5000.99,
-            "rate": 20,
+            "rate": 20.99,
             "chargeableAmount": 5000.99
           },
           "benefitInExcessOfLifetimeAllowance": {
             "amount": 5000.99,
             "taxPaid": 5000.99,
-            "rate": 20,
+            "rate": 20.99,
             "chargeableAmount": 5000.99
           }
         },
@@ -310,20 +310,20 @@
           "pensionSchemeUnauthorisedPaymentsSurcharge": {
             "amount": 5000.99,
             "taxPaid": 5000.99,
-            "rate": 20,
+            "rate": 20.99,
             "chargeableAmount": 5000.99
           },
           "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
             "amount": 5000.99,
             "taxPaid": 5000.99,
-            "rate": 20,
+            "rate": 20.99,
             "chargeableAmount": 5000.99
           }
         },
         "pensionSchemeOverseasTransfers": {
           "transferCharge": 5000.99,
           "transferChargeTaxPaid": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "chargeableAmount": 5000.99
         },
         "pensionContributionsInExcessOfTheAnnualAllowance": {
@@ -334,7 +334,7 @@
           "pensionBands": [
             {
               "name": "basic-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "contributionAmount": 5000.99,
@@ -350,7 +350,7 @@
           "shortServiceRefundBands": [
             {
               "name": "lowerBand",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "shortServiceRefundAmount": 5000.99,
@@ -369,7 +369,7 @@
         "studentLoanDeductionsFromEmployment": 5000.99,
         "studentLoanRepaymentAmountNetOfDeductions": 5000.99,
         "studentLoanApportionedIncomeThreshold": 12500,
-        "studentLoanRate": 20,
+        "studentLoanRate": 20.99,
         "payeIncomeForStudentLoan": 5000.99,
         "nonPayeIncomeForStudentLoan": 5000.99
       }
@@ -379,7 +379,7 @@
       "payeUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
+          "relatedTaxYear": "2021-22",
           "source": "customer"
         }
       ],
@@ -389,14 +389,16 @@
       "selfAssessmentUnderpaymentsDetail": [
         {
           "amount": 5000.99,
-          "relatedTaxYear": "string",
-          "source": "customer"
+          "relatedTaxYear": "2021-22",
+          "source": "customer",
+          "collectedAmount": 5000.99,
+          "uncollectedAmount": 5000.99
         }
       ]
     },
     "foreignPropertyIncome": [
       {
-        "incomeSourceId": "000000000000210",
+        "incomeSourceId": "XFIS12345678911",
         "incomeSourceType": "foreign-property",
         "countryCode": "USA",
         "totalIncome": 5000.99,
@@ -411,9 +413,9 @@
     ],
     "businessProfitAndLoss": [
       {
-        "incomeSourceId": "000000000000210",
+        "incomeSourceId": "XBIS12345678911",
         "incomeSourceType": "self-employment",
-        "incomeSourceName": "string",
+        "incomeSourceName": "Self-Employment Business One",
         "totalIncome": 5000.99,
         "totalExpenses": -99999999999.99,
         "netProfit": 5000.99,
@@ -444,13 +446,13 @@
       "tipsIncome": 5000.99,
       "employmentAndPensionsIncomeDetail": [
         {
-          "incomeSourceId": "XAIS12345678910",
+          "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
           "source": "customer",
           "occupationalPension": true,
           "employerRef": "123/AA12345",
-          "employerName": "string",
-          "payrollId": "string",
-          "startDate": "2021-12-02",
+          "employerName": "Green Ltd.",
+          "payrollId": "YDIAHPcYFQbOXLCKQ",
+          "startDate": "2021-01-02",
           "dateEmploymentEnded": "2021-12-02",
           "taxablePayToDate": 5000.99,
           "totalTaxToDate": -99999999999.99,
@@ -537,7 +539,7 @@
       "totalSeafarersDeduction": 5000.99,
       "seafarersDeductionDetail": [
         {
-          "nameOfShip": "string",
+          "nameOfShip": "Blue Bell",
           "amountDeducted": 5000.99
         }
       ]
@@ -551,7 +553,7 @@
       "stateBenefitsDetail": {
         "incapacityBenefit": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "bc51a3eb-e374-11b9-aa02-96db92561138",
             "amount": 5000.99,
             "taxPaid": 5000.99,
             "source": "customer"
@@ -559,23 +561,23 @@
         ],
         "statePension": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "cb74c290-cae6-11ec-bb64-0242ac121114",
             "amount": 5000.99,
             "source": "customer"
           }
         ],
         "statePensionLumpSum": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "dc45c178-bac5-22ec-9b65-1351bd140002",
             "amount": 5000.99,
             "taxPaid": 5000.99,
-            "rate": 20,
+            "rate": 20.99,
             "source": "customer"
           }
         ],
         "employmentSupportAllowance": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "e4bf331e-0e55-297f-8a74-c766674775d4",
             "amount": 5000.99,
             "taxPaid": -99999999999.99,
             "source": "customer"
@@ -583,7 +585,7 @@
         ],
         "jobSeekersAllowance": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "f4af222e-0b44-286f-9a65-c655674776d8",
             "amount": 5000.99,
             "taxPaid": -99999999999.99,
             "source": "customer"
@@ -591,14 +593,14 @@
         ],
         "bereavementAllowance": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "ae99d345-dab5-25dc-9b19-0252bc322252",
             "amount": 5000.99,
             "source": "customer"
           }
         ],
         "otherStateBenefits": [
           {
-            "incomeSourceId": "bb74c290-cae6-11ec-9b64-0242ac120002",
+            "incomeSourceId": "bf87eb89-3d07-1496-89da-cf16d45c934b",
             "amount": 5000.99,
             "source": "customer"
           }
@@ -610,8 +612,8 @@
       "shareSchemeDetail": [
         {
           "type": "shareOption",
-          "employerName": "string",
-          "employerRef": "123/AA12345",
+          "employerName": "ABC Ltd",
+          "employerRef": "123/AB56797",
           "taxableAmount": 5000.99
         }
       ]
@@ -665,7 +667,7 @@
       "gainsWithNoTaxPaidAndVoidedIsaDetail": [
         {
           "type": "lifeInsurance",
-          "customerReference": "string",
+          "customerReference": "INPOLY123B",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
           "yearsHeldSinceLastGain": 0,
@@ -675,7 +677,7 @@
       "totalForeignGainsOnLifePoliciesTaxPaid": 12500,
       "foreignGainsOnLifePoliciesTaxPaidDetail": [
         {
-          "customerReference": "string",
+          "customerReference": "INPOLY123C",
           "gainAmount": 5000.99,
           "taxPaidAmount": 5000.99,
           "yearsHeld": 0
@@ -684,7 +686,7 @@
       "totalForeignGainsOnLifePoliciesNoTaxPaid": 12500,
       "foreignGainsOnLifePoliciesNoTaxPaidDetail": [
         {
-          "customerReference": "string",
+          "customerReference": "INPOLY123D",
           "gainAmount": 5000.99,
           "yearsHeld": 0
         }
@@ -695,9 +697,9 @@
       "totalUkSavingsAndGains": 12500,
       "ukSavingsAndGainsIncome": [
         {
-          "incomeSourceId": "000000000000210",
+          "incomeSourceId": "XPIS12345678911",
           "incomeSourceType": "uk-savings-and-gains",
-          "incomeSourceName": "My Savings Account 1",
+          "incomeSourceName": "My Savings Account One",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99
@@ -707,7 +709,7 @@
       "foreignSavingsAndGainsIncome": [
         {
           "incomeSourceType": "foreign-savings-and-gains",
-          "countryCode": "GER",
+          "countryCode": "DEU",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -719,7 +721,7 @@
       "totalChargeableDividends": 12500,
       "totalUkDividends": 12500,
       "ukDividends": {
-        "incomeSourceId": "000000000000210",
+        "incomeSourceId": "XPIS12345678912",
         "incomeSourceType": "uk-dividends",
         "dividends": 12500,
         "otherUkDividends": 12500
@@ -727,7 +729,7 @@
       "otherDividends": [
         {
           "typeOfDividend": "stockDividend",
-          "customerReference": "string",
+          "customerReference": "ODPDLY235A",
           "grossAmount": 5000.99
         }
       ],
@@ -735,7 +737,7 @@
       "foreignDividends": [
         {
           "incomeSourceType": "foreign-dividends",
-          "countryCode": "ZZZ",
+          "countryCode": "FRA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -745,7 +747,7 @@
       "dividendIncomeReceivedWhilstAbroad": [
         {
           "incomeSourceType": "foreign-dividends",
-          "countryCode": "ZZZ",
+          "countryCode": "ITA",
           "grossIncome": 5000.99,
           "netIncome": 5000.99,
           "taxDeducted": 5000.99,
@@ -775,7 +777,7 @@
           "taxBands": [
             {
               "name": "savings-starter-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "income": 12500,
@@ -791,7 +793,7 @@
           "taxBands": [
             {
               "name": "savings-starter-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "income": 12500,
@@ -807,7 +809,7 @@
           "taxBands": [
             {
               "name": "savings-starter-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "income": 12500,
@@ -823,7 +825,7 @@
           "taxBands": [
             {
               "name": "savings-starter-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "income": 12500,
@@ -839,7 +841,7 @@
           "taxBands": [
             {
               "name": "savings-starter-rate",
-              "rate": 20,
+              "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
               "income": 12500,
@@ -879,7 +881,7 @@
           "nic4Bands": [
             {
               "name": "zero-rate",
-              "rate": 20,
+              "rate": 20.99,
               "threshold": 12500,
               "apportionedThreshold": 12500,
               "income": 12500,
@@ -910,7 +912,7 @@
           "gainsAfterLosses": 5000.99,
           "annualExemptionAmount": 5000.99,
           "taxableGains": 5000.99,
-          "rate": 20,
+          "rate": 20.99,
           "taxAmount": 5000.99
         },
         "residentialPropertyAndCarriedInterest": {
@@ -923,7 +925,7 @@
           "cgtTaxBands": [
             {
               "name": "lower-rate",
-              "rate": 20,
+              "rate": 20.99,
               "income": 5000.99,
               "taxAmount": 5000.99
             }
@@ -942,7 +944,7 @@
           "cgtTaxBands": [
             {
               "name": "lower-rate",
-              "rate": 20,
+              "rate": 20.99,
               "income": 5000.99,
               "taxAmount": 5000.99
             }
@@ -961,7 +963,7 @@
       "totalIncomeTaxAndNicsAndCgt": 5000.99
     },
     "previousCalculation": {
-      "calculationTimestamp": "2021-12-02T15:25:48Z",
+      "calculationTimestamp": "2021-12-02T15:25:48.475Z",
       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       "totalIncomeTaxAndNicsDue": -99999999999.99,
       "cgtTaxDue": 5000.99,
@@ -973,9 +975,9 @@
     "endOfYearEstimate": {
       "incomeSource": [
         {
-          "incomeSourceId": "000000000000210",
+          "incomeSourceId": "XBIS12345678920",
           "incomeSourceType": "self-employment",
-          "incomeSourceName": "string",
+          "incomeSourceName": "Self-Employment Business One",
           "taxableIncome": 12500,
           "finalised": true
         }
@@ -999,14 +1001,14 @@
     "lossesAndClaims": {
       "resultOfClaimsApplied": [
         {
-          "claimId": "0vayS9JrW2jTa6n",
-          "originatingClaimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
+          "claimId": "0xcuS9JrW2jTa6d",
+          "originatingClaimId": "0vbyS9JrW2jTa6x",
+          "incomeSourceId": "XBIS12345678915",
           "incomeSourceType": "self-employment",
-          "taxYearClaimMade": "2017-18",
+          "taxYearClaimMade": "2021-22",
           "claimType": "carry-forward",
-          "mtdLoss": true,
-          "taxYearLossIncurred": "2017-18",
+          "mtdLoss": false,
+          "taxYearLossIncurred": "2020-21",
           "lossAmountUsed": 12500,
           "remainingLossValue": 12500,
           "lossType": "income"
@@ -1014,40 +1016,40 @@
       ],
       "unclaimedLosses": [
         {
-          "incomeSourceId": "000000000000210",
+          "incomeSourceId": "XBIS12345678916",
           "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": "2017-18",
+          "taxYearLossIncurred": "2020-21",
           "currentLossValue": 12500,
           "lossType": "income"
         }
       ],
       "carriedForwardLosses": [
         {
-          "claimId": "0vayS9JrW2jTa6n",
-          "originatingClaimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
+          "claimId": "5xpu66JrW2jTa6c",
+          "originatingClaimId": "0vXc69prW2jTar6",
+          "incomeSourceId": "XBIS12345678917",
           "incomeSourceType": "self-employment",
           "claimType": "carry-forward",
-          "taxYearClaimMade": "2017-18",
-          "taxYearLossIncurred": "2017-18",
+          "taxYearClaimMade": "2021-22",
+          "taxYearLossIncurred": "2020-21",
           "currentLossValue": 12500,
           "lossType": "income"
         }
       ],
       "defaultCarriedForwardLosses": [
         {
-          "incomeSourceId": "000000000000210",
+          "incomeSourceId": "XBIS12345678918",
           "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": "2017-18",
+          "taxYearLossIncurred": "2020-21",
           "currentLossValue": 12500
         }
       ],
       "claimsNotApplied": [
         {
-          "claimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
+          "claimId": "6vry11JrW5jTvxt",
+          "incomeSourceId": "XBIS12345678919",
           "incomeSourceType": "self-employment",
-          "taxYearClaimMade": "2017-18",
+          "taxYearClaimMade": "2021-22",
           "claimType": "carry-forward"
         }
       ]
@@ -1056,33 +1058,33 @@
   "messages": {
     "info": [
       {
-        "id": "string",
-        "text": "string"
+        "id": "C22203",
+        "text": "Class 2 National Insurance has not been charged as your self-employed profits are under the small profit threshold."
       }
     ],
     "warnings": [
       {
-        "id": "string",
-        "text": "string"
+        "id": "C11317",
+        "text": "Class 4 exemption - calculation has been adjusted Individual’s age is equal to or greater than 16 years old on the 6th April of current tax year"
       }
     ],
     "errors": [
       {
-        "id": "string",
-        "text": "string"
+        "id": "C95005",
+        "text": "Final confirmation of income and expenses for all business sources has not been provided"
       }
     ]
   },
-  "links":[
+  "links": [
     {
-      "href":"/individuals/calculations/TC663795B/self-assessment/2021-22",
-      "rel":"trigger",
-      "method":"POST"
+      "href": "/individuals/calculations/TC663795B/self-assessment/2021-22",
+      "rel": "trigger",
+      "method": "POST"
     },
     {
-      "href":"/individuals/calculations/TC663795B/self-assessment/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      "rel":"self",
-      "method":"GET"
+      "href": "/individuals/calculations/TC663795B/self-assessment/2021-22/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "rel": "self",
+      "method": "GET"
     }
   ]
 }

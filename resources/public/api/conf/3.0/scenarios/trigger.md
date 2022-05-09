@@ -9,15 +9,15 @@
     <tbody> 
         <tr>
             <td><p>N/A - DEFAULT</p></td>
-            <td><p>Simulates a successful response</p></td>
+            <td><p>Simulates success response.</p></td>
         </tr>
         <tr>
             <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
-            <td><p>Simulates the scenario where no income submissions exist for the tax year</p></td>
+            <td><p>Simulates the scenario where no income submissions exist for the tax year.</p></td>
         </tr>    
         <tr>
             <td><p>FINAL_DECLARATION_RECEIVED</p></td>
-            <td><p>Simulates the scenario where a final declaration has already been received</p></td>
+            <td><p>Simulates the scenario where a final declaration has already been received.</p></td>
         </tr>                            
     </tbody>
 </table>

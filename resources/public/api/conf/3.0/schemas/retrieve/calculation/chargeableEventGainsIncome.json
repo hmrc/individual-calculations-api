@@ -1,16 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "This endpoint allows the developer to retrieve all the tax calculation data for a given NINO and Calculation ID.",
+  "description": "Object containing information about chargeable event gains income in the retrieved tax calculation.",
   "type": "object",
   "properties": {
     "totalOfAllGains": {
-      "description": "Total gains for chargeable event gains income. This value must be between 0 and 99999999999.99. No decimals.",
-      "type": "number",
+      "description": "Total gains for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
       "example": "5000"
     },
     "totalGainsWithTaxPaid": {
-      "description": "Total gains with tax paid for chargeable event gains income. This value must be between 0 and 99999999999.99. No decimals.",
-      "type": "number",
+      "description": "Total gains with tax paid for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
       "example": "5002"
     },
     "gainsWithTaxPaidDetail": {
@@ -41,12 +41,12 @@
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": "50"
           },
           "yearsHeldSinceLastGain": {
             "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": "35"
           }
         },
@@ -58,7 +58,7 @@
     },
     "totalGainsWithNoTaxPaidAndVoidedIsa": {
       "description": "Total of gains with no tax paid and voided ISA. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "5000"
     },
     "gainsWithNoTaxPaidAndVoidedIsaDetail": {
@@ -78,7 +78,7 @@
             ]
           },
           "customerReference": {
-            "description": "Reference unique to the customer.",
+            "description": "A reference unique to the customer.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "S1000z"
@@ -90,12 +90,12 @@
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": "50"
           },
           "yearsHeldSinceLastGain": {
             "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": "83"
           },
           "voidedIsaTaxPaid": {
@@ -112,17 +112,17 @@
     },
     "totalForeignGainsOnLifePoliciesTaxPaid": {
       "description": "Total of foreign gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "5000"
     },
     "foreignGainsOnLifePoliciesTaxPaidDetail": {
-      "description": "Array detailing foreign gains on life policies tax paid.",
+      "description": "Array detailing foreign gains on life policies with tax paid.",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "customerReference": {
-            "description": "Reference unique to the customer.",
+            "description": "A reference unique to the customer.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "S1000z"
@@ -130,17 +130,17 @@
           "gainAmount": {
             "description": "Gain amount for foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "5000"
+            "example": "5000.99"
           },
           "taxPaidAmount": {
             "description": "Foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "3500"
+            "example": "3500.99"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
-            "type": "number",
-            "example": "3300"
+            "type": "integer",
+            "example": "5"
           }
         },
         "additionalProperties": false
@@ -148,7 +148,7 @@
     },
     "totalForeignGainsOnLifePoliciesNoTaxPaid": {
       "description": "Total of foreign gains on life policies with no tax paid. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "3100"
     },
     "foreignGainsOnLifePoliciesNoTaxPaidDetail": {
@@ -158,19 +158,19 @@
         "type": "object",
         "properties": {
           "customerReference": {
-            "description": "Reference unique to the customer.",
+            "description": "A reference unique to the customer.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "S1000z"
           },
           "gainAmount": {
-            "description": "Foreign gain on life policies with no tax paid. This value must be between 0 and 99999999999. No decimals.",
+            "description": "Foreign gain on life policies with no tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "5000"
+            "example": "5000.99"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": "62"
           }
         },

@@ -1,6 +1,5 @@
 is:
   - headers.acceptJson
-  - headers.contentTypeJson
   - headers.testScenarioHeader
   - errors.formatNino
   - errors.formatTaxYear
@@ -22,14 +21,8 @@ description: This endpoint allows the developer to submit a final declaration fo
 (annotations.sandboxData): !include ../scenarios/submitFinalDeclaration.md
 (annotations.scope): "write:self-assessment"
 securedBy: [ sec.oauth_2_0: { scopes: [ "write:self-assessment" ] } ]
-body:
- application/json:
-  example: "N/A"
 responses:
  204:
-   body:
-     application/json:
-      example: "N/A"
    headers:
       X-CorrelationId:
         example: c75f40a6-a3df-4429-a697-471eeec46435

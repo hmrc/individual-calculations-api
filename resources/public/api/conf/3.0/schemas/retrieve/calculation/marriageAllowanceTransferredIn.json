@@ -11,7 +11,7 @@
     "rate": {
       "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to 2 decimal places.",
       "type": "number",
-      "example": "10.5"
+      "example": "10.52"
     }
   },
   "additionalProperties": false

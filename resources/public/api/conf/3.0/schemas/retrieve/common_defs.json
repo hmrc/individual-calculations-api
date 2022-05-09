@@ -21,7 +21,7 @@
       ]
     },
     "claimType": {
-      "description": "Type of claim.",
+      "description": "The type of claim made.",
       "type": "string",
       "enum": [
         "carry-forward",
@@ -33,7 +33,7 @@
       ]
     },
     "lossType": {
-      "description": "Type of loss.",
+      "description": "The type of loss.",
       "type": "string",
       "enum": [
         "income",

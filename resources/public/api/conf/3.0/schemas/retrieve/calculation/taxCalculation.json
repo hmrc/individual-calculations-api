@@ -10,43 +10,43 @@
       "$ref": "#/definitions/nics"
     },
     "totalTaxDeductedBeforeCodingOut": {
-      "description": "Total tax deducted before coding out. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total tax deducted before coding out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetaryPos"
     },
     "saUnderpaymentsCodedOut": {
-      "description": "Self Assessment underpayments coded out. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "Self Assessment underpayments coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetaryPos"
     },
     "totalIncomeTaxNicsCharged": {
-      "description": "Total income tax and NICs charged. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total income tax and NICs charged. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetary"
     },
     "totalStudentLoansRepaymentAmount": {
-      "description": "Total student loans repayment amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total student loans repayment amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetaryPos"
     },
     "totalAnnuityPaymentsTaxCharged": {
-      "description": "Total annuity payments tax charged. The value must be between 0 and 99999999999. No decimals.",
+      "description": "Total annuity payments tax charged. This value must be between 0 and 99999999999. No decimals.",
       "$ref": "#/definitions/intPos"
     },
     "totalRoyaltyPaymentsTaxCharged": {
-      "description": "Total Royalty Payments Tax Charged. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total Royalty Payments Tax Charged. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetaryPos"
     },
     "totalTaxDeducted": {
-      "description": "Total tax deducted. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total tax deducted. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetary"
     },
     "totalIncomeTaxAndNicsDue": {
-      "description": "Total income tax and NICs due. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "description": "Total income tax and NICs due. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
       "$ref": "#/definitions/monetary"
     },
     "capitalGainsTax": {
       "$ref": "#/definitions/capitalGainsTax"
     },
     "totalIncomeTaxAndNicsAndCgt": {
-      "description": "Total income tax, NICS and CGT. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
-      "$ref": "#/definitions/monetary"
+      "description": "Total income tax, NICS and CGT. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "$ref": "#/definitions/monetaryPos"
     }
   },
   "additionalProperties": false,
@@ -60,15 +60,15 @@
       "type": "object",
       "properties": {
         "totalIncomeReceivedFromAllSources": {
-          "description": "Total income received from all sources. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total income received from all sources. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "totalAllowancesAndDeductions": {
-          "description": "Total allowances and deductions. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total allowances and deductions. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "totalTaxableIncome": {
-          "description": "Total taxable income. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total taxable income. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "payPensionsProfit": {
@@ -87,47 +87,47 @@
           "$ref": "#/definitions/gainsOnLifePolicies"
         },
         "incomeTaxCharged": {
-          "description": "Total income tax charged. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total income tax charged. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "totalReliefs": {
-          "description": "Total reliefs. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total reliefs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "incomeTaxDueAfterReliefs": {
-          "description": "Income tax due after reliefs. The value must be between -99,999,999,999.99 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax due after reliefs. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetary"
         },
         "totalNotionalTax": {
-          "description": "Total notional tax. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total notional tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "marriageAllowanceRelief": {
-          "description": "Marriage allowance relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Marriage allowance relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "incomeTaxDueAfterTaxReductions": {
-          "description": "Income tax due after tax reductions. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax due after tax reductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "incomeTaxDueAfterGiftAid": {
-          "description": "Income tax due after gift aid. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax due after gift aid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "totalPensionSavingsTaxCharges": {
-          "description": "Total pension savings tax charges.The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total pension savings tax charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "statePensionLumpSumCharges": {
-          "description": "State pension lump sum charges. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "State pension lump sum charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "payeUnderpaymentsCodedOut": {
-          "description": "PAYE underpayments coded out. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "PAYE underpayments coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "totalIncomeTaxDue": {
-          "description": "Total income tax due. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total income tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         }
       },
@@ -144,19 +144,19 @@
       "type": "object",
       "properties": {
         "incomeReceived": {
-          "description": "Income received. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Income received. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "allowancesAllocated": {
-          "description": "Allowances allocated. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Allowances allocated. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "taxableIncome": {
-          "description": "Taxable income. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Taxable income. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "incomeTaxAmount": {
-          "description": "Income Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxBands": {
@@ -176,19 +176,19 @@
       "type": "object",
       "properties": {
         "incomeReceived": {
-          "description": "Income received from savings and gains. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Income received from savings and gains. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "allowancesAllocated": {
-          "description": "Allowances allocated. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Allowances allocated. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "taxableIncome": {
-          "description": "Taxable income from savings and gains. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Taxable income from savings and gains. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "incomeTaxAmount": {
-          "description": "Income tax amount.  The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax amount.  This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxBands": {
@@ -208,19 +208,19 @@
       "type": "object",
       "properties": {
         "incomeReceived": {
-          "description": "Income received from dividends. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Income received from dividends. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "allowancesAllocated": {
-          "description": "Allowances allocated. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Allowances allocated. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "taxableIncome": {
-          "description": "Taxable income from dividends. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Taxable income from dividends. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "incomeTaxAmount": {
-          "description": "Income tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxBands": {
@@ -236,23 +236,23 @@
       ]
     },
     "lumpSums": {
-      "description": "Object detailing Lump Sums.",
+      "description": "Object detailing lump sums.",
       "type": "object",
       "properties": {
         "incomeReceived": {
-          "description": "Income received from lump sums. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Income received from lump sums. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "allowancesAllocated": {
-          "description": "Allowances allocated. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Allowances allocated. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "taxableIncome": {
-          "description": "Taxable income from lump sums. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Taxable income from lump sums. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "incomeTaxAmount": {
-          "description": "Income tax amount. The value must be between 0 and 99999999999.99.",
+          "description": "Income tax amount. This value must be between 0 and 99999999999.99.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxBands": {
@@ -268,23 +268,23 @@
       ]
     },
     "gainsOnLifePolicies": {
-      "description": "Object detailing gains on life policies",
+      "description": "Object detailing gains on life policies.",
       "type": "object",
       "properties": {
         "incomeReceived": {
-          "description": "Income received from gains on life policies. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Income received from gains on life policies. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "allowancesAllocated": {
-          "description": "Allowances allocated. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Allowances allocated. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "taxableIncome": {
-          "description": "Taxable income from gains on life policies. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Taxable income from gains on life policies. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "incomeTaxAmount": {
-          "description": "Income tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Income tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxBands": {
@@ -310,15 +310,15 @@
           "$ref": "#/definitions/class4Nics"
         },
         "nic2NetOfDeductions": {
-          "description": "NIC2 net of deductions. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+          "description": "NIC2 net of deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetary"
         },
         "nic4NetOfDeductions": {
-          "description": "NIC4 net of deductions. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+          "description": "NIC4 net of deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetary"
         },
         "totalNic": {
-          "description": "Total NIC deductions. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total NIC deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetary"
         }
       },
@@ -329,27 +329,28 @@
       "type": "object",
       "properties": {
         "amount": {
-          "description": "Class 2 NICs amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Class 2 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "weeklyRate": {
-          "description": "Class 2 NICs weekly rate. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Class 2 NICs weekly rate. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "weeks": {
           "description": "Number of weeks.",
-          "type": "integer"
+          "type": "integer",
+          "example": "12"
         },
         "limit": {
-          "description": "Class 2 NICs limit. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Class 2 NICs limit. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "apportionedLimit": {
-          "description": "Class 2 NICs apportioned limit. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Class 2 NICs apportioned limit. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "underSmallProfitThreshold": {
-          "description": "Indicates whether small profits threshold is exceeded. The value must be true or false.",
+          "description": "Indicates whether small profits threshold is exceeded. This value must be true or false.",
           "type": "boolean",
           "example": "false"
         },
@@ -373,7 +374,7 @@
           "$ref": "#/definitions/intPos"
         },
         "totalClass4LossesAvailable": {
-          "description": "Total class 4 losses available. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total class 4 losses available. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "totalClass4LossesUsed": {
@@ -381,15 +382,15 @@
           "$ref": "#/definitions/intPos"
         },
         "totalClass4LossesCarriedForward": {
-          "description": "Total class 4 losses carried forward. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total class 4 losses carried forward. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "totalIncomeChargeableToClass4": {
-          "description": "Total income chargeable to class 4. The value must be between 0 and 99999999999. No decimals.",
+          "description": "Total income chargeable to class 4. This value must be between 0 and 99999999999. No decimals.",
           "$ref": "#/definitions/intPos"
         },
         "totalAmount": {
-          "description": "Total class 4 NICs amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total class 4 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "nic4Bands": {
@@ -398,7 +399,8 @@
       },
       "additionalProperties": false,
       "required": [
-        "totalAmount"
+        "totalAmount",
+        "nic4Bands"
       ]
     },
     "capitalGainsTax": {
@@ -406,15 +408,15 @@
       "type": "object",
       "properties": {
         "totalCapitalGainsIncome": {
-          "description": "Total capital gains income. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total capital gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "annualExemptionAmount": {
-          "description": "Annual exemption amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Annual exemption amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "totalTaxableGains": {
-          "description": "Total taxable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "businessAssetsDisposalsAndInvestorsRel": {
@@ -427,11 +429,11 @@
           "$ref": "#/definitions/otherGains"
         },
         "capitalGainsTaxAmount": {
-          "description": "Capital gains tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Capital gains tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "adjustments": {
-          "description": "Capital gains adjustments. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+          "description": "Capital gains adjustments. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetary"
         },
         "adjustedCapitalGainsTax": {
@@ -439,23 +441,23 @@
           "$ref": "#/definitions/monetaryPos"
         },
         "foreignTaxCreditRelief": {
-          "description": "Foreign Tax Credit Relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "capitalGainsTaxAfterFTCR": {
-          "description": "Capital gains tax after Foreign Tax Credit Relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Capital gains tax after Foreign Tax Credit Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxOnGainsAlreadyPaid": {
-          "description": "Tax on gains already paid. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Tax on gains already paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "capitalGainsTaxDue": {
-          "description": "Capital gains tax due. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Capital gains tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "capitalGainsOverpaid": {
-          "description": "Capital gains overpaid. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Capital gains overpaid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         }
       },
@@ -468,35 +470,35 @@
       ]
     },
     "businessAssetsDisposalsAndInvestorsRel": {
-      "description": "Object detailing the tax due on business asset disposal gains.",
+      "description": "Object detailing the tax due on business assets disposals and investors reliefs.",
       "type": "object",
       "properties": {
         "gainsIncome": {
-          "description": "Gains income from business assets disposals and investors. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Gains income from business assets disposals and investors reliefs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesBroughtForward": {
-          "description": "Losses brought forward. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Losses brought forward. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesArisingThisYear": {
-          "description": "Losses arising this year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Losses arising this year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "gainsAfterLosses": {
-          "description": "Gains after losses. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Gains after losses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "annualExemptionAmount": {
-          "description": "Annual exemption amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Annual exemption amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxableGains": {
-          "description": "Taxable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "rate": {
-          "description": "Rate for business assets disposals and investors. The value must be between 0 and 99.99 up to 2 decimal places.",
+          "description": "Rate for business assets disposals and investors. This value must be between 0 and 99.99 up to 2 decimal places.",
           "$ref": "#/definitions/percent"
         },
         "taxAmount": {
@@ -511,7 +513,7 @@
       "type": "object",
       "properties": {
         "gainsIncome": {
-          "description": "Gains income from residential property and carried interest. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Gains income from residential property and carried interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesBroughtForward": {
@@ -519,27 +521,27 @@
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesArisingThisYear": {
-          "description": "Losses arising this year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Losses arising this year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "gainsAfterLosses": {
-          "description": "Gains after losses. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Gains after losses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "annualExemptionAmount": {
-          "description": "Annual exemption amount for gains income from residential property and carried interest. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Annual exemption amount for gains income from residential property and carried interest. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxableGains": {
-          "description": "Taxable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "cgtTaxBands": {
           "description": "Array detailing tax bands for residential property and carried interest.",
-          "$ref": "#/definitions/cgtTaxBands"
+          "$ref": "#/definitions/cgtTaxBandsResidentialPropertyAndCarriedInterest"
         },
         "totalTaxAmount": {
-          "description": "Total tax amount. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Total tax amount. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         }
       },
@@ -550,43 +552,43 @@
       "type": "object",
       "properties": {
         "gainsIncome": {
-          "description": "Other gains income. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Other gains income. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesBroughtForward": {
-          "description": "Losses brought forward. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Losses brought forward. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "lossesArisingThisYear": {
-          "description": "Losses arising this year. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Losses arising this year. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "gainsAfterLosses": {
-          "description": "Gains after losses. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Gains after losses. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "attributedGains": {
-          "description": "Attributed gains. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Attributed gains. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "netGains": {
-          "description": "Net gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Net gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "annualExemptionAmount": {
-          "description": "Annual exemption amount. The value must be between 0 and 99999999999.99  up to 2 decimal places.",
+          "description": "Annual exemption amount. This value must be between 0 and 99999999999.99  up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "taxableGains": {
-          "description": "Taxable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Taxable gains. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         },
         "cgtTaxBands": {
           "description": "Array detailing tax bands for other gains.",
-          "$ref": "#/definitions/cgtTaxBands"
+          "$ref": "#/definitions/cgtTaxBandsOtherGains"
         },
         "totalTaxAmount": {
-          "description": "Total tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "Total tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "$ref": "#/definitions/monetaryPos"
         }
       },
@@ -614,23 +616,23 @@
             ]
           },
           "rate": {
-            "description": "Tax band rate. The value must be between 0 and 99.99 up to 2 decimal places.",
+            "description": "Tax band rate. This value must be between 0 and 99.99 up to 2 decimal places.",
             "$ref": "#/definitions/percent"
           },
           "bandLimit": {
-            "description": "Tax band limit. The value must be between 0 and 99999999999. No decimals.",
+            "description": "Tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "apportionedBandLimit": {
-            "description": "Apportioned tax band limit. The value must be between 0 and 99999999999. No decimals.",
+            "description": "Apportioned tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "income": {
-            "description": "Income amount. The value must be between 0 and 99999999999. No decimals.",
+            "description": "Income amount. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "taxAmount": {
-            "description": "Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "description": "Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "$ref": "#/definitions/monetaryPos"
           }
         },
@@ -661,23 +663,23 @@
             ]
           },
           "rate": {
-            "description": "NIC band rate. The value must be between 0 and 99.99 up to 2 decimal places.",
+            "description": "NIC band rate. This value must be between 0 and 99.99 up to 2 decimal places.",
             "$ref": "#/definitions/percent"
           },
           "threshold": {
-            "description": "NIC band limit. The value must be between 0 and 99999999999. No decimals.",
+            "description": "NIC band limit. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "apportionedThreshold": {
-            "description": "Apportioned NIC band limit. The value must be between 0 and 99999999999. No decimals.",
+            "description": "Apportioned NIC band limit. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "income": {
-            "description": "Income amount. The value must be between 0 and 99999999999. No decimals.",
+            "description": "Income amount. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "amount": {
-            "description": "Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "description": "Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "$ref": "#/definitions/monetaryPos"
           }
         },
@@ -690,7 +692,7 @@
         ]
       }
     },
-    "cgtTaxBands": {
+    "cgtTaxBandsResidentialPropertyAndCarriedInterest": {
       "type": "array",
       "items": {
         "type": "object",
@@ -701,15 +703,47 @@
             "enum": ["lower-rate", "higher-rate"]
           },
           "rate": {
-            "description": "Tax band rate. The  value must be between 0 and 99.99 up to 2 decimal places.",
+            "description": "Tax band rate. This value must be between 0 and 99.99 up to 2 decimal places.",
             "$ref": "#/definitions/percent"
           },
           "income": {
-            "description": "Tax band limit. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "description": "The amount from residential property and carried interest income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "$ref": "#/definitions/monetaryPos"
           },
           "taxAmount": {
-            "description": "Tax amount. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "description": "Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "$ref": "#/definitions/monetaryPos"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "rate",
+          "income",
+          "taxAmount"
+        ]
+      }
+    },
+    "cgtTaxBandsOtherGains": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the tax band.",
+            "type": "string",
+            "enum": ["lower-rate", "higher-rate"]
+          },
+          "rate": {
+            "description": "Tax band rate. This value must be between 0 and 99.99 up to 2 decimal places.",
+            "$ref": "#/definitions/percent"
+          },
+          "income": {
+            "description": "The amount from other gains income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "$ref": "#/definitions/monetaryPos"
+          },
+          "taxAmount": {
+            "description": "Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "$ref": "#/definitions/monetaryPos"
           }
         },

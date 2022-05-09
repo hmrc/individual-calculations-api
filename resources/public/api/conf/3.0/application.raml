@@ -37,8 +37,8 @@ documentation:
       nino: !include pathParameters/nino.raml
     /self-assessment:
       (annotations.group):
-        name: Self Assessment
-        description: !include docs/group_selfAssessment.md
+        name: Tax Calculations
+        description: !include docs/group_taxCalculations.md
       get: !include endpoints/list.raml
       /{taxYear}:
         uriParameters:

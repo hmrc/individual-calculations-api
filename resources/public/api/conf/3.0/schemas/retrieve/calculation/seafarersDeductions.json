@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Object detailing any seafarers deductions for the retrieved tax calculation",
+  "description": "Object detailing any seafarers deductions for the retrieved tax calculation.",
   "type": "object",
   "properties": {
     "totalSeafarersDeduction": {
@@ -18,7 +18,7 @@
         "type": "object",
         "properties": {
           "nameOfShip": {
-            "description": "The name of the ship for this deduction",
+            "description": "The name of the ship for this deduction.",
             "type": "string",
             "example": "Blue Ocean"
           },
@@ -31,6 +31,7 @@
             "example": "2000.98"
           }
         },
+        "additionalProperties": false,
         "required": [
           "nameOfShip",
           "amountDeducted"

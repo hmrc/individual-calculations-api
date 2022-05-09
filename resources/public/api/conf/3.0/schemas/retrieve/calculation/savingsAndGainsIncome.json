@@ -4,13 +4,13 @@
   "type": "object",
   "properties": {
     "totalChargeableSavingsAndGains": {
-      "description": "The total chargeable savings and gains. This value must be between 0 and 99999999999.99. No decimals.",
-      "type": "number",
+      "description": "The total chargeable savings and gains. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
       "example": "5055"
     },
     "totalUkSavingsAndGains": {
-      "description": "The total UK savings and gains. This value must be between 0 and 99999999999.99. No decimals.",
-      "type": "number",
+      "description": "The total UK savings and gains. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
       "example": "6400"
     },
     "ukSavingsAndGainsIncome": {
@@ -22,6 +22,7 @@
           "incomeSourceId": {
             "description": "The unique identifier of the income source.",
             "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
             "example": "000000000000210"
           },
           "incomeSourceType": {
@@ -62,7 +63,7 @@
     },
     "chargeableForeignSavingsAndGains": {
       "description": "The amount of chargeable foreign savings and gains. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "5000"
     },
     "foreignSavingsAndGainsIncome": {

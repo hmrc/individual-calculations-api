@@ -15,7 +15,7 @@
         "type": "object",
         "properties": {
           "countryCode": {
-            "description": "A three-letter code that represents a country name. The value must in ISO 3166-1 Alpha-3 format.",
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
             "type": "string",
             "example": "FRA"
           },
@@ -58,7 +58,7 @@
         "type": "object",
         "properties": {
           "countryCode": {
-            "description": "A three-letter code that represents a country name. The value must in ISO 3166-1 Alpha-3 format.",
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
             "type": "string",
             "example": "FRA"
           },
@@ -78,7 +78,7 @@
             "example": "504.99"
           },
           "foreignTaxCreditRelief": {
-            "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. The value must be true or false.",
+            "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. This value must be true or false.",
             "type": "boolean",
             "example": "true"
           }

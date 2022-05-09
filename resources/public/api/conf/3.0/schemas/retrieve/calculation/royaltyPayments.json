@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Object representing any loyalty payments in the retrieved tax calculation.",
+  "description": "Object representing any royalty payments in the retrieved tax calculation.",
   "type": "object",
   "properties": {
     "royaltyPaymentsAmount": {

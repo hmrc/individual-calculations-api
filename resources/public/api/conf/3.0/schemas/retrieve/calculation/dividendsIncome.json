@@ -5,12 +5,12 @@
   "properties": {
     "totalChargeableDividends": {
       "description": "Total chargeable dividends. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "5040"
     },
     "totalUkDividends": {
       "description": "Total UK dividends. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "example": "5000"
     },
     "ukDividends": {
@@ -32,12 +32,12 @@
         },
         "dividends": {
           "description": "Amount of UK dividends. This value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
+          "type": "integer",
           "example": "4300"
         },
         "otherUkDividends": {
           "description": "Amount of other UK dividends. This value must be between 0 and 99999999999. No decimals.",
-          "type": "number",
+          "type": "integer",
           "example": "5000"
         }
       },

@@ -1,2 +1,0 @@
-Here a developer can:
-- trigger a self-assessment tax calculation for a given tax year. The result of the calculation can be explored via the “Retrieve a self-assessment tax calculation metadata” endpoint
