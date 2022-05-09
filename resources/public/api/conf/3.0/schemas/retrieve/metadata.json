@@ -16,7 +16,7 @@
         "example": "2022-23"
       },
       "requestedBy": {
-        "description": "The requester of the calculation. Currently \"customer\" will be returned even in the case of an agent submission. Limited to the following possible values:",
+        "description": "The requester of the calculation. Currently \"customer\" will be returned even in the case of an agent submission.",
         "type": "string",
         "enum": [
           "customer",
@@ -25,12 +25,12 @@
         ]
       },
       "requestedTimestamp": {
-        "description": "The timestamp of when the calculation was requested in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
+        "description": "The timestamp of when the calculation was requested in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
-        "example": "2019-02-15T09:35:15Z"
+        "example": "2019-02-15T09:35:15.094Z"
       },
       "calculationReason": {
-        "description": "The reason why the calculation was triggered. Limited to one of the following possible values",
+        "description": "The reason why the calculation was triggered.",
         "type": "string",
         "oneOf": [
           {
@@ -67,7 +67,7 @@
             "enum": [
               "updatedLossEvent"
             ],
-            "description": "The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer.\nThis event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
+            "description": "The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer. This event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
           },
           {
             "enum": [
@@ -90,12 +90,12 @@
         ]
       },
       "calculationTimestamp": {
-        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
+        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
-        "example": "2019-02-15T09:35:15:094Z"
+        "example": "2019-02-15T09:35:15.094Z"
       },
       "calculationType": {
-        "description": "The type of calculation performed. Limited to the following possible values:",
+        "description": "The type of calculation performed.",
         "type": "string",
         "oneOf": [
           {"enum":  ["inYear"], "description": "Cannot be used for a final declaration."},
@@ -113,9 +113,9 @@
         "example": "false"
       },
       "finalDeclarationTimestamp": {
-        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ssZ",
+        "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
-        "example": "2019-02-15T09:35:15:094Z"
+        "example": "2019-02-15T09:35:15.094Z"
       },
       "periodFrom": {
         "id": "full-date",

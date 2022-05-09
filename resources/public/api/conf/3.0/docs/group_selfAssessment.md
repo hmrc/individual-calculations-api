@@ -1,2 +1,4 @@
 Here a developer can:
-- trigger a self-assessment tax calculation for a given tax year. The result of the calculation can be explored via the “Retrieve a self-assessment tax calculation metadata” endpoint
+- list self-assessment tax calculations for a given National Insurance number (NINO) and tax year
+- trigger a self-assessment tax calculation for a given tax year
+- retrieve all the tax calculation data for a given NINO and Calculation ID
