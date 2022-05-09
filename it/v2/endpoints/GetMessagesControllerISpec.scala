@@ -21,6 +21,7 @@ import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.test.Helpers.AUTHORIZATION
 import support.V2IntegrationBaseSpec
 import v2.fixtures.getMessages.MessagesResponseFixture
 import v2.fixtures.getMessages.MessagesResponseFixture._
@@ -43,7 +44,10 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
     def request: WSRequest = {
       setupStubs()
       buildRequest(uri)
-        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
+        .withHttpHeaders(
+          (ACCEPT, "application/vnd.hmrc.2.0+json"),
+          (AUTHORIZATION, "Bearer 123")
+        )
     }
 
     def uri: String = s"/$nino/self-assessment/$calcId/messages"
