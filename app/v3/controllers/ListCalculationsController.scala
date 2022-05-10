@@ -33,14 +33,16 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListCalculationsController @Inject()(val authService: EnrolmentsAuthService,
-                                           val lookupService: MtdIdLookupService,
-                                           parser: ListCalculationsParser,
-                                           service: ListCalculationsService,
-                                           hateoasFactory: HateoasFactory,
-                                           cc: ControllerComponents,
-                                           val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
-  extends AuthorisedController(cc) with BaseController with Logging {
+class ListCalculationsController @Inject() (val authService: EnrolmentsAuthService,
+                                            val lookupService: MtdIdLookupService,
+                                            parser: ListCalculationsParser,
+                                            service: ListCalculationsService,
+                                            hateoasFactory: HateoasFactory,
+                                            cc: ControllerComponents,
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+    extends AuthorisedController(cc)
+    with BaseController
+    with Logging {
 
   implicit val endpointLogContext: EndpointLogContext = EndpointLogContext(
     controllerName = "ListCalculationsController",
@@ -48,8 +50,7 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
   )
 
   def list(nino: String, taxYear: Option[String]): Action[AnyContent] =
-    authorisedAction(nino).async{ implicit request =>
-
+    authorisedAction(nino).async { implicit request =>
       implicit val correlationId: String = idGenerator.getCorrelationId
       logger.info(
         message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
@@ -78,7 +79,7 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
 
       result.leftMap { errorWrapper =>
         val resCorrelationId = errorWrapper.correlationId
-        val result = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
+        val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
         logger.warn(
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: $resCorrelationId")
@@ -88,10 +89,12 @@ class ListCalculationsController @Inject()(val authService: EnrolmentsAuthServic
     }
 
   private def errorResult(errorWrapper: ErrorWrapper) = errorWrapper.error match {
-      case BadRequestError | NinoFormatError | TaxYearFormatError |
-           RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError => BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError => NotFound(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-      case _               => unhandledError(errorWrapper)
-    }
+    case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
+        RuleIncorrectGovTestScenarioError =>
+      BadRequest(Json.toJson(errorWrapper))
+    case NotFoundError   => NotFound(Json.toJson(errorWrapper))
+    case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
+    case _               => unhandledError(errorWrapper)
+  }
+
 }

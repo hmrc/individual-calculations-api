@@ -29,27 +29,29 @@ object ListCalculationsResponse extends HateoasLinks {
   type ListCalculations = ListCalculationsResponse[Calculation]
 
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = Json.writes[ListCalculationsResponse[I]]
-  implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]] = JsPath.read[Seq[I]].map(ListCalculationsResponse(_))
+  implicit def reads[I: Reads]: Reads[ListCalculationsResponse[I]]     = JsPath.read[Seq[I]].map(ListCalculationsResponse(_))
 
   implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
-    override def itemLinks(appConfig: AppConfig,
-                           data: ListCalculationsHateoasData,
-                           item: Calculation): Seq[hateoas.Link] = Seq(
-      retrieve(appConfig, data.nino, data.taxYear.getOrElse("????-??"), item.calculationId) //There is a standing question about the tax year here.
+
+    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[hateoas.Link] = Seq(
+      retrieve(appConfig, data.nino, data.taxYear.getOrElse("????-??"), item.calculationId) // There is a standing question about the tax year here.
     )
 
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[hateoas.Link] = {
       import data._
       Seq(
-        trigger(appConfig, nino, taxYear.getOrElse("????-??")), //There is a standing question about the tax year here.
+        trigger(appConfig, nino, taxYear.getOrElse("????-??")), // There is a standing question about the tax year here.
         list(appConfig, nino, isSelf = true)
       )
     }
+
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
+
     override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
       ListCalculationsResponse(fa.calculations.map(f))
+
   }
 
 }

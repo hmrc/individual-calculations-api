@@ -22,14 +22,14 @@ import utils.enums.Enums
 sealed trait CgtBandName
 
 object CgtBandName {
-  case object `lower-rate`                   extends CgtBandName
-  case object `higher-rate`                  extends CgtBandName
+  case object `lower-rate`  extends CgtBandName
+  case object `higher-rate` extends CgtBandName
 
   implicit val writes: Writes[CgtBandName] = Enums.writes[CgtBandName]
 
   implicit val reads: Reads[CgtBandName] = Enums.readsUsing {
-    case "lowerRate"     => `lower-rate`
-    case "higherRate"   => `higher-rate`
+    case "lowerRate"  => `lower-rate`
+    case "higherRate" => `higher-rate`
   }
 
 }

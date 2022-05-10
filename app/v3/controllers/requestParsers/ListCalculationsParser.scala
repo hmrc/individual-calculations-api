@@ -23,8 +23,8 @@ import v3.models.request._
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
-  extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator)
+    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = ListCalculationsRequest(
     Nino(data.nino),
