@@ -43,6 +43,6 @@ object Calculation {
       (JsPath \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and
-      (JsPath \ "crystallisationTimestamp").readNullable[String]
-      ) (Calculation.apply _)
+      (JsPath \ "crystallisationTimestamp").readNullable[String])(Calculation.apply _)
+
 }

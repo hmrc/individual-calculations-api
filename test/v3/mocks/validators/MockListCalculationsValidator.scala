@@ -26,10 +26,13 @@ trait MockListCalculationsValidator extends MockFactory {
   val mockListCalculationsValidator: ListCalculationsValidator = mock[ListCalculationsValidator]
 
   object MockListCalculationsValidator {
+
     def validate(data: ListCalculationsRawData): CallHandler1[ListCalculationsRawData, List[MtdError]] = {
       (mockListCalculationsValidator
         .validate(_: ListCalculationsRawData))
         .expects(data)
     }
+
   }
+
 }

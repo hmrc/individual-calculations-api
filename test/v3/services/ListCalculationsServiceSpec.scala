@@ -28,8 +28,8 @@ import scala.concurrent.Future
 class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixture {
 
   trait Test extends MockListCalculationsConnector {
-    val nino: Nino = Nino("AA111111A")
-    val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+    val nino: Nino                       = Nino("AA111111A")
+    val taxYear: TaxYear                 = TaxYear.fromMtd("2018-19")
     val request: ListCalculationsRequest = ListCalculationsRequest(nino, Some(taxYear))
     val service: ListCalculationsService = new ListCalculationsService(mockListCalculationsConnector)
   }
@@ -39,9 +39,11 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
       "return a success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
-        MockListCalculationsConnector.list(request).returns(
-          Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
-        )
+        MockListCalculationsConnector
+          .list(request)
+          .returns(
+            Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
+          )
 
         await(service.list(request)) shouldBe outcome
       }
@@ -58,11 +60,11 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
 
       val mappings: Map[String, MtdError] = Map(
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-        "INVALID_TAXYEAR" -> TaxYearFormatError,
-        "NOT_FOUND" -> NotFoundError,
-        "SERVER_ERROR" -> DownstreamError,
-        "SERVICE_UNAVAILABLE" -> DownstreamError,
-        "UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError
+        "INVALID_TAXYEAR"           -> TaxYearFormatError,
+        "NOT_FOUND"                 -> NotFoundError,
+        "SERVER_ERROR"              -> DownstreamError,
+        "SERVICE_UNAVAILABLE"       -> DownstreamError,
+        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
       )
 
       mappings.foreach(args => (checkErrorMappings _).tupled(args))
@@ -74,4 +76,5 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
       }
     }
   }
+
 }

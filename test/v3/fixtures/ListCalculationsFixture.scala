@@ -22,8 +22,8 @@ import v3.models.response.common.CalculationType
 import v3.models.response.listCalculations.{Calculation, ListCalculationsResponse}
 
 trait ListCalculationsFixture {
-  val listCalculationsDownstreamJson: JsValue = Json.parse(
-    """
+
+  val listCalculationsDownstreamJson: JsValue = Json.parse("""
       |[
       |   {
       |      "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
@@ -41,8 +41,7 @@ trait ListCalculationsFixture {
       |]
     """.stripMargin)
 
-  val listCalculationsMtdJson: JsValue = Json.parse(
-    """
+  val listCalculationsMtdJson: JsValue = Json.parse("""
       |{
       |   "calculations": [
       |      {

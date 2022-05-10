@@ -21,8 +21,8 @@ import support.UnitSpec
 import v3.fixtures.ListCalculationsFixture
 
 class CalculationSpec extends UnitSpec with ListCalculationsFixture {
-  val downstreamJson: JsValue = Json.parse(
-    """
+
+  val downstreamJson: JsValue = Json.parse("""
       |{
       |   "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
       |   "calculationTimestamp":"2021-07-12T07:51:43.112Z",
@@ -38,8 +38,7 @@ class CalculationSpec extends UnitSpec with ListCalculationsFixture {
       |}
     """.stripMargin)
 
-  val mtdJson: JsValue = Json.parse(
-    """
+  val mtdJson: JsValue = Json.parse("""
       |{
       |   "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
       |   "calculationTimestamp":"2021-07-12T07:51:43.112Z",
@@ -66,4 +65,5 @@ class CalculationSpec extends UnitSpec with ListCalculationsFixture {
       }
     }
   }
+
 }

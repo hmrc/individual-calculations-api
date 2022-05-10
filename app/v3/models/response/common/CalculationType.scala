@@ -23,9 +23,9 @@ sealed trait CalculationType
 
 object CalculationType {
 
-  case object `inYear`    extends CalculationType
+  case object `inYear`           extends CalculationType
   case object `finalDeclaration` extends CalculationType
-  case object `biss`      extends CalculationType
+  case object `biss`             extends CalculationType
 
   implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
 

@@ -29,10 +29,10 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
 
   private trait Test {
-    val nino: String = "AA123456A"
+    val nino: String            = "AA123456A"
     val taxYear: Option[String] = None
 
-    def uri: String = s"/$nino/self-assessment"
+    def uri: String        = s"/$nino/self-assessment"
     def backendUrl: String = s"/income-tax/list-of-calculation-results/$nino"
     def setupStubs(): StubMapping
 
@@ -46,6 +46,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))
     }
+
   }
 
   "Calling the list calculations endpoint" should {
@@ -150,4 +151,5 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
       }
     }
   }
+
 }

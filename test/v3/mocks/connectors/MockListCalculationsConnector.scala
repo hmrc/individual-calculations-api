@@ -29,10 +29,13 @@ trait MockListCalculationsConnector extends MockFactory {
   val mockListCalculationsConnector: ListCalculationsConnector = mock[ListCalculationsConnector]
 
   object MockListCalculationsConnector {
+
     def list[I](request: ListCalculationsRequest): CallHandler[Future[DownstreamOutcome[ListCalculations]]] = {
       (mockListCalculationsConnector
         .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
+
   }
+
 }
