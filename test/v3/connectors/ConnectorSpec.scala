@@ -74,6 +74,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
 
   val requiredIfsHeaders: Seq[(String, String)] = Seq(
     "Environment"   -> "ifs-environment",
+    "consumerId"    -> "MDTP",
     "Authorization" -> s"Bearer ifs-token"
   )
 

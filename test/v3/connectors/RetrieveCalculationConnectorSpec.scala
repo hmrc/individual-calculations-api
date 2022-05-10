@@ -34,11 +34,10 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
   class Test extends MockHttpClient with MockAppConfig {
     val connector: RetrieveCalculationConnector = new RetrieveCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
-    val ifsRequestHeaders: Seq[(String, String)] = Seq("Environment" -> "ifs-environment", "Authorization" -> s"Bearer ifs-token")
     MockAppConfig.ifsBaseUrl returns baseUrl
     MockAppConfig.ifsToken returns "ifs-token"
     MockAppConfig.ifsEnvironment returns "ifs-environment"
-    MockAppConfig.ifsEnvironmentHeaders returns Some(allowedDesHeaders)
+    MockAppConfig.ifsEnvironmentHeaders returns Some(allowedIfsHeaders)
   }
 
   "retrieveCalculation" should {
@@ -53,7 +52,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
           .get(
             url = s"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId",
             config = dummyDesHeaderCarrierConfig,
-            requiredHeaders = ifsRequestHeaders,
+            requiredHeaders = requiredIfsHeaders,
             excludedHeaders = Seq("AnotherHeader" -> s"HeaderValue")
           )
           .returns(Future.successful(outcome))
