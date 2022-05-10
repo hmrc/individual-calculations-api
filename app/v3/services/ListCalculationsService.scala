@@ -30,14 +30,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsService @Inject()(connector: ListCalculationsConnector)
-  extends DownstreamResponseMappingSupport
-  with Logging {
+class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends DownstreamResponseMappingSupport with Logging {
 
-  def list(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
-                                             ec: ExecutionContext,
-                                             logContext: EndpointLogContext,
-                                             correlationId: String): ServiceOutcome[ListCalculations] = {
+  def list(request: ListCalculationsRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      logContext: EndpointLogContext,
+      correlationId: String): ServiceOutcome[ListCalculations] = {
     val result = for {
       responseWrapper <- EitherT(connector.list(request)).leftMap(mapDesErrors(mappingToMtdError))
     } yield responseWrapper
@@ -47,9 +46,11 @@ class ListCalculationsService @Inject()(connector: ListCalculationsConnector)
 
   private val mappingToMtdError: Map[String, MtdError] = Map(
     "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-    "INVALID_TAXYEAR" -> TaxYearFormatError,
-    "NOT_FOUND" -> NotFoundError,
-    "SERVER_ERROR" -> DownstreamError,
-    "SERVICE_UNAVAILABLE" -> DownstreamError
+    "INVALID_TAXYEAR"           -> TaxYearFormatError,
+    "NOT_FOUND"                 -> NotFoundError,
+    "SERVER_ERROR"              -> DownstreamError,
+    "SERVICE_UNAVAILABLE"       -> DownstreamError,
+    "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
   )
+
 }

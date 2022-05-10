@@ -27,12 +27,12 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListCalculationsConnector @Inject()(val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def list(request: ListCalculationsRequest)(
-    implicit hc: HeaderCarrier,
-    ec: ExecutionContext,
-    correlationId: String
+  def list(request: ListCalculationsRequest)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String
   ): Future[DownstreamOutcome[ListCalculations]] = {
     val nino = request.nino.nino
 
@@ -42,4 +42,5 @@ class ListCalculationsConnector @Inject()(val http: HttpClient, val appConfig: A
       DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino" + queryParam)
     )
   }
+
 }

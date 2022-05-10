@@ -32,10 +32,13 @@ trait MockListCalculationsService extends MockFactory {
   val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
 
   object MockListCalculationsService {
+
     def list[I](requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculations]]]] = {
       (mockListCalculationsService
         .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
         .expects(requestData, *, *, *, *)
     }
+
   }
+
 }

@@ -24,6 +24,7 @@ import v3.hateoas.HateoasFactory
 import v3.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 
 class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture {
+
   "ListCalculationsResponse" when {
     "read from downstream JSON" must {
       "return the expected data model" in {
@@ -40,22 +41,26 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
 
   "HateoasFactory" must {
     trait Test extends MockAppConfig {
-      val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino: String = "someNino"
-      val calcId: String = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
+      val hateoasFactory          = new HateoasFactory(mockAppConfig)
+      val nino: String            = "someNino"
+      val calcId: String          = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
       val taxYear: Option[String] = Some("2020-21")
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
     "wrap response correctly when tax year is defined" in new Test {
       hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)) shouldBe
         HateoasWrapper(
-          payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationModel, Seq(
-            Link(
-              href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}/$calcId",
-              rel = RelType.SELF,
-              method = Method.GET
-            )
-          )))),
+          payload = ListCalculationsResponse(
+            Seq(
+              HateoasWrapper(
+                calculationModel,
+                Seq(
+                  Link(
+                    href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}/$calcId",
+                    rel = RelType.SELF,
+                    method = Method.GET
+                  )
+                )))),
           links = Seq(
             Link(
               href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}",
@@ -71,4 +76,5 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
         )
     }
   }
+
 }

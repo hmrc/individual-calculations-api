@@ -24,6 +24,7 @@ import v3.models.errors.{ErrorWrapper, NinoFormatError}
 import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
+
   trait Test extends MockListCalculationsValidator with MockAppConfig {
     implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
     val parser: ListCalculationsParser = new ListCalculationsParser(mockListCalculationsValidator)
@@ -50,4 +51,5 @@ class ListCalculationsParserSpec extends UnitSpec {
       }
     }
   }
+
 }

@@ -50,4 +50,5 @@ class ListCalculationsValidatorSpec extends UnitSpec {
       }
     }
   }
+
 }
