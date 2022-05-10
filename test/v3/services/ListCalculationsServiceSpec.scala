@@ -61,7 +61,8 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
         "INVALID_TAXYEAR" -> TaxYearFormatError,
         "NOT_FOUND" -> NotFoundError,
         "SERVER_ERROR" -> DownstreamError,
-        "SERVICE_UNAVAILABLE" -> DownstreamError
+        "SERVICE_UNAVAILABLE" -> DownstreamError,
+        "UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError
       )
 
       mappings.foreach(args => (checkErrorMappings _).tupled(args))

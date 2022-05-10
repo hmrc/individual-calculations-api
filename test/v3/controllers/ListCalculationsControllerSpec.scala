@@ -35,25 +35,27 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalculationsFixture {
-  val defaultNino: String = "AA111111A"
-  val defaultTaxYear: Option[String] = Some("2018-19")
+  val defaultNino: String                     = "AA111111A"
+  val defaultTaxYear: Option[String]          = Some("2018-19")
   val defaultRawData: ListCalculationsRawData = ListCalculationsRawData(defaultNino, defaultTaxYear)
 
-  case class Test(rawData: ListCalculationsRawData = defaultRawData) extends MockEnrolmentsAuthService
-    with MockMtdIdLookupService
-    with MockListCalculationsParser
-    with MockListCalculationsService
-    with MockHateoasFactory
-    with MockIdGenerator {
+  case class Test(rawData: ListCalculationsRawData = defaultRawData)
+      extends MockEnrolmentsAuthService
+      with MockMtdIdLookupService
+      with MockListCalculationsParser
+      with MockListCalculationsService
+      with MockHateoasFactory
+      with MockIdGenerator {
 
-    val hc: HeaderCarrier = HeaderCarrier()
+    val hc: HeaderCarrier     = HeaderCarrier()
     val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-    val nino: String = rawData.nino
+    val nino: String            = rawData.nino
     val taxYear: Option[String] = rawData.taxYear
 
     lazy val request: ListCalculationsRequest = ListCalculationsRequest(
-      nino = Nino(nino), taxYear = taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
+      nino = Nino(nino),
+      taxYear = taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
     )
 
     val controller: ListCalculationsController = new ListCalculationsController(
@@ -76,31 +78,38 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
       "return the expected result for a successful service response" in new Test {
         MockListCalculationsParser.parse(rawData).returns(Right(request))
 
-        MockListCalculationsService.list(request).returns(
-          Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
-        )
+        MockListCalculationsService
+          .list(request)
+          .returns(
+            Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
+          )
 
-        MockHateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)).returns(
-          HateoasWrapper(
-            ListCalculationsResponse(Seq(HateoasWrapper(calculationModel, Seq(Link(
-              href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
-              rel = RelType.SELF,
-              method = Method.GET
-            ))))),
-            Seq(
-              Link(
-                href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
-                rel = RelType.TRIGGER,
-                method = Method.POST
-              ),
-              Link(
-                href = s"/individuals/calculations/$nino/self-assessment",
-                rel = RelType.SELF,
-                method = Method.GET
+        MockHateoasFactory
+          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear))
+          .returns(
+            HateoasWrapper(
+              ListCalculationsResponse(Seq(HateoasWrapper(
+                calculationModel,
+                Seq(Link(
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
+                  rel = RelType.SELF,
+                  method = Method.GET
+                ))
+              ))),
+              Seq(
+                Link(
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
+                  rel = RelType.TRIGGER,
+                  method = Method.POST
+                ),
+                Link(
+                  href = s"/individuals/calculations/$nino/self-assessment",
+                  rel = RelType.SELF,
+                  method = Method.GET
+                )
               )
             )
           )
-        )
 
         val result: Future[Result] = controller.list(nino, taxYear)(fakeGetRequest)
         status(result) shouldBe OK
@@ -113,9 +122,11 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
           s"handle $mtdError correctly" in new Test {
             MockListCalculationsParser.parse(rawData).returns(Right(request))
 
-            MockListCalculationsService.list(request).returns(
-              Future.successful(Left(ErrorWrapper(correlationId, mtdError)))
-            )
+            MockListCalculationsService
+              .list(request)
+              .returns(
+                Future.successful(Left(ErrorWrapper(correlationId, mtdError)))
+              )
 
             val result: Future[Result] = controller.list(nino, taxYear)(fakeGetRequest)
             status(result) shouldBe expectedStatus
@@ -125,11 +136,12 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
         }
 
         val serviceErrors = Map(
-          NinoFormatError -> 400,
-          TaxYearFormatError -> 400,
-          RuleTaxYearNotSupportedError -> 400,
-          NotFoundError -> 404,
-          DownstreamError -> 500
+          NinoFormatError                   -> BAD_REQUEST,
+          TaxYearFormatError                -> BAD_REQUEST,
+          RuleTaxYearNotSupportedError      -> BAD_REQUEST,
+          NotFoundError                     -> NOT_FOUND,
+          DownstreamError                   -> INTERNAL_SERVER_ERROR,
+          RuleIncorrectGovTestScenarioError -> BAD_REQUEST
         )
 
         serviceErrors.foreach(args => (checkServiceError _).tupled(args))
@@ -150,13 +162,14 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
       }
 
       val parserErrors = Map(
-        ListCalculationsRawData("", None) -> NinoFormatError,
-        ListCalculationsRawData("AA111111A", Some("")) -> TaxYearFormatError,
+        ListCalculationsRawData("", None)                     -> NinoFormatError,
+        ListCalculationsRawData("AA111111A", Some(""))        -> TaxYearFormatError,
         ListCalculationsRawData("AA111111A", Some("2018-20")) -> RuleTaxYearRangeInvalidError,
-        ListCalculationsRawData("AA111111A", Some("2011-12")) -> RuleTaxYearNotSupportedError,
+        ListCalculationsRawData("AA111111A", Some("2011-12")) -> RuleTaxYearNotSupportedError
       )
 
       parserErrors.foreach(args => (checkParserError _).tupled(args))
     }
   }
+
 }
