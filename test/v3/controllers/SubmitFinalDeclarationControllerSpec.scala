@@ -22,7 +22,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v3.mocks.services._
-import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import v3.models.audit.{AuditEvent, GenericAuditDetail}
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
@@ -47,8 +47,9 @@ class SubmitFinalDeclarationControllerSpec
 
   private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
     val auditValues   = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-    val auditResponse = AuditResponse(responseStatus, Some(List(AuditError(error.code))), None)
-    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId, auditResponse)
+    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
+      versionNumber = "3.0", response = "error", httpStatusCode = responseStatus, calculationId = None,
+      errorCodes = Some(Seq(error.code)))
 
     AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)
   }
@@ -92,8 +93,9 @@ class SubmitFinalDeclarationControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-        val detail: GenericAuditDetail =
-          GenericAuditDetail("Individual", None, auditValues, None, correlationId, AuditResponse(NO_CONTENT, None, None))
+        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
+          versionNumber = "3.0", response = "success", httpStatusCode = 204, calculationId = None,
+          errorCodes = None)
 
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)

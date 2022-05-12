@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerCalculationService}
-import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import v3.models.audit.{AuditEvent, GenericAuditDetail}
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.hateoas.Method.GET
@@ -82,10 +82,11 @@ class TriggerCalculationControllerSpec
 
   private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
     val auditValues   = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> "true")
-    val auditResponse = AuditResponse(responseStatus, Some(List(AuditError(error.code))), None)
-    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId, auditResponse)
+    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
+      versionNumber = "3.0", response = "error", httpStatusCode = responseStatus, calculationId = None,
+      errorCodes = Some(Seq(error.code)))
 
-    AuditEvent("TriggerCalculation", "trigger-calculation", detail)
+    AuditEvent("TriggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
   }
 
   trait Test {
@@ -132,11 +133,12 @@ class TriggerCalculationControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val auditValues = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}")
-        val detail: GenericAuditDetail =
-          GenericAuditDetail("Individual", None, auditValues, None, correlationId, AuditResponse(ACCEPTED, None, Some(json)))
+        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
+          versionNumber = "3.0", response = "success", httpStatusCode = 202, calculationId = Some(calculationId),
+          errorCodes = None)
 
         val event: AuditEvent[GenericAuditDetail] =
-          AuditEvent("TriggerCalculation", "trigger-calculation", detail)
+          AuditEvent("TriggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
 

@@ -83,11 +83,9 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
               auditResponse = AuditResponse(httpStatus = ACCEPTED, response = Right(Some(Json.toJson(vendorResponse))))
             )
           )
-
           Accepted(Json.toJson(vendorResponse)).withApiHeaders(serviceResponse.correlationId)
         }
       }
-
       result.leftMap { errorWrapper =>
         val resCorrelationId = errorWrapper.correlationId
         val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
@@ -121,8 +119,8 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
   private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
     val event = AuditEvent(
-      auditType = "TriggerCalculation",
-      transactionName = "trigger-calculation",
+      auditType = "TriggerASelfAssessmentTaxCalculation",
+      transactionName = "trigger-a-self-assessment-tax-calculation",
       detail = details
     )
 
