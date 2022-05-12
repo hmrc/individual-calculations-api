@@ -30,33 +30,28 @@ object GenericAuditDetailFixture {
   val requestBody: Option[JsValue]         = None
   val xCorrId: String                      = "a1e8057e-fbbc-47a8-a8b478d9f015c253"
 
-  val genericAuditDetailModelSuccess: GenericAuditDetail =
-    GenericAuditDetail(
-      userType = userType,
-      agentReferenceNumber = agentReferenceNumber,
-      pathParams = pathParams,
-      requestBody = requestBody,
-      `X-CorrelationId` = xCorrId,
-      auditResponse = auditResponseModelWithBody
-    )
+  val genericAuditDetailModelSuccess: GenericAuditDetail = GenericAuditDetail("Individual", None, pathParams, None, xCorrId,
+    versionNumber = "3.0", response = "success", httpStatusCode = 202, calculationId = Some(calculationId),
+    errorCodes = None)
+
 
   val genericAuditDetailModelError: GenericAuditDetail =
     genericAuditDetailModelSuccess.copy(
-      auditResponse = auditResponseModelWithErrors
+      httpStatusCode = auditResponseModelWithErrors.httpStatus,
+      response = "error",
+      errorCodes = Some(Seq("FORMAT_NINO"))
     )
 
   val genericAuditDetailJsonSuccess: JsValue = Json.parse(
     s"""
        |{
-       |   "userType": "$userType",
-       |   "agentReferenceNumber": "${agentReferenceNumber.get}",
-       |   "nino": "$nino",
-       |   "calculationId" : "$calculationId",
-       |   "response": {
-       |     "httpStatus": ${auditResponseModelWithBody.httpStatus},
-       |     "body": ${auditResponseModelWithBody.body.get}
-       |   },
-       |   "X-CorrelationId": "$xCorrId"
+       |   "userType":"Individual",
+       |   "calculationId":"calcId",
+       |   "nino":"ZG903729C",
+       |   "X-CorrelationId":"a1e8057e-fbbc-47a8-a8b478d9f015c253",
+       |   "versionNumber":"3.0",
+       |   "response":"success",
+       |   "httpStatusCode":202
        |}
      """.stripMargin
   )
@@ -64,12 +59,16 @@ object GenericAuditDetailFixture {
   val genericAuditDetailJsonError: JsValue = Json.parse(
     s"""
        |{
-       |   "userType": "$userType",
-       |   "agentReferenceNumber": "${agentReferenceNumber.get}",
-       |   "nino": "$nino",
-       |   "calculationId": "$calculationId",
-       |   "response": $auditResponseJsonWithErrors,
-       |   "X-CorrelationId": "$xCorrId"
+       |   "userType":"Individual",
+       |   "calculationId":"calcId",
+       |   "nino":"ZG903729C",
+       |   "X-CorrelationId":"a1e8057e-fbbc-47a8-a8b478d9f015c253",
+       |   "versionNumber":"3.0",
+       |   "response":"error",
+       |   "httpStatusCode":400,
+       |   "errorCodes":[
+       |      "FORMAT_NINO"
+       |   ]
        |}
      """.stripMargin
   )
