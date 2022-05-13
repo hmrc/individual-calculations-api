@@ -113,7 +113,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
     val event = AuditEvent(
       auditType = "SubmitAFinalDeclaration",
-      transactionName = "Submit-A-Final-Declaration",
+      transactionName = "submit-a-final-declaration",
       detail = details
     )
 

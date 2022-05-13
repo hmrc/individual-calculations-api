@@ -51,7 +51,7 @@ class SubmitFinalDeclarationControllerSpec
       versionNumber = "3.0", response = "error", httpStatusCode = responseStatus, calculationId = None,
       errorCodes = Some(Seq(error.code)))
 
-    AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)
+    AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
   }
 
   trait Test {
@@ -98,7 +98,7 @@ class SubmitFinalDeclarationControllerSpec
           errorCodes = None)
 
         val event: AuditEvent[GenericAuditDetail] =
-          AuditEvent("SubmitAFinalDeclaration", "Submit-A-Final-Declaration", detail)
+          AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
         MockedAuditService.verifyAuditEvent(event).once
       }
     }
