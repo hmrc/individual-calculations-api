@@ -40,7 +40,7 @@
             ]
           },
           "taxYear": {
-            "description": "The tax year the calculation was requested for..",
+            "description": "The tax year the calculation was requested for.",
             "id": "tax-year",
             "type": "string",
             "example": "2020-21"

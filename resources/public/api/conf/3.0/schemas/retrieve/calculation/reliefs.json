@@ -233,7 +233,7 @@
                 "companyName": {
                   "description": "The name of the Seed Enterprise Investment invested in.",
                   "type": "string",
-                  "example": "Goldman Sachs"
+                  "example": "Company Ltd"
                 },
                 "deficiencyReliefType": {
                   "description": "The type of relief. Populated only for deficiency relief.",
