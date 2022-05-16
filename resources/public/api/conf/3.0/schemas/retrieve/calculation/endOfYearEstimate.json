@@ -44,7 +44,8 @@
           },
           "incomeSourceName": {
             "description": "The name of the income source.",
-            "type": "string"
+            "type": "string",
+            "example": "Self-Employment Business One"
           },
           "taxableIncome": {
             "description": "Estimated taxable income. This value must be between 0 and 99999999999. No decimals.",

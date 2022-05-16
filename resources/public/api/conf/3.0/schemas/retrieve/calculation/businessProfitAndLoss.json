@@ -19,7 +19,7 @@
         "title": "incomeSourceName",
         "description": "The name of the income source.",
         "type": "string",
-        "example": "ABC Ltd."
+        "example": "ABC-123 Ltd."
       },
       "totalIncome": {
         "title": "totalIncome",

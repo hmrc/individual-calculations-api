@@ -275,7 +275,7 @@
           "contractorName": {
             "description": "The name of the contractor the subcontractor worked for.",
             "pattern": "^[A-Za-z0-9 \\-,.&'/]{1,105}$",
-            "example": "Jones Limited"
+            "example": "Company-123 Ltd."
           },
           "periodData": {
             "description": "An array containing submission periods made.",
@@ -440,7 +440,7 @@
           "incomeSourceName": {
             "description": "The name of the income source.",
             "type": "string",
-            "example": "ABC Ltd."
+            "example": "ABC-123 Ltd."
           },
           "accountingPeriodStartDate": {
             "description": "The accounting start date of the income source.",

@@ -100,7 +100,7 @@
     "constructionIndustryScheme": [
       {
         "employerRef": "123/AA12345",
-        "contractorName": "Jones Limited",
+        "contractorName": "Company-123 Ltd.",
         "periodData": [
           {
             "deductionFromDate": "2021-11-02",
@@ -211,7 +211,7 @@
               "uniqueInvestmentRef": "BAO123456A",
               "name": "VCT fund",
               "socialEnterpriseName": "SE Inc",
-              "companyName": "Company Ltd",
+              "companyName": "Company Ltd.",
               "deficiencyReliefType": "lifeInsurance",
               "customerReference": "INPOLY123A"
             }
@@ -612,7 +612,7 @@
       "shareSchemeDetail": [
         {
           "type": "shareOption",
-          "employerName": "ABC Ltd",
+          "employerName": "ABC-123 Ltd.",
           "employerRef": "123/AB56797",
           "taxableAmount": 5000.99
         }
