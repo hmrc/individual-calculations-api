@@ -14,6 +14,34 @@
         <tr>
             <td><p>NOT_FOUND</p></td>
             <td><p>Simulates the scenario where no data is found.</p></td>
-        </tr>                             
+        </tr>
+        <tr>
+            <td><p>UK_MULTIPLE_INCOMES_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK FHL Property business with Savings and Dividends.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_PROP_DIVIDENDS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK Non-FHL Property business with Dividends.</p></td>
+        </tr>   
+        <tr>
+            <td><p>UK_PROP_GIFTAID_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK Non-FHL Property business with Gift Aid.</p></td>
+        </tr>        
+        <tr>
+            <td><p>UK_PROP_SAVINGS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK Non-FHL Property business with Savings.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_SE_GIFTAID_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK Self-Employment business with Gift Aid.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_SE_SAVINGS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a UK Self-Employment business with Savings.</p></td>
+        </tr>
+        <tr>
+            <td><p>SCOT_SE_DIVIDENDS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation with realistic data values, for a Scottish Self-Employment business with Dividends.</p></td>
+        </tr>
     </tbody>
 </table>
