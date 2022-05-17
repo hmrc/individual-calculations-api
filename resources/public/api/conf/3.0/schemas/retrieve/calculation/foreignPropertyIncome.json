@@ -21,9 +21,8 @@
         ]
       },
       "countryCode": {
-        "description": "A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3.",
+        "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
         "type": "string",
-        "pattern": "^[A-Z]{3}$",
         "example": "FRA"
       },
       "totalIncome": {
@@ -91,11 +90,11 @@
         "example": "2000.98"
       }
     },
+    "additionalProperties": false,
     "required": [
       "incomeSourceId",
       "incomeSourceType",
       "countryCode"
     ]
-  },
-  "additionalProperties": false
+  }
 }

@@ -102,7 +102,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": "20.5"
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on the lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -137,7 +137,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": "20.5"
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -199,7 +199,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": "20.5"
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on unauthorised payments surcharges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -234,7 +234,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": "20.5"
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -269,7 +269,7 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": "20.5"
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -345,7 +345,7 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99.99,
-            "example": "20.5"
+            "example": "20.50"
           },
           "bandLimit": {
             "description": "The tax band limit. This value must be between 0 and 99999999999. No decimals.",
@@ -449,7 +449,7 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99.99,
-            "example": "20.5"
+            "example": "20.50"
           },
           "bandLimit": {
             "description": "The tax band limit. This value must be between 0 and 99999999999. No decimals.",

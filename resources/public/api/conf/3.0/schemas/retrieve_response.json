@@ -19,15 +19,15 @@
       "type": "array",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
+        "description": "A list of endpoint links that indicate possible actions related to the current resource.",
         "properties": {
           "href": {
-            "description": "The relative url of the endpoint",
+            "description": "The relative url of the endpoint.",
             "type": "string",
-            "example": "/individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}"
+            "example": "/individuals/calculations/TC663795B/self-assessment/2020-21/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
           },
           "rel": {
-            "description": "A label for the endpoint, which describes how it is related to the current resource\nThe rel will be self where the action is retrieval of the same resource",
+            "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
             "type": "string",
             "enum": [
               "self",
@@ -36,7 +36,7 @@
             ]
           },
           "method": {
-            "description": "The HTTP method type for the endpoint",
+            "description": "The HTTP method type for the endpoint.",
             "type": "string",
             "enum": [
               "GET",
@@ -49,7 +49,8 @@
           "rel",
           "method"
         ]
-      }
+      },
+      "additionalProperties": false
     }
   },
   "required": [

@@ -54,7 +54,8 @@
             "example": "5000.99"
           },
           "relatedTaxYear": {
-            "description": "The tax year this underpayment relates to. Format: YYYY-YY",
+            "description": "The tax year this underpayment relates to.",
+            "id": "tax-year",
             "type": "string",
             "example": "2020-21"
           },
@@ -83,7 +84,8 @@
             "example": "5000.99"
           },
           "relatedTaxYear": {
-            "description": "The tax year this underpayment relates to. Format: YYYY-YY",
+            "description": "The tax year this underpayment relates to.",
+            "id": "tax-year",
             "type": "string",
             "example": "2020-21"
           },

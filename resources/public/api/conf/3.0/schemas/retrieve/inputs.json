@@ -67,8 +67,9 @@
           "$ref": "#/definitions/studentLoanPlans"
         },
         "class2VoluntaryContributions": {
-          "description": "A boolean to identify the Class 2 Voluntary Contributions. Must be true.",
-          "type": "boolean"
+          "description": "A boolean to identify the Class 2 Voluntary Contributions. This value must be true.",
+          "type": "boolean",
+          "example": "true"
         },
         "marriageAllowance": {
           "description": "Indicates whether the customer has transferred out their allowance or received an allowance.",
@@ -80,7 +81,8 @@
         },
         "uniqueTaxpayerReference": {
           "description": "The Unique Taxpayer Reference for the customer.",
-          "type": "string"
+          "type": "string",
+          "example": "AGvHTfRUPO"
         }
       },
       "additionalProperties": false,
@@ -135,14 +137,15 @@
           "bsasId": {
             "description": "The unique identifier of the annual adjustment.",
             "type": "string",
-            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "example": "123a456b-789c-1d23-845e-678b9d1bd2ab"
           },
           "receivedDateTime": {
             "description": "The latest date of when the adjustment was created, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
             "$ref": "#/definitions/timestamp"
           },
           "applied": {
-            "description": "A boolean to identify whether the adjustment has been applied to this calculation.",
+            "description": "A boolean to identify whether the adjustment has been applied to this calculation. This value must be true or false.",
             "type": "boolean",
             "example": "true"
           }
@@ -188,12 +191,13 @@
             "$ref": "#/definitions/taxYear"
           },
           "currentLossValue": {
-            "description": "The current value of the loss.",
+            "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
             "$ref": "#/definitions/intPos"
           },
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
-            "type": "boolean"
+            "type": "boolean",
+            "example": "false"
           }
         },
         "additionalProperties": false,
@@ -232,7 +236,7 @@
             "$ref": "#/definitions/timestamp"
           },
           "taxYearClaimMade": {
-            "description": "The tax year that the claim was made.",
+            "description": "The tax year in which the claim was made.",
             "$ref": "#/definitions/taxYear"
           },
           "claimType": {
@@ -240,10 +244,11 @@
             "$ref": "common_defs.json#/definitions/claimType"
           },
           "sequence": {
-            "description": "The order in which this claim is to be used for a carry-sideways claim. It must be an integer in the range 1 to 99. The sequence must start with 1 and have no gaps.",
+            "description": "The order in which this claim is to be used for a carry-sideways claim. It must be in the range 1 to 99. The sequence must start with 1 and have no gaps.",
             "type": "integer",
             "minimum": 1,
-            "maximum": 99
+            "maximum": 99,
+            "example": "1"
           }
         },
         "additionalProperties": false,
@@ -256,7 +261,7 @@
       }
     },
     "constructionIndustryScheme": {
-      "description": "An array containing information about cis deduction periods by contractor reference.",
+      "description": "An array containing information about Construction Industry Scheme (CIS) deduction periods by contractor reference.",
       "type": "array",
       "items": {
         "type": "object",
@@ -270,7 +275,7 @@
           "contractorName": {
             "description": "The name of the contractor the subcontractor worked for.",
             "pattern": "^[A-Za-z0-9 \\-,.&'/]{1,105}$",
-            "example": "Jones Limited"
+            "example": "Company-123 Ltd."
           },
           "periodData": {
             "description": "An array containing submission periods made.",
@@ -354,10 +359,7 @@
             "$ref": "#/definitions/sourceMtdOnly"
           }
         },
-        "additionalProperties": false,
-        "required": [
-          "type"
-        ]
+        "additionalProperties": false
       }
     },
     "pensionContributionAndCharges": {
@@ -438,7 +440,7 @@
           "incomeSourceName": {
             "description": "The name of the income source.",
             "type": "string",
-            "example": "ABC Ltd."
+            "example": "ABC-123 Ltd."
           },
           "accountingPeriodStartDate": {
             "description": "The accounting start date of the income source.",
@@ -461,7 +463,7 @@
             "$ref": "#/definitions/timestamp"
           },
           "finalised": {
-            "description": "A boolean to identify whether the income source is finalised.",
+            "description": "A boolean to identify whether the income source is finalised. This value must be true or false.",
             "type": "boolean",
             "example": "false"
           },
@@ -476,7 +478,7 @@
               "type": "object",
               "properties": {
                 "periodId": {
-                  "description": "An identifier for the period, unique to the customer",
+                  "description": "An identifier for the period, unique to the customer.",
                   "type": "string",
                   "example": "001"
                 },
@@ -558,7 +560,6 @@
         "required": [
           "incomeSourceType",
           "startDate",
-          "endDate",
           "source"
         ]
       }
@@ -617,7 +618,7 @@
     },
     "timestamp": {
       "type": "string",
-      "example": "2019-02-15T09:35:15:094Z"
+      "example": "2019-02-15T09:35:15.094Z"
     },
     "taxYear": {
       "id": "tax-year",

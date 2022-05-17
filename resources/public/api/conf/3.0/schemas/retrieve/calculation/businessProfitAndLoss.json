@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "An array of objects summarising the profit and loss position for business income sources. The enum in the incomeSourceType will determine the business type.\n\nWhen the incomeSourceType is \"self-employment\", totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
+  "description": "An array of objects summarising the profit and loss position for business income sources. The enum in the incomeSourceType will determine the business type. When the incomeSourceType is \"self-employment\", totalExpenses and totalAdditions may be negative amounts. Other business sources will continue to return positive amounts.",
   "type": "array",
   "items": {
     "type": "object",
@@ -17,8 +17,9 @@
       },
       "incomeSourceName": {
         "title": "incomeSourceName",
-        "description": "The unique identifier of the income source.",
-        "type": "string"
+        "description": "The name of the income source.",
+        "type": "string",
+        "example": "ABC-123 Ltd."
       },
       "totalIncome": {
         "title": "totalIncome",
@@ -85,7 +86,7 @@
       },
       "taxableProfit": {
         "title": "taxableProfit",
-        "description": "The adjusted Income Tax loss after all additions and deductions have been applied for the business. This value must be between 0 and 99999999999. No decimals.",
+        "description": "The taxable profit after all additions and deductions have been applied for the business. This value must be between 0 and 99999999999. No decimals.",
         "type": "integer",
         "multipleOf": 1,
         "minimum": 0,
