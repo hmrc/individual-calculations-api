@@ -16,9 +16,11 @@
 
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{Format, Json, OFormat}
+import v3.models.response.common.ReliefsClaimedType
+import v3.models.response.common.ReliefsClaimedType._
 
-case class ReliefsClaimed(`type`: String,
+case class ReliefsClaimed(`type`: ReliefsClaimedType,
                           amountClaimed: Option[BigDecimal],
                           allowableAmount: Option[BigDecimal],
                           amountUsed: Option[BigDecimal],
@@ -26,5 +28,19 @@ case class ReliefsClaimed(`type`: String,
                           reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
 
 object ReliefsClaimed {
+
+  implicit val reliefClaimedTypeFormat: Format[ReliefsClaimedType] =
+    ReliefsClaimedType.formatRestricted(
+      `vctSubscriptions`,
+      `eisSubscriptions`,
+      `communityInvestment`,
+      `seedEnterpriseInvestment`,
+      `socialEnterpriseInvestment`,
+      `maintenancePayments`,
+      `deficiencyRelief`,
+      `nonDeductibleLoanInterest`,
+      `qualifyingDistributionRedemptionOfSharesAndSecurities`
+    )
+
   implicit val format: OFormat[ReliefsClaimed] = Json.format[ReliefsClaimed]
 }
