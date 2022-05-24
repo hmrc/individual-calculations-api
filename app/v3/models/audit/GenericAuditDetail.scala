@@ -44,7 +44,7 @@ object GenericAuditDetail {
       (JsPath \ "httpStatusCode").write[Int] and
       (JsPath \ "calculationId").writeNullable[String] and
       (JsPath \ "errorCodes").writeNullable[Seq[String]]
-    )(unlift(GenericAuditDetail.unapply))
+  )(unlift(GenericAuditDetail.unapply))
 
   def apply(userDetails: UserDetails,
             pathParams: Map[String, String],
@@ -52,15 +52,16 @@ object GenericAuditDetail {
             `X-CorrelationId`: String,
             auditResponse: AuditResponse): GenericAuditDetail = {
 
-    val resOutcome = if(auditResponse.errors.exists(x => x.nonEmpty)){ "error"} else { "success" }
-    val resData : Option[String] = auditResponse.body match {
+    val resOutcome = if (auditResponse.errors.exists(x => x.nonEmpty)) { "error" }
+    else { "success" }
+    val resData: Option[String] = auditResponse.body match {
       case Some(value) => (value \ "calculationId").asOpt[String]
-      case _ => None
+      case _           => None
     }
     val errorCodes: Option[Seq[String]] = auditResponse.errors.flatMap {
-      case Nil => None
-      case err::Nil => Some(Seq(err.errorCode))
-      case errs => Some(errs.map(err => err.errorCode))
+      case Nil        => None
+      case err :: Nil => Some(Seq(err.errorCode))
+      case errs       => Some(errs.map(err => err.errorCode))
     }
 
     GenericAuditDetail(
@@ -76,4 +77,5 @@ object GenericAuditDetail {
       errorCodes = errorCodes
     )
   }
+
 }

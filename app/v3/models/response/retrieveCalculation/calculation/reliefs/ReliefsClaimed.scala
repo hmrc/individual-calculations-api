@@ -17,8 +17,9 @@
 package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
+import v3.models.response.common.ReliefsClaimedType
 
-case class ReliefsClaimed(`type`: String,
+case class ReliefsClaimed(`type`: ReliefsClaimedType,
                           amountClaimed: Option[BigDecimal],
                           allowableAmount: Option[BigDecimal],
                           amountUsed: Option[BigDecimal],

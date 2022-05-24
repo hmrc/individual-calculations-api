@@ -25,7 +25,7 @@ case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[IncomeSourceTyp
                                         countryCode: String,
                                         foreignIncome: BigDecimal,
                                         foreignTax: Option[BigDecimal],
-                                        dtaRate: Option[BigInt],
+                                        dtaRate: Option[BigDecimal],
                                         dtaAmount: Option[BigDecimal],
                                         ukLiabilityOnIncome: Option[BigDecimal],
                                         foreignTaxCredit: BigDecimal,

@@ -334,7 +334,7 @@
                 "example": "2017.58"
               },
               "dtaRate": {
-                "description": "Defines a percentage rate for Double Tax Agreement.",
+                "description": "Defines a percentage rate for Double Tax Agreement. This value must be between 0 and 100.00 up to 2 decimal places.",
                 "type": "number",
                 "example": "20.99"
               },
