@@ -22,28 +22,27 @@ import v3.models.response.common.ReliefsClaimedType._
 
 class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-
   testReads[ReliefsClaimedType](
-    "vctSubscriptions"                      -> `vctSubscriptions`,
-    "eisSubscriptions"                                      -> `eisSubscriptions`,
-    "communityInvestment"                                   -> `communityInvestment`,
-    "seedEnterpriseInvestment"                              -> `seedEnterpriseInvestment`,
-    "socialEnterpriseInvestment"                            -> `socialEnterpriseInvestment`,
-    "maintenancePayments"                                   -> `maintenancePayments`,
-    "deficiencyRelief"                                      -> `deficiencyRelief`,
-    "nonDeductableLoanInterest"                             -> `nonDeductibleLoanInterest`,
-    "qualifyingDistributionRedemptionOfSharesAndSecurities" -> `qualifyingDistributionRedemptionOfSharesAndSecurities`
+    "vctSubscriptions"                      -> vctSubscriptions,
+    "eisSubscriptions"                                      -> eisSubscriptions,
+    "communityInvestment"                                   -> communityInvestment,
+    "seedEnterpriseInvestment"                              -> seedEnterpriseInvestment,
+    "socialEnterpriseInvestment"                            -> socialEnterpriseInvestment,
+    "maintenancePayments"                                   -> maintenancePayments,
+    "deficiencyRelief"                                      -> deficiencyRelief,
+    "nonDeductableLoanInterest"                             -> nonDeductibleLoanInterest,
+    "qualifyingDistributionRedemptionOfSharesAndSecurities" -> qualifyingDistributionRedemptionOfSharesAndSecurities
   )
 
   testWrites[ReliefsClaimedType](
-    `vctSubscriptions`                                      -> "vctSubscriptions",
-    `eisSubscriptions`                                      -> "eisSubscriptions",
-    `communityInvestment`                                   -> "communityInvestment",
-    `seedEnterpriseInvestment`                              -> "seedEnterpriseInvestment",
-    `socialEnterpriseInvestment`                            -> "socialEnterpriseInvestment",
-    `maintenancePayments`                                   -> "maintenancePayments",
-    `deficiencyRelief`                                      -> "deficiencyRelief",
-    `nonDeductibleLoanInterest`                             -> "nonDeductibleLoanInterest",
-    `qualifyingDistributionRedemptionOfSharesAndSecurities` -> "qualifyingDistributionRedemptionOfSharesAndSecurities"
+    vctSubscriptions                                      -> "vctSubscriptions",
+    eisSubscriptions                                      -> "eisSubscriptions",
+    communityInvestment                                   -> "communityInvestment",
+    seedEnterpriseInvestment                              -> "seedEnterpriseInvestment",
+    socialEnterpriseInvestment                            -> "socialEnterpriseInvestment",
+    maintenancePayments                                   -> "maintenancePayments",
+    deficiencyRelief                                      -> "deficiencyRelief",
+    nonDeductibleLoanInterest                             -> "nonDeductibleLoanInterest",
+    qualifyingDistributionRedemptionOfSharesAndSecurities -> "qualifyingDistributionRedemptionOfSharesAndSecurities"
   )
 }

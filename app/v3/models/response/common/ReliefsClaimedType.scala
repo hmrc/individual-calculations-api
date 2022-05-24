@@ -16,39 +16,34 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.{Format, JsResult, JsString, JsValue, Json, Reads, Writes}
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
 sealed trait ReliefsClaimedType
 
 object ReliefsClaimedType {
-  case object `vctSubscriptions`                                      extends ReliefsClaimedType
-  case object `eisSubscriptions`                                      extends ReliefsClaimedType
-  case object `communityInvestment`                                   extends ReliefsClaimedType
-  case object `seedEnterpriseInvestment`                              extends ReliefsClaimedType
-  case object `socialEnterpriseInvestment`                            extends ReliefsClaimedType
-  case object `maintenancePayments`                                   extends ReliefsClaimedType
-  case object `deficiencyRelief`                                      extends ReliefsClaimedType
-  case object `nonDeductibleLoanInterest`                             extends ReliefsClaimedType
-  case object `qualifyingDistributionRedemptionOfSharesAndSecurities` extends ReliefsClaimedType
+  case object vctSubscriptions                                      extends ReliefsClaimedType
+  case object eisSubscriptions                                      extends ReliefsClaimedType
+  case object communityInvestment                                   extends ReliefsClaimedType
+  case object seedEnterpriseInvestment                              extends ReliefsClaimedType
+  case object socialEnterpriseInvestment                            extends ReliefsClaimedType
+  case object maintenancePayments                                   extends ReliefsClaimedType
+  case object deficiencyRelief                                      extends ReliefsClaimedType
+  case object nonDeductibleLoanInterest                             extends ReliefsClaimedType
+  case object qualifyingDistributionRedemptionOfSharesAndSecurities extends ReliefsClaimedType
 
-  implicit val reliefsClaimedTypeWrites: Writes[ReliefsClaimedType] = Enums.writes[ReliefsClaimedType]
+  implicit val writes: Writes[ReliefsClaimedType] = Enums.writes[ReliefsClaimedType]
 
   implicit val reads: Reads[ReliefsClaimedType] = Enums.readsUsing {
-    case "vctSubscriptions"                                      => `vctSubscriptions`
-    case "eisSubscriptions"                                      => `eisSubscriptions`
-    case "communityInvestment"                                   => `communityInvestment`
-    case "seedEnterpriseInvestment"                              => `seedEnterpriseInvestment`
-    case "socialEnterpriseInvestment"                            => `socialEnterpriseInvestment`
-    case "maintenancePayments"                                   => `maintenancePayments`
-    case "deficiencyRelief"                                      => `deficiencyRelief`
-    case "nonDeductableLoanInterest"                             => `nonDeductibleLoanInterest`
-    case "qualifyingDistributionRedemptionOfSharesAndSecurities" => `qualifyingDistributionRedemptionOfSharesAndSecurities`
-  }
-
-  def formatRestricted(types: ReliefsClaimedType*): Format[ReliefsClaimedType] = new Format[ReliefsClaimedType] {
-    override def writes(o: ReliefsClaimedType): JsString            = Json.toJson(o)(reliefsClaimedTypeWrites).as[JsString]
-    override def reads(json: JsValue): JsResult[ReliefsClaimedType] = json.validate[ReliefsClaimedType](Enums.readsRestricted(types: _*))
+    case "vctSubscriptions"                                      => vctSubscriptions
+    case "eisSubscriptions"                                      => eisSubscriptions
+    case "communityInvestment"                                   => communityInvestment
+    case "seedEnterpriseInvestment"                              => seedEnterpriseInvestment
+    case "socialEnterpriseInvestment"                            => socialEnterpriseInvestment
+    case "maintenancePayments"                                   => maintenancePayments
+    case "deficiencyRelief"                                      => deficiencyRelief
+    case "nonDeductableLoanInterest"                             => nonDeductibleLoanInterest
+    case "qualifyingDistributionRedemptionOfSharesAndSecurities" => qualifyingDistributionRedemptionOfSharesAndSecurities
   }
 
 }
