@@ -1,0 +1,43 @@
+components:
+  parameters:
+    acceptHeader:
+      name: "Accept"
+      in: header
+      description: |
+        Specifies the response format and the version of the API to be used.
+      schema:
+        type: string
+        enum:
+          - "application/vnd.hmrc.3.0+json"
+      required: true
+
+    contentTypeJson:
+      name: "Content-Type"
+      in: header
+      description: |
+        Specifies the format of the request body, which must be JSON.
+      schema:
+        type: string
+        enum:
+          - "application/json"
+      required: true
+
+    testScenarioHeader:
+      name: "Gov-Test-Scenario"
+      in: header
+      description: |
+        Only in sandbox environment. See Test Data table for all header values.
+      schema:
+        type: string
+        example: "-"
+      required: false
+    
+    correlationId:
+      in: header
+      type: string
+      description: |
+        Unique ID for operation tracking
+        String, 36 characters.
+      schema:
+        type: string
+        example: c75f40a6-a3df-4429-a697-471eeec46435
