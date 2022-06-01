@@ -13,7 +13,15 @@
         "example": "XAIS12345678910"
       },
       "incomeSourceType": {
-        "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+        "description": "The income source type.",
+        "type": "string",
+        "enum": [
+          "self-employment",
+          "uk-property-non-fhl",
+          "uk-property-fhl",
+          "foreign-property",
+          "foreign-property-fhl-eea"
+        ]
       },
       "incomeSourceName": {
         "title": "incomeSourceName",

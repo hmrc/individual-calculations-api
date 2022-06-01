@@ -29,14 +29,32 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the claim.",
-            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+            "type": "string",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "uk-property-fhl",
+              "foreign-property",
+              "foreign-property-fhl-eea"
+            ]
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "claimType": {
-            "$ref": "../common_defs.json#/definitions/claimType"
+            "description": "The type of claim made.",
+            "type": "string",
+            "enum": [
+              "carry-forward",
+              "carry-sideways",
+              "carry-forward-to-carry-sideways",
+              "carry-sideways-fhl",
+              "carry-backwards",
+              "carry-backwards-general-income"
+            ]
           },
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
@@ -45,7 +63,9 @@
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "lossAmountUsed": {
             "description": "Loss amount used. This value must be between 0 and 99999999999. No decimals.",
@@ -64,7 +84,12 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../common_defs.json#/definitions/lossType"
+            "description": "The type of loss.",
+            "type": "string",
+            "enum": [
+              "income",
+              "class4nics"
+            ]
           }
         },
         "additionalProperties": false,
@@ -93,11 +118,20 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the unclaimed loss.",
-            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+            "type": "string",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "uk-property-fhl",
+              "foreign-property",
+              "foreign-property-fhl-eea"
+            ]
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -108,7 +142,12 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../common_defs.json#/definitions/lossType"
+            "description": "The type of loss.",
+            "type": "string",
+            "enum": [
+              "income",
+              "class4nics"
+            ]
           }
         },
         "additionalProperties": false,
@@ -145,18 +184,38 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the carried forward loss.",
-            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+            "type": "string",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "uk-property-fhl",
+              "foreign-property",
+              "foreign-property-fhl-eea"
+            ]
           },
           "claimType": {
-            "$ref": "../common_defs.json#/definitions/claimType"
+            "description": "The type of claim made.",
+            "type": "string",
+            "enum": [
+              "carry-forward",
+              "carry-sideways",
+              "carry-forward-to-carry-sideways",
+              "carry-sideways-fhl",
+              "carry-backwards",
+              "carry-backwards-general-income"
+            ]
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -167,7 +226,12 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../common_defs.json#/definitions/lossType"
+            "description": "The type of loss.",
+            "type": "string",
+            "enum": [
+              "income",
+              "class4nics"
+            ]
           }
         },
         "additionalProperties": false,
@@ -194,11 +258,20 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the default carried forward loss.",
-            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+            "type": "string",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "uk-property-fhl",
+              "foreign-property",
+              "foreign-property-fhl-eea"
+            ]
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -238,14 +311,32 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the claim not applied.",
-            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+            "type": "string",
+            "enum": [
+              "self-employment",
+              "uk-property-non-fhl",
+              "uk-property-fhl",
+              "foreign-property",
+              "foreign-property-fhl-eea"
+            ]
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "$ref": "#/definitions/taxYear"
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
           },
           "claimType": {
-            "$ref": "../common_defs.json#/definitions/claimType"
+            "description": "The type of claim made.",
+            "type": "string",
+            "enum": [
+              "carry-forward",
+              "carry-sideways",
+              "carry-forward-to-carry-sideways",
+              "carry-sideways-fhl",
+              "carry-backwards",
+              "carry-backwards-general-income"
+            ]
           }
         },
         "additionalProperties": false,
@@ -259,12 +350,5 @@
       }
     }
   },
-  "additionalProperties": false,
-  "definitions": {
-    "taxYear": {
-      "id": "tax-year",
-      "type": "string",
-      "example": "2020-21"
-    }
-  }
+  "additionalProperties": false
 }
