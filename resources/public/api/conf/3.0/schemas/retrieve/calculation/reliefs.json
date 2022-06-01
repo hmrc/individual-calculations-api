@@ -256,7 +256,7 @@
           }
         },
         "required": [
-         "type"
+          "type"
         ],
         "additionalProperties": false
       }

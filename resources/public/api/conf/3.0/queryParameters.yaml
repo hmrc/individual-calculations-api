@@ -1,0 +1,21 @@
+components:
+  parameters:
+    taxYear:
+      name: taxYear
+      in: query
+      description: |
+        The tax year the data applies to, for example, 2021-22. The start year and end year must not span two tax years. The minimum tax year is 2017-18. No gaps are allowed, for example, 2020-22 is not valid.
+      schema:
+        type: string
+        example: 2017-18
+    finalDeclaration:
+      name: finalDeclaration
+      in: query
+      description: |
+        Must be sent as “true” when the user is ready to submit a final declaration. Acceptable values are “true” and “false”.
+      schema:
+        type: boolean
+        enum: [
+          true,
+          false
+        ]

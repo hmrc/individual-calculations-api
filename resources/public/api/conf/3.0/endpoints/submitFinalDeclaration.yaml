@@ -1,0 +1,91 @@
+post:
+  summary: Submit a Self Assessment Final Declaration [test only]
+  description: |
+    This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. A National Insurance number, tax year and calculation ID must be provided.
+
+    Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+    | Header Value (Gov-Test-Scenario) | Scenario                                                                           |
+    |----------------------------------|------------------------------------------------------------------------------------|
+    | N/A - DEFAULT                    | Simulates success response.                                                        |
+    | INCOME_SOURCES_CHANGED           | Simulates the scenario where information relating to an income source has changed. |
+    | RECENT_SUBMISSIONS_EXIST         | Simulates the scenario where more recent submission exists.                        |
+    | RESIDENCY_CHANGED                | Simulates the scenario where residency has changed.                                |
+    | FINAL_DECLARATION_RECEIVED       | Simulates the scenario where a final declaration has already been received.        |
+    | INCOME_SOURCES_INVALID           | Simulates the scenario where a valid income source can not be found.               |
+    | NO_INCOME_SUBMISSIONS_EXIST      | Simulates the scenario where no income submissions exist.                          |
+    | SUBMISSION_FAILED                | Simulates the scenario where a submission has failed.                              |
+    | NOT_FOUND                        | Simulates the scenario where the supplied income source could not be found.        |
+
+
+  tags:
+    - Final Declaration
+
+  parameters:
+    - $ref: '../pathParameters.yaml#/components/parameters/nino'
+    - $ref: '../pathParameters.yaml#/components/parameters/taxYear'
+    - $ref: '../pathParameters.yaml#/components/parameters/calculationId'
+    - $ref: '../headers.yaml#/components/parameters/acceptHeader'
+    - $ref: '../headers.yaml#/components/parameters/testScenarioHeader'
+
+  security:
+    - User Restricted:
+        - write:self-assessment
+
+  responses:
+    "204":
+      description: Successfully submit final declaration
+      headers:
+        X-CorrelationId:
+          $ref: '../headers.yaml#/components/parameters/correlationId'
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            FORMAT_NINO:
+              $ref: '../errors.yaml#/components/examples/formatNino'
+            FORMAT_TAX_YEAR:
+              $ref: '../errors.yaml#/components/examples/formatTaxYear'
+            FORMAT_CALC_ID:
+              $ref: '../errors.yaml#/components/examples/formatCalcId'
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearNotSupported'
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearRangeInvalid'
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: '../errors.yaml#/components/examples/ruleIncorrectGTS'
+    "403":
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            RULE_INCOME_SOURCES_CHANGED:
+              $ref: '../errors.yaml#/components/examples/ruleIncomeSourcesChanged'
+            RULE_RECENT_SUBMISSIONS_EXIST:
+              $ref: '../errors.yaml#/components/examples/ruleRecentSubmissionsExist'
+            RULE_RESIDENCY_CHANGED:
+              $ref: '../errors.yaml#/components/examples/ruleResidencyChanged'
+            RULE_FINAL_DECLARATION_RECEIVED:
+              $ref: '../errors.yaml#/components/examples/ruleFinalDeclarationReceived'
+            RULE_INCOME_SOURCES_INVALID:
+              $ref: '../errors.yaml#/components/examples/ruleIncomeSourcesInvalid'
+            RULE_NO_INCOME_SUBMISSIONS_EXIST:
+              $ref: '../errors.yaml#/components/examples/ruleNoIncomeSubmissionExists'
+            RULE_SUBMISSION_FAILED:
+              $ref: '../errors.yaml#/components/examples/ruleSubmissionFailed'
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: '../errors.yaml#/components/examples/clientOrAgentNotAuthorised'
+    "404":
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: '../errors.yaml#/components/examples/notFound'

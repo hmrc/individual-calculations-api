@@ -40,7 +40,12 @@
                 "example": "5003.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [
@@ -68,7 +73,12 @@
                 "example": "5004.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "additionalProperties": false,
@@ -106,7 +116,12 @@
                 "example": "4.85"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [
@@ -140,7 +155,12 @@
                 "example": "5009.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [
@@ -173,7 +193,12 @@
                 "example": "5011.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [
@@ -201,7 +226,12 @@
                 "example": "5012.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [
@@ -229,7 +259,12 @@
                 "example": "5013.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "description": "The source of the data.",
+                "type": "string",
+                "enum": [
+                  "customer",
+                  "HMRC HELD"
+                ]
               }
             },
             "required": [

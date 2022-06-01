@@ -1,0 +1,75 @@
+post:
+  summary: Trigger a Self Assessment Tax Calculation [test only]
+  description: |
+    This endpoint allows the user to trigger a self assessment tax calculation for a given tax year. It should be called whenever income data is updated through a periodic or annual endpoint. To trigger a final declaration self assessment tax calculation, you must supply the finalDeclaration query parameter as true.
+
+    A National Insurance number and tax year must be provided. The tax calculation process is asynchronous, so it is recommended you wait at least 5 seconds before calling the retrieval endpoint. The result of the calculation can be seen using the “Retrieve a Self Assessment Tax Calculation” endpoint.
+
+    Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+    | Header Value (Gov-Test-Scenario) | Scenario                                                                    |
+    |----------------------------------|-----------------------------------------------------------------------------|
+    | N/A - DEFAULT                    | Simulates success response.                                                 |
+    | NO_INCOME_SUBMISSIONS_EXIST      | Simulates the scenario where no income submissions exist for the tax year.  |
+    | FINAL_DECLARATION_RECEIVED       | Simulates the scenario where a final declaration has already been received. |
+
+  tags:
+    - Tax Calculations
+
+  parameters:
+    - $ref: '../pathParameters.yaml#/components/parameters/nino'
+    - $ref: '../pathParameters.yaml#/components/parameters/taxYear'
+    - $ref: '../queryParameters.yaml#/components/parameters/finalDeclaration'
+    - $ref: '../headers.yaml#/components/parameters/acceptHeader'
+    - $ref: '../headers.yaml#/components/parameters/testScenarioHeader'
+
+  security:
+    - User Restricted:
+        - write:self-assessment
+
+  responses:
+    "202":
+      description: Successfully triggered tax calculation
+      headers:
+        X-CorrelationId:
+          $ref: '../headers.yaml#/components/parameters/correlationId'
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/trigger/trigger_response.json'
+          examples:
+            example-1:
+              description: Trigger Self Assessment Tax Calculations
+              externalValue: './examples/trigger/trigger_response.json'
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            FORMAT_NINO:
+              $ref: '../errors.yaml#/components/examples/formatNino'
+            FORMAT_TAX_YEAR:
+              $ref: '../errors.yaml#/components/examples/formatTaxYear'
+            FORMAT_FINAL_DECLARATION:
+              $ref: '../errors.yaml#/components/examples/formatFinalDeclaration'
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearNotSupported'
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearRangeInvalid'
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: '../errors.yaml#/components/examples/ruleIncorrectGTS'
+    "403":
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            RULE_NO_INCOME_SUBMISSIONS_EXIST:
+              $ref: '../errors.yaml#/components/examples/ruleNoIncomeSubmissionExists'
+            RULE_FINAL_DECLARATION_RECEIVED:
+              $ref: '../errors.yaml#/components/examples/ruleFinalDeclarationReceived'
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: '../errors.yaml#/components/examples/clientOrAgentNotAuthorised'

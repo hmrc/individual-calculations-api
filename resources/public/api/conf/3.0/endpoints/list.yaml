@@ -1,0 +1,74 @@
+get:
+  summary: List Self Assessment Tax Calculations [test only]
+  description: |
+    This endpoint allows the developer to list their Self Assessment tax calculations for a given NINO and tax year. The National Insurance number must be provided.
+
+    Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+    | Header Value (Gov-Test-Scenario) | Scenario                                       |
+    |----------------------------------|------------------------------------------------|
+    | N/A - DEFAULT                    | Simulates success response.                    |
+    | NOT_FOUND                        | Simulates the scenario where no data is found. |
+
+  tags:
+    - Tax Calculations
+
+  parameters:
+    - $ref: '../pathParameters.yaml#/components/parameters/nino'
+    - $ref: '../queryParameters.yaml#/components/parameters/taxYear'
+    - $ref: '../headers.yaml#/components/parameters/acceptHeader'
+    - $ref: '../headers.yaml#/components/parameters/testScenarioHeader'
+
+  security:
+    - User Restricted:
+        - read:self-assessment
+
+  responses:
+    "200":
+      description: Successfully retrieved tax calculation list
+      headers:
+        X-CorrelationId:
+          $ref: '../headers.yaml#/components/parameters/correlationId'
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/list/list_response.json'
+          examples:
+            example-1:
+              description: List Self Assessment Tax Calculations
+              externalValue: './examples/list/list_response.json'
+    "400":
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            FORMAT_NINO:
+              $ref: '../errors.yaml#/components/examples/formatNino'
+            FORMAT_TAX_YEAR:
+              $ref: '../errors.yaml#/components/examples/formatTaxYear'
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearNotSupported'
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: '../errors.yaml#/components/examples/ruleTaxYearRangeInvalid'
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: '../errors.yaml#/components/examples/ruleIncorrectGTS'
+    "403":
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: '../errors.yaml#/components/examples/clientOrAgentNotAuthorised'
+    "404":
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/error-response.yaml'
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: '../errors.yaml#/components/examples/notFoundList'
