@@ -20,7 +20,7 @@ get:
     - $ref: '../headers.yaml#/components/parameters/testScenarioHeader'
 
   security:
-    - userRestricted:
+    - User Restricted:
         - read:self-assessment
 
   responses:
