@@ -35,7 +35,7 @@ servers:
 
 components:
   securitySchemes:
-    User Restricted:
+    User-Restricted:
       type: oauth2
       description: HMRC supports OAuth 2.0 for authenticating User-restricted API requests
       flows:

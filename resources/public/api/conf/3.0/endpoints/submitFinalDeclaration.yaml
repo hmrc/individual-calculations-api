@@ -29,7 +29,7 @@ post:
     - $ref: '../headers.yaml#/components/parameters/testScenarioHeader'
 
   security:
-    - User Restricted:
+    - User-Restricted:
         - write:self-assessment
 
   responses:
