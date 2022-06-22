@@ -16,6 +16,10 @@
             <td><p>Simulates the scenario where no data is found.</p></td>
         </tr>
         <tr>
+            <td><p>ERROR_MESSAGES_EXIST</p></td>
+            <td><p>Simulates the scenario where errors exist and no calculation has been generated.</p></td>
+        </tr>
+        <tr>
             <td><p>UK_MULTIPLE_INCOMES_EXAMPLE</p></td>
             <td><p>Simulates an example tax calculation with realistic data values, for a UK FHL Property business with Savings and Dividends.</p></td>
         </tr>
