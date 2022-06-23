@@ -48,12 +48,7 @@
             "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
           },
           "source": {
-            "description": "The source of the data.",
-            "type": "string",
-            "enum": [
-              "customer",
-              "HMRC HELD"
-            ]
+            "$ref": "../common_defs.json#/definitions/dataSource"
           },
           "occupationalPension": {
             "description": "A boolean to identify whether the occupational pension is true or false.",
@@ -79,15 +74,11 @@
           },
           "startDate": {
             "description": "The date the employment began.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "dateEmploymentEnded": {
             "description": "The date the employment ended.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "taxablePayToDate": {
             "description": "Total taxable pay to date. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -525,5 +516,12 @@
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "definitions": {
+    "date": {
+      "id": "full-date",
+      "type": "string",
+      "example": "2020-01-01"
+    }
+  }
 }

@@ -5,6 +5,40 @@
   "properties": {
     "personalInformation": {
       "description": "Object containing personal information about the taxpayer for whom the calculation was performed.",
+      "$ref": "#/definitions/personalInformation"
+    },
+    "incomeSources": {
+      "$ref": "#/definitions/incomeSources"
+    },
+    "annualAdjustments": {
+      "$ref": "#/definitions/annualAdjustments"
+    },
+    "lossesBroughtForward": {
+      "$ref": "#/definitions/lossesBroughtForward"
+    },
+    "claims": {
+      "$ref": "#/definitions/claims"
+    },
+    "constructionIndustryScheme": {
+      "$ref": "#/definitions/constructionIndustryScheme"
+    },
+    "allowancesReliefsAndDeductions": {
+      "$ref": "#/definitions/allowancesReliefsAndDeductions"
+    },
+    "pensionContributionAndCharges": {
+      "$ref": "#/definitions/pensionContributionAndCharges"
+    },
+    "other": {
+      "$ref": "#/definitions/other"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "personalInformation",
+    "incomeSources"
+  ],
+  "definitions": {
+    "personalInformation": {
       "type": "object",
       "properties": {
         "identifier": {
@@ -14,9 +48,7 @@
         },
         "dateOfBirth": {
           "description": "The date of birth of the taxpayer.",
-          "id": "full-date",
-          "type": "string",
-          "example": "2020-01-01"
+          "$ref": "#/definitions/date"
         },
         "taxRegime": {
           "description": "The tax regime which applies to this calculation.",
@@ -29,32 +61,10 @@
         },
         "statePensionAgeDate": {
           "description": "The date the taxpayer qualifies for state pension.",
-          "id": "full-date",
-          "type": "string",
-          "example": "2020-01-01"
+          "$ref": "#/definitions/date"
         },
         "studentLoanPlan": {
-          "description": "An array containing details about student loan plans.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "planType": {
-                "description": "Student Loan plan type.",
-                "type": "string",
-                "enum": [
-                  "plan1",
-                  "plan2",
-                  "postgraduate",
-                  "plan4"
-                ]
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "planType"
-            ]
-          }
+          "$ref": "#/definitions/studentLoanPlans"
         },
         "class2VoluntaryContributions": {
           "description": "A boolean to identify the Class 2 Voluntary Contributions. This value must be true.",
@@ -81,201 +91,31 @@
         "taxRegime"
       ]
     },
+    "studentLoanPlans": {
+      "description": "An array containing details about student loan plans.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "planType": {
+            "$ref": "common_defs.json#/definitions/studentLoanPlanType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "planType"
+        ]
+      }
+    },
     "incomeSources": {
       "description": "Object containing the income sources used in the retrieved tax calculation.",
       "type": "object",
       "properties": {
         "businessIncomeSources": {
-          "description": "Array containing business income sources used in the retrieved tax calculation.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "incomeSourceId": {
-                "description": "The unique identifier of the income source.",
-                "type": "string",
-                "pattern": "^[A-Za-z0-9]{15}$",
-                "example": "XAIS12345678910"
-              },
-              "incomeSourceType": {
-                "description": "Business income source type.",
-                "type": "string",
-                "enum": [
-                  "self-employment",
-                  "uk-property-non-fhl",
-                  "uk-property-fhl",
-                  "foreign-property",
-                  "foreign-property-fhl-eea"
-                ]
-              },
-              "incomeSourceName": {
-                "description": "The name of the income source.",
-                "type": "string",
-                "example": "ABC-123 Ltd."
-              },
-              "accountingPeriodStartDate": {
-                "description": "The accounting start date of the income source.",
-                "id": "full-date",
-                "type": "string",
-                "example": "2020-01-01"
-              },
-              "accountingPeriodEndDate": {
-                "description": "The accounting end date of the income source.",
-                "id": "full-date",
-                "type": "string",
-                "example": "2020-01-01"
-              },
-              "source": {
-                "description": "The source of the income data used in this calculation.",
-                "type": "string",
-                "enum": [
-                  "MTD-SA"
-                ]
-              },
-              "latestPeriodEndDate": {
-                "description": "The end date of the period for which income has been submitted for the income source.",
-                "id": "full-date",
-                "type": "string",
-                "example": "2020-01-01"
-              },
-              "latestReceivedDateTime": {
-                "description": "The latest date & time when this income source had data submitted against it, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                "type": "string",
-                "example": "2019-02-15T09:35:15.094Z"
-              },
-              "finalised": {
-                "description": "A boolean to identify whether the income source is finalised. This value must be true or false.",
-                "type": "boolean",
-                "example": "false"
-              },
-              "finalisationTimestamp": {
-                "description": "The timestamp of when finalisation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                "type": "string",
-                "example": "2019-02-15T09:35:15.094Z"
-              },
-              "submissionPeriods": {
-                "description": "Array containing submission periods for the business income source.",
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "periodId": {
-                      "description": "An identifier for the period, unique to the customer.",
-                      "type": "string",
-                      "example": "001"
-                    },
-                    "startDate": {
-                      "description": "The first day the period covers.",
-                      "id": "full-date",
-                      "type": "string",
-                      "example": "2020-01-01"
-                    },
-                    "endDate": {
-                      "description": "The last day the period covers.",
-                      "id": "full-date",
-                      "type": "string",
-                      "example": "2020-01-01"
-                    },
-                    "receivedDateTime": {
-                      "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                      "type": "string",
-                      "example": "2019-02-15T09:35:15.094Z"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "startDate",
-                    "endDate",
-                    "receivedDateTime"
-                  ]
-                }
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "incomeSourceId",
-              "incomeSourceType",
-              "accountingPeriodStartDate",
-              "accountingPeriodEndDate",
-              "source",
-              "latestPeriodEndDate",
-              "latestReceivedDateTime"
-            ]
-          }
+          "$ref": "#/definitions/businessIncomeSources"
         },
         "nonBusinessIncomeSources": {
-          "description": "Array containing non-business income sources used in the retrieved tax calculation.",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "incomeSourceId": {
-                "description": "The unique identifier of the non-business income source.",
-                "type": "string",
-                "pattern": "^[A-Za-z0-9]{15}$",
-                "example": "XAIS12345678910"
-              },
-              "incomeSourceType": {
-                "description": "Non-business income source type.",
-                "type": "string",
-                "enum": [
-                  "employments",
-                  "foreign-dividends",
-                  "uk-savings-and-gains",
-                  "uk-dividends",
-                  "state-benefits",
-                  "gains-on-life-policies",
-                  "foreign-savings-and-gains",
-                  "other-dividends",
-                  "uk-securities",
-                  "other-income",
-                  "foreign-pension",
-                  "non-paye-income",
-                  "capital-gains-tax",
-                  "charitable-giving"
-                ]
-              },
-              "incomeSourceName": {
-                "description": "The name of the income source.",
-                "example": "Savings Account"
-              },
-              "startDate": {
-                "description": "The start date of the income source. ",
-                "id": "full-date",
-                "type": "string",
-                "example": "2020-01-01"
-              },
-              "endDate": {
-                "description": "The end date of the income source.",
-                "id": "full-date",
-                "type": "string",
-                "example": "2020-01-01"
-              },
-              "source": {
-                "description": "The source of the income data used in this calculation.",
-                "type": "string",
-                "enum": [
-                  "MTD-SA"
-                ]
-              },
-              "periodId": {
-                "description": "An identifier for the period, unique to the customer.",
-                "type": "string",
-                "example": "001"
-              },
-              "latestReceivedDateTime": {
-                "description": "The date and time when the latest income data was received by the source. This field may not be present for employments for which no pay data has been received. In ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                "type": "string",
-                "example": "2019-02-15T09:35:15.094Z"
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "incomeSourceType",
-              "startDate",
-              "source"
-            ]
-          }
+          "$ref": "#/definitions/nonBusinessIncomeSources"
         }
       },
       "additionalProperties": false
@@ -288,20 +128,11 @@
         "properties": {
           "incomeSourceId": {
             "description": "The unique identifier of the annual adjustment income source.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "XAIS12345678910"
+            "$ref": "#/definitions/incomeSourceId"
           },
           "incomeSourceType": {
             "description": "Business income source type.",
-            "type": "string",
-            "enum": [
-              "self-employment",
-              "uk-property-non-fhl",
-              "uk-property-fhl",
-              "foreign-property",
-              "foreign-property-fhl-eea"
-            ]
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "bsasId": {
             "description": "The unique identifier of the annual adjustment.",
@@ -311,8 +142,7 @@
           },
           "receivedDateTime": {
             "description": "The latest date of when the adjustment was created, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           },
           "applied": {
             "description": "A boolean to identify whether the adjustment has been applied to this calculation. This value must be true or false.",
@@ -338,52 +168,31 @@
         "properties": {
           "lossId": {
             "description": "The unique identifier of the loss which the customer declared when joining MTD.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "AAZZ1234567890a"
+            "$ref": "#/definitions/lossId"
           },
           "incomeSourceId": {
             "description": "The unique identifier of the loss brought forward income source.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "XAIS12345678910"
+            "$ref": "#/definitions/incomeSourceId"
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "type": "string",
-            "enum": [
-              "self-employment",
-              "uk-property-non-fhl",
-              "uk-property-fhl",
-              "foreign-property",
-              "foreign-property-fhl-eea"
-            ]
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "submissionTimestamp": {
             "description": "The date and time the loss was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           },
           "lossType": {
             "description": "The type of loss.",
-            "type": "string",
-            "enum": [
-              "income",
-              "class4nics"
-            ]
+            "$ref": "common_defs.json#/definitions/lossType"
           },
           "taxYearLossIncurred": {
             "description": "The tax year that the loss was incurred.",
-            "id": "tax-year",
-            "type": "string",
-            "example": "2020-21"
+            "$ref": "#/definitions/taxYear"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 99999999999,
-            "example": "5000"
+            "$ref": "#/definitions/intPos"
           },
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
@@ -408,55 +217,31 @@
         "properties": {
           "claimId": {
             "description": "An identifier for the claim made by the taxpayer.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "1234568790ABCDE"
+            "$ref": "#/definitions/claimId"
           },
           "originatingClaimId": {
             "description": "An identifier for the claim made by the taxpayer that resulted in this claim.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "1234568790ABCDE"
+            "$ref": "#/definitions/claimId"
           },
           "incomeSourceId": {
             "description": "The unique identifier of the income source.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]{15}$",
-            "example": "XAIS12345678910"
+            "$ref": "#/definitions/incomeSourceId"
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "type": "string",
-            "enum": [
-              "self-employment",
-              "uk-property-non-fhl",
-              "uk-property-fhl",
-              "foreign-property",
-              "foreign-property-fhl-eea"
-            ]
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
           },
           "submissionTimestamp": {
             "description": "The date and time the claim was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "id": "tax-year",
-            "type": "string",
-            "example": "2020-21"
+            "$ref": "#/definitions/taxYear"
           },
           "claimType": {
             "description": "The type of claim made.",
-            "type": "string",
-            "enum": [
-              "carry-forward",
-              "carry-sideways",
-              "carry-forward-to-carry-sideways",
-              "carry-sideways-fhl",
-              "carry-backwards",
-              "carry-backwards-general-income"
-            ]
+            "$ref": "common_defs.json#/definitions/claimType"
           },
           "sequence": {
             "description": "The order in which this claim is to be used for a carry-sideways claim. It must be in the range 1 to 99. The sequence must start with 1 and have no gaps.",
@@ -500,20 +285,15 @@
               "properties": {
                 "deductionFromDate": {
                   "description": "The from date for when the deduction was made within the CIS tax year period.",
-                  "id": "full-date",
-                  "type": "string",
-                  "example": "2020-01-01"
+                  "$ref": "#/definitions/date"
                 },
                 "deductionToDate": {
                   "description": "The to date for when the deduction was made within the CIS tax year period.",
-                  "id": "full-date",
-                  "type": "string",
-                  "example": "2020-01-01"
+                  "$ref": "#/definitions/date"
                 },
                 "submissionTimestamp": {
                   "description": "The date and time the period information was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                  "type": "string",
-                  "example": "2019-02-15T09:35:15.094Z"
+                  "$ref": "#/definitions/timestamp"
                 },
                 "source": {
                   "description": "Identifies whether the period information was submitted by the contractor or customer.",
@@ -525,10 +305,7 @@
                 },
                 "deductionAmount": {
                   "description": "The amount of tax deducted by the contractor. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 99999999999.99,
-                  "example": "5000.99"
+                  "$ref": "#/definitions/monetaryPos"
                 }
               },
               "additionalProperties": false,
@@ -544,8 +321,7 @@
         },
         "additionalProperties": false,
         "required": [
-          "employerRef",
-          "periodData"
+          "employerRef", "periodData"
         ]
       }
     },
@@ -568,27 +344,19 @@
           },
           "submittedTimestamp": {
             "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           },
           "startDate": {
             "description": "The start date for the period of the submission.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "endDate": {
             "description": "The end date for the period of the submission.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "source": {
             "description": "The source of the income data used in this calculation.",
-            "type": "string",
-            "enum": [
-              "MTD-SA"
-            ]
+            "$ref": "#/definitions/sourceMtdOnly"
           }
         },
         "additionalProperties": false
@@ -610,28 +378,19 @@
           },
           "submissionTimestamp": {
             "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           },
           "startDate": {
             "description": "The start date of the period.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "endDate": {
             "description": "The end date of the period.",
-            "id": "full-date",
-            "type": "string",
-            "example": "2020-01-01"
+            "$ref": "#/definitions/date"
           },
           "source": {
             "description": "The source of the data.",
-            "type": "string",
-            "enum": [
-              "MTD-SA",
-              "customer"
-            ]
+            "$ref": "#/definitions/source"
           }
         },
         "additionalProperties": false,
@@ -655,8 +414,7 @@
           },
           "submittedOn": {
             "description": "The date and time when the information was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "type": "string",
-            "example": "2019-02-15T09:35:15.094Z"
+            "$ref": "#/definitions/timestamp"
           }
         },
         "additionalProperties": false,
@@ -664,11 +422,220 @@
           "type"
         ]
       }
+    },
+    "businessIncomeSources": {
+      "description": "Array containing business income sources used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "$ref": "#/definitions/incomeSourceId"
+          },
+          "incomeSourceType": {
+            "description": "Business income source type.",
+            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "type": "string",
+            "example": "ABC-123 Ltd."
+          },
+          "accountingPeriodStartDate": {
+            "description": "The accounting start date of the income source.",
+            "$ref": "#/definitions/date"
+          },
+          "accountingPeriodEndDate": {
+            "description": "The accounting end date of the income source.",
+            "$ref": "#/definitions/date"
+          },
+          "source": {
+            "description": "The source of the income data used in this calculation.",
+            "$ref": "#/definitions/sourceMtdOnly"
+          },
+          "latestPeriodEndDate": {
+            "description": "The end date of the period for which income has been submitted for the income source.",
+            "$ref": "#/definitions/date"
+          },
+          "latestReceivedDateTime": {
+            "description": "The latest date & time when this income source had data submitted against it, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "$ref": "#/definitions/timestamp"
+          },
+          "finalised": {
+            "description": "A boolean to identify whether the income source is finalised. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          },
+          "finalisationTimestamp": {
+            "description": "The timestamp of when finalisation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "$ref": "#/definitions/timestamp"
+          },
+          "submissionPeriods": {
+            "description": "Array containing submission periods for the business income source.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "periodId": {
+                  "description": "An identifier for the period, unique to the customer.",
+                  "type": "string",
+                  "example": "001"
+                },
+                "startDate": {
+                  "description": "The first day the period covers.",
+                  "$ref": "#/definitions/date"
+                },
+                "endDate": {
+                  "description": "The last day the period covers.",
+                  "$ref": "#/definitions/date"
+                },
+                "receivedDateTime": {
+                  "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+                  "$ref": "#/definitions/timestamp"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "startDate",
+                "endDate",
+                "receivedDateTime"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "accountingPeriodStartDate",
+          "accountingPeriodEndDate",
+          "source",
+          "latestPeriodEndDate",
+          "latestReceivedDateTime"
+        ]
+      }
+    },
+    "nonBusinessIncomeSources": {
+      "description": "Array containing non-business income sources used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the non-business income source.",
+            "$ref": "#/definitions/incomeSourceId"
+          },
+          "incomeSourceType": {
+            "description": "Non-business income source type.",
+            "$ref": "#/definitions/nonBusinessIncomeSourceType"
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "example": "Savings Account"
+          },
+          "startDate": {
+            "description": "The start date of the income source. ",
+            "$ref": "#/definitions/date"
+          },
+          "endDate": {
+            "description": "The end date of the income source.",
+            "$ref": "#/definitions/date"
+          },
+          "source": {
+            "description": "The source of the income data used in this calculation.",
+            "$ref": "#/definitions/sourceMtdOnly"
+          },
+          "periodId": {
+            "description": "An identifier for the period, unique to the customer.",
+            "type": "string",
+            "example": "001"
+          },
+          "latestReceivedDateTime": {
+            "description": "The date and time when the latest income data was received by the source. This field may not be present for employments for which no pay data has been received. In ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "$ref": "#/definitions/timestamp"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceType",
+          "startDate",
+          "source"
+        ]
+      }
+    },
+    "incomeSourceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "XAIS12345678910"
+    },
+    "nonBusinessIncomeSourceType": {
+      "type": "string",
+      "enum": [
+        "employments",
+        "foreign-dividends",
+        "uk-savings-and-gains",
+        "uk-dividends",
+        "state-benefits",
+        "gains-on-life-policies",
+        "foreign-savings-and-gains",
+        "other-dividends",
+        "uk-securities",
+        "other-income",
+        "foreign-pension",
+        "non-paye-income",
+        "capital-gains-tax",
+        "charitable-giving"
+      ]
+    },
+    "lossId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "AAZZ1234567890a"
+    },
+    "claimId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "1234568790ABCDE"
+    },
+    "sourceMtdOnly": {
+      "type": "string",
+      "enum": [
+        "MTD-SA"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "MTD-SA",
+        "customer"
+      ]
+    },
+    "date": {
+      "id": "full-date",
+      "type": "string",
+      "example": "2020-01-01"
+    },
+    "timestamp": {
+      "type": "string",
+      "example": "2019-02-15T09:35:15.094Z"
+    },
+    "taxYear": {
+      "id": "tax-year",
+      "type": "string",
+      "example": "2020-21"
+    },
+    "intPos": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "5000"
+    },
+    "monetaryPos": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
     }
-  },
-  "additionalProperties": false,
-  "required": [
-    "personalInformation",
-    "incomeSources"
-  ]
+  }
 }
