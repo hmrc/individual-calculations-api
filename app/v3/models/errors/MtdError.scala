@@ -153,7 +153,7 @@ object RuleRecentSubmissionsExistError
 object RuleResidencyChangedError
     extends MtdError(
       code = "RULE_RESIDENCY_CHANGED",
-      message = "Residency has changed. Perform an Intent to submit a final declaration"
+      message = "Residency has changed. Trigger a new calculation"
     )
 
 // Standard Errors
