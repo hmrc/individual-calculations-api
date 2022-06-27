@@ -11,39 +11,7 @@
       "example": "5000.99"
     },
     "payeUnderpaymentsDetail": {
-      "description": "Array containing details for PAYE-related underpayments in the retrieved tax calculation.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "description": "Coded out amount attributed to PAYE underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "type": "number",
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "example": "5000.99"
-          },
-          "relatedTaxYear": {
-            "description": "The tax year this underpayment relates to.",
-            "id": "tax-year",
-            "type": "string",
-            "example": "2020-21"
-          },
-          "source": {
-            "description": "The source of the data.",
-            "type": "string",
-            "enum": [
-              "customer",
-              "HMRC HELD"
-            ]
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "amount",
-          "relatedTaxYear"
-        ]
-      }
+      "$ref": "#/definitions/payeUnderpaymentsDetail"
     },
     "totalSelfAssessmentUnderpayments": {
       "description": "The total amount of Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -67,6 +35,42 @@
       "example": "5000.99"
     },
     "selfAssessmentUnderpaymentsDetail": {
+      "$ref": "#/definitions/selfAssessmentUnderpaymentsDetail"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "payeUnderpaymentsDetail": {
+      "description": "Array containing details for PAYE-related underpayments in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "Coded out amount attributed to PAYE underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 99999999999.99,
+            "example": "5000.99"
+          },
+          "relatedTaxYear": {
+            "description": "The tax year this underpayment relates to.",
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
+          },
+          "source": {
+            "$ref": "../common_defs.json#/definitions/dataSource"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "amount",
+          "relatedTaxYear"
+        ]
+      }
+    },
+    "selfAssessmentUnderpaymentsDetail": {
       "description": "Array containing details about Self Assessment related underpayments in the retrieved tax calculation.",
       "type": "array",
       "items": {
@@ -86,12 +90,7 @@
             "example": "2020-21"
           },
           "source": {
-            "description": "The source of the data.",
-            "type": "string",
-            "enum": [
-              "customer",
-              "HMRC HELD"
-            ]
+            "$ref": "../common_defs.json#/definitions/dataSource"
           },
           "collectedAmount": {
             "description": "The amount of underpayment you have paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -115,6 +114,5 @@
         ]
       }
     }
-  },
-  "additionalProperties": false
+  }
 }

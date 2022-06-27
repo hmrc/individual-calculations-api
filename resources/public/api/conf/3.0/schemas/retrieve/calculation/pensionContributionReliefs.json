@@ -33,8 +33,5 @@
     }
   },
   "additionalProperties": false,
-  "required": [
-    "totalPensionContributionReliefs",
-    "pensionContributionDetail"
-  ]
+  "required": ["totalPensionContributionReliefs", "pensionContributionDetail"]
 }
