@@ -155,7 +155,7 @@ traits:
             type: types.errorResponse
             examples:
               ruleResidencyChanged:
-                description: 'Your residency has changed. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                description: 'Your residency has changed. You must trigger a new calculation again before final declaration.'
                 value:
                   code: RULE_RESIDENCY_CHANGED
   ruleIncomeSourcesInvalid:
@@ -188,7 +188,7 @@ traits:
             type: types.errorResponse
             examples:
               notFound:
-                description: 'The supplied income source could not be found.'
+                description: 'Either the calculation ID was not found or the calculation was in year.'
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   notFoundList:
