@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Object containing information about an end of year estimate for the retrieved tax calculation.",
+  "description": "Object containing information about an end of year estimate for the retrieved tax calculation. This object will only be present for an in year calculation.",
   "type": "object",
   "properties": {
     "incomeSource": {
