@@ -606,7 +606,8 @@
             "source": "customer"
           }
         ]
-      }
+      },
+      "totalStateBenefitsIncomeExcStatePensionLumpSum": 5000.01
     },
     "shareSchemesIncome": {
       "totalIncome": 5000.99,
