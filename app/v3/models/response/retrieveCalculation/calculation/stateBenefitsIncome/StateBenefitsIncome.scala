@@ -20,7 +20,8 @@ import play.api.libs.json.{Json, OFormat}
 
 case class StateBenefitsIncome(totalStateBenefitsIncome: Option[BigDecimal],
                                totalStateBenefitsTaxPaid: Option[BigDecimal],
-                               stateBenefitsDetail: Option[StateBenefitsDetail])
+                               stateBenefitsDetail: Option[StateBenefitsDetail],
+                               totalStateBenefitsIncomeExcStatePensionLumpSum: Option[BigDecimal])
 
 object StateBenefitsIncome {
   implicit val format: OFormat[StateBenefitsIncome] = Json.format[StateBenefitsIncome]
