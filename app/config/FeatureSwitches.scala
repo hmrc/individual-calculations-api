@@ -18,24 +18,33 @@ package config
 
 import play.api.Configuration
 
-case class FeatureSwitch(value: Option[Configuration]) {
+case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
   private val versionRegex = """(\d)\.\d""".r
 
   def isVersionEnabled(version: String): Boolean = {
-    val versionNoIfPresent: Option[String] =
+    val maybeVersion: Option[String] =
       version match {
         case versionRegex(v) => Some(v)
         case _               => None
       }
 
     val enabled = for {
-      versionNo <- versionNoIfPresent
-      config    <- value
-      enabled   <- config.getOptional[Boolean](s"version-$versionNo.enabled")
+      versionNo <- maybeVersion
+      enabled   <- featureSwitchConfig.getOptional[Boolean](s"version-$versionNo.enabled")
     } yield enabled
 
     enabled.getOrElse(false)
   }
 
+  val isV2R7cRoutingEnabled: Boolean = isEnabled("v2r7c-endpoints.enabled")
+  val isTaxYearSpecificApiEnabled: Boolean = isEnabled("tys-api.enabled")
+
+  private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+
 }
+
+object FeatureSwitches {
+  def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitches)
+}
+

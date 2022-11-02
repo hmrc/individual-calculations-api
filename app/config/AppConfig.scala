@@ -46,7 +46,7 @@ trait AppConfig {
   def confidenceLevelConfig: ConfidenceLevelConfig
   def apiStatus(version: String): String
   def endpointsEnabled(version: String): Boolean
-  def featureSwitch: Option[Configuration]
+  def featureSwitches: Configuration
 
   // NRS Config
   def mtdNrsProxyBaseUrl: String
@@ -76,7 +76,7 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   val apiGatewayContext: String                    = config.getString("api.gateway.context")
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
   def apiStatus(version: String): String           = config.getString(s"api.$version.status")
-  def featureSwitch: Option[Configuration]         = configuration.getOptional[Configuration](s"feature-switch")
+  def featureSwitches: Configuration               = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
   def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"feature-switch.version-$version.enabled")
 
   // NRS Config
@@ -101,3 +101,4 @@ object ConfidenceLevelConfig {
   }
 
 }
+

@@ -16,7 +16,7 @@
 
 package routing
 
-import config.{AppConfig, FeatureSwitch}
+import config.{AppConfig, FeatureSwitches}
 import definition.Versions
 import javax.inject.{Inject, Singleton}
 import play.api.http.{DefaultHttpRequestHandler, HttpConfiguration, HttpErrorHandler, HttpFilters}
@@ -33,16 +33,16 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
                                               config: AppConfig,
                                               filters: HttpFilters,
                                               action: DefaultActionBuilder)
-    extends DefaultHttpRequestHandler(
-      webCommands = new DefaultWebCommands,
-      optDevContext = None,
-      router = versionRoutingMap.defaultRouter,
-      errorHandler = errorHandler,
-      configuration = httpConfiguration,
-      filters = filters.filters
-    ) {
+  extends DefaultHttpRequestHandler(
+    webCommands = new DefaultWebCommands,
+    optDevContext = None,
+    router = versionRoutingMap.defaultRouter,
+    errorHandler = errorHandler,
+    configuration = httpConfiguration,
+    filters = filters.filters
+  ) {
 
-  private val featureSwitch = FeatureSwitch(config.featureSwitch)
+  private val featureSwitch = FeatureSwitches(config.featureSwitches)
 
   private val unsupportedVersionAction = action(Results.NotFound(Json.toJson(UnsupportedVersionError)))
 
@@ -79,3 +79,4 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
       }
 
 }
+

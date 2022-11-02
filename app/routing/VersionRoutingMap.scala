@@ -19,15 +19,15 @@ package routing
 import com.google.inject.ImplementedBy
 import config.AppConfig
 import definition.Versions.{VERSION_2, VERSION_3}
+
 import javax.inject.Inject
 import play.api.routing.Router
-import utils.Logging
 
 // So that we can have API-independent implementations of
 // VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec
 // implement this for the specific API...
 @ImplementedBy(classOf[VersionRoutingMapImpl])
-trait VersionRoutingMap extends Logging {
+trait VersionRoutingMap {
   val defaultRouter: Router
 
   val map: Map[String, Router]
@@ -36,8 +36,11 @@ trait VersionRoutingMap extends Logging {
 }
 
 // Add routes corresponding to available versions...
-case class VersionRoutingMapImpl @Inject() (appConfig: AppConfig, defaultRouter: Router, v2Router: v2.Routes, v3Router: v3.Routes)
-    extends VersionRoutingMap {
+case class VersionRoutingMapImpl @Inject() (appConfig: AppConfig,
+                                            defaultRouter: Router,
+                                            v2Router: v2.Routes,
+                                            v3Router: v3.Routes)
+  extends VersionRoutingMap {
 
   val map: Map[String, Router] = Map(
     VERSION_2 -> v2Router,
@@ -45,3 +48,4 @@ case class VersionRoutingMapImpl @Inject() (appConfig: AppConfig, defaultRouter:
   )
 
 }
+
