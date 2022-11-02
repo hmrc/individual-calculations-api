@@ -66,8 +66,8 @@ traits:
           application/json:
             type: types.errorResponse
             examples:
-              rule_TaxYearNotSupported:
-                description: 'The specified tax year is not supported. That is, the tax year specified is before the minimum tax year value.'
+              ruleTaxYearNotSupported:
+                description: 'The specified tax year is not supported. Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.'
                 value:
                   code: RULE_TAX_YEAR_NOT_SUPPORTED
   ruleTaxYearRangeInvalid:
