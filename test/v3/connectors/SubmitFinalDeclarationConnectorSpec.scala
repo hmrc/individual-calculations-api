@@ -55,10 +55,10 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
       val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
 
-      MockedHttpClient
+      MockHttpClient
         .post(
           url = s"$baseUrl/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise",
-          config = dummyDesHeaderCarrierConfig,
+          config = dummyHeaderCarrierConfig,
           body = EmptyJsonBody,
           requiredHeaders = requiredDesHeadersPost,
           excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")

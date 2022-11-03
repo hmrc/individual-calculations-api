@@ -44,10 +44,10 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
       "return the expected result" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
-        MockedHttpClient
+        MockHttpClient
           .get(
             s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019",
-            dummyDesHeaderCarrierConfig
+            dummyHeaderCarrierConfig
           )
           .returns(Future.successful(outcome))
 
@@ -59,10 +59,10 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
       "return the expected result" in new Test {
         val outcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode("ERROR_CODE"))))
 
-        MockedHttpClient
+        MockHttpClient
           .get(
             s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}",
-            dummyDesHeaderCarrierConfig
+            dummyHeaderCarrierConfig
           )
           .returns(Future.successful(outcome))
 

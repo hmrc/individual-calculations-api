@@ -60,10 +60,10 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, taxYear, finalDeclaration)
         val outcome                            = Right(ResponseWrapper(correlationId, response))
 
-        MockedHttpClient
+        MockHttpClient
           .post(
             url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/$downstreamTaxYear/tax-calculation?crystallise=$expectedCrystalliseParam",
-            config = dummyDesHeaderCarrierConfig,
+            config = dummyHeaderCarrierConfig,
             body = Json.parse("{}"),
             requiredHeaders = requiredDesHeaders
           )

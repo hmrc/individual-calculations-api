@@ -48,10 +48,10 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
       "a valid request with queryParams is supplied" in new Test {
         val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
 
-        MockedHttpClient
+        MockHttpClient
           .get(
             url = s"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId",
-            config = dummyDesHeaderCarrierConfig,
+            config = dummyHeaderCarrierConfig,
             requiredHeaders = requiredIfsHeaders,
             excludedHeaders = Seq("AnotherHeader" -> s"HeaderValue")
           )

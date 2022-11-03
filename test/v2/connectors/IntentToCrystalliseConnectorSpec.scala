@@ -59,7 +59,7 @@ class IntentToCrystalliseConnectorSpec extends ConnectorSpec {
         implicit val hc: HeaderCarrier                    = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
         val requiredDesHeadersPost: Seq[(String, String)] = requiredDownstreamHeaders ++ Seq("Content-Type" -> "application/json")
 
-        MockedHttpClient
+        MockHttpClient
           .post(
             url = s"$baseUrl/income-tax/nino/$nino/taxYear/${taxYear.value}/tax-calculation?crystallise=true",
             config = dummyHeaderCarrierConfig,
