@@ -68,8 +68,6 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     "User-Agent"        -> "this-api",
     "CorrelationId"     -> correlationId,
     "Gov-Test-Scenario" -> "DEFAULT",
-    "consumerId"    -> "MDTP",
-
   )
 
   val allowedIfsHeaders: Seq[String] = Seq(
