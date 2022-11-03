@@ -21,7 +21,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.DesUri
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
-import v3.connectors.httpparsers.StandardHttpParser._
+import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

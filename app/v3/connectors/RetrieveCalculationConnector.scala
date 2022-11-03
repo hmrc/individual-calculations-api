@@ -24,7 +24,7 @@ import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import v3.connectors.httpparsers.StandardHttpParser._
+import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
 @Singleton
 class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {

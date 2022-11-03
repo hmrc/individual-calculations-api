@@ -21,7 +21,7 @@ import org.apache.commons.lang3.BooleanUtils
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.DesUri
-import v3.connectors.httpparsers.StandardHttpParser._
+import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 

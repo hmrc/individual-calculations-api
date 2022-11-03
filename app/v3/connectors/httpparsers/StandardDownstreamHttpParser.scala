@@ -23,7 +23,7 @@ import v3.connectors.DownstreamOutcome
 import v3.models.errors.{DownstreamError, OutboundError}
 import v3.models.outcomes.ResponseWrapper
 
-object StandardHttpParser extends HttpParser {
+object StandardDownstreamHttpParser extends HttpParser {
 
   case class SuccessCode(status: Int) extends AnyVal
 
@@ -50,7 +50,7 @@ object StandardHttpParser extends HttpParser {
 
     if (response.status != successCode.status) {
       logger.warn(
-        "[StandardHttpParser][read] - " +
+        "[StandardDownstreamHttpParser][read] - " +
           s"Error response received from downstream with status: ${response.status} and body\n" +
           s"${response.body} and correlationId: $correlationId when calling $url")
     }
@@ -58,7 +58,7 @@ object StandardHttpParser extends HttpParser {
     response.status match {
       case successCode.status =>
         logger.info(
-          "[StandardHttpParser][read] - " +
+          "[StandardDownstreamHttpParser][read] - " +
             s"Success response received from downstream with correlationId: $correlationId when calling $url")
         successOutcomeFactory(correlationId)
       case BAD_REQUEST | NOT_FOUND | FORBIDDEN | CONFLICT | UNPROCESSABLE_ENTITY => Left(ResponseWrapper(correlationId, parseErrors(response)))

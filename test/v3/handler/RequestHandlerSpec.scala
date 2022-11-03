@@ -20,7 +20,7 @@ import cats.implicits._
 import org.scalatest.Inside
 import play.api.http.Status._
 import support.UnitSpec
-import v3.connectors.httpparsers.StandardHttpParser.SuccessCode
+import v3.connectors.httpparsers.StandardDownstreamHttpParser.SuccessCode
 import v3.handler.RequestHandler.ErrorMapping
 import v3.models.errors.{ErrorWrapper, MtdError}
 import v3.models.outcomes.ResponseWrapper

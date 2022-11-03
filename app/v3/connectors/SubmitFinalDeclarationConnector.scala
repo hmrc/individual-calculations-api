@@ -33,7 +33,7 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import v3.connectors.httpparsers.StandardHttpParser._
+    import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
     val nino: String          = request.nino.value
     val taxYear: String       = request.taxYear.asDownstream
