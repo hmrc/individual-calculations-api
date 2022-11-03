@@ -24,7 +24,7 @@ object TaxYearNotSupportedValidation extends FixedConfig {
 
   // @param taxYear In format YYYY-YY
   def validate(mtdTaxYear: String): List[MtdError] = {
-    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).toDownstream)
+    val taxYear = Integer.parseInt(TaxYear.fromMtd(mtdTaxYear).asDownstream)
 
     if (taxYear < minimumTaxYear) List(RuleTaxYearNotSupportedError) else NoValidationErrors
   }

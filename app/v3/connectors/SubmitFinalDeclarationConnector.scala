@@ -36,7 +36,7 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
     import v3.connectors.httpparsers.StandardHttpParser._
 
     val nino: String          = request.nino.value
-    val taxYear: String       = request.taxYear.toDownstream
+    val taxYear: String       = request.taxYear.asDownstream
     val calculationId: String = request.calculationId
 
     post(

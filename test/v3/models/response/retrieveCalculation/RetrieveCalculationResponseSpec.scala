@@ -60,7 +60,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
       RetrieveCalculationResponse(
         metadata = Metadata(
           "",
-          TaxYear.fromDownstream(""),
+          taxYear = TaxYear.fromDownstream("2021"),
           "",
           None,
           "",

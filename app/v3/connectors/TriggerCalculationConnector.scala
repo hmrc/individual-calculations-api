@@ -37,7 +37,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     val ninoString        = request.nino.value
-    val downstreamTaxYear = request.taxYear.toDownstream
+    val downstreamTaxYear = request.taxYear.asDownstream
     val crystallize       = BooleanUtils.toStringTrueFalse(request.finalDeclaration)
 
     // Note using empty JSON object ({}) which works for v2 tax calc...

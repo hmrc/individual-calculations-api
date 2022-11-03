@@ -36,7 +36,7 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
   ): Future[DownstreamOutcome[ListCalculations]] = {
     val nino = request.nino.nino
 
-    val queryParam = request.taxYear.fold("")(taxYear => s"?taxYear=${taxYear.toDownstream}")
+    val queryParam = request.taxYear.fold("")(taxYear => s"?taxYear=${taxYear.asDownstream}")
 
     get(
       DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino" + queryParam)

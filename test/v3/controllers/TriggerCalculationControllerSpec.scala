@@ -47,7 +47,7 @@ class TriggerCalculationControllerSpec
 
   private val nino                = "AA123456A"
   private val taxYear             = TaxYear.fromMtd("2017-18")
-  private val rawTaxYear          = taxYear.toMtd
+  private val rawTaxYear          = taxYear.asMtd
   private val rawFinalDeclaration = Some("true")
   private val calculationId       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId       = "X-123"
