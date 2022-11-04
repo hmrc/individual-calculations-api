@@ -23,6 +23,8 @@ trait V3IntegrationBaseSpec extends IntegrationBaseSpec {
     "microservice.services.des.port"                     -> mockPort,
     "microservice.services.ifs.host"                     -> mockHost,
     "microservice.services.ifs.port"                     -> mockPort,
+    "microservice.services.tys-ifs.host"                 -> mockHost,
+    "microservice.services.tys-ifs.port"                 -> mockPort,
     "microservice.services.individual-calculations.host" -> mockHost,
     "microservice.services.individual-calculations.port" -> mockPort,
     "microservice.services.mtd-id-lookup.host"           -> mockHost,

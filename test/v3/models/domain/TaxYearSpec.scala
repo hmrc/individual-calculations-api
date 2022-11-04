@@ -16,80 +16,49 @@
 
 package v3.models.domain
 
-import play.api.libs.json.{Format, Json, OFormat}
 import support.UnitSpec
-
-case class SomeModel(taxYear: TaxYear)
-
-object SomeModel {
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
-  implicit val format: OFormat[SomeModel]     = Json.format[SomeModel]
-}
 
 class TaxYearSpec extends UnitSpec {
 
   "TaxYear" when {
+
+    val taxYear = TaxYear.fromMtd("2023-24")
+
     "constructed from an MTD tax year" should {
-      "allow the downstream tax year to be extracted" should {
-        "return the downstream tax value" in {
-          TaxYear.fromMtd("2018-19").toDownstream shouldBe "2019"
-        }
+      "return the downstream tax value" in {
+        taxYear.asDownstream shouldBe "2024"
       }
 
-      "toMtd" should {
-        "allow the MTD tax year to be extracted" in {
-          TaxYear.fromMtd("2018-19").toMtd shouldBe "2018-19"
-        }
+      "return the MTD tax year" in {
+        taxYear.asMtd shouldBe "2023-24"
+      }
+
+      "return the tax year in the 'Tax Year Specific API' format" in {
+        taxYear.asTysDownstream shouldBe "23-24"
       }
     }
 
     "constructed from a downstream tax year" should {
-      "allow the downstream tax year to be extracted" should {
-        "return the downstream tax value" in {
-          TaxYear.fromDownstream("2019").toDownstream shouldBe "2019"
-        }
+      "return the downstream tax value" in {
+        TaxYear.fromDownstream("2019").asDownstream shouldBe "2019"
       }
 
-      "toMtd" should {
-        "allow the MTD tax year to be extracted" in {
-          TaxYear.fromDownstream("2019").toMtd shouldBe "2018-19"
-        }
+      "allow the MTD tax year to be extracted" in {
+        TaxYear.fromDownstream("2019").asMtd shouldBe "2018-19"
       }
     }
 
-    "constructed directly" must {
+    "constructed directly" should {
       "not compile" in {
         """new TaxYear("2021-22")""" shouldNot compile
       }
     }
 
-    "compared with equals" must {
+    "compared with equals" should {
       "have equality based on content" in {
-        TaxYear.fromMtd("2021-22") shouldBe TaxYear.fromDownstream("2022")
-        TaxYear.fromMtd("2021-22") should not be TaxYear.fromDownstream("2021")
-      }
-    }
-
-    "de-serialized from downstream JSON" must {
-      "convert correctly" in {
-        Json
-          .parse("""
-                   |{
-                   | "taxYear": 2020
-                   |}
-                   |""".stripMargin)
-          .as[SomeModel] shouldBe SomeModel(TaxYear.fromDownstream("2020"))
-      }
-    }
-
-    "serialized to MTD JSON" must {
-      "convert correctly" in {
-        Json.toJson(SomeModel(TaxYear.fromDownstream("2020"))) shouldBe
-          Json.parse("""
-                       |{
-                       | "taxYear": "2019-20"
-                       |}
-                       |""".stripMargin)
+        val taxYear = TaxYear.fromMtd("2021-22")
+        taxYear shouldBe TaxYear.fromDownstream("2022")
+        taxYear should not be TaxYear.fromDownstream("2021")
       }
     }
   }

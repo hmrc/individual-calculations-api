@@ -55,7 +55,7 @@ class StandardConnectorSpec extends ConnectorSpec {
       "request is a get" in new Test {
         val expected = Right(Response("someData"))
 
-        MockedHttpClient
+        MockHttpClient
           .get(
             url = s"$baseUrl/some/uri",
             parameters = queryParams,
@@ -73,7 +73,7 @@ class StandardConnectorSpec extends ConnectorSpec {
 
         val expected = Right(Response("someData"))
 
-        MockedHttpClient
+        MockHttpClient
           .post(
             url = s"$baseUrl/some/uri",
             config = dummyHeaderCarrierConfig,
@@ -91,7 +91,7 @@ class StandardConnectorSpec extends ConnectorSpec {
       "an error response is returned from the backend" in new Test {
         val expected = Left(BackendErrors.single(BAD_REQUEST, BackendErrorCode("BACKEND ERROR CODE")))
 
-        MockedHttpClient
+        MockHttpClient
           .get(
             url = s"$baseUrl/some/uri",
             parameters = queryParams,
@@ -107,7 +107,7 @@ class StandardConnectorSpec extends ConnectorSpec {
     "return an exception" when {
 
       "when an unexpected error is returned" in new Test {
-        MockedHttpClient
+        MockHttpClient
           .get(
             url = s"$baseUrl/some/uri",
             parameters = queryParams,

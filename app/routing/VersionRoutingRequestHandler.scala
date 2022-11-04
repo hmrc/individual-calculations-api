@@ -16,7 +16,7 @@
 
 package routing
 
-import config.{AppConfig, FeatureSwitch}
+import config.{AppConfig, FeatureSwitches}
 import definition.Versions
 import javax.inject.{Inject, Singleton}
 import play.api.http.{DefaultHttpRequestHandler, HttpConfiguration, HttpErrorHandler, HttpFilters}
@@ -33,16 +33,16 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
                                               config: AppConfig,
                                               filters: HttpFilters,
                                               action: DefaultActionBuilder)
-    extends DefaultHttpRequestHandler(
-      webCommands = new DefaultWebCommands,
-      optDevContext = None,
-      router = versionRoutingMap.defaultRouter,
-      errorHandler = errorHandler,
-      configuration = httpConfiguration,
-      filters = filters.filters
-    ) {
+  extends DefaultHttpRequestHandler(
+    webCommands = new DefaultWebCommands,
+    optDevContext = None,
+    router = versionRoutingMap.defaultRouter,
+    errorHandler = errorHandler,
+    configuration = httpConfiguration,
+    filters = filters.filters
+  ) {
 
-  private val featureSwitch = FeatureSwitch(config.featureSwitch)
+  private val featureSwitches = FeatureSwitches(config.featureSwitches)
 
   private val unsupportedVersionAction = action(Results.NotFound(Json.toJson(UnsupportedVersionError)))
 
@@ -55,7 +55,7 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
     def apiHandler: Option[Handler] = Versions.getFromRequest(request) match {
       case Some(version) =>
         versionRoutingMap.versionRouter(version) match {
-          case Some(versionRouter) if featureSwitch.isVersionEnabled(version) => routeWith(versionRouter)(request)
+          case Some(versionRouter) if featureSwitches.isVersionEnabled(version) => routeWith(versionRouter)(request)
           case Some(_)                                                        => Some(unsupportedVersionAction)
           case None                                                           => Some(unsupportedVersionAction)
         }
@@ -79,3 +79,4 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
       }
 
 }
+

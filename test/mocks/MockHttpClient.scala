@@ -28,7 +28,7 @@ trait MockHttpClient extends MockFactory {
 
   val mockHttpClient: HttpClient = mock[HttpClient]
 
-  object MockedHttpClient extends Matchers {
+  object MockHttpClient extends Matchers {
 
     def get[T](url: String,
                config: HeaderCarrier.Config,

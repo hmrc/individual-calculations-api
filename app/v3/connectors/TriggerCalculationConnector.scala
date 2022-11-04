@@ -21,7 +21,7 @@ import org.apache.commons.lang3.BooleanUtils
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.DesUri
-import v3.connectors.httpparsers.StandardHttpParser._
+import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
@@ -37,7 +37,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     val ninoString        = request.nino.value
-    val downstreamTaxYear = request.taxYear.toDownstream
+    val downstreamTaxYear = request.taxYear.asDownstream
     val crystallize       = BooleanUtils.toStringTrueFalse(request.finalDeclaration)
 
     // Note using empty JSON object ({}) which works for v2 tax calc...

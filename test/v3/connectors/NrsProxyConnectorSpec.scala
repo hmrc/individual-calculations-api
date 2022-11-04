@@ -41,10 +41,10 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
     "return a success response" in new Test {
       val outcome = Right(())
 
-      MockedHttpClient
+      MockHttpClient
         .post(
           url = s"$baseUrl/mtd-api-nrs-proxy/$nino/$notableEvent",
-          config = dummyDesHeaderCarrierConfig,
+          config = dummyHeaderCarrierConfig,
           body = body
         )
         .returns(Future.successful(Right(())))

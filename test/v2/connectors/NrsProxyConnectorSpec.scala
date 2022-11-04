@@ -42,7 +42,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
     "submit with valid data" should {
       "be successful" in new Test {
 
-        MockedHttpClient
+        MockHttpClient
           .post(
             url = s"$baseUrl/mtd-api-nrs-proxy/$nino/itsa-crystallisation",
             config = dummyHeaderCarrierConfig,

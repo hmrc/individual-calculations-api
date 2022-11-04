@@ -23,4 +23,5 @@ sealed trait DownstreamUri[Resp] {
 object DownstreamUri {
   final case class DesUri[Resp](value: String) extends DownstreamUri[Resp]
   final case class IfsUri[Resp](value: String) extends DownstreamUri[Resp]
+  final case class TaxYearSpecificIfsUri[Resp](value: String) extends DownstreamUri[Resp]
 }

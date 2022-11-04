@@ -106,7 +106,7 @@ class BaseConnectorSpec extends ConnectorSpec {
         MockAppConfig.desEnvironment returns "downstream-environment"
         MockAppConfig.desEnvironmentHeaders returns downstreamEnvironmentHeaders
 
-        MockedHttpClient
+        MockHttpClient
           .post(absoluteUrl, config, body, requiredHeadersPost, excludedHeaders)
           .returns(Future.successful(outcome))
 
@@ -123,7 +123,7 @@ class BaseConnectorSpec extends ConnectorSpec {
       "Get" in new Test {
         MockAppConfig.backendBaseUrl returns baseUrl
 
-        MockedHttpClient
+        MockHttpClient
           .get(absoluteUrl, config = config, parameters = Seq(("key", "value")), requiredHeaders = requiredHeaders)
           .returns(Future.successful(outcome))
 
@@ -133,7 +133,7 @@ class BaseConnectorSpec extends ConnectorSpec {
       "Post" in new Test {
         MockAppConfig.backendBaseUrl returns baseUrl
 
-        MockedHttpClient
+        MockHttpClient
           .post(absoluteUrl, config, body, requiredHeaders)
           .returns(Future.successful(outcome))
 

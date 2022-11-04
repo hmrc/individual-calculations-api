@@ -17,7 +17,6 @@
 package routing
 
 import akka.actor.ActorSystem
-import com.typesafe.config.ConfigFactory
 import mocks.MockAppConfig
 import org.scalatest.Inside
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -25,7 +24,7 @@ import play.api.Configuration
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpErrorHandler, HttpFilters}
 import play.api.libs.json.Json
-import play.api.mvc.{EssentialAction, _}
+import play.api.mvc._
 import play.api.routing.Router
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -73,10 +72,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     private val filters                      = mock[HttpFilters]
     (filters.filters _).stubs().returns(Seq.empty)
 
-    MockAppConfig.featureSwitch.returns(Some(Configuration(ConfigFactory.parseString("""
-                                                                                       |version-1.enabled = true
-                                                                                       |version-2.enabled = true
-                                                                         """.stripMargin))))
+    MockAppConfig.featureSwitches.returns(Configuration("version-1.enabled" -> true, "version-2.enabled" -> true))
 
     val requestHandler: VersionRoutingRequestHandler =
       new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, action)

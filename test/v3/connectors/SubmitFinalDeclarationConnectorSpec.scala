@@ -16,7 +16,6 @@
 
 package v3.connectors
 
-import mocks.{MockAppConfig, MockHttpClient}
 import v3.models.domain.{EmptyJsonBody, Nino, TaxYear}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
@@ -36,32 +35,20 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
     calculationId
   )
 
-  class Test extends MockHttpClient with MockAppConfig {
-
+  trait Test { _: ConnectorTest =>
     val connector: SubmitFinalDeclarationConnector = new SubmitFinalDeclarationConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
-
-    MockAppConfig.desBaseUrl returns baseUrl
-    MockAppConfig.desToken returns "des-token"
-    MockAppConfig.desEnvironment returns "des-environment"
-    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "Submit Final Declaration" should {
-    "return a success response" in new Test {
+    "return a success response" in new DesTest with Test {
       val outcome = Right(ResponseWrapper(correlationId, {}))
 
-      val requiredDesHeadersPost: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
-
-      MockedHttpClient
-        .post(
+        willPost(
           url = s"$baseUrl/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise",
-          config = dummyDesHeaderCarrierConfig,
           body = EmptyJsonBody,
-          requiredHeaders = requiredDesHeadersPost,
-          excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
         )
         .returns(Future.successful(outcome))
 
