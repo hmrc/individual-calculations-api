@@ -46,7 +46,7 @@ final case class TaxYear private (private val value: String) {
   val asTysDownstream: String = {
     val year2 = value.toInt - 2000
     val year1 = year2 - 1
-    s"${year1}-$year2"
+    s"$year1-$year2"
   }
 
   /** Use this for downstream API endpoints that are known to be TYS.
