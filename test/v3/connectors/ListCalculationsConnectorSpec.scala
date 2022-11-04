@@ -16,7 +16,6 @@
 
 package v3.connectors
 
-import mocks.{MockAppConfig, MockHttpClient}
 import v3.fixtures.ListCalculationsFixture
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors.{DesErrorCode, DesErrors}
@@ -27,27 +26,26 @@ import scala.concurrent.Future
 
 class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsFixture {
 
-  trait Test extends MockAppConfig with MockHttpClient {
-    val connector: ListCalculationsConnector = new ListCalculationsConnector(mockHttpClient, mockAppConfig)
-    val nino: Nino                           = Nino("AA111111A")
-    val taxYear: TaxYear                     = TaxYear.fromMtd("2018-19")
-    val request: ListCalculationsRequest     = ListCalculationsRequest(nino, Some(taxYear))
+  val nino: Nino                           = Nino("AA111111A")
+  val taxYear: TaxYear                     = TaxYear.fromMtd("2018-19")
 
-    MockAppConfig.desBaseUrl returns baseUrl
-    MockAppConfig.desToken returns "des-token"
-    MockAppConfig.desEnvironment returns "des-environment"
-    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
+  val request: ListCalculationsRequest     = ListCalculationsRequest(nino, Some(taxYear))
+
+  trait Test  { _: ConnectorTest =>
+    val connector: ListCalculationsConnector = new ListCalculationsConnector(
+      http = mockHttpClient,
+      appConfig = mockAppConfig
+    )
   }
 
   "ListCalculationsConnector" when {
     "a successful response is received" must {
-      "return the expected result" in new Test {
+      "return the expected result" in new DesTest with Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
-        MockHttpClient
-          .get(
+
+          willGet(
             s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019",
-            dummyHeaderCarrierConfig
           )
           .returns(Future.successful(outcome))
 
@@ -56,13 +54,12 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
     }
 
     "an error is received" must {
-      "return the expected result" in new Test {
+      "return the expected result" in new DesTest with Test {
         val outcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode("ERROR_CODE"))))
 
-        MockHttpClient
-          .get(
+
+          willGet(
             s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}",
-            dummyHeaderCarrierConfig
           )
           .returns(Future.successful(outcome))
 
