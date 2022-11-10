@@ -20,9 +20,12 @@ import sbt._
 
 object AppDependencies {
 
+  val bootstrap_28_version = "7.8.0"
+
+
   val compile = Seq(
     ws,
-    "uk.gov.hmrc"                  %% "bootstrap-backend-play-28" % "5.24.0",
+    "uk.gov.hmrc"                  %% "bootstrap-backend-play-28" % bootstrap_28_version,
     "org.typelevel"                %% "cats-core"                 % "2.7.0",
     "com.chuusai"                  %% "shapeless"                 % "2.4.0-M1",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"      % "2.13.2"
@@ -35,6 +38,7 @@ object AppDependencies {
     "org.scalamock"          %% "scalamock"          % "5.2.0"             % scope,
     "org.pegdown"            % "pegdown"             % "1.6.0"             % scope,
     "com.typesafe.play"      %% "play-test"          % PlayVersion.current % scope,
+    "uk.gov.hmrc"            %% "bootstrap-test-play-28" % bootstrap_28_version % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0"             % scope,
     "com.github.tomakehurst" % "wiremock-jre8"       % "2.33.2"            % scope
   )
