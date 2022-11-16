@@ -47,18 +47,18 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
     val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
-      "INVALID_CORRELATIONID"     -> DownstreamError,
-      "INVALID_CONSUMERID"        -> DownstreamError,
+      "INVALID_CORRELATIONID"     -> InternalError,
+      "INVALID_CONSUMERID"        -> InternalError,
       "NO_DATA_FOUND"             -> NotFoundError,
-      "SERVER_ERROR"              -> DownstreamError,
-      "SERVICE_UNAVAILABLE"       -> DownstreamError,
+      "SERVER_ERROR"              -> InternalError,
+      "SERVICE_UNAVAILABLE"       -> InternalError,
       "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
     )
 
     val extraTysErrors: Map[String, MtdError] = Map(
       "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> DownstreamError,
-      "INVALID_CONSUMER_ID"    -> DownstreamError,
+      "INVALID_CORRELATION_ID" -> InternalError,
+      "INVALID_CONSUMER_ID"    -> InternalError,
       "NOT_FOUND"              -> NotFoundError,
       "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
     )

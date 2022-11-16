@@ -64,13 +64,13 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
-            .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
       val input = Seq(
-        ("INVALID_IDTYPE", DownstreamError),
+        ("INVALID_IDTYPE", InternalError),
         ("INVALID_IDVALUE", NinoFormatError),
         ("INVALID_TAXYEAR", TaxYearFormatError),
         ("INVALID_CALCID", CalculationIdFormatError),
@@ -82,8 +82,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
-        ("SERVER_ERROR", DownstreamError),
-        ("SERVICE_UNAVAILABLE", DownstreamError),
+        ("SERVER_ERROR", InternalError),
+        ("SERVICE_UNAVAILABLE", InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 

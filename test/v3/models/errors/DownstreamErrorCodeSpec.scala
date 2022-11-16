@@ -19,7 +19,7 @@ package v3.models.errors
 import play.api.libs.json.Json
 import support.UnitSpec
 
-class DesErrorCodeSpec extends UnitSpec {
+class DownstreamErrorCodeSpec extends UnitSpec {
 
   "reads" should {
     val json = Json.parse(
@@ -32,7 +32,7 @@ class DesErrorCodeSpec extends UnitSpec {
     )
 
     "generate the correct error code" in {
-      json.as[DesErrorCode] shouldBe DesErrorCode("CODE")
+      json.as[DownstreamErrorCode] shouldBe DownstreamErrorCode("CODE")
     }
   }
 

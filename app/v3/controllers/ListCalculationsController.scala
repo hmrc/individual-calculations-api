@@ -92,9 +92,9 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
         RuleIncorrectGovTestScenarioError =>
       BadRequest(Json.toJson(errorWrapper))
-    case NotFoundError   => NotFound(Json.toJson(errorWrapper))
-    case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-    case _               => unhandledError(errorWrapper)
+    case NotFoundError => NotFound(Json.toJson(errorWrapper))
+    case InternalError => InternalServerError(Json.toJson(errorWrapper))
+    case _             => unhandledError(errorWrapper)
   }
 
 }

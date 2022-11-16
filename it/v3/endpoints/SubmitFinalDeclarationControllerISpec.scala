@@ -133,7 +133,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
         }
 
         val input = Seq(
-          (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, InternalError),
           (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "INVALID_CALCID", BAD_REQUEST, CalculationIdFormatError),
@@ -145,8 +145,8 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
           (UNPROCESSABLE_ENTITY, "INVALID_INCOME_SOURCES", FORBIDDEN, RuleIncomeSourcesInvalidError),
           (UNPROCESSABLE_ENTITY, "INCOME_SUBMISSIONS_NOT_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", FORBIDDEN, RuleSubmissionFailedError),
-          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 

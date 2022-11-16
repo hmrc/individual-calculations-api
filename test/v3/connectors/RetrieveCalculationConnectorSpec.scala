@@ -18,7 +18,7 @@ package v3.connectors
 
 import org.scalamock.handlers.CallHandler
 import v3.models.domain.{Nino, TaxYear}
-import v3.models.errors.{DesErrorCode, DesErrors}
+import v3.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationResponse}
@@ -54,8 +54,8 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
       }
 
       "response is an error" must {
-        val downstreamErrorResponse: DesErrors =
-          DesErrors.single(DesErrorCode("SOME_ERROR"))
+        val downstreamErrorResponse: DownstreamErrors =
+          DownstreamErrors.single(DownstreamErrorCode("SOME_ERROR"))
         val outcome = Left(ResponseWrapper(correlationId, downstreamErrorResponse))
 
         "return the error" in new IfsTest with Test {

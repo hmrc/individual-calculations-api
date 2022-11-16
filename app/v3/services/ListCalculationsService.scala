@@ -48,8 +48,8 @@ class ListCalculationsService @Inject() (connector: ListCalculationsConnector) e
     "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
     "INVALID_TAXYEAR"           -> TaxYearFormatError,
     "NOT_FOUND"                 -> NotFoundError,
-    "SERVER_ERROR"              -> DownstreamError,
-    "SERVICE_UNAVAILABLE"       -> DownstreamError,
+    "SERVER_ERROR"              -> InternalError,
+    "SERVICE_UNAVAILABLE"       -> InternalError,
     "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
   )
 

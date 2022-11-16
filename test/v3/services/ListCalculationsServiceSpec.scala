@@ -19,7 +19,7 @@ package v3.services
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.connectors.MockListCalculationsConnector
 import v3.models.domain.{Nino, TaxYear}
-import v3.models.errors.{DesErrorCode, DesErrors, MtdError, _}
+import v3.models.errors.{DownstreamErrorCode, DownstreamErrors, MtdError, _}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.ListCalculationsRequest
 
@@ -52,7 +52,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
     "an error response is returned" must {
       def checkErrorMappings(errorCode: String, mtdError: MtdError): Unit = new Test {
         s"map appropriately for error code: '$errorCode'" in {
-          val connectorOutcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(errorCode))))
+          val connectorOutcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(errorCode))))
           MockListCalculationsConnector.list(request).returns(Future.successful(connectorOutcome))
           await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, mtdError))
         }
@@ -62,17 +62,17 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
         "INVALID_TAXYEAR"           -> TaxYearFormatError,
         "NOT_FOUND"                 -> NotFoundError,
-        "SERVER_ERROR"              -> DownstreamError,
-        "SERVICE_UNAVAILABLE"       -> DownstreamError,
+        "SERVER_ERROR"              -> InternalError,
+        "SERVICE_UNAVAILABLE"       -> InternalError,
         "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
       )
 
       mappings.foreach(args => (checkErrorMappings _).tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
-        val outcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode("NOT_MAPPED"))))
+        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
-        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, DownstreamError))
+        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
       }
     }
   }
