@@ -64,7 +64,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
           await(service.retrieveCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val input = Seq(
+      val errors = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
         ("INVALID_CORRELATIONID", DownstreamError),
@@ -75,7 +75,15 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
-      input.foreach(args => (serviceError _).tupled(args))
+      val extraTysErrors = Seq(
+        ("INVALID_TAX_YEAR", TaxYearFormatError),
+        ("INVALID_CORRELATION_ID", DownstreamError),
+        ("INVALID_CONSUMER_ID", DownstreamError),
+        ("NOT_FOUND", NotFoundError),
+        ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
+      )
+
+      (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
     }
   }
 
