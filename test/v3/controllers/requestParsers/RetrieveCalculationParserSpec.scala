@@ -18,7 +18,7 @@ package v3.controllers.requestParsers
 
 import support.UnitSpec
 import v3.mocks.validators.MockRetrieveCalculationValidator
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 
@@ -39,7 +39,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         val data: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequest(Nino(nino), taxYear, calculationId))
+        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId))
       }
     }
 

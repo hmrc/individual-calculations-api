@@ -16,7 +16,7 @@
 
 package v3.connectors
 
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.CalculationFixture
@@ -29,7 +29,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
   val taxYear               = "2018-19"
   val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+  val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
 
   trait Test { _: ConnectorTest =>
     val connector: RetrieveCalculationConnector = new RetrieveCalculationConnector(

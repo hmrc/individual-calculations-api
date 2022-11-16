@@ -18,7 +18,7 @@ package v3.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.connectors.MockRetrieveCalculationConnector
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
@@ -32,7 +32,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
   private val taxYear       = "2019-20"
   private val calculationId = "someCalcId"
 
-  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, taxYear, calculationId)
+  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
   val response: RetrieveCalculationResponse = minimalCalculationResponse
 
   trait Test extends MockRetrieveCalculationConnector {

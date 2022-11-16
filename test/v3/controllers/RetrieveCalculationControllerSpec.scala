@@ -153,7 +153,7 @@ class RetrieveCalculationControllerSpec
   )
 
   val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), taxYear, calculationId)
+  val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
   val error: ErrorWrapper                     = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
