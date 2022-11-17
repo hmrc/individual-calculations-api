@@ -64,7 +64,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
-            .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
