@@ -136,6 +136,13 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
   }
 
+//  private trait TysIfsTest extends Test {
+//    def taxYear: String           = "2023-24"
+//    def downstreamTaxYear: String = "23-24"
+//
+////    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+//  }
+
   "Calling the retrieveCalculation endpoint" should {
 
     "return a 200 status code" when {
