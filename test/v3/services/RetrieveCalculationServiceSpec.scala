@@ -67,11 +67,11 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
       val input = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
-        ("INVALID_CORRELATIONID", DownstreamError),
-        ("INVALID_CONSUMERID", DownstreamError),
+        ("INVALID_CORRELATIONID", InternalError),
+        ("INVALID_CONSUMERID", InternalError),
         ("NO_DATA_FOUND", NotFoundError),
-        ("SERVER_ERROR", DownstreamError),
-        ("SERVICE_UNAVAILABLE", DownstreamError),
+        ("SERVER_ERROR", InternalError),
+        ("SERVICE_UNAVAILABLE", InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 

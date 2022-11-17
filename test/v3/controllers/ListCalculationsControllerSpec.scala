@@ -140,7 +140,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
           TaxYearFormatError                -> BAD_REQUEST,
           RuleTaxYearNotSupportedError      -> BAD_REQUEST,
           NotFoundError                     -> NOT_FOUND,
-          DownstreamError                   -> INTERNAL_SERVER_ERROR,
+          InternalError                     -> INTERNAL_SERVER_ERROR,
           RuleIncorrectGovTestScenarioError -> BAD_REQUEST
         )
 

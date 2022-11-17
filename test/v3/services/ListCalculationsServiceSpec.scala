@@ -50,29 +50,35 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
     }
 
     "an error response is returned" must {
-      def checkErrorMappings(errorCode: String, mtdError: MtdError): Unit = new Test {
-        s"map appropriately for error code: '$errorCode'" in {
-          val connectorOutcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(errorCode))))
+      def checkErrorMappings(downstreamErrorCode: String, mtdError: MtdError): Unit = new Test {
+        s"map appropriately for error code: '$downstreamErrorCode'" in {
+          val connectorOutcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))
           MockListCalculationsConnector.list(request).returns(Future.successful(connectorOutcome))
           await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, mtdError))
         }
       }
 
-      val mappings: Map[String, MtdError] = Map(
+      val errors = Seq(
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
         "INVALID_TAXYEAR"           -> TaxYearFormatError,
         "NOT_FOUND"                 -> NotFoundError,
-        "SERVER_ERROR"              -> DownstreamError,
-        "SERVICE_UNAVAILABLE"       -> DownstreamError,
+        "SERVER_ERROR"              -> InternalError,
+        "SERVICE_UNAVAILABLE"       -> InternalError,
         "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
       )
 
-      mappings.foreach(args => (checkErrorMappings _).tupled(args))
+      val extraTysErrors = Seq(
+        "INVALID_TAX_YEAR"       -> TaxYearFormatError,
+        "INVALID_CORRELATION_ID" -> InternalError,
+        "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
+      )
+
+      (errors ++ extraTysErrors).foreach(args => (checkErrorMappings _).tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
         val outcome = Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
-        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, DownstreamError))
+        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
       }
     }
   }
