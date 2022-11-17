@@ -18,7 +18,7 @@ package v3.connectors
 
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.DesUri
+import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 import v3.connectors.httpparsers.StandardDownstreamHttpParser._
@@ -34,13 +34,22 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
       ec: ExecutionContext,
       correlationId: String
   ): Future[DownstreamOutcome[ListCalculations]] = {
+    import request._
+
     val nino = request.nino.nino
 
-    val queryParam = request.taxYear.fold("")(taxYear => s"?taxYear=${taxYear.asDownstream}")
-
-    get(
-      DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino" + queryParam)
-    )
+    val downstreamUri = taxYear match {
+      case Some(taxYear) =>
+        if (taxYear.useTaxYearSpecificApi) {
+          TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
+        } else {
+          val queryParam = request.taxYear.fold("")(taxYear => s"?taxYear=${taxYear.asDownstream}")
+          DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino" + queryParam)
+        }
+      case _ =>
+        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino")
+    }
+    get(downstreamUri)
   }
 
 }
