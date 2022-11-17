@@ -102,19 +102,19 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
          |  "messages" : {},
          |  "links": [
          |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19",
+         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear",
          |      "rel": "trigger",
          |      "method": "POST"
          |    },
          |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
          |      "rel": "self",
          |      "method": "GET"
          |    }${if (canBeFinalised) {
           s"""
            |,
            |{
-           |  "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
+           |  "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
            |  "rel": "submit-final-declaration",
            |  "method": "POST"
            |}
@@ -127,6 +127,14 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         """.stripMargin
     )
 
+    def errorBody(code: String): String =
+      s"""
+         |{
+         |  "code": "$code",
+         |  "message": "backend message"
+         |}
+           """.stripMargin
+
   }
 
   private trait NonTysTest extends Test {
@@ -136,12 +144,12 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
   }
 
-//  private trait TysIfsTest extends Test {
-//    def taxYear: String           = "2023-24"
-//    def downstreamTaxYear: String = "23-24"
-//
-////    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
-//  }
+  private trait TysIfsTest extends Test {
+    def taxYear: String           = "2023-24"
+    def downstreamTaxYear: String = "23-24"
+
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
+  }
 
   "Calling the retrieveCalculation endpoint" should {
 
@@ -162,7 +170,37 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.json shouldBe responseBody(canBeFinalised = false)
       }
 
+      "a valid request is made with a Tax Year Specific tax year" in new TysIfsTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe responseBody(canBeFinalised = false)
+      }
+
       "a valid request is made and the response can be finalised" in new NonTysTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe responseBody(canBeFinalised = true)
+      }
+
+      "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -213,24 +251,15 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
 
       input.foreach(args => (validationErrorTest _).tupled(args))
 
-      "the backend returns a service error" when {
-
-        def errorBody(code: String): String =
-          s"""
-             |{
-             |  "code": "$code",
-             |  "message": "backend message"
-             |}
-           """.stripMargin
-
-        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $backendCode error and status $backendStatus" in new NonTysTest {
+      "downstream returns a service error" when {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, downstreamUri, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request.get())
@@ -240,7 +269,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           }
         }
 
-        val input = Seq(
+        val errors = Seq(
           (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
           (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
@@ -251,7 +280,15 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        input.foreach(args => (serviceErrorTest _).tupled(args))
+        val extraTysErrors = Seq(
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (BAD_REQUEST, "INVALID_CONSUMER_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
+        )
+
+        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
