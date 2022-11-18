@@ -31,17 +31,18 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
   private trait Test {
 
     val nino: String          = "AA123456A"
-    val taxYear: String       = "2018-19"
     val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+
+    def taxYear: String
+    def downstreamTaxYear: String
 
     def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId"
 
-    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+    def downstreamUri: String
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
@@ -50,115 +51,168 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         )
     }
 
+    def downstreamResponseBody(canBeFinalised: Boolean): JsValue = Json.parse(
+      s"""
+         |{
+         |  "metadata" : {
+         |    "calculationId": "",
+         |    "taxYear": 2017,
+         |    "requestedBy": "",
+         |    "calculationReason": "",
+         |    "calculationType": "inYear",
+         |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
+         |    "periodFrom": "",
+         |    "periodTo": ""
+         |  },
+         |  "inputs" : {
+         |    "personalInformation": {
+         |       "identifier": "",
+         |       "taxRegime": "UK"
+         |    },
+         |    "incomeSources": {}
+         |  },
+         |  "calculation" : {},
+         |  "messages" : {}
+         |}
+        """.stripMargin
+    )
+
+    def responseBody(canBeFinalised: Boolean): JsValue = Json.parse(
+      s"""
+         |{
+         |  "metadata" : {
+         |    "calculationId": "",
+         |    "taxYear": "2016-17",
+         |    "requestedBy": "",
+         |    "calculationReason": "",
+         |    "calculationType": "inYear",
+         |    "intentToSubmitFinalDeclaration": $canBeFinalised,
+         |    "finalDeclaration": false,
+         |    "periodFrom": "",
+         |    "periodTo": ""
+         |  },
+         |  "inputs" : {
+         |    "personalInformation": {
+         |       "identifier": "",
+         |       "taxRegime": "UK"
+         |    },
+         |    "incomeSources": {}
+         |  },
+         |  "calculation" : {},
+         |  "messages" : {},
+         |  "links": [
+         |    {
+         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear",
+         |      "rel": "trigger",
+         |      "method": "POST"
+         |    },
+         |    {
+         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+         |      "rel": "self",
+         |      "method": "GET"
+         |    }${if (canBeFinalised) {
+          s"""
+           |,
+           |{
+           |  "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
+           |  "rel": "submit-final-declaration",
+           |  "method": "POST"
+           |}
+           |""".stripMargin
+        } else {
+          ""
+        }}
+         |  ]
+         |}
+        """.stripMargin
+    )
+
+    def errorBody(code: String): String =
+      s"""
+         |{
+         |  "code": "$code",
+         |  "message": "backend message"
+         |}
+           """.stripMargin
+
+  }
+
+  private trait NonTysTest extends Test {
+    def taxYear: String           = "2018-19"
+    def downstreamTaxYear: String = "2018-19"
+
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+  }
+
+  private trait TysIfsTest extends Test {
+    def taxYear: String           = "2023-24"
+    def downstreamTaxYear: String = "23-24"
+
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
   }
 
   "Calling the retrieveCalculation endpoint" should {
 
     "return a 200 status code" when {
-      def successBody(canBeFinalised: Boolean): JsValue = Json.parse(
-        s"""
-          |{
-          |  "metadata" : {
-          |    "calculationId": "",
-          |    "taxYear": 2017,
-          |    "requestedBy": "",
-          |    "calculationReason": "",
-          |    "calculationType": "inYear",
-          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
-          |    "periodFrom": "",
-          |    "periodTo": ""
-          |  },
-          |  "inputs" : {
-          |    "personalInformation": {
-          |       "identifier": "",
-          |       "taxRegime": "UK"
-          |    },
-          |    "incomeSources": {}
-          |  },
-          |  "calculation" : {},
-          |  "messages" : {}
-          |}
-        """.stripMargin
-      )
 
-      def mtdBody(canBeFinalised: Boolean): JsValue = Json.parse(
-        s"""
-          |{
-          |  "metadata" : {
-          |    "calculationId": "",
-          |    "taxYear": "2016-17",
-          |    "requestedBy": "",
-          |    "calculationReason": "",
-          |    "calculationType": "inYear",
-          |    "intentToSubmitFinalDeclaration": $canBeFinalised,
-          |    "finalDeclaration": false,
-          |    "periodFrom": "",
-          |    "periodTo": ""
-          |  },
-          |  "inputs" : {
-          |    "personalInformation": {
-          |       "identifier": "",
-          |       "taxRegime": "UK"
-          |    },
-          |    "incomeSources": {}
-          |  },
-          |  "calculation" : {},
-          |  "messages" : {},
-          |  "links": [
-          |    {
-          |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19",
-          |      "rel": "trigger",
-          |      "method": "POST"
-          |    },
-          |    {
-          |      "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-          |      "rel": "self",
-          |      "method": "GET"
-          |    }${if (canBeFinalised) {
-            s"""
-             |,
-             |{
-             |  "href": "/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
-             |  "rel": "submit-final-declaration",
-             |  "method": "POST"
-             |}
-             |""".stripMargin
-          } else {
-            ""
-          }}
-          |  ]
-          |}
-        """.stripMargin
-      )
-
-      "a valid request is made" in new Test {
+      "a valid request is made" in new NonTysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = false))
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
         }
 
         val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe mtdBody(canBeFinalised = false)
+        response.json shouldBe responseBody(canBeFinalised = false)
       }
 
-      "a valid request is made and the response can be finalised" in new Test {
+      "a valid request is made with a Tax Year Specific tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, successBody(canBeFinalised = true))
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
         }
 
         val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe mtdBody(canBeFinalised = true)
+        response.json shouldBe responseBody(canBeFinalised = false)
+      }
+
+      "a valid request is made and the response can be finalised" in new NonTysTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe responseBody(canBeFinalised = true)
+      }
+
+      "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysIfsTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe responseBody(canBeFinalised = true)
       }
     }
 
@@ -168,7 +222,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
                               requestCalculationId: String,
                               expectedStatus: Int,
                               expectedBody: MtdError): Unit = {
-        s"validation fails with ${expectedBody.code} error" in new Test {
+        s"validation fails with ${expectedBody.code} error" in new NonTysTest {
 
           override val nino: String          = requestNino
           override val taxYear: String       = requestTaxYear
@@ -197,24 +251,15 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
 
       input.foreach(args => (validationErrorTest _).tupled(args))
 
-      "the backend returns a service error" when {
-
-        def errorBody(code: String): String =
-          s"""
-             |{
-             |  "code": "$code",
-             |  "message": "backend message"
-             |}
-           """.stripMargin
-
-        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $backendCode error and status $backendStatus" in new Test {
+      "downstream returns a service error" when {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request.get())
@@ -224,7 +269,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           }
         }
 
-        val input = Seq(
+        val errors = Seq(
           (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
           (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
@@ -235,7 +280,15 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        input.foreach(args => (serviceErrorTest _).tupled(args))
+        val extraTysErrors = Seq(
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (BAD_REQUEST, "INVALID_CONSUMER_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
+        )
+
+        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }

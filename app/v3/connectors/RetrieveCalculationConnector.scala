@@ -18,7 +18,7 @@ package v3.connectors
 
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.IfsUri
+import v3.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
@@ -34,12 +34,16 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfi
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
 
-    val nino          = request.nino.nino
-    val calculationId = request.calculationId
+    import request._
 
-    get(
-      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/$nino/$calculationId")
-    )
+    val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
+      TaxYearSpecificIfsUri[RetrieveCalculationResponse](
+        s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId")
+    } else {
+      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/${nino.nino}/$calculationId")
+    }
+
+    get(uri = downstreamUri)
   }
 
 }
