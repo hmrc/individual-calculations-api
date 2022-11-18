@@ -60,7 +60,7 @@ class ListCalculationsResponseSpec extends UnitSpec {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String   = "someNino"
       val calcId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     }
 
     "wrapping a ListCalculationsResponse object" should {

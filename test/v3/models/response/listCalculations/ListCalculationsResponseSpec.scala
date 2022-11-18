@@ -45,7 +45,7 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
       val nino: String            = "someNino"
       val calcId: String          = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
       val taxYear: Option[String] = Some("2020-21")
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     }
     "wrap response correctly when tax year is defined" in new Test {
       hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)) shouldBe

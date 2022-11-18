@@ -125,7 +125,7 @@ class GetTaxableIncomeControllerSpec
           AuditResponse(OK, None, Some(responseBody)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -155,7 +155,7 @@ class GetTaxableIncomeControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationTaxableIncome", "retrieve-self-assessment-tax-calculation-taxable-income", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
   }

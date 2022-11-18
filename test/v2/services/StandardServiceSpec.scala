@@ -61,7 +61,7 @@ class StandardServiceSpec extends ServiceSpec {
 
       override def customErrorMapping: Map[String, (Int, MtdError)] = Map(("BACKEND_MAPPED", (BAD_REQUEST, MappedError)))
 
-      override implicit val reads: Reads[Response]                      = implicitly
+     // override implicit val reads: Reads[Response]                      = implicitly
       override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
       override def successMapping: SuccessMapping[Response, Response]   = RequestHandler.noMapping
     }

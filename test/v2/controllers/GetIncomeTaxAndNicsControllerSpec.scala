@@ -127,7 +127,7 @@ class GetIncomeTaxAndNicsControllerSpec
           "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
           detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -159,7 +159,7 @@ class GetIncomeTaxAndNicsControllerSpec
           "retrieveSelfAssessmentTaxCalculationIncomeTaxNicsCalculated",
           "retrieve-self-assessment-tax-calculation-income-tax-nics-calculated",
           detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
   }

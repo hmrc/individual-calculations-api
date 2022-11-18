@@ -175,7 +175,7 @@ class StandardControllerSpec
           GenericAuditDetail("Individual", None, Map(), None, "X-123", AuditResponse(200, None, Some(Json.parse("""{"data":"dataMapped"}"""))))
 
         val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -244,7 +244,7 @@ class StandardControllerSpec
           AuditResponse(404, Some(List(AuditError("MATCHING_RESOURCE_NOT_FOUND"))), None))
 
         val event: AuditEvent[GenericAuditDetail] = AuditEvent("auditType", "txName", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
   }

@@ -99,7 +99,7 @@ class SubmitFinalDeclarationControllerSpec
 
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -119,7 +119,7 @@ class SubmitFinalDeclarationControllerSpec
             contentAsJson(result) shouldBe Json.toJson(error)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once
+            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once()
           }
         }
 
@@ -153,7 +153,7 @@ class SubmitFinalDeclarationControllerSpec
             contentAsJson(result) shouldBe Json.toJson(mtdError)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, mtdError)).once
+            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, mtdError)).once()
           }
         }
 

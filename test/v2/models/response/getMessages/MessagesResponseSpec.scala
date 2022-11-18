@@ -57,7 +57,7 @@ class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino: String   = "someNino"
       val calcId: String = "id"
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     }
 
     "wrapping a MessagesResponse object" should {

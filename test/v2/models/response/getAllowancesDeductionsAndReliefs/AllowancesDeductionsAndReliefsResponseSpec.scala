@@ -47,7 +47,7 @@ class AllowancesDeductionsAndReliefsResponseSpec extends UnitSpec with MockAppCo
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino           = "someNino"
       val calcId: String = "calcId"
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     }
 
     "wrapping a AllowancesDeductionsAndReliefsResponse object" should {

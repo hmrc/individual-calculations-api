@@ -46,7 +46,7 @@ trait JsonErrorValidators {
   implicit class JsResultOps[T](res: JsResult[T]) {
 
     def errors: JsErrors = res match {
-      case JsError(jsErrors) => jsErrors
+      case JsError(jsErrors) => jsErrors.map(c=>(c._1, c._2.toSeq)).toSeq
       case JsSuccess(_, _)   => fail("A JSON error was expected")
     }
 

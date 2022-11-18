@@ -27,7 +27,7 @@ object JsonFormatValidation {
     else {
       data.validate[A] match {
         case JsSuccess(body, _) => if (Json.toJson(body) == JsObject.empty) List(RuleIncorrectOrEmptyBodyError) else NoValidationErrors
-        case JsError(errors: Seq[(JsPath, Seq[JsonValidationError])]) => handleErrors(errors)
+        case JsError(errors) => handleErrors(errors.map (c=> (c._1, c._2.toSeq)).toSeq)
       }
     }
   }
