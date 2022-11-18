@@ -18,7 +18,7 @@ package v3.services
 
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.connectors.MockRetrieveCalculationConnector
-import v3.models.domain.Nino
+import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
@@ -32,7 +32,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
   private val taxYear       = "2019-20"
   private val calculationId = "someCalcId"
 
-  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, taxYear, calculationId)
+  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
   val response: RetrieveCalculationResponse = minimalCalculationResponse
 
   trait Test extends MockRetrieveCalculationConnector {
@@ -59,23 +59,31 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
 
           MockRetrieveCalculationConnector
             .retrieveCalculation(request)
-            .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))))
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           await(service.retrieveCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val input = Seq(
+      val errors = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
-        ("INVALID_CORRELATIONID", DownstreamError),
-        ("INVALID_CONSUMERID", DownstreamError),
+        ("INVALID_CORRELATIONID", InternalError),
+        ("INVALID_CONSUMERID", InternalError),
         ("NO_DATA_FOUND", NotFoundError),
-        ("SERVER_ERROR", DownstreamError),
-        ("SERVICE_UNAVAILABLE", DownstreamError),
+        ("SERVER_ERROR", InternalError),
+        ("SERVICE_UNAVAILABLE", InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
-      input.foreach(args => (serviceError _).tupled(args))
+      val extraTysErrors = Seq(
+        ("INVALID_TAX_YEAR", TaxYearFormatError),
+        ("INVALID_CORRELATION_ID", InternalError),
+        ("INVALID_CONSUMER_ID", InternalError),
+        ("NOT_FOUND", NotFoundError),
+        ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
+      )
+
+      (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
     }
   }
 

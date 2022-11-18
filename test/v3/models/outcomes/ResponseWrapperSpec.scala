@@ -17,7 +17,7 @@
 package v3.models.outcomes
 
 import support.UnitSpec
-import v3.models.errors.{DownstreamError, ErrorWrapper, MtdError}
+import v3.models.errors.{InternalError, ErrorWrapper, MtdError}
 
 class ResponseWrapperSpec extends UnitSpec {
 
@@ -39,7 +39,7 @@ class ResponseWrapperSpec extends UnitSpec {
       }
 
       "wrap an error response correctly" in {
-        val err            = ErrorWrapper("id", DownstreamError, None)
+        val err            = ErrorWrapper("id", InternalError, None)
         val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
         mappedResponse shouldBe Left(err)
       }

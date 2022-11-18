@@ -60,7 +60,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
 
             MockTriggerCalculationConnector
               .triggerCalculation(request)
-              .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(downstreamErrorCode))))))
+              .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
             await(service.triggerCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
@@ -69,11 +69,11 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("INVALID_NINO", NinoFormatError),
           ("INVALID_TAX_YEAR", TaxYearFormatError),
           ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
-          ("INVALID_REQUEST", DownstreamError),
+          ("INVALID_REQUEST", InternalError),
           ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
           ("CONFLICT", RuleFinalDeclarationReceivedError),
-          ("SERVER_ERROR", DownstreamError),
-          ("SERVICE_UNAVAILABLE", DownstreamError),
+          ("SERVER_ERROR", InternalError),
+          ("SERVICE_UNAVAILABLE", InternalError),
           ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
         )
 

@@ -16,42 +16,95 @@
 
 package v3.connectors
 
-import v3.models.domain.Nino
+import org.scalamock.handlers.CallHandler
+import v3.models.domain.{Nino, TaxYear}
+import v3.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
-import v3.models.response.retrieveCalculation.CalculationFixture
+import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationResponse}
 
 import scala.concurrent.Future
 
 class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFixture {
 
   val nino: Nino            = Nino("AA123456A")
-  val taxYear               = "2018-19"
   val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+  private val preTysTaxYear = TaxYear.fromMtd("2018-19")
+  private val tysTaxYear    = TaxYear.fromMtd("2023-24")
+
+  "retrieveCalculation" should {
+    "return a valid response" when {
+      "a valid request is supplied" in new IfsTest with Test {
+        def taxYear: TaxYear = preTysTaxYear
+        val outcome          = Right(ResponseWrapper(correlationId, minimalCalculationResponse))
+
+        stubHttpResponse(outcome)
+
+        await(connector.retrieveCalculation(request)) shouldBe outcome
+      }
+
+      "a valid request with Tax Year Specific tax year is supplied" in new TysIfsTest with Test {
+        def taxYear: TaxYear = tysTaxYear
+        val outcome          = Right(ResponseWrapper(correlationId, minimalCalculationResponse))
+
+        stubTysHttpResponse(outcome)
+
+        await(connector.retrieveCalculation(request)) shouldBe outcome
+      }
+
+      "response is an error" must {
+        val downstreamErrorResponse: DownstreamErrors =
+          DownstreamErrors.single(DownstreamErrorCode("SOME_ERROR"))
+        val outcome = Left(ResponseWrapper(correlationId, downstreamErrorResponse))
+
+        "return the error" in new IfsTest with Test {
+          def taxYear: TaxYear = preTysTaxYear
+          stubHttpResponse(outcome)
+
+          val result: DownstreamOutcome[RetrieveCalculationResponse] =
+            await(connector.retrieveCalculation(request))
+          result shouldBe outcome
+        }
+
+        "return the error given a TYS tax year request" in new TysIfsTest with Test {
+          def taxYear: TaxYear = tysTaxYear
+          stubTysHttpResponse(outcome)
+
+          val result: DownstreamOutcome[RetrieveCalculationResponse] =
+            await(connector.retrieveCalculation(request))
+          result shouldBe outcome
+        }
+      }
+    }
+  }
 
   trait Test { _: ConnectorTest =>
+    def taxYear: TaxYear
+
+    val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+
     val connector: RetrieveCalculationConnector = new RetrieveCalculationConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
-  }
 
-  "retrieveCalculation" should {
-    "return a valid response" when {
-      val outcome                    = Right(ResponseWrapper(correlationId, minimalCalculationResponse))
-
-      "a valid request with queryParams is supplied" in new IfsTest with Test {
-
-        willGet(
-            url = s"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId",
-          )
-          .returns(Future.successful(outcome))
-
-        await(connector.retrieveCalculation(request)) shouldBe outcome
-      }
+    protected def stubHttpResponse(
+        outcome: DownstreamOutcome[RetrieveCalculationResponse]): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
+      willGet(
+        url = s"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId"
+      )
+        .returns(Future.successful(outcome))
     }
+
+    protected def stubTysHttpResponse(
+        outcome: DownstreamOutcome[RetrieveCalculationResponse]): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
+      willGet(
+        url = s"$baseUrl/income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId"
+      )
+        .returns(Future.successful(outcome))
+    }
+
   }
 
 }
