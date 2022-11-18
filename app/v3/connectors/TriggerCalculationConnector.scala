@@ -17,10 +17,9 @@
 package v3.connectors
 
 import config.AppConfig
-import org.apache.commons.lang3.BooleanUtils
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.DesUri
+import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
 import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
@@ -36,15 +35,18 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
-    val ninoString        = request.nino.value
-    val downstreamTaxYear = request.taxYear.asDownstream
-    val crystallize       = BooleanUtils.toStringTrueFalse(request.finalDeclaration)
+    import request._
 
     // Note using empty JSON object ({}) which works for v2 tax calc...
-    post(
-      body = JsObject.empty,
-      uri = DesUri[TriggerCalculationResponse](s"income-tax/nino/$ninoString/taxYear/$downstreamTaxYear/tax-calculation?crystallise=$crystallize")
-    )
+    val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
+      TaxYearSpecificIfsUri[TriggerCalculationResponse](
+        s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
+    } else {
+      DesUri[TriggerCalculationResponse](
+        s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+    }
+
+    post(body = JsObject.empty, uri = downstreamUri)
 
   }
 

@@ -28,69 +28,34 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
 
-  private trait Test {
-
-    val nino              = "AA123456A"
-    val taxYear           = "2018-19"
-    val downstreamTaxYear = "2019"
-    val finalDeclaration  = true
-    val backendUrl        = s"/income-tax/nino/$nino/taxYear/$downstreamTaxYear/tax-calculation"
-
-    def setupStubs(): StubMapping
-
-    def request(nino: String, taxYear: String, maybeFinalDeclaration: Option[Boolean]): WSRequest = {
-      val suffix = maybeFinalDeclaration.map(d => s"?finalDeclaration=$d").getOrElse("")
-      val uri    = s"/$nino/self-assessment/$taxYear/$suffix"
-
-      setupStubs()
-      buildRequest(uri)
-        .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.3.0+json"),
-          (AUTHORIZATION, "Bearer 123")
-        )
-    }
-
-  }
-
   "Calling the triggerCalculation endpoint" should {
 
     "return a 202 status code" when {
 
-      val downstreamSuccessBody = Json.parse("""
-          |{
-          |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-          |}
-          |""".stripMargin)
-
-      val successBody = Json.parse(
-        """
-          |{
-          | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-          | "links":[
-          |   {
-          |     "href":"/individuals/calculations/AA123456A/self-assessment",
-          |     "method":"GET",
-          |     "rel":"list"
-          |   },
-          |   {
-          |     "href":"/individuals/calculations/AA123456A/self-assessment/2018-19/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-          |     "method":"GET",
-          |     "rel":"self"
-          |   }
-          | ]
-          |}
-        """.stripMargin
-      )
-
-      "a valid request is made" in new Test {
+      "a valid request is made" in new NonTysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
         }
 
-        val response: WSResponse = await(request(nino, taxYear, Some(finalDeclaration)).post(EmptyBody))
+        val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
+
+        response.status shouldBe ACCEPTED
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successBody
+      }
+
+      "a valid request is made for a Tax Year Specific (TYS) tax year" in new TysIfsTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
+        }
+
+        val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -100,7 +65,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
 
     "return the correct error code" when {
       def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-        s"validation fails with ${expectedBody.code} error" in new Test {
+        s"validation fails with ${expectedBody.code} error" in new NonTysTest {
 
           override val nino: String = requestNino
 
@@ -137,16 +102,16 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
            """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns $backendCode with status $backendStatus" in new Test {
+          s"backend returns $backendCode with status $backendStatus" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, Map("crystallise" -> s"$finalDeclaration"), backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request(nino, taxYear, Some(finalDeclaration)).post(EmptyBody))
+            val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -168,6 +133,67 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
         input.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
+  }
+
+  private trait Test {
+
+    val nino             = "AA123456A"
+    val finalDeclaration = true
+
+    def mtdTaxYear: String
+    def downstreamUri: String
+    def setupStubs(): StubMapping
+
+    def request(nino: String, taxYear: String, maybeFinalDeclaration: Option[Boolean]): WSRequest = {
+      val suffix = maybeFinalDeclaration.map(d => s"?finalDeclaration=$d").getOrElse("")
+      val uri    = s"/$nino/self-assessment/$taxYear/$suffix"
+
+      setupStubs()
+      buildRequest(uri)
+        .withHttpHeaders(
+          (ACCEPT, "application/vnd.hmrc.3.0+json"),
+          (AUTHORIZATION, "Bearer 123")
+        )
+    }
+
+    val downstreamSuccessBody = Json.parse("""
+        |{
+        |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+        |}
+        |""".stripMargin)
+
+    val successBody = Json.parse(
+      s"""
+        |{
+        | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        | "links":[
+        |   {
+        |     "href":"/individuals/calculations/AA123456A/self-assessment",
+        |     "method":"GET",
+        |     "rel":"list"
+        |   },
+        |   {
+        |     "href":"/individuals/calculations/AA123456A/self-assessment/${mtdTaxYear}/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        |     "method":"GET",
+        |     "rel":"self"
+        |   }
+        | ]
+        |}
+      """.stripMargin
+    )
+
+  }
+
+  private trait TysIfsTest extends Test {
+    def mtdTaxYear: String    = "2023-24"
+    def downstreamUri: String = s"/income-tax/calculation/23-24/$nino"
+
+  }
+
+  private trait NonTysTest extends Test {
+    def mtdTaxYear: String    = "2018-19"
+    def downstreamUri: String = s"/income-tax/nino/$nino/taxYear/2019/tax-calculation"
+
   }
 
 }

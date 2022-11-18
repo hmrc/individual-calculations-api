@@ -65,7 +65,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
             await(service.triggerCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
-        val input = Seq(
+        val errors = List(
           ("INVALID_NINO", NinoFormatError),
           ("INVALID_TAX_YEAR", TaxYearFormatError),
           ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
@@ -77,7 +77,24 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
         )
 
-        input.foreach(args => (serviceError _).tupled(args))
+        val extraTysErrors = List(
+          ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
+          ("INVALID_CRYSTALLISE", FinalDeclarationFormatError),
+          ("INVALID_CORRELATION_ID", InternalError),
+          ("NO_VALID_INCOME_SOURCES", InternalError),
+          ("NO_SUBMISSIONS_EXIST", RuleNoIncomeSubmissionsExistError),
+          ("INVALID_CALCULATION_ID", InternalError),
+          ("CHANGED_INCOME_SOURCES", RuleIncomeSourcesChangedError),
+          ("OUTDATED_SUBMISSION", RuleRecentSubmissionsExistError),
+          ("RESIDENCY_CHANGED", RuleResidencyChangedError),
+          ("ALREADY_DECLARED", RuleFinalDeclarationReceivedError),
+          ("PREMATURE_CRYSTALLISATION", RuleTaxYearNotEndedError),
+          ("CALCULATION_EXISTS", RuleCalculationInProgressError),
+          ("BVR_FAILURE", RuleBusinessValidationFailureError),
+          ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
+        )
+
+        (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
       }
     }
 
