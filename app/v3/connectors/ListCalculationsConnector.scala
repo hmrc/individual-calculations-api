@@ -36,18 +36,16 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
   ): Future[DownstreamOutcome[ListCalculations]] = {
     import request._
 
-    val nino = request.nino.nino
-
     val downstreamUri = taxYear match {
-      case Some(taxYear) =>
-        if (taxYear.useTaxYearSpecificApi) {
-          TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
+      case Some(taxYearValue) =>
+        if (taxYearValue.useTaxYearSpecificApi) {
+          TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYearValue.asTysDownstream}/${nino.nino}")
         } else {
-          val queryParam = request.taxYear.fold("")(taxYear => s"?taxYear=${taxYear.asDownstream}")
-          DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino" + queryParam)
+          val queryParam = taxYear.fold("")(taxYear => s"?taxYear=${taxYear.asDownstream}")
+          DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}" + queryParam)
         }
       case _ =>
-        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino")
+        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}")
     }
     get(downstreamUri)
   }
