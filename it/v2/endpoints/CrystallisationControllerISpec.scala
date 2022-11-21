@@ -89,6 +89,7 @@ class CrystallisationControllerISpec extends V2IntegrationBaseSpec {
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
           NrsStub.onError(NrsStub.POST, s"/mtd-api-nrs-proxy/$nino/itsa-crystallisation", INTERNAL_SERVER_ERROR, "An internal server error occurred")
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, NO_CONTENT)
         }
 
         val response: WSResponse = await(request().post(requestBody))
