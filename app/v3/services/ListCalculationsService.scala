@@ -37,20 +37,25 @@ class ListCalculationsService @Inject() (connector: ListCalculationsConnector) e
       ec: ExecutionContext,
       logContext: EndpointLogContext,
       correlationId: String): ServiceOutcome[ListCalculations] = {
-    val result = for {
-      responseWrapper <- EitherT(connector.list(request)).leftMap(mapDesErrors(mappingToMtdError))
-    } yield responseWrapper
 
-    result.value
+    EitherT(connector.list(request)).leftMap(mapDesErrors(downstreamErrorMap)).value
   }
 
-  private val mappingToMtdError: Map[String, MtdError] = Map(
-    "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-    "INVALID_TAXYEAR"           -> TaxYearFormatError,
-    "NOT_FOUND"                 -> NotFoundError,
-    "SERVER_ERROR"              -> InternalError,
-    "SERVICE_UNAVAILABLE"       -> InternalError,
-    "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
-  )
+  private def downstreamErrorMap: Map[String, MtdError] = {
+    val errors = Map(
+      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+      "INVALID_TAXYEAR"           -> TaxYearFormatError,
+      "NOT_FOUND"                 -> NotFoundError,
+      "SERVER_ERROR"              -> InternalError,
+      "SERVICE_UNAVAILABLE"       -> InternalError,
+      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+    )
+    val extraTysErrors = Map(
+      "INVALID_TAX_YEAR"       -> TaxYearFormatError,
+      "INVALID_CORRELATION_ID" -> InternalError,
+      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
+    )
+    errors ++ extraTysErrors
+  }
 
 }

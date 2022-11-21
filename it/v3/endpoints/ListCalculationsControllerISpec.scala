@@ -30,39 +30,66 @@ import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
 
   private trait Test {
-    val nino: String            = "AA123456A"
-    val taxYear: Option[String] = None
+    val nino: String = "AA123456A"
 
-    def uri: String        = s"/$nino/self-assessment"
-    def backendUrl: String = s"/income-tax/list-of-calculation-results/$nino"
+    def taxYear: Option[String]
+
+    def uri: String = s"/$nino/self-assessment"
+
+    def downstreamUri: String
+
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-      val queryParams: Seq[(String, String)] =
+      AuthStub.authorised()
+      MtdIdLookupStub.ninoFound(nino)
+
+      def downstreamQueryParams: Seq[(String, String)] =
         Seq("taxYear" -> taxYear)
           .collect { case (k, Some(v)) => (k, v) }
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
+        .addQueryStringParameters(downstreamQueryParams: _*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.3.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
 
+    def errorBody(code: String): String =
+      s"""
+         |{
+         |  "code": "$code",
+         |  "message": "backend message"
+         |}
+           """.stripMargin
+
+  }
+
+  private trait NonTysTest extends Test {
+    def taxYear: Option[String] = Some("2018-19")
+
+    override def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
+  }
+
+  private trait TysIfsTest extends Test {
+    def taxYear: Option[String] = Some("2023-24")
+
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/23-24/$nino"
+
+    def downstreamQueryParams: Seq[(String, String)] = Seq.empty
   }
 
   "Calling the list calculations endpoint" should {
     "return a 200 status code" when {
-      "valid request is made with a tax year" in new Test {
-        override val taxYear: Option[String] = Some("2018-19")
+      "valid request is made with a tax year" in new NonTysTest {
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -71,12 +98,28 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
       }
 
-      "valid request is made without a tax year" in new Test {
+      "valid request is made without a tax year" in new NonTysTest {
+        override def taxYear: Option[String] = None
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, listCalculationsDownstreamJson)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
+        }
+
+        val response: WSResponse = await(request.get)
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+      }
+
+      "valid TYS request is made without a tax year" in new TysIfsTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get)
@@ -89,7 +132,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
     "return error according to spec" when {
       "validation error" when {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new Test {
+          s"validation fails with ${expectedBody.code} error" in new NonTysTest {
             override val nino: String            = requestNino
             override val taxYear: Option[String] = Some(requestTaxYear)
 
@@ -116,23 +159,15 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
-      "backend service error" when {
-        def errorBody(code: String): String =
-          s"""
-             |{
-             |  "code": "$code",
-             |  "message": "backend message"
-             |}
-           """.stripMargin
-
-        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $backendCode error and status $backendStatus" in new Test {
+      "downstream returns a service error" when {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $downstreamStatus error and status $downstreamCode" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request.get)
@@ -142,7 +177,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           }
         }
 
-        val input = Seq(
+        val errors = Seq(
           (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
           (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
@@ -151,7 +186,13 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        input.foreach(args => (serviceErrorTest _).tupled(args))
+        val extraTysErrors = Seq(
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
+        )
+
+        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
