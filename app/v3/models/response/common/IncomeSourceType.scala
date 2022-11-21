@@ -17,11 +17,13 @@
 package v3.models.response.common
 
 import play.api.libs.json._
-import utils.enums.Enums
+import utils.enums._
 
 sealed trait IncomeSourceType
 
 object IncomeSourceType {
+
+
   case object `self-employment`           extends IncomeSourceType
   case object `uk-property-non-fhl`       extends IncomeSourceType
   case object `foreign-property-fhl-eea`  extends IncomeSourceType

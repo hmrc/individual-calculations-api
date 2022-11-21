@@ -28,6 +28,7 @@ object Shows {
 
 object Enums {
 
+
   implicit def typeName[E: ClassTag]: String = implicitly[ClassTag[E]].runtimeClass.getSimpleName
 
 
@@ -44,7 +45,7 @@ object Enums {
     implicitly[Reads[E]].filter(readsError)(es.contains(_))
 
   def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = {
-    implicitly[Writes[E]](e => JsString(ev.show(e)))
+    Writes[E](e => Json.toJson(ev.show(e)))
   }
 
   def format[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Format[E] =
