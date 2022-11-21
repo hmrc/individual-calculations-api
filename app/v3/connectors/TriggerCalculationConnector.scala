@@ -37,7 +37,6 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
 
     import request._
 
-    // Note using empty JSON object ({}) which works for v2 tax calc...
     val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
       TaxYearSpecificIfsUri[TriggerCalculationResponse](
         s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
@@ -46,6 +45,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
         s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
     }
 
+    // Note using empty JSON object ({}) which works for v2 tax calc...
     post(body = JsObject.empty, uri = downstreamUri)
 
   }

@@ -28,8 +28,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   val ninoString: String                   = "AA123456A"
   val nino: Nino                           = Nino(ninoString)
-  val nonTystaxYear: TaxYear               = TaxYear.fromMtd("2018-19")
-  val tystaxYear: TaxYear                  = TaxYear.fromMtd("2023-24")
+  val nonTysTaxYear: TaxYear               = TaxYear.fromMtd("2018-19")
+  val tysTaxYear: TaxYear                  = TaxYear.fromMtd("2023-24")
   val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 
   trait Test { _: ConnectorTest =>
@@ -52,7 +52,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
-        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, nonTystaxYear, finalDeclaration)
+        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, nonTysTaxYear, finalDeclaration)
         val outcome                            = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -64,7 +64,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new TysIfsTest with Test {
-      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, tystaxYear, false)
+      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, tysTaxYear, false)
       val outcome                            = Right(ResponseWrapper(correlationId, response))
 
       willPost(
