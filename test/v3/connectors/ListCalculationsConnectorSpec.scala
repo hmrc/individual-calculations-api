@@ -26,10 +26,12 @@ import scala.concurrent.Future
 
 class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsFixture {
 
-  val nino: Nino       = Nino("AA111111A")
-  val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+  val nino: Nino          = Nino("AA111111A")
+  val taxYear: TaxYear    = TaxYear.fromMtd("2018-19")
+  val tysTaxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-  val request: ListCalculationsRequest = ListCalculationsRequest(nino, Some(taxYear))
+  val request: ListCalculationsRequest    = ListCalculationsRequest(nino, Some(taxYear))
+  val tysRequest: ListCalculationsRequest = ListCalculationsRequest(nino, Some(tysTaxYear))
 
   trait Test { _: ConnectorTest =>
 
@@ -42,7 +44,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
 
   "ListCalculationsConnector" when {
     "a successful response is received" must {
-      "return the expected result" in new DesTest with Test {
+      "return the expected non TYS result" in new DesTest with Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
@@ -51,6 +53,16 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
           .returns(Future.successful(outcome))
 
         await(connector.list(request)) shouldBe outcome
+      }
+      "return the expected TYS result" in new TysIfsTest with Test {
+        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+        willGet(
+          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+        )
+          .returns(Future.successful(outcome))
+
+        await(connector.list(tysRequest)) shouldBe outcome
       }
     }
 
