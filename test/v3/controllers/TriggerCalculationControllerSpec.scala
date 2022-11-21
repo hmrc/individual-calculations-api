@@ -81,10 +81,19 @@ class TriggerCalculationControllerSpec
   private def uri = s"/$nino/self-assessment/$rawTaxYear/"
 
   private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
-    val auditValues   = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> "true")
-    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
-      versionNumber = "3.0", response = "error", httpStatusCode = responseStatus, calculationId = None,
-      errorCodes = Some(Seq(error.code)))
+    val auditValues = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> "true")
+    val detail = GenericAuditDetail(
+      "Individual",
+      None,
+      auditValues,
+      None,
+      correlationId,
+      versionNumber = "3.0",
+      response = "error",
+      httpStatusCode = responseStatus,
+      calculationId = None,
+      errorCodes = Some(Seq(error.code))
+    )
 
     AuditEvent("TriggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
   }
@@ -133,9 +142,18 @@ class TriggerCalculationControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val auditValues = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}")
-        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
-          versionNumber = "3.0", response = "success", httpStatusCode = 202, calculationId = Some(calculationId),
-          errorCodes = None)
+        val detail: GenericAuditDetail = GenericAuditDetail(
+          "Individual",
+          None,
+          auditValues,
+          None,
+          correlationId,
+          versionNumber = "3.0",
+          response = "success",
+          httpStatusCode = 202,
+          calculationId = Some(calculationId),
+          errorCodes = None
+        )
 
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("TriggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
@@ -215,7 +233,7 @@ class TriggerCalculationControllerSpec
         (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
         (RuleFinalDeclarationReceivedError, FORBIDDEN),
         (BadRequestError, BAD_REQUEST),
-        (DownstreamError, INTERNAL_SERVER_ERROR),
+        (InternalError, INTERNAL_SERVER_ERROR),
         (RuleIncorrectGovTestScenarioError, BAD_REQUEST)
       )
 

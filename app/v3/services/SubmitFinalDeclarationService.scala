@@ -48,7 +48,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
 
   private def downstreamErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_IDTYPE"               -> DownstreamError,
+      "INVALID_IDTYPE"               -> InternalError,
       "INVALID_IDVALUE"              -> NinoFormatError,
       "INVALID_TAXYEAR"              -> TaxYearFormatError,
       "INVALID_CALCID"               -> CalculationIdFormatError,
@@ -60,8 +60,8 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "INCOME_SUBMISSIONS_NOT_EXIST" -> RuleNoIncomeSubmissionsExistError,
       "BUSINESS_VALIDATION"          -> RuleSubmissionFailedError,
       "FINAL_DECLARATION_RECEIVED"   -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR"                 -> DownstreamError,
-      "SERVICE_UNAVAILABLE"          -> DownstreamError,
+      "SERVER_ERROR"                 -> InternalError,
+      "SERVICE_UNAVAILABLE"          -> InternalError,
       "UNMATCHED_STUB_ERROR"         -> RuleIncorrectGovTestScenarioError
     )
 

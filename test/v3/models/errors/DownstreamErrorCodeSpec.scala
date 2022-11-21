@@ -16,22 +16,24 @@
 
 package v3.models.errors
 
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class DesErrorCode(code: String) {
-  def toMtd: MtdError = MtdError(code = code, message = "")
+class DownstreamErrorCodeSpec extends UnitSpec {
+
+  "reads" should {
+    val json = Json.parse(
+      """
+        |{
+        |   "code": "CODE",
+        |   "reason": "ignored"
+        |}
+      """.stripMargin
+    )
+
+    "generate the correct error code" in {
+      json.as[DownstreamErrorCode] shouldBe DownstreamErrorCode("CODE")
+    }
+  }
+
 }
-
-object DesErrorCode {
-  implicit val reads: Reads[DesErrorCode] = Json.reads[DesErrorCode]
-}
-
-sealed trait DesError
-
-case class DesErrors(errors: List[DesErrorCode]) extends DesError
-
-object DesErrors {
-  def single(error: DesErrorCode): DesErrors = DesErrors(List(error))
-}
-
-case class OutboundError(error: MtdError, errors: Option[Seq[MtdError]] = None) extends DesError

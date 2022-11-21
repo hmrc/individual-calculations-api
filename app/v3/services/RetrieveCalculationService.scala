@@ -40,22 +40,30 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
       logContext: EndpointLogContext,
       correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
 
-    val result = for {
-      desResponseWrapper <- EitherT(connector.retrieveCalculation(request)).leftMap(mapDesErrors(mapDownstreamErrors))
-    } yield desResponseWrapper
-
-    result.value
+    EitherT(connector.retrieveCalculation(request)).leftMap(mapDesErrors(downstreamErrorMap)).value
   }
 
-  private val mapDownstreamErrors: Map[String, MtdError] = Map(
-    "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-    "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
-    "INVALID_CORRELATIONID"     -> DownstreamError,
-    "INVALID_CONSUMERID"        -> DownstreamError,
-    "NO_DATA_FOUND"             -> NotFoundError,
-    "SERVER_ERROR"              -> DownstreamError,
-    "SERVICE_UNAVAILABLE"       -> DownstreamError,
-    "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
-  )
+  def downstreamErrorMap: Map[String, MtdError] = {
+    val errors: Map[String, MtdError] = Map(
+      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+      "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
+      "INVALID_CORRELATIONID"     -> InternalError,
+      "INVALID_CONSUMERID"        -> InternalError,
+      "NO_DATA_FOUND"             -> NotFoundError,
+      "SERVER_ERROR"              -> InternalError,
+      "SERVICE_UNAVAILABLE"       -> InternalError,
+      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+    )
+
+    val extraTysErrors: Map[String, MtdError] = Map(
+      "INVALID_TAX_YEAR"       -> TaxYearFormatError,
+      "INVALID_CORRELATION_ID" -> InternalError,
+      "INVALID_CONSUMER_ID"    -> InternalError,
+      "NOT_FOUND"              -> NotFoundError,
+      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
+    )
+
+    errors ++ extraTysErrors
+  }
 
 }

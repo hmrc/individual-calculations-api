@@ -46,10 +46,19 @@ class SubmitFinalDeclarationControllerSpec
   private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
-    val auditValues   = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-    val detail        = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
-      versionNumber = "3.0", response = "error", httpStatusCode = responseStatus, calculationId = None,
-      errorCodes = Some(Seq(error.code)))
+    val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
+    val detail = GenericAuditDetail(
+      "Individual",
+      None,
+      auditValues,
+      None,
+      correlationId,
+      versionNumber = "3.0",
+      response = "error",
+      httpStatusCode = responseStatus,
+      calculationId = None,
+      errorCodes = Some(Seq(error.code))
+    )
 
     AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
   }
@@ -93,8 +102,16 @@ class SubmitFinalDeclarationControllerSpec
         header("X-CorrelationId", result) shouldBe Some(correlationId)
 
         val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-        val detail: GenericAuditDetail = GenericAuditDetail("Individual", None, auditValues, None, correlationId,
-          versionNumber = "3.0", response = "success", httpStatusCode = 204, calculationId = None,
+        val detail: GenericAuditDetail = GenericAuditDetail(
+          "Individual",
+          None,
+          auditValues,
+          None,
+          correlationId,
+          versionNumber = "3.0",
+          response = "success",
+          httpStatusCode = 204,
+          calculationId = None,
           errorCodes = None)
 
         val event: AuditEvent[GenericAuditDetail] =
@@ -168,7 +185,7 @@ class SubmitFinalDeclarationControllerSpec
           (RuleIncomeSourcesInvalidError, FORBIDDEN),
           (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
           (NotFoundError, NOT_FOUND),
-          (DownstreamError, INTERNAL_SERVER_ERROR),
+          (InternalError, INTERNAL_SERVER_ERROR),
           (RuleIncorrectGovTestScenarioError, BAD_REQUEST)
         )
 
@@ -190,7 +207,7 @@ class SubmitFinalDeclarationControllerSpec
         val result: Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
 
         status(result) shouldBe INTERNAL_SERVER_ERROR
-        contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+        contentAsJson(result) shouldBe Json.toJson(InternalError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
 
@@ -206,7 +223,7 @@ class SubmitFinalDeclarationControllerSpec
         val result: Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
 
         status(result) shouldBe INTERNAL_SERVER_ERROR
-        contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+        contentAsJson(result) shouldBe Json.toJson(InternalError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }

@@ -62,12 +62,8 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
         for {
           parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
           serviceResponse <- EitherT(service.list(parsedRequest))
-          vendorResponse <- EitherT.fromEither[Future](
-            hateoasFactory
-              .wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear))
-              .asRight[ErrorWrapper]
-          )
         } yield {
+          val vendorResponse = hateoasFactory.wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear))
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
@@ -89,12 +85,19 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     }
 
   private def errorResult(errorWrapper: ErrorWrapper) = errorWrapper.error match {
-    case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-        RuleIncorrectGovTestScenarioError =>
+    case _
+        if errorWrapper.containsAnyOf(
+          BadRequestError,
+          NinoFormatError,
+          TaxYearFormatError,
+          RuleTaxYearRangeInvalidError,
+          RuleTaxYearNotSupportedError,
+          RuleIncorrectGovTestScenarioError
+        ) =>
       BadRequest(Json.toJson(errorWrapper))
-    case NotFoundError   => NotFound(Json.toJson(errorWrapper))
-    case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
-    case _               => unhandledError(errorWrapper)
+    case NotFoundError => NotFound(Json.toJson(errorWrapper))
+    case InternalError => InternalServerError(Json.toJson(errorWrapper))
+    case _             => unhandledError(errorWrapper)
   }
 
 }

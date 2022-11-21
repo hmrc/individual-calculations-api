@@ -23,7 +23,7 @@ import support.UnitSpec
 import uk.gov.hmrc.http.HttpResponse
 import v3.connectors.MtdIdLookupOutcome
 import v3.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
-import v3.models.errors.{DownstreamError, InvalidBearerTokenError, NinoFormatError}
+import v3.models.errors.{InternalError, InvalidBearerTokenError, NinoFormatError}
 
 class MtdIdLookupHttpParserSpec extends UnitSpec {
 
@@ -49,21 +49,21 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
         val response                   = HttpResponse(OK, invalidJson.toString())
         val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
 
-        result shouldBe Left(DownstreamError)
+        result shouldBe Left(InternalError)
       }
 
       "backend doesn't return any data" in {
         val response                   = HttpResponse(OK, None.orNull)
         val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
 
-        result shouldBe Left(DownstreamError)
+        result shouldBe Left(InternalError)
       }
 
       "the json cannot be read" in {
         val response                   = HttpResponse(OK, None.orNull)
         val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
 
-        result shouldBe Left(DownstreamError)
+        result shouldBe Left(InternalError)
       }
     }
 
@@ -90,7 +90,7 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
         val response                   = HttpResponse(INTERNAL_SERVER_ERROR, None.orNull)
         val result: MtdIdLookupOutcome = mtdIdLookupHttpReads.read(method, url, response)
 
-        result shouldBe Left(DownstreamError)
+        result shouldBe Left(InternalError)
       }
     }
   }

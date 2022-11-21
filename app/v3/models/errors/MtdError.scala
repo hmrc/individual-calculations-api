@@ -163,7 +163,7 @@ object NotFoundError
       message = "Matching resource not found"
     )
 
-object DownstreamError
+object InternalError
     extends MtdError(
       code = "INTERNAL_SERVER_ERROR",
       message = "An internal server error occurred"

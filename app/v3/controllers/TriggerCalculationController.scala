@@ -112,7 +112,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
           BadRequestError | RuleIncorrectGovTestScenarioError =>
         BadRequest(Json.toJson(errorWrapper))
       case RuleNoIncomeSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
-      case DownstreamError                                                       => InternalServerError(Json.toJson(errorWrapper))
+      case InternalError                                                         => InternalServerError(Json.toJson(errorWrapper))
       case _                                                                     => unhandledError(errorWrapper)
     }
   }

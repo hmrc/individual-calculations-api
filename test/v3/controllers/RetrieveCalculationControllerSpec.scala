@@ -153,7 +153,7 @@ class RetrieveCalculationControllerSpec
   )
 
   val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), taxYear, calculationId)
+  val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
   val error: ErrorWrapper                     = ErrorWrapper(correlationId, RuleNoIncomeSubmissionsExistError, None)
 
   val testHateoasLink: Link = Link(href = "/foo/bar", method = GET, rel = "test-relationship")
@@ -244,7 +244,7 @@ class RetrieveCalculationControllerSpec
           (NinoFormatError, BAD_REQUEST),
           (CalculationIdFormatError, BAD_REQUEST),
           (NotFoundError, NOT_FOUND),
-          (DownstreamError, INTERNAL_SERVER_ERROR),
+          (InternalError, INTERNAL_SERVER_ERROR),
           (RuleIncorrectGovTestScenarioError, BAD_REQUEST)
         )
 
@@ -265,7 +265,7 @@ class RetrieveCalculationControllerSpec
           val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
 
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+          contentAsJson(result) shouldBe Json.toJson(InternalError)
           header("X-CorrelationId", result) shouldBe Some(correlationId)
         }
 
@@ -281,7 +281,7 @@ class RetrieveCalculationControllerSpec
           val result: Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
 
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          contentAsJson(result) shouldBe Json.toJson(DownstreamError)
+          contentAsJson(result) shouldBe Json.toJson(InternalError)
           header("X-CorrelationId", result) shouldBe Some(correlationId)
         }
       }
