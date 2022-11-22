@@ -47,6 +47,21 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.json shouldBe successBody
       }
 
+      "a valid request is made without a final declaration" in new NonTysTest {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"false"), OK, downstreamSuccessBody)
+        }
+
+        val response: WSResponse = await(request(nino, mtdTaxYear, None).post(EmptyBody))
+
+        response.status shouldBe ACCEPTED
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successBody
+      }
+
       "a valid request is made for a Tax Year Specific (TYS) tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -118,7 +133,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           }
         }
 
-        val input = Seq(
+        val errors = List(
           (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (FORBIDDEN, "INVALID_TAX_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
@@ -130,7 +145,16 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        input.foreach(args => (serviceErrorTest _).tupled(args))
+        val extraTysErrors = List(
+          (UNPROCESSABLE_ENTITY, "CHANGED_INCOME_SOURCES", BAD_REQUEST, RuleIncomeSourcesChangedError),
+          (UNPROCESSABLE_ENTITY, "OUTDATED_SUBMISSION", BAD_REQUEST, RuleRecentSubmissionsExistError),
+          (UNPROCESSABLE_ENTITY, "RESIDENCY_CHANGED", BAD_REQUEST, RuleResidencyChangedError),
+          (UNPROCESSABLE_ENTITY, "PREMATURE_CRYSTALLISATION", BAD_REQUEST, RuleTaxYearNotEndedError),
+          (UNPROCESSABLE_ENTITY, "CALCULATION_EXISTS", BAD_REQUEST, RuleCalculationInProgressError),
+          (UNPROCESSABLE_ENTITY, "BVR_FAILURE", BAD_REQUEST, RuleBusinessValidationFailureError)
+        )
+
+        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
