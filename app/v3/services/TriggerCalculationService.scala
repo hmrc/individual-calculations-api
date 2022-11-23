@@ -39,23 +39,41 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       ec: ExecutionContext,
       logContext: EndpointLogContext,
       correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
-    val result = for {
-      responseWrapper <- EitherT(connector.triggerCalculation(request)).leftMap(mapDesErrors(mappingToMtdError))
-    } yield responseWrapper
 
-    result.value
+    EitherT(connector.triggerCalculation(request)).leftMap(mapDesErrors(mappingToMtdError)).value
   }
 
-  private val mappingToMtdError: Map[String, MtdError] = Map(
-    "INVALID_NINO"            -> NinoFormatError,
-    "INVALID_TAX_YEAR"        -> TaxYearFormatError,
-    "INVALID_TAX_CRYSTALLISE" -> FinalDeclarationFormatError,
-    "INVALID_REQUEST"         -> InternalError,
-    "NO_SUBMISSION_EXIST"     -> RuleNoIncomeSubmissionsExistError,
-    "CONFLICT"                -> RuleFinalDeclarationReceivedError,
-    "SERVER_ERROR"            -> InternalError,
-    "SERVICE_UNAVAILABLE"     -> InternalError,
-    "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
-  )
+  private val mappingToMtdError: Map[String, MtdError] = {
+    val errors = Map(
+      "INVALID_NINO"            -> NinoFormatError,
+      "INVALID_TAX_YEAR"        -> TaxYearFormatError,
+      "INVALID_TAX_CRYSTALLISE" -> FinalDeclarationFormatError,
+      "INVALID_REQUEST"         -> InternalError,
+      "NO_SUBMISSION_EXIST"     -> RuleNoIncomeSubmissionsExistError,
+      "CONFLICT"                -> RuleFinalDeclarationReceivedError,
+      "SERVER_ERROR"            -> InternalError,
+      "SERVICE_UNAVAILABLE"     -> InternalError,
+      "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
+    )
+
+    val extraTysErrors = Map(
+      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+      "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
+      "INVALID_CORRELATIONID"     -> InternalError,
+      "INVALID_CALCULATION_ID"    -> InternalError,
+      "NO_VALID_INCOME_SOURCES"   -> InternalError,
+      "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
+      "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,
+      "OUTDATED_SUBMISSION"       -> RuleRecentSubmissionsExistError,
+      "RESIDENCY_CHANGED"         -> RuleResidencyChangedError,
+      "ALREADY_DECLARED"          -> RuleFinalDeclarationReceivedError,
+      "PREMATURE_CRYSTALLISATION" -> RuleTaxYearNotEndedError,
+      "CALCULATION_EXISTS"        -> RuleCalculationInProgressError,
+      "BVR_FAILURE"               -> RuleBusinessValidationFailureError,
+      "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError
+    )
+
+    errors ++ extraTysErrors
+  }
 
 }

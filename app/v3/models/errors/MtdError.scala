@@ -135,7 +135,7 @@ object RuleFinalDeclarationReceivedError
 object RuleIncomeSourcesChangedError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_CHANGED",
-      message = "Income sources data has changed. Perform an Intent to submit a final declaration"
+      message = "Income sources data has changed. Trigger a new calculation"
     )
 
 object RuleIncomeSourcesInvalidError
@@ -147,7 +147,7 @@ object RuleIncomeSourcesInvalidError
 object RuleRecentSubmissionsExistError
     extends MtdError(
       code = "RULE_RECENT_SUBMISSIONS_EXIST",
-      message = "More recent submissions exist. Perform an Intent to submit a final declaration"
+      message = "More recent submissions exist. Trigger a new calculation"
     )
 
 object RuleResidencyChangedError
@@ -224,4 +224,22 @@ object UnsupportedVersionError
     extends MtdError(
       code = "NOT_FOUND",
       message = "The requested resource could not be found"
+    )
+
+object RuleTaxYearNotEndedError
+    extends MtdError(
+      code = "RULE_TAX_YEAR_NOT_ENDED",
+      message = "Tax year not ended"
+    )
+
+object RuleCalculationInProgressError
+    extends MtdError(
+      code = "RULE_CALCULATION_IN_PROGRESS",
+      message = "A calculation is in progress. Please wait before triggering a new calculation"
+    )
+
+object RuleBusinessValidationFailureError
+    extends MtdError(
+      code = "RULE_BUSINESS_VALIDATION_FAILURE",
+      message = "Business validation rule failures"
     )

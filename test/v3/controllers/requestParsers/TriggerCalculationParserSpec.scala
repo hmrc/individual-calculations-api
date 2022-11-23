@@ -41,6 +41,13 @@ class TriggerCalculationParserSpec extends UnitSpec {
 
         parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = true))
       }
+
+      "default final declaration to false" in new Test {
+        val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, None)
+        MockValidator.validate(data).returns(Nil)
+
+        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = false))
+      }
     }
 
     "single validation error" should {

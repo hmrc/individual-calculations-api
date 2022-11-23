@@ -133,7 +133,7 @@ traits:
             type: types.errorResponse
             examples:
               ruleIncomeSourcesChanged:
-                description: 'Information relating to your income sources changed. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                description: 'Information relating to your income sources changed. You must trigger a new calculation before final declaration.'
                 value:
                   code: RULE_INCOME_SOURCES_CHANGED
   ruleRecentSubmissionsExist:
@@ -144,7 +144,7 @@ traits:
             type: types.errorResponse
             examples:
               ruleRecentSubmissionsExist:
-                description: 'More recent submissions exist. You must trigger a new calculation using Intent to Submit a Final Declaration again before final declaration.'
+                description: 'More recent submissions exist. You must trigger a new calculation before final declaration.'
                 value:
                   code: RULE_RECENT_SUBMISSIONS_EXIST
   ruleResidencyChanged:
@@ -192,13 +192,97 @@ traits:
                 value:
                   code: MATCHING_RESOURCE_NOT_FOUND
   notFoundList:
-      responses:
-        404:
-          body:
-            application/json:
-              type: types.errorResponse
-              examples:
-                notFoundList:
-                  description: 'No tax calculations can be found for the supplied NINO and tax year.'
-                  value:
-                    code: MATCHING_RESOURCE_NOT_FOUND
+    responses:
+      404:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              notFoundList:
+                description: 'No tax calculations can be found for the supplied NINO and tax year.'
+                value:
+                  code: MATCHING_RESOURCE_NOT_FOUND
+  triggerRuleIncomeSourcesChanged:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleIncomeSourcesChanged:
+                 description: |
+                   Information relating to income sources changed. You must first trigger a calculation with finalDeclaration false.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_INCOME_SOURCES_CHANGED
+  triggerRuleResidencyChanged:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleResidencyChanged:
+                 description: |
+                   Information relating to residency has changed. You must first trigger a calculation with finalDeclaration false.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_RESIDENCY_CHANGED
+  triggerRuleTaxYearNotEnded:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleTaxYearNotEnded:
+                 description: |
+                   A calculation with finalDeclaration true cannot be triggered before the taxYear to which it relates has ended.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_TAX_YEAR_NOT_ENDED
+  triggerRuleRecentSubmissionsExist:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleRecentSubmissionsExist:
+                 description: |
+                   More recent submissions exist. You must first trigger a calculation with finalDeclaration false.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_RECENT_SUBMISSIONS_EXIST
+  triggerRuleCalculationInProgress:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleCalculationInProgress:
+                 description: |
+                   A calculation is in progress. Please wait before triggering a new calculation.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_CALCULATION_IN_PROGRESS
+  triggerRuleBusinessValidationFailure:
+    responses:
+      400:
+         body:
+           application/json:
+             type: types.errorResponse
+             examples:
+               ruleBusinessValidationFailure:
+                 description: |
+                   Business validation rule failures.
+
+                   This error only occurs for taxYears from 2023-24 onwards.
+                 value:
+                   code: RULE_BUSINESS_VALIDATION_FAILURE

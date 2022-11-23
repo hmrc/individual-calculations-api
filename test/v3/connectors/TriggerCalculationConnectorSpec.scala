@@ -28,15 +28,15 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   val ninoString: String                   = "AA123456A"
   val nino: Nino                           = Nino(ninoString)
-  val downstreamTaxYear                    = "2019"
-  val taxYear: TaxYear                     = TaxYear.fromDownstream(downstreamTaxYear)
   val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 
   trait Test { _: ConnectorTest =>
+
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
+
   }
 
   "connector" when {
@@ -50,18 +50,28 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
-        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, taxYear, finalDeclaration)
+        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
         val outcome                            = Right(ResponseWrapper(correlationId, response))
 
-
-          willPost(
-            url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/$downstreamTaxYear/tax-calculation?crystallise=$expectedCrystalliseParam",
-            body = Json.parse("{}"),
-          )
-          .returns(Future.successful(outcome))
+        willPost(
+          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          body = Json.parse("{}")
+        ).returns(Future.successful(outcome))
 
         await(connector.triggerCalculation(request)) shouldBe outcome
       }
+
+    "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new TysIfsTest with Test {
+      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2023-24"), false)
+      val outcome                            = Right(ResponseWrapper(correlationId, response))
+
+      willPost(
+        url = s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
+        body = Json.parse("{}")
+      ).returns(Future.successful(outcome))
+
+      await(connector.triggerCalculation(request)) shouldBe outcome
+    }
   }
 
 }
