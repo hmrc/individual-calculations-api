@@ -30,7 +30,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.DataEvent
-import uk.gov.hmrc.play.bootstrap.config.{DefaultHttpAuditEvent}
+import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v2.models.errors._
 
 import java.time.Instant
@@ -48,7 +48,7 @@ class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
     val auditConnector: AuditConnector = mock[AuditConnector]
-    val httpAuditEvent: DefaultHttpAuditEvent = mock[DefaultHttpAuditEvent]
+    val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
 
     val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
 
@@ -65,10 +65,6 @@ class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
     (httpAuditEvent.dataEvent(_:String,_:String, _: RequestHeader, _: Map[String, String])(_:HeaderCarrier))
       .expects(*, *, *, *, *)
       .returning(dataEvent)
-
-   // (httpAuditEvent.dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String])(_: HeaderCarrier) )
-   // .expects(*, *, *, *, *)
-  //  .returns(dataEvent)
 
     (auditConnector
       .sendEvent(_: DataEvent)(_: HeaderCarrier, _: ExecutionContext))
