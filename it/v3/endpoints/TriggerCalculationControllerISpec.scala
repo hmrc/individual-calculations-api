@@ -146,12 +146,20 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
         )
 
         val extraTysErrors = List(
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
+          (UNPROCESSABLE_ENTITY, "INVALID_CALCULATION_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (UNPROCESSABLE_ENTITY, "NO_VALID_INCOME_SOURCES", INTERNAL_SERVER_ERROR, InternalError),
+          (UNPROCESSABLE_ENTITY, "NO_SUBMISSIONS_EXIST", FORBIDDEN, RuleNoIncomeSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "CHANGED_INCOME_SOURCES", BAD_REQUEST, RuleIncomeSourcesChangedError),
           (UNPROCESSABLE_ENTITY, "OUTDATED_SUBMISSION", BAD_REQUEST, RuleRecentSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "RESIDENCY_CHANGED", BAD_REQUEST, RuleResidencyChangedError),
+          (UNPROCESSABLE_ENTITY, "ALREADY_DECLARED", FORBIDDEN, RuleFinalDeclarationReceivedError),
           (UNPROCESSABLE_ENTITY, "PREMATURE_CRYSTALLISATION", BAD_REQUEST, RuleTaxYearNotEndedError),
           (UNPROCESSABLE_ENTITY, "CALCULATION_EXISTS", BAD_REQUEST, RuleCalculationInProgressError),
-          (UNPROCESSABLE_ENTITY, "BVR_FAILURE", BAD_REQUEST, RuleBusinessValidationFailureError)
+          (UNPROCESSABLE_ENTITY, "BVR_FAILURE", BAD_REQUEST, RuleBusinessValidationFailureError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
 
         (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
