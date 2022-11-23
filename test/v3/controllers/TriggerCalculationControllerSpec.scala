@@ -227,7 +227,7 @@ class TriggerCalculationControllerSpec
         }
       }
 
-      val input = Seq(
+      val errors = List(
         (NinoFormatError, BAD_REQUEST),
         (TaxYearFormatError, BAD_REQUEST),
         (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
@@ -237,7 +237,16 @@ class TriggerCalculationControllerSpec
         (RuleIncorrectGovTestScenarioError, BAD_REQUEST)
       )
 
-      input.foreach(args => (serviceErrors _).tupled(args))
+      val extraTysErrors = List(
+        (RuleIncomeSourcesChangedError, BAD_REQUEST),
+        (RuleResidencyChangedError, BAD_REQUEST),
+        (RuleTaxYearNotEndedError, BAD_REQUEST),
+        (RuleRecentSubmissionsExistError, BAD_REQUEST),
+        (RuleCalculationInProgressError, BAD_REQUEST),
+        (RuleBusinessValidationFailureError, BAD_REQUEST)
+      )
+
+      (errors ++ extraTysErrors).foreach(args => (serviceErrors _).tupled(args))
     }
   }
 

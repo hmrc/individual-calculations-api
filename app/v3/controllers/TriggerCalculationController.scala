@@ -62,14 +62,10 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
         for {
           parsedRequest   <- wrap(parser.parseRequest(rawData))
           serviceResponse <- wrap(service.triggerCalculation(parsedRequest))
-          vendorResponse <- wrap(
-            hateoasFactory
-              .wrap(
-                serviceResponse.responseData,
-                TriggerCalculationHateoasData(nino, taxYear, parsedRequest.finalDeclaration, serviceResponse.responseData.calculationId))
-              .asRight[ErrorWrapper])
-
         } yield {
+          val hateoasData = TriggerCalculationHateoasData(nino, taxYear, parsedRequest.finalDeclaration, serviceResponse.responseData.calculationId)
+          val vendorResponse = hateoasFactory.wrap(serviceResponse.responseData, hateoasData)
+
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
@@ -108,8 +104,22 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     errorWrapper.error match {
-      case NinoFormatError | TaxYearFormatError | RuleTaxYearNotSupportedError | RuleTaxYearRangeInvalidError | FinalDeclarationFormatError |
-          BadRequestError | RuleIncorrectGovTestScenarioError =>
+      case _
+          if errorWrapper.containsAnyOf(
+            NinoFormatError,
+            TaxYearFormatError,
+            RuleTaxYearNotSupportedError,
+            RuleTaxYearRangeInvalidError,
+            FinalDeclarationFormatError,
+            BadRequestError,
+            RuleIncorrectGovTestScenarioError,
+            RuleIncomeSourcesChangedError,
+            RuleResidencyChangedError,
+            RuleTaxYearNotEndedError,
+            RuleRecentSubmissionsExistError,
+            RuleCalculationInProgressError,
+            RuleBusinessValidationFailureError
+          ) =>
         BadRequest(Json.toJson(errorWrapper))
       case RuleNoIncomeSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
       case InternalError                                                         => InternalServerError(Json.toJson(errorWrapper))
