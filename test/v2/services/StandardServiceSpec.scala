@@ -16,7 +16,7 @@
 
 package v2.services
 
-import play.api.libs.json.Reads
+import play.api.libs.json.{Json, Reads}
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.httpparsers.StandardHttpParser
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -64,6 +64,8 @@ class StandardServiceSpec extends ServiceSpec {
      // override implicit val reads: Reads[Response]                      = implicitly
       override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
       override def successMapping: SuccessMapping[Response, Response]   = RequestHandler.noMapping
+
+      override implicit val reads: Reads[Response] = Json.reads[Response]
     }
 
     "use the connector with the RequestDefn" in new Test(Future.successful(expected)) {

@@ -30,25 +30,25 @@ import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.DataEvent
-import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
+import uk.gov.hmrc.play.bootstrap.config.{DefaultHttpAuditEvent}
 import v2.models.errors._
 
 import java.time.Instant
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
+class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
 
   def versionHeader: (String, String) = ACCEPT -> s"application/vnd.hmrc.1.0+json"
 
-  class Test() {
-    val method = "some-method"
+  class Test  (){
+
 
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
     val auditConnector: AuditConnector = mock[AuditConnector]
-    val httpAuditEvent: HttpAuditEvent = mock[HttpAuditEvent]
+    val httpAuditEvent: DefaultHttpAuditEvent = mock[DefaultHttpAuditEvent]
 
     val eventTags: Map[String, String] = Map("transactionName" -> "event.transactionName")
 
@@ -61,15 +61,19 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       generatedAt = Instant.now()
     )
 
-    (httpAuditEvent
-      .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String])(_: HeaderCarrier))
+
+    (httpAuditEvent.dataEvent(_:String,_:String, _: RequestHeader, _: Map[String, String])(_:HeaderCarrier))
       .expects(*, *, *, *, *)
-      .returns(dataEvent)
+      .returning(dataEvent)
+
+   // (httpAuditEvent.dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String])(_: HeaderCarrier) )
+   // .expects(*, *, *, *, *)
+  //  .returns(dataEvent)
 
     (auditConnector
       .sendEvent(_: DataEvent)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
-      .returns(Future.successful(Success))
+      .returning(Future.successful(Success))
 
     val configuration: Configuration = Configuration(
       "appName"                                         -> "myApp",

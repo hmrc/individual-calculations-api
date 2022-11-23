@@ -45,8 +45,9 @@ object Enums {
     implicitly[Reads[E]].filter(readsError)(es.contains(_))
 
   def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = {
-    Writes[E](e => Json.toJson(ev.show(e)))
+    (e => Json.toJson(ev.show(e)))
   }
+
 
   def format[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Format[E] =
     Format(reads, writes)
