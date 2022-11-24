@@ -76,7 +76,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
           HateoasWrapper(
             triggerCalculationResponseModel,
             Seq(
-              Link(s"/individuals/calculations/$nino/self-assessment", GET, "list"),
+              Link(s"/individuals/calculations/$nino/self-assessment?taxYear=2020-21", GET, "list"),
               Link(s"/individuals/calculations/$nino/self-assessment/2020-21/$calculationId", GET, "self")
             )
           )

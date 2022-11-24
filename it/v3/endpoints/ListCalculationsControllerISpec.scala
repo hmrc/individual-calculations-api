@@ -95,7 +95,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         val response: WSResponse = await(request.get)
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
       }
 
       "valid request is made without a tax year" in new NonTysTest {
@@ -111,10 +111,10 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         val response: WSResponse = await(request.get)
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+        response.json shouldBe listCalculationsMtdJsonWithHateoasNoTaxYear(nino)
       }
 
-      "valid TYS request is made without a tax year" in new TysIfsTest {
+      "valid TYS request is made with a tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -125,7 +125,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         val response: WSResponse = await(request.get)
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.getOrElse("????-??"))
+        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
       }
     }
 

@@ -36,7 +36,7 @@ import scala.concurrent.Future
 
 class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalculationsFixture {
   val defaultNino: String                     = "AA111111A"
-  val defaultTaxYear: Option[String]          = Some("2018-19")
+  val defaultTaxYear: Option[String]          = Some("2020-21")
   val defaultRawData: ListCalculationsRawData = ListCalculationsRawData(defaultNino, defaultTaxYear)
 
   case class Test(rawData: ListCalculationsRawData = defaultRawData)
@@ -103,7 +103,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
                   method = Method.POST
                 ),
                 Link(
-                  href = s"/individuals/calculations/$nino/self-assessment",
+                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${taxYear.get}",
                   rel = RelType.SELF,
                   method = Method.GET
                 )

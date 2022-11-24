@@ -42,7 +42,7 @@ object ListCalculationsResponse extends HateoasLinks {
       import data._
       Seq(
         data.taxYear.map(trigger(appConfig, nino, _)),
-        Some(list(appConfig, nino, isSelf = true))
+        Some(list(appConfig, nino, taxYear, isSelf = true))
       ).flatten
     }
 

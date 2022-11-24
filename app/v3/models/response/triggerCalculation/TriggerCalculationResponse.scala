@@ -33,7 +33,7 @@ object TriggerCalculationResponse extends HateoasLinks {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
       Seq(
-        list(appConfig, data.nino, isSelf = false),
+        list(appConfig, data.nino, Some(data.taxYear), isSelf = false),
         retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
       )
 

@@ -17,55 +17,62 @@
 package v3.hateoas
 
 import mocks.MockAppConfig
-import play.api.Configuration
 import support.UnitSpec
 import v3.models.domain.TaxYear
-import v3.models.hateoas.{Link, Method}
+import v3.models.hateoas.Link
+import v3.models.hateoas.Method.{GET, POST}
 
 class HateoasLinksSpec extends UnitSpec with MockAppConfig {
 
-//  private val nino        = "AA111111A"
-  private val taxYear2023 = TaxYear.fromMtd("2022-23")
-  private val taxYear2024 = TaxYear.fromMtd("2023-24")
+  private val nino    = "AA111111A"
+  private val taxYear = TaxYear.fromMtd("2022-23")
 
-  object Target extends HateoasLinks
-
-  class Test {
+  class Test extends HateoasLinks {
     MockAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes
-  }
-
-  class TysDisabledTest extends Test {
-    MockAppConfig.featureSwitches returns Configuration("tys-api.enabled" -> false)
-  }
-
-  class TysEnabledTest extends Test {
-    MockAppConfig.featureSwitches returns Configuration("tys-api.enabled" -> true)
   }
 
   "HateoasLinks" when {
     "trigger" should {
-//      assertCorrectLink(makeLink)
-    }
-  }
-
-  def assertCorrectLink(makeLink: Option[TaxYear] => Link, baseHref: String, method: Method, rel: String): Unit = {
-    "return the correct link" in new TysDisabledTest {
-      makeLink(None) shouldBe Link(href = baseHref, method = method, rel = rel)
-    }
-
-    "TYS feature switch is disabled" should {
-      "not include tax year query parameter given a TYS tax year" in new TysDisabledTest {
-        makeLink(Some(taxYear2024)) shouldBe Link(href = baseHref, method = method, rel = rel)
+      "return the correct link" in new Test {
+        val result       = trigger(mockAppConfig, nino, taxYear)
+        val expectedHref = s"/context/$nino/self-assessment/2022-23"
+        result shouldBe Link(href = expectedHref, method = POST, rel = "trigger")
       }
     }
 
-    "TYS feature switch is enabled" should {
-      "not include tax year query parameter given a non-TYS tax year" in new TysEnabledTest {
-        makeLink(Some(taxYear2023)) shouldBe Link(href = baseHref, method = method, rel = rel)
+    "list" should {
+      "return the correct link with isSelf true" in new Test {
+        val result       = list(mockAppConfig, nino, None, isSelf = true)
+        val expectedHref = s"/context/$nino/self-assessment"
+        result shouldBe Link(href = expectedHref, method = GET, rel = "self")
       }
 
-      "include tax year query parameter given a TYS tax year" in new TysEnabledTest {
-        makeLink(Some(taxYear2024)) shouldBe Link(href = s"$baseHref?taxYear=2023-24", method = method, rel = rel)
+      "return the correct link with isSelf false" in new Test {
+        val result       = list(mockAppConfig, nino, None, isSelf = false)
+        val expectedHref = s"/context/$nino/self-assessment"
+        result shouldBe Link(href = expectedHref, method = GET, rel = "list")
+      }
+
+      "return the correct link with tax year param" in new Test {
+        val result       = list(mockAppConfig, nino, Some(taxYear), isSelf = false)
+        val expectedHref = s"/context/$nino/self-assessment?taxYear=2022-23"
+        result shouldBe Link(href = expectedHref, method = GET, rel = "list")
+      }
+    }
+
+    "retrieve" should {
+      "return the correct link" in new Test {
+        val result       = retrieve(mockAppConfig, nino, taxYear, "calcId")
+        val expectedHref = s"/context/$nino/self-assessment/2022-23/calcId"
+        result shouldBe Link(href = expectedHref, method = GET, rel = "self")
+      }
+    }
+
+    "submitFinalDeclaration" should {
+      "return the correct link" in new Test {
+        val result       = submitFinalDeclaration(mockAppConfig, nino, taxYear, "calcId")
+        val expectedHref = s"/context/$nino/self-assessment/2022-23/calcId/final-declaration"
+        result shouldBe Link(href = expectedHref, method = POST, rel = "submit-final-declaration")
       }
     }
   }

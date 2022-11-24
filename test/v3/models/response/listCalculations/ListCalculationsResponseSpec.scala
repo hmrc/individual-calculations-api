@@ -70,7 +70,7 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
               method = Method.POST
             ),
             Link(
-              href = "/individuals/calculations/someNino/self-assessment",
+              href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
               rel = RelType.SELF,
               method = Method.GET
             )

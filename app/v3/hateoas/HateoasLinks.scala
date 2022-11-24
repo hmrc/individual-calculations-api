@@ -23,15 +23,13 @@ import v3.models.hateoas.Method._
 import v3.models.hateoas.RelType._
 
 trait HateoasLinks {
-//
-//  private def withTaxYearParameter(appConfig: AppConfig, uri: String, maybeTaxYear: Option[TaxYear]): String = {
-//    implicit val featureSwitches: FeatureSwitches = FeatureSwitches(appConfig.featureSwitches)
-//
-//    maybeTaxYear match {
-//      case Some(taxYear) if taxYear.useTaxYearSpecificApi => s"$uri?taxYear=${taxYear.asMtd}"
-//      case _ => uri
-//    }
-//  }
+
+  private def withTaxYearParameter(uri: String, maybeTaxYear: Option[TaxYear]): String = {
+    maybeTaxYear match {
+      case Some(taxYear) => s"$uri?taxYear=${taxYear.asMtd}"
+      case _             => uri
+    }
+  }
 
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
@@ -49,11 +47,11 @@ trait HateoasLinks {
     )
   }
 
-  def list(appConfig: AppConfig, nino: String, isSelf: Boolean): Link = Link(
-    href = baseSaUri(appConfig, nino),
-    method = GET,
-    rel = if (isSelf) SELF else LIST
-  )
+  def list(appConfig: AppConfig, nino: String, taxYear: Option[TaxYear], isSelf: Boolean): Link = {
+    val href = withTaxYearParameter(baseSaUri(appConfig, nino), taxYear)
+
+    Link(href = href, method = GET, rel = if (isSelf) SELF else LIST)
+  }
 
   def retrieve(appConfig: AppConfig, nino: String, taxYear: TaxYear, calculationId: String): Link = Link(
     href = baseSaUriWithTaxYear(appConfig, nino, taxYear) + s"/$calculationId",
