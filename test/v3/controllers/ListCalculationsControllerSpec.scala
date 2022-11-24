@@ -55,7 +55,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
 
     lazy val request: ListCalculationsRequest = ListCalculationsRequest(
       nino = Nino(nino),
-      taxYear = taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
+      taxYear = taxYear.map(TaxYear.fromMtd)
     )
 
     val controller: ListCalculationsController = new ListCalculationsController(
@@ -85,7 +85,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
           )
 
         MockHateoasFactory
-          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear))
+          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear.map(TaxYear.fromMtd)))
           .returns(
             HateoasWrapper(
               ListCalculationsResponse(Seq(HateoasWrapper(

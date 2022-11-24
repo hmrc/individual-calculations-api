@@ -28,7 +28,7 @@ class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = ListCalculationsRequest(
     Nino(data.nino),
-    data.taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
+    data.taxYear.map(TaxYear.fromMtd)
   )
 
 }

@@ -19,6 +19,7 @@ package v3.models.response.triggerCalculation
 import config.AppConfig
 import play.api.libs.json._
 import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v3.models.domain.TaxYear
 import v3.models.hateoas.{HateoasData, Link}
 
 case class TriggerCalculationResponse(calculationId: String)
@@ -40,4 +41,4 @@ object TriggerCalculationResponse extends HateoasLinks {
 
 }
 
-case class TriggerCalculationHateoasData(nino: String, taxYear: String, finalDeclaration: Boolean, calculationId: String) extends HateoasData
+case class TriggerCalculationHateoasData(nino: String, taxYear: TaxYear, finalDeclaration: Boolean, calculationId: String) extends HateoasData

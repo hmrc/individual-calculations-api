@@ -20,6 +20,7 @@ import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v3.hateoas.HateoasFactory
+import v3.models.domain.TaxYear
 import v3.models.hateoas.Method.GET
 import v3.models.hateoas.{HateoasWrapper, Link}
 
@@ -63,7 +64,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino           = "someNino"
-      val taxYear        = "2020-21"
+      val taxYear        = TaxYear.fromMtd("2020-21")
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
@@ -76,7 +77,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
             triggerCalculationResponseModel,
             Seq(
               Link(s"/individuals/calculations/$nino/self-assessment", GET, "list"),
-              Link(s"/individuals/calculations/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+              Link(s"/individuals/calculations/$nino/self-assessment/2020-21/$calculationId", GET, "self")
             )
           )
       }

@@ -49,7 +49,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
     trait Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino           = "AA999999A"
-      val taxYear        = "2021-22"
+      val taxYear        = TaxYear.fromMtd("2021-22")
       val calculationId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes
     }
@@ -104,9 +104,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -127,9 +127,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -150,9 +150,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId/final-declaration", POST, "submit-final-declaration")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -176,8 +176,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }
@@ -198,8 +198,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }
@@ -220,8 +220,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/$taxYear", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/$taxYear/$calculationId", GET, "self")
+            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }
