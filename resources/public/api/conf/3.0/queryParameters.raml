@@ -8,6 +8,12 @@ types:
     enum: [info,warning,error]
 
 traits:
+  taxYearTys:
+    queryParameters:
+        taxYear:
+          description: 'The tax year to which the data applies in the format YYYY-YY.<br><br>The minimum tax year is 2017-18. No gaps are allowed. For example, 2020-22 is not valid.<br><br>Where no tax year is provided, it will default to the current tax year.'
+          example: "2023-24"
+          required: false
   taxYear:
     queryParameters:
         taxYear:
