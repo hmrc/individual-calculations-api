@@ -42,9 +42,9 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
 
   }
 
-  "ListCalculationsConnector" when {
-    "a successful response is received" must {
-      "return the expected non TYS result" in new DesTest with Test {
+  "ListCalculationsConnector" should {
+    "return successful response" when {
+      "Non-TYS tax year query param is passed" in new DesTest with Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
@@ -54,7 +54,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
 
         await(connector.list(request)) shouldBe outcome
       }
-      "return the expected TYS result" in new TysIfsTest with Test {
+
+      "TYS tax year query param is passed" in new TysIfsTest with Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
@@ -63,6 +64,47 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
           .returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome
+      }
+
+      "no taxYear query param and current tax year is Non-TYS" in new DesTest {
+        val outcome                                       = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val requestWithNoTaxYear: ListCalculationsRequest = ListCalculationsRequest(nino, None)
+
+        val connector: ListCalculationsConnector = new ListCalculationsConnector(
+          http = mockHttpClient,
+          appConfig = mockAppConfig
+        ) {
+          override def getCurrentTaxYearFromNow(): TaxYear = {
+            taxYear
+          }
+        }
+
+        willGet(
+          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}"
+        ).returns(Future.successful(outcome))
+
+        await(connector.list(requestWithNoTaxYear)) shouldBe outcome
+      }
+
+      "no taxYear query param and current tax year is TYS" in new TysIfsTest {
+        val outcome                                       = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val requestWithNoTaxYear: ListCalculationsRequest = ListCalculationsRequest(nino, None)
+
+        val connector: ListCalculationsConnector = new ListCalculationsConnector(
+          http = mockHttpClient,
+          appConfig = mockAppConfig
+        ) {
+          override def getCurrentTaxYearFromNow(): TaxYear = {
+            tysTaxYear
+          }
+        }
+
+        willGet(
+          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+        )
+          .returns(Future.successful(outcome))
+
+        await(connector.list(requestWithNoTaxYear)) shouldBe outcome
       }
     }
 
