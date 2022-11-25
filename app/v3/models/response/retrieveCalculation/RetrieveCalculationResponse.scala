@@ -19,6 +19,7 @@ package v3.models.response.retrieveCalculation
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
 import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
+import v3.models.domain.TaxYear
 import v3.models.hateoas.{HateoasData, Link}
 import v3.models.response.retrieveCalculation.calculation.Calculation
 import v3.models.response.retrieveCalculation.inputs.Inputs
@@ -74,7 +75,7 @@ object RetrieveCalculationResponse extends HateoasLinks {
 
 case class RetrieveCalculationHateoasData(
     nino: String,
-    taxYear: String,
+    taxYear: TaxYear,
     calculationId: String,
     response: RetrieveCalculationResponse
 ) extends HateoasData

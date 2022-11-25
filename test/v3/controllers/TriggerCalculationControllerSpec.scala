@@ -131,7 +131,7 @@ class TriggerCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
-          .wrap(response, TriggerCalculationHateoasData(nino, rawTaxYear, finalDeclaration = requestData.finalDeclaration, calculationId))
+          .wrap(response, TriggerCalculationHateoasData(nino, TaxYear.fromMtd(rawTaxYear), finalDeclaration = requestData.finalDeclaration, calculationId))
           .returns(HateoasWrapper(response, Seq(testHateoasLink)))
 
         val result: Future[Result] =

@@ -21,6 +21,7 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v3.fixtures.ListCalculationsFixture
 import v3.hateoas.HateoasFactory
+import v3.models.domain.TaxYear
 import v3.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 
 class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture {
@@ -41,12 +42,13 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
 
   "HateoasFactory" must {
     trait Test extends MockAppConfig {
-      val hateoasFactory          = new HateoasFactory(mockAppConfig)
-      val nino: String            = "someNino"
-      val calcId: String          = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
-      val taxYear: Option[String] = Some("2020-21")
+      val hateoasFactory   = new HateoasFactory(mockAppConfig)
+      val nino: String     = "someNino"
+      val calcId: String   = "c432a56d-e811-474c-a26a-76fc3bcaefe5"
+      val taxYear: TaxYear = TaxYear.fromMtd("2020-21")
       MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
+
     "wrap response correctly when tax year is defined" in new Test {
       hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)) shouldBe
         HateoasWrapper(
@@ -56,19 +58,41 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
                 calculationModel,
                 Seq(
                   Link(
-                    href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}/$calcId",
+                    href = s"/individuals/calculations/someNino/self-assessment/2020-21/$calcId",
                     rel = RelType.SELF,
                     method = Method.GET
                   )
                 )))),
           links = Seq(
             Link(
-              href = s"/individuals/calculations/someNino/self-assessment/${taxYear.get}",
+              href = s"/individuals/calculations/someNino/self-assessment/2020-21",
               rel = RelType.TRIGGER,
               method = Method.POST
             ),
             Link(
-              href = "/individuals/calculations/someNino/self-assessment",
+              href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
+              rel = RelType.SELF,
+              method = Method.GET
+            )
+          )
+        )
+    }
+
+    "omit retrieve item link when calculation does not contain tax year" in new Test {
+      val calculationWithoutTaxYear = calculationModel.copy(taxYear = None)
+      val responseWithoutTaxYear    = ListCalculationsResponse(Seq(calculationWithoutTaxYear))
+
+      hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, taxYear)) shouldBe
+        HateoasWrapper(
+          payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationWithoutTaxYear, Seq()))),
+          links = Seq(
+            Link(
+              href = s"/individuals/calculations/someNino/self-assessment/2020-21",
+              rel = RelType.TRIGGER,
+              method = Method.POST
+            ),
+            Link(
+              href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
               rel = RelType.SELF,
               method = Method.GET
             )
