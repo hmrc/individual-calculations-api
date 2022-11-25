@@ -42,19 +42,13 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
 
     "list" should {
       "return the correct link with isSelf true" in new Test {
-        val result       = list(mockAppConfig, nino, None, isSelf = true)
-        val expectedHref = s"/context/$nino/self-assessment"
+        val result       = list(mockAppConfig, nino, taxYear, isSelf = true)
+        val expectedHref = s"/context/$nino/self-assessment?taxYear=2022-23"
         result shouldBe Link(href = expectedHref, method = GET, rel = "self")
       }
 
       "return the correct link with isSelf false" in new Test {
-        val result       = list(mockAppConfig, nino, None, isSelf = false)
-        val expectedHref = s"/context/$nino/self-assessment"
-        result shouldBe Link(href = expectedHref, method = GET, rel = "list")
-      }
-
-      "return the correct link with tax year param" in new Test {
-        val result       = list(mockAppConfig, nino, Some(taxYear), isSelf = false)
+        val result       = list(mockAppConfig, nino, taxYear, isSelf = false)
         val expectedHref = s"/context/$nino/self-assessment?taxYear=2022-23"
         result shouldBe Link(href = expectedHref, method = GET, rel = "list")
       }

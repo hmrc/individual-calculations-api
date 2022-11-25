@@ -24,13 +24,6 @@ import v3.models.hateoas.RelType._
 
 trait HateoasLinks {
 
-  private def withTaxYearParameter(uri: String, maybeTaxYear: Option[TaxYear]): String = {
-    maybeTaxYear match {
-      case Some(taxYear) => s"$uri?taxYear=${taxYear.asMtd}"
-      case _             => uri
-    }
-  }
-
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
@@ -45,8 +38,8 @@ trait HateoasLinks {
     rel = TRIGGER
   )
 
-  def list(appConfig: AppConfig, nino: String, taxYear: Option[TaxYear], isSelf: Boolean): Link = {
-    val href = withTaxYearParameter(baseSaUri(appConfig, nino), taxYear)
+  def list(appConfig: AppConfig, nino: String, taxYear: TaxYear, isSelf: Boolean): Link = {
+    val href = baseSaUri(appConfig, nino) + s"?taxYear=${taxYear.asMtd}"
 
     Link(href = href, method = GET, rel = if (isSelf) SELF else LIST)
   }

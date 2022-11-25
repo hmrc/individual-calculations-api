@@ -26,9 +26,9 @@ import javax.inject.{Inject, Singleton}
 class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator)
     extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = ListCalculationsRequest(
-    Nino(data.nino),
-    data.taxYear.map(TaxYear.fromMtd)
-  )
+  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = {
+    val taxYear = data.taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
+    ListCalculationsRequest(Nino(data.nino), taxYear)
+  }
 
 }

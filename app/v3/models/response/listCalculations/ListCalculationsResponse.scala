@@ -40,9 +40,9 @@ object ListCalculationsResponse extends HateoasLinks {
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[hateoas.Link] = {
       import data._
       Seq(
-        data.taxYear.map(trigger(appConfig, nino, _)),
-        Some(list(appConfig, nino, taxYear, isSelf = true))
-      ).flatten
+        trigger(appConfig, nino, taxYear),
+        list(appConfig, nino, taxYear, isSelf = true)
+      )
     }
 
   }
@@ -56,4 +56,4 @@ object ListCalculationsResponse extends HateoasLinks {
 
 }
 
-case class ListCalculationsHateoasData(nino: String, taxYear: Option[TaxYear]) extends HateoasData
+case class ListCalculationsHateoasData(nino: String, taxYear: TaxYear) extends HateoasData

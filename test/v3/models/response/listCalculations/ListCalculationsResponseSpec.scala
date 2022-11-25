@@ -50,7 +50,7 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
     }
 
     "wrap response correctly when tax year is defined" in new Test {
-      hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, Some(taxYear))) shouldBe
+      hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear)) shouldBe
         HateoasWrapper(
           payload = ListCalculationsResponse(
             Seq(
@@ -78,35 +78,11 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
         )
     }
 
-    "omit trigger link when tax year param is not provided" in new Test {
-      hateoasFactory.wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, None)) shouldBe
-        HateoasWrapper(
-          payload = ListCalculationsResponse(
-            Seq(
-              HateoasWrapper(
-                calculationModel,
-                Seq(
-                  Link(
-                    href = s"/individuals/calculations/someNino/self-assessment/2020-21/$calcId",
-                    rel = RelType.SELF,
-                    method = Method.GET
-                  )
-                )))),
-          links = Seq(
-            Link(
-              href = "/individuals/calculations/someNino/self-assessment",
-              rel = RelType.SELF,
-              method = Method.GET
-            )
-          )
-        )
-    }
-
     "omit retrieve item link when calculation does not contain tax year" in new Test {
       val calculationWithoutTaxYear = calculationModel.copy(taxYear = None)
       val responseWithoutTaxYear    = ListCalculationsResponse(Seq(calculationWithoutTaxYear))
 
-      hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, Some(taxYear))) shouldBe
+      hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, taxYear)) shouldBe
         HateoasWrapper(
           payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationWithoutTaxYear, Seq()))),
           links = Seq(

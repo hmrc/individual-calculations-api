@@ -19,4 +19,5 @@ package v3.models.request
 import v3.models.domain.{Nino, TaxYear}
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[TaxYear])
+
+case class ListCalculationsRequest(nino: Nino, taxYear: TaxYear)

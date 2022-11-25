@@ -92,6 +92,8 @@ object TaxYear {
     new TaxYear(year)
   }
 
+  def now(): TaxYear = TaxYear.fromIso(LocalDate.now().toString)
+
   private def isPreviousTaxYear(date: LocalDate): Boolean = {
     val taxYearStartDate = LocalDate.of(date.getYear, taxYearMonthStart, taxYearDayStart)
     date.isBefore(taxYearStartDate)
