@@ -55,7 +55,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
 
     lazy val request: ListCalculationsRequest = ListCalculationsRequest(
       nino = Nino(nino),
-      taxYear = taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
+      taxYear = taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
     )
 
     val controller: ListCalculationsController = new ListCalculationsController(
