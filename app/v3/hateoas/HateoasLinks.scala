@@ -39,13 +39,11 @@ trait HateoasLinks {
 
   // API resource links
 
-  def trigger(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link = {
-    Link(
-      href = baseSaUriWithTaxYear(appConfig, nino, taxYear),
-      method = POST,
-      rel = TRIGGER
-    )
-  }
+  def trigger(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link = Link(
+    href = baseSaUriWithTaxYear(appConfig, nino, taxYear),
+    method = POST,
+    rel = TRIGGER
+  )
 
   def list(appConfig: AppConfig, nino: String, taxYear: Option[TaxYear], isSelf: Boolean): Link = {
     val href = withTaxYearParameter(baseSaUri(appConfig, nino), taxYear)

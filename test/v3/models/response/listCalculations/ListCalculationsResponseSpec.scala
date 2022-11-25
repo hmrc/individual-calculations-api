@@ -102,38 +102,27 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
         )
     }
 
-    // TODO: Implement me
-//    "do ??? when calculation does not contain tax year" in new Test {
-//      val calculationWithoutTaxYear = calculationModel.copy(taxYear = None)
-//      val responseWithoutTaxYear    = ListCalculationsResponse(Seq(calculationWithoutTaxYear))
-//
-//      hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, Some(taxYear))) shouldBe
-//        HateoasWrapper(
-//          payload = ListCalculationsResponse(
-//            Seq(
-//              HateoasWrapper(
-//                calculationModel,
-//                Seq(
-//                  Link(
-//                    href = s"/individuals/calculations/someNino/self-assessment/2020-21/$calcId",
-//                    rel = RelType.SELF,
-//                    method = Method.GET
-//                  )
-//                )))),
-//          links = Seq(
-//            Link(
-//              href = s"/individuals/calculations/someNino/self-assessment/2020-21",
-//              rel = RelType.TRIGGER,
-//              method = Method.POST
-//            ),
-//            Link(
-//              href = "/individuals/calculations/someNino/self-assessment",
-//              rel = RelType.SELF,
-//              method = Method.GET
-//            )
-//          )
-//        )
-//    }
+    "omit retrieve item link when calculation does not contain tax year" in new Test {
+      val calculationWithoutTaxYear = calculationModel.copy(taxYear = None)
+      val responseWithoutTaxYear    = ListCalculationsResponse(Seq(calculationWithoutTaxYear))
+
+      hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, Some(taxYear))) shouldBe
+        HateoasWrapper(
+          payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationWithoutTaxYear, Seq()))),
+          links = Seq(
+            Link(
+              href = s"/individuals/calculations/someNino/self-assessment/2020-21",
+              rel = RelType.TRIGGER,
+              method = Method.POST
+            ),
+            Link(
+              href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
+              rel = RelType.SELF,
+              method = Method.GET
+            )
+          )
+        )
+    }
   }
 
 }

@@ -34,9 +34,8 @@ object ListCalculationsResponse extends HateoasLinks {
 
   implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
 
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[hateoas.Link] = Seq(
-      retrieve(appConfig, data.nino, item.taxYear.get, item.calculationId)
-    )
+    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[hateoas.Link] =
+      Seq(item.taxYear.map(retrieve(appConfig, data.nino, _, item.calculationId))).flatten
 
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[hateoas.Link] = {
       import data._
