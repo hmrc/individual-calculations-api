@@ -38,18 +38,18 @@ class ListCalculationsParserSpec extends UnitSpec {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111A", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(Nil)
 
-        parser.parseRequest(rawData) shouldBe
-          Right(ListCalculationsRequest(nino, TaxYear.fromMtd("2018-19")))
+        val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
+        result shouldBe Right(ListCalculationsRequest(nino, TaxYear.fromMtd("2018-19")))
       }
     }
+
     "given valid parameters without a taxYear" must {
       "return parsed request data" in new Test {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111A", None)
         MockListCalculationsValidator.validate(rawData).returns(Nil)
-
         val expectedTaxYear = TaxYear.now()
 
-        private val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
+        val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
         result shouldBe Right(ListCalculationsRequest(nino, expectedTaxYear))
       }
     }
@@ -59,8 +59,9 @@ class ListCalculationsParserSpec extends UnitSpec {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(List(NinoFormatError))
 
-        parser.parseRequest(ListCalculationsRawData("AA111111", Some("2018-19"))) shouldBe
-          Left(ErrorWrapper("a1e8057e-fbbc-47a8-a8b4-78d9f015c253", NinoFormatError, None))
+        val result: Either[ErrorWrapper, ListCalculationsRequest] =
+          parser.parseRequest(ListCalculationsRawData("AA111111", Some("2018-19")))
+        result shouldBe Left(ErrorWrapper("a1e8057e-fbbc-47a8-a8b4-78d9f015c253", NinoFormatError, None))
       }
     }
   }
