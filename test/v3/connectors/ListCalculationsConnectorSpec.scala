@@ -21,6 +21,7 @@ import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.ListCalculationsRequest
+import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
 import scala.concurrent.Future
 
@@ -30,8 +31,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
   val taxYear: TaxYear    = TaxYear.fromMtd("2018-19")
   val tysTaxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-  val request: ListCalculationsRequest    = ListCalculationsRequest(nino, Some(taxYear))
-  val tysRequest: ListCalculationsRequest = ListCalculationsRequest(nino, Some(tysTaxYear))
+  val request: ListCalculationsRequest    = ListCalculationsRequest(nino, taxYear)
+  val tysRequest: ListCalculationsRequest = ListCalculationsRequest(nino, tysTaxYear)
 
   trait Test { _: ConnectorTest =>
 
@@ -65,47 +66,6 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
 
         await(connector.list(tysRequest)) shouldBe outcome
       }
-
-      "no taxYear query param and current tax year is Non-TYS" in new DesTest {
-        val outcome                                       = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
-        val requestWithNoTaxYear: ListCalculationsRequest = ListCalculationsRequest(nino, None)
-
-        val connector: ListCalculationsConnector = new ListCalculationsConnector(
-          http = mockHttpClient,
-          appConfig = mockAppConfig
-        ) {
-          override def getCurrentTaxYearFromNow(): TaxYear = {
-            taxYear
-          }
-        }
-
-        willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}"
-        ).returns(Future.successful(outcome))
-
-        await(connector.list(requestWithNoTaxYear)) shouldBe outcome
-      }
-
-      "no taxYear query param and current tax year is TYS" in new TysIfsTest {
-        val outcome                                       = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
-        val requestWithNoTaxYear: ListCalculationsRequest = ListCalculationsRequest(nino, None)
-
-        val connector: ListCalculationsConnector = new ListCalculationsConnector(
-          http = mockHttpClient,
-          appConfig = mockAppConfig
-        ) {
-          override def getCurrentTaxYearFromNow(): TaxYear = {
-            tysTaxYear
-          }
-        }
-
-        willGet(
-          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
-        )
-          .returns(Future.successful(outcome))
-
-        await(connector.list(requestWithNoTaxYear)) shouldBe outcome
-      }
     }
 
     "an error is received" must {
@@ -113,11 +73,12 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}"
+          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request.copy(taxYear = None))) shouldBe outcome
+        private val result: DownstreamOutcome[ListCalculations] = await(connector.list(request))
+        result shouldBe outcome
       }
     }
   }
