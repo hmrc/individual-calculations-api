@@ -25,23 +25,36 @@ import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
 
+  private val nino: Nino = Nino("AA111111A")
+
   trait Test extends MockListCalculationsValidator with MockAppConfig {
     implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
     val parser: ListCalculationsParser = new ListCalculationsParser(mockListCalculationsValidator)
   }
 
   "ListCalculationsParser" when {
-    "valid parameters are supplied" must {
+    "given valid parameters including a taxYear" must {
       "return parsed request data" in new Test {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111A", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(Nil)
 
         parser.parseRequest(rawData) shouldBe
-          Right(ListCalculationsRequest(Nino("AA111111A"), Some(TaxYear.fromMtd("2018-19"))))
+          Right(ListCalculationsRequest(nino, TaxYear.fromMtd("2018-19")))
+      }
+    }
+    "given valid parameters without a taxYear" must {
+      "return parsed request data" in new Test {
+        val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111A", None)
+        MockListCalculationsValidator.validate(rawData).returns(Nil)
+
+        val expectedTaxYear = TaxYear.now()
+
+        private val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
+        result shouldBe Right(ListCalculationsRequest(nino, expectedTaxYear))
       }
     }
 
-    "invalid parameters are supplied" must {
+    "given invalid parameters" must {
       "return errors" in new Test {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(List(NinoFormatError))

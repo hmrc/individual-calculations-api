@@ -18,7 +18,7 @@ package v3.models.domain
 
 import support.UnitSpec
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZoneId}
 
 class TaxYearSpec extends UnitSpec {
 
@@ -96,6 +96,21 @@ class TaxYearSpec extends UnitSpec {
 
       "allow the MTD tax year to be extracted" in {
         TaxYear.fromDownstream("2019").asMtd shouldBe "2018-19"
+      }
+    }
+
+    "TaxYear.now()" should {
+      "return the current tax year" in {
+        val now  = LocalDate.now(ZoneId.of("UTC"))
+        val year = now.getYear
+
+        val expectedYear = {
+          val taxYearStartDate = LocalDate.of(year, 4, 6)
+          if (now.isBefore(taxYearStartDate)) year else year + 1
+        }
+
+        val result = TaxYear.now()
+        result.year shouldBe expectedYear
       }
     }
 

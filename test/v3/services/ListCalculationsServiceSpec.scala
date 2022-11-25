@@ -30,7 +30,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
   trait Test extends MockListCalculationsConnector {
     val nino: Nino                       = Nino("AA111111A")
     val taxYear: TaxYear                 = TaxYear.fromMtd("2018-19")
-    val request: ListCalculationsRequest = ListCalculationsRequest(nino, Some(taxYear))
+    val request: ListCalculationsRequest = ListCalculationsRequest(nino, taxYear)
     val service: ListCalculationsService = new ListCalculationsService(mockListCalculationsConnector)
   }
 

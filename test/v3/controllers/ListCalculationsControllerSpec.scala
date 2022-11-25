@@ -36,7 +36,8 @@ import scala.concurrent.Future
 
 class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalculationsFixture {
   val defaultNino: String                     = "AA111111A"
-  val defaultTaxYear: Option[String]          = Some("2018-19")
+  val defaultTaxYearStr                       = "2018-19"
+  val defaultTaxYear: Option[String]          = Some(defaultTaxYearStr)
   val defaultRawData: ListCalculationsRawData = ListCalculationsRawData(defaultNino, defaultTaxYear)
 
   case class Test(rawData: ListCalculationsRawData = defaultRawData)
@@ -50,13 +51,10 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
     val hc: HeaderCarrier     = HeaderCarrier()
     val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-    val nino: String            = rawData.nino
-    val taxYear: Option[String] = rawData.taxYear
+    val nino: String     = rawData.nino
+    val taxYear: TaxYear = TaxYear.fromMtd(defaultTaxYearStr)
 
-    lazy val request: ListCalculationsRequest = ListCalculationsRequest(
-      nino = Nino(nino),
-      taxYear = taxYear.fold(Option.empty[TaxYear])(taxYear => Some(TaxYear.fromMtd(taxYear)))
-    )
+    lazy val request: ListCalculationsRequest = ListCalculationsRequest(nino = Nino(nino), taxYear = taxYear)
 
     val controller: ListCalculationsController = new ListCalculationsController(
       mockEnrolmentsAuthService,
@@ -85,20 +83,20 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
           )
 
         MockHateoasFactory
-          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, taxYear))
+          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, Some(taxYear.asMtd)))
           .returns(
             HateoasWrapper(
               ListCalculationsResponse(Seq(HateoasWrapper(
                 calculationModel,
                 Seq(Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.asMtd}/${calculationModel.calculationId}",
                   rel = RelType.SELF,
                   method = Method.GET
                 ))
               ))),
               Seq(
                 Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.asMtd}",
                   rel = RelType.TRIGGER,
                   method = Method.POST
                 ),
@@ -111,9 +109,9 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
             )
           )
 
-        val result: Future[Result] = controller.list(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.list(nino, Some(taxYear.asMtd))(fakeGetRequest)
         status(result) shouldBe OK
-        contentAsJson(result) shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
+        contentAsJson(result) shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.asMtd)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
 
@@ -128,7 +126,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
                 Future.successful(Left(ErrorWrapper(correlationId, mtdError)))
               )
 
-            val result: Future[Result] = controller.list(nino, taxYear)(fakeGetRequest)
+            val result: Future[Result] = controller.list(nino, Option(taxYear.asMtd))(fakeGetRequest)
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
@@ -153,7 +151,7 @@ class ListCalculationsControllerSpec extends ControllerBaseSpec with ListCalcula
         s"handle $mtdError correctly" in new Test(rawRequestData) {
           MockListCalculationsParser.parse(rawRequestData).returns(Left(ErrorWrapper(correlationId, mtdError)))
 
-          val result: Future[Result] = controller.list(nino, taxYear)(fakeGetRequest)
+          val result: Future[Result] = controller.list(nino, Option(taxYear.asMtd))(fakeGetRequest)
           result shouldBe result
           status(result) shouldBe BAD_REQUEST
           contentAsJson(result) shouldBe Json.toJson(mtdError)

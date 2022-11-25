@@ -19,12 +19,10 @@ package v3.connectors
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
+import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
-import v3.connectors.httpparsers.StandardDownstreamHttpParser._
-import v3.models.domain.TaxYear
 
-import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,26 +36,14 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
   ): Future[DownstreamOutcome[ListCalculations]] = {
     import request._
 
-    val downstreamUri = taxYear match {
-      case Some(taxYearValue) =>
-        if (taxYearValue.useTaxYearSpecificApi) {
-          TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYearValue.asTysDownstream}/${nino.nino}")
-        } else {
-          DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}?taxYear=${taxYearValue.asDownstream}")
-        }
-      case _ =>
-        val currentTaxYear = getCurrentTaxYearFromNow()
-        if (currentTaxYear.useTaxYearSpecificApi) {
-          TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${currentTaxYear.asTysDownstream}/${nino.nino}")
-        } else {
-          DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}")
-        }
-    }
-    get(downstreamUri)
-  }
+    val downstreamUri =
+      if (taxYear.useTaxYearSpecificApi) {
+        TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}")
+      } else {
+        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}?taxYear=${taxYear.asDownstream}")
+      }
 
-  def getCurrentTaxYearFromNow(): TaxYear = {
-    TaxYear.fromLocalDate(LocalDate.now())
+    get(downstreamUri)
   }
 
 }
