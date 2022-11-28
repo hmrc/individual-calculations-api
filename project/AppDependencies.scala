@@ -29,7 +29,7 @@ object AppDependencies {
     "com.chuusai"                  %% "shapeless"                 % "2.4.0-M1",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"      % "2.14.1"
   )
-
+//2.8.18
   def test(scope: String = "test, it"): Seq[sbt.ModuleID] = Seq(
     "org.scalatest"          %% "scalatest"          % "3.2.14"            % scope,
     "com.vladsch.flexmark"   % "flexmark-all"        % "0.64.0"            % scope,

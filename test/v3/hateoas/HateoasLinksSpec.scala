@@ -28,7 +28,7 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
   private val taxYear = TaxYear.fromMtd("2022-23")
 
   class Test extends HateoasLinks {
-    MockAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes
+    MockAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes()
   }
 
   "HateoasLinks" when {

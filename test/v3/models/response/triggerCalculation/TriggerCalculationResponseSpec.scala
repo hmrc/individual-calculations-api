@@ -65,7 +65,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino           = "someNino"
       val taxYear        = TaxYear.fromMtd("2020-21")
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
     }
 
     "wrapping a TriggerCalculationResponse object" should {
