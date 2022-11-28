@@ -32,17 +32,17 @@ class TriggerCalculationResponseSpec extends UnitSpec {
 
   val downstreamResponseJson: JsValue = Json.parse(
     s"""
-      |{
-      | "id": "$calculationId"
-      |}
+       |{
+       | "id": "$calculationId"
+       |}
     """.stripMargin
   )
 
   val vendorResponseJson: JsValue = Json.parse(
     s"""
-      |{
-      | "calculationId": "$calculationId"
-      |}
+       |{
+       | "calculationId": "$calculationId"
+       |}
     """.stripMargin
   )
 
@@ -64,8 +64,8 @@ class TriggerCalculationResponseSpec extends UnitSpec {
     class Test extends MockAppConfig {
       val hateoasFactory = new HateoasFactory(mockAppConfig)
       val nino           = "someNino"
-      val taxYear        = "2020-21"
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
+      val taxYear        = TaxYear.fromMtd("2020-21")
+      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes
     }
 
     "wrapping a TriggerCalculationResponse object" should {
