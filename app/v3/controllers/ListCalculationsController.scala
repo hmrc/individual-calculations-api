@@ -63,7 +63,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
           parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
           serviceResponse <- EitherT(service.list(parsedRequest))
         } yield {
-          val vendorResponse = hateoasFactory.wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, taxYear))
+          val vendorResponse = hateoasFactory.wrapList(serviceResponse.responseData, ListCalculationsHateoasData(nino, parsedRequest.taxYear))
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${serviceResponse.correlationId}")

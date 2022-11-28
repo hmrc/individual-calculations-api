@@ -20,6 +20,7 @@ import cats.Functor
 import config.AppConfig
 import play.api.libs.json._
 import v3.hateoas.{HateoasLinks, HateoasListLinksFactory}
+import v3.models.domain.TaxYear
 import v3.models.hateoas
 import v3.models.hateoas.HateoasData
 
@@ -33,15 +34,14 @@ object ListCalculationsResponse extends HateoasLinks {
 
   implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
 
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[hateoas.Link] = Seq(
-      retrieve(appConfig, data.nino, data.taxYear.getOrElse("????-??"), item.calculationId) // There is a standing question about the tax year here.
-    )
+    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[hateoas.Link] =
+      Seq(item.taxYear.map(retrieve(appConfig, data.nino, _, item.calculationId))).flatten
 
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[hateoas.Link] = {
       import data._
       Seq(
-        trigger(appConfig, nino, taxYear.getOrElse("????-??")), // There is a standing question about the tax year here.
-        list(appConfig, nino, isSelf = true)
+        trigger(appConfig, nino, taxYear),
+        list(appConfig, nino, taxYear, isSelf = true)
       )
     }
 
@@ -56,4 +56,4 @@ object ListCalculationsResponse extends HateoasLinks {
 
 }
 
-case class ListCalculationsHateoasData(nino: String, taxYear: Option[String]) extends HateoasData
+case class ListCalculationsHateoasData(nino: String, taxYear: TaxYear) extends HateoasData
