@@ -20,9 +20,11 @@ import sbt._
 
 object AppDependencies {
 
+  val bootstrapPlayVersion = "7.11.0"
+
   val compile = Seq(
     ws,
-    "uk.gov.hmrc"                  %% "bootstrap-backend-play-28" % "5.25.0",
+    "uk.gov.hmrc" %% "bootstrap-backend-play-28" % bootstrapPlayVersion,
     "org.typelevel"                %% "cats-core"                 % "2.8.0",
     "com.chuusai"                  %% "shapeless"                 % "2.4.0-M1",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"      % "2.14.1"

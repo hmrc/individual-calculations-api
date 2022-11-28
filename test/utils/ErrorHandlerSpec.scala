@@ -29,7 +29,7 @@ import uk.gov.hmrc.auth.core.InsufficientEnrolments
 import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
-import uk.gov.hmrc.play.audit.model.DataEvent
+import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v2.models.errors._
 
@@ -62,9 +62,10 @@ class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
     )
 
 
-    (httpAuditEvent.dataEvent(_:String,_:String, _: RequestHeader, _: Map[String, String])(_:HeaderCarrier))
-      .expects(*, *, *, *, *)
-      .returning(dataEvent)
+    (httpAuditEvent
+      .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String], _: TruncationLog)(_: HeaderCarrier))
+      .expects(*, *, *, *, *, *)
+      .returns(dataEvent)
 
     (auditConnector
       .sendEvent(_: DataEvent)(_: HeaderCarrier, _: ExecutionContext))
