@@ -34,10 +34,6 @@ class StandardServiceSpec extends ServiceSpec {
   val requestDefn: RequestDefn.Get = RequestDefn.Get("url")
   case class Response(data: String)
 
-  object PassedThroughError extends MtdError("PASSED_THROUGH", "msg1")
-
-  object MappedError extends MtdError("MAPPED", "msg2")
-
   class Test(response: Future[BackendOutcome[Response]]) {
     val mockConnector: StandardConnector = mock[StandardConnector]
 
@@ -48,6 +44,10 @@ class StandardServiceSpec extends ServiceSpec {
 
     val service = new StandardService(mockConnector)
   }
+
+  object PassedThroughError extends MtdError("PASSED_THROUGH", "msg1")
+
+  object MappedError extends MtdError("MAPPED", "msg2")
 
   "StandardService" should {
 
@@ -61,8 +61,7 @@ class StandardServiceSpec extends ServiceSpec {
 
       override def customErrorMapping: Map[String, (Int, MtdError)] = Map(("BACKEND_MAPPED", (BAD_REQUEST, MappedError)))
 
-     // override implicit val reads: Reads[Response]                      = implicitly
-      override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123) // Unused
+      override implicit val successCode: StandardHttpParser.SuccessCode = SuccessCode(123)
       override def successMapping: SuccessMapping[Response, Response]   = RequestHandler.noMapping
 
       override implicit val reads: Reads[Response] = Json.reads[Response]

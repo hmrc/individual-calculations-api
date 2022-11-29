@@ -26,41 +26,41 @@ trait MockAppConfig extends MockFactory {
 
   object MockAppConfig {
     // MTD ID Lookup Config
-    def mtdIdBaseUrl: CallHandler[String] = (()=>mockAppConfig.mtdIdBaseUrl: String).expects()
+    def mtdIdBaseUrl: CallHandler[String] = (() => mockAppConfig.mtdIdBaseUrl: String).expects()
 
     // Backend Config
-    def backendBaseUrl: CallHandler[String] = (()=>mockAppConfig.backendBaseUrl: String).expects()
+    def backendBaseUrl: CallHandler[String] = (() => mockAppConfig.backendBaseUrl: String).expects()
 
     // DES Config
-    def desBaseUrl: CallHandler[String]                         = (()=>mockAppConfig.desBaseUrl : String).expects()
-    def desToken: CallHandler[String]                           = (()=>mockAppConfig.desToken :String).expects()
-    def desEnvironment: CallHandler[String]                     = (()=>mockAppConfig.desEnv: String).expects()
-    def desEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (()=>mockAppConfig.desEnvironmentHeaders :Option[Seq[String]]).expects()
+    def desBaseUrl: CallHandler[String]                         = (() => mockAppConfig.desBaseUrl: String).expects()
+    def desToken: CallHandler[String]                           = (() => mockAppConfig.desToken: String).expects()
+    def desEnvironment: CallHandler[String]                     = (() => mockAppConfig.desEnv: String).expects()
+    def desEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (() => mockAppConfig.desEnvironmentHeaders: Option[Seq[String]]).expects()
 
     // IFS Config
-    def ifsBaseUrl: CallHandler[String]                         = (()=>mockAppConfig.ifsBaseUrl : String).expects()
-    def ifsToken: CallHandler[String]                           = (()=>mockAppConfig.ifsToken :String).expects()
-    def ifsEnvironment: CallHandler[String]                     = (()=>mockAppConfig.ifsEnv :String).expects()
-    def ifsEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (()=>mockAppConfig.ifsEnvironmentHeaders :Option[Seq[String]]).expects()
+    def ifsBaseUrl: CallHandler[String]                         = (() => mockAppConfig.ifsBaseUrl: String).expects()
+    def ifsToken: CallHandler[String]                           = (() => mockAppConfig.ifsToken: String).expects()
+    def ifsEnvironment: CallHandler[String]                     = (() => mockAppConfig.ifsEnv: String).expects()
+    def ifsEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (() => mockAppConfig.ifsEnvironmentHeaders: Option[Seq[String]]).expects()
 
     // TYS IFS Config
-    def tysIfsBaseUrl: CallHandler[String] = (()=>mockAppConfig.tysIfsBaseUrl:String).expects()
-    def tysIfsToken: CallHandler[String] = (()=>mockAppConfig.tysIfsToken :String).expects()
-    def tysIfsEnv: CallHandler[String] = (()=>mockAppConfig.tysIfsEnv :String).expects()
-    def tysIfsEnvironment: CallHandler[String] = (()=>mockAppConfig.tysIfsEnv: String).expects()
-    def tysIfsEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (() => mockAppConfig.tysIfsEnvironmentHeaders : Option[Seq[String]]).expects()
+    def tysIfsBaseUrl: CallHandler[String]                         = (() => mockAppConfig.tysIfsBaseUrl: String).expects()
+    def tysIfsToken: CallHandler[String]                           = (() => mockAppConfig.tysIfsToken: String).expects()
+    def tysIfsEnv: CallHandler[String]                             = (() => mockAppConfig.tysIfsEnv: String).expects()
+    def tysIfsEnvironment: CallHandler[String]                     = (() => mockAppConfig.tysIfsEnv: String).expects()
+    def tysIfsEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (() => mockAppConfig.tysIfsEnvironmentHeaders: Option[Seq[String]]).expects()
 
     // API Config
-    def featureSwitches: CallHandler[Configuration]             = (()=>mockAppConfig.featureSwitches :Configuration).expects()
-    def apiGatewayContext: CallHandler[String]                  = (()=>mockAppConfig.apiGatewayContext : String).expects()
+    def featureSwitches: CallHandler[Configuration]             = (() => mockAppConfig.featureSwitches: Configuration).expects()
+    def apiGatewayContext: CallHandler[String]                  = (() => mockAppConfig.apiGatewayContext: String).expects()
     def apiStatus(status: String): CallHandler[String]          = (mockAppConfig.apiStatus: String => String).expects(status)
     def endpointsEnabled(version: String): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled: String => Boolean).expects(version)
 
     def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] =
-      (()=>mockAppConfig.confidenceLevelConfig :ConfidenceLevelConfig).expects()
+      (() => mockAppConfig.confidenceLevelConfig: ConfidenceLevelConfig).expects()
 
     // NRS Config
-    def mtdNrsProxyBaseUrl: CallHandler[String] = (()=>mockAppConfig.mtdNrsProxyBaseUrl :String).expects()
+    def mtdNrsProxyBaseUrl: CallHandler[String] = (() => mockAppConfig.mtdNrsProxyBaseUrl: String).expects()
   }
 
 }

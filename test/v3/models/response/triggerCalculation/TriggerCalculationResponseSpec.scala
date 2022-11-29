@@ -29,7 +29,6 @@ class TriggerCalculationResponseSpec extends UnitSpec {
   private val calculationId = "testId"
 
   val triggerCalculationResponseModel: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
-
   val downstreamResponseJson: JsValue = Json.parse(
     s"""
        |{
@@ -37,7 +36,6 @@ class TriggerCalculationResponseSpec extends UnitSpec {
        |}
     """.stripMargin
   )
-
   val vendorResponseJson: JsValue = Json.parse(
     s"""
        |{
