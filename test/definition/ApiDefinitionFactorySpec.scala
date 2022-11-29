@@ -36,14 +36,14 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        MockAppConfig.featureSwitches returns Configuration.empty anyNumberOfTimes ()
-        MockAppConfig.apiStatus(status = "2.0") returns "BETA"
-        MockAppConfig.endpointsEnabled(version = "2") returns true anyNumberOfTimes ()
+        MockAppConfig.featureSwitches.returns(Configuration.empty).anyNumberOfTimes()
+        MockAppConfig.apiStatus(status = "2.0").returns("BETA")
+        MockAppConfig.endpointsEnabled(version = "2").returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(status = "3.0") returns "BETA"
-        MockAppConfig.endpointsEnabled(version = "3") returns true anyNumberOfTimes ()
-        MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(
+        MockAppConfig.endpointsEnabled(version = "3").returns(true).anyNumberOfTimes()
+        MockAppConfig.confidenceLevelCheckEnabled.returns(ConfidenceLevelConfig(
           definitionEnabled = true,
-          authValidationEnabled = true) anyNumberOfTimes ()
+          authValidationEnabled = true)).anyNumberOfTimes ()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(

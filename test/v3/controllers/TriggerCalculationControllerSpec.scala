@@ -157,7 +157,7 @@ class TriggerCalculationControllerSpec
 
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("TriggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
 
       "happy path with final declaration" in new Test {
@@ -190,7 +190,7 @@ class TriggerCalculationControllerSpec
           contentAsJson(result) shouldBe Json.toJson(error)
           header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-          MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once
+          MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once()
         }
       }
 
@@ -223,7 +223,7 @@ class TriggerCalculationControllerSpec
           contentAsJson(result) shouldBe Json.toJson(error)
           header("X-CorrelationId", result) shouldBe Some(correlationId)
 
-          MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once
+          MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once()
         }
       }
 

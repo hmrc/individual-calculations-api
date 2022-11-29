@@ -86,8 +86,8 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     }
     "writes" should {
       "work" in {
-        Json.toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes) shouldBe
-          JsString("self-employment")
+        Json.toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes)
+          .shouldBe(JsString("self-employment"))
       }
     }
   }

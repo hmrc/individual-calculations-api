@@ -137,7 +137,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
           detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -169,7 +169,7 @@ class GetAllowancesDeductionsAndReliefsControllerSpec
           "retrieveSelfAssessmentTaxCalculationAllowanceDeductionAndReliefs",
           "retrieve-self-assessment-tax-calculation-allowance-deduction-reliefs",
           detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
   }

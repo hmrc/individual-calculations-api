@@ -135,7 +135,7 @@ class TriggerCalculationControllerSpec
           AuditResponse(ACCEPTED, None, Some(json)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -165,7 +165,7 @@ class TriggerCalculationControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("triggerASelfAssessmentTaxCalculation", "trigger-a-self-assessment-tax-calculation", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 

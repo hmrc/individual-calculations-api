@@ -19,6 +19,7 @@ package v3.models.response.common
 import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
+
 sealed trait ReliefsClaimedType
 
 object ReliefsClaimedType {
@@ -33,6 +34,7 @@ object ReliefsClaimedType {
   case object qualifyingDistributionRedemptionOfSharesAndSecurities extends ReliefsClaimedType
 
   implicit val writes: Writes[ReliefsClaimedType] = Enums.writes[ReliefsClaimedType]
+
 
   implicit val reads: Reads[ReliefsClaimedType] = Enums.readsUsing {
     case "vctSubscriptions"                                      => vctSubscriptions

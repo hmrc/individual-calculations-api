@@ -127,7 +127,7 @@ class GetEoyEstimateControllerSpec
           AuditResponse(OK, None, Some(responseBody)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -157,7 +157,7 @@ class GetEoyEstimateControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -187,7 +187,7 @@ class GetEoyEstimateControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationEndOfYearEstimate", "retrieve-self-assessment-tax-calculation-end-of-year-estimate", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
   }

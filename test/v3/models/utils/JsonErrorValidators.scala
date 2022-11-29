@@ -46,7 +46,7 @@ trait JsonErrorValidators {
   implicit class JsResultOps[T](res: JsResult[T]) {
 
     def errors: JsErrors = res match {
-      case JsError(jsErrors) => jsErrors
+      case JsError(jsErrors) => jsErrors.map(c=> (c._1, c._2.toSeq)).toSeq
       case JsSuccess(_, _)   => fail("A JSON error was expected")
     }
 
@@ -113,7 +113,7 @@ trait JsonErrorValidators {
   def testJsonAllPropertiesOptionalExcept[A: Reads](json: JsValue)(mandatoryProperties: String*): Unit = {
     val optionalProperties = json.as[JsObject].fields.map(_._1).filterNot(field => mandatoryProperties.contains(field))
 
-    testJsonProperties(json)(mandatoryProperties, optionalProperties)
+    testJsonProperties(json)(mandatoryProperties, optionalProperties.toSeq)
   }
 
   def testJsonAllPropertiesOptional[A: Reads](json: JsValue): Unit =
@@ -122,7 +122,7 @@ trait JsonErrorValidators {
   def testJsonAllPropertiesMandatoryExcept[A: Reads](json: JsValue)(optionalProperties: String*): Unit = {
     val mandatoryProperties = json.as[JsObject].fields.map(_._1).filterNot(field => optionalProperties.contains(field))
 
-    testJsonProperties(json)(mandatoryProperties, optionalProperties)
+    testJsonProperties(json)(mandatoryProperties.toSeq, optionalProperties)
   }
 
   def testJsonAllPropertiesMandatory[A: Reads](json: JsValue): Unit =

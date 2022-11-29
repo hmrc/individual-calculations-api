@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package mocks
+package utils
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import utils.IdGenerator
 
-trait MockIdGenerator extends MockFactory {
-
-  val mockIdGenerator: IdGenerator = mock[IdGenerator]
-
-  object MockIdGenerator {
-    def getCorrelationId: CallHandler[String] = (()=>mockIdGenerator.getCorrelationId :String).expects()
-  }
-
+class AuditFixture {
+ // val auditConnector: AuditConnector = mock[AuditConnector]
+//  val httpAuditEvent: DefaultHttpAuditEvent = mock[DefaultHttpAuditEvent]
 }

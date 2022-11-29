@@ -148,7 +148,7 @@ class GetMetadataControllerSpec
           AuditResponse(OK, None, Some(responseBody)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -178,7 +178,7 @@ class GetMetadataControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationMetadata", "retrieve-self-assessment-tax-calculation-metadata", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 

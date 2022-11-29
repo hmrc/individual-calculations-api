@@ -136,7 +136,7 @@ class GetMessagesControllerSpec
           AuditResponse(OK, None, Some(responseBody)))
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 
@@ -168,7 +168,7 @@ class GetMessagesControllerSpec
         )
         val event: AuditEvent[GenericAuditDetail] =
           AuditEvent("retrieveSelfAssessmentTaxCalculationMessages", "retrieve-self-assessment-tax-calculation-messages", detail)
-        MockedAuditService.verifyAuditEvent(event).once
+        MockedAuditService.verifyAuditEvent(event).once()
       }
     }
 

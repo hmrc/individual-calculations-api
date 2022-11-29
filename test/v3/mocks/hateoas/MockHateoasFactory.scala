@@ -22,7 +22,6 @@ import org.scalamock.scalatest.MockFactory
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory, HateoasListLinksFactory}
 import v3.models.hateoas.{HateoasData, HateoasWrapper}
 
-import scala.language.higherKinds
 
 trait MockHateoasFactory extends MockFactory {
 

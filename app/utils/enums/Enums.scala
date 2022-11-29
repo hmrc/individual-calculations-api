@@ -27,7 +27,10 @@ object Shows {
 }
 
 object Enums {
-  private def typeName[E: ClassTag]: String = implicitly[ClassTag[E]].runtimeClass.getSimpleName
+
+
+  implicit def typeName[E: ClassTag]: String = implicitly[ClassTag[E]].runtimeClass.getSimpleName
+
 
   def parser[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): PartialFunction[String, E] =
     implicitly[MkValues[E]].values.map(e => ev.show(e) -> e).toMap
@@ -41,7 +44,10 @@ object Enums {
   def readsRestricted[E: Reads: ClassTag](es: E*): Reads[E] =
     implicitly[Reads[E]].filter(readsError)(es.contains(_))
 
-  def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = Writes[E](e => JsString(ev.show(e)))
+  def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = {
+    (e => Json.toJson(ev.show(e)))
+  }
+
 
   def format[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Format[E] =
     Format(reads, writes)

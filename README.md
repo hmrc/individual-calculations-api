@@ -25,7 +25,7 @@ Run unit tests: `sbt test`
 
 Run integration tests: `sbt it:test`
 
-## To view the RAML
+## To view the RAML documention
 To view documentation locally, ensure the Individual Calculations API is running, and run api-documentation-frontend:
 
 ```
@@ -46,7 +46,7 @@ You can see our changelog [here](https://github.com/hmrc/income-tax-mtd-changelo
 
 You can create a GitHub issue [here](https://github.com/hmrc/income-tax-mtd-changelog/issues)
 
-## API Reference / Documentation 
+## API Reference / Documentation
 Available on the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-calculations-api/2.0)
 
 ## License

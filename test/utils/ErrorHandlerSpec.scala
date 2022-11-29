@@ -29,21 +29,21 @@ import uk.gov.hmrc.auth.core.InsufficientEnrolments
 import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
-import uk.gov.hmrc.play.audit.model.DataEvent
+import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import v2.models.errors._
 
 import java.time.Instant
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
+class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
 
   def versionHeader: (String, String) = ACCEPT -> s"application/vnd.hmrc.1.0+json"
 
-  class Test() {
-    val method = "some-method"
+  class Test  (){
+
 
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
@@ -61,15 +61,16 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       generatedAt = Instant.now()
     )
 
+
     (httpAuditEvent
-      .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String])(_: HeaderCarrier))
-      .expects(*, *, *, *, *)
+      .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String], _: TruncationLog)(_: HeaderCarrier))
+      .expects(*, *, *, *, *, *)
       .returns(dataEvent)
 
     (auditConnector
       .sendEvent(_: DataEvent)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
-      .returns(Future.successful(Success))
+      .returning(Future.successful(Success))
 
     val configuration: Configuration = Configuration(
       "appName"                                         -> "myApp",

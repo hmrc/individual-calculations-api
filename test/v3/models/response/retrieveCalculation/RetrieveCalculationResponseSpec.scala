@@ -51,7 +51,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
       val nino           = "AA999999A"
       val taxYear        = TaxYear.fromMtd("2021-22")
       val calculationId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-      MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes
+      MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes()
     }
 
     def retrieveCalculationResponse(intentToSubmitFinalDeclaration: Boolean,

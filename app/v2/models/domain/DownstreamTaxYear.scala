@@ -34,6 +34,6 @@ object DownstreamTaxYear {
     DownstreamTaxYear(taxYear.take(2) + taxYear.drop(5))
 
   def fromDownstreamIntToString(taxYear: Int): String =
-    (taxYear - 1) + "-" + taxYear.toString.drop(2)
+    s"${taxYear - 1}-${taxYear.toString.drop(2)}"
 
 }
