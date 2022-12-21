@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package v3.models.response.retrieveCalculation.calculation.taxCalculation
+package v3.models.response.retrieveCalculation.calculation.reliefs
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Json, OFormat}
 
-case class Class2Nics(
-    amount: Option[BigDecimal],
-    weeklyRate: Option[BigDecimal],
-    weeks: Option[BigInt],
-    limit: Option[BigInt],
-    apportionedLimit: Option[BigInt],
-    underSmallProfitThreshold: Boolean,
-    underLowerProfitThreshold: Option[Boolean],
-    actualClass2Nic: Option[Boolean]
-)
+case class BasicRateExtension(totalBasicRateExtension: Option[BigDecimal], giftAidRelief: Option[BigInt], pensionContributionReliefs: Option[BigDecimal] )
 
-object Class2Nics {
-  implicit val format: Format[Class2Nics] = Json.format
+object BasicRateExtension {
+  implicit val format: OFormat[BasicRateExtension] = Json.format[BasicRateExtension]
 }

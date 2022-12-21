@@ -21,6 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 case class EndOfYearEstimate(
     incomeSource: Option[Seq[IncomeSource]],
     totalEstimatedIncome: Option[BigInt],
+    totalAllowancesAndDeductions: Option[BigInt],
     totalTaxableIncome: Option[BigInt],
     incomeTaxAmount: Option[BigDecimal],
     nic2: Option[BigDecimal],

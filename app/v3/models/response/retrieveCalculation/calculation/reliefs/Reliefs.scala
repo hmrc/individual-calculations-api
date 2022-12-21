@@ -21,7 +21,9 @@ import play.api.libs.json.{Json, OFormat}
 case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                   topSlicingRelief: Option[TopSlicingRelief])
+                   topSlicingRelief: Option[TopSlicingRelief],
+                   basicRateExtension: Option[BasicRateExtension],
+                  )
 
 object Reliefs extends {
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
