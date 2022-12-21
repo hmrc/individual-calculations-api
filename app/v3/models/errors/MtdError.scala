@@ -114,12 +114,6 @@ object RuleCalculationErrorMessagesExistError
       message = "Calculation error messages exist for the supplied calculation ID"
     )
 
-object RuleNoSubmissionsExistError
-    extends MtdError(
-      code = "RULE_NO_SUBMISSIONS_EXIST",
-      message = "No periodic or annual income data has been submitted"
-    )
-
 object RuleSubmissionFailedError
     extends MtdError(
       code = "RULE_SUBMISSION_FAILED",

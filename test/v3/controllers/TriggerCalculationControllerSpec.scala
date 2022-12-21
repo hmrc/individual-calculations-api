@@ -230,8 +230,8 @@ class TriggerCalculationControllerSpec
       val errors = List(
         (NinoFormatError, BAD_REQUEST),
         (TaxYearFormatError, BAD_REQUEST),
-        (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
-        (RuleFinalDeclarationReceivedError, FORBIDDEN),
+        (RuleNoIncomeSubmissionsExistError, BAD_REQUEST),
+        (RuleFinalDeclarationReceivedError, BAD_REQUEST),
         (BadRequestError, BAD_REQUEST),
         (InternalError, INTERNAL_SERVER_ERROR),
         (RuleIncorrectGovTestScenarioError, BAD_REQUEST)

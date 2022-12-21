@@ -124,12 +124,13 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             RuleTaxYearNotEndedError,
             RuleRecentSubmissionsExistError,
             RuleCalculationInProgressError,
-            RuleBusinessValidationFailureError
+            RuleBusinessValidationFailureError,
+            RuleNoIncomeSubmissionsExistError,
+            RuleFinalDeclarationReceivedError
           ) =>
         BadRequest(Json.toJson(errorWrapper))
-      case RuleNoIncomeSubmissionsExistError | RuleFinalDeclarationReceivedError => Forbidden(Json.toJson(errorWrapper))
-      case InternalError                                                         => InternalServerError(Json.toJson(errorWrapper))
-      case _                                                                     => unhandledError(errorWrapper)
+      case InternalError => InternalServerError(Json.toJson(errorWrapper))
+      case _             => unhandledError(errorWrapper)
     }
   }
 
