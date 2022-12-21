@@ -358,6 +358,11 @@
           "description": "Indicates whether the Class 2 NIC charge is an actual charge (true) or else an estimated charge (false).",
           "type": "boolean",
           "example": "true"
+        },
+        "underLowerProfitThreshold": {
+          "type": "boolean",
+          "description": "Indicates whether the lower profits threshold is exceeded. This value must be true or false.",
+          "example": "false"
         }
       },
       "additionalProperties": false,

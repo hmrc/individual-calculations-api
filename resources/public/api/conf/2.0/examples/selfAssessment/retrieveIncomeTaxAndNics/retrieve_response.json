@@ -218,7 +218,8 @@
         "apportionedLimit": 12500,
         "underSmallProfitThreshold": true,
         "actualClass2Nic": true,
-        "class2VoluntaryContributions": true
+        "class2VoluntaryContributions": true,
+        "underLowerProfitThreshold": false
       },
       "class4Nics": {
         "totalIncomeLiableToClass4Charge": 200,

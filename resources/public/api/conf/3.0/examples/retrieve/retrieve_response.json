@@ -870,7 +870,8 @@
           "limit": 12500,
           "apportionedLimit": 12500,
           "underSmallProfitThreshold": true,
-          "actualClass2Nic": true
+          "actualClass2Nic": true,
+          "underLowerProfitThreshold": false
         },
         "class4Nics": {
           "totalIncomeLiableToClass4Charge": 12500,
