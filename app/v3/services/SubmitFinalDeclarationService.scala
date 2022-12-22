@@ -17,8 +17,6 @@
 package v3.services
 
 import cats.data.EitherT
-
-import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v3.connectors.SubmitFinalDeclarationConnector
@@ -28,6 +26,7 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
 import v3.support.DownstreamResponseMappingSupport
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

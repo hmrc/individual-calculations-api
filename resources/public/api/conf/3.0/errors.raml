@@ -94,7 +94,7 @@ traits:
                   code: FORMAT_CALCULATION_ID
   ruleNoIncomeSubmissionExists:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -116,7 +116,7 @@ traits:
                   code: CLIENT_OR_AGENT_NOT_AUTHORISED
   ruleFinalDeclarationReceived:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -127,7 +127,7 @@ traits:
                   code: RULE_FINAL_DECLARATION_RECEIVED
   ruleIncomeSourcesChanged:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -138,7 +138,7 @@ traits:
                   code: RULE_INCOME_SOURCES_CHANGED
   ruleRecentSubmissionsExist:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -149,7 +149,7 @@ traits:
                   code: RULE_RECENT_SUBMISSIONS_EXIST
   ruleResidencyChanged:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -160,7 +160,7 @@ traits:
                   code: RULE_RESIDENCY_CHANGED
   ruleIncomeSourcesInvalid:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse
@@ -171,7 +171,7 @@ traits:
                   code: RULE_INCOME_SOURCES_INVALID
   ruleSubmissionFailed:
     responses:
-      403:
+      400:
         body:
           application/json:
             type: types.errorResponse

@@ -19,16 +19,16 @@ package v3.controllers
 import cats.data.EitherT
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.SubmitFinalDeclarationParser
+import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.errors._
 import v3.models.request.SubmitFinalDeclarationRawData
 import v3.services._
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditResult
-import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -100,11 +100,10 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   private def errorResult(errorWrapper: ErrorWrapper) =
     errorWrapper.error match {
       case BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearRangeInvalidError | RuleTaxYearNotSupportedError |
-          CalculationIdFormatError | RuleIncorrectGovTestScenarioError =>
+          CalculationIdFormatError | RuleIncorrectGovTestScenarioError | RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError |
+          RuleResidencyChangedError | RuleFinalDeclarationReceivedError | RuleIncomeSourcesInvalidError | RuleNoIncomeSubmissionsExistError |
+          RuleSubmissionFailedError =>
         BadRequest(Json.toJson(errorWrapper))
-      case RuleIncomeSourcesChangedError | RuleRecentSubmissionsExistError | RuleResidencyChangedError | RuleFinalDeclarationReceivedError |
-          RuleIncomeSourcesInvalidError | RuleNoIncomeSubmissionsExistError | RuleSubmissionFailedError =>
-        Forbidden(Json.toJson(errorWrapper))
       case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case InternalError => InternalServerError(Json.toJson(errorWrapper))
       case _             => unhandledError(errorWrapper)
