@@ -102,7 +102,7 @@ trait ListCalculationsFixture {
     calculationType = CalculationType.`finalDeclaration`,
     requestedBy = Some("customer"),
     taxYear = Some(TaxYear.fromDownstreamInt(2021)),
-    totalIncomeTaxAndNicsDue = 10000.12,
+    totalIncomeTaxAndNicsDue = Some(10000.12),
     intentToSubmitFinalDeclaration = Some(true),
     finalDeclaration = Some(true),
     finalDeclarationTimestamp = Some("2021-07-13T07:51:43.112Z")

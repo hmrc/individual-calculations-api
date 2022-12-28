@@ -17,7 +17,7 @@
             "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
           },
           "calculationTimestamp": {
-            "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ if BVRs do not fail or populated from requestTimestamp if BVRs fail.",
             "type": "string",
             "example": "2019-07-13T07:51:43.112Z"
           },
@@ -26,8 +26,7 @@
             "type": "string",
             "enum": [
               "inYear",
-              "finalDeclaration",
-              "biss"
+              "finalDeclaration"
             ]
           },
           "requestedBy": {

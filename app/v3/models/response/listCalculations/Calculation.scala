@@ -26,7 +26,7 @@ case class Calculation(calculationId: String,
                        calculationType: CalculationType,
                        requestedBy: Option[String],
                        taxYear: Option[TaxYear],
-                       totalIncomeTaxAndNicsDue: BigDecimal,
+                       totalIncomeTaxAndNicsDue: Option[BigDecimal],
                        intentToSubmitFinalDeclaration: Option[Boolean],
                        finalDeclaration: Option[Boolean],
                        finalDeclarationTimestamp: Option[String])
@@ -40,7 +40,7 @@ object Calculation {
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
       (JsPath \ "year").readNullable[TaxYear] and
-      (JsPath \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
+      (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and
       (JsPath \ "crystallisationTimestamp").readNullable[String])(Calculation.apply _)
