@@ -22,7 +22,7 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
                    topSlicingRelief: Option[TopSlicingRelief],
-                   basicRateExtension: Option[BasicRateExtension],
+                   basicRateExtension: Option[BasicRateExtension]
                   )
 
 object Reliefs extends {
