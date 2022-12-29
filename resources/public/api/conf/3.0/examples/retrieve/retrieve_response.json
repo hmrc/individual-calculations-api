@@ -242,6 +242,11 @@
       },
       "topSlicingRelief": {
         "amount": 5000.99
+      },
+      "basicRateExtension": {
+        "totalBasicRateExtension": 2010.58,
+        "giftAidRelief": 3000,
+        "pensionContributionReliefs": 5000.58
       }
     },
     "taxDeductedAtSource": {
@@ -998,7 +1003,8 @@
       "totalTaxDeducted": -99999999999.99,
       "incomeTaxNicAmount": -99999999999.99,
       "cgtAmount": 5000.99,
-      "incomeTaxNicAndCgtAmount": 5000.99
+      "incomeTaxNicAndCgtAmount": 5000.99,
+      "totalAllowancesAndDeductions": 5000
     },
     "lossesAndClaims": {
       "resultOfClaimsApplied": [
