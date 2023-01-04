@@ -73,7 +73,7 @@
             "example": "S9500206"
           },
           "offPayrollWorker": {
-            "description": "This indicator indicates the customer's off payroll working status for employment",
+            "description": "This indicator indicates the customer's off-payroll working status for employment",
             "type": "boolean",
             "example": "true"
           },
