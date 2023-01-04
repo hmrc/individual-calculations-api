@@ -72,6 +72,11 @@
             "pattern": "^[A-Za-z0-9.,\\-()/=!\"%&*; <>'+:\\?]{0,38}$",
             "example": "S9500206"
           },
+          "offPayrollWorker": {
+            "description": "This indicator indicates the customer's off-payroll working status for employment",
+            "type": "boolean",
+            "example": "true"
+          },
           "startDate": {
             "description": "The date the employment began.",
             "$ref": "#/definitions/date"
