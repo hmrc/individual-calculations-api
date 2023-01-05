@@ -385,7 +385,7 @@
       },
       "additionalProperties": false
     },
-    "basicRateExtenstion": {
+    "basicRateExtension": {
       "type": "object",
       "description": "Basic rate extension.",
       "properties": {
