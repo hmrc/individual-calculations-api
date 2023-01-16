@@ -4,7 +4,7 @@ get:
     This endpoint allows the developer to retrieve all the tax calculation data 
     for a given National Insurance number and Calculation ID.
 
-    <p>Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.</p>
+    <p>Scenario simulations using <code>Gov-Test-Scenario</code> headers is only available in the sandbox environment.</p>
     <table>
         <thead>
             <tr>
