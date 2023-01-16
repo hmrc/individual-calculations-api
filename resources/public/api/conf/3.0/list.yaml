@@ -8,7 +8,7 @@ get:
     A National Insurance number must be provided.
     
      ### Test data
-    <p>Scenario simulations using <code>Gov-Test-Scenario</code> headers is only available in the sandbox environment.</p>
+    Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
     <table>
         <thead>
             <tr>
