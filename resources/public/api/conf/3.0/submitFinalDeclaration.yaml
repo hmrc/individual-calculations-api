@@ -1,4 +1,6 @@
 post:
+  tags:
+    - Final Declaration
   summary: Submit a Self Assessment Final Declaration
   description: |
     This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. 

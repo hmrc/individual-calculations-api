@@ -1,4 +1,6 @@
 get:
+  tags:
+    - Tax Calculations
   summary: List Self Assessment Tax Calculations
   description: |
     This endpoint enables you to list Self Assessment tax calculations for a given National Insurance number and tax year. 

@@ -46,6 +46,27 @@ components:
             write:self-assessment: Grant write access
             read:self-assessment: Grant read access
 
+tags:
+  - name: Tax Calculations
+    description: |
+      Here a developer can:
+        - list self-assessment tax calculations for a given National Insurance number (NINO) and tax year
+        - trigger a self-assessment tax calculation for a given tax year
+        - retrieve all the tax calculation data for a given NINO and Calculation ID
+  - name: Final Declaration
+    description: |
+      **Final declaration was previously called crystallisation.**
+      
+      This resource allows software packages to make a final declaration regarding a customer’s end of year position for a tax year.
+    
+      Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:  
+        - has finalised EOPS for all their businesses (self-employment, uk-property and foreign property)
+        - has already provided their entire income e.g. interest, dividends, other SA schedules
+        - does not have any additional information to provide
+      
+      Here, the developer can:      
+        - submit final declaration for a tax year
+
 paths:
   /individuals/calculations/{nino}/self-assessment:
     $ref: ./list.yaml

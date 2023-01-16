@@ -1,4 +1,6 @@
 post:
+  tags:
+    - Tax Calculations
   summary: Trigger a Self Assessment Tax Calculation
   description: |
     This endpoint allows the user to trigger a self assessment tax calculation for a given tax year. 
