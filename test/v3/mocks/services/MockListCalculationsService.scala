@@ -18,8 +18,7 @@ package v3.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors.ErrorWrapper
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.ListCalculationsRequest
@@ -35,8 +34,8 @@ trait MockListCalculationsService extends MockFactory {
 
     def list[I](requestData: ListCalculationsRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculations]]]] = {
       (mockListCalculationsService
-        .list(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
-        .expects(requestData, *, *, *, *)
+        .list(_: ListCalculationsRequest)(_: RequestContext, _: ExecutionContext))
+        .expects(requestData, *, *)
     }
 
   }

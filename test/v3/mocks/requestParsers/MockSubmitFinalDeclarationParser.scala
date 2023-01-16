@@ -28,7 +28,7 @@ trait MockSubmitFinalDeclarationParser extends MockFactory {
 
   object MockSubmitFinalDeclarationParser {
 
-    def parse(data: SubmitFinalDeclarationRawData): CallHandler[Either[ErrorWrapper, SubmitFinalDeclarationRequest]] = {
+    def parseRequest(data: SubmitFinalDeclarationRawData): CallHandler[Either[ErrorWrapper, SubmitFinalDeclarationRequest]] = {
       (mockSubmitFinalDeclarationParser.parseRequest(_: SubmitFinalDeclarationRawData)(_: String)).expects(data, *)
     }
 

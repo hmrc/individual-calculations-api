@@ -16,24 +16,20 @@
 
 package v3.controllers
 
-import cats.data.EitherT
-import cats.implicits._
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
-import v3.models.errors._
 import v3.models.request.RetrieveCalculationRawData
 import v3.models.response.retrieveCalculation.RetrieveCalculationHateoasData
 import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculationService}
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               retrieveCalculationParser: RetrieveCalculationParser,
+                                               parser: RetrieveCalculationParser,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
@@ -50,62 +46,24 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      implicit val correlationId: String = idGenerator.getCorrelationId
-      logger.info(
-        s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
-          s"with CorrelationId: $correlationId")
+      implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData = RetrieveCalculationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)
 
-      val result =
-        for {
-          parsedRequest <- EitherT.fromEither[Future](retrieveCalculationParser.parseRequest(rawData))
-          response      <- EitherT(service.retrieveCalculation(parsedRequest))
-        } yield {
-          val hateoasData = RetrieveCalculationHateoasData(
-            nino = nino,
-            taxYear = parsedRequest.taxYear,
-            calculationId = calculationId,
-            response = response.responseData
-          )
+      val requestHandler =
+        RequestHandler
+          .withParser(parser)
+          .withService(service.retrieveCalculation)
+          .withHateoasResultFrom(hateoasFactory) { (request, response) =>
+            RetrieveCalculationHateoasData(
+              nino = nino,
+              taxYear = request.taxYear,
+              calculationId = calculationId,
+              response = response
+            )
+          }
 
-          val hateoasResponse = hateoasFactory.wrap(response.responseData, hateoasData)
-
-          logger.info(
-            s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-              s"Success response received with correlationId: ${response.correlationId}"
-          )
-
-          Ok(Json.toJson(hateoasResponse))
-            .withApiHeaders(response.correlationId)
-        }
-      result.leftMap { errorWrapper =>
-        val resCorrelationId = errorWrapper.correlationId
-        val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
-        logger.info(
-          s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-            s"Error response received with CorrelationId: $resCorrelationId")
-
-        result
-      }.merge
-    }
-
-  private def errorResult(errorWrapper: ErrorWrapper) =
-    errorWrapper.error match {
-      case _
-          if errorWrapper.containsAnyOf(
-            BadRequestError,
-            NinoFormatError,
-            TaxYearFormatError,
-            RuleTaxYearRangeInvalidError,
-            RuleTaxYearNotSupportedError,
-            CalculationIdFormatError,
-            RuleIncorrectGovTestScenarioError
-          ) =>
-        BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError => NotFound(Json.toJson(errorWrapper))
-      case InternalError => InternalServerError(Json.toJson(errorWrapper))
-      case _             => unhandledError(errorWrapper)
+      requestHandler.handleRequest(rawData)
     }
 
 }

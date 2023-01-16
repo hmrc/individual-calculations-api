@@ -20,20 +20,24 @@ import cats.data.EitherT
 import cats.implicits._
 import play.api.libs.json.Json
 import play.api.mvc.Result
-import play.api.mvc.Results.InternalServerError
+import play.api.mvc.Results.Status
 import utils.Logging
-import v3.models.errors.{InternalError, ErrorWrapper}
+import v3.models.errors.ErrorWrapper
 
 import scala.concurrent.{ExecutionContext, Future}
 
 trait BaseController {
   self: Logging =>
 
-  protected def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
-    logger.error(
+
+  protected def errorResult(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
+    val resCorrelationId = errorWrapper.correlationId
+    logger.warn(
       s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-        s"Unhandled error: $errorWrapper")
-    InternalServerError(Json.toJson(InternalError))
+        s"Error response received with CorrelationId: $resCorrelationId")
+
+    Status(errorWrapper.error.httpStatus)(Json.toJson(errorWrapper))
+      .withApiHeaders(resCorrelationId)
   }
 
   implicit class Response(result: Result) {

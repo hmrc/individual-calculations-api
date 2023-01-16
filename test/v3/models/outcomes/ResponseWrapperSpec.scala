@@ -17,7 +17,6 @@
 package v3.models.outcomes
 
 import support.UnitSpec
-import v3.models.errors.{InternalError, ErrorWrapper, MtdError}
 
 class ResponseWrapperSpec extends UnitSpec {
 
@@ -29,31 +28,6 @@ class ResponseWrapperSpec extends UnitSpec {
     "mapped" should {
       "map the response data correctly" in {
         wrappedResponse.map(_.toLowerCase) shouldBe wrapResponse(responseData = "somestring")
-      }
-    }
-
-    "mapped to an Either" should {
-      "wrap a successful response correctly" in {
-        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Right("aSuccess") }
-        mappedResponse shouldBe Right(wrapResponse(responseData = "aSuccess"))
-      }
-
-      "wrap an error response correctly" in {
-        val err            = ErrorWrapper("id", InternalError, None)
-        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
-        mappedResponse shouldBe Left(err)
-      }
-    }
-
-    "toErrorWhen" should {
-      val err = ErrorWrapper("id", MtdError("anErrorCode", "aMessage"), None)
-
-      "return a success when the error condition is not met" in {
-        wrappedResponse.toErrorWhen { case "" => err } shouldBe Right(wrappedResponse)
-      }
-
-      "return errors when the error condition is met" in {
-        wrapResponse(responseData = "").toErrorWhen { case "" => err } shouldBe Left(err)
       }
     }
   }

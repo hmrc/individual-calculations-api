@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@
 
 package config
 
+import io.swagger.v3.parser.OpenAPIV3Parser
+import org.scalatest.OptionValues
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import support.IntegrationBaseSpec
 
-class DocumentationISpec extends IntegrationBaseSpec {
+class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
 
   val apiDefinitionJson: JsValue = Json.parse("""
       |{
@@ -71,7 +73,7 @@ class DocumentationISpec extends IntegrationBaseSpec {
     }
   }
 
-  "a documentation request" must {
+  "a RAML documentation request" must {
     "return the documentation for v1" in {
       val response: WSResponse = await(buildRequest("/api/conf/1.0/application.raml").get())
       response.status shouldBe Status.NOT_FOUND
@@ -87,6 +89,22 @@ class DocumentationISpec extends IntegrationBaseSpec {
       val response: WSResponse = await(buildRequest("/api/conf/3.0/application.raml").get())
       response.status shouldBe Status.OK
       response.body[String] should startWith("#%RAML 1.0")
+    }
+  }
+
+  "an OAS documentation request" must {
+    "return the documentation that passes OAS V3 parser" in {
+      val response: WSResponse = await(buildRequest("/api/conf/3.0/application.yaml").get())
+      response.status shouldBe Status.OK
+
+      val contents     = response.body[String]
+      val parserResult = new OpenAPIV3Parser().readContents(contents)
+
+      val openAPI = Option(parserResult.getOpenAPI)
+
+      openAPI.value.getOpenapi shouldBe "3.0.3"
+      openAPI.value.getInfo.getTitle shouldBe "Individual Calculations (MTD)"
+      openAPI.value.getInfo.getVersion shouldBe "3.0"
     }
   }
 

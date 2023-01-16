@@ -1,0 +1,27 @@
+components:
+  parameters:
+    taxYearTys:
+      name: taxYear
+      in: query
+      description: |
+        The tax year to which the data applies in the format YYYY-YY.
+        
+        The minimum tax year is 2017-18. 
+        No gaps are allowed. 
+        For example, 2020-22 is not valid.
+        
+        Where no tax year is provided, it will default to the current tax year.
+      schema:
+        type: string
+        example: "2023-24"
+      required: false
+
+    finalDeclaration:
+      name: finalDeclaration
+      in: query
+      description: |
+        Must be sent as "true" when the user is ready to submit a final declaration. 
+        Acceptable values are "true" and "false".
+      schema:
+        type: boolean
+      required: false

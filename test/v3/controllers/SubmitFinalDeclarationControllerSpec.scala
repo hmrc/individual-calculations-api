@@ -17,12 +17,11 @@
 package v3.controllers
 
 import mocks.MockIdGenerator
-import play.api.libs.json.Json
+import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v3.mocks.services._
-import v3.models.audit.{AuditEvent, GenericAuditDetail}
+import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
@@ -33,6 +32,7 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationControllerSpec
     extends ControllerBaseSpec
+    with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockSubmitFinalDeclarationService
@@ -40,31 +40,10 @@ class SubmitFinalDeclarationControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val nino          = "AA123456A"
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
-  private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
-  private def auditError(responseStatus: Int, error: MtdError): AuditEvent[GenericAuditDetail] = {
-    val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-    val detail = GenericAuditDetail(
-      "Individual",
-      None,
-      auditValues,
-      None,
-      correlationId,
-      versionNumber = "3.0",
-      response = "error",
-      httpStatusCode = responseStatus,
-      calculationId = None,
-      errorCodes = Some(Seq(error.code))
-    )
-
-    AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
-  }
-
-  trait Test {
-    val hc: HeaderCarrier = HeaderCarrier()
+  trait Test extends ControllerTest with AuditEventChecking {
 
     val controller = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,
@@ -76,157 +55,67 @@ class SubmitFinalDeclarationControllerSpec
       idGenerator = mockIdGenerator
     )
 
-    MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
-    MockedEnrolmentsAuthService.authoriseUser()
-    MockIdGenerator.getCorrelationId.returns(correlationId)
+    protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
+
+    override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        "SubmitAFinalDeclaration",
+        "submit-a-final-declaration",
+        GenericAuditDetail(
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+          requestBody = None,
+          `X-CorrelationId` = correlationId,
+          auditResponse = auditResponse
+        )
+      )
+
   }
 
   private val rawData     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
   private val requestData = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
   "submit final declaration" should {
-    "return a successful response from a consolidated request" when {
+    "return a successful response" when {
       "the request received is valid" in new Test {
 
         MockSubmitFinalDeclarationParser
-          .parse(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
+          .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
 
         MockSubmitFinalDeclarationService
-          .submitIntent(requestData)
+          .submitFinalDeclaration(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-        val result: Future[Result] =
-          controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-        status(result) shouldBe NO_CONTENT
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-        val auditValues = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
-        val detail: GenericAuditDetail = GenericAuditDetail(
-          "Individual",
-          None,
-          auditValues,
-          None,
-          correlationId,
-          versionNumber = "3.0",
-          response = "success",
-          httpStatusCode = 204,
-          calculationId = None,
-          errorCodes = None)
-
-        val event: AuditEvent[GenericAuditDetail] =
-          AuditEvent("SubmitAFinalDeclaration", "submit-a-final-declaration", detail)
-        MockedAuditService.verifyAuditEvent(event).once()
+        runOkTestWithAudit(
+          expectedStatus = NO_CONTENT
+        )
       }
     }
 
     "return the error as per spec" when {
-      "parser errors occur" should {
-        def errorsFromParserTester(error: MtdError, expectedStatus: Int): Unit = {
-          s"a ${error.code} error is returned from the parser" in new Test {
-
-            MockSubmitFinalDeclarationParser
-              .parse(rawData)
-              .returns(Left(ErrorWrapper(correlationId, error, None)))
-
-            val result: Future[Result] =
-              controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-
-            status(result) shouldBe expectedStatus
-            contentAsJson(result) shouldBe Json.toJson(error)
-            header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, error)).once()
-          }
-        }
-
-        val input = Seq(
-          (BadRequestError, BAD_REQUEST),
-          (NinoFormatError, BAD_REQUEST),
-          (TaxYearFormatError, BAD_REQUEST),
-          (RuleTaxYearRangeInvalidError, BAD_REQUEST),
-          (RuleTaxYearNotSupportedError, BAD_REQUEST),
-          (CalculationIdFormatError, BAD_REQUEST)
-        )
-
-        input.foreach(args => (errorsFromParserTester _).tupled(args))
-      }
-
-      "service errors occur" should {
-        def serviceErrors(mtdError: MtdError, expectedStatus: Int): Unit = {
-          s"a $mtdError error is returned from the service" in new Test {
-
-            MockSubmitFinalDeclarationParser
-              .parse(rawData)
-              .returns(Right(requestData))
-
-            MockSubmitFinalDeclarationService
-              .submitIntent(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError))))
-
-            val result: Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-
-            status(result) shouldBe expectedStatus
-            contentAsJson(result) shouldBe Json.toJson(mtdError)
-            header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-            MockedAuditService.verifyAuditEvent(auditError(expectedStatus, mtdError)).once()
-          }
-        }
-
-        val input = Seq(
-          (NinoFormatError, BAD_REQUEST),
-          (TaxYearFormatError, BAD_REQUEST),
-          (CalculationIdFormatError, BAD_REQUEST),
-          (RuleIncomeSourcesChangedError, BAD_REQUEST),
-          (RuleRecentSubmissionsExistError, BAD_REQUEST),
-          (RuleResidencyChangedError, BAD_REQUEST),
-          (RuleFinalDeclarationReceivedError, BAD_REQUEST),
-          (RuleIncomeSourcesInvalidError, BAD_REQUEST),
-          (RuleNoIncomeSubmissionsExistError, BAD_REQUEST),
-          (NotFoundError, NOT_FOUND),
-          (InternalError, INTERNAL_SERVER_ERROR),
-          (RuleIncorrectGovTestScenarioError, BAD_REQUEST)
-        )
-
-        input.foreach(args => (serviceErrors _).tupled(args))
-      }
-    }
-
-    "return a DownstreamError" when {
-      object TestError
-          extends MtdError(
-            code = "TEST_ERROR",
-            message = "This is a test error"
-          )
-      "the parser returns an unexpected error" in new Test {
+      "the parser validation fails" in new Test {
         MockSubmitFinalDeclarationParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, TestError, None)))
+          .parseRequest(rawData)
+          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
 
-        val result: Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-
-        status(result) shouldBe INTERNAL_SERVER_ERROR
-        contentAsJson(result) shouldBe Json.toJson(InternalError)
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
+        runErrorTestWithAudit(NinoFormatError)
       }
 
-      "the service returns an unexpected error" in new Test {
+      "the service returns an error" in new Test {
         MockSubmitFinalDeclarationParser
-          .parse(rawData)
+          .parseRequest(rawData)
           .returns(Right(requestData))
 
         MockSubmitFinalDeclarationService
-          .submitIntent(requestData)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, TestError))))
+          .submitFinalDeclaration(requestData)
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
 
-        val result: Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-
-        status(result) shouldBe INTERNAL_SERVER_ERROR
-        contentAsJson(result) shouldBe Json.toJson(InternalError)
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
+        runErrorTestWithAudit(RuleTaxYearNotSupportedError)
       }
     }
+
   }
 
 }

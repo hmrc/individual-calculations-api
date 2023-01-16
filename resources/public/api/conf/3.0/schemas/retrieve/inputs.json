@@ -5,7 +5,11 @@
   "properties": {
     "personalInformation": {
       "description": "Object containing personal information about the taxpayer for whom the calculation was performed.",
-      "$ref": "#/definitions/personalInformation"
+      "allOf": [
+        {
+          "$ref": "#/definitions/personalInformation"
+        }
+      ]
     },
     "incomeSources": {
       "$ref": "#/definitions/incomeSources"
@@ -48,7 +52,11 @@
         },
         "dateOfBirth": {
           "description": "The date of birth of the taxpayer.",
-          "$ref": "#/definitions/date"
+          "allOf": [
+            {
+              "$ref": "#/definitions/date"
+            }
+          ]
         },
         "taxRegime": {
           "description": "The tax regime which applies to this calculation.",
@@ -61,7 +69,11 @@
         },
         "statePensionAgeDate": {
           "description": "The date the taxpayer qualifies for state pension.",
-          "$ref": "#/definitions/date"
+          "allOf": [
+            {
+              "$ref": "#/definitions/date"
+            }
+          ]
         },
         "studentLoanPlan": {
           "$ref": "#/definitions/studentLoanPlans"
@@ -128,11 +140,19 @@
         "properties": {
           "incomeSourceId": {
             "description": "The unique identifier of the annual adjustment income source.",
-            "$ref": "#/definitions/incomeSourceId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
           },
           "incomeSourceType": {
             "description": "Business income source type.",
-            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
           },
           "bsasId": {
             "description": "The unique identifier of the annual adjustment.",
@@ -142,7 +162,11 @@
           },
           "receivedDateTime": {
             "description": "The latest date of when the adjustment was created, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "applied": {
             "description": "A boolean to identify whether the adjustment has been applied to this calculation. This value must be true or false.",
@@ -168,31 +192,59 @@
         "properties": {
           "lossId": {
             "description": "The unique identifier of the loss which the customer declared when joining MTD.",
-            "$ref": "#/definitions/lossId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/lossId"
+              }
+            ]
           },
           "incomeSourceId": {
             "description": "The unique identifier of the loss brought forward income source.",
-            "$ref": "#/definitions/incomeSourceId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
           },
           "submissionTimestamp": {
             "description": "The date and time the loss was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "lossType": {
             "description": "The type of loss.",
-            "$ref": "common_defs.json#/definitions/lossType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/lossType"
+              }
+            ]
           },
           "taxYearLossIncurred": {
             "description": "The tax year that the loss was incurred.",
-            "$ref": "#/definitions/taxYear"
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
-            "$ref": "#/definitions/intPos"
+            "allOf": [
+              {
+                "$ref": "#/definitions/intPos"
+              }
+            ]
           },
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
@@ -217,31 +269,59 @@
         "properties": {
           "claimId": {
             "description": "An identifier for the claim made by the taxpayer.",
-            "$ref": "#/definitions/claimId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/claimId"
+              }
+            ]
           },
           "originatingClaimId": {
             "description": "An identifier for the claim made by the taxpayer that resulted in this claim.",
-            "$ref": "#/definitions/claimId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/claimId"
+              }
+            ]
           },
           "incomeSourceId": {
             "description": "The unique identifier of the income source.",
-            "$ref": "#/definitions/incomeSourceId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
           },
           "incomeSourceType": {
             "description": "The income source type on which the loss was made.",
-            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
           },
           "submissionTimestamp": {
             "description": "The date and time the claim was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "$ref": "#/definitions/taxYear"
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
           },
           "claimType": {
             "description": "The type of claim made.",
-            "$ref": "common_defs.json#/definitions/claimType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/claimType"
+              }
+            ]
           },
           "sequence": {
             "description": "The order in which this claim is to be used for a carry-sideways claim. It must be in the range 1 to 99. The sequence must start with 1 and have no gaps.",
@@ -285,15 +365,27 @@
               "properties": {
                 "deductionFromDate": {
                   "description": "The from date for when the deduction was made within the CIS tax year period.",
-                  "$ref": "#/definitions/date"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
                 },
                 "deductionToDate": {
                   "description": "The to date for when the deduction was made within the CIS tax year period.",
-                  "$ref": "#/definitions/date"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
                 },
                 "submissionTimestamp": {
                   "description": "The date and time the period information was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                  "$ref": "#/definitions/timestamp"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/timestamp"
+                    }
+                  ]
                 },
                 "source": {
                   "description": "Identifies whether the period information was submitted by the contractor or customer.",
@@ -305,7 +397,11 @@
                 },
                 "deductionAmount": {
                   "description": "The amount of tax deducted by the contractor. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-                  "$ref": "#/definitions/monetaryPos"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/monetaryPos"
+                    }
+                  ]
                 }
               },
               "additionalProperties": false,
@@ -321,7 +417,8 @@
         },
         "additionalProperties": false,
         "required": [
-          "employerRef", "periodData"
+          "employerRef",
+          "periodData"
         ]
       }
     },
@@ -344,19 +441,35 @@
           },
           "submittedTimestamp": {
             "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "startDate": {
             "description": "The start date for the period of the submission.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "endDate": {
             "description": "The end date for the period of the submission.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "source": {
             "description": "The source of the income data used in this calculation.",
-            "$ref": "#/definitions/sourceMtdOnly"
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -378,19 +491,35 @@
           },
           "submissionTimestamp": {
             "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "startDate": {
             "description": "The start date of the period.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "endDate": {
             "description": "The end date of the period.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "source": {
             "description": "The source of the data.",
-            "$ref": "#/definitions/source"
+            "allOf": [
+              {
+                "$ref": "#/definitions/source"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -414,7 +543,11 @@
           },
           "submittedOn": {
             "description": "The date and time when the information was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -431,11 +564,19 @@
         "properties": {
           "incomeSourceId": {
             "description": "The unique identifier of the income source.",
-            "$ref": "#/definitions/incomeSourceId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
           },
           "incomeSourceType": {
             "description": "Business income source type.",
-            "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
           },
           "incomeSourceName": {
             "description": "The name of the income source.",
@@ -444,23 +585,43 @@
           },
           "accountingPeriodStartDate": {
             "description": "The accounting start date of the income source.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "accountingPeriodEndDate": {
             "description": "The accounting end date of the income source.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "source": {
             "description": "The source of the income data used in this calculation.",
-            "$ref": "#/definitions/sourceMtdOnly"
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
           },
           "latestPeriodEndDate": {
             "description": "The end date of the period for which income has been submitted for the income source.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "latestReceivedDateTime": {
             "description": "The latest date & time when this income source had data submitted against it, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "finalised": {
             "description": "A boolean to identify whether the income source is finalised. This value must be true or false.",
@@ -469,7 +630,11 @@
           },
           "finalisationTimestamp": {
             "description": "The timestamp of when finalisation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           },
           "submissionPeriods": {
             "description": "Array containing submission periods for the business income source.",
@@ -484,15 +649,27 @@
                 },
                 "startDate": {
                   "description": "The first day the period covers.",
-                  "$ref": "#/definitions/date"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
                 },
                 "endDate": {
                   "description": "The last day the period covers.",
-                  "$ref": "#/definitions/date"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
                 },
                 "receivedDateTime": {
                   "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                  "$ref": "#/definitions/timestamp"
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/timestamp"
+                    }
+                  ]
                 }
               },
               "additionalProperties": false,
@@ -524,11 +701,19 @@
         "properties": {
           "incomeSourceId": {
             "description": "The unique identifier of the non-business income source.",
-            "$ref": "#/definitions/incomeSourceId"
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
           },
           "incomeSourceType": {
             "description": "Non-business income source type.",
-            "$ref": "#/definitions/nonBusinessIncomeSourceType"
+            "allOf": [
+              {
+                "$ref": "#/definitions/nonBusinessIncomeSourceType"
+              }
+            ]
           },
           "incomeSourceName": {
             "description": "The name of the income source.",
@@ -536,15 +721,27 @@
           },
           "startDate": {
             "description": "The start date of the income source. ",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "endDate": {
             "description": "The end date of the income source.",
-            "$ref": "#/definitions/date"
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
           },
           "source": {
             "description": "The source of the income data used in this calculation.",
-            "$ref": "#/definitions/sourceMtdOnly"
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
           },
           "periodId": {
             "description": "An identifier for the period, unique to the customer.",
@@ -553,7 +750,11 @@
           },
           "latestReceivedDateTime": {
             "description": "The date and time when the latest income data was received by the source. This field may not be present for employments for which no pay data has been received. In ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "$ref": "#/definitions/timestamp"
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
           }
         },
         "additionalProperties": false,

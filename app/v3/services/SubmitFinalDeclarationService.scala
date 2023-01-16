@@ -17,35 +17,30 @@
 package v3.services
 
 import cats.data.EitherT
-import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
 import v3.connectors.SubmitFinalDeclarationConnector
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
-import v3.support.DownstreamResponseMappingSupport
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends DownstreamResponseMappingSupport with Logging {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      logContext: EndpointLogContext,
-      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
 
     val result = for {
-      downstreamResponseWrapper <- EitherT(connector.submitFinalDeclaration(request)).leftMap(mapDesErrors(downstreamErrorMap))
+      downstreamResponseWrapper <- EitherT(connector.submitFinalDeclaration(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
     } yield downstreamResponseWrapper
 
     result.value
   }
 
-  private def downstreamErrorMap: Map[String, MtdError] =
+  private val downstreamErrorMap: Map[String, MtdError] =
     Map(
       "INVALID_IDTYPE"               -> InternalError,
       "INVALID_IDVALUE"              -> NinoFormatError,

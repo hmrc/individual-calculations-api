@@ -91,7 +91,7 @@ class GetIncomeTaxAndNicsControllerSpec
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
-    MockIdGenerator.getCorrelationId.returns(correlationId)
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
   }
 
   "handleRequest" should {

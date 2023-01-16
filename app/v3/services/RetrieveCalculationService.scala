@@ -18,32 +18,27 @@ package v3.services
 
 import cats.data.EitherT
 import cats.implicits._
-import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
 import v3.connectors.RetrieveCalculationConnector
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
-import v3.support.DownstreamResponseMappingSupport
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector) extends DownstreamResponseMappingSupport with Logging {
+class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector) extends BaseService {
 
   def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      logContext: EndpointLogContext,
-      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
 
-    EitherT(connector.retrieveCalculation(request)).leftMap(mapDesErrors(downstreamErrorMap)).value
+    EitherT(connector.retrieveCalculation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
   }
 
-  def downstreamErrorMap: Map[String, MtdError] = {
+  val downstreamErrorMap: Map[String, MtdError] = {
     val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
