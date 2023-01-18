@@ -79,19 +79,11 @@
           },
           "startDate": {
             "description": "The date the employment began.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/date"
-              }
-            ]
+            "$ref": "#/definitions/date"
           },
           "dateEmploymentEnded": {
             "description": "The date the employment ended.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/date"
-              }
-            ]
+            "$ref": "#/definitions/date"
           },
           "taxablePayToDate": {
             "description": "Total taxable pay to date. This value must be between 0 and 99999999999.99 up to 2 decimal places.",

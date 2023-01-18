@@ -29,19 +29,11 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the claim.",
-            "allOf": [
-              {
-                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
-              }
-            ]
+            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "claimType": {
             "$ref": "../common_defs.json#/definitions/claimType"
@@ -53,11 +45,7 @@
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "lossAmountUsed": {
             "description": "Loss amount used. This value must be between 0 and 99999999999. No decimals.",
@@ -105,19 +93,11 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the unclaimed loss.",
-            "allOf": [
-              {
-                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
-              }
-            ]
+            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -165,30 +145,18 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the carried forward loss.",
-            "allOf": [
-              {
-                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
-              }
-            ]
+            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
           },
           "claimType": {
             "$ref": "../common_defs.json#/definitions/claimType"
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -226,19 +194,11 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the default carried forward loss.",
-            "allOf": [
-              {
-                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
-              }
-            ]
+            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
           },
           "taxYearLossIncurred": {
             "description": "The tax year in which the loss was incurred.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "currentLossValue": {
             "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
@@ -278,19 +238,11 @@
           },
           "incomeSourceType": {
             "description": "The income source type for the claim not applied.",
-            "allOf": [
-              {
-                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
-              }
-            ]
+            "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/taxYear"
-              }
-            ]
+            "$ref": "#/definitions/taxYear"
           },
           "claimType": {
             "$ref": "../common_defs.json#/definitions/claimType"
