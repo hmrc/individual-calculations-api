@@ -105,7 +105,7 @@ post:
             RULE_NO_INCOME_SUBMISSIONS_EXIST:
               $ref: ./common/errors.yaml#/components/examples/ruleNoIncomeSubmissionExists
             RULE_SUBMISSION_FAILED:
-              $ref: ./common/errors.yaml#/components/examples/ruleNoIncomeSubmissionExists
+              $ref: ./common/errors.yaml#/components/examples/ruleSubmissionFailed
             RULE_INCORRECT_GOV_TEST_SCENARIO:
               $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
 

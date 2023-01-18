@@ -1,6 +1,7 @@
 components:
   examples:
 
+    # 400
     ruleIncorrectGTS:
       description: |
         The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. 
@@ -58,15 +59,6 @@ components:
         code: RULE_NO_INCOME_SUBMISSIONS_EXIST
         message: No income submissions exist for the tax year
 
-    clientOrAgentNotAuthorised:
-      description: |
-        The client and/or agent is not authorised. 
-        This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, 
-        or the client has not authorised the agent to act on their behalf.
-      value:
-        code: CLIENT_OR_AGENT_NOT_AUTHORISED
-        message: The client and/or agent is not authorised
-
     ruleFinalDeclarationReceived:
       description: |
         Final declaration has already been received.
@@ -107,21 +99,7 @@ components:
         The submission cannot be completed due to validation failures.
       value:
         code: RULE_SUBMISSION_FAILED
-        message: No valid income sources could be found
-
-    notFound:
-      description: |
-        Either the calculation ID was not found or the calculation was in year.
-      value:
-        code: MATCHING_RESOURCE_NOT_FOUND
-        message: Matching resource not found
-
-    notFoundList:
-      description: |
-        No tax calculations can be found for the supplied NINO and tax year.
-      value:
-        code: MATCHING_RESOURCE_NOT_FOUND
-        message: Matching resource not found
+        message: The submission cannot be completed due to validation failures
 
     triggerRuleIncomeSourcesChanged:
       description: |
@@ -176,3 +154,29 @@ components:
       value:
         code: RULE_BUSINESS_VALIDATION_FAILURE
         message: Business validation rule failures
+
+    # 403
+    clientOrAgentNotAuthorised:
+      description: |
+        The client and/or agent is not authorised. 
+        This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, 
+        or the client has not authorised the agent to act on their behalf.
+      value:
+        code: CLIENT_OR_AGENT_NOT_AUTHORISED
+        message: The client and/or agent is not authorised
+
+    # 404
+    notFound:
+      description: |
+        Either the calculation ID was not found or the calculation was in year.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: Matching resource not found
+
+    notFoundList:
+      description: |
+        No tax calculations can be found for the supplied NINO and tax year.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: Matching resource not found
+

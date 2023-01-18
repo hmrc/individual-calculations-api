@@ -75,4 +75,4 @@ paths:
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
     $ref: ./retrieve.yaml
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/final-declaration:
-    $ref: ./submitFinalDeclaration.yaml
+    $ref: ./submit_final_declaration.yaml
