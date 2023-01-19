@@ -16,6 +16,7 @@
 
 package v3.controllers
 
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.TriggerCalculationParser
@@ -71,10 +72,17 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             auditType = "TriggerASelfAssessmentTaxCalculation",
             transactionName = "trigger-a-self-assessment-tax-calculation",
             params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}"),
-            includeResponse = true
+            requestBody = None,
+            responseBodyMap = auditResponseBody
           ))
 
       requestHandler.handleRequest(rawData)
     }
+
+  private def auditResponseBody(maybeBody: Option[JsValue]) =
+    for {
+      body   <- maybeBody
+      calcId <- (body \ "calculationId").asOpt[String]
+    } yield Json.obj("calculationId" -> calcId)
 
 }

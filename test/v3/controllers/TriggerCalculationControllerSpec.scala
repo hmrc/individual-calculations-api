@@ -50,15 +50,16 @@ class TriggerCalculationControllerSpec
 
   private val response: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
 
-  private val mtdResponseJson: JsValue = Json
+  private val responseJsonNoHateoas: JsValue = Json
     .parse(
       s"""
-       |{
-       |  "calculationId" : "$calculationId"
-       |}
+         |{
+         |  "calculationId" : "$calculationId"
+         |}
     """.stripMargin
     )
-    .as[JsObject] ++ hateoaslinksJson
+
+  private val mtdResponseJson: JsValue = responseJsonNoHateoas.as[JsObject] ++ hateoaslinksJson
 
   val rawDataWithFinalDeclaration: TriggerCalculationRawData          = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("true"))
   val rawDataWithFinalDeclarationFalse: TriggerCalculationRawData     = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("false"))
@@ -123,7 +124,7 @@ class TriggerCalculationControllerSpec
         runOkTestWithAudit(
           expectedStatus = ACCEPTED,
           maybeExpectedResponseBody = Some(mtdResponseJson),
-          maybeAuditResponseBody = Some(mtdResponseJson)
+          maybeAuditResponseBody = Some(responseJsonNoHateoas)
         )
       }
 
