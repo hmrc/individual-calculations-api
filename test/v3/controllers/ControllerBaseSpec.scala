@@ -16,24 +16,29 @@
 
 package v3.controllers
 
-import ControllerTestRunner.validNino
 import mocks.MockIdGenerator
 import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
 import play.api.test.Helpers.stubControllerComponents
 import play.api.test.{FakeRequest, ResultExtractors}
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
+import v3.controllers.ControllerTestRunner.validNino
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.errors.MtdError
-import v3.models.hateoas.Link
-import v3.models.hateoas.Method.GET
 
 import scala.concurrent.Future
 
-class ControllerBaseSpec extends UnitSpec with Status with MimeTypes with HeaderNames with ResultExtractors with MockAuditService {
+class ControllerBaseSpec
+    extends UnitSpec
+    with Status
+    with MimeTypes
+    with HeaderNames
+    with ResultExtractors
+    with MockAuditService
+    with ControllerSpecHateoasSupport {
 
   implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
@@ -42,19 +47,6 @@ class ControllerBaseSpec extends UnitSpec with Status with MimeTypes with Header
   lazy val fakeGetRequest: FakeRequest[AnyContentAsEmpty.type] = fakeRequest.withHeaders(
     HeaderNames.AUTHORIZATION -> "Bearer Token"
   )
-
-  val hateoaslinks: Seq[Link] = Seq(Link(href = "/foo/bar", method = GET, rel = "test-relationship"))
-
-  val hateoaslinksJson: JsObject = Json
-    .parse("""
-      |{
-      |  "links": [{
-      |    "href": "/foo/bar",
-      |    "method": "GET",
-      |    "rel": "test-relationship"
-      |  }]
-      |}""".stripMargin)
-    .as[JsObject]
 
   def fakePostRequest[T](body: T): FakeRequest[T] = fakeRequest.withBody(body)
 }

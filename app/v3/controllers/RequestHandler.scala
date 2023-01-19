@@ -128,11 +128,6 @@ object RequestHandler {
 
       def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
 
-        def auditIfRequired(httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]]): Unit =
-          auditHandler.foreach { creator =>
-            creator.performAudit(request.userDetails, httpStatus, response)
-          }
-
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
             s"with correlationId : ${ctx.correlationId}")
@@ -141,40 +136,49 @@ object RequestHandler {
           for {
             parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
             serviceResponse <- EitherT(service(parsedRequest))
-          } yield {
-            logger.info(
-              s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
-                s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
-
-            val resultWrapper = resultCreator
-              .createResult(rawData, parsedRequest, serviceResponse.responseData)
-
-            val result = resultWrapper.asResult.withApiHeaders(serviceResponse.correlationId)
-
-            auditIfRequired(result.header.status, Right(resultWrapper.body))
-
-            result
+          } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
+            handleSuccess(rawData, parsedRequest, serviceResponse)
           }
 
         result.leftMap { errorWrapper =>
-          val result = errorResult(errorWrapper)
-
-          auditIfRequired(result.header.status, Left(errorWrapper))
-
-          result
+          doWithContext(ctx.withCorrelationId(errorWrapper.correlationId)) { implicit ctx: RequestContext =>
+            handleFailure(errorWrapper)
+          }
         }.merge
       }
 
-      private def errorResult(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
-        val resCorrelationId = errorWrapper.correlationId
+      private def doWithContext[A](ctx: RequestContext)(f: RequestContext => A) = f(ctx)
 
+      private def handleSuccess(rawData: InputRaw, parsedRequest: Input, serviceResponse: ResponseWrapper[Output])(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext): Result = {
+        logger.info(
+          s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
+            s"Success response received with CorrelationId: ${ctx.correlationId}")
+
+        val resultWrapper = resultCreator
+          .createResult(rawData, parsedRequest, serviceResponse.responseData)
+
+        val result = resultWrapper.asResult.withApiHeaders(ctx.correlationId)
+
+        auditIfRequired(result.header.status, Right(resultWrapper.body))
+
+        result
+      }
+
+      private def handleFailure(errorWrapper: ErrorWrapper)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext) = {
         logger.warn(
-          s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-            s"Error response received with CorrelationId: $resCorrelationId")
+          s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
+            s"Error response received with CorrelationId: ${ctx.correlationId}")
 
         val errorResult = errorHandling.errorHandler.applyOrElse(errorWrapper, unhandledError)
 
-        errorResult.withApiHeaders(resCorrelationId)
+        val result = errorResult.withApiHeaders(ctx.correlationId)
+
+        auditIfRequired(result.header.status, Left(errorWrapper))
+
+        result
       }
 
       private def unhandledError(errorWrapper: ErrorWrapper)(implicit endpointLogContext: EndpointLogContext): Result = {
@@ -183,6 +187,14 @@ object RequestHandler {
             s"Unhandled error: $errorWrapper")
         InternalServerError(Json.toJson(InternalError))
       }
+
+      def auditIfRequired(httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext): Unit =
+        auditHandler.foreach { creator =>
+          creator.performAudit(request.userDetails, httpStatus, response)
+        }
 
     }
 

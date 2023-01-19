@@ -19,7 +19,12 @@ package v3.controllers
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.IdGenerator
 
-case class RequestContext(hc: HeaderCarrier, correlationId: String, endpointLogContext: EndpointLogContext)
+case class RequestContext(hc: HeaderCarrier, correlationId: String, endpointLogContext: EndpointLogContext) {
+
+  def withCorrelationId(correlationId: String): RequestContext =
+    copy(correlationId = correlationId)
+
+}
 
 object RequestContext {
 
