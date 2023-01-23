@@ -23,6 +23,7 @@ import v3.models.auth.UserDetails
 import v3.models.errors.ErrorWrapper
 import v3.services.AuditService
 
+import scala.Function.const
 import scala.concurrent.ExecutionContext
 
 object AuditHandler {
@@ -32,14 +33,15 @@ object AuditHandler {
             transactionName: String,
             params: Map[String, String],
             requestBody: Option[JsValue] = None,
-            includeResponse: Boolean = false): AuditHandler = new AuditHandler(
-    auditService = auditService,
-    auditType = auditType,
-    transactionName = transactionName,
-    params = params,
-    requestBody = requestBody,
-    responseBodyMap = if (includeResponse) identity else _ => None
-  )
+            includeResponse: Boolean = false): AuditHandler =
+    AuditHandler(
+      auditService = auditService,
+      auditType = auditType,
+      transactionName = transactionName,
+      params = params,
+      requestBody = requestBody,
+      responseBodyMap = if (includeResponse) identity else const(None)
+    )
 
 }
 

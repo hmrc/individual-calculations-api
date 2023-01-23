@@ -30,7 +30,7 @@ case class GenericAuditDetail(userType: String,
 object GenericAuditDetail {
   private val versionNumber = "3.0"
 
-  implicit def writes: OWrites[GenericAuditDetail] =
+  implicit val writes: OWrites[GenericAuditDetail] =
     ((JsPath \ "userType").write[String] and
       (JsPath \ "agentReferenceNumber").writeNullable[String] and
       JsPath.write[Map[String, String]] and
