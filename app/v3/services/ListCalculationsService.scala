@@ -17,31 +17,26 @@
 package v3.services
 
 import cats.data.EitherT
-import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
 import v3.connectors.ListCalculationsConnector
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors.{MtdError, _}
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
-import v3.support.DownstreamResponseMappingSupport
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends DownstreamResponseMappingSupport with Logging {
+class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends BaseService {
 
   def list(request: ListCalculationsRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      logContext: EndpointLogContext,
-      correlationId: String): ServiceOutcome[ListCalculations] = {
+                                             ctx: RequestContext,
+                                             ec: ExecutionContext): ServiceOutcome[ListCalculations] = {
 
-    EitherT(connector.list(request)).leftMap(mapDesErrors(downstreamErrorMap)).value
+    EitherT(connector.list(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
   }
 
-  private def downstreamErrorMap: Map[String, MtdError] = {
+  private val downstreamErrorMap: Map[String, MtdError] = {
     val errors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_TAXYEAR"           -> TaxYearFormatError,

@@ -25,8 +25,8 @@ class IdGeneratorSpec extends UnitSpec {
 
   "IdGenerator" should {
     "generate a correlation id" when {
-      "getCorrelationId is called" in {
-        generator.getCorrelationId.matches(correlationRegex) shouldBe true
+      "generateCorrelationId is called" in {
+        generator.generateCorrelationId.matches(correlationRegex) shouldBe true
       }
     }
   }

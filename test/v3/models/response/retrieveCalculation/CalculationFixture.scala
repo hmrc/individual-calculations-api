@@ -16,7 +16,7 @@
 
 package v3.models.response.retrieveCalculation
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType.`inYear`
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
@@ -59,5 +59,30 @@ trait CalculationFixture {
     calculation = None,
     messages = None
   )
+
+  val minimumCalculationResponseMtdJson: JsObject = Json.parse(
+    """
+      |{
+      |  "metadata" : {
+      |    "calculationId": "",
+      |    "taxYear": "2017-18",
+      |    "requestedBy": "",
+      |    "calculationReason": "",
+      |    "calculationType": "inYear",
+      |    "intentToSubmitFinalDeclaration": false,
+      |    "finalDeclaration": false,
+      |    "periodFrom": "",
+      |    "periodTo": ""
+      |  },
+      |  "inputs" : {
+      |    "personalInformation": {
+      |       "identifier": "",
+      |       "taxRegime": "UK"
+      |    },
+      |    "incomeSources": {}
+      |  }
+      |}
+    """.stripMargin
+  ).as[JsObject]
 
 }

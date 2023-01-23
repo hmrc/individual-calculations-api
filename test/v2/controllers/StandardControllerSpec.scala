@@ -87,7 +87,7 @@ class StandardControllerSpec
 
     MockedEnrolmentsAuthService.authoriseUser()
 
-    MockIdGenerator.getCorrelationId.returns(correlationId)
+    MockIdGenerator.generateCorrelationId.returns(correlationId)
 
     class TestController
         extends StandardController[Raw, RequestData, BackendResp, APIResp, AnyContent](

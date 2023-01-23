@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package v3.models.outcomes
+package v3.controllers
 
-import support.UnitSpec
+import play.api.libs.json.{JsObject, Json}
+import v3.models.hateoas.Link
+import v3.models.hateoas.Method.GET
 
-class ResponseWrapperSpec extends UnitSpec {
+trait ControllerSpecHateoasSupport {
 
-  val wrappedResponse: ResponseWrapper[String] = ResponseWrapper(correlationId = "id", responseData = "someString")
+  val hateoaslinks: Seq[Link] = Seq(Link(href = "/foo/bar", method = GET, rel = "test-relationship"))
 
-  def wrapResponse(responseData: String): ResponseWrapper[String] = wrappedResponse.copy(responseData = responseData)
-
-  "ResponseWrapper" when {
-    "mapped" should {
-      "map the response data correctly" in {
-        wrappedResponse.map(_.toLowerCase) shouldBe wrapResponse(responseData = "somestring")
-      }
-    }
-  }
+  val hateoaslinksJson: JsObject = Json
+    .parse("""
+        |{
+        |  "links": [{
+        |    "href": "/foo/bar",
+        |    "method": "GET",
+        |    "rel": "test-relationship"
+        |  }]
+        |}""".stripMargin)
+    .as[JsObject]
 
 }

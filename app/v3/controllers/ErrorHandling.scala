@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package v3.models.outcomes
+package v3.controllers
 
-import support.UnitSpec
+import play.api.libs.json.Json
+import play.api.mvc.Result
+import play.api.mvc.Results.Status
+import v3.models.errors.ErrorWrapper
 
-class ResponseWrapperSpec extends UnitSpec {
+case class ErrorHandling(errorHandler: PartialFunction[ErrorWrapper, Result])
 
-  val wrappedResponse: ResponseWrapper[String] = ResponseWrapper(correlationId = "id", responseData = "someString")
+object ErrorHandling {
 
-  def wrapResponse(responseData: String): ResponseWrapper[String] = wrappedResponse.copy(responseData = responseData)
-
-  "ResponseWrapper" when {
-    "mapped" should {
-      "map the response data correctly" in {
-        wrappedResponse.map(_.toLowerCase) shouldBe wrapResponse(responseData = "somestring")
-      }
-    }
+  val Default: ErrorHandling = ErrorHandling { case errorWrapper: ErrorWrapper =>
+    Status(errorWrapper.error.httpStatus)(Json.toJson(errorWrapper))
   }
 
 }

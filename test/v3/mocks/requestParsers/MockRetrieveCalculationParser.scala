@@ -28,7 +28,7 @@ trait MockRetrieveCalculationParser extends MockFactory {
 
   object MockRetrieveCalculationParser {
 
-    def parse(data: RetrieveCalculationRawData): CallHandler[Either[ErrorWrapper, RetrieveCalculationRequest]] = {
+    def parseRequest(data: RetrieveCalculationRawData): CallHandler[Either[ErrorWrapper, RetrieveCalculationRequest]] = {
       (mockRetrieveCalculationParser.parseRequest(_: RetrieveCalculationRawData)(_: String)).expects(data, *)
     }
 

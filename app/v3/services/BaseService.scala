@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package v3.models.outcomes
+package v3.services
 
-import support.UnitSpec
+import utils.Logging
+import v3.controllers.RequestContextImplicits
+import v3.support.DownstreamResponseMappingSupport
 
-class ResponseWrapperSpec extends UnitSpec {
-
-  val wrappedResponse: ResponseWrapper[String] = ResponseWrapper(correlationId = "id", responseData = "someString")
-
-  def wrapResponse(responseData: String): ResponseWrapper[String] = wrappedResponse.copy(responseData = responseData)
-
-  "ResponseWrapper" when {
-    "mapped" should {
-      "map the response data correctly" in {
-        wrappedResponse.map(_.toLowerCase) shouldBe wrapResponse(responseData = "somestring")
-      }
-    }
-  }
-
-}
+trait BaseService extends RequestContextImplicits with DownstreamResponseMappingSupport with Logging

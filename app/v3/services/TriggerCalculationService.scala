@@ -18,29 +18,24 @@ package v3.services
 
 import cats.data.EitherT
 import cats.implicits._
-import uk.gov.hmrc.http.HeaderCarrier
-import utils.Logging
 import v3.connectors.TriggerCalculationConnector
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
-import v3.support.DownstreamResponseMappingSupport
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationService @Inject() (connector: TriggerCalculationConnector) extends DownstreamResponseMappingSupport with Logging {
+class TriggerCalculationService @Inject() (connector: TriggerCalculationConnector) extends BaseService {
 
   def triggerCalculation(request: TriggerCalculationRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      logContext: EndpointLogContext,
-      correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
 
-    EitherT(connector.triggerCalculation(request)).leftMap(mapDesErrors(mappingToMtdError)).value
+    EitherT(connector.triggerCalculation(request)).leftMap(mapDownstreamErrors(mappingToMtdError)).value
   }
 
   private val mappingToMtdError: Map[String, MtdError] = {

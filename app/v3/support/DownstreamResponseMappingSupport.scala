@@ -24,15 +24,15 @@ import v3.models.outcomes.ResponseWrapper
 trait DownstreamResponseMappingSupport {
   self: Logging =>
 
-  final def mapDesErrors[D](errorCodeMap: PartialFunction[String, MtdError])(desResponseWrapper: ResponseWrapper[DownstreamError])(implicit
-      logContext: EndpointLogContext): ErrorWrapper = {
+  final def mapDownstreamErrors[D](errorCodeMap: PartialFunction[String, MtdError])(responseWrapper: ResponseWrapper[DownstreamError])(implicit
+                                                                                                                                       logContext: EndpointLogContext): ErrorWrapper = {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
       logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
       InternalError
     }
 
-    desResponseWrapper match {
+    responseWrapper match {
       case ResponseWrapper(correlationId, DownstreamErrors(error :: Nil)) =>
         ErrorWrapper(correlationId, errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None)
 

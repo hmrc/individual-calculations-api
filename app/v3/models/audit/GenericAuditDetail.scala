@@ -22,60 +22,56 @@ import v3.models.auth.UserDetails
 
 case class GenericAuditDetail(userType: String,
                               agentReferenceNumber: Option[String],
-                              pathParams: Map[String, String],
+                              params: Map[String, String],
                               requestBody: Option[JsValue],
                               `X-CorrelationId`: String,
                               versionNumber: String,
-                              response: String,
-                              httpStatusCode: Int,
-                              calculationId: Option[String],
-                              errorCodes: Option[Seq[String]])
+                              auditResponse: AuditResponse)
 
 object GenericAuditDetail {
 
-  implicit val writes: OWrites[GenericAuditDetail] = (
-    (JsPath \ "userType").write[String] and
+  implicit val writes: OWrites[GenericAuditDetail] =
+    ((JsPath \ "userType").write[String] and
       (JsPath \ "agentReferenceNumber").writeNullable[String] and
       JsPath.write[Map[String, String]] and
+      JsPath.writeNullable[JsValue] and
       (JsPath \ "request").writeNullable[JsValue] and
       (JsPath \ "X-CorrelationId").write[String] and
       (JsPath \ "versionNumber").write[String] and
       (JsPath \ "response").write[String] and
       (JsPath \ "httpStatusCode").write[Int] and
-      (JsPath \ "calculationId").writeNullable[String] and
-      (JsPath \ "errorCodes").writeNullable[Seq[String]]
-  )(unlift(GenericAuditDetail.unapply))
+      (JsPath \ "errorCodes").writeNullable[Seq[String]]) { genericAuditDetail: GenericAuditDetail =>
+      import genericAuditDetail._
+
+      val errorCodes: Option[Seq[String]] = auditResponse.errors.map(_.map(_.errorCode))
+      val response                        = if (errorCodes.forall(_.isEmpty)) "success" else "error"
+
+      (
+        userType,
+        agentReferenceNumber,
+        params,
+        auditResponse.body,
+        requestBody,
+        `X-CorrelationId`,
+        versionNumber,
+        response,
+        auditResponse.httpStatus,
+        errorCodes)
+    }
 
   def apply(userDetails: UserDetails,
-            pathParams: Map[String, String],
+            params: Map[String, String],
             requestBody: Option[JsValue],
             `X-CorrelationId`: String,
-            auditResponse: AuditResponse): GenericAuditDetail = {
-
-    val resOutcome = if (auditResponse.errors.exists(x => x.nonEmpty)) { "error" }
-    else { "success" }
-    val resData: Option[String] = auditResponse.body match {
-      case Some(value) => (value \ "calculationId").asOpt[String]
-      case _           => None
-    }
-    val errorCodes: Option[Seq[String]] = auditResponse.errors.flatMap {
-      case Nil        => None
-      case err :: Nil => Some(Seq(err.errorCode))
-      case errs       => Some(errs.map(err => err.errorCode))
-    }
-
+            auditResponse: AuditResponse): GenericAuditDetail =
     GenericAuditDetail(
       userType = userDetails.userType,
       agentReferenceNumber = userDetails.agentReferenceNumber,
-      pathParams = pathParams,
+      params = params,
       requestBody = requestBody,
       `X-CorrelationId` = `X-CorrelationId`,
       versionNumber = "3.0",
-      response = resOutcome,
-      httpStatusCode = auditResponse.httpStatus,
-      calculationId = resData,
-      errorCodes = errorCodes
+      auditResponse = auditResponse
     )
-  }
 
 }

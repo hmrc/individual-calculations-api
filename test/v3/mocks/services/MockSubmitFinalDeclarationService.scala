@@ -18,8 +18,7 @@ package v3.mocks.services
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.EndpointLogContext
+import v3.controllers.RequestContext
 import v3.models.errors.ErrorWrapper
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
@@ -33,17 +32,15 @@ trait MockSubmitFinalDeclarationService extends MockFactory {
 
   object MockSubmitFinalDeclarationService {
 
-    def submitIntent(requestData: SubmitFinalDeclarationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+    def submitFinalDeclaration(requestData: SubmitFinalDeclarationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
       (
         mockSubmitFinalDeclarationService
           .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(
-            _: HeaderCarrier,
-            _: ExecutionContext,
-            _: EndpointLogContext,
-            _: String
+            _: RequestContext,
+            _: ExecutionContext
           )
         )
-        .expects(requestData, *, *, *, *)
+        .expects(requestData, *, *)
     }
 
   }

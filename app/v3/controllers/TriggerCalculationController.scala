@@ -16,22 +16,17 @@
 
 package v3.controllers
 
-import cats.implicits._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.TriggerCalculationParser
 import v3.hateoas.HateoasFactory
-import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import v3.models.errors._
 import v3.models.request.TriggerCalculationRawData
 import v3.models.response.triggerCalculation.TriggerCalculationHateoasData
 import v3.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, TriggerCalculationService}
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                               val lookupService: MtdIdLookupService,
@@ -53,95 +48,41 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
   def triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      implicit val correlationId: String = idGenerator.getCorrelationId
-      logger.info(message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
-        s"with correlationId : $correlationId")
+      implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)
-      val result = {
-        for {
-          parsedRequest   <- wrap(parser.parseRequest(rawData))
-          serviceResponse <- wrap(service.triggerCalculation(parsedRequest))
-        } yield {
-          val hateoasData = TriggerCalculationHateoasData(
-            nino = nino,
-            taxYear = parsedRequest.taxYear,
-            finalDeclaration = parsedRequest.finalDeclaration,
-            calculationId = serviceResponse.responseData.calculationId
+
+      val requestHandler =
+        RequestHandler
+          .withParser(parser)
+          .withService(service.triggerCalculation)
+          .withHateoasResultFrom(hateoasFactory)(
+            { (parsedRequest, response) =>
+              TriggerCalculationHateoasData(
+                nino = nino,
+                taxYear = parsedRequest.taxYear,
+                finalDeclaration = parsedRequest.finalDeclaration,
+                calculationId = response.calculationId
+              )
+            },
+            successStatus = ACCEPTED
           )
-
-          val vendorResponse = hateoasFactory.wrap(serviceResponse.responseData, hateoasData)
-
-          logger.info(
-            s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-              s"Success response received with CorrelationId: ${serviceResponse.correlationId}")
-
-          auditSubmission(
-            GenericAuditDetail(
-              userDetails = request.userDetails,
-              pathParams = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> parsedRequest.finalDeclaration.toString),
-              requestBody = None,
-              `X-CorrelationId` = serviceResponse.correlationId,
-              auditResponse = AuditResponse(httpStatus = ACCEPTED, response = Right(Some(Json.toJson(vendorResponse))))
-            )
-          )
-          Accepted(Json.toJson(vendorResponse)).withApiHeaders(serviceResponse.correlationId)
-        }
-      }
-      result.leftMap { errorWrapper =>
-        val resCorrelationId = errorWrapper.correlationId
-        val result           = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
-        logger.warn(
-          s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-            s"Error response received with CorrelationId: $resCorrelationId")
-
-        auditSubmission(
-          GenericAuditDetail(
-            userDetails = request.userDetails,
-            pathParams = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}"),
+          .withAuditing(AuditHandler(
+            auditService,
+            auditType = "TriggerASelfAssessmentTaxCalculation",
+            transactionName = "trigger-a-self-assessment-tax-calculation",
+            params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}"),
             requestBody = None,
-            `X-CorrelationId` = resCorrelationId,
-            auditResponse = AuditResponse(httpStatus = result.header.status, response = Left(errorWrapper.auditErrors))
+            responseBodyMap = auditResponseBody
           ))
 
-        result
-      }.merge
+      requestHandler.handleRequest(rawData)
     }
 
-  private def errorResult(errorWrapper: ErrorWrapper) = {
-    errorWrapper.error match {
-      case _
-          if errorWrapper.containsAnyOf(
-            NinoFormatError,
-            TaxYearFormatError,
-            RuleTaxYearNotSupportedError,
-            RuleTaxYearRangeInvalidError,
-            FinalDeclarationFormatError,
-            BadRequestError,
-            RuleIncorrectGovTestScenarioError,
-            RuleIncomeSourcesChangedError,
-            RuleResidencyChangedError,
-            RuleTaxYearNotEndedError,
-            RuleRecentSubmissionsExistError,
-            RuleCalculationInProgressError,
-            RuleBusinessValidationFailureError,
-            RuleNoIncomeSubmissionsExistError,
-            RuleFinalDeclarationReceivedError
-          ) =>
-        BadRequest(Json.toJson(errorWrapper))
-      case InternalError => InternalServerError(Json.toJson(errorWrapper))
-      case _             => unhandledError(errorWrapper)
-    }
-  }
-
-  private def auditSubmission(details: GenericAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent(
-      auditType = "TriggerASelfAssessmentTaxCalculation",
-      transactionName = "trigger-a-self-assessment-tax-calculation",
-      detail = details
-    )
-
-    auditService.auditEvent(event)
-  }
+  private def auditResponseBody(maybeBody: Option[JsValue]) =
+    for {
+      body   <- maybeBody
+      calcId <- (body \ "calculationId").asOpt[String]
+    } yield Json.obj("calculationId" -> calcId)
 
 }
