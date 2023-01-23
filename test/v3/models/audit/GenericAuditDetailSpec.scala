@@ -18,16 +18,17 @@ package v3.models.audit
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v3.models.auth.UserDetails
 
 class GenericAuditDetailSpec extends UnitSpec {
 
-  private val nino: String                    = "SOMENINO"
-  private val calculationId: String           = "calcId"
-  private val userType: String                = "Agent"
-  private val agentReferenceNumber            = "ARN"
-  private val pathParams: Map[String, String] = Map("nino" -> nino)
-  private val xCorrId: String                 = "corr-id"
-  private val httpStatusCode                  = 123
+  private val nino: String                = "SOMENINO"
+  private val calculationId: String       = "calcId"
+  private val userType: String            = "Agent"
+  private val agentReferenceNumber        = "ARN"
+  private val params: Map[String, String] = Map("nino" -> nino)
+  private val xCorrId: String             = "corr-id"
+  private val httpStatusCode              = 123
 
   "GenericAuditDetail" when {
     "written to JSON" should {
@@ -36,9 +37,10 @@ class GenericAuditDetailSpec extends UnitSpec {
         GenericAuditDetail(
           userType = userType,
           agentReferenceNumber = Some(agentReferenceNumber),
-          params = pathParams,
+          params = params,
           requestBody = requestBody,
           `X-CorrelationId` = xCorrId,
+          versionNumber = "3.0",
           auditResponse
         )
 
@@ -115,6 +117,29 @@ class GenericAuditDetailSpec extends UnitSpec {
       }
     }
 
+    "constructed from the companion object" must {
+      "create the correct instance" in {
+        val auditResponse = AuditResponse(httpStatusCode, Right(Some(Json.parse(s"""{ "property": "value" }"""))))
+        val requestBody   = Some(Json.parse(s"""{ "property": "value" }"""))
+
+        GenericAuditDetail(
+          userDetails = UserDetails("ignored", userType, Some(agentReferenceNumber)),
+          params = params,
+          requestBody = requestBody,
+          `X-CorrelationId` = xCorrId,
+          auditResponse = auditResponse
+        ) shouldBe
+          GenericAuditDetail(
+            userType = userType,
+            agentReferenceNumber = Some(agentReferenceNumber),
+            params = params,
+            requestBody = requestBody,
+            `X-CorrelationId` = xCorrId,
+            versionNumber = "3.0",
+            auditResponse
+          )
+      }
+    }
   }
 
 }

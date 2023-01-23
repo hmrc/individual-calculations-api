@@ -25,10 +25,10 @@ case class GenericAuditDetail(userType: String,
                               params: Map[String, String],
                               requestBody: Option[JsValue],
                               `X-CorrelationId`: String,
+                              versionNumber: String,
                               auditResponse: AuditResponse)
 
 object GenericAuditDetail {
-  private val versionNumber = "3.0"
 
   implicit val writes: OWrites[GenericAuditDetail] =
     ((JsPath \ "userType").write[String] and
@@ -70,6 +70,7 @@ object GenericAuditDetail {
       params = params,
       requestBody = requestBody,
       `X-CorrelationId` = `X-CorrelationId`,
+      versionNumber = "3.0",
       auditResponse = auditResponse
     )
 

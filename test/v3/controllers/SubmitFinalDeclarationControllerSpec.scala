@@ -67,6 +67,7 @@ class SubmitFinalDeclarationControllerSpec
           params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
           requestBody = None,
           `X-CorrelationId` = correlationId,
+          versionNumber = "3.0",
           auditResponse = auditResponse
         )
       )
