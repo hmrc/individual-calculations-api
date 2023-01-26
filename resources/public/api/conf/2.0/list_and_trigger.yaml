@@ -1,0 +1,12 @@
+get:
+  $ref: list.yaml
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+post:
+  $ref: trigger.yaml
+  security:
+    - User-Restricted:
+        - write:self-assessment
+

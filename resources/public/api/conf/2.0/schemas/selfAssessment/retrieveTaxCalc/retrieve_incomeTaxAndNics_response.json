@@ -269,22 +269,10 @@
         "taxRegime": {
           "type": "string",
           "description": "The national tax rates and rules that apply to the calculation.",
-          "oneOf": [
-            {
-              "enum": [
-                "UK"
-              ]
-            },
-            {
-              "enum": [
-                "Scotland"
-              ]
-            },
-            {
-              "enum": [
-                "Wales"
-              ]
-            }
+          "enum": [
+            "UK",
+            "Scotland",
+            "Wales"
           ]
         },
         "totalTaxDeductedBeforeCodingOut": {
@@ -312,12 +300,12 @@
           "example": "5600.99"
         }
       },
-    "required": [
-      "incomeTax",
-      "totalIncomeTaxAndNicsDue",
-      "taxRegime"
-    ]
-  },
+      "required": [
+        "incomeTax",
+        "totalIncomeTaxAndNicsDue",
+        "taxRegime"
+      ]
+    },
     "detail": {
       "type": "object",
       "description": "Details the breakdown of Income Tax and National Insurance Contributions due.",

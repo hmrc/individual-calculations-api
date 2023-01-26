@@ -1,0 +1,140 @@
+post:
+  tags:
+    - Final Declaration
+  summary: Crystallisation
+  description: |
+    This endpoint allows the developer to crystallise a tax year by agreeing to the HMRC's tax calculation.
+    
+    ### Test data
+    Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
+    <table>
+      <thead>
+          <tr>
+              <th>Header Value (Gov-Test-Scenario)</th>
+              <th>Scenario</th>
+          </tr>
+      </thead>
+      <tbody> 
+          <tr>
+              <td><p>N/A - DEFAULT</p></td>
+              <td><p>Simulates a successful response.</p></td>
+          </tr>         
+          <tr>
+              <td><p>INCOME_SOURCES_CHANGED</p></td>
+              <td><p>Simulates the scenario where information relating to an income source has changed.</p></td>
+          </tr>   
+          <tr>
+              <td><p>RECENT_SUBMISSIONS_EXIST</p></td>
+              <td><p>Simulates the scenario where more recent submission exists.</p></td>
+          </tr>   
+          <tr>
+              <td><p>RESIDENCY_CHANGED</p></td>
+              <td><p>Simulates the scenario where residency has changed.</p></td>
+          </tr>   
+          <tr>
+              <td><p>FINAL_DECLARATION_RECEIVED</p></td>
+              <td><p>Simulates the scenario where a crystallisation declaration has already been received.</p></td>
+          </tr>   
+          <tr>
+              <td><p>INCOME_SOURCES_INVALID</p></td>
+              <td><p>Simulates the scenario where a valid income source can not be found.</p></td>
+          </tr>   
+          <tr>
+              <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
+              <td><p>Simulates the scenario where no income submissions exist.</p></td>
+          </tr>   
+          <tr>
+              <td><p>SUBMISSION_FAILED</p></td>
+              <td><p>Simulates the scenario where a submission has failed.</p></td>
+          </tr>
+          <tr>
+              <td><p>NOT_FOUND</p></td>
+              <td><p>Simulates the scenario where the supplied income source could not be found.</p></td>
+          </tr>   
+      </tbody>
+    </table>
+
+  parameters:
+    - $ref: ./common/pathParameters.yaml#/components/parameters/nino
+    - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
+    - $ref: ./common/headers.yaml#/components/parameters/acceptJson
+    - $ref: ./common/headers.yaml#/components/parameters/authorization
+    - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
+
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ./schemas/crystallisation/crystallise_request.json
+        examples:
+          example-1:
+            description: Default Example
+            value:
+              $ref: ./examples/crystallisation/crystallisation_request.json
+
+  responses:
+    204:
+      description: Success
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+
+    400:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            FORMAT_NINO:
+              $ref: ./common/errors.yaml#/components/examples/formatNino
+            FORMAT_TAX_YEAR:
+              $ref: ./common/errors.yaml#/components/examples/formatTaxYear
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearNotSupported
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid
+            FORMAT_CALC_ID:
+              $ref: ./common/errors.yaml#/components/examples/formatCalcId
+            RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+              $ref: ./common/errors.yaml#/components/examples/incorrectOrEmptyBody
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
+
+    403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: ./common/errors.yaml#/components/examples/clientOrAgentNotAuthorised
+            RULE_NO_INCOME_SUBMISSIONS_EXIST:
+              $ref: ./common/errors.yaml#/components/examples/ruleNoIncomeSubmissionsExists
+            RULE_FINAL_DECLARATION_RECEIVED:
+              $ref: ./common/errors.yaml#/components/examples/ruleFinalDeclarationReceived
+            RULE_SUBMISSION_FAILED:
+              $ref: ./common/errors.yaml#/components/examples/ruleSubmissionFailed
+            RULE_INCOME_SOURCES_INVALID:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncomeSourcesInvalid
+            RULE_RESIDENCY_CHANGED:
+              $ref: ./common/errors.yaml#/components/examples/ruleResidencyChanged
+            RULE_RECENT_SUBMISSIONS_EXIST:
+              $ref: ./common/errors.yaml#/components/examples/ruleRecentSubmissionsExist
+            RULE_INCOME_SOURCES_CHANGED:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncomeSourcesChanged
+
+    404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: ./common/errors.yaml#/components/examples/notFoundCrystallisation
