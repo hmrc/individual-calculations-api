@@ -20,5 +20,5 @@ components:
         The type parameter can be supplied more than once; e.g. `?type=info&type=warning`.
       schema:
         type: string
-        enum: [info,warning,error]
-        required: false
+        enum: [ info,warning,error ]
+      required: false

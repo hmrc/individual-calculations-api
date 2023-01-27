@@ -1,10 +1,16 @@
 get:
+  summary: List Self Assessment Tax Calculations
   $ref: list.yaml
+
+  parameters:
+    - $ref: ./common/queryParameters.yaml#/components/parameters/taxYear
+
   security:
     - User-Restricted:
         - read:self-assessment
 
 post:
+  summary: Trigger a Self Assessment Tax Calculation
   $ref: trigger.yaml
   security:
     - User-Restricted:

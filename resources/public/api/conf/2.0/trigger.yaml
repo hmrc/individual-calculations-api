@@ -1,6 +1,5 @@
 tags:
   - Self Assessment
-summary: Trigger a Self Assessment Tax Calculation
 description: |
   This endpoint allows the user to trigger a self-assessment tax calculation for a given tax year.
   It should be called whenever income data is updated through a periodic or annual endpoint. 
@@ -35,10 +34,6 @@ parameters:
   - $ref: ./common/headers.yaml#/components/parameters/acceptJson
   - $ref: ./common/headers.yaml#/components/parameters/authorization
   - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
-
-security:
-  - User-Restricted:
-      - write:self-assessment
 
 requestBody:
   content:

@@ -1,6 +1,5 @@
 tags:
   - Self Assessment
-summary: List Self Assessment Tax Calculations
 description: |
   The "List Self Assessment tax calculations" endpoint allows users to list their Self Assessment 
   tax calculations for the supplied NINO and given tax year.    
@@ -40,10 +39,6 @@ parameters:
   - $ref: ./common/headers.yaml#/components/parameters/acceptJson
   - $ref: ./common/headers.yaml#/components/parameters/authorization
   - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
-
-security:
-  - User-Restricted:
-      - read:self-assessment
 
 responses:
   200:
