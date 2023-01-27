@@ -47,7 +47,6 @@
             }
           }
         },
-
         "totalTaxableIncome": {
           "title": "totalTaxableIncome",
           "description": "The total taxable end of year income. This value must be between 0 and 99999999999. No Decimals.",
@@ -490,9 +489,9 @@
     },
     "links": {
       "type": "array",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
         "properties": {
           "href": {
             "description": "The relative url of the endpoint",

@@ -2001,9 +2001,9 @@
                 },
                 "cgtTaxBands": {
                   "type": "array",
+                  "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                   "items": {
                     "type": "object",
-                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                     "properties": {
                       "name": {
                         "type": "string",
@@ -2126,9 +2126,9 @@
                 },
                 "cgtTaxBands": {
                   "type": "array",
+                  "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                   "items": {
                     "type": "object",
-                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                     "properties": {
                       "name": {
                         "type": "string",
@@ -2212,9 +2212,9 @@
     },
     "links": {
       "type": "array",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
         "properties": {
           "href": {
             "type": "string",

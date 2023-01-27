@@ -553,11 +553,10 @@
               ]
             },
             "reliefsClaimed": {
-              "title": "reliefsClaimed",
+              "description": "Details of investment and other reliefs used in the calculation.",
               "type": "array",
               "items": {
                 "type": "object",
-                "description": "Details of investment and other reliefs used in the calculation.",
                 "properties": {
                   "type": {
                     "title": "type",
@@ -661,16 +660,15 @@
                 }
               }
             }
-
           }
         }
       }
     },
     "links": {
       "type": "array",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
         "properties": {
           "href": {
             "description": "The relative url of the endpoint",
@@ -701,5 +699,8 @@
       }
     }
   },
-  "required": ["summary", "detail"]
+  "required": [
+    "summary",
+    "detail"
+  ]
 }
