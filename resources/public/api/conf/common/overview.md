@@ -1,4 +1,4 @@
-This API allows a developer to:
+This API enables you to:
 
 * trigger a customer’s self assessment tax calculation
   * for version 3.0, a query parameter is used to control whether the calculation is to be used for a final declaration
@@ -13,6 +13,3 @@ In versions prior to version 3.0, the term ‘crystallise’ was used to mean su
 was used to mean trigger a final declaration self-assessment tax calculation.
 
 For information on how to connect to this API [see the Income Tax MTD end-to-end service guide](https://developer.service.hmrc.gov.uk/guides/income-tax-mtd-end-to-end-service-guide/).
-
-
-
