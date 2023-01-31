@@ -1,43 +1,45 @@
-get:
+post:
   tags:
-    - Tax Calculations
-  summary: List Self Assessment Tax Calculations
+    - Final Declaration
+  summary: Intent to Crystallise
   description: |
-    This endpoint enables you to list Self Assessment tax calculations for a given National Insurance number and tax year. 
-    
-    A National Insurance number must be provided.
+    This endpoint allows the developer to trigger a final calculation; to be used when you Crystallise.
     
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
     <table>
-        <thead>
-            <tr>
-                <th>Header Value (Gov-Test-Scenario)</th>
-                <th>Scenario</th>
-            </tr>
-        </thead>
-        <tbody> 
-            <tr>
-                <td><p>N/A - DEFAULT</p></td>
-                <td><p>Simulates success response.</p></td>
-            </tr>
-            <tr>
-                <td><p>NOT_FOUND</p></td>
-                <td><p>Simulates the scenario where no data is found.</p></td>
-            </tr>                       
-        </tbody>
+      <thead>
+          <tr>
+              <th>Header Value (Gov-Test-Scenario)</th>
+              <th>Scenario</th>
+          </tr>
+      </thead>
+      <tbody> 
+          <tr>
+              <td><p>N/A - DEFAULT</p></td>
+              <td><p>Simulates a successful response.</p></td>
+          </tr>
+          <tr>
+              <td><p>NO_SUBMISSIONS_EXIST</p></td>
+              <td><p>Simulates the scenario where no periodic or annual income data has been submitted.</p></td>
+          </tr>                        
+          <tr>
+              <td><p>FINAL_DECLARATION_RECEIVED</p></td>
+              <td><p>Simulates the scenario where a crystallisation declaration has already been received.</p></td>
+          </tr>           
+      </tbody>
     </table>
 
   parameters:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
-    - $ref: ./common/queryParameters.yaml#/components/parameters/taxYearTys
+    - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
     - $ref: ./common/headers.yaml#/components/parameters/authorization
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
   security:
     - User-Restricted:
-        - read:self-assessment
+        - write:self-assessment
 
   responses:
     200:
@@ -48,12 +50,11 @@ get:
       content:
         application/json:
           schema:
-            $ref: ./schemas/list/list_response.json
+            $ref: ./schemas/crystallisation/intentToCrystallise_response.json
           examples:
-            example-response:
-              description: Example Response
+            example-1:
               value:
-                $ref: ./examples/list/list_response.json
+                $ref: ./examples/crystallisation/intentToCrystallise_response.json
 
     400:
       description: Bad request
@@ -82,13 +83,7 @@ get:
           examples:
             CLIENT_OR_AGENT_NOT_AUTHORISED:
               $ref: ./common/errors.yaml#/components/examples/clientOrAgentNotAuthorised
-
-    404:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: ./schemas/error-response.yaml
-          examples:
-            MATCHING_RESOURCE_NOT_FOUND:
-              $ref: ./common/errors.yaml#/components/examples/notFoundList
+            RULE_NO_SUBMISSIONS_EXIST:
+              $ref: ./common/errors.yaml#/components/examples/ruleNoSubmissionsExists
+            RULE_FINAL_DECLARATION_RECEIVED:
+              $ref: ./common/errors.yaml#/components/examples/ruleFinalDeclarationReceived

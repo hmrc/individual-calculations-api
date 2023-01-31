@@ -1,0 +1,96 @@
+openapi: "3.0.3"
+
+info:
+  version: "2.0"
+  title: Individual Calculations (MTD)
+  description: |
+    Trigger a self-assessment tax calculation, list self-assessment tax calculations for a tax year and 
+    retrieve a self-assessment tax calculation result using multiple endpoints.
+    
+    # Send fraud prevention data
+    HMRC monitors transactions to help protect your customers' confidential data from criminals and fraudsters. 
+    <div class="govuk-warning-text warning-icon-fix">
+      <span class="govuk-warning-text__icon warning-icon-ui-fix" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        You are required by law to submit header data for this API. This includes all associated APIs and endpoints.
+      </strong>
+    </div>
+    [Check the data you need to send](/guides/fraud-prevention/). You can also use the [Test API](/api-documentation/docs/api/service/txm-fph-validator-api/1.0) 
+    during initial development and as part of your quality assurance checks.
+    
+    # Changelog
+    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) GitHub wiki.
+    
+    # Support
+    
+    * Raise non-technical or platform-related issues with the [Software Development Support Team (SDST)](https://developer.service.hmrc.gov.uk/developer/support).
+    * Raise technical issues on the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/issues) GitHub page.
+    * <a href="/contact/report-technical-problem?newTab=true&service=api-documentation-frontend" target="_blank">Is this page not working properly? (opens in new tab)</a>
+servers:
+  - url: https://test-api.service.hmrc.gov.uk
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk
+    description: Production
+
+components:
+  securitySchemes:
+    User-Restricted:
+      type: oauth2
+      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.qa.tax.service.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            write:self-assessment: Grant write access
+            read:self-assessment: Grant read access
+
+tags:
+  - name: Self Assessment
+    description: |
+      Here a developer can:
+        - list self-assessment tax calculations for a given National Insurance number (NINO) and tax year
+        - trigger a self-assessment tax calculation for a given tax year. 
+          The result of the calculation can be explored via the “Retrieve a self-assessment tax calculation metadata” endpoint
+        - retrieve high-level calculation metadata for a given Calculation ID
+        - retrieve the calculated Income Tax and National Insurance contributions for a given NINO and Calculation ID
+        - retrieve the taxable income that has been used in the self-assessment tax calculation for a given NINO and Calculation ID
+        - retrieve the allowances, deductions and reliefs that exist for the self assessment tax calculation for a given NINO and Calculation ID
+        - retrieve the end-of-year Income Tax and National Insurance contribution estimates for a given NINO and Calculation ID
+        - retrieve “info”, “warning” and “error” level messages linked to a Calculation ID
+  - name: Final Declaration
+    description: |
+      **Final declaration was previously called Crystallisation.**
+      
+      These resources allow software packages to make a final declaration regarding a customer’s end of year position for a tax year.
+    
+      Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:    
+        - has finalised EOPS for all their businesses (self-employment and uk-property)
+        - has already provided their entire income e.g. interest, dividends, other SA schedules
+        - does not have any additional information to provide
+      
+      Here, the developer can:      
+        - provide the customer’s intent to make a final declaration, for which they will receive a Calculation ID
+        - submit final declaration for a tax year
+
+paths:
+  /individuals/calculations/{nino}/self-assessment:
+    $ref: ./list_and_trigger.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}:
+    $ref: ./retrieve_metadata.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}/income-tax-nics-calculated:
+    $ref: ./retrieve_income_tax_nics_calculated.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}/taxable-income:
+    $ref: ./retrieve_taxable_income.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}/allowances-deductions-reliefs:
+    $ref: ./retrieve_allowances_deductions_reliefs.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}/end-of-year-estimate:
+    $ref: ./retrieve_end_of_year_estimate.yaml
+  /individuals/calculations/{nino}/self-assessment/{calculationId}/messages:
+    $ref: ./retrieve_messages.yaml
+  /individuals/calculations/crystallisation/{nino}/{taxYear}/intent-to-crystallise:
+    $ref: ./intent_to_crystallise.yaml
+  /individuals/calculations/crystallisation/{nino}/{taxYear}/crystallise:
+    $ref: ./crystallise.yaml

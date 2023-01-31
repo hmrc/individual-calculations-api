@@ -269,22 +269,10 @@
         "taxRegime": {
           "type": "string",
           "description": "The national tax rates and rules that apply to the calculation.",
-          "oneOf": [
-            {
-              "enum": [
-                "UK"
-              ]
-            },
-            {
-              "enum": [
-                "Scotland"
-              ]
-            },
-            {
-              "enum": [
-                "Wales"
-              ]
-            }
+          "enum": [
+            "UK",
+            "Scotland",
+            "Wales"
           ]
         },
         "totalTaxDeductedBeforeCodingOut": {
@@ -312,12 +300,12 @@
           "example": "5600.99"
         }
       },
-    "required": [
-      "incomeTax",
-      "totalIncomeTaxAndNicsDue",
-      "taxRegime"
-    ]
-  },
+      "required": [
+        "incomeTax",
+        "totalIncomeTaxAndNicsDue",
+        "taxRegime"
+      ]
+    },
     "detail": {
       "type": "object",
       "description": "Details the breakdown of Income Tax and National Insurance Contributions due.",
@@ -2013,9 +2001,9 @@
                 },
                 "cgtTaxBands": {
                   "type": "array",
+                  "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                   "items": {
                     "type": "object",
-                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                     "properties": {
                       "name": {
                         "type": "string",
@@ -2138,9 +2126,9 @@
                 },
                 "cgtTaxBands": {
                   "type": "array",
+                  "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                   "items": {
                     "type": "object",
-                    "description": "Details the relevant tax bands for Residential Property and Carried Interest.",
                     "properties": {
                       "name": {
                         "type": "string",
@@ -2224,9 +2212,9 @@
     },
     "links": {
       "type": "array",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
         "properties": {
           "href": {
             "type": "string",

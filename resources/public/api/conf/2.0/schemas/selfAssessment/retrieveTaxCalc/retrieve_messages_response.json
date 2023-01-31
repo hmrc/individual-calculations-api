@@ -6,9 +6,9 @@
   "properties": {
     "info": {
       "type": "array",
+      "description": "A list of info messages relating to the calculation ID.",
       "items": {
         "type": "object",
-        "description": "A list of info messages relating to the calculation ID.",
         "properties": {
           "id": {
             "description": "The ID of the message.",
@@ -27,9 +27,9 @@
     },
     "warnings": {
       "type": "array",
+      "description": "A list of warning messages relating to the calculation ID.",
       "items": {
         "type": "object",
-        "description": "A list of warning messages relating to the calculation ID.",
         "properties": {
           "id": {
             "description": "The ID of the message.",
@@ -48,9 +48,9 @@
     },
     "errors": {
       "type": "array",
+      "description": "A list of error messages relating to the calculation ID.",
       "items": {
         "type": "object",
-        "description": "A list of error messages relating to the calculation ID.",
         "properties": {
           "id": {
             "description": "The ID of the message.",
@@ -69,9 +69,9 @@
     },
     "links": {
       "type": "array",
+      "description": "A list of endpoint links that indicate possible actions related to the current resource",
       "items": {
         "type": "object",
-        "description": "A list of endpoint links that indicate possible actions related to the current resource",
         "properties": {
           "href": {
             "description": "The relative url of the endpoint",

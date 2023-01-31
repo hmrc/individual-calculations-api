@@ -1,0 +1,137 @@
+get:
+  tags:
+    - Self Assessment
+  summary: Retrieve Self Assessment Tax Calculation Metadata
+  description: |
+    The "Retrieve Self Assessment tax calculation metadata" endpoint allows users 
+    to retrieve high-level calculation metadata for a given Calculation ID. 
+    There will always be calculation metadata associated to a Calculation ID that 
+    exists within HMRC. 
+    Calculation metadata is mutable and can be updated after a calculation has been run,
+    an example scenario being when a crystallisation declaration has been accepted by HMRC.
+    
+    ### Test data
+    Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
+    <table>
+      <thead>
+        <tr>
+            <th>Header Value (Gov-Test-Scenario)</th>
+            <th>Scenario</th>
+        </tr>
+      </thead>
+      <tbody> 
+        <tr>
+            <td><p>N/A - DEFAULT</p></td>
+            <td><p>Simulates returning an in year tax calculation with all fields.<br><br>Please note the values do not represent a realistic tax calculation and is intended to show all fields being populated.</p></td>
+        </tr>
+        <tr>
+            <td><p>CRYSTALLISATION_METADATA</p></td>
+            <td><p>Simulates returning a crystallisation tax calculation with all fields.<br><br>Please note the values do not represent a realistic tax calculation and is intended to show all fields being populated.</p></td>
+        </tr>
+        <tr>
+            <td><p>ERROR_MESSAGES_EXIST</p></td>
+            <td><p>Simulates the scenario where errors exist and no calculation has been generated.</p></td>
+        </tr>
+        <tr>
+            <td><p>NOT_FOUND</p></td>
+            <td><p>Simulates the scenario where no data can be found.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_MULTIPLE_INCOMES_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK FHL Property business with Savings and Dividends.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_PROP_DIVIDENDS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK Non-FHL Property business with Dividends.</p></td>
+        </tr>   
+        <tr>
+            <td><p>UK_PROP_GIFTAID_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK Non-FHL Property business with Gift Aid.</p></td>
+        </tr>        
+        <tr>
+            <td><p>UK_PROP_SAVINGS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK Non-FHL Property business with Savings.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_SE_GIFTAID_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK Self-Employment business with Gift Aid.</p></td>
+        </tr>
+        <tr>
+            <td><p>UK_SE_SAVINGS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a UK Self-Employment business with Savings.</p></td>
+        </tr>
+        <tr>
+            <td><p>SCOT_SE_DIVIDENDS_EXAMPLE</p></td>
+            <td><p>Simulates an example tax calculation for a Scottish Self-Employment business with Dividends.</p></td>
+        </tr> 
+      </tbody>
+    </table>
+
+  parameters:
+    - $ref: ./common/pathParameters.yaml#/components/parameters/nino
+    - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
+    - $ref: ./common/headers.yaml#/components/parameters/acceptJson
+    - $ref: ./common/headers.yaml#/components/parameters/authorization
+    - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
+
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+  responses:
+    200:
+      description: Success
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/selfAssessment/retrieveTaxCalc/retrieve_metadata_response.json
+          examples:
+            crystallisation:
+              description: Retrieve Calculation Metadata for Crystallisation Calculation
+              value:
+                $ref: ./examples/selfAssessment/retrieveMetadata/retrieve_calc_crystallisation_response.json
+            in-year:
+              description: Retrieve Calculation Metadata for In Year Calculation
+              value:
+                $ref: ./examples/selfAssessment/retrieveMetadata/retrieve_calc_inYear_response.json
+            with-errors:
+              description: Retrieve Calculation Metadata with Error Messages
+              value:
+                $ref: ./examples/selfAssessment/retrieveMetadata/retrieve_calc_error_messages_response.json
+
+    400:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            FORMAT_NINO:
+              $ref: ./common/errors.yaml#/components/examples/formatNino
+            FORMAT_CALC_ID:
+              $ref: ./common/errors.yaml#/components/examples/formatCalcId
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
+
+    403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: ./common/errors.yaml#/components/examples/clientOrAgentNotAuthorised
+
+    404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: ./common/errors.yaml#/components/examples/notFoundRetrieveTaxCalc

@@ -4,7 +4,7 @@ components:
       name: nino
       in: path
       description: |
-        National Insurance number, in the format `AA999999A`
+        National Insurance number, in the format AA999999A.
       schema:
         type: string
         example: TC663795B
@@ -14,9 +14,11 @@ components:
       name: taxYear
       in: path
       description: |
-        The tax year the data applies to, for example, 2021-22. 
+        The tax year the data applies to, for example, 2017-18. 
+        The tax year must have ended. 
         The start year and end year must not span two tax years. 
-        The minimum tax year is 2017-18. No gaps are allowed, for example, 2020-22 is not valid.
+        The minimum tax year is 2017-18. 
+        No gaps are allowed, for example, 2020-22 is not valid.
       schema:
         type: string
         example: "2021-22"
@@ -26,7 +28,7 @@ components:
       name: calculationId
       in: path
       description: |
-        The unique identifier of the calculation.
+        The unique identifier of the calculation. 
         
         Must conform to the regular expression: `^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`
       schema:
