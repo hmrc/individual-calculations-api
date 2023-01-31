@@ -17,7 +17,7 @@
 package v3.controllers
 
 import cats.syntax.either._
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Writes}
 import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.auth.UserDetails
 import v3.models.errors.ErrorWrapper
@@ -26,7 +26,19 @@ import v3.services.AuditService
 import scala.Function.const
 import scala.concurrent.ExecutionContext
 
+trait AuditHandler extends RequestContextImplicits {
+
+  def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Unit
+
+}
+
 object AuditHandler {
+
+  trait AuditDetailCreator[A] {
+    def createAuditDetail(userDetails: UserDetails, requestBody: Option[JsValue], auditResponse: AuditResponse)(implicit ctx: RequestContext): A
+  }
 
   def apply(auditService: AuditService,
             auditType: String,
@@ -34,43 +46,57 @@ object AuditHandler {
             params: Map[String, String],
             requestBody: Option[JsValue] = None,
             includeResponse: Boolean = false): AuditHandler =
-    AuditHandler(
+    new AuditHandlerImpl[GenericAuditDetail](
       auditService = auditService,
       auditType = auditType,
       transactionName = transactionName,
-      params = params,
+      auditDetailCreator = GenericAuditDetail.auditDetailCreator(params),
       requestBody = requestBody,
       responseBodyMap = if (includeResponse) identity else const(None)
     )
 
-}
-
-case class AuditHandler(auditService: AuditService,
+  def custom[A: Writes](auditService: AuditService,
                         auditType: String,
                         transactionName: String,
-                        params: Map[String, String],
-                        requestBody: Option[JsValue],
-                        responseBodyMap: Option[JsValue] => Option[JsValue])
-    extends RequestContextImplicits {
+                        auditDetailCreator: AuditDetailCreator[A],
+                        requestBody: Option[JsValue] = None,
+                        responseBodyMap: Option[JsValue] => Option[JsValue]): AuditHandler =
+    new AuditHandlerImpl[A](
+      auditService = auditService,
+      auditType = auditType,
+      transactionName = transactionName,
+      auditDetailCreator,
+      requestBody = requestBody,
+      responseBodyMap = responseBodyMap
+    )
 
-  def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Unit = {
-    val auditEvent = {
-      val auditResponse = AuditResponse(httpStatus, response.map(responseBodyMap).leftMap(ew => ew.auditErrors))
+  private class AuditHandlerImpl[A: Writes](auditService: AuditService,
+                                            auditType: String,
+                                            transactionName: String,
+                                            auditDetailCreator: AuditDetailCreator[A],
+                                            requestBody: Option[JsValue],
+                                            responseBodyMap: Option[JsValue] => Option[JsValue])
+      extends AuditHandler {
 
-      val detail = GenericAuditDetail(
-        userDetails = userDetails,
-        params = params,
-        requestBody = requestBody,
-        `X-CorrelationId` = ctx.correlationId,
-        auditResponse = auditResponse
-      )
+    def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
+        ctx: RequestContext,
+        ec: ExecutionContext): Unit = {
 
-      AuditEvent(auditType, transactionName, detail)
+      val auditEvent = {
+        val auditResponse = AuditResponse(httpStatus, response.map(responseBodyMap).leftMap(ew => ew.auditErrors))
+
+        val detail = auditDetailCreator.createAuditDetail(
+          userDetails = userDetails,
+          requestBody = requestBody,
+          auditResponse = auditResponse
+        )
+
+        AuditEvent(auditType, transactionName, detail)
+      }
+
+      auditService.auditEvent(auditEvent)
     }
 
-    auditService.auditEvent(auditEvent)
   }
 
 }
