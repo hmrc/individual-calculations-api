@@ -20,6 +20,7 @@ components:
       schema:
         type: string
         example: "2021-22"
+      required: true
 
     calculationId:
       name: calculationId
@@ -31,3 +32,4 @@ components:
       schema:
         type: string
         example: "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      required: true
