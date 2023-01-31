@@ -103,6 +103,8 @@ get:
               $ref: ./common/errors.yaml#/components/examples/formatNino
             FORMAT_CALC_ID:
               $ref: ./common/errors.yaml#/components/examples/formatCalcId
+            FORMAT_TYPE:
+              $ref: ./common/errors.yaml#/components/examples/formatType
             RULE_INCORRECT_GOV_TEST_SCENARIO:
               $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
 
