@@ -17,6 +17,7 @@
 package v3.connectors
 
 import config.AppConfig
+import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
@@ -37,17 +38,16 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
 
     import request._
 
-    val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
-      TaxYearSpecificIfsUri[TriggerCalculationResponse](
+    if (taxYear.useTaxYearSpecificApi) {
+      implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+      post(body = JsObject.empty, uri = TaxYearSpecificIfsUri[TriggerCalculationResponse](
         s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
-    } else {
-      DesUri[TriggerCalculationResponse](
-        s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+      )
     }
-
-    // Note using empty JSON object ({}) which works for v2 tax calc...
-    post(body = JsObject.empty, uri = downstreamUri)
-
+    else {
+      post(body = JsObject.empty, uri = DesUri[TriggerCalculationResponse](
+        s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+      )
+    }
   }
-
 }
