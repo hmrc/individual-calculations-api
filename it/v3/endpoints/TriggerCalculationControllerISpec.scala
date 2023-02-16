@@ -19,7 +19,7 @@ package v3.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
@@ -67,7 +67,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), ACCEPTED, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
@@ -188,13 +188,13 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
         )
     }
 
-    val downstreamSuccessBody = Json.parse("""
+    val downstreamSuccessBody: JsValue = Json.parse("""
         |{
         |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
         |}
         |""".stripMargin)
 
-    val successBody = Json.parse(
+    val successBody: JsValue = Json.parse(
       s"""
         |{
         | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",

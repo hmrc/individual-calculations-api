@@ -51,7 +51,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
         val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
-        val outcome                            = Right(ResponseWrapper(correlationId, response))
+        val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
           url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
@@ -62,8 +62,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new TysIfsTest with Test {
-      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2023-24"), false)
-      val outcome                            = Right(ResponseWrapper(correlationId, response))
+      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
+      val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
       willPost(
         url = s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
