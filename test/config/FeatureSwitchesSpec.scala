@@ -50,6 +50,35 @@ class FeatureSwitchesSpec extends UnitSpec {
     }
   }
 
+  "r8b feature switch" should {
+    "be true" when {
+
+      "absent from the config" in {
+        val configuration = Configuration.empty
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isR8bSpecificApiEnabled shouldBe true
+      }
+
+      "enabled" in {
+        val configuration = Configuration("r8b-api.enabled" -> true)
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isR8bSpecificApiEnabled shouldBe true
+
+      }
+    }
+
+    "be false" when {
+      "disabled" in {
+        val configuration = Configuration("r8b-api.enabled" -> false)
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isR8bSpecificApiEnabled shouldBe false
+      }
+    }
+  }
+
   "isVersionEnabled()" should {
     val configuration = Configuration(
       "version-1.enabled" -> true,

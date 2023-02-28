@@ -39,6 +39,8 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
   val isTaxYearSpecificApiEnabled: Boolean = isEnabled("tys-api.enabled")
 
+  val isR8bSpecificApiEnabled: Boolean = isEnabled("r8b-api.enabled")
+
   private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 
 }
