@@ -25,14 +25,14 @@ class FeatureSwitchesSpec extends UnitSpec {
     "be true" when {
 
       "absent from the config" in {
-        val configuration = Configuration.empty
+        val configuration   = Configuration.empty
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isTaxYearSpecificApiEnabled shouldBe true
       }
 
       "enabled" in {
-        val configuration = Configuration("tys-api.enabled" -> true)
+        val configuration   = Configuration("tys-api.enabled" -> true)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isTaxYearSpecificApiEnabled shouldBe true
@@ -42,7 +42,7 @@ class FeatureSwitchesSpec extends UnitSpec {
 
     "be false" when {
       "disabled" in {
-        val configuration = Configuration("tys-api.enabled" -> false)
+        val configuration   = Configuration("tys-api.enabled" -> false)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isTaxYearSpecificApiEnabled shouldBe false
@@ -54,14 +54,14 @@ class FeatureSwitchesSpec extends UnitSpec {
     "be true" when {
 
       "absent from the config" in {
-        val configuration = Configuration.empty
+        val configuration   = Configuration.empty
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
       }
 
       "enabled" in {
-        val configuration = Configuration("r8b-api.enabled" -> true)
+        val configuration   = Configuration("r8b-api.enabled" -> true)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
@@ -71,10 +71,36 @@ class FeatureSwitchesSpec extends UnitSpec {
 
     "be false" when {
       "disabled" in {
-        val configuration = Configuration("r8b-api.enabled" -> false)
+        val configuration   = Configuration("r8b-api.enabled" -> false)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
+      }
+    }
+  }
+
+  "cl249 feature switch" should {
+    "be true" when {
+      "absent from the config" in {
+        val configuration   = Configuration.empty
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isCL249Enabled shouldBe true
+      }
+      "enabled" in {
+        val configuration   = Configuration("cl249.enabled" -> true)
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isCL249Enabled shouldBe true
+      }
+    }
+
+    "be false" when {
+      "disabled" in {
+        val configuration   = Configuration("cl249.enabled" -> false)
+        val featureSwitches = FeatureSwitches(configuration)
+
+        featureSwitches.isCL249Enabled shouldBe false
       }
     }
   }
@@ -114,4 +140,3 @@ class FeatureSwitchesSpec extends UnitSpec {
   }
 
 }
-

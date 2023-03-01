@@ -41,6 +41,8 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
   val isR8bSpecificApiEnabled: Boolean = isEnabled("r8b-api.enabled")
 
+  val isCL249Enabled: Boolean = isEnabled("cl249.enabled")
+
   private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 
 }
@@ -48,4 +50,3 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
 object FeatureSwitches {
   def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitches)
 }
-
