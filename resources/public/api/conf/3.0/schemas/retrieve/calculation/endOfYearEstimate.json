@@ -191,7 +191,7 @@
       "example": "5000.99"
     },
     "totalAllowancesAndDeductions": {
-      "description": "Total Allowances and Deductions. This value must be between 0 and 99999999999. No decimals.",
+      "description": "Total Allowances and Deductions. This value must be between 0 and 99999999999. No decimals. [test only]",
       "type": "number",
       "multipleOf": 1,
       "minimum": 0,

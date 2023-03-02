@@ -16,7 +16,8 @@
 
 package v3.controllers
 
-import mocks.MockIdGenerator
+import mocks.{MockAppConfig, MockIdGenerator}
+import play.api.Configuration
 import play.api.mvc.Result
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
@@ -41,6 +42,7 @@ class RetrieveCalculationControllerSpec
     with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator
+    with MockAppConfig
     with CalculationFixture {
 
   private val taxYear       = "2017-18"
@@ -48,6 +50,7 @@ class RetrieveCalculationControllerSpec
 
   private val response        = minimalCalculationResponse
   private val mtdResponseJson = minimumCalculationResponseMtdJson ++ hateoaslinksJson
+  private val r8bMtdResponseJson = emptyCalculationResponseMtdJson ++ hateoaslinksJson
 
   val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
@@ -61,7 +64,8 @@ class RetrieveCalculationControllerSpec
       service = mockService,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
+      idGenerator = mockIdGenerator,
+      appConfig = mockAppConfig
     )
 
     protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
@@ -70,7 +74,7 @@ class RetrieveCalculationControllerSpec
 
   "handleRequest" should {
     "return OK with the calculation" when {
-      "happy path" in new Test {
+      "happy path with r8b-api disabled" in new Test {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -79,6 +83,43 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> false))
+
+        MockHateoasFactory
+          .wrap(response, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, emptyCalculationResponse))
+          .returns(HateoasWrapper(emptyCalculationResponse, hateoaslinks))
+
+        runOkTest(OK, Some(r8bMtdResponseJson))
+      }
+
+      "happy path with r8b-api disabled but no EOY data" in new Test {
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, noEOYCalculationResponse))))
+
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> false))
+
+        MockHateoasFactory
+          .wrap(noEOYCalculationResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, noEOYCalculationResponse))
+          .returns(HateoasWrapper(noEOYCalculationResponse, hateoaslinks))
+
+        runOkTest(OK, Some(noEOYCalculationResponseMtdJson ++ hateoaslinksJson))
+      }
+
+      "happy path with r8b-api enabled" in new Test {
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> true))
         MockHateoasFactory
           .wrap(response, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, response))
           .returns(HateoasWrapper(response, hateoaslinks))
@@ -100,7 +141,6 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
-
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))

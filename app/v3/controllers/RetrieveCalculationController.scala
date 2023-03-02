@@ -16,6 +16,7 @@
 
 package v3.controllers
 
+import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
@@ -33,7 +34,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
-                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                               val idGenerator: IdGenerator,
+                                               val appConfig: AppConfig)(implicit val ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -55,12 +57,24 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withParser(parser)
           .withService(service.retrieveCalculation)
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
-            RetrieveCalculationHateoasData(
-              nino = nino,
-              taxYear = request.taxYear,
-              calculationId = calculationId,
-              response = response
-            )
+            if(!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled &&
+              response.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) {
+              RetrieveCalculationHateoasData(
+                nino = nino,
+                taxYear = request.taxYear,
+                calculationId = calculationId,
+                response = response.copy(calculation = response.calculation.map(calc =>
+                  calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x =>
+                    x.copy(totalAllowancesAndDeductions = None))))))
+            }
+            else {
+              RetrieveCalculationHateoasData(
+                nino = nino,
+                taxYear = request.taxYear,
+                calculationId = calculationId,
+                response = response
+              )
+            }
           }
 
       requestHandler.handleRequest(rawData)
