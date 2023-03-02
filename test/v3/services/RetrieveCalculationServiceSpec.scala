@@ -33,7 +33,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
   private val calculationId = "someCalcId"
 
   val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
-  val response: RetrieveCalculationResponse = minimalCalculationResponseWithBasicRateExtension
+  val response: RetrieveCalculationResponse = minimalCalculationResponse
 
   trait Test extends MockRetrieveCalculationConnector {
     implicit val hc: HeaderCarrier = HeaderCarrier()

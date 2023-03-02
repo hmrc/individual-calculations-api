@@ -34,24 +34,24 @@ import scala.concurrent.Future
 
 class RetrieveCalculationControllerSpec
     extends ControllerBaseSpec
-      with ControllerTestRunner
-      with MockEnrolmentsAuthService
-      with MockMtdIdLookupService
-      with MockRetrieveCalculationParser
-      with MockHateoasFactory
-      with MockRetrieveCalculationService
-      with MockAppConfig
-      with MockAuditService
-      with MockIdGenerator
-      with CalculationFixture {
+    with ControllerTestRunner
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockRetrieveCalculationParser
+    with MockHateoasFactory
+    with MockRetrieveCalculationService
+    with MockAppConfig
+    with MockAuditService
+    with MockIdGenerator
+    with CalculationFixture {
 
-  val rawData: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear = "2017-18"
-  private val response = minimalCalculationResponseWithBasicRateExtension
-  private val mtdResponseJson = minimumCalculationResponseWithBasicRateExtensionMtdJson ++ hateoaslinksJson
+  val rawData: RetrieveCalculationRawData          = RetrieveCalculationRawData(nino, taxYear, calculationId)
+  val requestData: RetrieveCalculationRequest      = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
+  private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear                              = "2017-18"
+  private val response                             = minimalCalculationResponse
+  private val mtdResponseJson                      = minimumCalculationResponseWithBasicRateExtensionMtdJson ++ hateoaslinksJson
   private val mtdResponseWithoutBasicRateExtension = minimumCalculationResponseWithoutBasicRateExtensionMtdJson ++ hateoaslinksJson
-  val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
   trait Test extends ControllerTest {
 

@@ -74,7 +74,7 @@ trait CalculationFixture {
     lossesAndClaims = None
   )
 
-  val minimalCalculationResponseWithBasicRateExtension: RetrieveCalculationResponse = RetrieveCalculationResponse(
+  val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
       calculationId = "",
       taxYear = TaxYear.fromDownstream("2018"),
@@ -134,7 +134,7 @@ trait CalculationFixture {
     messages = None
   )
 
-  val calculationWitBasicRateExtensionResponseMtdJson: JsObject = Json
+  val minimumCalculationResponseMtdJson: JsObject = Json
     .parse(
       """
         |{

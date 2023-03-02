@@ -28,14 +28,14 @@ import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculati
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject()(val authService: EnrolmentsAuthService,
-                                              val lookupService: MtdIdLookupService,
-                                              appConfig: AppConfig,
-                                              parser: RetrieveCalculationParser,
-                                              service: RetrieveCalculationService,
-                                              hateoasFactory: HateoasFactory,
-                                              cc: ControllerComponents,
-                                              val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
+                                               val lookupService: MtdIdLookupService,
+                                               appConfig: AppConfig,
+                                               parser: RetrieveCalculationParser,
+                                               service: RetrieveCalculationService,
+                                               hateoasFactory: HateoasFactory,
+                                               cc: ControllerComponents,
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -51,6 +51,7 @@ class RetrieveCalculationController @Inject()(val authService: EnrolmentsAuthSer
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData = RetrieveCalculationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)
+
       val requestHandler =
         RequestHandler
           .withParser(parser)
@@ -58,7 +59,7 @@ class RetrieveCalculationController @Inject()(val authService: EnrolmentsAuthSer
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             val res = FeatureSwitches()(appConfig).isCL249Enabled match {
               case false => response.removeBasicRateExtension
-              case _ => response
+              case _     => response
             }
             RetrieveCalculationHateoasData(
               nino = nino,
