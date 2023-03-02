@@ -42,6 +42,17 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
     "have the correct fields optional" when {
       testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
+
+    "return valid model without reliefs.basicRateExtension when removeBasicRateExtension is called" when {
+      "calculation is None" in {
+        minimalCalculationResponseWithoutBasicRateExtension.removeBasicRateExtension() shouldBe minimalCalculationResponseWithoutBasicRateExtension
+      }
+
+      "basicRateExtension is provided" in {
+        minimalCalculationResponseWithBasicRateExtension.removeBasicRateExtension() shouldBe minimalCalculationResponseWithoutBasicRateExtension
+      }
+    }
+
   }
 
   "LinksFactory" should {

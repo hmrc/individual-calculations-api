@@ -19,6 +19,8 @@ package v3.models.response.retrieveCalculation
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType.`inYear`
+import v3.models.response.retrieveCalculation.calculation.Calculation
+import v3.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, Reliefs}
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.metadata.Metadata
 
@@ -30,7 +32,79 @@ trait CalculationFixture {
   val calculationDownstreamJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_downstream.json"))
 
-  val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+  val totalBasicRateExtension = 2000
+
+  val reliefs = Reliefs(
+    basicRateExtension =
+      Some(BasicRateExtension(totalBasicRateExtension = Some(totalBasicRateExtension), giftAidRelief = None, pensionContributionReliefs = None)),
+    residentialFinanceCosts = None,
+    foreignTaxCreditRelief = None,
+    topSlicingRelief = None,
+    reliefsClaimed = None
+  )
+
+  val calculationWithBasicRateExtension = Calculation(
+    reliefs = Some(reliefs),
+    allowancesAndDeductions = None,
+    taxDeductedAtSource = None,
+    giftAid = None,
+    royaltyPayments = None,
+    notionalTax = None,
+    marriageAllowanceTransferredIn = None,
+    pensionContributionReliefs = None,
+    pensionSavingsTaxCharges = None,
+    studentLoans = None,
+    codedOutUnderpayments = None,
+    foreignPropertyIncome = None,
+    businessProfitAndLoss = None,
+    employmentAndPensionsIncome = None,
+    employmentExpenses = None,
+    seafarersDeductions = None,
+    foreignTaxForFtcrNotClaimed = None,
+    stateBenefitsIncome = None,
+    shareSchemesIncome = None,
+    foreignIncome = None,
+    chargeableEventGainsIncome = None,
+    savingsAndGainsIncome = None,
+    dividendsIncome = None,
+    incomeSummaryTotals = None,
+    taxCalculation = None,
+    previousCalculation = None,
+    endOfYearEstimate = None,
+    lossesAndClaims = None
+  )
+
+  val minimalCalculationResponseWithBasicRateExtension: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = Metadata(
+      calculationId = "",
+      taxYear = TaxYear.fromDownstream("2018"),
+      requestedBy = "",
+      requestedTimestamp = None,
+      calculationReason = "",
+      calculationTimestamp = None,
+      calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false,
+      finalDeclaration = false,
+      finalDeclarationTimestamp = None,
+      periodFrom = "",
+      periodTo = ""
+    ),
+    inputs = Inputs(
+      PersonalInformation("", None, "UK", None, None, None, None, None),
+      IncomeSources(None, None),
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None
+    ),
+    calculation = Some(calculationWithBasicRateExtension),
+    messages = None
+  )
+
+  val minimalCalculationResponseWithoutBasicRateExtension: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
       calculationId = "",
       taxYear = TaxYear.fromDownstream("2018"),
@@ -60,8 +134,43 @@ trait CalculationFixture {
     messages = None
   )
 
-  val minimumCalculationResponseMtdJson: JsObject = Json.parse(
-    """
+  val calculationWitBasicRateExtensionResponseMtdJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |    "reliefs": {
+        |       "basicRateExtension": {
+        |       "totalBasicRateExtension": 2000.00
+        |       }
+        |    }
+        |  }
+        |}
+  """.stripMargin
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseWithBasicRateExtensionMtdJson: JsObject = Json
+    .parse(
+      """
       |{
       |  "metadata" : {
       |    "calculationId": "",
@@ -80,9 +189,44 @@ trait CalculationFixture {
       |       "taxRegime": "UK"
       |    },
       |    "incomeSources": {}
+      |  },
+      |  "calculation": {
+      |    "reliefs": {
+      |       "basicRateExtension": {
+      |       "totalBasicRateExtension": 2000.00
+      |       }
+      |    }
       |  }
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseWithoutBasicRateExtensionMtdJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  }
+        |}
+    """.stripMargin
+    )
+    .as[JsObject]
 
 }

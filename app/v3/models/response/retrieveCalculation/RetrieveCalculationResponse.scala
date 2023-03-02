@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OWrites, Reads}
 import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v3.models.domain.TaxYear
 import v3.models.hateoas.{HateoasData, Link}
-import v3.models.response.retrieveCalculation.calculation.Calculation
+import v3.models.response.retrieveCalculation.calculation._
 import v3.models.response.retrieveCalculation.inputs.Inputs
 import v3.models.response.retrieveCalculation.messages.Messages
 import v3.models.response.retrieveCalculation.metadata.Metadata
@@ -31,7 +31,29 @@ case class RetrieveCalculationResponse(
     inputs: Inputs,
     calculation: Option[Calculation],
     messages: Option[Messages]
-)
+) {
+
+  def removeBasicRateExtension(): RetrieveCalculationResponse = {
+    calculation match {
+      case None => this
+      case Some(calc) => {
+        val updatedReliefs = calc.reliefs.map(reliefs => reliefs.copy(basicRateExtension = None))
+        val updatedCalculation = updatedReliefs match {
+          case Some(reliefs) if (reliefs.isEmpty) => calc.copy(reliefs = None)
+          case _                                  => calc.copy(reliefs = updatedReliefs)
+        }
+
+        updatedCalculation match {
+          case calc if (calc.isEmpty) => copy(calculation = None)
+          case calc                   => copy(calculation = Some(calc))
+
+        }
+      }
+    }
+
+  }
+
+}
 
 object RetrieveCalculationResponse extends HateoasLinks {
   implicit val reads: Reads[RetrieveCalculationResponse] = Json.reads[RetrieveCalculationResponse]
