@@ -36,12 +36,12 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
     import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
     val nino: String          = request.nino.value
-    val taxYear: String       = request.taxYear.asDownstream
+    val taxYear: String       = request.taxYear.asTysDownstream
     val calculationId: String = request.calculationId
 
     post(
       body = EmptyJsonBody,
-      uri = DesUri(s"income-tax/calculation/nino/$nino/$taxYear/$calculationId/crystallise")
+      uri = DesUri(s"income-tax/$taxYear/calculation/$nino/$calculationId/crystallise")
     )
   }
 

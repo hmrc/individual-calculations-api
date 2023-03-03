@@ -70,10 +70,10 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         }
 
       val input = Seq(
-        ("INVALID_IDTYPE", InternalError),
-        ("INVALID_IDVALUE", NinoFormatError),
-        ("INVALID_TAXYEAR", TaxYearFormatError),
+        ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
+        ("INVALID_TAX_YEAR", TaxYearFormatError),
         ("INVALID_CALCID", CalculationIdFormatError),
+        ("INVALID_CORRELATION_ID", InternalError),
         ("NOT_FOUND", NotFoundError),
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
@@ -82,6 +82,9 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
+        ("CRYSTALLISATION_TAX_YEAR_ERROR", RuleFinalDeclarationTaxYearError),
+        ("CRYSTALLISATION_IN_PROGRESS", RuleFinalDeclarationInProgressError),
+        ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
         ("SERVER_ERROR", InternalError),
         ("SERVICE_UNAVAILABLE", InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)

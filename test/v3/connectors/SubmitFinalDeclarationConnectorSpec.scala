@@ -25,8 +25,8 @@ import scala.concurrent.Future
 class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
   val nino: String              = "AA111111A"
-  val taxYear: TaxYear          = TaxYear.fromMtd("2021-22")
-  val downstreamTaxYear: String = "2022"
+  val taxYear: TaxYear          = TaxYear.fromMtd("2020-21")
+  val downstreamTaxYear: String = "20-21"
   val calculationId: String     = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
@@ -36,20 +36,22 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   )
 
   trait Test { _: ConnectorTest =>
+
     val connector: SubmitFinalDeclarationConnector = new SubmitFinalDeclarationConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
+
   }
 
   "Submit Final Declaration" should {
     "return a success response" in new DesTest with Test {
       val outcome = Right(ResponseWrapper(correlationId, {}))
 
-        willPost(
-          url = s"$baseUrl/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise",
-          body = EmptyJsonBody,
-        )
+      willPost(
+        url = s"$baseUrl/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise",
+        body = EmptyJsonBody
+      )
         .returns(Future.successful(outcome))
 
       await(connector.submitFinalDeclaration(request)) shouldBe outcome
