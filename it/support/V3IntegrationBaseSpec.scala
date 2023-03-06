@@ -33,7 +33,8 @@ trait V3IntegrationBaseSpec extends IntegrationBaseSpec {
     "microservice.services.auth.port"                    -> mockPort,
     "auditing.consumer.baseUri.port"                     -> mockPort,
     "feature-switch.version-2.enabled"                   -> "false",
-    "feature-switch.version-3.enabled"                   -> "true"
+    "feature-switch.version-3.enabled"                   -> "true",
+    "feature-switch.r8b.enabled"                         -> "true"
   )
 
 }

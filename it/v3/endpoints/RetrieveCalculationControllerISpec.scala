@@ -71,7 +71,11 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
          |    },
          |    "incomeSources": {}
          |  },
-         |  "calculation" : {},
+         |  "calculation" : {
+         |   "endOfYearEstimate": {
+         |     "totalAllowancesAndDeductions": 100
+         |   }
+         |  },
          |  "messages" : {}
          |}
         """.stripMargin
@@ -98,7 +102,11 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
          |    },
          |    "incomeSources": {}
          |  },
-         |  "calculation" : {},
+         |  "calculation" : {
+         |   "endOfYearEstimate": {
+         |     "totalAllowancesAndDeductions": 100
+         |   }
+         |  },
          |  "messages" : {},
          |  "links": [
          |    {
