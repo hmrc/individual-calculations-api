@@ -22,11 +22,18 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.R8BDisabledIntegrationBaseSpec
+import support.V3IntegrationBaseSpec
 import v3.models.errors._
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class RetrieveCalculationControllerR8BDisabledISpec extends R8BDisabledIntegrationBaseSpec {
+class RetrieveCalculationControllerR8BDisabledISpec extends V3IntegrationBaseSpec {
+
+  // Disable r8b-api feature switch
+  override def servicesConfig: Map[String, String] = {
+    super.servicesConfig ++ Map(
+      "feature-switch.r8b-api.enabled" -> "false"
+    )
+  }
 
   private trait Test {
 
