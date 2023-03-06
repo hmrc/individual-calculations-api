@@ -48,4 +48,3 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
 object FeatureSwitches {
   def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitches)
 }
-

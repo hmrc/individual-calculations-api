@@ -16,13 +16,15 @@
 
 package v3.services
 
+import mocks.MockAppConfig
+import play.api.Configuration
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.connectors.MockRetrieveCalculationConnector
 import v3.models.domain.{Nino, TaxYear}
 import v3.models.errors._
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
-import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationResponse}
+import v3.models.response.retrieveCalculation.CalculationFixture
 
 import scala.concurrent.Future
 
@@ -32,23 +34,56 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
   private val taxYear       = "2019-20"
   private val calculationId = "someCalcId"
 
-  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
-  val response: RetrieveCalculationResponse = minimalCalculationResponse
+  val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), calculationId)
 
-  trait Test extends MockRetrieveCalculationConnector {
+  trait Test extends MockRetrieveCalculationConnector with MockAppConfig {
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val service = new RetrieveCalculationService(mockConnector)
+    val service = new RetrieveCalculationService(mockConnector, mockAppConfig)
   }
 
   "retrieveCalculation" should {
-    "return a valid response" when {
-      "a valid request is supplied" in new Test {
+    "return a valid response without totalAllowancesAndDeductions" when {
+      "downstream response includes totalAllowancesAndDeductions but r8b-api is disabled" in new Test {
         MockRetrieveCalculationConnector
           .retrieveCalculation(request)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, minimalCalculationResponse))))
 
-        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, response))
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> false))
+
+        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, emptyCalculationResponse))
+      }
+
+      "downstream response does not include totalAllowancesAndDeductions and r8b-api is disabled" in new Test {
+        MockRetrieveCalculationConnector
+          .retrieveCalculation(request)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, emptyCalculationResponse))))
+
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> false))
+
+        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, emptyCalculationResponse))
+      }
+
+      "downstream response does not include totalAllowancesAndDeductions and r8b-api is enabled" in new Test {
+        MockRetrieveCalculationConnector
+          .retrieveCalculation(request)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, emptyCalculationResponse))))
+
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> true))
+
+        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, emptyCalculationResponse))
+      }
+    }
+
+    "return a valid response with totalAllowancesAndDeductions" when {
+      "downstream response includes totalAllowancesAndDeductions and r8b-api is enabled" in new Test {
+        MockRetrieveCalculationConnector
+          .retrieveCalculation(request)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, minimalCalculationResponse))))
+
+        MockAppConfig.featureSwitches.returns(Configuration("r8b-api.enabled" -> true))
+
+        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, minimalCalculationResponse))
       }
     }
 

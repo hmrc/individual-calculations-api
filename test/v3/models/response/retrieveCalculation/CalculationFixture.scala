@@ -34,16 +34,85 @@ trait CalculationFixture {
 
   val totalAllowancesAndDeductions = 100
 
-  val calcWithEndOfYearEstimate: Calculation = Calculation(None, None, None, None, None, None, None, None, None, None, None, None, None,
-    None, None, None, None, None, None, None, None, None, None, None, None, None,
-    Some(EndOfYearEstimate(None, None, totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
-      None, None, None, None, None, None, None, None, None, None, None, None, None, None)),
-    None)
+  val calcWithEndOfYearEstimate: Calculation = Calculation(
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(
+      EndOfYearEstimate(
+        None,
+        None,
+        totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None)),
+    None
+  )
 
-  val emptyCalc: Calculation = Calculation(None, None, None, None, None, None, None, None, None, None, None, None, None,
-    None, None, None, None, None, None, None, None, None, None, None, None, None,
+  val emptyCalc: Calculation = Calculation(
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
     Some(EndOfYearEstimate(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)),
-    None)
+    None
+  )
 
   val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
@@ -135,8 +204,9 @@ trait CalculationFixture {
     messages = None
   )
 
-  val minimumCalculationResponseMtdJson: JsObject = Json.parse(
-    """
+  val minimumCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
       |{
       |  "metadata" : {
       |    "calculationId": "",
@@ -163,10 +233,12 @@ trait CalculationFixture {
       |  }
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
-  val emptyCalculationResponseMtdJson: JsObject = Json.parse(
-    """
+  val emptyCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
       |{
       |  "metadata" : {
       |    "calculationId": "",
@@ -192,10 +264,12 @@ trait CalculationFixture {
       |  }
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
 
-  val noEOYCalculationResponseMtdJson: JsObject = Json.parse(
-    """
+  val noEOYCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
       |{
       |  "metadata" : {
       |    "calculationId": "",
@@ -217,5 +291,7 @@ trait CalculationFixture {
       |  }
       |}
     """.stripMargin
-  ).as[JsObject]
+    )
+    .as[JsObject]
+
 }

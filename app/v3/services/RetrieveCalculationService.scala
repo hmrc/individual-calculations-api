@@ -18,6 +18,7 @@ package v3.services
 
 import cats.data.EitherT
 import cats.implicits._
+import config.{AppConfig, FeatureSwitches}
 import v3.connectors.RetrieveCalculationConnector
 import v3.controllers.RequestContext
 import v3.models.errors._
@@ -29,13 +30,28 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector) extends BaseService {
+class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector, appConfig: AppConfig) extends BaseService {
 
   def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
 
-    EitherT(connector.retrieveCalculation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
+    EitherT(connector.retrieveCalculation(request))
+      .map(_.map(r8bResponseMap))
+      .leftMap(mapDownstreamErrors(downstreamErrorMap))
+      .value
+  }
+
+  def r8bResponseMap(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    if (!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled) {
+      response.copy(
+        calculation = response.calculation.map(calc =>
+          calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(
+            _.copy(totalAllowancesAndDeductions = None)
+          ))))
+    } else {
+      response
+    }
   }
 
   val downstreamErrorMap: Map[String, MtdError] = {
