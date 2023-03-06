@@ -39,7 +39,7 @@ class ListCalculationsParserSpec extends UnitSpec {
   "parse" when {
     "valid data is supplied" should {
       "return a valid request object" in new Test {
-        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.now())
+        MockCurrentDateProvider.getCurrentDate.returns(LocalDate.now())
         val data: ListCalculationsRawData = ListCalculationsRawData(nino, Some(taxYear))
         MockValidator.validate(data).returns(Nil)
 
@@ -50,7 +50,7 @@ class ListCalculationsParserSpec extends UnitSpec {
     "data with out tax year supplied is after 5th April of the year" should {
       "return a valid request object" in new Test {
 
-        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-06"))
+        MockCurrentDateProvider.getCurrentDate.returns(LocalDate.parse("2017-04-06"))
         val data: ListCalculationsRawData = ListCalculationsRawData(nino, None)
         MockValidator.validate(data).returns(Nil)
 
@@ -61,7 +61,7 @@ class ListCalculationsParserSpec extends UnitSpec {
     "data with out tax year supplied is on or before 5th April of the year" should {
       "return a valid request object" in new Test {
 
-        MockCurrentDateProvider.getCurrentDate().returns(LocalDate.parse("2017-04-05"))
+        MockCurrentDateProvider.getCurrentDate.returns(LocalDate.parse("2017-04-05"))
         val data: ListCalculationsRawData = ListCalculationsRawData(nino, None)
         MockValidator.validate(data).returns(Nil)
 

@@ -30,7 +30,6 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               appConfig: AppConfig,
                                                parser: RetrieveCalculationParser,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
@@ -67,6 +66,24 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
               calculationId = calculationId,
               response = res
             )
+            if(!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled &&
+              response.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) {
+              RetrieveCalculationHateoasData(
+                nino = nino,
+                taxYear = request.taxYear,
+                calculationId = calculationId,
+                response = response.copy(calculation = response.calculation.map(calc =>
+                  calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x =>
+                    x.copy(totalAllowancesAndDeductions = None))))))
+            }
+            else {
+              RetrieveCalculationHateoasData(
+                nino = nino,
+                taxYear = request.taxYear,
+                calculationId = calculationId,
+                response = response
+              )
+            }
           }
 
       requestHandler.handleRequest(rawData)

@@ -28,7 +28,7 @@ trait MockCurrentDateProvider extends MockFactory {
 
   object MockCurrentDateProvider {
 
-    def getCurrentDate(): CallHandler[LocalDate] = (mockCurrentDateProvider.getCurrentDate _).expects()
+    def getCurrentDate: CallHandler[LocalDate] = (mockCurrentDateProvider.getCurrentDate _).expects()
   }
 
 }
