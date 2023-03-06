@@ -45,13 +45,13 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  val rawData: RetrieveCalculationRawData          = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  val requestData: RetrieveCalculationRequest      = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val taxYear                              = "2017-18"
   private val response                             = minimalCalculationResponse
-  private val mtdResponseJson                      = minimumCalculationResponseWithBasicRateExtensionMtdJson ++ hateoaslinksJson
-  private val mtdResponseWithoutBasicRateExtension = minimumCalculationResponseWithoutBasicRateExtensionMtdJson ++ hateoaslinksJson
+  private val mtdResponseJson                      = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithoutBasicRateExtension = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
+  val rawData: RetrieveCalculationRawData          = RetrieveCalculationRawData(nino, taxYear, calculationId, true)
+  val requestData: RetrieveCalculationRequest      = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
   trait Test extends ControllerTest {
 
@@ -72,7 +72,7 @@ class RetrieveCalculationControllerSpec
 
   "handleRequest" should {
     "return OK with the calculation" when {
-      "happy path with CL249 feature switch enabled" in new Test {
+      "happy path with R8B feature switch enabled" in new Test {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -82,7 +82,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> true))
+          .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -92,24 +92,26 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseJson))
       }
 
-      "happy path with CL249 feature switch disabled" in new Test {
+      "happy path with R8B feature switch disabled" in new Test {
+
         MockRetrieveCalculationParser
-          .parseRequest(rawData)
+          .parseRequest(rawData.copy(isCL249Enabled = false))
           .returns(Right(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, minimalCalculationResponseWithoutR8BData))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> false))
+          .returns(Configuration("r8b-api.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
           .wrap(
-            response,
-            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, minimalCalculationResponseWithoutBasicRateExtension))
-          .returns(HateoasWrapper(minimalCalculationResponseWithoutBasicRateExtension, hateoaslinks))
+            minimalCalculationResponseWithoutR8BData,
+            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, minimalCalculationResponseWithoutR8BData)
+          )
+          .returns(HateoasWrapper(minimalCalculationResponseWithoutR8BData, hateoaslinks))
 
         runOkTest(OK, Some(mtdResponseWithoutBasicRateExtension))
       }
@@ -121,6 +123,9 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        MockAppConfig.featureSwitches
+          .returns(Configuration("r8b-api.enabled" -> true))
+          .anyNumberOfTimes()
 
         runErrorTest(NinoFormatError)
       }
@@ -129,6 +134,9 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
+        MockAppConfig.featureSwitches
+          .returns(Configuration("r8b-api.enabled" -> true))
+          .anyNumberOfTimes()
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)

@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType.`inYear`
 import v3.models.response.retrieveCalculation.calculation.Calculation
+import v3.models.response.retrieveCalculation.calculation.endOfYearEstimate.EndOfYearEstimate
 import v3.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, Reliefs}
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.metadata.Metadata
@@ -32,7 +33,8 @@ trait CalculationFixture {
   val calculationDownstreamJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_downstream.json"))
 
-  val totalBasicRateExtension = 2000
+  val totalBasicRateExtension      = 2000
+  val totalAllowancesAndDeductions = 100
 
   val reliefs = Reliefs(
     basicRateExtension =
@@ -43,7 +45,26 @@ trait CalculationFixture {
     reliefsClaimed = None
   )
 
-  val calculationWithBasicRateExtension = Calculation(
+  val eoyEstimates = EndOfYearEstimate(
+    None,
+    None,
+    totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None)
+
+  val calculationWithR8BData = Calculation(
     reliefs = Some(reliefs),
     allowancesAndDeductions = None,
     taxDeductedAtSource = None,
@@ -70,7 +91,7 @@ trait CalculationFixture {
     incomeSummaryTotals = None,
     taxCalculation = None,
     previousCalculation = None,
-    endOfYearEstimate = None,
+    endOfYearEstimate = Some(eoyEstimates),
     lossesAndClaims = None
   )
 
@@ -100,11 +121,122 @@ trait CalculationFixture {
       None,
       None
     ),
-    calculation = Some(calculationWithBasicRateExtension),
+    calculation = Some(calculationWithR8BData),
     messages = None
   )
 
-  val minimalCalculationResponseWithoutBasicRateExtension: RetrieveCalculationResponse = RetrieveCalculationResponse(
+  val calcWithEndOfYearEstimate: Calculation = Calculation(
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(
+      EndOfYearEstimate(
+        None,
+        None,
+        totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None)),
+    None
+  )
+
+  val calcWithBasicExtension: Calculation = Calculation(
+    None,
+    Some(reliefs),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
+  )
+
+  val emptyCalc: Calculation = Calculation(
+    None,
+    Some(reliefs),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    Some(EndOfYearEstimate(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)),
+    None
+  )
+
+  val minimalCalculationResponseWithoutR8BData: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = Metadata(
       calculationId = "",
       taxYear = TaxYear.fromDownstream("2018"),
@@ -157,6 +289,9 @@ trait CalculationFixture {
         |    "incomeSources": {}
         |  },
         |  "calculation": {
+        |    "endOfYearEstimate": {
+        |     "totalAllowancesAndDeductions": 100
+        |   },
         |    "reliefs": {
         |       "basicRateExtension": {
         |       "totalBasicRateExtension": 2000.00
@@ -168,7 +303,7 @@ trait CalculationFixture {
     )
     .as[JsObject]
 
-  val minimumCalculationResponseWithBasicRateExtensionMtdJson: JsObject = Json
+  val minimumCalculationResponseR8BEnabledJson: JsObject = Json
     .parse(
       """
       |{
@@ -191,6 +326,9 @@ trait CalculationFixture {
       |    "incomeSources": {}
       |  },
       |  "calculation": {
+      |    "endOfYearEstimate": {
+      |       "totalAllowancesAndDeductions": 100
+      |     },
       |    "reliefs": {
       |       "basicRateExtension": {
       |       "totalBasicRateExtension": 2000.00
@@ -202,7 +340,37 @@ trait CalculationFixture {
     )
     .as[JsObject]
 
-  val minimumCalculationResponseWithoutBasicRateExtensionMtdJson: JsObject = Json
+  val emptyCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = Metadata(
+      calculationId = "",
+      taxYear = TaxYear.fromDownstream("2018"),
+      requestedBy = "",
+      requestedTimestamp = None,
+      calculationReason = "",
+      calculationTimestamp = None,
+      calculationType = `inYear`,
+      intentToSubmitFinalDeclaration = false,
+      finalDeclaration = false,
+      finalDeclarationTimestamp = None,
+      periodFrom = "",
+      periodTo = ""
+    ),
+    inputs = Inputs(
+      PersonalInformation("", None, "UK", None, None, None, None, None),
+      IncomeSources(None, None),
+      None,
+      None,
+      None,
+      None,
+      None,
+      None,
+      None
+    ),
+    calculation = Some(emptyCalc),
+    messages = None
+  )
+
+  val minimumCalculationResponseWithoutR8BJson: JsObject = Json
     .parse(
       """
         |{
@@ -226,6 +394,64 @@ trait CalculationFixture {
         |  }
         |}
     """.stripMargin
+    )
+    .as[JsObject]
+
+  val emptyCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
+      |{
+      |  "metadata" : {
+      |    "calculationId": "",
+      |    "taxYear": "2017-18",
+      |    "requestedBy": "",
+      |    "calculationReason": "",
+      |    "calculationType": "inYear",
+      |    "intentToSubmitFinalDeclaration": false,
+      |    "finalDeclaration": false,
+      |    "periodFrom": "",
+      |    "periodTo": ""
+      |  },
+      |  "inputs" : {
+      |    "personalInformation": {
+      |       "identifier": "",
+      |       "taxRegime": "UK"
+      |    },
+      |    "incomeSources": {}
+      |  },
+      |  "calculation" : {
+      |   "endOfYearEstimate": {
+      |   }
+      |  }
+      |}
+   """.stripMargin
+    )
+    .as[JsObject]
+
+  val noEOYCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
+      |{
+      |  "metadata" : {
+      |    "calculationId": "",
+      |    "taxYear": "2017-18",
+      |    "requestedBy": "",
+      |    "calculationReason": "",
+      |    "calculationType": "inYear",
+      |    "intentToSubmitFinalDeclaration": false,
+      |    "finalDeclaration": false,
+      |    "periodFrom": "",
+      |    "periodTo": ""
+      |  },
+      |  "inputs" : {
+      |    "personalInformation": {
+      |       "identifier": "",
+      |       "taxRegime": "UK"
+      |    },
+      |    "incomeSources": {}
+      |  }
+      |}
+   """.stripMargin
     )
     .as[JsObject]
 

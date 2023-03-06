@@ -16,12 +16,14 @@
 
 package v3.controllers
 
+//import cats.Show.Shown.mat
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
+//import shapeless.Lazy.apply
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
@@ -31,6 +33,7 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
+//import scala.util.parsing.json.JSON.flatten3
 
 trait RequestHandler[InputRaw <: RawData] {
 
@@ -52,25 +55,36 @@ object RequestHandler {
 
   }
 
+  /*
+case class RequestHandlerBuilderWithModelling[InputRaw <: RawData, Input, Output] private[RequestHandler] (
+    parser: RequestParser[InputRaw, Input],
+    service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
+    updatedModel: Option[Output] => (Option[Output], Boolean)=> Option[Output],
+    errorHandling: ErrorHandling = ErrorHandling.Default,
+    resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
+    auditHandler: Option[AuditHandler] = None
+) extends RequestHandler[InputRaw] {
+   */
   case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
       errorHandling: ErrorHandling = ErrorHandling.Default,
       resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
-      auditHandler: Option[AuditHandler] = None
+      auditHandler: Option[AuditHandler] = None,
+      modelHandler: Option[(Output) => Output] = None
   ) extends RequestHandler[InputRaw] {
 
     def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] =
       Delegate.handleRequest(rawData)
-
-    def withResultCreator(resultCreator: ResultCreator[InputRaw, Input, Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      copy(resultCreator = resultCreator)
 
     def withErrorHandling(errorHandling: ErrorHandling): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(errorHandling = errorHandling)
 
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(auditHandler = Some(auditHandler))
+
+    def withModelHandler(modelHandler: Option[(Output) => Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
+      copy(modelHandler = modelHandler)
 
     /** Shorthand for
       * {{{
@@ -98,6 +112,9 @@ object RequestHandler {
         linksFactory: HateoasLinksFactory[Output, HData],
         writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] =
       withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
+
+    def withResultCreator(resultCreator: ResultCreator[InputRaw, Input, Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
+      copy(resultCreator = resultCreator)
 
     /** Shorthand for
       * {{{
@@ -137,7 +154,13 @@ object RequestHandler {
             parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
             serviceResponse <- EitherT(service(parsedRequest))
           } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-            handleSuccess(rawData, parsedRequest, serviceResponse)
+            if (modelHandler.isEmpty) {
+              handleSuccess(rawData, parsedRequest, serviceResponse)
+            } else {
+              val responseHandler                   = (modelHandler.get)
+              val response: ResponseWrapper[Output] = serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData))
+              handleSuccess(rawData, parsedRequest, response)
+            }
           }
 
         result.leftMap { errorWrapper =>
@@ -167,6 +190,14 @@ object RequestHandler {
         result
       }
 
+      def auditIfRequired(httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext): Unit =
+        auditHandler.foreach { creator =>
+          creator.performAudit(request.userDetails, httpStatus, response)
+        }
+
       private def handleFailure(errorWrapper: ErrorWrapper)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext) = {
         logger.warn(
           s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
@@ -188,13 +219,27 @@ object RequestHandler {
         InternalServerError(Json.toJson(InternalError))
       }
 
-      def auditIfRequired(httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
-          ctx: RequestContext,
-          request: UserRequest[_],
-          ec: ExecutionContext): Unit =
-        auditHandler.foreach { creator =>
-          creator.performAudit(request.userDetails, httpStatus, response)
-        }
+      def handleRequestWithModelUpdate(
+          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
+
+        logger.info(
+          message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
+            s"with correlationId : ${ctx.correlationId}")
+
+        val result =
+          for {
+            parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
+            serviceResponse <- EitherT(service(parsedRequest))
+          } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
+            handleSuccess(rawData, parsedRequest, serviceResponse)
+          }
+
+        result.leftMap { errorWrapper =>
+          doWithContext(ctx.withCorrelationId(errorWrapper.correlationId)) { implicit ctx: RequestContext =>
+            handleFailure(errorWrapper)
+          }
+        }.merge
+      }
 
     }
 

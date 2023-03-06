@@ -36,7 +36,27 @@ case class EndOfYearEstimate(
     incomeTaxNicAmount: Option[BigDecimal],
     cgtAmount: Option[BigDecimal],
     incomeTaxNicAndCgtAmount: Option[BigDecimal]
-)
+) {
+
+  def isEmpty: Boolean =
+    totalEstimatedIncome.isEmpty &
+      totalAllowancesAndDeductions.isEmpty &
+      totalTaxableIncome.isEmpty &
+      incomeTaxAmount.isEmpty &
+      nic2.isEmpty &
+      nic4.isEmpty &
+      totalTaxDeductedBeforeCodingOut.isEmpty &
+      saUnderpaymentsCodedOut.isEmpty &
+      totalNicAmount.isEmpty &
+      totalStudentLoansRepaymentAmount.isEmpty &
+      totalAnnuityPaymentsTaxCharged.isEmpty &
+      totalRoyaltyPaymentsTaxCharged.isEmpty &
+      totalTaxDeducted.isEmpty &
+      incomeTaxNicAmount.isEmpty &
+      cgtAmount.isEmpty &
+      incomeTaxNicAndCgtAmount.isEmpty
+
+}
 
 object EndOfYearEstimate {
   implicit val format: OFormat[EndOfYearEstimate] = Json.format
