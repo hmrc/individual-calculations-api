@@ -17,12 +17,14 @@
 package v3.controllers
 
 import config.{AppConfig, FeatureSwitches}
+import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
+//import play.api.http.Status
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
-import v3.models.request.RetrieveCalculationRawData
-import v3.models.response.retrieveCalculation.RetrieveCalculationHateoasData
+import v3.models.request.{RetrieveCalculationRawData}
+import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData}
 import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculationService}
 
 import javax.inject.Inject
@@ -30,6 +32,7 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
+                                               appConfig: AppConfig,
                                                parser: RetrieveCalculationParser,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
@@ -45,43 +48,63 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       endpointName = "retrieveCalculation"
     )
 
+  private def getBasicExtension(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    FeatureSwitches()(appConfig).isCL249Enabled match {
+      case false => {
+        response.calculation match {
+          case None => response
+          case Some(calc) => {
+            val updatedReliefs = calc.reliefs.map(reliefs => reliefs.copy(basicRateExtension = None))
+            val updatedCalculation = updatedReliefs match {
+              case Some(reliefs) if (reliefs.isEmpty) => calc.copy(reliefs = None)
+              case _                                  => calc.copy(reliefs = updatedReliefs)
+            }
+
+            updatedCalculation match {
+              case calc if (calc.isEmpty) => response.copy(calculation = None)
+              case calc                   => response.copy(calculation = Some(calc))
+
+            }
+          }
+        }
+      }
+
+      case _ => response
+    }
+  }
+
+  private def getTotalAllowanceAndDeductions(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    FeatureSwitches()(appConfig).isCL249Enabled match {
+      case false
+          if (!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled &&
+            response.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) => {
+        response.copy(calculation = response.calculation.map(calc =>
+          calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x => x.copy(totalAllowancesAndDeductions = None)))))
+      }
+      case _ => response
+    }
+  }
+
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData = RetrieveCalculationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)
+      val rawData =
+        RetrieveCalculationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId, FeatureSwitches()(appConfig).isCL249Enabled)
 
       val requestHandler =
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveCalculation)
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
-            val res = FeatureSwitches()(appConfig).isCL249Enabled match {
-              case false => response.removeBasicRateExtension
-              case _     => response
-            }
-            RetrieveCalculationHateoasData(
-              nino = nino,
-              taxYear = request.taxYear,
-              calculationId = calculationId,
-              response = res
-            )
-            if(!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled &&
-              response.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) {
+            {
+              val res = getBasicExtension(getTotalAllowanceAndDeductions(response))
+
               RetrieveCalculationHateoasData(
                 nino = nino,
                 taxYear = request.taxYear,
                 calculationId = calculationId,
-                response = response.copy(calculation = response.calculation.map(calc =>
-                  calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x =>
-                    x.copy(totalAllowancesAndDeductions = None))))))
-            }
-            else {
-              RetrieveCalculationHateoasData(
-                nino = nino,
-                taxYear = request.taxYear,
-                calculationId = calculationId,
-                response = response
+                response = res
               )
             }
           }

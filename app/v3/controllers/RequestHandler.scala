@@ -16,12 +16,14 @@
 
 package v3.controllers
 
+//import cats.Show.Shown.mat
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
+//import shapeless.Lazy.apply
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
@@ -31,6 +33,7 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
+//import scala.util.parsing.json.JSON.flatten3
 
 trait RequestHandler[InputRaw <: RawData] {
 
@@ -99,6 +102,20 @@ object RequestHandler {
         writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] =
       withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
 
+    /*
+    def withHateoasResultFromModel[HData <: HateoasData](
+        hateoasFactory: HateoasFactory,
+        updated: (Output, Boolean) => Output,
+        update: Boolean)(data: (Input, Output) => HData, input: Input, output: Output, successStatus: Int = Status.OK)(implicit
+        linksFactory: HateoasLinksFactory[Output, HData],
+        writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] = {
+      val updatedModel: Output = updated(output, update)
+
+      withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
+    }
+
+     */
+
     /** Shorthand for
       * {{{
       * withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)((_,_) => data))
@@ -122,6 +139,11 @@ object RequestHandler {
           )
 
           result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
+        }
+
+        def withUpdatedBody(func: (Result) => Result): Result = {
+
+          func(result)
         }
 
       }

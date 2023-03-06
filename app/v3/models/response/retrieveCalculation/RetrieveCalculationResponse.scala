@@ -32,7 +32,7 @@ case class RetrieveCalculationResponse(
     calculation: Option[Calculation],
     messages: Option[Messages]
 ) {
-
+  /*
   def removeBasicRateExtension(): RetrieveCalculationResponse = {
     calculation match {
       case None => this
@@ -51,7 +51,7 @@ case class RetrieveCalculationResponse(
       }
     }
 
-  }
+  }*/
 
 }
 
