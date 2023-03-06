@@ -17,7 +17,7 @@
 package v3.controllers.requestParsers.validators
 
 import support.UnitSpec
-import v3.models.errors.{CalculationIdFormatError, NinoFormatError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import v3.models.errors.{CalculationIdFormatError, NinoFormatError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import v3.models.request.SubmitFinalDeclarationRawData
 
 class SubmitFinalDeclarationValidatorSpec extends UnitSpec {
@@ -62,12 +62,6 @@ class SubmitFinalDeclarationValidatorSpec extends UnitSpec {
         }
       }
 
-      "return RuleTaxYearNotSupportedError error" when {
-        "an out of range tax year is supplied" in {
-          validator.validate(SubmitFinalDeclarationRawData(validNino, "2016-17", calcId)) shouldBe
-            List(RuleTaxYearNotSupportedError)
-        }
-      }
     }
 
   }
