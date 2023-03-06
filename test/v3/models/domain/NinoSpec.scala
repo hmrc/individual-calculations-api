@@ -82,5 +82,11 @@ class NinoSpec extends UnitSpec {
     }
   }
 
+  "toString" should {
+    "return the value of the nino" in {
+      Nino("AA111111A").toString shouldBe "AA111111A"
+    }
+  }
+
   def validateNino(nino: String): Boolean = Nino.isValid(nino)
 }

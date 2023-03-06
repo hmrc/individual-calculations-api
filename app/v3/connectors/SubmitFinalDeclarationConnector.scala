@@ -18,7 +18,7 @@ package v3.connectors
 
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.DesUri
+import v3.connectors.DownstreamUri.IfsUri
 import v3.models.domain.EmptyJsonBody
 import v3.models.request.SubmitFinalDeclarationRequest
 
@@ -34,14 +34,11 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
     import v3.connectors.httpparsers.StandardDownstreamHttpParser._
-
-    val nino: String          = request.nino.value
-    val taxYear: String       = request.taxYear.asTysDownstream
-    val calculationId: String = request.calculationId
+    import request._
 
     post(
       body = EmptyJsonBody,
-      uri = DesUri(s"income-tax/$taxYear/calculation/$nino/$calculationId/crystallise")
+      uri = IfsUri(s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
     )
   }
 

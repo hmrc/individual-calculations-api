@@ -16,7 +16,7 @@
 
 package v3.services
 
-import cats.data.EitherT
+import cats.implicits._
 import v3.connectors.SubmitFinalDeclarationConnector
 import v3.controllers.RequestContext
 import v3.models.errors._
@@ -33,11 +33,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       ctx: RequestContext,
       ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
 
-    val result = for {
-      downstreamResponseWrapper <- EitherT(connector.submitFinalDeclaration(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
-    } yield downstreamResponseWrapper
-
-    result.value
+    connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
   private val downstreamErrorMap: Map[String, MtdError] =
@@ -50,10 +46,10 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "INCOME_SOURCES_CHANGED"         -> RuleIncomeSourcesChangedError,
       "RECENT_SUBMISSIONS_EXIST"       -> RuleRecentSubmissionsExistError,
       "RESIDENCY_CHANGED"              -> RuleResidencyChangedError,
+      "FINAL_DECLARATION_RECEIVED"     -> RuleFinalDeclarationReceivedError,
       "INVALID_INCOME_SOURCES"         -> RuleIncomeSourcesInvalidError,
       "INCOME_SUBMISSIONS_NOT_EXIST"   -> RuleNoIncomeSubmissionsExistError,
       "BUSINESS_VALIDATION"            -> RuleSubmissionFailedError,
-      "FINAL_DECLARATION_RECEIVED"     -> RuleFinalDeclarationReceivedError,
       "CRYSTALLISATION_TAX_YEAR_ERROR" -> RuleFinalDeclarationTaxYearError,
       "CRYSTALLISATION_IN_PROGRESS"    -> RuleFinalDeclarationInProgressError,
       "TAX_YEAR_NOT_SUPPORTED"         -> RuleTaxYearNotSupportedError,

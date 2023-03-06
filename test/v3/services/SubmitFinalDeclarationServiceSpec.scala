@@ -47,18 +47,18 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
     "SubmitFinalDeclaration" must {
       "return correct result for a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, ()))
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
           .returns(Future.successful(outcome))
 
-        await(service.submitFinalDeclaration(request)) shouldBe outcome
+        val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+        result shouldBe outcome
       }
     }
 
     "map errors according to spec" when {
-
       def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
         s"a $downstreamErrorCode error is returned from the service" in new Test {
 
@@ -66,10 +66,11 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
             .submitFinalDeclaration(request)
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-          await(service.submitFinalDeclaration(request)) shouldBe Left(ErrorWrapper(correlationId, error))
+          val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+          result shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val input = Seq(
+      val errors = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_TAX_YEAR", TaxYearFormatError),
         ("INVALID_CALCID", CalculationIdFormatError),
@@ -78,10 +79,10 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
         ("RESIDENCY_CHANGED", RuleResidencyChangedError),
+        ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
         ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError),
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
-        ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
         ("CRYSTALLISATION_TAX_YEAR_ERROR", RuleFinalDeclarationTaxYearError),
         ("CRYSTALLISATION_IN_PROGRESS", RuleFinalDeclarationInProgressError),
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
@@ -90,7 +91,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
-      input.foreach(args => (serviceError _).tupled(args))
+      errors.foreach(args => (serviceError _).tupled(args))
     }
   }
 

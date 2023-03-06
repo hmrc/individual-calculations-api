@@ -34,16 +34,14 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
     val downstreamTaxYear: String = "18-19"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
-
-    def backendUrl: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
+    def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-
       setupStubs()
-      buildRequest(uri)
+      buildRequest(mtdUri)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.3.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -53,15 +51,13 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
   }
 
   "Calling the submit final declaration endpoint" should {
-
     "return a 204 status code" when {
-
       "a valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, NO_CONTENT, Json.obj())
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, NO_CONTENT, Json.obj())
         }
 
         val response: WSResponse = await(request.post(EmptyBody))
@@ -122,7 +118,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, downstreamUri, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.post(EmptyBody))

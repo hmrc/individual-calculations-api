@@ -97,14 +97,14 @@ object RuleBusinessValidationFailureError
 
 object RuleFinalDeclarationTaxYearError
     extends MtdError(
-      code = "CRYSTALLISATION_TAX_YEAR_ERROR",
+      code = "RULE_FINAL_DECLARATION_TAX_YEAR",
       message = "Final declaration cannot be submitted until after the end of the tax year",
       BAD_REQUEST
     )
 
 object RuleFinalDeclarationInProgressError
     extends MtdError(
-      code = "FINAL_DECLARATION_IN_PROGRESS",
-      message = "A calculation is in progress for the tax year",
+      code = "RULE_FINAL_DECLARATION_IN_PROGRESS",
+      message = "There is a calculation in progress for the tax year",
       BAD_REQUEST
     )
