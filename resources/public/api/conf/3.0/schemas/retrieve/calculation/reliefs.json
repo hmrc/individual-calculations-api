@@ -389,19 +389,19 @@
       "type": "object",
       "description": "Basic rate extension.",
       "properties": {
-        "totalBasicRateExtension [test only]": {
+        "totalBasicRateExtension" : {
           "type": "number",
-          "description": "The monetary value of the total basic rate extension. \nThis value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "The monetary value of the total basic rate extension. \nThis value must be between 0 and 99999999999.99 up to 2 decimal places. [test only]\"",
           "example": "2010.58"
         },
-        "giftAidRelief [test only]": {
+        "giftAidRelief": {
           "type": "number",
-          "description": "The amount of Gift Aid Relief received, \nThis value must be between 0 and 99999999999. No decimal places.",
+          "description": "The amount of Gift Aid Relief received, \nThis value must be between 0 and 99999999999. No decimal places. [test only]",
           "example": "3000"
         },
-        "pensionContributionReliefs [test only]": {
+        "pensionContributionReliefs": {
           "type": "number",
-          "description": "The monetary value of the pension contribution reliefs.\nThis value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "description": "The monetary value of the pension contribution reliefs.\nThis value must be between 0 and 99999999999.99 up to 2 decimal places. [test only]",
           "example": "5000.58"
         }
       }
