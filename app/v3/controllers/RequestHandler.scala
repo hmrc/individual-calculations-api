@@ -16,14 +16,14 @@
 
 package v3.controllers
 
-//import cats.Show.Shown.mat
+
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
-//import shapeless.Lazy.apply
+
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
@@ -33,7 +33,7 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
-//import scala.util.parsing.json.JSON.flatten3
+
 
 trait RequestHandler[InputRaw <: RawData] {
 
@@ -55,16 +55,7 @@ object RequestHandler {
 
   }
 
-  /*
-case class RequestHandlerBuilderWithModelling[InputRaw <: RawData, Input, Output] private[RequestHandler] (
-    parser: RequestParser[InputRaw, Input],
-    service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
-    updatedModel: Option[Output] => (Option[Output], Boolean)=> Option[Output],
-    errorHandling: ErrorHandling = ErrorHandling.Default,
-    resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
-    auditHandler: Option[AuditHandler] = None
-) extends RequestHandler[InputRaw] {
-   */
+
   case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
