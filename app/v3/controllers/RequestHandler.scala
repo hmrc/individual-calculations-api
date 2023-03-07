@@ -16,14 +16,12 @@
 
 package v3.controllers
 
-
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
-
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
@@ -33,7 +31,6 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
-
 
 trait RequestHandler[InputRaw <: RawData] {
 
@@ -54,7 +51,6 @@ object RequestHandler {
       RequestHandlerBuilder(parser, serviceFunction)
 
   }
-
 
   case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],

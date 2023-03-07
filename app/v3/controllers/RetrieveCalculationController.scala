@@ -17,14 +17,12 @@
 package v3.controllers
 
 import config.{AppConfig, FeatureSwitches}
-import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
-
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
 import v3.models.request.RetrieveCalculationRawData
-import v3.models.response.retrieveCalculation.RetrieveCalculationHateoasData
+import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculationService}
 
 import javax.inject.Inject

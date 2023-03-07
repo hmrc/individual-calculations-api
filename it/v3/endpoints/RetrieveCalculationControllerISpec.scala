@@ -160,11 +160,11 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
   }
 
   private trait TysIfsTest extends Test {
-    def taxYear: String                = "2023-24"
+    def taxYear: String = "2023-24"
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
-    def downstreamTaxYear: String      = "23-24"
+    def downstreamTaxYear: String = "23-24"
   }
 
   "Calling the retrieveCalculation endpoint" should {
