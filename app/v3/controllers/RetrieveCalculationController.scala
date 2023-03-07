@@ -16,12 +16,9 @@
 
 package v3.controllers
 
-//import cats.data.EitherT
 import config.{AppConfig, FeatureSwitches}
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
-//import scala.concurrent.Future
-//import play.api.http.Status
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
