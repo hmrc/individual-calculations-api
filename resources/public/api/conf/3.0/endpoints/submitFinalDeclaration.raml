@@ -3,9 +3,9 @@ is:
   - headers.testScenarioHeader
   - errors.formatNino
   - errors.formatTaxYear
-  - errors.formatCalculationId
   - errors.ruleTaxYearRangeInvalid
   - errors.ruleTaxYearNotSupported
+  - errors.formatCalculationId
   - errors.ruleIncomeSourcesChanged
   - errors.ruleRecentSubmissionsExist
   - errors.ruleResidencyChanged
@@ -13,9 +13,10 @@ is:
   - errors.ruleIncomeSourcesInvalid
   - errors.ruleNoIncomeSubmissionExists
   - errors.ruleSubmissionFailed
+  - errors.ruleFinalDeclarationTaxYear
+  - errors.ruleFinalDeclarationInProgress
   - errors.clientOrAgentNotAuthorised
   - errors.notFound
-  - errors.ruleIncorrectGTS
 displayName: Submit a Self Assessment Final Declaration
 description: This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. A National Insurance number, tax year and calculation ID must be provided.
 (annotations.sandboxData): !include ../scenarios/submitFinalDeclaration.md
