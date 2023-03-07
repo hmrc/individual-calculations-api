@@ -42,11 +42,11 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
     "update model" when {
       "removeTotalAllowanceAndDeductions is called" in {
         val calculation: Calculation = calcWithBasicExtension
-        minimalCalculationResponse.removeTotalAllowanceAndDeductions() shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        minimalCalculationResponse.withoutTotalAllowanceAndDeductions shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
       "removeBasicExtension is called" in {
         val calculation: Calculation = calcWithEndOfYearEstimate
-        minimalCalculationResponse.removeBasicExtension() shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        minimalCalculationResponse.withoutBasicExtension() shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
     }
 

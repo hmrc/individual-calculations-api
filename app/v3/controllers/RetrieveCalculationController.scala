@@ -17,14 +17,12 @@
 package v3.controllers
 
 import config.{AppConfig, FeatureSwitches}
-import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
-
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
 import v3.models.request.RetrieveCalculationRawData
-import v3.models.response.retrieveCalculation.RetrieveCalculationHateoasData
+import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculationService}
 
 import javax.inject.Inject
@@ -52,26 +50,28 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
+      val isR8bFeatureSwitchEnabled = FeatureSwitches()(appConfig).isR8bSpecificApiEnabled
+
       val rawData =
         RetrieveCalculationRawData(
           nino = nino,
           taxYear = taxYear,
           calculationId = calculationId,
-          FeatureSwitches()(appConfig).isR8bSpecificApiEnabled)
-
-      val modelFromResponse: Option[(RetrieveCalculationResponse) => RetrieveCalculationResponse] =
-        if (FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled == false)
-          Some(r8bFeatureSwitchModel)
-        else None
+          isR8bFeatureSwitchEnabled
+        )
 
       val requestHandler =
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveCalculation)
-          .withModelHandler(modelFromResponse)
+          .withModelHandling(({ response: RetrieveCalculationResponse =>
+            if (isR8bFeatureSwitchEnabled)
+              response
+            else
+              (response.withoutBasicExtension).withoutTotalAllowanceAndDeductions
+          }))
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
-
               RetrieveCalculationHateoasData(
                 nino = nino,
                 taxYear = request.taxYear,
@@ -84,9 +84,5 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       requestHandler.handleRequest(rawData)
 
     }
-
-  def r8bFeatureSwitchModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    (response.removeBasicExtension).removeTotalAllowanceAndDeductions
-  }
 
 }

@@ -16,14 +16,12 @@
 
 package v3.controllers
 
-
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
-
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
@@ -33,7 +31,6 @@ import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
-
 
 trait RequestHandler[InputRaw <: RawData] {
 
@@ -55,7 +52,6 @@ object RequestHandler {
 
   }
 
-
   case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
@@ -74,8 +70,8 @@ object RequestHandler {
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(auditHandler = Some(auditHandler))
 
-    def withModelHandler(modelHandler: Option[(Output) => Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      copy(modelHandler = modelHandler)
+    def withModelHandling(modelHandler: (Output) => Output): RequestHandlerBuilder[InputRaw, Input, Output] =
+      copy(modelHandler = Option(modelHandler))
 
     /** Shorthand for
       * {{{
@@ -145,12 +141,11 @@ object RequestHandler {
             parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
             serviceResponse <- EitherT(service(parsedRequest))
           } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-            if (modelHandler.isEmpty) {
-              handleSuccess(rawData, parsedRequest, serviceResponse)
-            } else {
-              val responseHandler                   = (modelHandler.get)
-              val response: ResponseWrapper[Output] = serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData))
-              handleSuccess(rawData, parsedRequest, response)
+            modelHandler match {
+              case Some(responseHandler) =>
+                handleSuccess(rawData, parsedRequest, serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData)))
+              case None =>
+                handleSuccess(rawData, parsedRequest, serviceResponse)
             }
           }
 
