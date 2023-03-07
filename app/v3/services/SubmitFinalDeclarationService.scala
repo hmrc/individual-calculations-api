@@ -16,7 +16,7 @@
 
 package v3.services
 
-import cats.data.EitherT
+import cats.implicits._
 import v3.connectors.SubmitFinalDeclarationConnector
 import v3.controllers.RequestContext
 import v3.models.errors._
@@ -33,30 +33,29 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       ctx: RequestContext,
       ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
 
-    val result = for {
-      downstreamResponseWrapper <- EitherT(connector.submitFinalDeclaration(request)).leftMap(mapDownstreamErrors(downstreamErrorMap))
-    } yield downstreamResponseWrapper
-
-    result.value
+    connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
   private val downstreamErrorMap: Map[String, MtdError] =
     Map(
-      "INVALID_IDTYPE"               -> InternalError,
-      "INVALID_IDVALUE"              -> NinoFormatError,
-      "INVALID_TAXYEAR"              -> TaxYearFormatError,
-      "INVALID_CALCID"               -> CalculationIdFormatError,
-      "NOT_FOUND"                    -> NotFoundError,
-      "INCOME_SOURCES_CHANGED"       -> RuleIncomeSourcesChangedError,
-      "RECENT_SUBMISSIONS_EXIST"     -> RuleRecentSubmissionsExistError,
-      "RESIDENCY_CHANGED"            -> RuleResidencyChangedError,
-      "INVALID_INCOME_SOURCES"       -> RuleIncomeSourcesInvalidError,
-      "INCOME_SUBMISSIONS_NOT_EXIST" -> RuleNoIncomeSubmissionsExistError,
-      "BUSINESS_VALIDATION"          -> RuleSubmissionFailedError,
-      "FINAL_DECLARATION_RECEIVED"   -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR"                 -> InternalError,
-      "SERVICE_UNAVAILABLE"          -> InternalError,
-      "UNMATCHED_STUB_ERROR"         -> RuleIncorrectGovTestScenarioError
+      "INVALID_TAXABLE_ENTITY_ID"      -> NinoFormatError,
+      "INVALID_TAX_YEAR"               -> TaxYearFormatError,
+      "INVALID_CALCID"                 -> CalculationIdFormatError,
+      "INVALID_CORRELATION_ID"         -> InternalError,
+      "NOT_FOUND"                      -> NotFoundError,
+      "INCOME_SOURCES_CHANGED"         -> RuleIncomeSourcesChangedError,
+      "RECENT_SUBMISSIONS_EXIST"       -> RuleRecentSubmissionsExistError,
+      "RESIDENCY_CHANGED"              -> RuleResidencyChangedError,
+      "FINAL_DECLARATION_RECEIVED"     -> RuleFinalDeclarationReceivedError,
+      "INVALID_INCOME_SOURCES"         -> RuleIncomeSourcesInvalidError,
+      "INCOME_SUBMISSIONS_NOT_EXIST"   -> RuleNoIncomeSubmissionsExistError,
+      "BUSINESS_VALIDATION"            -> RuleSubmissionFailedError,
+      "CRYSTALLISATION_TAX_YEAR_ERROR" -> RuleFinalDeclarationTaxYearError,
+      "CRYSTALLISATION_IN_PROGRESS"    -> RuleFinalDeclarationInProgressError,
+      "TAX_YEAR_NOT_SUPPORTED"         -> RuleTaxYearNotSupportedError,
+      "SERVER_ERROR"                   -> InternalError,
+      "SERVICE_UNAVAILABLE"            -> InternalError,
+      "UNMATCHED_STUB_ERROR"           -> RuleIncorrectGovTestScenarioError
     )
 
 }

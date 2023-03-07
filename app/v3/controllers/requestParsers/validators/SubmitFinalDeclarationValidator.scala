@@ -22,7 +22,7 @@ import v3.models.request.SubmitFinalDeclarationRawData
 
 class SubmitFinalDeclarationValidator extends Validator[SubmitFinalDeclarationRawData] {
 
-  private val validationSet = List(parserValidation, ruleValidation)
+  private val validationSet = List(parserValidation)
 
   private def parserValidation: SubmitFinalDeclarationRawData => List[List[MtdError]] = { data =>
     List(
@@ -30,10 +30,6 @@ class SubmitFinalDeclarationValidator extends Validator[SubmitFinalDeclarationRa
       TaxYearValidation.validate(data.taxYear),
       CalculationIdValidation.validate(data.calculationId)
     )
-  }
-
-  private def ruleValidation: SubmitFinalDeclarationRawData => List[List[MtdError]] = { data =>
-    List(TaxYearNotSupportedValidation.validate(data.taxYear))
   }
 
   override def validate(data: SubmitFinalDeclarationRawData): List[MtdError] = run(validationSet, data).distinct

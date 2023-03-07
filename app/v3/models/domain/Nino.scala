@@ -24,6 +24,8 @@ case class Nino(nino: String) {
   val name                             = "nino"
   def formatted: String                = value.grouped(2).mkString(" ")
   def withoutSuffix: String            = value.take(LengthWithoutSuffix)
+
+  override def toString: String = value
 }
 
 object Nino extends (String => Nino) {

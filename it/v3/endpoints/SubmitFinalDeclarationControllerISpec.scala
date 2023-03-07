@@ -31,19 +31,17 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
 
     val nino: String              = "AA123456A"
     val taxYear: String           = "2018-19"
-    val downstreamTaxYear: String = "2019"
+    val downstreamTaxYear: String = "18-19"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
-
-    def backendUrl: String = s"/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise"
+    def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-
       setupStubs()
-      buildRequest(uri)
+      buildRequest(mtdUri)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.3.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -53,15 +51,13 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
   }
 
   "Calling the submit final declaration endpoint" should {
-
     "return a 204 status code" when {
-
       "a valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, backendUrl, NO_CONTENT, Json.obj())
+          BackendStub.onSuccess(BackendStub.POST, downstreamUri, NO_CONTENT, Json.obj())
         }
 
         val response: WSResponse = await(request.post(EmptyBody))
@@ -99,7 +95,6 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
         ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
         ("AA123456A", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
         ("AA123456A", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-        ("AA123456A", "2016-17", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearNotSupportedError),
         ("AA123456A", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
       )
 
@@ -122,7 +117,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              BackendStub.onError(BackendStub.POST, downstreamUri, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.post(EmptyBody))
@@ -133,10 +128,10 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
         }
 
         val input = Seq(
-          (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, InternalError),
-          (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "INVALID_CALCID", BAD_REQUEST, CalculationIdFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
           (CONFLICT, "INCOME_SOURCES_CHANGED", BAD_REQUEST, RuleIncomeSourcesChangedError),
           (CONFLICT, "RECENT_SUBMISSIONS_EXIST", BAD_REQUEST, RuleRecentSubmissionsExistError),
@@ -145,6 +140,9 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
           (UNPROCESSABLE_ENTITY, "INVALID_INCOME_SOURCES", BAD_REQUEST, RuleIncomeSourcesInvalidError),
           (UNPROCESSABLE_ENTITY, "INCOME_SUBMISSIONS_NOT_EXIST", BAD_REQUEST, RuleNoIncomeSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", BAD_REQUEST, RuleSubmissionFailedError),
+          (UNPROCESSABLE_ENTITY, "CRYSTALLISATION_TAX_YEAR_ERROR", BAD_REQUEST, RuleFinalDeclarationTaxYearError),
+          (UNPROCESSABLE_ENTITY, "CRYSTALLISATION_IN_PROGRESS", BAD_REQUEST, RuleFinalDeclarationInProgressError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
