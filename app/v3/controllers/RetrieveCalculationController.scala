@@ -51,6 +51,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val isR8bFeatureSwitchEnabled = FeatureSwitches()(appConfig).isR8bSpecificApiEnabled
+
       val rawData =
         RetrieveCalculationRawData(
           nino = nino,
@@ -59,19 +60,18 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           isR8bFeatureSwitchEnabled
         )
 
-      val modelFromResponse: Option[(RetrieveCalculationResponse) => RetrieveCalculationResponse] =
-        if (!isR8bFeatureSwitchEnabled)
-          Some(r8bFeatureSwitchModel)
-        else None
-
       val requestHandler =
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveCalculation)
-          .withModelHandler(modelFromResponse)
+          .withModelHandling(({ response: RetrieveCalculationResponse =>
+            if (isR8bFeatureSwitchEnabled)
+              response
+            else
+              (response.withoutBasicExtension).withoutTotalAllowanceAndDeductions
+          }))
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
-
               RetrieveCalculationHateoasData(
                 nino = nino,
                 taxYear = request.taxYear,
@@ -84,9 +84,5 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       requestHandler.handleRequest(rawData)
 
     }
-
-  def r8bFeatureSwitchModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    (response.removeBasicExtension).removeTotalAllowanceAndDeductions
-  }
 
 }
