@@ -32,26 +32,33 @@ case class RetrieveCalculationResponse(
     calculation: Option[Calculation],
     messages: Option[Messages]
 ) {
-  /*
-  def removeBasicRateExtension(): RetrieveCalculationResponse = {
-    calculation match {
+  def removeBasicExtension(): RetrieveCalculationResponse = {
+    this.calculation match {
       case None => this
       case Some(calc) => {
         val updatedReliefs = calc.reliefs.map(reliefs => reliefs.copy(basicRateExtension = None))
         val updatedCalculation = updatedReliefs match {
           case Some(reliefs) if (reliefs.isEmpty) => calc.copy(reliefs = None)
-          case _                                  => calc.copy(reliefs = updatedReliefs)
+          case _ => calc.copy(reliefs = updatedReliefs)
         }
 
         updatedCalculation match {
-          case calc if (calc.isEmpty) => copy(calculation = None)
-          case calc                   => copy(calculation = Some(calc))
+          case calc if (calc.isEmpty) => this.copy(calculation = None)
+          case calc => this.copy(calculation = Some(calc))
 
         }
       }
     }
+  }
 
-  }*/
+  def removeTotalAllowanceAndDeductions(): RetrieveCalculationResponse = {
+    if (this.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) {
+      this.copy(calculation = this.calculation.map(calc =>
+        calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x => x.copy(totalAllowancesAndDeductions = None)))))
+    } else {
+      this
+    }
+  }
 
 }
 

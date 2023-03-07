@@ -16,8 +16,11 @@
 
 package v3.controllers
 
+//import cats.data.EitherT
 import config.{AppConfig, FeatureSwitches}
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
+
+//import scala.concurrent.Future
 //import play.api.http.Status
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
@@ -48,41 +51,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       endpointName = "retrieveCalculation"
     )
 
-  private def getBasicExtension(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    FeatureSwitches()(appConfig).isCL249Enabled match {
-      case false => {
-        response.calculation match {
-          case None => response
-          case Some(calc) => {
-            val updatedReliefs = calc.reliefs.map(reliefs => reliefs.copy(basicRateExtension = None))
-            val updatedCalculation = updatedReliefs match {
-              case Some(reliefs) if (reliefs.isEmpty) => calc.copy(reliefs = None)
-              case _                                  => calc.copy(reliefs = updatedReliefs)
-            }
-
-            updatedCalculation match {
-              case calc if (calc.isEmpty) => response.copy(calculation = None)
-              case calc                   => response.copy(calculation = Some(calc))
-
-            }
-          }
-        }
-      }
-
-      case _ => response
-    }
-  }
-
-  private def getTotalAllowanceAndDeductions(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    FeatureSwitches()(appConfig).isCL249Enabled match {
-      case false
-          if (!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled &&
-            response.calculation.exists(calc => calc.endOfYearEstimate.exists(eoy => eoy.totalAllowancesAndDeductions.isDefined))) => {
-        response.copy(calculation = response.calculation.map(calc =>
-          calc.copy(endOfYearEstimate = calc.endOfYearEstimate.map(x => x.copy(totalAllowancesAndDeductions = None)))))
-      }
-      case _ => response
-    }
+  def r8bFeatureSwitchModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    (response.removeBasicExtension).removeTotalAllowanceAndDeductions
   }
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
@@ -90,26 +60,35 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData =
-        RetrieveCalculationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId, FeatureSwitches()(appConfig).isCL249Enabled)
+        RetrieveCalculationRawData(
+          nino = nino,
+          taxYear = taxYear,
+          calculationId = calculationId,
+          FeatureSwitches()(appConfig).isR8bSpecificApiEnabled)
 
+      val someResponseToResponse: Option[(RetrieveCalculationResponse) => RetrieveCalculationResponse] =
+        if (FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled == false)
+          Some(r8bFeatureSwitchModel)
+        else None
       val requestHandler =
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveCalculation)
+          .withModelHandler(someResponseToResponse)
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
-              val res = getBasicExtension(getTotalAllowanceAndDeductions(response))
 
               RetrieveCalculationHateoasData(
                 nino = nino,
                 taxYear = request.taxYear,
                 calculationId = calculationId,
-                response = res
+                response = response
               )
             }
           }
 
       requestHandler.handleRequest(rawData)
+
     }
 
 }

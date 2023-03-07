@@ -73,7 +73,7 @@ class RetrieveCalculationControllerSpec
 
   "handleRequest" should {
     "return OK with the calculation" when {
-      "happy path with CL249 feature switch enabled" in new Test {
+      "happy path with R8B feature switch enabled" in new Test {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -83,7 +83,6 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> true))
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
@@ -94,7 +93,7 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseJson))
       }
 
-      "happy path with CL249 feature switch disabled" in new Test {
+      "happy path with R8B feature switch disabled" in new Test {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -104,7 +103,6 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> false))
           .returns(Configuration("r8b-api.enabled" -> false))
           .anyNumberOfTimes()
 
@@ -125,7 +123,6 @@ class RetrieveCalculationControllerSpec
           .parseRequest(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> true))
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
@@ -137,7 +134,6 @@ class RetrieveCalculationControllerSpec
           .parseRequest(rawData)
           .returns(Right(requestData))
         MockAppConfig.featureSwitches
-          .returns(Configuration("cl249.enabled" -> true))
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 

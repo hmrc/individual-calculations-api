@@ -55,12 +55,23 @@ object RequestHandler {
 
   }
 
+  /*
+case class RequestHandlerBuilderWithModelling[InputRaw <: RawData, Input, Output] private[RequestHandler] (
+    parser: RequestParser[InputRaw, Input],
+    service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
+    updatedModel: Option[Output] => (Option[Output], Boolean)=> Option[Output],
+    errorHandling: ErrorHandling = ErrorHandling.Default,
+    resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
+    auditHandler: Option[AuditHandler] = None
+) extends RequestHandler[InputRaw] {
+   */
   case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
       errorHandling: ErrorHandling = ErrorHandling.Default,
       resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
-      auditHandler: Option[AuditHandler] = None
+      auditHandler: Option[AuditHandler] = None,
+      modelHandler: Option[(Output) => Output] = None
   ) extends RequestHandler[InputRaw] {
 
     def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] =
@@ -74,6 +85,9 @@ object RequestHandler {
 
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(auditHandler = Some(auditHandler))
+
+    def withModelHandler(modelHandler: Option[(Output) => Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
+      copy(modelHandler = modelHandler)
 
     /** Shorthand for
       * {{{
@@ -102,20 +116,6 @@ object RequestHandler {
         writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] =
       withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
 
-    /*
-    def withHateoasResultFromModel[HData <: HateoasData](
-        hateoasFactory: HateoasFactory,
-        updated: (Output, Boolean) => Output,
-        update: Boolean)(data: (Input, Output) => HData, input: Input, output: Output, successStatus: Int = Status.OK)(implicit
-        linksFactory: HateoasLinksFactory[Output, HData],
-        writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] = {
-      val updatedModel: Output = updated(output, update)
-
-      withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
-    }
-
-     */
-
     /** Shorthand for
       * {{{
       * withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)((_,_) => data))
@@ -141,14 +141,37 @@ object RequestHandler {
           result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
         }
 
-        def withUpdatedBody(func: (Result) => Result): Result = {
-
-          func(result)
-        }
-
       }
 
       def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
+
+        logger.info(
+          message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
+            s"with correlationId : ${ctx.correlationId}")
+
+        val result =
+          for {
+            parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
+            serviceResponse <- EitherT(service(parsedRequest))
+          } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
+            if (modelHandler.isEmpty) {
+              handleSuccess(rawData, parsedRequest, serviceResponse)
+            } else {
+              val responseHandler                   = (modelHandler.get)
+              val response: ResponseWrapper[Output] = serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData))
+              handleSuccess(rawData, parsedRequest, response)
+            }
+          }
+
+        result.leftMap { errorWrapper =>
+          doWithContext(ctx.withCorrelationId(errorWrapper.correlationId)) { implicit ctx: RequestContext =>
+            handleFailure(errorWrapper)
+          }
+        }.merge
+      }
+
+      def handleRequestWithModelUpdate(
+          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
 
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
