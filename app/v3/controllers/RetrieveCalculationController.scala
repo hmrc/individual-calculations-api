@@ -16,7 +16,6 @@
 
 package v3.controllers
 
-import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
@@ -34,8 +33,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
-                                               val idGenerator: IdGenerator,
-                                               val appConfig: AppConfig)(implicit val ec: ExecutionContext)
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

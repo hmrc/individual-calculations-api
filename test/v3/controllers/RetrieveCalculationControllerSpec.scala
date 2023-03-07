@@ -16,7 +16,7 @@
 
 package v3.controllers
 
-import mocks.{MockAppConfig, MockIdGenerator}
+import mocks.MockIdGenerator
 import play.api.mvc.Result
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
@@ -41,7 +41,6 @@ class RetrieveCalculationControllerSpec
     with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator
-    with MockAppConfig
     with CalculationFixture {
 
   private val taxYear       = "2017-18"
@@ -62,8 +61,7 @@ class RetrieveCalculationControllerSpec
       service = mockService,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator,
-      appConfig = mockAppConfig
+      idGenerator = mockIdGenerator
     )
 
     protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
