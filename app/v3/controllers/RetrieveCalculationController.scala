@@ -50,15 +50,17 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
+      val isR8bFeatureSwitchEnabled = FeatureSwitches()(appConfig).isR8bSpecificApiEnabled
       val rawData =
         RetrieveCalculationRawData(
           nino = nino,
           taxYear = taxYear,
           calculationId = calculationId,
-          FeatureSwitches()(appConfig).isR8bSpecificApiEnabled)
+          isR8bFeatureSwitchEnabled
+        )
 
       val modelFromResponse: Option[(RetrieveCalculationResponse) => RetrieveCalculationResponse] =
-        if (!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled)
+        if (!isR8bFeatureSwitchEnabled)
           Some(r8bFeatureSwitchModel)
         else None
 

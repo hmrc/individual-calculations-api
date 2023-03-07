@@ -44,25 +44,12 @@ trait CalculationFixture {
     topSlicingRelief = None,
     reliefsClaimed = None
   )
-
+  // @formatter:off
   val eoyEstimates = EndOfYearEstimate(
-    None,
-    None,
-    totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None)
+    None,    None,    totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
+    None,    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,    None)
+  // @formatter:on
 
   val calculationWithR8BData = Calculation(
     reliefs = Some(reliefs),
@@ -95,173 +82,71 @@ trait CalculationFixture {
     lossesAndClaims = None
   )
 
+  val metadata = Metadata(
+    calculationId = "",
+    taxYear = TaxYear.fromDownstream("2018"),
+    requestedBy = "",
+    requestedTimestamp = None,
+    calculationReason = "",
+    calculationTimestamp = None,
+    calculationType = `inYear`,
+    intentToSubmitFinalDeclaration = false,
+    finalDeclaration = false,
+    finalDeclarationTimestamp = None,
+    periodFrom = "",
+    periodTo = ""
+  )
+
+  val inputs = Inputs(
+    PersonalInformation("", None, "UK", None, None, None, None, None),
+    IncomeSources(None, None),
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None
+  )
+
   val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
-    metadata = Metadata(
-      calculationId = "",
-      taxYear = TaxYear.fromDownstream("2018"),
-      requestedBy = "",
-      requestedTimestamp = None,
-      calculationReason = "",
-      calculationTimestamp = None,
-      calculationType = `inYear`,
-      intentToSubmitFinalDeclaration = false,
-      finalDeclaration = false,
-      finalDeclarationTimestamp = None,
-      periodFrom = "",
-      periodTo = ""
-    ),
-    inputs = Inputs(
-      PersonalInformation("", None, "UK", None, None, None, None, None),
-      IncomeSources(None, None),
-      None,
-      None,
-      None,
-      None,
-      None,
-      None,
-      None
-    ),
+    metadata = metadata,
+    inputs = inputs,
     calculation = Some(calculationWithR8BData),
     messages = None
   )
 
+  // @formatter:off
   val calcWithEndOfYearEstimate: Calculation = Calculation(
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    Some(
-      EndOfYearEstimate(
-        None,
-        None,
-        totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None)),
-    None
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    Some(eoyEstimates),    None
   )
 
   val calcWithBasicExtension: Calculation = Calculation(
-    None,
-    Some(reliefs),
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
+    None,    Some(reliefs),    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None
   )
 
   val emptyCalc: Calculation = Calculation(
-    None,
-    Some(reliefs),
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
+    None,    Some(reliefs),    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,    None,    None,    None,
+    None,    None,    None,
     Some(EndOfYearEstimate(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)),
     None
   )
+  // @formatter:on
 
   val minimalCalculationResponseWithoutR8BData: RetrieveCalculationResponse = RetrieveCalculationResponse(
-    metadata = Metadata(
-      calculationId = "",
-      taxYear = TaxYear.fromDownstream("2018"),
-      requestedBy = "",
-      requestedTimestamp = None,
-      calculationReason = "",
-      calculationTimestamp = None,
-      calculationType = `inYear`,
-      intentToSubmitFinalDeclaration = false,
-      finalDeclaration = false,
-      finalDeclarationTimestamp = None,
-      periodFrom = "",
-      periodTo = ""
-    ),
-    inputs = Inputs(
-      PersonalInformation("", None, "UK", None, None, None, None, None),
-      IncomeSources(None, None),
-      None,
-      None,
-      None,
-      None,
-      None,
-      None,
-      None
-    ),
+    metadata = metadata,
+    inputs = inputs,
     calculation = None,
     messages = None
   )
@@ -341,31 +226,8 @@ trait CalculationFixture {
     .as[JsObject]
 
   val emptyCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
-    metadata = Metadata(
-      calculationId = "",
-      taxYear = TaxYear.fromDownstream("2018"),
-      requestedBy = "",
-      requestedTimestamp = None,
-      calculationReason = "",
-      calculationTimestamp = None,
-      calculationType = `inYear`,
-      intentToSubmitFinalDeclaration = false,
-      finalDeclaration = false,
-      finalDeclarationTimestamp = None,
-      periodFrom = "",
-      periodTo = ""
-    ),
-    inputs = Inputs(
-      PersonalInformation("", None, "UK", None, None, None, None, None),
-      IncomeSources(None, None),
-      None,
-      None,
-      None,
-      None,
-      None,
-      None,
-      None
-    ),
+    metadata = metadata,
+    inputs = inputs,
     calculation = Some(emptyCalc),
     messages = None
   )

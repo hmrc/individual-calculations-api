@@ -45,13 +45,13 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear                              = "2017-18"
-  private val response                             = minimalCalculationResponse
-  private val mtdResponseJson                      = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithoutBasicRateExtension = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
-  val rawData: RetrieveCalculationRawData          = RetrieveCalculationRawData(nino, taxYear, calculationId, true)
-  val requestData: RetrieveCalculationRequest      = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
+  private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear                                 = "2017-18"
+  private val response                                = minimalCalculationResponse
+  private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithoutBasicRateExtension    = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
+  private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId, true)
+  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
   trait Test extends ControllerTest {
 
