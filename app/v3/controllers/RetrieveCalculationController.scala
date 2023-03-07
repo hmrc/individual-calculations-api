@@ -58,7 +58,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           FeatureSwitches()(appConfig).isR8bSpecificApiEnabled)
 
       val modelFromResponse: Option[(RetrieveCalculationResponse) => RetrieveCalculationResponse] =
-        if (FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled == false)
+        if (!FeatureSwitches(appConfig.featureSwitches).isR8bSpecificApiEnabled)
           Some(r8bFeatureSwitchModel)
         else None
 

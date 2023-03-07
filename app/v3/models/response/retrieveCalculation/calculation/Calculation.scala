@@ -77,7 +77,7 @@ case class Calculation(
     lossesAndClaims: Option[LossesAndClaims]
 ) {
 
-  def isEmpty: Boolean = allowancesAndDeductions.isEmpty &
+  val isEmpty: Boolean = allowancesAndDeductions.isEmpty &
     reliefs.isEmpty & taxDeductedAtSource.isEmpty &
     giftAid.isEmpty &
     royaltyPayments.isEmpty &

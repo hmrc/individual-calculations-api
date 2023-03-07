@@ -141,12 +141,11 @@ object RequestHandler {
             parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
             serviceResponse <- EitherT(service(parsedRequest))
           } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-            if (modelHandler.isEmpty) {
-              handleSuccess(rawData, parsedRequest, serviceResponse)
-            } else {
-              val responseHandler                   = (modelHandler.get)
-              val response: ResponseWrapper[Output] = serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData))
-              handleSuccess(rawData, parsedRequest, response)
+            modelHandler match {
+              case Some(responseHandler) =>
+                handleSuccess(rawData, parsedRequest, serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData)))
+              case None =>
+                handleSuccess(rawData, parsedRequest, serviceResponse)
             }
           }
 

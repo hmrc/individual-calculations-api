@@ -38,7 +38,7 @@ case class EndOfYearEstimate(
     incomeTaxNicAndCgtAmount: Option[BigDecimal]
 ) {
 
-  def isEmpty: Boolean =
+  val isEmpty: Boolean =
     totalEstimatedIncome.isEmpty &
       totalAllowancesAndDeductions.isEmpty &
       totalTaxableIncome.isEmpty &

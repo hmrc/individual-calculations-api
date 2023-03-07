@@ -181,6 +181,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe responseBody(canBeFinalised = false)
       }
+
       "a valid request is made with a Tax Year Specific tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -193,6 +194,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe responseBody(canBeFinalised = false)
       }
+
       "a valid request is made and the response can be finalised" in new NonTysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -205,6 +207,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe responseBody(canBeFinalised = true)
       }
+
       "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysIfsTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -218,6 +221,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
         response.json shouldBe responseBody(canBeFinalised = true)
       }
     }
+
     "return the correct error code" when {
       def validationErrorTest(requestNino: String,
                               requestTaxYear: String,
