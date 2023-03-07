@@ -101,6 +101,20 @@ components:
         code: RULE_SUBMISSION_FAILED
         message: The submission cannot be completed due to validation failures
 
+    ruleFinalDeclarationTaxYear:
+      description: |
+        The final declaration cannot be submitted until after the end of the tax year.
+      value:
+        code: RULE_FINAL_DECLARATION_TAX_YEAR
+        message: The final declaration cannot be submitted until after the end of the tax year
+
+    ruleFinalDeclarationInProgress:
+      description: |
+        There is a calculation in progress for the tax year.
+      value:
+        code: RULE_FINAL_DECLARATION_IN_PROGRESS
+        message: There is a calculation in progress for the tax year
+
     triggerRuleIncomeSourcesChanged:
       description: |
         Information relating to income sources changed. You must first trigger a calculation with finalDeclaration false.

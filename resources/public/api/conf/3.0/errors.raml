@@ -180,6 +180,28 @@ traits:
                 description: 'The submission cannot be completed due to validation failures.'
                 value:
                   code: RULE_SUBMISSION_FAILED
+  ruleFinalDeclarationTaxYear:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleSubmissionFailed:
+                description: 'The final declaration cannot be submitted until after the end of the tax year.'
+                value:
+                  code: RULE_FINAL_DECLARATION_TAX_YEAR
+  ruleFinalDeclarationInProgress:
+    responses:
+      400:
+        body:
+          application/json:
+            type: types.errorResponse
+            examples:
+              ruleSubmissionFailed:
+                description: 'There is a calculation in progress for the tax year. '
+                value:
+                  code: RULE_FINAL_DECLARATION_IN_PROGRESS
   notFound:
     responses:
       404:
