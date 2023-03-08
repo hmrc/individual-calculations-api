@@ -39,21 +39,21 @@ case class EndOfYearEstimate(
 ) {
 
   val isDefined: Boolean =
-    !(totalEstimatedIncome.isEmpty &
-      totalAllowancesAndDeductions.isEmpty &
-      totalTaxableIncome.isEmpty &
-      incomeTaxAmount.isEmpty &
-      nic2.isEmpty &
-      nic4.isEmpty &
-      totalTaxDeductedBeforeCodingOut.isEmpty &
-      saUnderpaymentsCodedOut.isEmpty &
-      totalNicAmount.isEmpty &
-      totalStudentLoansRepaymentAmount.isEmpty &
-      totalAnnuityPaymentsTaxCharged.isEmpty &
-      totalRoyaltyPaymentsTaxCharged.isEmpty &
-      totalTaxDeducted.isEmpty &
-      incomeTaxNicAmount.isEmpty &
-      cgtAmount.isEmpty &
+    !(totalEstimatedIncome.isEmpty &&
+      totalAllowancesAndDeductions.isEmpty &&
+      totalTaxableIncome.isEmpty &&
+      incomeTaxAmount.isEmpty &&
+      nic2.isEmpty &&
+      nic4.isEmpty &&
+      totalTaxDeductedBeforeCodingOut.isEmpty &&
+      saUnderpaymentsCodedOut.isEmpty &&
+      totalNicAmount.isEmpty &&
+      totalStudentLoansRepaymentAmount.isEmpty &&
+      totalAnnuityPaymentsTaxCharged.isEmpty &&
+      totalRoyaltyPaymentsTaxCharged.isEmpty &&
+      totalTaxDeducted.isEmpty &&
+      incomeTaxNicAmount.isEmpty &&
+      cgtAmount.isEmpty &&
       incomeTaxNicAndCgtAmount.isEmpty)
 
 }
