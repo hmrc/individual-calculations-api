@@ -77,33 +77,34 @@ case class Calculation(
     lossesAndClaims: Option[LossesAndClaims]
 ) {
 
-  val isEmpty: Boolean = allowancesAndDeductions.isEmpty &
-    reliefs.isEmpty & taxDeductedAtSource.isEmpty &
-    giftAid.isEmpty &
-    royaltyPayments.isEmpty &
-    notionalTax.isEmpty &
-    marriageAllowanceTransferredIn.isEmpty &
-    pensionContributionReliefs.isEmpty &
-    pensionSavingsTaxCharges.isEmpty &
-    studentLoans.isEmpty &
-    codedOutUnderpayments.isEmpty &
-    foreignPropertyIncome.isEmpty &
-    businessProfitAndLoss.isEmpty &
-    employmentAndPensionsIncome.isEmpty &
-    employmentExpenses.isEmpty &
-    seafarersDeductions.isEmpty &
-    foreignTaxForFtcrNotClaimed.isEmpty &
-    stateBenefitsIncome.isEmpty &
-    shareSchemesIncome.isEmpty &
-    foreignIncome.isEmpty &
-    chargeableEventGainsIncome.isEmpty &
-    savingsAndGainsIncome.isEmpty &
-    dividendsIncome.isEmpty &
-    incomeSummaryTotals.isEmpty &
-    taxCalculation.isEmpty &
-    previousCalculation.isEmpty &
-    endOfYearEstimate.isEmpty &
-    lossesAndClaims.isEmpty
+  val isDefined: Boolean =
+    !(allowancesAndDeductions.isEmpty &&
+      reliefs.isEmpty && taxDeductedAtSource.isEmpty &&
+      giftAid.isEmpty &&
+      royaltyPayments.isEmpty &&
+      notionalTax.isEmpty &&
+      marriageAllowanceTransferredIn.isEmpty &&
+      pensionContributionReliefs.isEmpty &&
+      pensionSavingsTaxCharges.isEmpty &&
+      studentLoans.isEmpty &&
+      codedOutUnderpayments.isEmpty &&
+      foreignPropertyIncome.isEmpty &&
+      businessProfitAndLoss.isEmpty &&
+      employmentAndPensionsIncome.isEmpty &&
+      employmentExpenses.isEmpty &&
+      seafarersDeductions.isEmpty &&
+      foreignTaxForFtcrNotClaimed.isEmpty &&
+      stateBenefitsIncome.isEmpty &&
+      shareSchemesIncome.isEmpty &&
+      foreignIncome.isEmpty &&
+      chargeableEventGainsIncome.isEmpty &&
+      savingsAndGainsIncome.isEmpty &&
+      dividendsIncome.isEmpty &&
+      incomeSummaryTotals.isEmpty &&
+      taxCalculation.isEmpty &&
+      previousCalculation.isEmpty &&
+      endOfYearEstimate.isEmpty &&
+      lossesAndClaims.isEmpty)
 
 }
 

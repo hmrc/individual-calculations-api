@@ -33,22 +33,28 @@ case class RetrieveCalculationResponse(
     messages: Option[Messages]
 ) {
 
-  def withoutBasicExtension(): RetrieveCalculationResponse = {
-    val updatedCalculation = this.calculation.map(calc => {
-      val updatedReliefs = calc.reliefs.map(_.copy(basicRateExtension = None))
-      calc.copy(reliefs = updatedReliefs.filterNot(_.isEmpty))
-    })
-
-    copy(calculation = updatedCalculation.filterNot(_.isEmpty))
+  def withoutBasicExtension: RetrieveCalculationResponse = {
+    val updatedCalculation = this.calculation
+      .map { calc =>
+        val updatedReliefs = calc.reliefs
+          .map(_.copy(basicRateExtension = None))
+          .filter(_.isDefined)
+        calc.copy(reliefs = updatedReliefs)
+      }
+      .filter(_.isDefined)
+    copy(calculation = updatedCalculation)
   }
 
-  def withoutTotalAllowanceAndDeductions(): RetrieveCalculationResponse = {
-    val updatedCalculation = this.calculation.map(calc => {
-      val updatedEoy = calc.endOfYearEstimate.map(_.copy(totalAllowancesAndDeductions = None))
-      calc.copy(endOfYearEstimate = updatedEoy.filterNot(_.isEmpty))
-    })
-
-    copy(calculation = updatedCalculation.filterNot(_.isEmpty))
+  def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse = {
+    val updatedCalculation = this.calculation
+      .map { calc =>
+        val updatedEoy = calc.endOfYearEstimate
+          .map(_.copy(totalAllowancesAndDeductions = None))
+          .filter(_.isDefined)
+        calc.copy(endOfYearEstimate = updatedEoy)
+      }
+      .filter(_.isDefined)
+    copy(calculation = updatedCalculation)
   }
 
 }

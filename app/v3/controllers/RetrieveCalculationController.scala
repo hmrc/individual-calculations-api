@@ -46,30 +46,30 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       endpointName = "retrieveCalculation"
     )
 
+  private val featureSwitches = FeatureSwitches()(appConfig)
+
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
-
-      val isR8bFeatureSwitchEnabled = FeatureSwitches()(appConfig).isR8bSpecificApiEnabled
 
       val rawData =
         RetrieveCalculationRawData(
           nino = nino,
           taxYear = taxYear,
           calculationId = calculationId,
-          isR8bFeatureSwitchEnabled
+          featureSwitches.isR8bSpecificApiEnabled
         )
 
       val requestHandler =
         RequestHandler
           .withParser(parser)
           .withService(service.retrieveCalculation)
-          .withModelHandling(({ response: RetrieveCalculationResponse =>
-            if (isR8bFeatureSwitchEnabled)
+          .withModelHandling { response: RetrieveCalculationResponse =>
+            if (featureSwitches.isR8bSpecificApiEnabled)
               response
             else
               (response.withoutBasicExtension).withoutTotalAllowanceAndDeductions
-          }))
+          }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
               RetrieveCalculationHateoasData(

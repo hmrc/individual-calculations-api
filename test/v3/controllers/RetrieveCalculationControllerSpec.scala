@@ -55,7 +55,7 @@ class RetrieveCalculationControllerSpec
 
   trait Test extends ControllerTest {
 
-    val controller = new RetrieveCalculationController(
+    lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveCalculationParser,

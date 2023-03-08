@@ -46,7 +46,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
       }
       "removeBasicExtension is called" in {
         val calculation: Calculation = calcWithEndOfYearEstimate
-        minimalCalculationResponse.withoutBasicExtension() shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        minimalCalculationResponse.withoutBasicExtension shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
     }
 

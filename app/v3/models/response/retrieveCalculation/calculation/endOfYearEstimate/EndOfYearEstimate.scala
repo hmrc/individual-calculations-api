@@ -38,8 +38,8 @@ case class EndOfYearEstimate(
     incomeTaxNicAndCgtAmount: Option[BigDecimal]
 ) {
 
-  val isEmpty: Boolean =
-    totalEstimatedIncome.isEmpty &
+  val isDefined: Boolean =
+    !(totalEstimatedIncome.isEmpty &
       totalAllowancesAndDeductions.isEmpty &
       totalTaxableIncome.isEmpty &
       incomeTaxAmount.isEmpty &
@@ -54,7 +54,7 @@ case class EndOfYearEstimate(
       totalTaxDeducted.isEmpty &
       incomeTaxNicAmount.isEmpty &
       cgtAmount.isEmpty &
-      incomeTaxNicAndCgtAmount.isEmpty
+      incomeTaxNicAndCgtAmount.isEmpty)
 
 }
 

@@ -24,8 +24,8 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    topSlicingRelief: Option[TopSlicingRelief],
                    basicRateExtension: Option[BasicRateExtension]) {
 
-  val isEmpty: Boolean =
-    residentialFinanceCosts.isEmpty & reliefsClaimed.isEmpty & foreignTaxCreditRelief.isEmpty & topSlicingRelief.isEmpty & basicRateExtension.isEmpty
+  val isDefined: Boolean =
+    !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty)
 
 }
 
