@@ -22,9 +22,14 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
                    topSlicingRelief: Option[TopSlicingRelief],
-                   basicRateExtension: Option[BasicRateExtension]
-                  )
+                   basicRateExtension: Option[BasicRateExtension]) {
+
+  val isDefined: Boolean =
+    !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty)
+
+}
 
 object Reliefs extends {
+
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
 }

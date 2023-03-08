@@ -18,6 +18,6 @@ package v3.models.request
 
 import v3.models.domain.{Nino, TaxYear}
 
-case class RetrieveCalculationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
+case class RetrieveCalculationRawData(nino: String, taxYear: String, calculationId: String, isCL249Enabled: Boolean = true) extends RawData
 
 case class RetrieveCalculationRequest(nino: Nino, taxYear: TaxYear, calculationId: String)
