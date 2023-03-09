@@ -32,7 +32,8 @@ description: |
 parameters:
   - $ref: ./common/pathParameters.yaml#/components/parameters/nino
   - $ref: ./common/headers.yaml#/components/parameters/acceptJson
-  - $ref: ./common/headers.yaml#/components/parameters/authorization
+  - $ref: ./common/headers.yaml#/components/parameters/contentTypeJson
+  - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
   - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
 requestBody:

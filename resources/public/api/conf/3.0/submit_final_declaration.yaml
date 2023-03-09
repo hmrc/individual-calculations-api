@@ -73,7 +73,7 @@ post:
     - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
     - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
-    - $ref: ./common/headers.yaml#/components/parameters/authorization
+    - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
   security:
