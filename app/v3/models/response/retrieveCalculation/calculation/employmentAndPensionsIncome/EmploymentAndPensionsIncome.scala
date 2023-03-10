@@ -22,7 +22,16 @@ case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Opti
                                        totalOccupationalPensionIncome: Option[BigDecimal],
                                        totalBenefitsInKind: Option[BigDecimal],
                                        tipsIncome: Option[BigDecimal],
-                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]])
+                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]) {
+
+  val isDefined: Boolean =
+    !(totalPayeEmploymentAndLumpSumIncome.isEmpty &&
+      totalOccupationalPensionIncome.isEmpty &&
+      totalBenefitsInKind.isEmpty &&
+      tipsIncome.isEmpty &&
+      employmentAndPensionsIncomeDetail.isEmpty)
+
+}
 
 object EmploymentAndPensionsIncome {
 

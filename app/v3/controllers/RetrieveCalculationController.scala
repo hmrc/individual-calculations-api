@@ -68,7 +68,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             if (featureSwitches.isR8bSpecificApiEnabled)
               response
             else
-              (response.withoutBasicExtension).withoutTotalAllowanceAndDeductions
+              response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker.withoutUnderLowerProfitThreshold
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {

@@ -41,12 +41,20 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
     }
     "update model" when {
       "removeTotalAllowanceAndDeductions is called" in {
-        val calculation: Calculation = calcWithBasicExtension
+        val calculation: Calculation = calcWithoutEndOfYearEstimate
         minimalCalculationResponse.withoutTotalAllowanceAndDeductions shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
       "removeBasicExtension is called" in {
-        val calculation: Calculation = calcWithEndOfYearEstimate
+        val calculation: Calculation = calcWithoutBasicExtension
         minimalCalculationResponse.withoutBasicExtension shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+      }
+      "removeOffPayrollWorker is called" in {
+        val calculation: Calculation = calcWithoutOffPayrollWorker
+        minimalCalculationResponse.withoutOffPayrollWorker shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+      }
+      "removeUnderLowerProfitThreshold is called" in {
+        val calculation: Calculation = calcWithoutUnderLowerProfitThreshold
+        minimalCalculationResponse.withoutUnderLowerProfitThreshold shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
     }
 
@@ -59,10 +67,10 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
   "LinksFactory" should {
 
     trait Test extends MockAppConfig {
-      val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "AA999999A"
-      val taxYear        = TaxYear.fromMtd("2021-22")
-      val calculationId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      val hateoasFactory   = new HateoasFactory(mockAppConfig)
+      val nino             = "AA999999A"
+      val taxYear: TaxYear = TaxYear.fromMtd("2021-22")
+      val calculationId    = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes()
     }
 
