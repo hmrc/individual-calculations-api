@@ -28,7 +28,7 @@ Run unit tests: `sbt test`
 
 Run integration tests: `sbt it:test`
 
-## Vieweing OAS
+## Viewing OAS
 To view documentation locally ensure the Individual Calculations API is running, and run api-documentation-frontend:
 
 ```
