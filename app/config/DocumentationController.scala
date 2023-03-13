@@ -32,7 +32,7 @@ class DocumentationController @Inject() (selfAssessmentApiDefinition: ApiDefinit
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))
   }
 
-  def raml(version: String, file: String): Action[AnyContent] = {
+  def asset(version: String, file: String): Action[AnyContent] = {
     assets.at(s"/public/api/conf/$version", file)
   }
 
