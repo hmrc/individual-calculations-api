@@ -32,7 +32,7 @@ get:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
     - $ref: ./common/queryParameters.yaml#/components/parameters/taxYearTys
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
-    - $ref: ./common/headers.yaml#/components/parameters/authorization
+    - $ref: ./common/headers.yaml#/components/parameters/authorizationReadScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
   security:

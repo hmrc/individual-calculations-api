@@ -65,7 +65,7 @@ get:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
     - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
-    - $ref: ./common/headers.yaml#/components/parameters/authorization
+    - $ref: ./common/headers.yaml#/components/parameters/authorizationReadScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
   security:
