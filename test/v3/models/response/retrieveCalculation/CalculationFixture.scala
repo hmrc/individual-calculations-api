@@ -135,6 +135,9 @@ trait CalculationFixture {
     lossesAndClaims = None
   )
 
+  val calculationWithR8BDisabledAndTysEnabled =
+    calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
+
   val metadata = Metadata(
     calculationId = "",
     taxYear = TaxYear.fromDownstream("2018"),
@@ -302,24 +305,53 @@ trait CalculationFixture {
       |    },
       |    "endOfYearEstimate": {
       |       "totalAllowancesAndDeductions": 100
-      |     },
-      |     "taxCalculation": {
-      |      "incomeTax": {
-      |        "totalIncomeReceivedFromAllSources": 50,
-      |        "totalAllowancesAndDeductions": 50,
-      |        "totalTaxableIncome": 50,
-      |        "incomeTaxCharged": 50
-      |      },
-      |      "totalIncomeTaxAndNicsDue": 50,
-      |      "nics": {
-      |        "class2Nics": {
-      |          "underSmallProfitThreshold": true,
-      |          "underLowerProfitThreshold": true
-      |        }
-      |      }
-      |    }
+      |     }
       |  }
       |}
+    """.stripMargin
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseWithTysEnabledR8BDisabledJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |  "taxCalculation":{
+        |    "incomeTax":{
+        |       "totalIncomeReceivedFromAllSources":50,
+        |       "totalAllowancesAndDeductions":50,
+        |       "totalTaxableIncome":50,
+        |       "incomeTaxCharged":50
+        |    },
+        |    "nics":{
+        |       "class2Nics":{
+        |          "underSmallProfitThreshold":true,
+        |          "underLowerProfitThreshold":true
+        |          }
+        |        },
+        |    "totalIncomeTaxAndNicsDue":50
+        |   }
+        |  }
+        |}
     """.stripMargin
     )
     .as[JsObject]

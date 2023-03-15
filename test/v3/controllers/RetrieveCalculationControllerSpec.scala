@@ -49,8 +49,8 @@ class RetrieveCalculationControllerSpec
   private val taxYear                                 = "2017-18"
   private val response                                = minimalCalculationResponse
   private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithoutBasicRateExtension    = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
-  private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId, true)
+  private val mtdResponseWithoutR8BJson    = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
+  private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
   trait Test extends ControllerTest {
@@ -92,10 +92,34 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseJson))
       }
 
+      "happy path with TYS feature switch enabled" in new Test {
+        val updatedRawData     = rawData
+        val updatedResponse    = response.copy(calculation = Some(calculationWithR8BDisabledAndTysEnabled))
+        val updatedMtdResponse = minimumCalculationResponseWithTysEnabledR8BDisabledJson ++ hateoaslinksJson
+        MockRetrieveCalculationParser
+          .parseRequest(updatedRawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, updatedResponse))))
+
+        MockAppConfig.featureSwitches
+          .returns(Configuration("tys-api.enabled" -> true))
+          .returns(Configuration("r8b-api.enabled" -> false))
+          .anyNumberOfTimes()
+
+        MockHateoasFactory
+          .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
+          .returns(HateoasWrapper(updatedResponse, hateoaslinks))
+
+        runOkTest(OK, Some(updatedMtdResponse))
+      }
+
       "happy path with R8B feature switch disabled" in new Test {
 
         MockRetrieveCalculationParser
-          .parseRequest(rawData.copy(isCL249Enabled = false))
+          .parseRequest(rawData)
           .returns(Right(requestData))
 
         MockRetrieveCalculationService
@@ -113,7 +137,7 @@ class RetrieveCalculationControllerSpec
           )
           .returns(HateoasWrapper(minimalCalculationResponseWithoutR8BData, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithoutBasicRateExtension))
+        runOkTest(OK, Some(mtdResponseWithoutR8BJson))
       }
 
     }

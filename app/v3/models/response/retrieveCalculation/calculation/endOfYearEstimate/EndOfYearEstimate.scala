@@ -38,6 +38,9 @@ case class EndOfYearEstimate(
     incomeTaxNicAndCgtAmount: Option[BigDecimal]
 ) {
 
+  def withoutTotalAllowanceAndDeductions: EndOfYearEstimate =
+    copy(totalAllowancesAndDeductions = None)
+
   val isDefined: Boolean =
     !(totalEstimatedIncome.isEmpty &&
       totalAllowancesAndDeductions.isEmpty &&

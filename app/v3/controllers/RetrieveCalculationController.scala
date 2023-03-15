@@ -56,8 +56,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
         RetrieveCalculationRawData(
           nino = nino,
           taxYear = taxYear,
-          calculationId = calculationId,
-          featureSwitches.isR8bSpecificApiEnabled
+          calculationId = calculationId
         )
 
       val requestHandler =
@@ -65,10 +64,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withParser(parser)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>
-            if (featureSwitches.isR8bSpecificApiEnabled)
-              response
-            else
-              response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker.withoutUnderLowerProfitThreshold
+            updateModel(response)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
@@ -83,6 +79,14 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
       requestHandler.handleRequest(rawData)
 
+    }
+
+  private def updateModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+    featureSwitches.isTaxYearSpecificApiEnabled match {
+      case true if (!featureSwitches.isR8bSpecificApiEnabled) =>
+        response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutBasicExtension
+      case false => response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutUnderLowerProfitThreshold.withoutBasicExtension
+      case _     => response
     }
 
 }
