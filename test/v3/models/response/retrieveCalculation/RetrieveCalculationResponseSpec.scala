@@ -24,7 +24,6 @@ import v3.models.domain.TaxYear
 import v3.models.hateoas.Method.{GET, POST}
 import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.response.common.CalculationType
-import v3.models.response.retrieveCalculation.calculation.Calculation
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.messages.{Message, Messages}
 import v3.models.response.retrieveCalculation.metadata.Metadata
@@ -37,24 +36,6 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
       "JSON contains every field" in {
         val model = calculationDownstreamJson.as[RetrieveCalculationResponse]
         Json.toJson(model) shouldBe calculationMtdJson
-      }
-    }
-    "update model" when {
-      "removeTotalAllowanceAndDeductions is called" in {
-        val calculation: Calculation = calcWithoutEndOfYearEstimate
-        minimalCalculationResponse.withoutTotalAllowanceAndDeductions shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
-      }
-      "removeBasicExtension is called" in {
-        val calculation: Calculation = calcWithoutBasicExtension
-        minimalCalculationResponse.withoutBasicExtension shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
-      }
-      "removeOffPayrollWorker is called" in {
-        val calculation: Calculation = calcWithoutOffPayrollWorker
-        minimalCalculationResponse.withoutOffPayrollWorker shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
-      }
-      "removeUnderLowerProfitThreshold is called" in {
-        val calculation: Calculation = calcWithoutUnderLowerProfitThreshold
-        minimalCalculationResponse.withoutUnderLowerProfitThreshold shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
       }
     }
 

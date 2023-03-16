@@ -84,8 +84,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
   private def updateModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     featureSwitches.isTaxYearSpecificApiEnabled match {
       case true if (!featureSwitches.isR8bSpecificApiEnabled) =>
-        response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutBasicExtension
-      case false => response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutUnderLowerProfitThreshold.withoutBasicExtension
+        response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker
+      case false => response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutUnderLowerProfitThreshold.withoutOffPayrollWorker
       case _     => response
     }
 

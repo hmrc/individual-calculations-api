@@ -36,7 +36,7 @@ case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Opti
       case Some(det) => {
         val details = (for (c <- det) yield c.copy(offPayrollWorker = None)).filter(_.isDefined)
         if (details.nonEmpty)
-          copy(employmentAndPensionsIncomeDetail = Some(det))
+          copy(employmentAndPensionsIncomeDetail = Some(details))
         else copy(employmentAndPensionsIncomeDetail = None)
       }
       case None => copy(employmentAndPensionsIncomeDetail = None)
