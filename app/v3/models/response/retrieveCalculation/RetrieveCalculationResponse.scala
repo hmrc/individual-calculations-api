@@ -45,6 +45,12 @@ case class RetrieveCalculationResponse(
   def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
 
+
+
+}
+
+object RetrieveCalculationResponse extends HateoasLinks {
+
   def apply(metadata: Metadata, inputs: Inputs, calculation: Option[Calculation], messages: Option[Messages]): RetrieveCalculationResponse = {
     new RetrieveCalculationResponse(
       metadata,
@@ -53,10 +59,6 @@ case class RetrieveCalculationResponse(
       messages
     )
   }
-
-}
-
-object RetrieveCalculationResponse extends HateoasLinks {
   implicit val reads: Reads[RetrieveCalculationResponse] = Json.reads[RetrieveCalculationResponse]
 
   implicit val writes: OWrites[RetrieveCalculationResponse] = Json.writes[RetrieveCalculationResponse]
