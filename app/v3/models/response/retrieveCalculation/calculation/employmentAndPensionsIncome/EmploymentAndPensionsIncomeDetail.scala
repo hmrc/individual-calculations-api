@@ -52,6 +52,8 @@ case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
       studentLoans.isEmpty &&
       benefitsInKind.isEmpty)
 
+  def withoutOffPayrollWorker: EmploymentAndPensionsIncomeDetail = copy(offPayrollWorker = None)
+
 }
 
 object EmploymentAndPensionsIncomeDetail {

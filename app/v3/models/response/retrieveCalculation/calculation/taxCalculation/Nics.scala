@@ -26,7 +26,7 @@ case class Nics(
     totalNic: Option[BigDecimal]
 ) {
 
-  def isDefined = !(
+  def isDefined: Boolean = !(
     class2Nics.isEmpty &&
       class4Nics.isEmpty &&
       nic2NetOfDeductions.isEmpty &&
