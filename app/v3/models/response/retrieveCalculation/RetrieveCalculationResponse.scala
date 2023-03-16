@@ -33,14 +33,26 @@ case class RetrieveCalculationResponse(
     messages: Option[Messages]
 ) {
 
-  def withoutBasicExtension: RetrieveCalculationResponse   = copy(calculation = calculation.map(_.withoutBasicExtension).filter(_.isDefined))
-  def withoutOffPayrollWorker: RetrieveCalculationResponse = copy(calculation = calculation.map(_.withoutOffPayrollWorker).filter(_.isDefined))
+  def withoutBasicExtension: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
+
+  def withoutOffPayrollWorker: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
 
   def withoutUnderLowerProfitThreshold: RetrieveCalculationResponse =
-    copy(calculation = calculation.map(_.withoutUnderLowerProfitThreshold).filter(_.isDefined))
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
 
   def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
-    copy(calculation = calculation.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
+
+  def apply(metadata: Metadata, inputs: Inputs, calculation: Option[Calculation], messages: Option[Messages]): RetrieveCalculationResponse = {
+    new RetrieveCalculationResponse(
+      metadata,
+      inputs,
+      calculation = if (calculation.exists(_.isDefined)) calculation else None,
+      messages
+    )
+  }
 
 }
 

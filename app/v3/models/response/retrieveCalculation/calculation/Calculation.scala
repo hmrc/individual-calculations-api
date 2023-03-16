@@ -77,16 +77,16 @@ case class Calculation(
     lossesAndClaims: Option[LossesAndClaims]
 ) {
 
-  def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
+  def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension))
 
   def withoutUnderLowerProfitThreshold: Calculation =
     copy(taxCalculation = taxCalculation.map(_.withoutUnderLowerProfitThreshold))
 
   def withoutOffPayrollWorker: Calculation =
-    copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker).filter(_.isDefined))
+    copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker))
 
   def withoutTotalAllowanceAndDeductions: Calculation =
-    copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
+    copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions))
 
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v3.models.response.retrieveCalculation.calculation.employmentAndPensionsIncome
 
 import support.UnitSpec
 
 class EmploymentAndPensionsIncomeSpec extends UnitSpec {
 
-  val detail = EmploymentAndPensionsIncomeDetail(
+  val detail: EmploymentAndPensionsIncomeDetail = EmploymentAndPensionsIncomeDetail(
     incomeSourceId = None,
     source = None,
     occupationalPension = None,
@@ -37,14 +38,25 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
     benefitsInKind = None
   )
 
-  val model   = EmploymentAndPensionsIncome(None, None, None, None, Some(Seq(detail)))
-  val updated = model.copy(employmentAndPensionsIncomeDetail = None)
+  val detailWithIncomeSource: EmploymentAndPensionsIncomeDetail        = detail.copy(incomeSourceId = Some("incomeSourceId"))
+  val updatedDetailWithIncomeSource: EmploymentAndPensionsIncomeDetail = detailWithIncomeSource.copy(offPayrollWorker = None)
+  val model: EmploymentAndPensionsIncome                               = EmploymentAndPensionsIncome(None, None, None, None, Some(Seq(detail)))
+  val updatedModel: EmploymentAndPensionsIncome                        = model.copy(employmentAndPensionsIncomeDetail = None)
 
-  "functionName" when {
-    "called" should {
-      "return model with offPayrollWorker = None" in {
-        model.withoutOffPayrollWorker shouldBe updated
-
+  "withoutOffPayrollWorker" when {
+    "employmentAndPensionIncome.isDefined returns true" should {
+      "employmentAndPensionDetail should be Some(_)" in {
+        val employmentAndPensionsIncome: EmploymentAndPensionsIncome =
+          model.copy(employmentAndPensionsIncomeDetail = Some(Seq(detailWithIncomeSource)))
+        val result: EmploymentAndPensionsIncome = employmentAndPensionsIncome.withoutOffPayrollWorker
+        result.employmentAndPensionsIncomeDetail shouldBe Some(Seq(updatedDetailWithIncomeSource))
+      }
+    }
+    "employmentAndPensionIncome.isDefined returns false" should {
+      "employmentAndPensionDetail should be None" in {
+        val employmentAndPensionsIncome: EmploymentAndPensionsIncome = model
+        val result                                                   = employmentAndPensionsIncome.withoutOffPayrollWorker
+        result.employmentAndPensionsIncomeDetail shouldBe None
       }
     }
   }

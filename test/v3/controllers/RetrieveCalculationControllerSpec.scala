@@ -18,6 +18,7 @@ package v3.controllers
 
 import mocks.{MockAppConfig, MockIdGenerator}
 import play.api.Configuration
+import play.api.libs.json.JsObject
 import play.api.mvc.Result
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
@@ -27,7 +28,7 @@ import v3.models.errors._
 import v3.models.hateoas.HateoasWrapper
 import v3.models.outcomes.ResponseWrapper
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
-import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData}
+import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,11 +46,11 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear                                 = "2017-18"
-  private val response                                = minimalCalculationResponse
-  private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithoutR8BJson    = minimumCalculationResponseWithoutR8BJson ++ hateoaslinksJson
+  private val calculationId   = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear         = "2017-18"
+  private val response        = minimalCalculationResponse
+  private val mtdResponseJson = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+//  private val mtdResponseWithoutR8BJson               = minimumCalculationResponseJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
@@ -72,7 +73,7 @@ class RetrieveCalculationControllerSpec
 
   "handleRequest" should {
     "return OK with the calculation" when {
-      "happy path with R8B feature switch enabled" in new Test {
+      "happy path with R8B and TYS feature switches enabled" in new Test {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -92,17 +93,17 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseJson))
       }
 
-      "happy path with TYS feature switch enabled" in new Test {
-        val updatedRawData     = rawData
-        val updatedResponse    = response.copy(calculation = Some(calculationWithR8BDisabledAndTysEnabled))
-        val updatedMtdResponse = minimumCalculationResponseWithTysEnabledR8BDisabledJson ++ hateoaslinksJson
+      "happy path with TYS enabled and R8B feature switches disabled" in new Test {
+        val updatedRawData: RetrieveCalculationRawData   = rawData
+        val updatedResponse: RetrieveCalculationResponse = response.copy(calculation = Some(calculationWithR8BDisabledAndTysEnabled))
+        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithTysEnabledR8BDisabledJson ++ hateoaslinksJson
         MockRetrieveCalculationParser
           .parseRequest(updatedRawData)
           .returns(Right(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, updatedResponse))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockAppConfig.featureSwitches
           .returns(Configuration("tys-api.enabled" -> true))
@@ -116,30 +117,61 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(updatedMtdResponse))
       }
 
-      "happy path with R8B feature switch disabled" in new Test {
+      "happy path with R8B and TYS feature switches disabled" in new Test {
 
+        val updatedCalculation  = calculationWithR8BDisabledAndTysEnabled.copy(taxCalculation = Some(taxCalculationWithoutUnderLowerProfitThreshold))
+        val updatedResponse     = minimalCalculationResponse.copy(calculation = Some(updatedCalculation))
+        val updatedResponseJson = noUnderLowerProfitThresholdCalculationResponseMtdJson ++ hateoaslinksJson
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, minimalCalculationResponseWithoutR8BData))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> false))
+          .returns(Configuration("tys-api.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
           .wrap(
-            minimalCalculationResponseWithoutR8BData,
-            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, minimalCalculationResponseWithoutR8BData)
+            updatedResponse,
+            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse)
           )
-          .returns(HateoasWrapper(minimalCalculationResponseWithoutR8BData, hateoaslinks))
+          .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithoutR8BJson))
+        runOkTest(OK, Some(updatedResponseJson))
       }
 
+      "happy path with R8B  enabled and TYS feature switches disabled" in new Test {
+
+        val updatedCalculation  = calculationWithR8BDisabledAndTysEnabled.copy(taxCalculation = Some(taxCalculationWithoutUnderLowerProfitThreshold))
+        val updatedResponse     = minimalCalculationResponse.copy(calculation = Some(updatedCalculation))
+        val updatedResponseJson = noUnderLowerProfitThresholdCalculationResponseMtdJson ++ hateoaslinksJson
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+
+        MockAppConfig.featureSwitches
+          .returns(Configuration("r8b-api.enabled" -> true))
+          .returns(Configuration("tys-api.enabled" -> false))
+          .anyNumberOfTimes()
+
+        MockHateoasFactory
+          .wrap(
+            updatedResponse,
+            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse)
+          )
+          .returns(HateoasWrapper(updatedResponse, hateoaslinks))
+
+        runOkTest(OK, Some(updatedResponseJson))
+      }
     }
 
     "return the error as per spec" when {
