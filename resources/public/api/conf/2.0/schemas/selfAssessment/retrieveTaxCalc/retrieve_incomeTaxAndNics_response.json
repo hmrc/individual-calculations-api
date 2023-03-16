@@ -1643,11 +1643,6 @@
                   "type": "boolean",
                   "description": "Boolean showing the customer has requested to make voluntary Class 2 NICs contributions.",
                   "example": "true"
-                },
-                "underLowerProfitThreshold": {
-                  "type": "boolean",
-                  "description": "Indicates whether the lower profits threshold is exceeded. This value must be true or false.",
-                  "example": "false"
                 }
               },
               "required": [

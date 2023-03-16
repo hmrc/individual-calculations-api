@@ -88,11 +88,6 @@
       ],
       "topSlicingRelief": {
         "amount": 2000.58
-      },
-      "basicRateExtension": {
-        "totalBasicRateExtension": 2010.58,
-        "giftAidRelief": "3000",
-        "pensionContributionReliefs": 5000.58
       }
     }
   },
