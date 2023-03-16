@@ -12,9 +12,9 @@ The Individual Calculations API allows a developer to:
 ## Requirements
 
 - Scala 2.12.x
-- Java 8
-- sbt 1.6.x
-- [Service Manager](https://github.com/hmrc/service-manager)
+- Java 11
+- sbt 1.7.x
+- [Service Manager V2](https://github.com/hmrc/sm2)
 
 ## Development Setup
 
@@ -29,6 +29,7 @@ Run unit tests: `sbt test`
 Run integration tests: `sbt it:test`
 
 ## Viewing OAS
+
 To view documentation locally ensure the Individual Calculations API is running, and run api-documentation-frontend:
 
 ```
@@ -43,7 +44,7 @@ http://localhost:9767/api/conf/2.0/application.yaml
 
 ## Changelog
 
-You can see our changelog [here](https://github.com/hmrc/income-tax-mtd-changelog/wiki)
+You can see our changelog [here](https://github.com/hmrc/income-tax-mtd-changelog)
 
 ## Support and Reporting Issues
 
@@ -52,7 +53,7 @@ You can create a GitHub issue [here](https://github.com/hmrc/income-tax-mtd-chan
 ## API Reference / Documentation
 
 Available on
-the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-calculations-api/2.0)
+the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-calculations-api)
 
 ## License
 
