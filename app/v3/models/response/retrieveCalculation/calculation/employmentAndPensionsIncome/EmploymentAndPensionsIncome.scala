@@ -22,7 +22,28 @@ case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Opti
                                        totalOccupationalPensionIncome: Option[BigDecimal],
                                        totalBenefitsInKind: Option[BigDecimal],
                                        tipsIncome: Option[BigDecimal],
-                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]])
+                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]) {
+
+  val isDefined: Boolean =
+    !(totalPayeEmploymentAndLumpSumIncome.isEmpty &&
+      totalOccupationalPensionIncome.isEmpty &&
+      totalBenefitsInKind.isEmpty &&
+      tipsIncome.isEmpty &&
+      employmentAndPensionsIncomeDetail.isEmpty)
+
+  def withoutOffPayrollWorker: EmploymentAndPensionsIncome = {
+    employmentAndPensionsIncomeDetail match {
+      case Some(det) => {
+        val details = (for (c <- det) yield c.withoutOffPayrollWorker).filter(_.isDefined)
+        if (details.nonEmpty)
+          copy(employmentAndPensionsIncomeDetail = Some(details))
+        else copy(employmentAndPensionsIncomeDetail = None)
+      }
+      case None => copy(employmentAndPensionsIncomeDetail = None)
+    }
+  }
+
+}
 
 object EmploymentAndPensionsIncome {
 

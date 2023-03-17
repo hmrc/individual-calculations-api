@@ -20,21 +20,24 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType.`inYear`
 import v3.models.response.retrieveCalculation.calculation.Calculation
+import v3.models.response.retrieveCalculation.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v3.models.response.retrieveCalculation.calculation.endOfYearEstimate.EndOfYearEstimate
 import v3.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, Reliefs}
+import v3.models.response.retrieveCalculation.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
+
+  val totalBasicRateExtension      = 2000
+  val totalAllowancesAndDeductions = 100
+  val incomeTaxValue               = 50
 
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_mtd.json"))
 
   val calculationDownstreamJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_downstream.json"))
-
-  val totalBasicRateExtension      = 2000
-  val totalAllowancesAndDeductions = 100
 
   val reliefs = Reliefs(
     basicRateExtension =
@@ -44,11 +47,107 @@ trait CalculationFixture {
     topSlicingRelief = None,
     reliefsClaimed = None
   )
-  // @formatter:off
+
+  val class2Nics: Class2Nics = Class2Nics(
+    amount = None,
+    weeklyRate = None,
+    weeks = None,
+    limit = None,
+    apportionedLimit = None,
+    underSmallProfitThreshold = true,
+    underLowerProfitThreshold = Some(true),
+    actualClass2Nic = None
+  )
+
+  val class2NicsWithoutUnderLowerProfitThreshold: Class2Nics = class2Nics.copy(underLowerProfitThreshold = None)
+
+  val nics: Nics = Nics(class2Nics = Some(class2Nics), class4Nics = None, nic2NetOfDeductions = None, nic4NetOfDeductions = None, totalNic = None)
+  val nicsWithoutUnderLowerProfitThreshold: Nics = nics.copy(class2Nics = Some(class2NicsWithoutUnderLowerProfitThreshold))
+
+  val incomeTax: IncomeTax = IncomeTax(
+    totalIncomeReceivedFromAllSources = incomeTaxValue,
+    totalAllowancesAndDeductions = incomeTaxValue,
+    totalTaxableIncome = incomeTaxValue,
+    payPensionsProfit = None,
+    savingsAndGains = None,
+    dividends = None,
+    lumpSums = None,
+    gainsOnLifePolicies = None,
+    incomeTaxCharged = incomeTaxValue,
+    totalReliefs = None,
+    incomeTaxDueAfterReliefs = None,
+    totalNotionalTax = None,
+    marriageAllowanceRelief = None,
+    incomeTaxDueAfterTaxReductions = None,
+    incomeTaxDueAfterGiftAid = None,
+    totalPensionSavingsTaxCharges = None,
+    statePensionLumpSumCharges = None,
+    payeUnderpaymentsCodedOut = None,
+    totalIncomeTaxDue = None
+  )
+
+  val taxCalculation: TaxCalculation = TaxCalculation(
+    incomeTax = incomeTax,
+    nics = Some(nics),
+    totalTaxDeductedBeforeCodingOut = None,
+    saUnderpaymentsCodedOut = None,
+    totalIncomeTaxNicsCharged = None,
+    totalStudentLoansRepaymentAmount = None,
+    totalAnnuityPaymentsTaxCharged = None,
+    totalRoyaltyPaymentsTaxCharged = None,
+    totalTaxDeducted = None,
+    totalIncomeTaxAndNicsDue = incomeTaxValue,
+    capitalGainsTax = None,
+    totalIncomeTaxAndNicsAndCgt = None
+  )
+
+  val taxCalculationWithoutUnderLowerProfitThreshold = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
+
+  val employmentAndPensionsIncomeDetails = EmploymentAndPensionsIncomeDetail(
+    incomeSourceId = None,
+    source = None,
+    occupationalPension = None,
+    employerRef = None,
+    employerName = None,
+    offPayrollWorker = Some(true),
+    payrollId = None,
+    startDate = None,
+    dateEmploymentEnded = None,
+    taxablePayToDate = None,
+    totalTaxToDate = None,
+    disguisedRemuneration = None,
+    lumpSums = None,
+    studentLoans = None,
+    benefitsInKind = None
+  )
+
+  val employmentAndPensionsIncome = EmploymentAndPensionsIncome(
+    totalPayeEmploymentAndLumpSumIncome = None,
+    totalOccupationalPensionIncome = None,
+    totalBenefitsInKind = None,
+    tipsIncome = None,
+    employmentAndPensionsIncomeDetail = Some(Seq(employmentAndPensionsIncomeDetails))
+  )
+
   val eoyEstimates = EndOfYearEstimate(
-    None,    None,    totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
-    None,    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,    None)
+    incomeSource = None,
+    totalEstimatedIncome = None,
+    totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
+    totalTaxableIncome = None,
+    incomeTaxAmount = None,
+    nic2 = None,
+    nic4 = None,
+    totalTaxDeductedBeforeCodingOut = None,
+    saUnderpaymentsCodedOut = None,
+    totalNicAmount = None,
+    totalStudentLoansRepaymentAmount = None,
+    totalAnnuityPaymentsTaxCharged = None,
+    totalRoyaltyPaymentsTaxCharged = None,
+    totalTaxDeducted = None,
+    incomeTaxNicAmount = None,
+    cgtAmount = None,
+    incomeTaxNicAndCgtAmount = None
+  )
   // @formatter:on
 
   val calculationWithR8BData = Calculation(
@@ -65,7 +164,7 @@ trait CalculationFixture {
     codedOutUnderpayments = None,
     foreignPropertyIncome = None,
     businessProfitAndLoss = None,
-    employmentAndPensionsIncome = None,
+    employmentAndPensionsIncome = Some(employmentAndPensionsIncome),
     employmentExpenses = None,
     seafarersDeductions = None,
     foreignTaxForFtcrNotClaimed = None,
@@ -76,11 +175,14 @@ trait CalculationFixture {
     savingsAndGainsIncome = None,
     dividendsIncome = None,
     incomeSummaryTotals = None,
-    taxCalculation = None,
+    taxCalculation = Some(taxCalculation),
     previousCalculation = None,
     endOfYearEstimate = Some(eoyEstimates),
     lossesAndClaims = None
   )
+
+  val calculationWithR8BDisabledAndTysEnabled: Calculation =
+    calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
 
   val metadata = Metadata(
     calculationId = "",
@@ -117,31 +219,20 @@ trait CalculationFixture {
   )
 
   // @formatter:off
-  val calcWithEndOfYearEstimate: Calculation = Calculation(
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    Some(eoyEstimates),    None
-  )
+  val emptyCalculation: Calculation = Calculation(
+    None, None, None, None, None, None,
+    None, None, None, None, None, None,
+    None, None, None, None, None, None,
+    None, None, None, None, None, None,
+    None, None, None, None)
 
-  val calcWithBasicExtension: Calculation = Calculation(
-    None,    Some(reliefs),    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None
-  )
+  val calcWithoutEndOfYearEstimate: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
 
-  val emptyCalc: Calculation = Calculation(
-    None,    Some(reliefs),    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,    None,    None,    None,
-    None,    None,    None,
-    Some(EndOfYearEstimate(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)),
-    None
-  )
+
+  val calcWithoutBasicExtension: Calculation = emptyCalculation.copy(endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
+
+ val calcWithoutOffPayrollWorker: Calculation= emptyCalculation.copy(reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), taxCalculation = Some(taxCalculation))
+  val calcWithoutUnderLowerProfitThreshold: Calculation= emptyCalculation.copy(taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
   // @formatter:on
 
   val minimalCalculationResponseWithoutR8BData: RetrieveCalculationResponse = RetrieveCalculationResponse(
@@ -174,13 +265,35 @@ trait CalculationFixture {
         |    "incomeSources": {}
         |  },
         |  "calculation": {
-        |    "endOfYearEstimate": {
-        |     "totalAllowancesAndDeductions": 100
-        |   },
+        |    "taxCalculation": {
+        |      "incomeTax": {
+        |        "totalIncomeReceivedFromAllSources": 50,
+        |        "totalAllowancesAndDeductions": 50,
+        |        "totalTaxableIncome": 50,
+        |        "incomeTaxCharged": 50
+        |      },
+        |      "totalIncomeTaxAndNicsDue": 50,
+        |      "nics": {
+        |        "class2Nics": {
+        |          "underSmallProfitThreshold": true,
+        |          "underLowerProfitThreshold": true
+        |        }
+        |      }
+        |    },
+        |    "employmentAndPensionsIncome": {
+        |      "employmentAndPensionsIncomeDetail": [
+        |        {
+        |          "offPayrollWorker": true
+        |        }
+        |      ]
+        |    },
         |    "reliefs": {
-        |       "basicRateExtension": {
-        |       "totalBasicRateExtension": 2000.00
-        |       }
+        |      "basicRateExtension": {
+        |        "totalBasicRateExtension": 2000
+        |      }
+        |    },
+        |    "endOfYearEstimate": {
+        |      "totalAllowancesAndDeductions": 100
         |    }
         |  }
         |}
@@ -211,16 +324,80 @@ trait CalculationFixture {
       |    "incomeSources": {}
       |  },
       |  "calculation": {
-      |    "endOfYearEstimate": {
-      |       "totalAllowancesAndDeductions": 100
-      |     },
+      |  "taxCalculation":{
+      |    "incomeTax":{
+      |       "totalIncomeReceivedFromAllSources":50,
+      |       "totalAllowancesAndDeductions":50,
+      |       "totalTaxableIncome":50,
+      |       "incomeTaxCharged":50
+      |    },
+      |    "nics":{
+      |       "class2Nics":{
+      |          "underSmallProfitThreshold":true,
+      |          "underLowerProfitThreshold":true
+      |          }
+      |        },
+      |    "totalIncomeTaxAndNicsDue":50
+      |   },
+      |  "employmentAndPensionsIncome":{
+      |       "employmentAndPensionsIncomeDetail": [
+      |          { "offPayrollWorker": true }
+      |      ]
+      |    },
       |    "reliefs": {
       |       "basicRateExtension": {
       |       "totalBasicRateExtension": 2000.00
       |       }
-      |    }
+      |    },
+      |    "endOfYearEstimate": {
+      |       "totalAllowancesAndDeductions": 100
+      |     }
       |  }
       |}
+    """.stripMargin
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseWithTysEnabledR8BDisabledJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |  "taxCalculation":{
+        |    "incomeTax":{
+        |       "totalIncomeReceivedFromAllSources":50,
+        |       "totalAllowancesAndDeductions":50,
+        |       "totalTaxableIncome":50,
+        |       "incomeTaxCharged":50
+        |    },
+        |    "nics":{
+        |       "class2Nics":{
+        |          "underSmallProfitThreshold":true,
+        |          "underLowerProfitThreshold":true
+        |          }
+        |        },
+        |    "totalIncomeTaxAndNicsDue":50
+        |   }
+        |  }
+        |}
     """.stripMargin
     )
     .as[JsObject]
@@ -228,11 +405,11 @@ trait CalculationFixture {
   val emptyCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,
-    calculation = Some(emptyCalc),
+    calculation = Some(emptyCalculation),
     messages = None
   )
 
-  val minimumCalculationResponseWithoutR8BJson: JsObject = Json
+  val minimumCalculationResponseJson: JsObject = Json
     .parse(
       """
         |{
@@ -313,6 +490,49 @@ trait CalculationFixture {
       |    "incomeSources": {}
       |  }
       |}
+   """.stripMargin
+    )
+    .as[JsObject]
+
+  val noUnderLowerProfitThresholdCalculationResponseMtdJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |    "taxCalculation":{
+        |      "incomeTax":{
+        |       "totalIncomeReceivedFromAllSources":50,
+        |       "totalAllowancesAndDeductions":50,
+        |       "totalTaxableIncome":50,
+        |       "incomeTaxCharged":50
+        |    },
+        |    "nics":{
+        |       "class2Nics":{
+        |          "underSmallProfitThreshold":true
+        |          }
+        |    },
+        |    "totalIncomeTaxAndNicsDue":50
+        |    }
+        |   }
+        |}
    """.stripMargin
     )
     .as[JsObject]

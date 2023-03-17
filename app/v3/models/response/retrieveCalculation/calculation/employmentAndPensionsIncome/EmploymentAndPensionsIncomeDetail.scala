@@ -33,7 +33,28 @@ case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
                                              disguisedRemuneration: Option[Boolean],
                                              lumpSums: Option[LumpSums],
                                              studentLoans: Option[StudentLoans],
-                                             benefitsInKind: Option[BenefitsInKind])
+                                             benefitsInKind: Option[BenefitsInKind]) {
+
+  val isDefined: Boolean =
+    !(incomeSourceId.isEmpty &&
+      source.isEmpty &&
+      occupationalPension.isEmpty &&
+      employerRef.isEmpty &&
+      employerName.isEmpty &&
+      offPayrollWorker.isEmpty &&
+      payrollId.isEmpty &&
+      startDate.isEmpty &&
+      dateEmploymentEnded.isEmpty &&
+      taxablePayToDate.isEmpty &&
+      totalTaxToDate.isEmpty &&
+      disguisedRemuneration.isEmpty &&
+      lumpSums.isEmpty &&
+      studentLoans.isEmpty &&
+      benefitsInKind.isEmpty)
+
+  def withoutOffPayrollWorker: EmploymentAndPensionsIncomeDetail = copy(offPayrollWorker = None)
+
+}
 
 object EmploymentAndPensionsIncomeDetail {
 

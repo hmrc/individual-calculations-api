@@ -33,33 +33,32 @@ case class RetrieveCalculationResponse(
     messages: Option[Messages]
 ) {
 
-  def withoutBasicExtension: RetrieveCalculationResponse = {
-    val updatedCalculation = this.calculation
-      .map { calc =>
-        val updatedReliefs = calc.reliefs
-          .map(_.copy(basicRateExtension = None))
-          .filter(_.isDefined)
-        calc.copy(reliefs = updatedReliefs)
-      }
-      .filter(_.isDefined)
-    copy(calculation = updatedCalculation)
-  }
+  def withoutBasicExtension: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
 
-  def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse = {
-    val updatedCalculation = this.calculation
-      .map { calc =>
-        val updatedEoy = calc.endOfYearEstimate
-          .map(_.copy(totalAllowancesAndDeductions = None))
-          .filter(_.isDefined)
-        calc.copy(endOfYearEstimate = updatedEoy)
-      }
-      .filter(_.isDefined)
-    copy(calculation = updatedCalculation)
-  }
+  def withoutOffPayrollWorker: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
+
+  def withoutUnderLowerProfitThreshold: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
+
+  def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
+
+
 
 }
 
 object RetrieveCalculationResponse extends HateoasLinks {
+
+  def apply(metadata: Metadata, inputs: Inputs, calculation: Option[Calculation], messages: Option[Messages]): RetrieveCalculationResponse = {
+    new RetrieveCalculationResponse(
+      metadata,
+      inputs,
+      calculation = if (calculation.exists(_.isDefined)) calculation else None,
+      messages
+    )
+  }
   implicit val reads: Reads[RetrieveCalculationResponse] = Json.reads[RetrieveCalculationResponse]
 
   implicit val writes: OWrites[RetrieveCalculationResponse] = Json.writes[RetrieveCalculationResponse]

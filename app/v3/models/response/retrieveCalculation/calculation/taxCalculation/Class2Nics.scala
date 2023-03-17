@@ -27,7 +27,9 @@ case class Class2Nics(
     underSmallProfitThreshold: Boolean,
     underLowerProfitThreshold: Option[Boolean],
     actualClass2Nic: Option[Boolean]
-)
+) {
+  def withoutUnderLowerProfitThreshold: Class2Nics = copy(underLowerProfitThreshold = None)
+}
 
 object Class2Nics {
   implicit val format: Format[Class2Nics] = Json.format

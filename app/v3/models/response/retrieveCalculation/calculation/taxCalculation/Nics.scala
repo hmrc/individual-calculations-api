@@ -24,7 +24,20 @@ case class Nics(
     nic2NetOfDeductions: Option[BigDecimal],
     nic4NetOfDeductions: Option[BigDecimal],
     totalNic: Option[BigDecimal]
-)
+) {
+
+  def isDefined: Boolean = !(
+    class2Nics.isEmpty &&
+      class4Nics.isEmpty &&
+      nic2NetOfDeductions.isEmpty &&
+      nic4NetOfDeductions.isEmpty &&
+      totalNic.isEmpty
+  )
+
+  def withoutUnderLowerProfitThreshold: Nics =
+    copy(class2Nics = class2Nics.map(_.withoutUnderLowerProfitThreshold))
+
+}
 
 object Nics {
   implicit val format: Format[Nics] = Json.format

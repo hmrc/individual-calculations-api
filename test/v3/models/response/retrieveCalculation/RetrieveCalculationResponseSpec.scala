@@ -24,7 +24,6 @@ import v3.models.domain.TaxYear
 import v3.models.hateoas.Method.{GET, POST}
 import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.response.common.CalculationType
-import v3.models.response.retrieveCalculation.calculation.Calculation
 import v3.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v3.models.response.retrieveCalculation.messages.{Message, Messages}
 import v3.models.response.retrieveCalculation.metadata.Metadata
@@ -39,16 +38,6 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
         Json.toJson(model) shouldBe calculationMtdJson
       }
     }
-    "update model" when {
-      "removeTotalAllowanceAndDeductions is called" in {
-        val calculation: Calculation = calcWithBasicExtension
-        minimalCalculationResponse.withoutTotalAllowanceAndDeductions shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
-      }
-      "removeBasicExtension is called" in {
-        val calculation: Calculation = calcWithEndOfYearEstimate
-        minimalCalculationResponse.withoutBasicExtension shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
-      }
-    }
 
     "have the correct fields optional" when {
       testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
@@ -59,10 +48,10 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
   "LinksFactory" should {
 
     trait Test extends MockAppConfig {
-      val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "AA999999A"
-      val taxYear        = TaxYear.fromMtd("2021-22")
-      val calculationId  = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      val hateoasFactory   = new HateoasFactory(mockAppConfig)
+      val nino             = "AA999999A"
+      val taxYear: TaxYear = TaxYear.fromMtd("2021-22")
+      val calculationId    = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       MockAppConfig.apiGatewayContext.returns("some-context").anyNumberOfTimes()
     }
 
