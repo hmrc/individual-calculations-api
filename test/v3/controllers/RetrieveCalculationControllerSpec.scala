@@ -46,11 +46,10 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId   = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear         = "2017-18"
-  private val response        = minimalCalculationResponse
-  private val mtdResponseJson = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-//  private val mtdResponseWithoutR8BJson               = minimumCalculationResponseJson ++ hateoaslinksJson
+  private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear                                 = "2017-18"
+  private val response                                = minimalCalculationResponse
+  private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
