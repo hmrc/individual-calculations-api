@@ -99,7 +99,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
       }
 
-      "valid request is made without a tax year" in new NonTysTest {
+      "valid request is made without a tax year" in new TysIfsTest {
         override def taxYear: Option[String] = None
 
         override def setupStubs(): StubMapping = {
