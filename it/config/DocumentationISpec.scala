@@ -25,8 +25,7 @@ import support.IntegrationBaseSpec
 
 class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
 
-  val apiDefinitionJson: JsValue = Json.parse(
-    """
+  val apiDefinitionJson: JsValue = Json.parse("""
       |{
       |  "scopes":[
       |    {
@@ -79,7 +78,7 @@ class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
       val response: WSResponse = await(buildRequest("/api/conf/3.0/application.yaml").get())
       response.status shouldBe Status.OK
 
-      val contents = response.body[String]
+      val contents     = response.body[String]
       val parserResult = new OpenAPIV3Parser().readContents(contents)
 
       val openAPI = Option(parserResult.getOpenAPI)
