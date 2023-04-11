@@ -561,7 +561,7 @@
         },
         "underLowerProfitThreshold": {
           "type": "boolean",
-          "description": "Indicates whether the lower profits threshold is exceeded. This value must be true or false. [test only]",
+          "description": "Indicates whether the lower profits threshold is exceeded. This value must be true or false.",
           "example": "false"
         }
       },
