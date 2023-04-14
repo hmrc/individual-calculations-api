@@ -29,10 +29,10 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String = "AA123456A"
-    val taxYear: String = "2018-19"
+    val nino: String              = "AA123456A"
+    val taxYear: String           = "2018-19"
     val downstreamTaxYear: String = "2019"
-    val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
 
@@ -75,8 +75,8 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
                               expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new Test {
 
-          override val nino: String = requestNino
-          override val taxYear: String = requestTaxYear
+          override val nino: String          = requestNino
+          override val taxYear: String       = requestTaxYear
           override val calculationId: String = requestCalculationId
 
           override def setupStubs(): StubMapping = {
@@ -152,7 +152,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
         val extraDesErrors = Seq(
           (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, InternalError),
           (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError)
         )
 
         (errors ++ extraDesErrors).foreach(args => (serviceErrorTest _).tupled(args))

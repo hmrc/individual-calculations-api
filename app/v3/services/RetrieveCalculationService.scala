@@ -62,5 +62,3 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
   }
 
 }
-
-

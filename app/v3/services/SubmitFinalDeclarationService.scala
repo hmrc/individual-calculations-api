@@ -27,11 +27,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject()(connector: SubmitFinalDeclarationConnector) extends BaseService {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
-                                                                     ctx: RequestContext,
-                                                                     ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
 
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
@@ -59,9 +59,9 @@ class SubmitFinalDeclarationService @Inject()(connector: SubmitFinalDeclarationC
     )
 
     val extraDesErrors: Map[String, MtdError] = Map(
-      "INVALID_IDTYPE" -> InternalError,
+      "INVALID_IDTYPE"  -> InternalError,
       "INVALID_IDVALUE" -> NinoFormatError,
-      "INVALID_TAXYEAR" -> TaxYearFormatError,
+      "INVALID_TAXYEAR" -> TaxYearFormatError
     )
 
     errors ++ extraDesErrors
