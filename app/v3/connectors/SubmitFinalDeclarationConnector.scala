@@ -16,9 +16,9 @@
 
 package v3.connectors
 
-import config.AppConfig
+import config.{AppConfig, FeatureSwitches}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.IfsUri
+import v3.connectors.DownstreamUri.{DesUri, IfsUri}
 import v3.models.domain.EmptyJsonBody
 import v3.models.request.SubmitFinalDeclarationRequest
 
@@ -33,12 +33,20 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import v3.connectors.httpparsers.StandardDownstreamHttpParser._
     import request._
+    import v3.connectors.httpparsers.StandardDownstreamHttpParser._
+
+    val isIfsEnabled: Boolean = FeatureSwitches(appConfig.featureSwitches).isIfsSubmitFinalDeclarationEnabled
+
+    val downstreamUri = if (isIfsEnabled) {
+      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+    } else {
+      DesUri[Unit](s"income-tax/calculation/nino/$nino/${taxYear.asDownstream}/$calculationId/crystallise")
+    }
 
     post(
       body = EmptyJsonBody,
-      uri = IfsUri(s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+      uri = downstreamUri
     )
   }
 

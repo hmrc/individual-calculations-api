@@ -36,8 +36,8 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
-  private val downstreamErrorMap: Map[String, MtdError] =
-    Map(
+  private val downstreamErrorMap: Map[String, MtdError] = {
+    val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID"      -> NinoFormatError,
       "INVALID_TAX_YEAR"               -> TaxYearFormatError,
       "INVALID_CALCID"                 -> CalculationIdFormatError,
@@ -57,5 +57,15 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "SERVICE_UNAVAILABLE"            -> InternalError,
       "UNMATCHED_STUB_ERROR"           -> RuleIncorrectGovTestScenarioError
     )
+
+    val extraDesErrors: Map[String, MtdError] = Map(
+      "INVALID_IDTYPE"  -> InternalError,
+      "INVALID_IDVALUE" -> NinoFormatError,
+      "INVALID_TAXYEAR" -> TaxYearFormatError
+    )
+
+    errors ++ extraDesErrors
+
+  }
 
 }

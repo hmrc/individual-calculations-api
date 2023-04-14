@@ -67,7 +67,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     "Environment"       -> "ifs-environment",
     "User-Agent"        -> "this-api",
     "CorrelationId"     -> correlationId,
-    "Gov-Test-Scenario" -> "DEFAULT",
+    "Gov-Test-Scenario" -> "DEFAULT"
   )
 
   val allowedIfsHeaders: Seq[String] = Seq(
@@ -113,7 +113,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
         )
     }
 
-    protected def willGet[T](url: String, parameters : Seq[(String, String)]): CallHandler[Future[T]] = {
+    protected def willGet[T](url: String, parameters: Seq[(String, String)]): CallHandler[Future[T]] = {
       MockHttpClient
         .get(
           url = url,
@@ -171,6 +171,19 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
 
   }
 
+  protected trait DesTestSubmitFinalDeclaration extends ConnectorTest {
+
+    protected lazy val requiredHeaders: Seq[(String, String)] = requiredDesHeaders
+
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
+
+    MockAppConfig.featureSwitches returns Configuration("ifs-submit-final-declaration.enabled" -> false)
+
+  }
+
   protected trait IfsTest extends ConnectorTest {
 
     protected lazy val requiredHeaders: Seq[(String, String)] = requiredIfsHeaders
@@ -181,6 +194,18 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     MockAppConfig.ifsEnvironmentHeaders returns Some(allowedIfsHeaders)
 
     MockAppConfig.featureSwitches returns Configuration("tys-api.enabled" -> false)
+  }
+
+  protected trait IfsTestSubmitFinalDeclaration extends ConnectorTest {
+
+    protected lazy val requiredHeaders: Seq[(String, String)] = requiredIfsHeaders
+
+    MockAppConfig.ifsBaseUrl returns baseUrl
+    MockAppConfig.ifsToken returns "ifs-token"
+    MockAppConfig.ifsEnvironment returns "ifs-environment"
+    MockAppConfig.ifsEnvironmentHeaders returns Some(allowedIfsHeaders)
+
+    MockAppConfig.featureSwitches returns Configuration("ifs-submit-final-declaration.enabled" -> true)
   }
 
   protected trait TysIfsTest extends ConnectorTest {
