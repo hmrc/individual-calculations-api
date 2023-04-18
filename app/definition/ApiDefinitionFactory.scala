@@ -28,7 +28,11 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
   private val readScope  = "read:self-assessment"
   private val writeScope = "write:self-assessment"
 
-  def confidenceLevel: ConfidenceLevel = if (appConfig.confidenceLevelConfig.definitionEnabled) ConfidenceLevel.L200 else ConfidenceLevel.L50
+  lazy val confidenceLevel: ConfidenceLevel = {
+    val clConfig = appConfig.confidenceLevelConfig
+
+    if (clConfig.definitionEnabled) clConfig.confidenceLevel else ConfidenceLevel.L50
+  }
 
   lazy val definition: Definition =
     Definition(

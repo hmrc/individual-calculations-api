@@ -41,9 +41,9 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.endpointsEnabled(version = "2").returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(status = "3.0") returns "BETA"
         MockAppConfig.endpointsEnabled(version = "3").returns(true).anyNumberOfTimes()
-        MockAppConfig.confidenceLevelCheckEnabled.returns(ConfidenceLevelConfig(
-          definitionEnabled = true,
-          authValidationEnabled = true)).anyNumberOfTimes ()
+        MockAppConfig.confidenceLevelCheckEnabled
+          .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
+          .anyNumberOfTimes()
 
         apiDefinitionFactory.definition shouldBe Definition(
           scopes = Seq(
@@ -86,13 +86,17 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
   "confidenceLevel" when {
     Seq(
-      (true, ConfidenceLevel.L200),
-      (false, ConfidenceLevel.L50)
-    ).foreach { case (definitionEnabled, cl) =>
-      s"confidence-level-check.definition.enabled is $definitionEnabled in config" should {
-        s"return $cl" in new Test {
-          MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(definitionEnabled = definitionEnabled, authValidationEnabled = true)
-          apiDefinitionFactory.confidenceLevel shouldBe cl
+      (true, ConfidenceLevel.L250, ConfidenceLevel.L250),
+      (true, ConfidenceLevel.L200, ConfidenceLevel.L200),
+      (false, ConfidenceLevel.L200, ConfidenceLevel.L50)
+    ).foreach { case (definitionEnabled, configCL, expectedDefinitionCL) =>
+      s"confidence-level-check.definition.enabled is $definitionEnabled and confidence-level = $configCL" should {
+        s"return confidence level $expectedDefinitionCL" in new Test {
+          MockAppConfig.confidenceLevelCheckEnabled returns ConfidenceLevelConfig(
+            confidenceLevel = configCL,
+            definitionEnabled = definitionEnabled,
+            authValidationEnabled = true)
+          apiDefinitionFactory.confidenceLevel shouldBe expectedDefinitionCL
         }
       }
     }
