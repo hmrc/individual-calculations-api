@@ -31,12 +31,12 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
 
     val nino: String              = "AA123456A"
     val taxYear: String           = "2018-19"
-    val downstreamTaxYear: String = "2019"
+    val downstreamTaxYear: String = "18-19"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
 
-    def downstreamUri: String = s"/income-tax/calculation/nino/$nino/$downstreamTaxYear/$calculationId/crystallise"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
