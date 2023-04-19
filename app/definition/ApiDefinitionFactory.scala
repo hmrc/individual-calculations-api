@@ -30,7 +30,6 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
 
   lazy val confidenceLevel: ConfidenceLevel = {
     val clConfig = appConfig.confidenceLevelConfig
-
     if (clConfig.definitionEnabled) clConfig.confidenceLevel else ConfidenceLevel.L50
   }
 
