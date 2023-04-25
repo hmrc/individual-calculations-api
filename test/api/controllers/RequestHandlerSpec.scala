@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package api.controllers
 
-import api.controllers.{EndpointLogContext, RequestContext, RequestHandler, UserRequest}
 import api.mocks.MockIdGenerator
 import api.models.errors
 import api.models.errors.NinoFormatError
@@ -33,6 +32,7 @@ import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.requestParsers.RequestParser
+import v3.controllers.{AuditHandler, ControllerSpecHateoasSupport}
 import v3.hateoas.HateoasLinksFactory
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.services.MockAuditService
