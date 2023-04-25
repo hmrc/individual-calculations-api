@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.connectors.httpparsers
+package api.connectors.httpparsers
 
 import api.connectors.MtdIdLookupOutcome
 import api.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
