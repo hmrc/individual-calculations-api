@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package api.controllers
 
-import api.controllers.{AuthorisedController, ControllerBaseSpec}
 import api.models.errors.{ClientNotAuthorisedError, InternalError, InvalidBearerTokenError, NinoFormatError}
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.Json
