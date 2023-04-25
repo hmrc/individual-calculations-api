@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package api.controllers.requestParsers.validators.validations
 
-import api.models.errors.MtdError
-import v3.models.errors.FinalDeclarationFormatError
+import api.models.errors.{FinalDeclarationFormatError, MtdError}
 
 import scala.util.{Failure, Success, Try}
 

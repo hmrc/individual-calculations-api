@@ -19,7 +19,6 @@ package api.models.errors
 import api.models.errors
 import play.api.libs.json.Json
 import support.UnitSpec
-import v3.models.errors.CalculationIdFormatError
 
 class ErrorWrapperSpec extends UnitSpec {
 
@@ -95,7 +94,8 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "When ErrorWrapper has several errors, containsAnyOf" should {
-    val errorWrapper = errors.ErrorWrapper("correlationId", BadRequestError, Some(List(NinoFormatError, TaxYearFormatError, CalculationIdFormatError)))
+    val errorWrapper =
+      errors.ErrorWrapper("correlationId", BadRequestError, Some(List(NinoFormatError, TaxYearFormatError, CalculationIdFormatError)))
 
     "return false" when {
       "given no matching errors" in {
@@ -114,4 +114,5 @@ class ErrorWrapperSpec extends UnitSpec {
       }
     }
   }
+
 }

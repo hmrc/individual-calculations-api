@@ -22,7 +22,6 @@ import org.scalamock.scalatest.MockFactory
 import v2.hateoas.{HateoasFactory, HateoasLinksFactory, HateoasListLinksFactory}
 import v2.models.hateoas.{HateoasData, HateoasWrapper}
 
-
 trait MockHateoasFactory extends MockFactory {
 
   val mockHateoasFactory: HateoasFactory = mock[HateoasFactory]

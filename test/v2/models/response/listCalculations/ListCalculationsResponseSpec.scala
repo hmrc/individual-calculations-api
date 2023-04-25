@@ -22,8 +22,8 @@ import support.UnitSpec
 import v2.fixtures.listCalculations.CalculationListItemFixture.{calculationListItemJson, calculationListItemModel}
 import v2.fixtures.listCalculations.ListCalculationsFixture._
 import v2.hateoas.HateoasFactory
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.{GET, POST}
+import v2.models.hateoas.{HateoasWrapper, Link}
 
 class ListCalculationsResponseSpec extends UnitSpec {
 

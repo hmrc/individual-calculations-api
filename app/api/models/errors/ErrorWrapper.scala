@@ -33,6 +33,7 @@ case class ErrorWrapper(correlationId: String, error: MtdError, errors: Option[S
     */
   def containsAnyOf(errorsToCheck: MtdError*): Boolean =
     errorsToCheck.exists(_.code == error.code)
+
 }
 
 object ErrorWrapper {

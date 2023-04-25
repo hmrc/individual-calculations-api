@@ -27,8 +27,8 @@ import v2.mocks.requestParsers.MockListCalculationsParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v2.models.domain.Nino
 import v2.models.errors._
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.{GET, POST}
+import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 import v2.models.response.common.{CalculationRequestor, CalculationType}

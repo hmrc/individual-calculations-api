@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package api.controllers.requestParsers.validators.validations
 
 import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
 import play.api.Logger
@@ -27,7 +27,7 @@ object JsonFormatValidation {
     else {
       data.validate[A] match {
         case JsSuccess(body, _) => if (Json.toJson(body) == JsObject.empty) List(RuleIncorrectOrEmptyBodyError) else NoValidationErrors
-        case JsError(errors) => handleErrors(errors.map (c=> (c._1, c._2.toSeq)).toSeq)
+        case JsError(errors)    => handleErrors(errors.map(c => (c._1, c._2.toSeq)).toSeq)
       }
     }
   }

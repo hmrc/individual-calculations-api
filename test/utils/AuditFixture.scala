@@ -16,8 +16,7 @@
 
 package utils
 
-
 class AuditFixture {
- // val auditConnector: AuditConnector = mock[AuditConnector]
+  // val auditConnector: AuditConnector = mock[AuditConnector]
 //  val httpAuditEvent: DefaultHttpAuditEvent = mock[DefaultHttpAuditEvent]
 }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package api.controllers.requestParsers.validators.validations
 
+import api.models.errors.FinalDeclarationFormatError
 import support.UnitSpec
-import v3.models.errors.FinalDeclarationFormatError
 
 class FinalDeclarationValidationSpec extends UnitSpec {
 

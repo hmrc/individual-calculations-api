@@ -45,7 +45,7 @@ object RequestHandler {
     new ParserOnlyBuilder[InputRaw, Input](parser)
 
   // Intermediate class so that the compiler can separately capture the InputRaw and Input types here, and the Output type later
-  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandler](parser: RequestParser[InputRaw, Input]) {
+  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandler] (parser: RequestParser[InputRaw, Input]) {
 
     def withService[Output](
         serviceFunction: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]]): RequestHandlerBuilder[InputRaw, Input, Output] =
@@ -53,7 +53,7 @@ object RequestHandler {
 
   }
 
-  case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler](
+  case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
       errorHandling: ErrorHandling = ErrorHandling.Default,

@@ -16,7 +16,7 @@
 
 package v3.endpoints
 
-import api.models.errors.{InternalError, MtdError, NinoFormatError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import api.models.errors.{FinalDeclarationFormatError, InternalError, MtdError, NinoFormatError, RuleBusinessValidationFailureError, RuleCalculationInProgressError, RuleFinalDeclarationReceivedError, RuleIncomeSourcesChangedError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._

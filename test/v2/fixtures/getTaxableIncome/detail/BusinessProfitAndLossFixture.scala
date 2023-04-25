@@ -17,12 +17,12 @@
 package v2.fixtures.getTaxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.models.response.getTaxableIncome.detail.BusinessProfitAndLoss
 import v2.fixtures.getTaxableIncome.detail.eeaPropertyFhl.EeaPropertyFhlFixture._
 import v2.fixtures.getTaxableIncome.detail.foreignProperty.ForeignPropertyFixture._
 import v2.fixtures.getTaxableIncome.detail.selfEmployment.SelfEmploymentFixture._
 import v2.fixtures.getTaxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixture._
 import v2.fixtures.getTaxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhlFixture._
+import v2.models.response.getTaxableIncome.detail.BusinessProfitAndLoss
 
 object BusinessProfitAndLossFixture {
 

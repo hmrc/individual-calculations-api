@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators
+package api.controllers.requestParsers.validators.validations
 
-package object validations {
+import api.models.errors.{CalculationIdFormatError, MtdError}
 
-  val NoValidationErrors = List()
+object CalculationIdValidation {
+  private val calculationIdRegex = "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+
+  def validate(calculationId: String): List[MtdError] = calculationId match {
+    case _ if calculationId matches calculationIdRegex => NoValidationErrors
+    case _                                             => List(CalculationIdFormatError)
+  }
 
 }

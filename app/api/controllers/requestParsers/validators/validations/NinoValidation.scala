@@ -18,7 +18,6 @@ package api.controllers.requestParsers.validators.validations
 
 import api.models.domain.Nino
 import api.models.errors.{MtdError, NinoFormatError}
-import v3.controllers.requestParsers.validators.validations.NoValidationErrors
 
 object NinoValidation {
 

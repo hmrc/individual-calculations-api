@@ -45,6 +45,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
           .authorise[A](_: Predicate, _: Retrieval[A])(_: HeaderCarrier, _: ExecutionContext))
           .expects(predicate, retrievals, *, *)
       }
+
     }
 
     lazy val target = new EnrolmentsAuthService(mockAuthConnector, mockAppConfig)
@@ -58,6 +59,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         )
       )
     }
+
   }
 
   private val extraPredicatesAnd = CompositePredicate(

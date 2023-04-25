@@ -16,9 +16,8 @@
 
 package v3.controllers.requestParsers.validators
 
-import api.models.errors.{NinoFormatError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import api.models.errors._
 import support.UnitSpec
-import v3.models.errors.FinalDeclarationFormatError
 import v3.models.request.TriggerCalculationRawData
 
 class TriggerCalculationValidatorSpec extends UnitSpec {

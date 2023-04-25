@@ -35,7 +35,8 @@ trait MockStandardService extends MockFactory {
 
   object MockStandardService {
 
-    def doService[BackendResp, ApiResponse](requestDefn: RequestDefn, successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
+    def doService[BackendResp, ApiResponse](requestDefn: RequestDefn,
+                                            successStatus: Int): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[BackendResp]]]] = {
 
       val correctRequestHandler = argAssert { actualRequestHandler: RequestHandler[BackendResp, ApiResponse] =>
         actualRequestHandler.requestDefn shouldBe requestDefn

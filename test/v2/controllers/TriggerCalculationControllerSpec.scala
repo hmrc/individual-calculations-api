@@ -25,12 +25,11 @@ import v2.handler.{RequestDefn, RequestHandler}
 import v2.mocks.hateoas.MockHateoasFactory
 import v2.mocks.requestParsers.MockTriggerCalculationParser
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
-import v2.models.domain.Nino
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v2.models.domain.TriggerCalculationRequestBody
+import v2.models.domain.{Nino, TriggerCalculationRequestBody}
 import v2.models.errors._
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
+import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v2.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}

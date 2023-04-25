@@ -17,8 +17,8 @@
 package v3.fixtures.hateoas
 
 import play.api.libs.json.{JsValue, Json, OWrites}
-import v3.models.hateoas.{HateoasWrapper, Link}
 import v3.models.hateoas.Method.GET
+import v3.models.hateoas.{HateoasWrapper, Link}
 
 object HateoasWrapperFixture {
 

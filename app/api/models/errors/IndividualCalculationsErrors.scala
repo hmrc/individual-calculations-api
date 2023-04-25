@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.models.errors
+package api.models.errors
 
-import api.models.errors.MtdError
 import play.api.http.Status.BAD_REQUEST
 
 object CalculationIdFormatError

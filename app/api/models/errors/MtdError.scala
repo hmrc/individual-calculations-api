@@ -20,6 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 import scala.collection.immutable.Seq
+
 case class MtdError(code: String, message: String, httpStatus: Int, paths: Option[Seq[String]] = None) {
   val asJson: JsObject = Json.toJson(this).as[JsObject]
 }
@@ -30,7 +31,7 @@ object MtdError {
     (JsPath \ "code").write[String] and
       (JsPath \ "message").write[String] and
       (JsPath \ "paths").writeNullable[Seq[String]]
-    )(unlift(MtdError.unapply))
+  )(unlift(MtdError.unapply))
 
   // excludes httpStatus
   def unapply(e: MtdError): Option[(String, String, Option[Seq[String]])] = Some((e.code, e.message, e.paths))
@@ -39,6 +40,3 @@ object MtdError {
     writes.contramap[T](c => c: MtdError)
 
 }
-
-
-

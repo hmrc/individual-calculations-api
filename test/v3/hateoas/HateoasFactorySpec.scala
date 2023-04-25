@@ -20,8 +20,8 @@ import cats.Functor
 import config.AppConfig
 import mocks.MockAppConfig
 import support.UnitSpec
-import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
 import v3.models.hateoas.Method.GET
+import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
 class HateoasFactorySpec extends UnitSpec with MockAppConfig {
 
