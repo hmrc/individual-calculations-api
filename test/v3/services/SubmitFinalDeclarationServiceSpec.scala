@@ -16,10 +16,13 @@
 
 package v3.services
 
+import api.models.domain.Nino
+import api.models.errors
+import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.outcomes.ResponseWrapper
 import v3.mocks.connectors.MockSubmitFinalDeclarationConnector
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.Future
@@ -67,14 +70,14 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
-          result shouldBe Left(ErrorWrapper(correlationId, error))
+          result shouldBe Left(errors.ErrorWrapper(correlationId, error))
         }
 
       val errors = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_TAX_YEAR", TaxYearFormatError),
         ("INVALID_CALCID", CalculationIdFormatError),
-        ("INVALID_CORRELATION_ID", InternalError),
+        ("INVALID_CORRELATION_ID", errors.InternalError),
         ("NOT_FOUND", NotFoundError),
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
@@ -86,8 +89,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("CRYSTALLISATION_TAX_YEAR_ERROR", RuleFinalDeclarationTaxYearError),
         ("CRYSTALLISATION_IN_PROGRESS", RuleFinalDeclarationInProgressError),
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
-        ("SERVER_ERROR", InternalError),
-        ("SERVICE_UNAVAILABLE", InternalError),
+        ("SERVER_ERROR", errors.InternalError),
+        ("SERVICE_UNAVAILABLE", errors.InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 

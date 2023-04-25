@@ -16,6 +16,8 @@
 
 package v3.models.errors
 
+import api.models.errors
+import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import play.api.libs.json.Json
 import support.UnitSpec
 
@@ -41,7 +43,7 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "Rendering a error response with one error and an empty sequence of errors" should {
-    val error = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty))
+    val error = errors.ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty))
 
     val json = Json.parse(
       """
@@ -58,7 +60,7 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "Rendering a error response with two errors" should {
-    val error = ErrorWrapper(
+    val error = errors.ErrorWrapper(
       correlationId,
       BadRequestError,
       Some(
@@ -93,7 +95,7 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "When ErrorWrapper has several errors, containsAnyOf" should {
-    val errorWrapper = ErrorWrapper("correlationId", BadRequestError, Some(List(NinoFormatError, TaxYearFormatError, CalculationIdFormatError)))
+    val errorWrapper = errors.ErrorWrapper("correlationId", BadRequestError, Some(List(NinoFormatError, TaxYearFormatError, CalculationIdFormatError)))
 
     "return false" when {
       "given no matching errors" in {

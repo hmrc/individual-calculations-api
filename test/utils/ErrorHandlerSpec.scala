@@ -16,6 +16,7 @@
 
 package utils
 
+import api.models.errors.{BadRequestError, ClientNotAuthorisedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.Status

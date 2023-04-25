@@ -16,6 +16,7 @@
 
 package v3.models.outcomes
 
+import api.models.outcomes.ResponseWrapper
 import support.UnitSpec
 
 class ResponseWrapperSpec extends UnitSpec {

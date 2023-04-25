@@ -16,6 +16,7 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamOutcome
 import config.{AppConfig, FeatureSwitches}
 import play.api.http.{HeaderNames, MimeTypes}
 import play.api.libs.json.Writes
@@ -128,4 +129,5 @@ trait BaseDownstreamConnector {
       case IfsUri(_)                => appConfig.ifsDownstreamConfig
       case TaxYearSpecificIfsUri(_) => appConfig.taxYearSpecificIfsDownstreamConfig
     }
+
 }

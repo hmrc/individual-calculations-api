@@ -16,10 +16,11 @@
 
 package v3.connectors
 
+import api.models.domain.Nino
+import api.models.outcomes.ResponseWrapper
 import v3.fixtures.ListCalculationsFixture
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 

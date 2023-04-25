@@ -16,6 +16,7 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamOutcome
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
@@ -24,7 +25,6 @@ import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
 @Singleton
 class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {

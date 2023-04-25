@@ -16,8 +16,8 @@
 
 package v2.controllers
 
+import api.mocks.MockIdGenerator
 import cats.implicits._
-import mocks.MockIdGenerator
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, Request, Result}

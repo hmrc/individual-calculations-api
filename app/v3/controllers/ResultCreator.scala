@@ -16,13 +16,13 @@
 
 package v3.controllers
 
+import api.models.request.RawData
 import cats.Functor
 import play.api.http.{HttpEntity, Status}
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.{ResponseHeader, Result, Results}
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory, HateoasListLinksFactory}
 import v3.models.hateoas.{HateoasData, HateoasWrapper}
-import v3.models.request.RawData
 
 case class ResultWrapper(httpStatus: Int, body: Option[JsValue]) {
 

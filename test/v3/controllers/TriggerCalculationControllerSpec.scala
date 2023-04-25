@@ -16,17 +16,21 @@
 
 package v3.controllers
 
-import mocks.MockIdGenerator
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.mocks.MockIdGenerator
+import api.models.domain.Nino
+import api.models.errors
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import api.models.outcomes.ResponseWrapper
 import play.api.libs.json._
 import play.api.mvc.Result
 import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerCalculationService}
 import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors._
 import v3.models.hateoas.HateoasWrapper
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v3.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 
@@ -158,7 +162,7 @@ class TriggerCalculationControllerSpec
 
         MockTriggerCalculationService
           .triggerCalculation(requestDataWithFinalDeclarationFalse)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
+          .returns(Future.successful(Left(errors.ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
       }

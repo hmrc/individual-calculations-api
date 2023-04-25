@@ -16,6 +16,8 @@
 
 package v3.controllers
 
+import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
+import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
@@ -23,7 +25,7 @@ import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
 import v3.models.request.RetrieveCalculationRawData
 import v3.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
-import v3.services.{EnrolmentsAuthService, MtdIdLookupService, RetrieveCalculationService}
+import v3.services.RetrieveCalculationService
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext

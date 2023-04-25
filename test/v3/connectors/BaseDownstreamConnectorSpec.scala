@@ -16,11 +16,12 @@
 
 package v3.connectors
 
+import api.connectors.connectors.DownstreamOutcome
+import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import v3.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
-import v3.models.outcomes.ResponseWrapper
 
 import scala.concurrent.Future
 

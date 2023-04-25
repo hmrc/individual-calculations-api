@@ -16,6 +16,10 @@
 
 package v3.controllers
 
+import api.controllers.{AuthorisedController, ControllerBaseSpec}
+import api.models.errors
+import api.models.errors.{ClientNotAuthorisedError, InvalidBearerTokenError, NinoFormatError}
+import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.auth.core.Enrolment
@@ -23,7 +27,6 @@ import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v3.models.errors._
-import v3.services.{EnrolmentsAuthService, MtdIdLookupService}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -78,7 +81,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
 
         MockedEnrolmentsAuthService
           .authorised(predicate)
-          .returns(Future.successful(Left(InternalError)))
+          .returns(Future.successful(Left(errors.InternalError)))
 
         private val result = target.action(nino)(fakeGetRequest)
         status(result) shouldBe INTERNAL_SERVER_ERROR
@@ -128,7 +131,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec {
 
       MockedMtdIdLookupService
         .lookup(nino)
-        .returns(Future.successful(Left(InternalError)))
+        .returns(Future.successful(Left(errors.InternalError)))
 
       private val result = target.action(nino)(fakeGetRequest)
       status(result) shouldBe INTERNAL_SERVER_ERROR

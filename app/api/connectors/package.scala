@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package api
 
-import v3.models.domain.Nino
-import v3.models.errors.{MtdError, NinoFormatError}
+import api.models.outcomes.ResponseWrapper
+import v3.models.errors.{DownstreamError, MtdError}
 
-object NinoValidation {
+package object connectors {
 
-  private val ninoRegex =
-    "^([ACEHJLMOPRSWXY][A-CEGHJ-NPR-TW-Z]|B[A-CEHJ-NPR-TW-Z]|G[ACEGHJ-NPR-TW-Z]|" +
-      "[KT][A-CEGHJ-MPR-TW-Z]|N[A-CEGHJL-NPR-SW-Z]|Z[A-CEGHJ-NPR-TW-Y])[0-9]{6}[A-D ]?$"
+  type MtdIdLookupOutcome = Either[MtdError, String]
 
-  def validate(nino: String): List[MtdError] = {
-    if (Nino.isValid(nino) && nino.matches(ninoRegex)) NoValidationErrors else List(NinoFormatError)
-  }
-
+  type DownstreamOutcome[A] = Either[ResponseWrapper[DownstreamError], ResponseWrapper[A]]
 }

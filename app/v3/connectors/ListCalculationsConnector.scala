@@ -16,10 +16,10 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamOutcome
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
-import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 

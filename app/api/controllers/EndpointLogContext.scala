@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
-package v3.models.request
+package api.controllers
 
-trait RawData
+case class EndpointLogContext(
+    controllerName: String,
+    endpointName: String
+)

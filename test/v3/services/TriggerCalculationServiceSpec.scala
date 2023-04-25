@@ -16,10 +16,13 @@
 
 package v3.services
 
+import api.models.domain.Nino
+import api.models.errors
+import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.outcomes.ResponseWrapper
 import v3.mocks.connectors.MockTriggerCalculationConnector
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
@@ -69,19 +72,19 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("INVALID_NINO", NinoFormatError),
           ("INVALID_TAX_YEAR", TaxYearFormatError),
           ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
-          ("INVALID_REQUEST", InternalError),
+          ("INVALID_REQUEST", errors.InternalError),
           ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
           ("CONFLICT", RuleFinalDeclarationReceivedError),
-          ("SERVER_ERROR", InternalError),
-          ("SERVICE_UNAVAILABLE", InternalError),
+          ("SERVER_ERROR", errors.InternalError),
+          ("SERVICE_UNAVAILABLE", errors.InternalError),
           ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
         )
 
         val extraTysErrors = List(
           ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
           ("INVALID_CRYSTALLISE", FinalDeclarationFormatError),
-          ("INVALID_CORRELATION_ID", InternalError),
-          ("NO_VALID_INCOME_SOURCES", InternalError),
+          ("INVALID_CORRELATION_ID", errors.InternalError),
+          ("NO_VALID_INCOME_SOURCES", errors.InternalError),
           ("NO_SUBMISSIONS_EXIST", RuleNoIncomeSubmissionsExistError),
           ("INVALID_CALCULATION_ID", InternalError),
           ("CHANGED_INCOME_SOURCES", RuleIncomeSourcesChangedError),

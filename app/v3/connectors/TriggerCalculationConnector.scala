@@ -16,12 +16,13 @@
 
 package v3.connectors
 
+import api.connectors.connectors.DownstreamOutcome
+import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
-import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
@@ -40,14 +41,18 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
 
     if (taxYear.useTaxYearSpecificApi) {
       implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
-      post(body = JsObject.empty, uri = TaxYearSpecificIfsUri[TriggerCalculationResponse](
-        s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
+      post(
+        body = JsObject.empty,
+        uri = TaxYearSpecificIfsUri[TriggerCalculationResponse](
+          s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
       )
-    }
-    else {
-      post(body = JsObject.empty, uri = DesUri[TriggerCalculationResponse](
-        s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+    } else {
+      post(
+        body = JsObject.empty,
+        uri = DesUri[TriggerCalculationResponse](
+          s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
       )
     }
   }
+
 }

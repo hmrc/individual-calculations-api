@@ -16,9 +16,12 @@
 
 package v3.controllers.requestParsers
 
+import api.models.domain.Nino
+import api.models.errors
+import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v3.mocks.validators.MockRetrieveCalculationValidator
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors._
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 
@@ -58,7 +61,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe
-          Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
+          Left(errors.ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))
       }
     }
   }

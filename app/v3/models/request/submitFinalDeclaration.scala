@@ -16,7 +16,9 @@
 
 package v3.models.request
 
-import v3.models.domain.{Nino, TaxYear}
+import api.models.domain.Nino
+import api.models.request.RawData
+import v3.models.domain.TaxYear
 
 case class SubmitFinalDeclarationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 

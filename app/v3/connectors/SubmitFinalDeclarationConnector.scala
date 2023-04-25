@@ -16,6 +16,7 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamOutcome
 import config.{AppConfig, FeatureSwitches}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v3.connectors.DownstreamUri.{DesUri, IfsUri}
@@ -33,8 +34,8 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
+    import api.connectors.httpparsers.StandardDownstreamHttpParser._
     import request._
-    import v3.connectors.httpparsers.StandardDownstreamHttpParser._
 
     val isIfsEnabled: Boolean = FeatureSwitches(appConfig.featureSwitches).isIfsSubmitFinalDeclarationEnabled
 

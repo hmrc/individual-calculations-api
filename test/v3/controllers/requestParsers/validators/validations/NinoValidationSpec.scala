@@ -16,8 +16,9 @@
 
 package v3.controllers.requestParsers.validators.validations
 
+import api.controllers.requestParsers.validators.validations.NinoValidation
+import api.models.errors.NinoFormatError
 import support.UnitSpec
-import v3.models.errors.NinoFormatError
 
 class NinoValidationSpec extends UnitSpec {
 

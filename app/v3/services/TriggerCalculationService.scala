@@ -16,12 +16,15 @@
 
 package v3.services
 
+import api.controllers.RequestContext
+import api.models
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.outcomes.ResponseWrapper
+import api.services.BaseService
 import cats.data.EitherT
 import cats.implicits._
 import v3.connectors.TriggerCalculationConnector
-import v3.controllers.RequestContext
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 
@@ -43,20 +46,20 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       "INVALID_NINO"            -> NinoFormatError,
       "INVALID_TAX_YEAR"        -> TaxYearFormatError,
       "INVALID_TAX_CRYSTALLISE" -> FinalDeclarationFormatError,
-      "INVALID_REQUEST"         -> InternalError,
+      "INVALID_REQUEST"         -> models.errors.InternalError,
       "NO_SUBMISSION_EXIST"     -> RuleNoIncomeSubmissionsExistError,
       "CONFLICT"                -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR"            -> InternalError,
-      "SERVICE_UNAVAILABLE"     -> InternalError,
+      "SERVER_ERROR"            -> models.errors.InternalError,
+      "SERVICE_UNAVAILABLE"     -> models.errors.InternalError,
       "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
     )
 
     val extraTysErrors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
-      "INVALID_CORRELATIONID"     -> InternalError,
-      "INVALID_CALCULATION_ID"    -> InternalError,
-      "NO_VALID_INCOME_SOURCES"   -> InternalError,
+      "INVALID_CORRELATIONID"     -> models.errors.InternalError,
+      "INVALID_CALCULATION_ID"    -> models.errors.InternalError,
+      "NO_VALID_INCOME_SOURCES"   -> models.errors.InternalError,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
       "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,
       "OUTDATED_SUBMISSION"       -> RuleRecentSubmissionsExistError,

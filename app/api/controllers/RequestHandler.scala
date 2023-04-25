@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package api.controllers
 
+import api.models.errors.{ErrorWrapper, InternalError}
+import api.models.outcomes.ResponseWrapper
+import api.models.request.RawData
 import cats.data.EitherT
 import cats.implicits._
 import play.api.http.Status
@@ -24,11 +27,9 @@ import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
+import v3.controllers.{AuditHandler, ErrorHandling, ResultCreator}
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
-import v3.models.errors.{ErrorWrapper, InternalError}
 import v3.models.hateoas.{HateoasData, HateoasWrapper}
-import v3.models.outcomes.ResponseWrapper
-import v3.models.request.RawData
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,7 +45,7 @@ object RequestHandler {
     new ParserOnlyBuilder[InputRaw, Input](parser)
 
   // Intermediate class so that the compiler can separately capture the InputRaw and Input types here, and the Output type later
-  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandler] (parser: RequestParser[InputRaw, Input]) {
+  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandler](parser: RequestParser[InputRaw, Input]) {
 
     def withService[Output](
         serviceFunction: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]]): RequestHandlerBuilder[InputRaw, Input, Output] =
@@ -52,7 +53,7 @@ object RequestHandler {
 
   }
 
-  case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
+  case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler](
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
       errorHandling: ErrorHandling = ErrorHandling.Default,

@@ -16,8 +16,9 @@
 
 package v3.controllers.requestParsers
 
+import api.models.domain.Nino
 import v3.controllers.requestParsers.validators.RetrieveCalculationValidator
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 
 import javax.inject.Inject

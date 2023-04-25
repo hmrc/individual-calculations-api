@@ -16,12 +16,14 @@
 
 package v3.support
 
+import api.controllers.EndpointLogContext
+import api.models.errors
+import api.models.errors.{BadRequestError, ErrorWrapper}
+import api.models.outcomes.ResponseWrapper
 import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import utils.Logging
-import v3.controllers.EndpointLogContext
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 
 import java.time.LocalDate
 
@@ -43,7 +45,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
   val errorCodeMap: PartialFunction[String, MtdError] = {
     case "ERR1" => Error1
     case "ERR2" => Error2
-    case "DS"   => InternalError
+    case "DS"   => errors.InternalError
   }
 
   lazy val date: LocalDate = LocalDate.now()
@@ -60,7 +62,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
       "the error code is not in the map provided" must {
         "default to DownstreamError and wrap" in {
           mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("UNKNOWN")))) shouldBe
-            ErrorWrapper(correlationId, InternalError)
+            errors.ErrorWrapper(correlationId, errors.InternalError)
         }
       }
     }
@@ -70,7 +72,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
         "use the mapping and wrap with main error type of BadRequest" in {
           mapping.mapDownstreamErrors(errorCodeMap)(
             ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("ERR1"), DownstreamErrorCode("ERR2"))))) shouldBe
-            ErrorWrapper(correlationId, BadRequestError, Some(Seq(Error1, Error2)))
+            errors.ErrorWrapper(correlationId, BadRequestError, Some(Seq(Error1, Error2)))
         }
       }
 
@@ -78,7 +80,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
         "default main error to DownstreamError ignore other errors" in {
           mapping.mapDownstreamErrors(errorCodeMap)(
             ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("ERR1"), DownstreamErrorCode("UNKNOWN"))))) shouldBe
-            ErrorWrapper(correlationId, InternalError)
+            errors.ErrorWrapper(correlationId, errors.InternalError)
         }
       }
 
@@ -86,7 +88,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
         "wrap the errors with main error type of DownstreamError" in {
           mapping.mapDownstreamErrors(errorCodeMap)(
             ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("ERR1"), DownstreamErrorCode("DS"))))) shouldBe
-            ErrorWrapper(correlationId, InternalError)
+            errors.ErrorWrapper(correlationId, errors.InternalError)
         }
       }
     }
@@ -94,14 +96,14 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
     "the error code is an OutboundError" must {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(ErrorBvrMain))) shouldBe
-          ErrorWrapper(correlationId, ErrorBvrMain)
+          errors.ErrorWrapper(correlationId, ErrorBvrMain)
       }
     }
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
         mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
-          ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)))
+          errors.ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)))
       }
     }
   }

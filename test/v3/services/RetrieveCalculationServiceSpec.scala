@@ -16,11 +16,14 @@
 
 package v3.services
 
+import api.models.domain.Nino
+import api.models.errors
+import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.mocks.connectors.MockRetrieveCalculationConnector
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationResponse}
 
@@ -67,17 +70,17 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
       val errors = Seq(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
-        ("INVALID_CORRELATIONID", InternalError),
-        ("INVALID_CONSUMERID", InternalError),
+        ("INVALID_CORRELATIONID", errors.InternalError),
+        ("INVALID_CONSUMERID", errors.InternalError),
         ("NO_DATA_FOUND", NotFoundError),
-        ("SERVER_ERROR", InternalError),
-        ("SERVICE_UNAVAILABLE", InternalError),
+        ("SERVER_ERROR", errors.InternalError),
+        ("SERVICE_UNAVAILABLE", errors.InternalError),
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
       val extraTysErrors = Seq(
         ("INVALID_TAX_YEAR", TaxYearFormatError),
-        ("INVALID_CORRELATION_ID", InternalError),
+        ("INVALID_CORRELATION_ID", errors.InternalError),
         ("INVALID_CONSUMER_ID", InternalError),
         ("NOT_FOUND", NotFoundError),
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)

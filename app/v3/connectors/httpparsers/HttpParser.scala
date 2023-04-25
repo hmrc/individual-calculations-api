@@ -16,6 +16,7 @@
 
 package v3.connectors.httpparsers
 
+import api.models.errors.{BVRError, InternalError}
 import play.api.libs.json._
 import uk.gov.hmrc.http.HttpResponse
 import utils.Logging

@@ -16,11 +16,12 @@
 
 package v3.controllers
 
+import api.controllers.{RequestContext, RequestContextImplicits}
+import api.models.errors.ErrorWrapper
 import cats.syntax.either._
 import play.api.libs.json.{JsValue, Writes}
 import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.auth.UserDetails
-import v3.models.errors.ErrorWrapper
 import v3.services.AuditService
 
 import scala.Function.const

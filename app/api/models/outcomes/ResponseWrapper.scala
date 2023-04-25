@@ -14,25 +14,10 @@
  * limitations under the License.
  */
 
-package v3.services
+package api.models.outcomes
 
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.connectors.{MtdIdLookupConnector, MtdIdLookupOutcome}
-import v3.models.domain.Nino
-import v3.models.errors.NinoFormatError
+case class ResponseWrapper[+A](correlationId: String, responseData: A) {
 
-import scala.concurrent.{ExecutionContext, Future}
-
-@Singleton
-class MtdIdLookupService @Inject() (val connector: MtdIdLookupConnector) {
-
-  def lookup(nino: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[MtdIdLookupOutcome] = {
-    if (Nino.isValid(nino)) {
-      connector.getMtdId(nino)
-    } else {
-      Future.successful(Left(NinoFormatError))
-    }
-  }
+  def map[B](f: A => B): ResponseWrapper[B] = ResponseWrapper(correlationId, f(responseData))
 
 }

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package api.controllers
 
-import mocks.MockIdGenerator
+import api.controllers.ControllerTestRunner.validNino
+import api.mocks.MockIdGenerator
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
@@ -24,7 +25,7 @@ import play.api.test.Helpers.stubControllerComponents
 import play.api.test.{FakeRequest, ResultExtractors}
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.ControllerTestRunner.validNino
+import v3.controllers.ControllerSpecHateoasSupport
 import v3.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.errors.MtdError

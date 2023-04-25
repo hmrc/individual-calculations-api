@@ -16,8 +16,13 @@
 
 package v3.controllers
 
+import api.controllers.{EndpointLogContext, RequestContext, RequestHandler, UserRequest}
+import api.mocks.MockIdGenerator
+import api.models.errors
+import api.models.errors.{ErrorWrapper, NinoFormatError}
+import api.models.outcomes.ResponseWrapper
+import api.models.request.RawData
 import config.AppConfig
-import mocks.MockIdGenerator
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, Status}
 import play.api.libs.json.{JsString, Json, OWrites}
@@ -32,10 +37,7 @@ import v3.mocks.hateoas.MockHateoasFactory
 import v3.mocks.services.MockAuditService
 import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.auth.UserDetails
-import v3.models.errors.{ErrorWrapper, NinoFormatError}
 import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
-import v3.models.outcomes.ResponseWrapper
-import v3.models.request.RawData
 import v3.services.ServiceOutcome
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -150,7 +152,7 @@ class RequestHandlerSpec
           .withService(mockService.service)
           .withPlainJsonResult(successCode)
 
-        parseRequest returns Left(ErrorWrapper(generatedCorrelationId, NinoFormatError))
+        parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -168,7 +170,7 @@ class RequestHandlerSpec
           .withPlainJsonResult(successCode)
 
         parseRequest returns Right(Input)
-        service returns Future.successful(Left(ErrorWrapper(serviceCorrelationId, NinoFormatError)))
+        service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -248,7 +250,7 @@ class RequestHandlerSpec
         "audit the failure" in {
           val requestHandler = basicRequestHandler.withAuditing(auditHandler())
 
-          parseRequest returns Left(ErrorWrapper(generatedCorrelationId, NinoFormatError))
+          parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
 
           val result = requestHandler.handleRequest(InputRaw)
 
@@ -265,7 +267,7 @@ class RequestHandlerSpec
           val requestHandler = basicRequestHandler.withAuditing(auditHandler())
 
           parseRequest returns Right(Input)
-          service returns Future.successful(Left(ErrorWrapper(serviceCorrelationId, NinoFormatError)))
+          service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
 
           val result = requestHandler.handleRequest(InputRaw)
 

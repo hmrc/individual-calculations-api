@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v3
+package api
 
-import v3.models.errors.{DownstreamError, MtdError}
-import v3.models.outcomes.ResponseWrapper
+import api.models.errors.ErrorWrapper
+import api.models.outcomes.ResponseWrapper
 
-package object connectors {
+import scala.concurrent.Future
 
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DownstreamOutcome[A] = Either[ResponseWrapper[DownstreamError], ResponseWrapper[A]]
+package object services {
+  type ServiceOutcome[I] = Future[Either[ErrorWrapper, ResponseWrapper[I]]]
 }

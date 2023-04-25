@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-package v3.services
+package api.models.request
 
-import utils.Logging
-import v3.controllers.RequestContextImplicits
-import v3.support.DownstreamResponseMappingSupport
-
-trait BaseService extends RequestContextImplicits with DownstreamResponseMappingSupport with Logging
+trait RawData

@@ -16,13 +16,14 @@
 
 package v3.controllers
 
+import api.controllers.EndpointLogContext
+import api.models.errors.ErrorWrapper
 import cats.data.EitherT
 import cats.implicits._
 import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.mvc.Results.Status
 import utils.Logging
-import v3.models.errors.ErrorWrapper
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -16,11 +16,11 @@
 
 package v3.mocks.services
 
+import api.controllers.RequestContext
+import api.models.errors.ErrorWrapper
+import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v3.controllers.RequestContext
-import v3.models.errors.ErrorWrapper
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
 import v3.services.SubmitFinalDeclarationService
 

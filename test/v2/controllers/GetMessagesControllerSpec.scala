@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import mocks.MockIdGenerator
+import api.mocks.MockIdGenerator
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier

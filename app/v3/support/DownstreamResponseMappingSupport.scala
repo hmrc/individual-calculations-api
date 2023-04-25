@@ -16,10 +16,13 @@
 
 package v3.support
 
+import api.controllers.EndpointLogContext
+import api.models
+import api.models.errors
+import api.models.errors.{BadRequestError, ErrorWrapper}
+import api.models.outcomes.ResponseWrapper
 import utils.Logging
-import v3.controllers.EndpointLogContext
 import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 
 trait DownstreamResponseMappingSupport {
   self: Logging =>
@@ -29,27 +32,27 @@ trait DownstreamResponseMappingSupport {
 
     lazy val defaultErrorCodeMapping: String => MtdError = { code =>
       logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
-      InternalError
+      errors.InternalError
     }
 
     responseWrapper match {
       case ResponseWrapper(correlationId, DownstreamErrors(error :: Nil)) =>
-        ErrorWrapper(correlationId, errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None)
+        errors.ErrorWrapper(correlationId, errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping), None)
 
       case ResponseWrapper(correlationId, DownstreamErrors(errorCodes)) =>
         val mtdErrors = errorCodes.map(error => errorCodeMap.applyOrElse(error.code, defaultErrorCodeMapping))
 
-        if (mtdErrors.contains(InternalError)) {
+        if (mtdErrors.contains(errors.InternalError)) {
           logger.warn(
             s"[${logContext.controllerName}] [${logContext.endpointName}] [CorrelationId - $correlationId]" +
               s" - downstream returned ${errorCodes.map(_.code).mkString(",")}. Revert to ISE")
-          ErrorWrapper(correlationId, InternalError, None)
+          errors.ErrorWrapper(correlationId, errors.InternalError, None)
         } else {
-          ErrorWrapper(correlationId, BadRequestError, Some(mtdErrors))
+          errors.ErrorWrapper(correlationId, BadRequestError, Some(mtdErrors))
         }
 
       case ResponseWrapper(correlationId, OutboundError(error, errors)) =>
-        ErrorWrapper(correlationId, error, errors)
+        models.errors.ErrorWrapper(correlationId, error, errors)
     }
   }
 

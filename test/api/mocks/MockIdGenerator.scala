@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package v3.models.outcomes
+package api.mocks
 
-case class ResponseWrapper[+A](correlationId: String, responseData: A) {
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import utils.IdGenerator
 
-  def map[B](f: A => B): ResponseWrapper[B] = ResponseWrapper(correlationId, f(responseData))
+trait MockIdGenerator extends MockFactory {
+
+  val mockIdGenerator: IdGenerator = mock[IdGenerator]
+
+  object MockIdGenerator {
+    def generateCorrelationId: CallHandler[String] = (() => mockIdGenerator.generateCorrelationId: String).expects()
+  }
 
 }

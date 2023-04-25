@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package mocks
+package api.services
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import utils.IdGenerator
+import api.controllers.RequestContextImplicits
+import utils.Logging
+import v3.support.DownstreamResponseMappingSupport
 
-trait MockIdGenerator extends MockFactory {
-
-  val mockIdGenerator: IdGenerator = mock[IdGenerator]
-
-  object MockIdGenerator {
-    def generateCorrelationId: CallHandler[String] = (()=>mockIdGenerator.generateCorrelationId :String).expects()
-  }
-
-}
+trait BaseService extends RequestContextImplicits with DownstreamResponseMappingSupport with Logging

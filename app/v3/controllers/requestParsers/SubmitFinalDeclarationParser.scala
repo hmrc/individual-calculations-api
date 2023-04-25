@@ -16,9 +16,10 @@
 
 package v3.controllers.requestParsers
 
+import api.models.domain.Nino
 import javax.inject.Inject
 import v3.controllers.requestParsers.validators.SubmitFinalDeclarationValidator
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
 class SubmitFinalDeclarationParser @Inject() (val validator: SubmitFinalDeclarationValidator)

@@ -16,6 +16,7 @@
 
 package v3.models.errors
 
+import api.models.errors.NinoFormatError
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 

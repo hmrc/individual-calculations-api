@@ -16,8 +16,9 @@
 
 package v3.controllers.requestParsers
 
+import api.models.domain.Nino
 import v3.controllers.requestParsers.validators.ListCalculationsValidator
-import v3.models.domain.{Nino, TaxYear}
+import v3.models.domain.TaxYear
 import v3.models.request._
 
 import javax.inject.{Inject, Singleton}

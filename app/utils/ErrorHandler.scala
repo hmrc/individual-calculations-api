@@ -16,6 +16,8 @@
 
 package utils
 
+import api.models.errors
+import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
 import definition.Versions
 import play.api.Configuration
 import play.api.http.Status._
@@ -27,7 +29,7 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.backend.http.JsonErrorHandler
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import v3.models.errors.{ClientNotAuthenticatedError, InvalidHttpMethodError, _}
+import v3.models.errors._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent._
@@ -97,8 +99,8 @@ class ErrorHandler @Inject() (config: Configuration, auditConnector: AuditConnec
       case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined =>
         (BadRequestError, "ServerValidationError")
       case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined =>
-        (InternalError, "ServerInternalError")
-      case _ => (InternalError, "ServerInternalError")
+        (errors.InternalError, "ServerInternalError")
+      case _ => (errors.InternalError, "ServerInternalError")
     }
 
     auditConnector.sendEvent(
