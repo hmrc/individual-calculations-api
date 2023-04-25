@@ -16,6 +16,7 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamOutcome
 import api.models.domain.Nino
 import api.models.outcomes.ResponseWrapper
 import v3.models.domain.{EmptyJsonBody, TaxYear}

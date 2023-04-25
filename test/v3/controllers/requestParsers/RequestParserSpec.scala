@@ -17,7 +17,6 @@
 package v3.controllers.requestParsers
 
 import api.models.domain.Nino
-import api.models.errors
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
 import api.models.request.RawData
 import support.UnitSpec
@@ -55,7 +54,7 @@ class RequestParserSpec extends UnitSpec {
     "return a single error" when {
       "the validator returns a single error" in new Test {
         lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError)
-        parser.parseRequest(Raw(nino)) shouldBe Left(errors.ErrorWrapper(correlationId, NinoFormatError, None))
+        parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None))
       }
     }
 
@@ -63,7 +62,7 @@ class RequestParserSpec extends UnitSpec {
       "the validator returns multiple errors" in new Test {
         lazy val validator: Validator[Raw] = (_: Raw) => List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
         parser.parseRequest(Raw(nino)) shouldBe Left(
-          errors.ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError))))
+          ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError))))
       }
     }
   }

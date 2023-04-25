@@ -16,7 +16,7 @@
 
 package v3.connectors
 
-import api.connectors.connectors.DownstreamOutcome
+import api.connectors.DownstreamOutcome
 import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import config.AppConfig
 import play.api.http.Status

@@ -16,8 +16,7 @@
 
 package utils
 
-import api.models.errors
-import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
+import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
 import definition.Versions
 import play.api.Configuration
 import play.api.http.Status._
@@ -36,7 +35,7 @@ import scala.concurrent._
 
 @Singleton
 class ErrorHandler @Inject() (config: Configuration, auditConnector: AuditConnector, httpAuditEvent: HttpAuditEvent)(implicit ec: ExecutionContext)
-  extends JsonErrorHandler(auditConnector, httpAuditEvent, config)
+    extends JsonErrorHandler(auditConnector, httpAuditEvent, config)
     with Logging {
 
   import httpAuditEvent.dataEvent
@@ -99,8 +98,8 @@ class ErrorHandler @Inject() (config: Configuration, auditConnector: AuditConnec
       case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream4xxResponse.unapply(e).isDefined =>
         (BadRequestError, "ServerValidationError")
       case e: UpstreamErrorResponse if UpstreamErrorResponse.Upstream5xxResponse.unapply(e).isDefined =>
-        (errors.InternalError, "ServerInternalError")
-      case _ => (errors.InternalError, "ServerInternalError")
+        (InternalError, "ServerInternalError")
+      case _ => (InternalError, "ServerInternalError")
     }
 
     auditConnector.sendEvent(

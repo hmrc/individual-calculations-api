@@ -16,6 +16,7 @@
 
 package v3.connectors.httpparsers
 
+import api.connectors.DownstreamOutcome
 import api.models.errors
 import api.models.errors.BVRError
 import api.models.outcomes.ResponseWrapper
@@ -23,7 +24,6 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json, Reads}
 import support.UnitSpec
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import v3.connectors.DownstreamOutcome
 import v3.models.errors._
 
 // WLOG if Reads tested elsewhere

@@ -30,19 +30,17 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
-import v3.models.errors._
 
 import java.time.Instant
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NoStackTrace
 
-class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
+class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   def versionHeader: (String, String) = ACCEPT -> s"application/vnd.hmrc.1.0+json"
 
-  class Test  (){
-
+  class Test() {
 
     val requestHeader: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(versionHeader)
 
@@ -59,7 +57,6 @@ class ErrorHandlerSpec extends UnitSpec  with  GuiceOneAppPerSuite{
       detail = Map("test" -> "test"),
       generatedAt = Instant.now()
     )
-
 
     (httpAuditEvent
       .dataEvent(_: String, _: String, _: RequestHeader, _: Map[String, String], _: TruncationLog)(_: HeaderCarrier))

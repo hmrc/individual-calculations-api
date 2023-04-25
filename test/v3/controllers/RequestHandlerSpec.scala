@@ -19,9 +19,10 @@ package v3.controllers
 import api.controllers.{EndpointLogContext, RequestContext, RequestHandler, UserRequest}
 import api.mocks.MockIdGenerator
 import api.models.errors
-import api.models.errors.{ErrorWrapper, NinoFormatError}
+import api.models.errors.NinoFormatError
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
+import api.services.ServiceOutcome
 import config.AppConfig
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, Status}
@@ -38,7 +39,6 @@ import v3.mocks.services.MockAuditService
 import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v3.models.auth.UserDetails
 import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
-import v3.services.ServiceOutcome
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}

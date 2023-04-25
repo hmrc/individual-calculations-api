@@ -16,7 +16,7 @@
 
 package v3.connectors
 
-import api.connectors.connectors.DownstreamOutcome
+import api.connectors.DownstreamOutcome
 import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
@@ -366,4 +366,5 @@ class BaseDownstreamConnectorSpec extends ConnectorSpec {
       }
     }
   }
+
 }

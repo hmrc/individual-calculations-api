@@ -19,8 +19,7 @@ package v3.services
 import api.controllers.RequestContext
 import api.models
 import api.models.errors._
-import api.services.BaseService
-import api.services.services.ServiceOutcome
+import api.services.{BaseService, ServiceOutcome}
 import cats.data.EitherT
 import v3.connectors.ListCalculationsConnector
 import v3.models.errors.MtdError

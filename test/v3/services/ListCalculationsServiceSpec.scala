@@ -17,8 +17,15 @@
 package v3.services
 
 import api.models.domain.Nino
-import api.models.errors
-import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.errors.{
+  ErrorWrapper,
+  InternalError,
+  NinoFormatError,
+  NotFoundError,
+  RuleIncorrectGovTestScenarioError,
+  RuleTaxYearNotSupportedError,
+  TaxYearFormatError
+}
 import api.models.outcomes.ResponseWrapper
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.connectors.MockListCalculationsConnector
@@ -65,14 +72,14 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
         "INVALID_TAXYEAR"           -> TaxYearFormatError,
         "NOT_FOUND"                 -> NotFoundError,
-        "SERVER_ERROR"              -> errors.InternalError,
-        "SERVICE_UNAVAILABLE"       -> errors.InternalError,
+        "SERVER_ERROR"              -> InternalError,
+        "SERVICE_UNAVAILABLE"       -> InternalError,
         "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
       )
 
       val extraTysErrors = Seq(
         "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-        "INVALID_CORRELATION_ID" -> errors.InternalError,
+        "INVALID_CORRELATION_ID" -> InternalError,
         "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
       )
 
@@ -81,7 +88,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
       "return an internal server error for an unexpected error code" in new Test {
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
-        await(service.list(request)) shouldBe Left(errors.ErrorWrapper(correlationId, InternalError))
+        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
       }
     }
   }

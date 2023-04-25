@@ -34,6 +34,7 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
       ec: ExecutionContext,
       correlationId: String
   ): Future[DownstreamOutcome[ListCalculations]] = {
+    import api.connectors.httpparsers.StandardDownstreamHttpParser._
     import request._
 
     val downstreamUri =
