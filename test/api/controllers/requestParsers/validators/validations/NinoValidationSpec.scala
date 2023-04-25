@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers.validators.validations
+package api.controllers.requestParsers.validators.validations
 
-import api.controllers.requestParsers.validators.validations.NinoValidation
 import api.models.errors.NinoFormatError
 import support.UnitSpec
 
