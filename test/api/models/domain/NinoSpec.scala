@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.models.domain
+package api.models.domain
 
-import api.models.domain.Nino
 import support.UnitSpec
 
 class NinoSpec extends UnitSpec {
