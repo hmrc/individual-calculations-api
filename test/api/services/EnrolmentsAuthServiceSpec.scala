@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package v3.services
+package api.services
 
 import api.models.errors.{ClientNotAuthorisedError, InternalError}
-import api.services.EnrolmentsAuthService
 import config.ConfidenceLevelConfig
 import mocks.MockAppConfig
 import org.scalamock.handlers.CallHandler
@@ -28,6 +27,7 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import uk.gov.hmrc.http.HeaderCarrier
 import v3.models.auth.UserDetails
+import v3.services.ServiceSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
