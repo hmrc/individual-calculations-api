@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.models.outcomes
+package api.models.outcomes
 
-import api.models.outcomes.ResponseWrapper
 import support.UnitSpec
 
 class ResponseWrapperSpec extends UnitSpec {
