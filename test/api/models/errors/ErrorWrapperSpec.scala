@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v3.models.errors
+package api.models.errors
 
 import api.models.errors
-import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import play.api.libs.json.Json
 import support.UnitSpec
+import v3.models.errors.CalculationIdFormatError
 
 class ErrorWrapperSpec extends UnitSpec {
 
