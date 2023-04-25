@@ -16,7 +16,8 @@
 
 package v3.controllers.requestParsers.validators.validations
 
-import v3.models.errors.{FinalDeclarationFormatError, MtdError}
+import api.models.errors.MtdError
+import v3.models.errors.FinalDeclarationFormatError
 
 import scala.util.{Failure, Success, Try}
 

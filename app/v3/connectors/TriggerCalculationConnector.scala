@@ -16,13 +16,13 @@
 
 package v3.connectors
 
-import api.connectors.DownstreamOutcome
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
+import api.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 

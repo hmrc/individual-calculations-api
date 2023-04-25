@@ -16,11 +16,11 @@
 
 package v3.controllers.requestParsers.validators
 
+import api.models.errors.MtdError
 import api.models.request.RawData
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status.{BAD_REQUEST, IM_A_TEAPOT}
 import support.UnitSpec
-import v3.models.errors.MtdError
 
 class ValidatorSpec extends UnitSpec with MockFactory {
 

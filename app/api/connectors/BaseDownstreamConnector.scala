@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package api.connectors
 
-import api.connectors.DownstreamOutcome
+import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import config.{AppConfig, FeatureSwitches}
 import play.api.http.{HeaderNames, MimeTypes}
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
-import v3.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 
 import scala.concurrent.{ExecutionContext, Future}
 

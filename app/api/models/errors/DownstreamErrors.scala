@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.models.errors
+package api.models.errors
 
 import play.api.libs.json.{Json, Reads}
 

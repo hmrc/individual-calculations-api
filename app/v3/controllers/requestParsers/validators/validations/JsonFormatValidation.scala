@@ -16,10 +16,9 @@
 
 package v3.controllers.requestParsers.validators.validations
 
-import api.models.errors.RuleIncorrectOrEmptyBodyError
+import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
 import play.api.Logger
 import play.api.libs.json._
-import v3.models.errors.MtdError
 
 object JsonFormatValidation {
 

@@ -17,13 +17,11 @@
 package api.connectors.httpparsers
 
 import api.connectors.DownstreamOutcome
-import api.models.errors.InternalError
+import api.models.errors.{InternalError, OutboundError}
 import api.models.outcomes.ResponseWrapper
 import play.api.http.Status._
 import play.api.libs.json.Reads
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import v3.connectors.httpparsers.HttpParser
-import v3.models.errors.OutboundError
 
 object StandardDownstreamHttpParser extends HttpParser {
 

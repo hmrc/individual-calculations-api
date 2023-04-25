@@ -17,15 +17,7 @@
 package v3.services
 
 import api.models.domain.Nino
-import api.models.errors.{
-  ErrorWrapper,
-  InternalError,
-  NinoFormatError,
-  RuleIncorrectGovTestScenarioError,
-  RuleTaxYearNotEndedError,
-  RuleTaxYearNotSupportedError,
-  TaxYearFormatError
-}
+import api.models.errors.{DownstreamErrorCode, DownstreamErrors, ErrorWrapper, InternalError, MtdError, NinoFormatError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
 import api.models.outcomes.ResponseWrapper
 import v3.mocks.connectors.MockTriggerCalculationConnector
 import v3.models.domain.TaxYear

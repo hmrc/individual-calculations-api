@@ -18,8 +18,11 @@ package v3.services
 
 import api.models.domain.Nino
 import api.models.errors.{
+  DownstreamErrorCode,
+  DownstreamErrors,
   ErrorWrapper,
   InternalError,
+  MtdError,
   NinoFormatError,
   NotFoundError,
   RuleIncorrectGovTestScenarioError,
@@ -30,7 +33,6 @@ import api.models.outcomes.ResponseWrapper
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.connectors.MockListCalculationsConnector
 import v3.models.domain.TaxYear
-import v3.models.errors._
 import v3.models.request.ListCalculationsRequest
 
 import scala.concurrent.Future

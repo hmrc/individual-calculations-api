@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package v3.connectors.httpparsers
+package api.connectors.httpparsers
 
-import api.models.errors.{BVRError, InternalError}
+import api.models.errors.{BVRError, DownstreamError, DownstreamErrorCode, DownstreamErrors, InternalError, OutboundError}
 import play.api.libs.json._
 import uk.gov.hmrc.http.HttpResponse
 import utils.Logging
-import v3.models.errors._
 
 import scala.util.{Success, Try}
 

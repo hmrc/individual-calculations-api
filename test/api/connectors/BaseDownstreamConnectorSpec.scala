@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package api.connectors
 
-import api.connectors.DownstreamOutcome
+import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
-import v3.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
+import v3.connectors.ConnectorSpec
 
 import scala.concurrent.Future
 

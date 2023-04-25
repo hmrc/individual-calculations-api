@@ -21,7 +21,6 @@ import api.models.errors.{InternalError, InvalidBearerTokenError, NinoFormatErro
 import play.api.http.Status.{FORBIDDEN, OK, UNAUTHORIZED}
 import play.api.libs.json.{Reads, __}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import v3.connectors.httpparsers.HttpParser
 
 object MtdIdLookupHttpParser extends HttpParser {
 

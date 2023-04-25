@@ -18,7 +18,7 @@ package v3.services
 
 import api.controllers.RequestContext
 import api.models
-import api.models.errors.{ErrorWrapper, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.errors.{ErrorWrapper, MtdError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
 import api.models.outcomes.ResponseWrapper
 import api.services.BaseService
 import cats.implicits._

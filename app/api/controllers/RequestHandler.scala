@@ -27,7 +27,7 @@ import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import utils.Logging
 import v3.controllers.requestParsers.RequestParser
-import v3.controllers.{AuditHandler, ErrorHandling, ResultCreator}
+import v3.controllers.{ErrorHandling, ResultCreator}
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 import v3.models.hateoas.{HateoasData, HateoasWrapper}
 

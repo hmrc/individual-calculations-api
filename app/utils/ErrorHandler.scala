@@ -16,7 +16,15 @@
 
 package utils
 
-import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
+import api.models.errors.{
+  BadRequestError,
+  ClientNotAuthenticatedError,
+  InternalError,
+  InvalidBodyTypeError,
+  InvalidHttpMethodError,
+  MtdError,
+  NotFoundError
+}
 import definition.Versions
 import play.api.Configuration
 import play.api.http.Status._
@@ -28,7 +36,6 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.backend.http.JsonErrorHandler
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import v3.models.errors._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent._

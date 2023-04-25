@@ -16,8 +16,7 @@
 
 package v3.controllers.requestParsers.validators.validations
 
-import api.models.errors.{RuleTaxYearRangeInvalidError, TaxYearFormatError}
-import v3.models.errors.MtdError
+import api.models.errors.{MtdError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 
 object TaxYearValidation {
 

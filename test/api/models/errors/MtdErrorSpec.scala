@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.models.errors
+package api.models.errors
 
-import api.models.errors.NinoFormatError
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 

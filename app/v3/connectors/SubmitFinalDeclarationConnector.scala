@@ -16,10 +16,10 @@
 
 package v3.connectors
 
-import api.connectors.DownstreamOutcome
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.{AppConfig, FeatureSwitches}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.connectors.DownstreamUri.{DesUri, IfsUri}
+import api.connectors.DownstreamUri.{DesUri, IfsUri}
 import v3.models.domain.EmptyJsonBody
 import v3.models.request.SubmitFinalDeclarationRequest
 

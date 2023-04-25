@@ -18,12 +18,11 @@ package v3.support
 
 import api.controllers.EndpointLogContext
 import api.models.errors
-import api.models.errors.{BadRequestError, ErrorWrapper}
+import api.models.errors._
 import api.models.outcomes.ResponseWrapper
 import play.api.http.Status.BAD_REQUEST
 import support.UnitSpec
 import utils.Logging
-import v3.models.errors._
 
 import java.time.LocalDate
 
@@ -102,7 +101,7 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
 
     "the error code is an OutboundError with multiple errors" must {
       "return the error as is (in an ErrorWrapper)" in {
-        mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, OutboundError(ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
+        mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, errors.OutboundError(ErrorBvrMain, Some(Seq(ErrorBvr))))) shouldBe
           errors.ErrorWrapper(correlationId, ErrorBvrMain, Some(Seq(ErrorBvr)))
       }
     }

@@ -22,7 +22,6 @@ import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.data.EitherT
 import v3.connectors.ListCalculationsConnector
-import v3.models.errors.MtdError
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 

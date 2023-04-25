@@ -17,7 +17,6 @@
 package api.models.errors
 
 import play.api.http.Status._
-import v3.models.errors.MtdError
 
 import scala.collection.immutable.Seq
 
