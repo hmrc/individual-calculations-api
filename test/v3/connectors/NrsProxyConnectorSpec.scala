@@ -16,6 +16,7 @@
 
 package v3.connectors
 
+import api.connectors.ConnectorSpec
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.{JsValue, Json}
 

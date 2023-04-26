@@ -21,7 +21,6 @@ import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
-import v3.connectors.ConnectorSpec
 
 import scala.concurrent.Future
 

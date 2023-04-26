@@ -16,7 +16,7 @@
 
 package v3.connectors
 
-import api.connectors.DownstreamOutcome
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.{EmptyJsonBody, Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
