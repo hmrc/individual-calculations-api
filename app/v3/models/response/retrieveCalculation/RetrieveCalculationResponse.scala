@@ -16,11 +16,11 @@
 
 package v3.models.response.retrieveCalculation
 
+import api.models.domain.TaxYear
+import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
 import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
-import v3.models.domain.TaxYear
-import v3.models.hateoas.{HateoasData, Link}
 import v3.models.response.retrieveCalculation.calculation._
 import v3.models.response.retrieveCalculation.inputs.Inputs
 import v3.models.response.retrieveCalculation.messages.Messages
@@ -45,8 +45,6 @@ case class RetrieveCalculationResponse(
   def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
 
-
-
 }
 
 object RetrieveCalculationResponse extends HateoasLinks {
@@ -59,6 +57,7 @@ object RetrieveCalculationResponse extends HateoasLinks {
       messages
     )
   }
+
   implicit val reads: Reads[RetrieveCalculationResponse] = Json.reads[RetrieveCalculationResponse]
 
   implicit val writes: OWrites[RetrieveCalculationResponse] = Json.writes[RetrieveCalculationResponse]

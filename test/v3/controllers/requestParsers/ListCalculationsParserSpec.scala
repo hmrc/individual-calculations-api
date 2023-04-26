@@ -16,13 +16,12 @@
 
 package v3.controllers.requestParsers
 
-import api.models.domain.Nino
+import api.models.domain.{Nino, TaxYear}
 import api.models.errors
 import api.models.errors.{ErrorWrapper, NinoFormatError}
 import mocks.MockAppConfig
 import support.UnitSpec
 import v3.mocks.validators.MockListCalculationsValidator
-import v3.models.domain.TaxYear
 import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {

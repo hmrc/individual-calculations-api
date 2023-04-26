@@ -19,9 +19,9 @@ package v2.hateoas
 import cats.Functor
 import cats.implicits._
 import config.AppConfig
-import javax.inject.Inject
 import v2.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
+import javax.inject.Inject
 
 class HateoasFactory @Inject() (appConfig: AppConfig) {
 

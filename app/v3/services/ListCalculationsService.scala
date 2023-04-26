@@ -20,20 +20,21 @@ import api.controllers.RequestContext
 import api.models
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
-import cats.data.EitherT
+import cats.implicits._
 import v3.connectors.ListCalculationsConnector
 import v3.models.request.ListCalculationsRequest
 import v3.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends BaseService {
 
-  def list(request: ListCalculationsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): ServiceOutcome[ListCalculations] = {
+  def list(request: ListCalculationsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[ListCalculations]] = {
 
-    EitherT(connector.list(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
+    connector.list(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {

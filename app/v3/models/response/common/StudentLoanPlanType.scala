@@ -16,7 +16,7 @@
 
 package v3.models.response.common
 
-import play.api.libs.json.{Writes, Reads}
+import play.api.libs.json.{Reads, Writes}
 import utils.enums.Enums
 
 sealed trait StudentLoanPlanType

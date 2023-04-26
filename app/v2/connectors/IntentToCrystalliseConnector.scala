@@ -17,12 +17,12 @@
 package v2.connectors
 
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.models.domain.EmptyJsonBody
 import v2.models.request.intentToCrystallise.IntentToCrystalliseRequest
 import v2.models.response.intentToCrystallise.IntentToCrystalliseResponse
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

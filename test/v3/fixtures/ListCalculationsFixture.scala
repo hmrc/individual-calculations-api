@@ -16,8 +16,8 @@
 
 package v3.fixtures
 
+import api.models.domain.TaxYear
 import play.api.libs.json.{JsValue, Json}
-import v3.models.domain.TaxYear
 import v3.models.response.common.CalculationType
 import v3.models.response.listCalculations.{Calculation, ListCalculationsResponse}
 

@@ -16,11 +16,12 @@
 
 package v2.controllers.requestParsers
 
-import javax.inject.Inject
 import utils.{CurrentDateProvider, DateUtils}
 import v2.controllers.requestParsers.validators.ListCalculationsValidator
 import v2.models.domain.Nino
 import v2.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+
+import javax.inject.Inject
 
 class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator, val dateProvider: CurrentDateProvider)
     extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {

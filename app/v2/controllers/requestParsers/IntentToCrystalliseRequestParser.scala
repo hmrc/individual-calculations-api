@@ -16,10 +16,11 @@
 
 package v2.controllers.requestParsers
 
-import javax.inject.Inject
 import v2.controllers.requestParsers.validators.IntentToCrystalliseValidator
 import v2.models.domain.{DownstreamTaxYear, Nino}
 import v2.models.request.intentToCrystallise.{IntentToCrystalliseRawData, IntentToCrystalliseRequest}
+
+import javax.inject.Inject
 
 class IntentToCrystalliseRequestParser @Inject() (val validator: IntentToCrystalliseValidator)
     extends RequestParser[IntentToCrystalliseRawData, IntentToCrystalliseRequest] {

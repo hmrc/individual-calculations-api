@@ -16,12 +16,13 @@
 
 package api.controllers
 
+import api.models.audit
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.auth.UserDetails
 import api.models.errors.ErrorWrapper
+import api.services.AuditService
 import cats.syntax.either._
 import play.api.libs.json.{JsValue, Writes}
-import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import v3.models.auth.UserDetails
-import v3.services.AuditService
 
 import scala.Function.const
 import scala.concurrent.ExecutionContext
@@ -83,7 +84,7 @@ object AuditHandler {
         ec: ExecutionContext): Unit = {
 
       val auditEvent = {
-        val auditResponse = AuditResponse(httpStatus, response.map(responseBodyMap).leftMap(ew => ew.auditErrors))
+        val auditResponse = audit.AuditResponse(httpStatus, response.map(responseBodyMap).leftMap(ew => ew.auditErrors))
 
         val detail = auditDetailCreator.createAuditDetail(
           userDetails = userDetails,

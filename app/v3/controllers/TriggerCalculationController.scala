@@ -16,17 +16,17 @@
 
 package v3.controllers
 
-import api.controllers.{AuditHandler, AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import api.controllers._
+import api.models.audit.GenericAuditDetail
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.TriggerCalculationParser
 import v3.hateoas.HateoasFactory
-import v3.models.audit.GenericAuditDetail
 import v3.models.request.TriggerCalculationRawData
 import v3.models.response.triggerCalculation.TriggerCalculationHateoasData
-import v3.services.{AuditService, TriggerCalculationService}
+import v3.services.TriggerCalculationService
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext

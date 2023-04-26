@@ -16,10 +16,11 @@
 
 package v2.controllers.requestParsers
 
-import javax.inject.Inject
 import v2.controllers.requestParsers.validators.GetMessagesValidator
 import v2.models.domain.{MessageType, Nino}
 import v2.models.request.{GetMessagesRawData, GetMessagesRequest}
+
+import javax.inject.Inject
 
 class GetMessagesParser @Inject() (val validator: GetMessagesValidator) extends RequestParser[GetMessagesRawData, GetMessagesRequest] {
 

@@ -16,10 +16,11 @@
 
 package v2.controllers.requestParsers
 
-import javax.inject.Inject
 import v2.controllers.requestParsers.validators.GetCalculationValidator
 import v2.models.domain.Nino
 import v2.models.request.{GetCalculationRawData, GetCalculationRequest}
+
+import javax.inject.Inject
 
 class GetCalculationParser @Inject() (val validator: GetCalculationValidator) extends RequestParser[GetCalculationRawData, GetCalculationRequest] {
 

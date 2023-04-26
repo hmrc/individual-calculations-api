@@ -23,7 +23,6 @@ sealed trait IncomeSourceType
 
 object IncomeSourceType {
 
-
   case object `self-employment`           extends IncomeSourceType
   case object `uk-property-non-fhl`       extends IncomeSourceType
   case object `foreign-property-fhl-eea`  extends IncomeSourceType

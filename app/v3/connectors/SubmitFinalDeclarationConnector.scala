@@ -16,11 +16,11 @@
 
 package v3.connectors
 
+import api.connectors.DownstreamUri.{DesUri, IfsUri}
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import api.models.domain.EmptyJsonBody
 import config.{AppConfig, FeatureSwitches}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import api.connectors.DownstreamUri.{DesUri, IfsUri}
-import v3.models.domain.EmptyJsonBody
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import javax.inject.{Inject, Singleton}

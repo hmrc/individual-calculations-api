@@ -16,15 +16,7 @@
 
 package utils
 
-import api.models.errors.{
-  BadRequestError,
-  ClientNotAuthenticatedError,
-  InternalError,
-  InvalidBodyTypeError,
-  InvalidHttpMethodError,
-  MtdError,
-  NotFoundError
-}
+import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, MtdError, NotFoundError}
 import definition.Versions
 import play.api.Configuration
 import play.api.http.Status._

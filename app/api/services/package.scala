@@ -19,8 +19,6 @@ package api
 import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 
-import scala.concurrent.Future
-
 package object services {
-  type ServiceOutcome[I] = Future[Either[ErrorWrapper, ResponseWrapper[I]]]
+  type ServiceOutcome[I] = Either[ErrorWrapper, ResponseWrapper[I]]
 }

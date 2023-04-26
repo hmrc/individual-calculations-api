@@ -17,9 +17,9 @@
 package v3.handler
 
 import api.controllers.UserRequest
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import play.api.libs.json.{JsValue, Writes}
 import play.api.mvc.AnyContent
-import v3.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 
 case class AuditHandler[Details](auditType: String, transactionName: String, detailFactory: (String, AuditResponse) => Details)(implicit
     val writes: Writes[Details]) {

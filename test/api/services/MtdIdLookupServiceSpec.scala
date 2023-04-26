@@ -16,9 +16,9 @@
 
 package api.services
 
+import api.mocks.connectors.MockMtdIdLookupConnector
 import api.models.domain.Nino
 import api.models.errors.{ClientNotAuthorisedError, InternalError, NinoFormatError}
-import v3.mocks.connectors.MockMtdIdLookupConnector
 import v3.services.ServiceSpec
 
 import scala.concurrent.Future

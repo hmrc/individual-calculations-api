@@ -16,11 +16,17 @@
 
 package api.controllers
 
+import api.controllers.requestParsers.RequestParser
 import api.mocks.MockIdGenerator
-import api.models.errors
+import api.mocks.hateoas.MockHateoasFactory
+import api.mocks.services.MockAuditService
+import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.auth.UserDetails
 import api.models.errors.NinoFormatError
+import api.models.hateoas.{HateoasData, Link}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
+import api.models.{errors, hateoas}
 import api.services.ServiceOutcome
 import config.AppConfig
 import org.scalamock.handlers.CallHandler
@@ -32,13 +38,7 @@ import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.ControllerSpecHateoasSupport
-import v3.controllers.requestParsers.RequestParser
 import v3.hateoas.HateoasLinksFactory
-import v3.mocks.hateoas.MockHateoasFactory
-import v3.mocks.services.MockAuditService
-import v3.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
-import v3.models.auth.UserDetails
-import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
@@ -79,7 +79,7 @@ class RequestHandlerSpec
   implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, FakeRequest())
 
   trait DummyService {
-    def service(input: Input.type)(implicit ctx: RequestContext, ec: ExecutionContext): ServiceOutcome[Output.type]
+    def service(input: Input.type)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Output.type]]
   }
 
   private val mockService = mock[DummyService]
@@ -135,7 +135,7 @@ class RequestHandlerSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
-        MockHateoasFactory.wrap(Output, HData) returns HateoasWrapper(Output, hateoaslinks)
+        MockHateoasFactory.wrap(Output, HData) returns hateoas.HateoasWrapper(Output, hateoaslinks)
 
         val result = requestHandler.handleRequest(InputRaw)
 

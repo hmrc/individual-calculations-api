@@ -17,13 +17,13 @@
 package v2.connectors
 
 import config.AppConfig
-import javax.inject.Inject
 import play.api.libs.json.Reads
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.connectors.httpparsers.StandardHttpParser._
 import v2.handler.RequestDefn
 import v2.handler.RequestDefn.{Get, Post}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class StandardConnector @Inject() (val appConfig: AppConfig, val http: HttpClient) extends BaseConnector {

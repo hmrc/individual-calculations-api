@@ -18,13 +18,7 @@ package v3.models.response.retrieveCalculation.calculation.businessProfitAndLoss
 
 import play.api.libs.json._
 import v3.models.response.common.IncomeSourceType
-import v3.models.response.common.IncomeSourceType.{
-  `foreign-property-fhl-eea`,
-  `foreign-property`,
-  `self-employment`,
-  `uk-property-fhl`,
-  `uk-property-non-fhl`
-}
+import v3.models.response.common.IncomeSourceType.{`foreign-property-fhl-eea`, `foreign-property`, `self-employment`, `uk-property-fhl`, `uk-property-non-fhl`}
 
 case class BusinessProfitAndLoss(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,

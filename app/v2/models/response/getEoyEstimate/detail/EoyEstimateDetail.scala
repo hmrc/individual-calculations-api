@@ -17,7 +17,7 @@
 package v2.models.response.getEoyEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
-import EoyEstimateIncomeSourceSummary._
+import v2.models.response.getEoyEstimate.detail.EoyEstimateIncomeSourceSummary._
 
 case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
                              ukPropertyFhl: Option[IncomeSourceSummaryWithFinalised],

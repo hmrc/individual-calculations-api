@@ -16,6 +16,7 @@
 
 package v3.endpoints
 
+import api.models.domain.TaxYear
 import api.models.errors.{InternalError, MtdError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
@@ -25,8 +26,6 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.fixtures.ListCalculationsFixture
-import v3.models.domain.TaxYear
-import v3.models.errors._
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {

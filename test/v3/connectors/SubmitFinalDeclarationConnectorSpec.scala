@@ -17,9 +17,8 @@
 package v3.connectors
 
 import api.connectors.DownstreamOutcome
-import api.models.domain.Nino
+import api.models.domain.{EmptyJsonBody, Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
-import v3.models.domain.{EmptyJsonBody, TaxYear}
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.Future

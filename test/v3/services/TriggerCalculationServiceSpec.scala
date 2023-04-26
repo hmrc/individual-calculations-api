@@ -16,11 +16,10 @@
 
 package v3.services
 
-import api.models.domain.Nino
+import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors, ErrorWrapper, FinalDeclarationFormatError, InternalError, MtdError, NinoFormatError, RuleBusinessValidationFailureError, RuleCalculationInProgressError, RuleFinalDeclarationReceivedError, RuleIncomeSourcesChangedError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
 import api.models.outcomes.ResponseWrapper
 import v3.mocks.connectors.MockTriggerCalculationConnector
-import v3.models.domain.TaxYear
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 

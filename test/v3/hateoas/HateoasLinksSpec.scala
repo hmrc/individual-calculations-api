@@ -16,11 +16,11 @@
 
 package v3.hateoas
 
+import api.models.domain.TaxYear
+import api.models.hateoas.Link
+import api.models.hateoas.Method.{GET, POST}
 import mocks.MockAppConfig
 import support.UnitSpec
-import v3.models.domain.TaxYear
-import v3.models.hateoas.Link
-import v3.models.hateoas.Method.{GET, POST}
 
 class HateoasLinksSpec extends UnitSpec with MockAppConfig {
 

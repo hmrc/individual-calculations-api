@@ -16,13 +16,13 @@
 
 package v3.models.response.triggerCalculation
 
+import api.models.domain.TaxYear
+import api.models.hateoas.Method.GET
+import api.models.hateoas.{HateoasWrapper, Link}
 import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v3.hateoas.HateoasFactory
-import v3.models.domain.TaxYear
-import v3.models.hateoas.Method.GET
-import v3.models.hateoas.{HateoasWrapper, Link}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 

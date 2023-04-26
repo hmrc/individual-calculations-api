@@ -16,6 +16,7 @@
 
 package v3.controllers.requestParsers.validators
 
+import api.controllers.requestParsers.validators.Validator
 import api.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation, TaxYearValidation}
 import api.models.errors.MtdError
 import v3.models.request.SubmitFinalDeclarationRawData

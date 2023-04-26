@@ -16,9 +16,9 @@
 
 package api.controllers.requestParsers.validators.validations
 
+import api.models.domain.TaxYear
 import api.models.errors.{MtdError, RuleTaxYearNotSupportedError}
 import config.FixedConfig
-import v3.models.domain.TaxYear
 
 object TaxYearNotSupportedValidation extends FixedConfig {
 

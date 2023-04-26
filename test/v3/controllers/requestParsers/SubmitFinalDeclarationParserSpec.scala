@@ -16,11 +16,10 @@
 
 package v3.controllers.requestParsers
 
-import api.models.domain.Nino
+import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v3.mocks.validators.MockSubmitFinalDeclarationTriggerValidator
-import v3.models.domain.TaxYear
 import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
 class SubmitFinalDeclarationParserSpec extends UnitSpec {

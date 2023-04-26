@@ -17,8 +17,7 @@
 package v2.models.response.getTaxableIncome.detail.foreignProperty
 
 import play.api.libs.json.{Json, OFormat}
-import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.BusinessSourceAdjustableSummary
-import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.LossClaimsDetail
+import v2.models.response.getTaxableIncome.detail.foreignProperty.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v2.models.response.getTaxableIncome.detail.foreignProperty.summary.LossClaimsSummary
 
 case class ForeignProperty(totalIncome: Option[BigDecimal],
