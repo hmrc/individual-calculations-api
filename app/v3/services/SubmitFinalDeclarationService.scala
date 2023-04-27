@@ -20,7 +20,7 @@ import api.controllers.RequestContext
 import api.models
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
-import api.services.BaseService
+import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v3.connectors.SubmitFinalDeclarationConnector
 import v3.models.request.SubmitFinalDeclarationRequest
@@ -33,7 +33,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
       ctx: RequestContext,
-      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
+      ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
 
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

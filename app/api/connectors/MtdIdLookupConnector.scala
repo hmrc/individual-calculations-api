@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package api.connectors
 
-import api.connectors.MtdIdLookupOutcome
 import api.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package api.connectors
 
-import api.connectors.{ConnectorSpec, MtdIdLookupOutcome}
 import api.models.errors.InternalError
 import mocks.{MockAppConfig, MockHttpClient}
 

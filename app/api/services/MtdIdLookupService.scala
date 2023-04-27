@@ -16,11 +16,10 @@
 
 package api.services
 
-import api.connectors.MtdIdLookupOutcome
+import api.connectors.{MtdIdLookupConnector, MtdIdLookupOutcome}
 import api.models.domain.Nino
 import api.models.errors.NinoFormatError
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.connectors.MtdIdLookupConnector
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

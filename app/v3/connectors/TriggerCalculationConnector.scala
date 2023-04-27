@@ -44,13 +44,13 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       post(
         body = JsObject.empty,
         uri = TaxYearSpecificIfsUri[TriggerCalculationResponse](
-          s"income-tax/calculation/${taxYear.asTysDownstream}/${nino.value}?crystallise=$finalDeclaration")
+          s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
       )
     } else {
       post(
         body = JsObject.empty,
         uri = DesUri[TriggerCalculationResponse](
-          s"income-tax/nino/${nino.value}/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+          s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
       )
     }
   }

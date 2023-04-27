@@ -39,9 +39,9 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
 
     val downstreamUri =
       if (taxYear.useTaxYearSpecificApi) {
-        TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}")
+        TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
       } else {
-        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/${nino.nino}?taxYear=${taxYear.asDownstream}")
+        DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
       }
 
     get(downstreamUri)

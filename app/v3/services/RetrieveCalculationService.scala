@@ -20,7 +20,7 @@ import api.controllers.RequestContext
 import api.models
 import api.models.errors._
 import api.models.outcomes.ResponseWrapper
-import api.services.BaseService
+import api.services.{BaseService, ServiceOutcome}
 import cats.data.EitherT
 import cats.implicits._
 import v3.connectors.RetrieveCalculationConnector
@@ -35,12 +35,13 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
 
   def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
       ctx: RequestContext,
-      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
-    EitherT(connector.retrieveCalculation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
+    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+
   }
 
-  val downstreamErrorMap: Map[String, MtdError] = {
+  private val downstreamErrorMap: Map[String, MtdError] = {
     val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,

@@ -18,9 +18,7 @@ package v3.services
 
 import api.controllers.RequestContext
 import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.BaseService
-import cats.data.EitherT
+import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v3.connectors.TriggerCalculationConnector
 import v3.models.request.TriggerCalculationRequest
@@ -32,11 +30,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class TriggerCalculationService @Inject() (connector: TriggerCalculationConnector) extends BaseService {
 
-  def triggerCalculation(request: TriggerCalculationRequest)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
+  def triggerCalculation(
+      request: TriggerCalculationRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
-    EitherT(connector.triggerCalculation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
+    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {

@@ -39,9 +39,9 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfi
 
     val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
       TaxYearSpecificIfsUri[RetrieveCalculationResponse](
-        s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId")
+        s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
     } else {
-      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/${nino.nino}/$calculationId")
+      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/$nino/$calculationId")
     }
 
     get(uri = downstreamUri)
