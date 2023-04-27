@@ -19,9 +19,7 @@ package v3.services
 import api.controllers.RequestContext
 import api.models
 import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import api.services.{BaseService, ServiceOutcome}
-import cats.data.EitherT
 import cats.implicits._
 import v3.connectors.RetrieveCalculationConnector
 import v3.models.request.RetrieveCalculationRequest

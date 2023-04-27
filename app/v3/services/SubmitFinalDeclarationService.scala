@@ -19,7 +19,6 @@ package v3.services
 import api.controllers.RequestContext
 import api.models
 import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v3.connectors.SubmitFinalDeclarationConnector
@@ -31,9 +30,8 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
 
-  def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
+  def submitFinalDeclaration(
+      request: SubmitFinalDeclarationRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
 
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

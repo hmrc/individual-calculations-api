@@ -43,14 +43,14 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
       post(
         body = JsObject.empty,
-        uri = TaxYearSpecificIfsUri[TriggerCalculationResponse](
-          s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
+        uri =
+          TaxYearSpecificIfsUri[TriggerCalculationResponse](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
       )
     } else {
       post(
         body = JsObject.empty,
-        uri = DesUri[TriggerCalculationResponse](
-          s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
+        uri =
+          DesUri[TriggerCalculationResponse](s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
       )
     }
   }
