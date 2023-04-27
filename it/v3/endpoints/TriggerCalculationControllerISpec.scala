@@ -16,6 +16,7 @@
 
 package v3.endpoints
 
+import api.models.errors.{FinalDeclarationFormatError, InternalError, MtdError, NinoFormatError, RuleBusinessValidationFailureError, RuleCalculationInProgressError, RuleFinalDeclarationReceivedError, RuleIncomeSourcesChangedError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleTaxYearNotEndedError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
@@ -23,7 +24,6 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
-import v3.models.errors._
 import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {

@@ -18,7 +18,7 @@ package v2.support
 
 import support.UnitSpec
 import v2.models.domain.MessageType
-import v2.models.response.getMessages.{MessagesResponse, Message}
+import v2.models.response.getMessages.{Message, MessagesResponse}
 
 class MessagesFilterSpec extends UnitSpec {
 

@@ -16,7 +16,6 @@
 
 package v2.controllers
 
-import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser
@@ -34,6 +33,7 @@ import v2.models.response.getMessages.{MessagesHateoasData, MessagesResponse}
 import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 import v2.support.MessagesFilter
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class GetMessagesController @Inject() (authService: EnrolmentsAuthService,

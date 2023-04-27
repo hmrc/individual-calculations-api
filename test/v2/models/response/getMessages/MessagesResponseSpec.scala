@@ -19,11 +19,11 @@ package v2.models.response.getMessages
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getMessages.MessagesResponseFixture._
 import v2.fixtures.getMessages.MessageFixture._
+import v2.fixtures.getMessages.MessagesResponseFixture._
 import v2.hateoas.HateoasFactory
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
+import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.utils.JsonErrorValidators
 
 class MessagesResponseSpec extends UnitSpec with JsonErrorValidators {

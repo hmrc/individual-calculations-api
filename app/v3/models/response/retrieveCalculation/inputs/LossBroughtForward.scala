@@ -16,8 +16,8 @@
 
 package v3.models.response.retrieveCalculation.inputs
 
+import api.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v3.models.domain.TaxYear
 import v3.models.response.common.IncomeSourceType
 import v3.models.response.common.IncomeSourceType._
 

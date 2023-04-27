@@ -16,11 +16,12 @@
 
 package v3.services
 
+import api.controllers.RequestContext
+import api.models
+import api.models.errors._
+import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v3.connectors.SubmitFinalDeclarationConnector
-import v3.controllers.RequestContext
-import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.SubmitFinalDeclarationRequest
 
 import javax.inject.{Inject, Singleton}
@@ -29,9 +30,8 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
 
-  def submitFinalDeclaration(request: SubmitFinalDeclarationRequest)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[Unit]]] = {
+  def submitFinalDeclaration(
+      request: SubmitFinalDeclarationRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
 
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
@@ -41,7 +41,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "INVALID_TAXABLE_ENTITY_ID"      -> NinoFormatError,
       "INVALID_TAX_YEAR"               -> TaxYearFormatError,
       "INVALID_CALCID"                 -> CalculationIdFormatError,
-      "INVALID_CORRELATION_ID"         -> InternalError,
+      "INVALID_CORRELATION_ID"         -> models.errors.InternalError,
       "NOT_FOUND"                      -> NotFoundError,
       "INCOME_SOURCES_CHANGED"         -> RuleIncomeSourcesChangedError,
       "RECENT_SUBMISSIONS_EXIST"       -> RuleRecentSubmissionsExistError,
@@ -53,13 +53,13 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "CRYSTALLISATION_TAX_YEAR_ERROR" -> RuleFinalDeclarationTaxYearError,
       "CRYSTALLISATION_IN_PROGRESS"    -> RuleFinalDeclarationInProgressError,
       "TAX_YEAR_NOT_SUPPORTED"         -> RuleTaxYearNotSupportedError,
-      "SERVER_ERROR"                   -> InternalError,
-      "SERVICE_UNAVAILABLE"            -> InternalError,
+      "SERVER_ERROR"                   -> models.errors.InternalError,
+      "SERVICE_UNAVAILABLE"            -> models.errors.InternalError,
       "UNMATCHED_STUB_ERROR"           -> RuleIncorrectGovTestScenarioError
     )
 
     val extraDesErrors: Map[String, MtdError] = Map(
-      "INVALID_IDTYPE"  -> InternalError,
+      "INVALID_IDTYPE"  -> models.errors.InternalError,
       "INVALID_IDVALUE" -> NinoFormatError,
       "INVALID_TAXYEAR" -> TaxYearFormatError
     )

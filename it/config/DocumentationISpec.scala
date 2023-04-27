@@ -19,14 +19,14 @@ package config
 import io.swagger.v3.parser.OpenAPIV3Parser
 import org.scalatest.OptionValues
 import play.api.http.Status
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
 import support.IntegrationBaseSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
 
-  val config: AppConfig = app.injector.instanceOf[AppConfig]
+  val config: AppConfig                = app.injector.instanceOf[AppConfig]
   val confidenceLevel: ConfidenceLevel = config.confidenceLevelConfig.confidenceLevel
 
   val apiDefinitionJson: JsValue = Json.parse(s"""

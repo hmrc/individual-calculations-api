@@ -16,9 +16,9 @@
 
 package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
+import api.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v3.models.domain.TaxYear
-import v3.models.response.common.{IncomeSourceType, ClaimType}
+import v3.models.response.common.{ClaimType, IncomeSourceType}
 
 case class ClaimNotApplied(
     claimId: String,

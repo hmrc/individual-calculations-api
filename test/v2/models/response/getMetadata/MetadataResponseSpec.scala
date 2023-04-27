@@ -21,8 +21,8 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v2.fixtures.getMetadata.MetadataResponseFixture._
 import v2.hateoas.HateoasFactory
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
+import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.utils.JsonErrorValidators
 
 class MetadataResponseSpec extends UnitSpec with JsonErrorValidators {

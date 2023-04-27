@@ -16,7 +16,8 @@
 
 package v3.models.request
 
-import v3.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
+import api.models.request.RawData
 
 case class TriggerCalculationRawData(nino: String, taxYear: String, finalDeclaration: Option[String]) extends RawData
 

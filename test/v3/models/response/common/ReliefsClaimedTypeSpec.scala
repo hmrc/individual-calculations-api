@@ -23,7 +23,7 @@ import v3.models.response.common.ReliefsClaimedType._
 class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[ReliefsClaimedType](
-    "vctSubscriptions"                      -> vctSubscriptions,
+    "vctSubscriptions"                                      -> vctSubscriptions,
     "eisSubscriptions"                                      -> eisSubscriptions,
     "communityInvestment"                                   -> communityInvestment,
     "seedEnterpriseInvestment"                              -> seedEnterpriseInvestment,
@@ -45,4 +45,5 @@ class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     nonDeductibleLoanInterest                             -> "nonDeductibleLoanInterest",
     qualifyingDistributionRedemptionOfSharesAndSecurities -> "qualifyingDistributionRedemptionOfSharesAndSecurities"
   )
+
 }

@@ -18,7 +18,7 @@ package v2.connectors
 
 import config.AppConfig
 import mocks.{MockAppConfig, MockHttpClient}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpClient}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
 import v2.models.outcomes.ResponseWrapper
 import v2.models.response.common.DownstreamResponse
 

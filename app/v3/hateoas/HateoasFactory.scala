@@ -16,12 +16,12 @@
 
 package v3.hateoas
 
+import api.models.hateoas.{HateoasData, HateoasWrapper, Link}
 import cats.Functor
 import cats.implicits._
 import config.AppConfig
-import javax.inject.Inject
-import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
 
+import javax.inject.Inject
 
 class HateoasFactory @Inject() (appConfig: AppConfig) {
 

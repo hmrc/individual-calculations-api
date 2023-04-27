@@ -16,12 +16,12 @@
 
 package v3.services
 
-import cats.data.EitherT
+import api.controllers.RequestContext
+import api.models
+import api.models.errors._
+import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v3.connectors.RetrieveCalculationConnector
-import v3.controllers.RequestContext
-import v3.models.errors._
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 
@@ -33,27 +33,28 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
 
   def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
       ctx: RequestContext,
-      ec: ExecutionContext): Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]] = {
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
-    EitherT(connector.retrieveCalculation(request)).leftMap(mapDownstreamErrors(downstreamErrorMap)).value
+    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+
   }
 
-  val downstreamErrorMap: Map[String, MtdError] = {
+  private val downstreamErrorMap: Map[String, MtdError] = {
     val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
-      "INVALID_CORRELATIONID"     -> InternalError,
-      "INVALID_CONSUMERID"        -> InternalError,
+      "INVALID_CORRELATIONID"     -> models.errors.InternalError,
+      "INVALID_CONSUMERID"        -> models.errors.InternalError,
       "NO_DATA_FOUND"             -> NotFoundError,
-      "SERVER_ERROR"              -> InternalError,
-      "SERVICE_UNAVAILABLE"       -> InternalError,
+      "SERVER_ERROR"              -> models.errors.InternalError,
+      "SERVICE_UNAVAILABLE"       -> models.errors.InternalError,
       "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
     )
 
     val extraTysErrors: Map[String, MtdError] = Map(
       "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> InternalError,
-      "INVALID_CONSUMER_ID"    -> InternalError,
+      "INVALID_CORRELATION_ID" -> models.errors.InternalError,
+      "INVALID_CONSUMER_ID"    -> models.errors.InternalError,
       "NOT_FOUND"              -> NotFoundError,
       "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
     )

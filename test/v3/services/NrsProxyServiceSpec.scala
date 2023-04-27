@@ -16,6 +16,7 @@
 
 package v3.services
 
+import api.services.ServiceSpec
 import v3.fixtures.nrs.NrsFixture
 import v3.mocks.connectors.MockNrsProxyConnector
 

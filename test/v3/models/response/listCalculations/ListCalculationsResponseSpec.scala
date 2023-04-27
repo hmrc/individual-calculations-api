@@ -16,13 +16,13 @@
 
 package v3.models.response.listCalculations
 
+import api.models.domain.TaxYear
+import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v3.fixtures.ListCalculationsFixture
 import v3.hateoas.HateoasFactory
-import v3.models.domain.TaxYear
-import v3.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 
 class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture {
 

@@ -16,10 +16,11 @@
 
 package v2.controllers.requestParsers
 
-import javax.inject.Inject
 import v2.controllers.requestParsers.validators.CrystallisationValidator
 import v2.models.domain.{CrystallisationRequestBody, DownstreamTaxYear, Nino}
 import v2.models.request.crystallisation.{CrystallisationRawData, CrystallisationRequest}
+
+import javax.inject.Inject
 
 class CrystallisationRequestParser @Inject() (val validator: CrystallisationValidator)
     extends RequestParser[CrystallisationRawData, CrystallisationRequest] {

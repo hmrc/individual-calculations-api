@@ -16,13 +16,13 @@
 
 package v3.endpoints
 
+import api.models.errors.{CalculationIdFormatError, InternalError, MtdError, NinoFormatError, NotFoundError, RuleFinalDeclarationInProgressError, RuleFinalDeclarationReceivedError, RuleFinalDeclarationTaxYearError, RuleIncomeSourcesChangedError, RuleIncomeSourcesInvalidError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleSubmissionFailedError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 import support.V3IntegrationBaseSpec
-import v3.models.errors._
 import v3.stubs._
 
 class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {

@@ -20,8 +20,8 @@ import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v2.hateoas.HateoasFactory
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.GET
+import v2.models.hateoas.{HateoasWrapper, Link}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
 

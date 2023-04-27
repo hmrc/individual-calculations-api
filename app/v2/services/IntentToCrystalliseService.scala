@@ -18,7 +18,6 @@ package v2.services
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v2.connectors.IntentToCrystalliseConnector
@@ -29,6 +28,7 @@ import v2.models.request.intentToCrystallise.IntentToCrystalliseRequest
 import v2.models.response.intentToCrystallise.IntentToCrystalliseResponse
 import v2.support.BackendResponseMappingSupport
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

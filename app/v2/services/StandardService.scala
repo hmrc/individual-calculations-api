@@ -16,7 +16,6 @@
 
 package v2.services
 
-import javax.inject.Inject
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v2.connectors.StandardConnector
@@ -26,6 +25,7 @@ import v2.models.errors._
 import v2.models.outcomes.ResponseWrapper
 import v2.support.BackendResponseMappingSupport
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class StandardService @Inject() (connector: StandardConnector) extends BackendResponseMappingSupport with Logging {

@@ -16,10 +16,10 @@
 
 package v3.mocks.requestParsers
 
+import api.models.errors.ErrorWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v3.controllers.requestParsers.TriggerCalculationParser
-import v3.models.errors.ErrorWrapper
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 
 trait MockTriggerCalculationParser extends MockFactory {

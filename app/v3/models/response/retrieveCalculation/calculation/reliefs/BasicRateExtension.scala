@@ -18,7 +18,9 @@ package v3.models.response.retrieveCalculation.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class BasicRateExtension(totalBasicRateExtension: Option[BigDecimal], giftAidRelief: Option[BigInt], pensionContributionReliefs: Option[BigDecimal] )
+case class BasicRateExtension(totalBasicRateExtension: Option[BigDecimal],
+                              giftAidRelief: Option[BigInt],
+                              pensionContributionReliefs: Option[BigDecimal])
 
 object BasicRateExtension {
   implicit val format: OFormat[BasicRateExtension] = Json.format[BasicRateExtension]

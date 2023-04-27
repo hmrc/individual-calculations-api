@@ -17,7 +17,7 @@
 package v2.fixtures.getIncomeTaxAndNics.detail.nics
 
 import play.api.libs.json.{JsValue, Json}
-import Class4LossesFixture._
+import v2.fixtures.getIncomeTaxAndNics.detail.nics.Class4LossesFixture._
 import v2.fixtures.getIncomeTaxAndNics.detail.nics.NicBandFixture._
 import v2.models.response.getIncomeTaxAndNics.detail.nics.Class4NicDetail
 

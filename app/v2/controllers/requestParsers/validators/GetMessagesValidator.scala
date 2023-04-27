@@ -16,7 +16,7 @@
 
 package v2.controllers.requestParsers.validators
 
-import v2.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation, MessageTypeValidation}
+import v2.controllers.requestParsers.validators.validations.{CalculationIdValidation, MessageTypeValidation, NinoValidation}
 import v2.models.errors.MtdError
 import v2.models.request.GetMessagesRawData
 

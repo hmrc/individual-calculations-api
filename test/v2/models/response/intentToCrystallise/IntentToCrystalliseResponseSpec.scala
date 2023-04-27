@@ -20,8 +20,8 @@ import mocks.MockAppConfig
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v2.hateoas.HateoasFactory
-import v2.models.hateoas.{HateoasWrapper, Link}
 import v2.models.hateoas.Method.{GET, POST}
+import v2.models.hateoas.{HateoasWrapper, Link}
 
 class IntentToCrystalliseResponseSpec extends UnitSpec {
 

@@ -90,9 +90,9 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   val ifsEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.ifs.environmentHeaders")
 
   // Tax Year Specific (TYS) IFS Config
-  val tysIfsBaseUrl: String = config.baseUrl("tys-ifs")
-  val tysIfsEnv: String = config.getString("microservice.services.tys-ifs.env")
-  val tysIfsToken: String = config.getString("microservice.services.tys-ifs.token")
+  val tysIfsBaseUrl: String                         = config.baseUrl("tys-ifs")
+  val tysIfsEnv: String                             = config.getString("microservice.services.tys-ifs.env")
+  val tysIfsToken: String                           = config.getString("microservice.services.tys-ifs.token")
   val tysIfsEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.tys-ifs.environmentHeaders")
 
   // API Config
@@ -125,4 +125,3 @@ object ConfidenceLevelConfig {
   }
 
 }
-

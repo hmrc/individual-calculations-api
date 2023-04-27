@@ -16,6 +16,7 @@
 
 package utils
 
+import api.models.errors.{BadRequestError, ClientNotAuthenticatedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, MtdError, NotFoundError}
 import definition.Versions
 import play.api.Configuration
 import play.api.http.Status._
@@ -27,14 +28,13 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.bootstrap.backend.http.JsonErrorHandler
 import uk.gov.hmrc.play.bootstrap.config.HttpAuditEvent
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import v3.models.errors.{ClientNotAuthenticatedError, InvalidHttpMethodError, _}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent._
 
 @Singleton
 class ErrorHandler @Inject() (config: Configuration, auditConnector: AuditConnector, httpAuditEvent: HttpAuditEvent)(implicit ec: ExecutionContext)
-  extends JsonErrorHandler(auditConnector, httpAuditEvent, config)
+    extends JsonErrorHandler(auditConnector, httpAuditEvent, config)
     with Logging {
 
   import httpAuditEvent.dataEvent

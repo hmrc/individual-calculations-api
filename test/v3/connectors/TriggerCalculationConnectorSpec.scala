@@ -16,9 +16,10 @@
 
 package v3.connectors
 
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.Json
-import v3.models.domain.{Nino, TaxYear}
-import v3.models.outcomes.ResponseWrapper
 import v3.models.request.TriggerCalculationRequest
 import v3.models.response.triggerCalculation.TriggerCalculationResponse
 

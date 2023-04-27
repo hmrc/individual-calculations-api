@@ -16,8 +16,9 @@
 
 package v3.controllers.requestParsers.validators
 
-import v3.controllers.requestParsers.validators.validations._
-import v3.models.errors.MtdError
+import api.controllers.requestParsers.validators.Validator
+import api.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation, TaxYearValidation}
+import api.models.errors.MtdError
 import v3.models.request.SubmitFinalDeclarationRawData
 
 class SubmitFinalDeclarationValidator extends Validator[SubmitFinalDeclarationRawData] {

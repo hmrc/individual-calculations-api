@@ -16,11 +16,12 @@
 
 package v3.controllers.requestParsers
 
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors
+import api.models.errors.{ErrorWrapper, NinoFormatError}
 import mocks.MockAppConfig
 import support.UnitSpec
 import v3.mocks.validators.MockListCalculationsValidator
-import v3.models.domain.{Nino, TaxYear}
-import v3.models.errors.{ErrorWrapper, NinoFormatError}
 import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
@@ -61,7 +62,7 @@ class ListCalculationsParserSpec extends UnitSpec {
 
         val result: Either[ErrorWrapper, ListCalculationsRequest] =
           parser.parseRequest(ListCalculationsRawData("AA111111", Some("2018-19")))
-        result shouldBe Left(ErrorWrapper("a1e8057e-fbbc-47a8-a8b4-78d9f015c253", NinoFormatError, None))
+        result shouldBe Left(errors.ErrorWrapper("a1e8057e-fbbc-47a8-a8b4-78d9f015c253", NinoFormatError, None))
       }
     }
   }

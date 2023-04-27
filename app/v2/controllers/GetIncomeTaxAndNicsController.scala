@@ -16,7 +16,6 @@
 
 package v2.controllers
 
-import javax.inject.Inject
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser
@@ -32,6 +31,7 @@ import v2.models.response.calculationWrappers.CalculationWrapperOrError
 import v2.models.response.getIncomeTaxAndNics.{IncomeTaxAndNicsHateoasData, IncomeTaxAndNicsResponse}
 import v2.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, StandardService}
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
 class GetIncomeTaxAndNicsController @Inject() (authService: EnrolmentsAuthService,

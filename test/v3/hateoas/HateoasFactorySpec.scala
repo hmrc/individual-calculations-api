@@ -16,12 +16,12 @@
 
 package v3.hateoas
 
+import api.models.hateoas.Method.GET
+import api.models.hateoas.{HateoasData, HateoasWrapper, Link}
 import cats.Functor
 import config.AppConfig
 import mocks.MockAppConfig
 import support.UnitSpec
-import v3.models.hateoas.{HateoasData, HateoasWrapper, Link}
-import v3.models.hateoas.Method.GET
 
 class HateoasFactorySpec extends UnitSpec with MockAppConfig {
 

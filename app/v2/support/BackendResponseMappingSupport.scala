@@ -17,8 +17,8 @@
 package v2.support
 
 import cats.implicits._
-import utils.Logging
 import play.api.http.Status._
+import utils.Logging
 import v2.connectors.BackendOutcome
 import v2.controllers.EndpointLogContext
 import v2.models.errors._

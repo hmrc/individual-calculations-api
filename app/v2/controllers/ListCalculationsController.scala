@@ -16,7 +16,6 @@
 
 package v2.controllers
 
-import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Request}
 import utils.IdGenerator
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
@@ -30,6 +29,7 @@ import v2.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 import v2.models.response.listCalculations.{CalculationListItem, ListCalculationsHateoasData, ListCalculationsResponse}
 import v2.services._
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton

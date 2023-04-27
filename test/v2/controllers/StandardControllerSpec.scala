@@ -16,8 +16,8 @@
 
 package v2.controllers
 
+import api.mocks.MockIdGenerator
 import cats.implicits._
-import mocks.MockIdGenerator
 import org.scalamock.handlers.CallHandler
 import play.api.libs.json._
 import play.api.mvc.{Action, AnyContent, Request, Result}
@@ -25,8 +25,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v2.connectors.httpparsers.StandardHttpParser
 import v2.connectors.httpparsers.StandardHttpParser.SuccessCode
 import v2.controllers.requestParsers.RequestParser
-import v2.handler.{AuditHandler, RequestHandler}
 import v2.handler.RequestDefn.Get
+import v2.handler.{AuditHandler, RequestHandler}
 import v2.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockStandardService}
 import v2.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v2.models.errors._

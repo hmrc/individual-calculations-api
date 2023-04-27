@@ -17,7 +17,7 @@
 package utils.enums
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Reads, _}
+import play.api.libs.json._
 import support.UnitSpec
 import utils.NestedJsonReads._
 

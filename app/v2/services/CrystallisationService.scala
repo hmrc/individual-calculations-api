@@ -17,7 +17,6 @@
 package v2.services
 
 import cats.data.EitherT
-import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v2.connectors.CrystallisationConnector
@@ -28,6 +27,7 @@ import v2.models.request.crystallisation.CrystallisationRequest
 import v2.models.response.common.DownstreamUnit
 import v2.support.BackendResponseMappingSupport
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

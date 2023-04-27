@@ -16,9 +16,9 @@
 
 package utils
 
-import java.time.LocalDate
-
 import support.UnitSpec
+
+import java.time.LocalDate
 
 class DateUtilsSpec extends UnitSpec {
 

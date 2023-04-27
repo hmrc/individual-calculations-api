@@ -16,7 +16,7 @@
 
 package v2.controllers.requestParsers.validators
 
-import v2.controllers.requestParsers.validators.validations.{TaxYearNotSupportedValidation, NinoValidation, TaxYearValidation}
+import v2.controllers.requestParsers.validators.validations.{NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import v2.models.errors.MtdError
 import v2.models.request.ListCalculationsRawData
 

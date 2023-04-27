@@ -16,10 +16,10 @@
 
 package v3.mocks.validators
 
+import api.models.errors.MtdError
 import org.scalamock.handlers.CallHandler1
 import org.scalamock.scalatest.MockFactory
 import v3.controllers.requestParsers.validators.TriggerCalculationValidator
-import v3.models.errors.MtdError
 import v3.models.request.TriggerCalculationRawData
 
 trait MockTriggerCalculationValidator extends MockFactory {

@@ -68,7 +68,7 @@ case class APIDefinition(name: String,
   require(uniqueVersions, "version numbers must be unique")
 
   private def uniqueVersions: Boolean = {
-    versions.map(_.version).groupBy(identity).filter(x=>x._2.size > 1).isEmpty
+    versions.map(_.version).groupBy(identity).filter(x => x._2.size > 1).isEmpty
   }
 
 }

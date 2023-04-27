@@ -16,10 +16,10 @@
 
 package v3.models.response.common
 
+import play.api.libs.json.{JsResultException, JsString, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import IncomeSourceType._
-import play.api.libs.json.{JsResultException, JsString, Json}
+import v3.models.response.common.IncomeSourceType._
 
 class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
@@ -86,7 +86,8 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     }
     "writes" should {
       "work" in {
-        Json.toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes)
+        Json
+          .toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes)
           .shouldBe(JsString("self-employment"))
       }
     }

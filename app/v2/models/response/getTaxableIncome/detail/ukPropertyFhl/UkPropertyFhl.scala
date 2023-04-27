@@ -17,7 +17,7 @@
 package v2.models.response.getTaxableIncome.detail.ukPropertyFhl
 
 import play.api.libs.json._
-import v2.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.{LossClaimsDetail, BusinessSourceAdjustableSummary}
+import v2.models.response.getTaxableIncome.detail.ukPropertyFhl.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v2.models.response.getTaxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],

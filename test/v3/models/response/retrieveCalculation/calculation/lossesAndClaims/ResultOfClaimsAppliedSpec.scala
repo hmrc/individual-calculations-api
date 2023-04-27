@@ -16,9 +16,9 @@
 
 package v3.models.response.retrieveCalculation.calculation.lossesAndClaims
 
+import api.models.domain.TaxYear
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v3.models.domain.TaxYear
 import v3.models.response.common.{ClaimType, IncomeSourceType}
 
 class ResultOfClaimsAppliedSpec extends UnitSpec {
