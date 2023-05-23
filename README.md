@@ -11,7 +11,7 @@ The Individual Calculations API allows a developer to:
 
 ## Requirements
 
-- Scala 2.12.x
+- Scala 2.13.x
 - Java 11
 - sbt 1.7.x
 - [Service Manager V2](https://github.com/hmrc/sm2)

@@ -87,7 +87,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends V2IntegrationBase
             AllowancesDeductionsAndReliefsResponseFixture.allowancesDeductionsAndReliefsTopLevelJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -104,7 +104,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends V2IntegrationBase
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe FORBIDDEN
         response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
@@ -125,7 +125,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends V2IntegrationBase
             AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsExistJsonFromBackend)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.json shouldBe AllowancesDeductionsAndReliefsResponseFixture.noAllowancesDeductionsAndReliefsResponseJson.deepMerge(linksJson)
@@ -147,7 +147,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends V2IntegrationBase
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
           }
@@ -181,7 +181,7 @@ class GetAllowancesDeductionsAndReliefsControllerISpec extends V2IntegrationBase
               BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

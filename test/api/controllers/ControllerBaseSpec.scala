@@ -107,12 +107,12 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
 
     protected def checkAuditOkEvent(expectedStatus: Int, maybeRequestBody: Option[JsValue], maybeAuditResponseBody: Option[JsValue]): Unit = {
       val auditResponse: AuditResponse = AuditResponse(expectedStatus, None, maybeAuditResponseBody)
-      MockedAuditService.verifyAuditEvent(event(auditResponse, maybeRequestBody)).once
+      MockedAuditService.verifyAuditEvent(event(auditResponse, maybeRequestBody)).once()
     }
 
     protected def checkAuditErrorEvent(expectedError: MtdError, maybeRequestBody: Option[JsValue]): Unit = {
       val auditResponse: AuditResponse = AuditResponse(expectedError.httpStatus, Some(Seq(AuditError(expectedError.code))), None)
-      MockedAuditService.verifyAuditEvent(event(auditResponse, maybeRequestBody)).once
+      MockedAuditService.verifyAuditEvent(event(auditResponse, maybeRequestBody)).once()
     }
 
   }

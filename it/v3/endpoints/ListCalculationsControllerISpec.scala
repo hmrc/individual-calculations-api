@@ -17,7 +17,16 @@
 package v3.endpoints
 
 import api.models.domain.TaxYear
-import api.models.errors.{InternalError, MtdError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import api.models.errors.{
+  InternalError,
+  MtdError,
+  NinoFormatError,
+  NotFoundError,
+  RuleIncorrectGovTestScenarioError,
+  RuleTaxYearNotSupportedError,
+  RuleTaxYearRangeInvalidError,
+  TaxYearFormatError
+}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
@@ -93,7 +102,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
@@ -109,7 +118,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, TaxYear.now().asMtd)
@@ -123,7 +132,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
@@ -143,7 +152,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -171,7 +180,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
               BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

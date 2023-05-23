@@ -120,7 +120,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           )
           .as[JsObject]
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -219,7 +219,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           )
           .as[JsObject]
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -298,7 +298,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           )
           .as[JsObject]
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -374,7 +374,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           )
           .as[JsObject]
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -455,7 +455,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
           )
           .as[JsObject]
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -478,7 +478,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -513,7 +513,7 @@ class GetMetadataControllerISpec extends V2IntegrationBaseSpec {
               BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

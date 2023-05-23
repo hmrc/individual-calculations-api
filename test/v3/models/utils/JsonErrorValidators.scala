@@ -170,6 +170,7 @@ trait JsonErrorValidators {
       case (path, err :: Nil) if jsError.path == path => err
       case (path, _ :: Nil)                           => fail(s"single error returned but path $path does not match $jsPath")
       case (path, errs @ _ :: _)                      => fail(s"multiple errors returned for $path but only 1 required : $errs")
+      case _                                          => fail("no errors returned")
     }
   }
 

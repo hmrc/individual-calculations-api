@@ -68,7 +68,7 @@ class RequestHandlerSpec
     override def links(appConfig: AppConfig, data: HData.type): Seq[Link] = hateoaslinks
   }
 
-  MockIdGenerator.generateCorrelationId returns generatedCorrelationId anyNumberOfTimes ()
+  (MockIdGenerator.generateCorrelationId returns generatedCorrelationId).anyNumberOfTimes()
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SomeController", endpointName = "someEndpoint")
