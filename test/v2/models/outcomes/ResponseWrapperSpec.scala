@@ -35,13 +35,13 @@ class ResponseWrapperSpec extends UnitSpec {
 
     "mapped to an Either" should {
       "wrap a successful response correctly" in {
-        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Right("aSuccess") }
+        val mappedResponse = wrappedResponse.mapToEither(_ => Right("aSuccess"))
         mappedResponse shouldBe Right(wrapResponse(responseData = "aSuccess"))
       }
 
       "wrap an error response correctly" in {
         val err            = ErrorWrapper("id", DownstreamError, None, IM_A_TEAPOT)
-        val mappedResponse = wrappedResponse.mapToEither { case "someString" => Left(err) }
+        val mappedResponse = wrappedResponse.mapToEither(_ => Left(err))
         mappedResponse shouldBe Left(err)
       }
     }

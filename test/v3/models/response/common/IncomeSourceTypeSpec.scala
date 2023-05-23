@@ -20,7 +20,9 @@ import play.api.libs.json.{JsResultException, JsString, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v3.models.response.common.IncomeSourceType._
+import java.lang.FunctionalInterface
 
+@FunctionalInterface
 class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[IncomeSourceType](
@@ -87,7 +89,8 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     "writes" should {
       "work" in {
         Json
-          .toJson(IncomeSourceType.`self-employment`)(IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes)
+          .toJson(IncomeSourceType.`self-employment`)(o => IncomeSourceType.formatRestricted(IncomeSourceType.`self-employment`).writes(o))
+          .as[JsString]
           .shouldBe(JsString("self-employment"))
       }
     }

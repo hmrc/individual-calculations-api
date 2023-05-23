@@ -86,7 +86,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
           MtdIdLookupStub.ninoFound(nino)
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -101,7 +101,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -119,7 +119,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
         val response: WSResponse = await(
           request
             .withQueryStringParameters("type" -> "error", "type" -> "warning", "type" -> "info")
-            .get)
+            .get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -136,7 +136,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonEmpty)
         }
 
-        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get())
 
         response.status shouldBe NOT_FOUND
         response.header("Content-Type") shouldBe Some("application/json")
@@ -151,7 +151,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, messagesResponseTopLevelJsonInfo)
         }
 
-        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get)
+        val response: WSResponse = await(request.withQueryStringParameters(("type", "error")).get())
 
         response.status shouldBe NOT_FOUND
         response.header("Content-Type") shouldBe Some("application/json")
@@ -180,7 +180,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
             val queryParams: Seq[(String, String)] =
               Seq("type" -> typeQuery.getOrElse("error"), "type" -> "info", "type" -> "warning")
 
-            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get)
+            val response: WSResponse = await(request.withQueryStringParameters(queryParams: _*).get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -216,7 +216,7 @@ class GetMessagesControllerISpec extends V2IntegrationBaseSpec {
               BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

@@ -102,7 +102,7 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, Map("taxYear" -> "2018-19"), OK, successBody)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -118,7 +118,7 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, successBody)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successBody
@@ -140,7 +140,7 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -177,7 +177,7 @@ class ListCalculationsControllerISpec extends V2IntegrationBaseSpec {
               BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

@@ -84,7 +84,7 @@ class GetTaxableIncomeControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, taxableIncomeResponseTopLevelJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -101,7 +101,7 @@ class GetTaxableIncomeControllerISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, errorResponseTopLevelJson)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.get())
 
         response.status shouldBe FORBIDDEN
         response.json shouldBe Json.toJson(RuleCalculationErrorMessagesExist)
@@ -123,7 +123,7 @@ class GetTaxableIncomeControllerISpec extends V2IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -158,7 +158,7 @@ class GetTaxableIncomeControllerISpec extends V2IntegrationBaseSpec {
               BackendStub.onError(BackendStub.GET, backendUrl, backendStatus, errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.get())
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

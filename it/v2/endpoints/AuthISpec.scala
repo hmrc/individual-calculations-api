@@ -77,7 +77,7 @@ class AuthISpec extends V2IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -92,7 +92,7 @@ class AuthISpec extends V2IntegrationBaseSpec {
           BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.OK
       }
     }
@@ -108,7 +108,7 @@ class AuthISpec extends V2IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -124,7 +124,7 @@ class AuthISpec extends V2IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().get)
+        val response: WSResponse = await(request().get())
         response.status shouldBe Status.FORBIDDEN
       }
     }
