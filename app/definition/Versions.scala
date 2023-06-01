@@ -22,6 +22,7 @@ import play.api.mvc.RequestHeader
 object Versions {
   val VERSION_2 = "2.0"
   val VERSION_3 = "3.0"
+  val VERSION_4 = "4.0"
 
   private val versionRegex = """application/vnd.hmrc.(\d.\d)\+json""".r
 
