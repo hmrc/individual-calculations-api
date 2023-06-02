@@ -18,7 +18,7 @@ package definition
 
 import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
-import definition.Versions.{VERSION_2, VERSION_3}
+import definition.Versions.{VERSION_2, VERSION_3, VERSION_4}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import support.UnitSpec
@@ -41,6 +41,8 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.endpointsEnabled(version = "2").returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(status = "3.0") returns "BETA"
         MockAppConfig.endpointsEnabled(version = "3").returns(true).anyNumberOfTimes()
+        MockAppConfig.apiStatus(status = "4.0") returns "BETA"
+        MockAppConfig.endpointsEnabled(version = "4").returns(true).anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled
           .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
           .anyNumberOfTimes()
@@ -73,6 +75,11 @@ class ApiDefinitionFactorySpec extends UnitSpec {
               ),
               APIVersion(
                 version = VERSION_3,
+                status = APIStatus.BETA,
+                endpointsEnabled = true
+              ),
+              APIVersion(
+                version = VERSION_4,
                 status = APIStatus.BETA,
                 endpointsEnabled = true
               )

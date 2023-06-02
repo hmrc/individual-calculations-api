@@ -44,6 +44,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   object V1Handler      extends Handler
   object V2Handler      extends Handler
   object V3Handler      extends Handler
+  object V4Handler      extends Handler
 
   private val defaultRouter = Router.from { case GET(p"") =>
     DefaultHandler
@@ -61,9 +62,13 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     V3Handler
   }
 
+  private val v4Router = Router.from { case GET(p"/v4") =>
+    V4Handler
+  }
+
   private val routingMap = new VersionRoutingMap {
     override val defaultRouter: Router    = test.defaultRouter
-    override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router)
+    override val map: Map[String, Router] = Map("1.0" -> v1Router, "2.0" -> v2Router, "3.0" -> v3Router, "4.0" -> v4Router)
   }
 
   class Test(implicit acceptHeader: Option[String]) {
@@ -72,7 +77,8 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     private val filters                      = mock[HttpFilters]
     (() => filters.filters).stubs().returns(Seq.empty)
 
-    MockAppConfig.featureSwitches.returns(Configuration("version-1.enabled" -> true, "version-2.enabled" -> true))
+    MockAppConfig.featureSwitches.returns(
+      Configuration("version-1.enabled" -> true, "version-2.enabled" -> true, "version-3.enabled" -> true, "version-4.enabled" -> true))
 
     val requestHandler: VersionRoutingRequestHandler =
       new VersionRoutingRequestHandler(routingMap, errorHandler, httpConfiguration, mockAppConfig, filters, action)
@@ -106,6 +112,16 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   "Routing requests with v2" should {
     implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
     handleWithVersionRoutes("/v2", V2Handler)
+  }
+
+  "Routing requests with v3" should {
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.3.0+json")
+    handleWithVersionRoutes("/v3", V3Handler)
+  }
+
+  "Routing requests with v4" should {
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.4.0+json")
+    handleWithVersionRoutes("/v4", V4Handler)
   }
 
   private def handleWithDefaultRoutes()(implicit acceptHeader: Option[String]): Unit = {
@@ -174,7 +190,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   }
 
   "Routing requests for supported version but not enabled" when {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.3.0+json")
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
 
     "the version has a route for the resource" must {
       "return 404 Not Found" in new Test {
