@@ -24,7 +24,11 @@ get:
             <tr>
                 <td><p>NOT_FOUND</p></td>
                 <td><p>Simulates the scenario where no data is found.</p></td>
-            </tr>                       
+            </tr>   
+             <tr>
+                <td><p>DYNAMIC</p></td>
+                <td><p>The following response parameters will be based on the data submitted in the request:<ol><li>taxYear</li><li>calculationTimestamp</li><li>finalDeclarationTimestamp</li></ol></p></td>
+            </tr> 
         </tbody>
     </table>
 
