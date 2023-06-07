@@ -89,6 +89,21 @@ class GetIncomeTaxAndNicsControllerISpec extends V4IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe incomeTaxNicsResponseJson.as[JsObject].deepMerge(linksJson)
       }
+
+      "valid request is made with omitted totalIncomeTaxAndNicsDue" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, incomeTaxAndNicsResponseTopLevelNoIncomeTaxAndNicsDueJson)
+        }
+
+        val response: WSResponse = await(request.get())
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe incomeTaxNicsResponseNoIncomeTaxAndNicsDueJson.as[JsObject].deepMerge(linksJson)
+      }
     }
 
     "return 403" when {

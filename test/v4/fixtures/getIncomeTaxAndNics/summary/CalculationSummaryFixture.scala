@@ -72,4 +72,23 @@ object CalculationSummaryFixture {
      """.stripMargin
   )
 
+  val calculationSummaryNoIncomeTaxAndNicsDueJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "incomeTax": $incomeTaxSummaryJson,
+       |   "nics": $nicSummaryJson,
+       |   "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+       |   "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+       |   "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+       |   "totalIncomeTaxNicsCharged": ${totalIncomeTaxNicsCharged.get},
+       |   "totalTaxDeducted": ${totalTaxDeducted.get},
+       |   "taxRegime": "$taxRegime",
+       |   "capitalGainsTax": $capitalGainsTaxSummaryJson,
+       |   "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+       |   "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get},
+       |   "totalIncomeTaxAndNicsAndCgt": ${totalIncomeTaxAndNicsAndCgt.get}
+       |}
+     """.stripMargin
+  )
+
 }

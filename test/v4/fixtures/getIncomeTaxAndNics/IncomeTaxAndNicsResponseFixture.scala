@@ -48,6 +48,28 @@ object IncomeTaxAndNicsResponseFixture {
      """.stripMargin
   )
 
+  val incomeTaxNicsResponseNoIncomeTaxAndNicsDueJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "summary": $calculationSummaryNoIncomeTaxAndNicsDueJson,
+       |   "detail": $calculationDetailJson,
+       |   "id": "$fixtureCalculationId"
+       |}
+     """.stripMargin
+  )
+
+  val incomeTaxAndNicsResponseTopLevelNoIncomeTaxAndNicsDueJson: JsValue = Json.parse(
+    s"""
+       |{
+       |  "metadata": $metadataResponseJson,
+       |  "incomeTaxAndNicsCalculated": {
+       |      "summary": $calculationSummaryNoIncomeTaxAndNicsDueJson,
+       |      "detail": $calculationDetailJson
+       |   }
+       |}
+     """.stripMargin
+  )
+
   val incomeTaxAndNicsResponseTopLevelJson: JsValue = Json.parse(
     s"""
        |{
