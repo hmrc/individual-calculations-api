@@ -27,7 +27,13 @@ get:
             </tr>   
              <tr>
                 <td><p>DYNAMIC</p></td>
-                <td><p>The following response parameters will be based on the data submitted in the request:<ol><li>taxYear</li><li>calculationTimestamp</li><li>finalDeclarationTimestamp</li></ol></p></td>
+                <td><p>The following response parameters will be based on the data submitted in the request:
+                          <ul>
+                            <li>taxYear</li>
+                            <li>calculationTimestamp</li>
+                            <li>finalDeclarationTimestamp</li>
+                          </ul>
+                </p></td>
             </tr> 
         </tbody>
     </table>
