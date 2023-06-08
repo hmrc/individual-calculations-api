@@ -16,9 +16,10 @@
 
 package v4.models.hateoas
 
+import api.models.hateoas.Link
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v4.models.hateoas.Method.GET
+import api.models.hateoas.Method.GET
 import v4.models.hateoas.RelType._
 
 class LinkSpec extends UnitSpec {

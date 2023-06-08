@@ -16,11 +16,12 @@
 
 package v4.models.response.getIncomeTaxAndNics
 
+import api.models.hateoas.Link
+import v4.models.hateoas.HateoasData
 import config.AppConfig
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v4.hateoas.{HateoasLinks, HateoasLinksFactory}
-import v4.models.hateoas.{HateoasData, Link}
 import v4.models.response.getIncomeTaxAndNics.detail.CalculationDetail
 import v4.models.response.getIncomeTaxAndNics.summary.CalculationSummary
 

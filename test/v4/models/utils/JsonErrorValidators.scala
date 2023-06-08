@@ -87,6 +87,23 @@ trait JsonErrorValidators {
     }
   }
 
+  def testJsonAllPropertiesOptionalExcept[A: Reads](json: JsValue)(mandatoryProperties: String*): Unit = {
+    val optionalProperties = json.as[JsObject].fields.map(_._1).filterNot(field => mandatoryProperties.contains(field))
+
+    testJsonProperties(json)(mandatoryProperties, optionalProperties.toSeq)
+  }
+
+  def testJsonAllPropertiesOptional[A: Reads](json: JsValue): Unit =
+    testJsonAllPropertiesOptionalExcept(json)()
+
+  def testJsonAllPropertiesMandatoryExcept[A: Reads](json: JsValue)(optionalProperties: String*): Unit = {
+    val mandatoryProperties = json.as[JsObject].fields.map(_._1).filterNot(field => optionalProperties.contains(field))
+
+    testJsonProperties(json)(mandatoryProperties.toSeq, optionalProperties)
+  }
+
+  def testJsonAllPropertiesMandatory[A: Reads](json: JsValue): Unit =
+    testJsonAllPropertiesMandatoryExcept(json)()
   def testOptionalProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
     s"the JSON is missing the optional property $property" should {
 

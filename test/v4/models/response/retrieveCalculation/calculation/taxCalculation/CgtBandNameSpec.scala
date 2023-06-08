@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-package v4.models.hateoas
+package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v4.models.response.retrieveCalculation.calculation.taxCalculation.CgtBandName._
 
-case class Link(href: String, method: Method, rel: String)
+class CgtBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object Link {
-  implicit val format: OFormat[Link] = Json.format[Link]
+  testReads[CgtBandName](
+    "lowerRate"  -> `lower-rate`,
+    "higherRate" -> `higher-rate`
+  )
+
+  testWrites[CgtBandName](
+    `lower-rate`  -> "lower-rate",
+    `higher-rate` -> "higher-rate"
+  )
+
 }

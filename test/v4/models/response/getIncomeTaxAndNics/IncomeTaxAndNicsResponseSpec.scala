@@ -16,13 +16,14 @@
 
 package v4.models.response.getIncomeTaxAndNics
 
+import api.models.hateoas.Link
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v4.fixtures.getIncomeTaxAndNics.IncomeTaxAndNicsResponseFixture._
 import v4.hateoas.HateoasFactory
-import v4.models.hateoas.Method.GET
-import v4.models.hateoas.{HateoasWrapper, Link}
+import api.models.hateoas.Method.GET
+import v4.models.hateoas.HateoasWrapper
 
 class IncomeTaxAndNicsResponseSpec extends UnitSpec with MockAppConfig {
 

@@ -16,6 +16,7 @@
 
 package v4.models.hateoas
 
+import api.models.hateoas.Link
 import play.api.libs.json.{JsObject, Json, OWrites, Writes}
 
 case class HateoasWrapper[A](payload: A, links: Seq[Link])

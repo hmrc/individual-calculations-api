@@ -17,6 +17,7 @@
 package v4.controllers
 
 import api.mocks.MockIdGenerator
+import api.models.hateoas.Link
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.http.HeaderCarrier
@@ -28,8 +29,8 @@ import v4.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdId
 import v4.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import v4.models.domain.Nino
 import v4.models.errors._
-import v4.models.hateoas.Method.GET
-import v4.models.hateoas.{HateoasWrapper, Link}
+import api.models.hateoas.Method.GET
+import v4.models.hateoas.HateoasWrapper
 import v4.models.outcomes.ResponseWrapper
 import v4.models.request.{GetCalculationRawData, GetCalculationRequest}
 import v4.models.response.calculationWrappers.CalculationWrapperOrError
