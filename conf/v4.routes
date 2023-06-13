@@ -1,20 +1,7 @@
 #V4 endpoints
-GET       /:nino/self-assessment/:calcId/income-tax-nics-calculated      v4.controllers.GetIncomeTaxAndNicsController.getIncomeTaxAndNics(nino: String, calcId: String)
 GET       /:nino/self-assessment/:taxYear/:calculationId                 v4.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 
 #V3 endpoints
 GET         /:nino/self-assessment                                                  v3.controllers.ListCalculationsController.list(nino: String, taxYear: Option[String])
 POST        /:nino/self-assessment/:taxYear                                         v3.controllers.TriggerCalculationController.triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String])
 POST        /:nino/self-assessment/:taxYear/:calculationId/final-declaration        v3.controllers.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String)
-
-#V2 endpoints
-GET       /:nino/self-assessment/:calcId                                 v2.controllers.GetMetadataController.getMetadata(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/taxable-income                  v2.controllers.GetTaxableIncomeController.getTaxableIncome(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/allowances-deductions-reliefs   v2.controllers.GetAllowancesDeductionsAndReliefsController.getAllowancesDeductionsAndReliefs(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/end-of-year-estimate            v2.controllers.GetEoyEstimateController.getEoyEstimate(nino: String, calcId: String)
-GET       /:nino/self-assessment/:calcId/messages                        v2.controllers.GetMessagesController.getMessages(nino: String, calcId: String)
-
-POST      /:nino/self-assessment                                         v2.controllers.TriggerCalculationController.triggerCalculation(nino: String)
-POST      /crystallisation/:nino/:taxYear/intent-to-crystallise          v2.controllers.IntentToCrystalliseController.submitIntentToCrystallise(nino: String, taxYear: String)
-POST      /crystallisation/:nino/:taxYear/crystallise                    v2.controllers.CrystallisationController.declareCrystallisation(nino: String, taxYear: String)
-
