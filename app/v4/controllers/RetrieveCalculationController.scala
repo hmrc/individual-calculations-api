@@ -21,9 +21,8 @@ import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v4.controllers.requestParsers.RetrieveCalculationParser
-import api.controllers.RequestHandler
 import v3.hateoas.HateoasFactory
+import v4.controllers.requestParsers.RetrieveCalculationParser
 import v4.models.request.RetrieveCalculationRawData
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v4.services.RetrieveCalculationService
@@ -31,14 +30,14 @@ import v4.services.RetrieveCalculationService
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject()(val authService: EnrolmentsAuthService,
-                                              val lookupService: MtdIdLookupService,
-                                              appConfig: AppConfig,
-                                              parser: RetrieveCalculationParser,
-                                              service: RetrieveCalculationService,
-                                              hateoasFactory: HateoasFactory,
-                                              cc: ControllerComponents,
-                                              val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
+                                               val lookupService: MtdIdLookupService,
+                                               appConfig: AppConfig,
+                                               parser: RetrieveCalculationParser,
+                                               service: RetrieveCalculationService,
+                                               hateoasFactory: HateoasFactory,
+                                               cc: ControllerComponents,
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -97,4 +96,3 @@ class RetrieveCalculationController @Inject()(val authService: EnrolmentsAuthSer
   }
 
 }
-
