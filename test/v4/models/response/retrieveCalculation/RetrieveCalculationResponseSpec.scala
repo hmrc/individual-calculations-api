@@ -17,8 +17,8 @@
 package v4.models.response.retrieveCalculation
 
 import api.models.domain.TaxYear
-import api.models.hateoas.{HateoasWrapper, Link}
 import api.models.hateoas.Method.{GET, POST}
+import api.models.hateoas.{HateoasWrapper, Link}
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
