@@ -29,9 +29,9 @@ import v3.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
 
-  val totalBasicRateExtension      = 2000
+  val totalBasicRateExtension = 2000
   val totalAllowancesAndDeductions = 100
-  val incomeTaxValue               = 50
+  val incomeTaxValue = 50
 
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_mtd.json"))
@@ -304,56 +304,56 @@ trait CalculationFixture {
   val minimumCalculationResponseR8BEnabledJson: JsObject = Json
     .parse(
       """
-      |{
-      |  "metadata" : {
-      |    "calculationId": "",
-      |    "taxYear": "2017-18",
-      |    "requestedBy": "",
-      |    "calculationReason": "",
-      |    "calculationType": "inYear",
-      |    "intentToSubmitFinalDeclaration": false,
-      |    "finalDeclaration": false,
-      |    "periodFrom": "",
-      |    "periodTo": ""
-      |  },
-      |  "inputs" : {
-      |    "personalInformation": {
-      |       "identifier": "",
-      |       "taxRegime": "UK"
-      |    },
-      |    "incomeSources": {}
-      |  },
-      |  "calculation": {
-      |  "taxCalculation":{
-      |    "incomeTax":{
-      |       "totalIncomeReceivedFromAllSources":50,
-      |       "totalAllowancesAndDeductions":50,
-      |       "totalTaxableIncome":50,
-      |       "incomeTaxCharged":50
-      |    },
-      |    "nics":{
-      |       "class2Nics":{
-      |          "underSmallProfitThreshold":true,
-      |          "underLowerProfitThreshold":true
-      |          }
-      |        },
-      |    "totalIncomeTaxAndNicsDue":50
-      |   },
-      |  "employmentAndPensionsIncome":{
-      |       "employmentAndPensionsIncomeDetail": [
-      |          { "offPayrollWorker": true }
-      |      ]
-      |    },
-      |    "reliefs": {
-      |       "basicRateExtension": {
-      |       "totalBasicRateExtension": 2000.00
-      |       }
-      |    },
-      |    "endOfYearEstimate": {
-      |       "totalAllowancesAndDeductions": 100
-      |     }
-      |  }
-      |}
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |  "taxCalculation":{
+        |    "incomeTax":{
+        |       "totalIncomeReceivedFromAllSources":50,
+        |       "totalAllowancesAndDeductions":50,
+        |       "totalTaxableIncome":50,
+        |       "incomeTaxCharged":50
+        |    },
+        |    "nics":{
+        |       "class2Nics":{
+        |          "underSmallProfitThreshold":true,
+        |          "underLowerProfitThreshold":true
+        |          }
+        |        },
+        |    "totalIncomeTaxAndNicsDue":50
+        |   },
+        |  "employmentAndPensionsIncome":{
+        |       "employmentAndPensionsIncomeDetail": [
+        |          { "offPayrollWorker": true }
+        |      ]
+        |    },
+        |    "reliefs": {
+        |       "basicRateExtension": {
+        |       "totalBasicRateExtension": 2000.00
+        |       }
+        |    },
+        |    "endOfYearEstimate": {
+        |       "totalAllowancesAndDeductions": 100
+        |     }
+        |  }
+        |}
     """.stripMargin
     )
     .as[JsObject]
@@ -439,30 +439,30 @@ trait CalculationFixture {
   val emptyCalculationResponseMtdJson: JsObject = Json
     .parse(
       """
-      |{
-      |  "metadata" : {
-      |    "calculationId": "",
-      |    "taxYear": "2017-18",
-      |    "requestedBy": "",
-      |    "calculationReason": "",
-      |    "calculationType": "inYear",
-      |    "intentToSubmitFinalDeclaration": false,
-      |    "finalDeclaration": false,
-      |    "periodFrom": "",
-      |    "periodTo": ""
-      |  },
-      |  "inputs" : {
-      |    "personalInformation": {
-      |       "identifier": "",
-      |       "taxRegime": "UK"
-      |    },
-      |    "incomeSources": {}
-      |  },
-      |  "calculation" : {
-      |   "endOfYearEstimate": {
-      |   }
-      |  }
-      |}
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation" : {
+        |   "endOfYearEstimate": {
+        |   }
+        |  }
+        |}
    """.stripMargin
     )
     .as[JsObject]
@@ -470,26 +470,26 @@ trait CalculationFixture {
   val noEOYCalculationResponseMtdJson: JsObject = Json
     .parse(
       """
-      |{
-      |  "metadata" : {
-      |    "calculationId": "",
-      |    "taxYear": "2017-18",
-      |    "requestedBy": "",
-      |    "calculationReason": "",
-      |    "calculationType": "inYear",
-      |    "intentToSubmitFinalDeclaration": false,
-      |    "finalDeclaration": false,
-      |    "periodFrom": "",
-      |    "periodTo": ""
-      |  },
-      |  "inputs" : {
-      |    "personalInformation": {
-      |       "identifier": "",
-      |       "taxRegime": "UK"
-      |    },
-      |    "incomeSources": {}
-      |  }
-      |}
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  }
+        |}
    """.stripMargin
     )
     .as[JsObject]

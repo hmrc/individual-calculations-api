@@ -104,6 +104,7 @@ trait JsonErrorValidators {
 
   def testJsonAllPropertiesMandatory[A: Reads](json: JsValue): Unit =
     testJsonAllPropertiesMandatoryExcept(json)()
+
   def testOptionalProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
     s"the JSON is missing the optional property $property" should {
 

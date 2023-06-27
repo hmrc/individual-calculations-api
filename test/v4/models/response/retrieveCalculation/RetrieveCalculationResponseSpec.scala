@@ -17,19 +17,19 @@
 package v4.models.response.retrieveCalculation
 
 import api.models.domain.TaxYear
-import api.models.hateoas.Link
 import api.models.hateoas.Method.{GET, POST}
-import api.models.hateoas.HateoasWrapper
+import api.models.hateoas.{HateoasWrapper, Link}
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v3.hateoas.HateoasFactory
 import v4.models.response.common.CalculationType
+import v4.models.response.retrieveCalculation.RetrieveCalculationResponse._
 import v4.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v4.models.response.retrieveCalculation.messages.{Message, Messages}
 import v4.models.response.retrieveCalculation.metadata.Metadata
 import v4.models.utils.JsonErrorValidators
-import v4.models.response.retrieveCalculation.RetrieveCalculationResponse._
+
 class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
 
   "RetrieveCalculationResponse" must {

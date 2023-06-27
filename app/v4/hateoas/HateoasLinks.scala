@@ -67,4 +67,5 @@ trait HateoasLinks {
     method = POST,
     rel = SUBMIT_FINAL_DECLARATION
   )
+
 }

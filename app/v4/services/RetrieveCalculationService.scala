@@ -29,7 +29,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class RetrieveCalculationService @Inject()(connector: RetrieveCalculationConnector) extends BaseService {
+class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector) extends BaseService {
 
   def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
       ctx: RequestContext,
