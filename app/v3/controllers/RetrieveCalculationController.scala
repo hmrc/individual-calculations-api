@@ -49,7 +49,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     )
 
   private val featureSwitches = FeatureSwitches()(appConfig)
-  import featureSwitches.{isR8bSpecificApiEnabled, isTaxYearSpecificApiEnabled}
+  import featureSwitches.isR8bSpecificApiEnabled
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -88,10 +88,10 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     def without: RetrieveCalculationResponse =
       response.withoutBasicExtension.withoutTotalAllowanceAndDeductions
 
-    isTaxYearSpecificApiEnabled match {
-      case true if (!isR8bSpecificApiEnabled) => without.withoutOffPayrollWorker
-      case false                              => without.withoutUnderLowerProfitThreshold.withoutOffPayrollWorker
-      case _                                  => response
+    if (isR8bSpecificApiEnabled) {
+      without.withoutUnderLowerProfitThreshold.withoutOffPayrollWorker
+    } else {
+      without.withoutOffPayrollWorker
     }
   }
 

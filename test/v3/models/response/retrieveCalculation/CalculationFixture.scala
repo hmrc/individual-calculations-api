@@ -29,9 +29,9 @@ import v3.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
 
-  val totalBasicRateExtension = 2000
+  val totalBasicRateExtension      = 2000
   val totalAllowancesAndDeductions = 100
-  val incomeTaxValue = 50
+  val incomeTaxValue               = 50
 
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_mtd.json"))
@@ -39,7 +39,7 @@ trait CalculationFixture {
   val calculationDownstreamJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v3/models/response/retrieveCalculation/calculation_downstream.json"))
 
-  val reliefs = Reliefs(
+  val reliefs: Reliefs = Reliefs(
     basicRateExtension =
       Some(BasicRateExtension(totalBasicRateExtension = Some(totalBasicRateExtension), giftAidRelief = None, pensionContributionReliefs = None)),
     residentialFinanceCosts = None,
@@ -101,9 +101,9 @@ trait CalculationFixture {
     totalIncomeTaxAndNicsAndCgt = None
   )
 
-  val taxCalculationWithoutUnderLowerProfitThreshold = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
+  val taxCalculationWithoutUnderLowerProfitThreshold: TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
 
-  val employmentAndPensionsIncomeDetails = EmploymentAndPensionsIncomeDetail(
+  val employmentAndPensionsIncomeDetails: EmploymentAndPensionsIncomeDetail = EmploymentAndPensionsIncomeDetail(
     incomeSourceId = None,
     source = None,
     occupationalPension = None,
@@ -121,7 +121,7 @@ trait CalculationFixture {
     benefitsInKind = None
   )
 
-  val employmentAndPensionsIncome = EmploymentAndPensionsIncome(
+  val employmentAndPensionsIncome: EmploymentAndPensionsIncome = EmploymentAndPensionsIncome(
     totalPayeEmploymentAndLumpSumIncome = None,
     totalOccupationalPensionIncome = None,
     totalBenefitsInKind = None,
@@ -129,7 +129,7 @@ trait CalculationFixture {
     employmentAndPensionsIncomeDetail = Some(Seq(employmentAndPensionsIncomeDetails))
   )
 
-  val eoyEstimates = EndOfYearEstimate(
+  val eoyEstimates: EndOfYearEstimate = EndOfYearEstimate(
     incomeSource = None,
     totalEstimatedIncome = None,
     totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
@@ -150,7 +150,7 @@ trait CalculationFixture {
   )
   // @formatter:on
 
-  val calculationWithR8BData = Calculation(
+  val calculationWithR8BData: Calculation = Calculation(
     reliefs = Some(reliefs),
     allowancesAndDeductions = None,
     taxDeductedAtSource = None,
@@ -181,10 +181,10 @@ trait CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithR8BDisabledAndTysEnabled: Calculation =
+  val calculationWithR8BDisabled: Calculation =
     calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
 
-  val metadata = Metadata(
+  val metadata: Metadata = Metadata(
     calculationId = "",
     taxYear = TaxYear.fromDownstream("2018"),
     requestedBy = "",
@@ -199,7 +199,7 @@ trait CalculationFixture {
     periodTo = ""
   )
 
-  val inputs = Inputs(
+  val inputs: Inputs = Inputs(
     PersonalInformation("", None, "UK", None, None, None, None, None),
     IncomeSources(None, None),
     None,
@@ -226,13 +226,34 @@ trait CalculationFixture {
     None, None, None, None, None, None,
     None, None, None, None)
 
-  val calcWithoutEndOfYearEstimate: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
+  val calcWithoutEndOfYearEstimate: Calculation =
+    emptyCalculation
+      .copy(reliefs =
+        Some(reliefs),employmentAndPensionsIncome =
+        Some(employmentAndPensionsIncome), taxCalculation =
+        Some(taxCalculation))
 
 
-  val calcWithoutBasicExtension: Calculation = emptyCalculation.copy(endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
+  val calcWithoutBasicExtension: Calculation =
+    emptyCalculation
+      .copy(endOfYearEstimate =
+        Some(eoyEstimates), employmentAndPensionsIncome =
+        Some(employmentAndPensionsIncome), taxCalculation =
+        Some(taxCalculation))
 
- val calcWithoutOffPayrollWorker: Calculation= emptyCalculation.copy(reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), taxCalculation = Some(taxCalculation))
-  val calcWithoutUnderLowerProfitThreshold: Calculation= emptyCalculation.copy(taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
+ val calcWithoutOffPayrollWorker: Calculation=
+   emptyCalculation
+     .copy(reliefs=
+       Some(reliefs), endOfYearEstimate =
+       Some(eoyEstimates), taxCalculation = Some(taxCalculation))
+       
+  val calcWithoutUnderLowerProfitThreshold: Calculation =
+    emptyCalculation
+      .copy(taxCalculation=
+        Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs =
+        Some(reliefs),endOfYearEstimate =
+        Some(eoyEstimates), employmentAndPensionsIncome =
+        Some(employmentAndPensionsIncome))
   // @formatter:on
 
   val minimalCalculationResponseWithoutR8BData: RetrieveCalculationResponse = RetrieveCalculationResponse(
@@ -358,7 +379,7 @@ trait CalculationFixture {
     )
     .as[JsObject]
 
-  val minimumCalculationResponseWithTysEnabledR8BDisabledJson: JsObject = Json
+  val minimumCalculationResponseWithR8BDisabledJson: JsObject = Json
     .parse(
       """
         |{

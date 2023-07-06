@@ -18,6 +18,7 @@ package config
 
 import com.typesafe.config.Config
 import play.api.{ConfigLoader, Configuration}
+import routing.Version
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -60,8 +61,8 @@ trait AppConfig {
   // API Config
   def apiGatewayContext: String
   def confidenceLevelConfig: ConfidenceLevelConfig
-  def apiStatus(version: String): String
-  def endpointsEnabled(version: String): Boolean
+  def apiStatus(version: Version): String
+  def endpointsEnabled(version: Version): Boolean
   def featureSwitches: Configuration
 
   // NRS Config
@@ -98,9 +99,9 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   // API Config
   val apiGatewayContext: String                    = config.getString("api.gateway.context")
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
-  def apiStatus(version: String): String           = config.getString(s"api.$version.status")
+  def apiStatus(version: Version): String          = config.getString(s"api.$version.status")
   def featureSwitches: Configuration               = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
-  def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"feature-switch.version-$version.enabled")
+  def endpointsEnabled(version: Version): Boolean  = config.getBoolean(s"api.$version.endpoints.enabled")
 
   // NRS Config
   val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")

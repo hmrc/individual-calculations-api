@@ -17,7 +17,7 @@
 package definition
 
 import config.AppConfig
-import definition.Versions._
+import routing.{Version, Version2, Version3, Version4}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import utils.Logging
 
@@ -57,30 +57,28 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(
-            version = VERSION_2,
-            status = buildAPIStatus(VERSION_2),
-            endpointsEnabled = appConfig.endpointsEnabled(version = "2")
+            version = Version2,
+            status = buildAPIStatus(Version2),
+            endpointsEnabled = appConfig.endpointsEnabled(Version2)
           ),
           APIVersion(
-            version = VERSION_3,
-            status = buildAPIStatus(VERSION_3),
-            endpointsEnabled = appConfig.endpointsEnabled(version = "3")
+            version = Version3,
+            status = buildAPIStatus(Version3),
+            endpointsEnabled = appConfig.endpointsEnabled(Version3)
           ),
           APIVersion(
-            version = VERSION_4,
-            status = buildAPIStatus(VERSION_4),
-            endpointsEnabled = appConfig.endpointsEnabled(version = "4")
+            version = Version4,
+            status = buildAPIStatus(Version4),
+            endpointsEnabled = appConfig.endpointsEnabled(Version4)
           )
         ),
         requiresTrust = None
       )
     )
 
-  private[definition] def buildAPIStatus(version: String): APIStatus = {
-    lazy val apiStatus = appConfig.apiStatus(version)
+  private[definition] def buildAPIStatus(version: Version): APIStatus = {
     APIStatus.parser
-      .lift(apiStatus)
-      .find(_.toString == apiStatus)
+      .lift(appConfig.apiStatus(version))
       .getOrElse {
         logger.error(s"[ApiDefinition][buildApiStatus] no API Status found in config.  Reverting to Alpha")
         APIStatus.ALPHA
