@@ -103,8 +103,7 @@
         "required": [
           "calculationId",
           "calculationTimestamp",
-          "calculationType",
-          "totalIncomeTaxAndNicsDue"
+          "calculationType"
         ]
       }
     },
