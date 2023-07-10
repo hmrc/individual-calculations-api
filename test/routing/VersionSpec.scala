@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package definition
+package routing
 
 import play.api.http.HeaderNames.ACCEPT
 import play.api.test.FakeRequest
@@ -23,9 +23,19 @@ import support.UnitSpec
 class VersionSpec extends UnitSpec {
 
   "Versions" when {
-    "retrieved from a request header" must {
+    "v2 retrieved from a request header" must {
       "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))) shouldBe Some("1.0")
+        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))) shouldBe Right(Version2)
+      }
+    }
+    "v3 retrieved from a request header" must {
+      "work" in {
+        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))) shouldBe Right(Version3)
+      }
+    }
+    "v4 retrieved from a request header" must {
+      "work" in {
+        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.4.0+json"))) shouldBe Right(Version4)
       }
     }
   }

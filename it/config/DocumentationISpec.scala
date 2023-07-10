@@ -60,12 +60,12 @@ class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
       |      },
       |      {
       |        "version":"3.0",
-      |        "status":"ALPHA",
+      |        "status":"BETA",
       |        "endpointsEnabled":true
       |      },
       |      {
       |        "version":"4.0",
-      |        "status":"ALPHA",
+      |        "status":"BETA",
       |        "endpointsEnabled":true
       |      }
       |    ]

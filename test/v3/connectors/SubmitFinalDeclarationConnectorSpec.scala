@@ -46,18 +46,6 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   }
 
   "Submit Final Declaration" should {
-    "return a success response when request is made to DES downstream API" in new DesTestSubmitFinalDeclaration with Test {
-      val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
-
-      willPost(
-        url = s"$baseUrl/income-tax/calculation/nino/$nino/${taxYear.asDownstream}/$calculationId/crystallise",
-        body = EmptyJsonBody
-      )
-        .returns(Future.successful(outcome))
-
-      val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
-      result shouldBe outcome
-    }
 
     "return a success response when request is made to IFS downstream API" in new IfsTestSubmitFinalDeclaration with Test {
       val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
