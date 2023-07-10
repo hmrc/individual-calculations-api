@@ -84,13 +84,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
     }
 
-  private def updateModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-
-    if (isR8bSpecificApiEnabled) {
-      response
-    } else {
-      response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker
-    }
-  }
+  private def updateModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+    if (isR8bSpecificApiEnabled) response else response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker
 
 }
