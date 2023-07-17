@@ -9,64 +9,22 @@ post:
     
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
-    <table>
-      <thead>
-          <tr>
-              <th>Header Value (Gov-Test-Scenario)</th>
-              <th>Scenario</th>
-          </tr>
-      </thead>
-      <tbody> 
-          <tr>
-              <td><p>N/A - DEFAULT</p></td>
-              <td><p>Simulates success response.</p></td>
-          </tr>
-          <tr>
-              <td><p>FINAL_DECLARATION_IN_PROGRESS</p></td>
-              <td><p>Simulates the scenario where there is a calculation in progress for the tax year.</p></td>
-          </tr>
-          <tr>
-              <td><p>FINAL_DECLARATION_RECEIVED</p></td>
-              <td><p>Simulates the scenario where a final declaration has already been received.</p></td>
-          </tr>
-          <tr>
-              <td><p>FINAL_DECLARATION_TAX_YEAR</p></td>
-              <td><p>Simulates the scenario where the final declaration cannot be submitted until after the end of the tax year.</p></td>
-          </tr>
-          <tr>
-              <td><p>INCOME_SOURCES_CHANGED</p></td>
-              <td><p>Simulates the scenario where information relating to an income source has changed.</p></td>
-          </tr>
-          <tr>
-              <td><p>INCOME_SOURCES_INVALID</p></td>
-              <td><p>Simulates the scenario where a valid income source can not be found.</p></td>
-          </tr>
-          <tr>
-              <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
-              <td><p>Simulates the scenario where no income submissions exist.</p></td>
-          </tr>
-          <tr>
-              <td><p>RECENT_SUBMISSIONS_EXIST</p></td>
-              <td><p>Simulates the scenario where more recent submission exists.</p></td>
-          </tr>
-          <tr>
-              <td><p>RESIDENCY_CHANGED</p></td>
-              <td><p>Simulates the scenario where residency has changed.</p></td>
-          </tr>
-          <tr>
-              <td><p>SUBMISSION_FAILED</p></td>
-              <td><p>Simulates the scenario where a submission has failed.</p></td>
-          </tr>
-          <tr>
-              <td><p>TAX_YEAR_NOT_SUPPORTED</p></td>
-              <td><p>Simulates the scenario where the specified tax year is not supported.</p></td>
-          </tr>
-          <tr>
-              <td><p>NOT_FOUND</p></td>
-              <td><p>Simulates the scenario where the supplied income source could not be found.</p></td>
-          </tr>
-      </tbody>
-    </table>
+    
+    | Header Value (Gov-Test-Scenario)   | Scenario                                                                                                     |
+    |------------------------------------|--------------------------------------------------------------------------------------------------------------|
+    | N/A - DEFAULT                      | Simulates success response.                                                                                  |
+    | FINAL_DECLARATION_IN_PROGRESS      | Simulates the scenario where there is a calculation in progress for the tax year.                           |
+    | FINAL_DECLARATION_RECEIVED         | Simulates the scenario where a final declaration has already been received.                                 |
+    | FINAL_DECLARATION_TAX_YEAR         | Simulates the scenario where the final declaration cannot be submitted until after the end of the tax year. |
+    | INCOME_SOURCES_CHANGED             | Simulates the scenario where information relating to an income source has changed.                         |
+    | INCOME_SOURCES_INVALID             | Simulates the scenario where a valid income source cannot be found.                                         |
+    | NO_INCOME_SUBMISSIONS_EXIST        | Simulates the scenario where no income submissions exist.                                                   |
+    | RECENT_SUBMISSIONS_EXIST           | Simulates the scenario where more recent submissions exist.                                                 |
+    | RESIDENCY_CHANGED                  | Simulates the scenario where residency has changed.                                                         |
+    | SUBMISSION_FAILED                  | Simulates the scenario where a submission has failed.                                                        |
+    | TAX_YEAR_NOT_SUPPORTED             | Simulates the scenario where the specified tax year is not supported.                                       |
+    | NOT_FOUND                         | Simulates the scenario where the supplied income source could not be found.                                 |
+
 
   parameters:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino

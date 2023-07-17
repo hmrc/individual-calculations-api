@@ -9,24 +9,12 @@ get:
     
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
-    <table>
-        <thead>
-            <tr>
-                <th>Header Value (Gov-Test-Scenario)</th>
-                <th>Scenario</th>
-            </tr>
-        </thead>
-        <tbody> 
-            <tr>
-                <td><p>N/A - DEFAULT</p></td>
-                <td><p>Simulates success response.</p></td>
-            </tr>
-            <tr>
-                <td><p>NOT_FOUND</p></td>
-                <td><p>Simulates the scenario where no data is found.</p></td>
-            </tr>                       
-        </tbody>
-    </table>
+    
+    | Header Value (Gov-Test-Scenario)   | Scenario                                    |
+    |------------------------------------|---------------------------------------------|
+    | N/A - DEFAULT                      | Simulates success response.                 |
+    | NOT_FOUND                          | Simulates the scenario where no data is found. |
+
 
   parameters:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
