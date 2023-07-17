@@ -10,24 +10,12 @@ description: |
   
   ### Test data 
   Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
-  <table>
-    <thead>
-        <tr>
-            <th>Header Value (Gov-Test-Scenario)</th>
-            <th>Scenario</th>
-        </tr>
-    </thead>
-    <tbody> 
-        <tr>
-            <td><p>N/A - DEFAULT</p></td>
-            <td><p>Simulates a successful response</p></td>
-        </tr>
-        <tr>
-            <td><p>NO_INCOME_SUBMISSIONS_EXIST</p></td>
-            <td><p>Simulates the scenario where no income submissions exist for the tax year</p></td>
-        </tr>                               
-    </tbody>
-  </table>
+  
+  | Header Value (Gov-Test-Scenario)   | Scenario                                                                                           |
+  |------------------------------------|----------------------------------------------------------------------------------------------------|
+  | N/A - DEFAULT                      | Simulates a successful response                                                                    |
+  | NO_INCOME_SUBMISSIONS_EXIST        | Simulates the scenario where no income submissions exist for the tax year                         |
+
 
 parameters:
   - $ref: ./common/pathParameters.yaml#/components/parameters/nino
