@@ -29,6 +29,8 @@ import scala.concurrent.ExecutionContext
 
 trait AuditHandler extends RequestContextImplicits {
 
+
+
   def performAudit(userDetails: UserDetails, httpStatus: Int, response: Either[ErrorWrapper, Option[JsValue]])(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Unit
