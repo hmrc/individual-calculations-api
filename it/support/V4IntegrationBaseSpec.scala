@@ -27,9 +27,7 @@ trait V4IntegrationBaseSpec extends IntegrationBaseSpec {
     "microservice.services.mtd-id-lookup.port"           -> mockPort,
     "microservice.services.auth.host"                    -> mockHost,
     "microservice.services.auth.port"                    -> mockPort,
-    "auditing.consumer.baseUri.port"                     -> mockPort,
-    "feature-switch.version-2.enabled"                   -> "true",
-    "feature-switch.version-3.enabled"                   -> "false"
+    "auditing.consumer.baseUri.port"                     -> mockPort
   )
 
 }

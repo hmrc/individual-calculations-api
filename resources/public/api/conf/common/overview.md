@@ -13,3 +13,7 @@ In versions prior to version 3.0, the term ‘crystallise’ was used to mean su
 was used to mean trigger a final declaration self-assessment tax calculation.
 
 For information on how to connect to this API [see the Income Tax MTD end-to-end service guide](https://developer.service.hmrc.gov.uk/guides/income-tax-mtd-end-to-end-service-guide/).
+
+
+> **Deprecation Notice:**
+>  v2 and v3 are now deprecated. Please migrate to v4 for expanded functionality and long-term support.
