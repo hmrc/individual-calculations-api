@@ -20,28 +20,9 @@ import play.api.Configuration
 
 case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
-  val isTaxYearSpecificApiEnabled: Boolean        = isEnabled("tys-api.enabled")
-  val isR8bSpecificApiEnabled: Boolean            = isEnabled("r8b-api.enabled")
-  val isIfsSubmitFinalDeclarationEnabled: Boolean = isEnabled("ifs-submit-final-declaration.enabled")
-  private val versionRegex                        = """(\d)\.\d""".r
-
-  def isVersionEnabled(version: String): Boolean = {
-    val maybeVersion: Option[String] =
-      version match {
-        case versionRegex(v) => Some(v)
-        case _               => None
-      }
-
-    val enabled = for {
-      versionNo <- maybeVersion
-      enabled   <- featureSwitchConfig.getOptional[Boolean](s"version-$versionNo.enabled")
-    } yield enabled
-
-    enabled.getOrElse(false)
-  }
+  val isR8bSpecificApiEnabled: Boolean = isEnabled("r8b-api.enabled")
 
   private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
-
 }
 
 object FeatureSwitches {

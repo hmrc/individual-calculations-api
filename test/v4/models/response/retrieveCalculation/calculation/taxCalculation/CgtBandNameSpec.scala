@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package definition
+package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
-import play.api.http.HeaderNames.ACCEPT
-import play.api.mvc.RequestHeader
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v4.models.response.retrieveCalculation.calculation.taxCalculation.CgtBandName._
 
-object Versions {
-  val VERSION_2 = "2.0"
-  val VERSION_3 = "3.0"
-  val VERSION_4 = "4.0"
+class CgtBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  private val versionRegex = """application/vnd.hmrc.(\d.\d)\+json""".r
+  testReads[CgtBandName](
+    "lowerRate"  -> `lower-rate`,
+    "higherRate" -> `higher-rate`
+  )
 
-  def getFromRequest(request: RequestHeader): Option[String] =
-    getFrom(request.headers.headers)
-
-  private def getFrom(headers: Seq[(String, String)]): Option[String] =
-    headers.collectFirst { case (ACCEPT, versionRegex(ver)) => ver }
+  testWrites[CgtBandName](
+    `lower-rate`  -> "lower-rate",
+    `higher-rate` -> "higher-rate"
+  )
 
 }

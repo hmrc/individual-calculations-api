@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package definition
+package v4.models.response.retrieveCalculation.calculation.giftAid
 
-import play.api.http.HeaderNames.ACCEPT
-import play.api.test.FakeRequest
-import support.UnitSpec
+import play.api.libs.json.{Json, OFormat}
 
-class VersionSpec extends UnitSpec {
+case class GiftAid(grossGiftAidPayments: BigInt,
+                   rate: BigDecimal,
+                   giftAidTax: BigDecimal,
+                   giftAidTaxReductions: Option[BigDecimal],
+                   incomeTaxChargedAfterGiftAidTaxReductions: Option[BigDecimal],
+                   giftAidCharge: Option[BigDecimal])
 
-  "Versions" when {
-    "retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))) shouldBe Some("1.0")
-      }
-    }
-  }
-
+object GiftAid {
+  implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
 }

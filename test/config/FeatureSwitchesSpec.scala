@@ -21,35 +21,6 @@ import support.UnitSpec
 
 class FeatureSwitchesSpec extends UnitSpec {
 
-  "a feature switch" should {
-    "be true" when {
-
-      "absent from the config" in {
-        val configuration   = Configuration.empty
-        val featureSwitches = FeatureSwitches(configuration)
-
-        featureSwitches.isTaxYearSpecificApiEnabled shouldBe true
-      }
-
-      "enabled" in {
-        val configuration   = Configuration("tys-api.enabled" -> true)
-        val featureSwitches = FeatureSwitches(configuration)
-
-        featureSwitches.isTaxYearSpecificApiEnabled shouldBe true
-
-      }
-    }
-
-    "be false" when {
-      "disabled" in {
-        val configuration   = Configuration("tys-api.enabled" -> false)
-        val featureSwitches = FeatureSwitches(configuration)
-
-        featureSwitches.isTaxYearSpecificApiEnabled shouldBe false
-      }
-    }
-  }
-
   "r8b feature switch" should {
     "be true" when {
 
@@ -75,40 +46,6 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
-      }
-    }
-  }
-
-  "isVersionEnabled()" should {
-    val configuration = Configuration(
-      "version-1.enabled" -> true,
-      "version-2.enabled" -> false
-    )
-    val featureSwitches = FeatureSwitches(configuration)
-
-    "return false" when {
-      "the version is blank" in {
-        featureSwitches.isVersionEnabled("") shouldBe false
-      }
-
-      "the version is an invalid format" in {
-        featureSwitches.isVersionEnabled("ABCDE-1") shouldBe false
-        featureSwitches.isVersionEnabled("1.") shouldBe false
-        featureSwitches.isVersionEnabled("1.ABC") shouldBe false
-      }
-
-      "the version isn't in the config" in {
-        featureSwitches.isVersionEnabled("3.0") shouldBe false
-      }
-
-      "the version is disabled in the config" in {
-        featureSwitches.isVersionEnabled("2.0") shouldBe false
-      }
-    }
-
-    "return true" when {
-      "the version is enabled in the config" in {
-        featureSwitches.isVersionEnabled("1.0") shouldBe true
       }
     }
   }

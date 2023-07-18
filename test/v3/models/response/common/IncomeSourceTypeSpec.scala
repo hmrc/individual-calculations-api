@@ -20,7 +20,6 @@ import play.api.libs.json.{JsResultException, JsString, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v3.models.response.common.IncomeSourceType._
-import java.lang.FunctionalInterface
 
 @FunctionalInterface
 class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
