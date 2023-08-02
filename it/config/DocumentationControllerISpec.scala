@@ -17,14 +17,16 @@
 package config
 
 import io.swagger.v3.parser.OpenAPIV3Parser
-import org.scalatest.OptionValues
-import play.api.http.Status
+import play.api.http.Status.OK
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
+import routing.{Version2, Version3, Version4}
 import support.IntegrationBaseSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
-class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
+import scala.util.Try
+
+class DocumentationControllerISpec extends IntegrationBaseSpec {
 
   val config: AppConfig                = app.injector.instanceOf[AppConfig]
   val confidenceLevel: ConfidenceLevel = config.confidenceLevelConfig.confidenceLevel
@@ -77,25 +79,34 @@ class DocumentationISpec extends IntegrationBaseSpec with OptionValues {
     "return a 200 with the correct response body" in {
 
       val response: WSResponse = await(buildRequest("/api/definition").get())
-      response.status shouldBe Status.OK
+      response.status shouldBe OK
       Json.parse(response.body) shouldBe apiDefinitionJson
     }
   }
 
   "an OAS documentation request" must {
-    "return the documentation that passes OAS V3 parser" in {
-      val response: WSResponse = await(buildRequest("/api/conf/3.0/application.yaml").get())
-      response.status shouldBe Status.OK
+    Seq(Version2, Version3, Version4).foreach { version =>
+      s"return the documentation for $version" in {
+        val response = get(s"/api/conf/${version.name}/application.yaml")
 
-      val contents     = response.body[String]
-      val parserResult = new OpenAPIV3Parser().readContents(contents)
+        val body         = response.body[String]
+        val parserResult = Try(new OpenAPIV3Parser().readContents(body))
+        parserResult.isSuccess shouldBe true
 
-      val openAPI = Option(parserResult.getOpenAPI)
-
-      openAPI.value.getOpenapi shouldBe "3.0.3"
-      openAPI.value.getInfo.getTitle shouldBe "Individual Calculations (MTD)"
-      openAPI.value.getInfo.getVersion shouldBe "3.0"
+        val openAPI = Option(parserResult.get.getOpenAPI).getOrElse(fail("openAPI wasn't defined"))
+        openAPI.getOpenapi shouldBe "3.0.3"
+        withClue(s"If v${version.name} endpoints are enabled in application.conf, remove the [test only] from this test: ") {
+          openAPI.getInfo.getTitle shouldBe "Individual Calculations (MTD)"
+        }
+        openAPI.getInfo.getVersion shouldBe version.toString
+      }
     }
+  }
+
+  private def get(path: String): WSResponse = {
+    val response: WSResponse = await(buildRequest(path).get())
+    response.status shouldBe OK
+    response
   }
 
 }

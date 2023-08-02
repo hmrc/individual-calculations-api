@@ -62,8 +62,17 @@ trait AppConfig {
   def apiGatewayContext: String
   def confidenceLevelConfig: ConfidenceLevelConfig
   def apiStatus(version: Version): String
+  def endpointsEnabled(version: String): Boolean
   def endpointsEnabled(version: Version): Boolean
   def featureSwitches: Configuration
+
+  /** Currently only for OAS documentation.
+    */
+  def apiVersionReleasedInProduction(version: String): Boolean
+
+  /** Currently only for OAS documentation.
+    */
+  def endpointReleasedInProduction(version: String, name: String): Boolean
 
   // NRS Config
   def mtdNrsProxyBaseUrl: String
@@ -101,7 +110,17 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
   def apiStatus(version: Version): String          = config.getString(s"api.${version.name}.status")
   def featureSwitches: Configuration               = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
+  def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"api.$version.endpoints.enabled")
   def endpointsEnabled(version: Version): Boolean  = config.getBoolean(s"api.${version.name}.endpoints.enabled")
+  def apiVersionReleasedInProduction(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
+
+  def endpointReleasedInProduction(version: String, name: String): Boolean = {
+    val versionReleasedInProd = apiVersionReleasedInProduction(version)
+    val path = s"api.$version.endpoints.released-in-production.$name"
+
+    val conf = configuration.underlying
+    if (versionReleasedInProd && conf.hasPath(path)) config.getBoolean(path) else versionReleasedInProd
+  }
 
   // NRS Config
   val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")

@@ -29,23 +29,27 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
+        featureSwitches.isR10AdditionalFieldsEnabled shouldBe true
+
       }
 
       "enabled" in {
-        val configuration   = Configuration("r8b-api.enabled" -> true)
+        val configuration   = Configuration("r8b-api.enabled" -> true, "r10-additional-fields.enabled" -> true)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
+        featureSwitches.isR10AdditionalFieldsEnabled shouldBe true
 
       }
     }
 
     "be false" when {
       "disabled" in {
-        val configuration   = Configuration("r8b-api.enabled" -> false)
+        val configuration   = Configuration("r8b-api.enabled" -> false, "r10-additional-fields.enabled" -> false)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
+        featureSwitches.isR10AdditionalFieldsEnabled shouldBe false
       }
     }
   }
