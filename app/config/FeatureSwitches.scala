@@ -20,9 +20,11 @@ import play.api.Configuration
 
 case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
-  val isR8bSpecificApiEnabled: Boolean = isEnabled("r8b-api.enabled")
+  val isR8bSpecificApiEnabled: Boolean = isConfigTrue("r8b-api.enabled")
+  val isRetrieveSAAdditionalFieldsEnabled: Boolean = isConfigTrue("retrieveSAAdditionalFields.enabled")
 
-  private def isEnabled(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+  def isEnabled(key: String): Boolean = isConfigTrue(key + ".enabled")
+  private def isConfigTrue(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 }
 
 object FeatureSwitches {
