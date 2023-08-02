@@ -29,7 +29,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
-        featureSwitches.isRetrieveSAAdditionalFields shouldBe true
+        featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
 
       }
 
@@ -38,7 +38,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
-        featureSwitches.isRetrieveSAAdditionalFields shouldBe true
+        featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
 
       }
     }
@@ -49,7 +49,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
-        featureSwitches.isRetrieveSAAdditionalFields shouldBe false
+        featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe false
       }
     }
   }
