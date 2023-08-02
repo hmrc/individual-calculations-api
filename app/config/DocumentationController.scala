@@ -22,7 +22,6 @@ import definition.ApiDefinitionFactory
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import utils.Logging
 
 import javax.inject.{Inject, Singleton}
 
@@ -32,8 +31,7 @@ class DocumentationController @Inject() (
     docRewriters: DocumentationRewriters,
     assets: RewriteableAssets,
     cc: ControllerComponents
-) extends BackendController(cc)
-    with Logging {
+) extends BackendController(cc) {
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))
