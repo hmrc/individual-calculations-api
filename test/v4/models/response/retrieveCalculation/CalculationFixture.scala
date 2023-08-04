@@ -280,7 +280,7 @@ trait CalculationFixture {
   )
 
   val inputsWithAdditionalFields: Inputs = Inputs(
-    PersonalInformation("", None, "UK", None, None, None, None, None, None),
+    PersonalInformation("", None, "UK", None, None, None, None, None, Some("No status")),
     IncomeSources(Some(Seq(businessIncomeSourceWithAdditionalField)), None),
     // @formatter:off
     None, None, None, None,
@@ -462,7 +462,8 @@ trait CalculationFixture {
       "inputs": {
         "personalInformation": {
           "identifier": "",
-          "taxRegime": "UK"
+          "taxRegime": "UK",
+          "itsaStatus": "No status"
         },
         "incomeSources": {
           "businessIncomeSources": [
