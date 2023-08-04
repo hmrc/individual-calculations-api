@@ -24,16 +24,16 @@ class RetrieveCalculationResponseWithoutSpec extends UnitSpec with CalculationFi
     "calculation.isDefined returns true" should {
       "return the response with the calculation" in {
         val calculation = calcWithoutEndOfYearEstimate
-        val result      = minimalCalculationResponse.withoutTotalAllowanceAndDeductions
-        result shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        val result      = minimalCalculationR8bResponse.withoutTotalAllowanceAndDeductions
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = Some(calculation))
       }
     }
 
     "calculation.isDefined returns false" should {
       "return the response with no calculation" in {
-        val response = minimalCalculationResponse.copy(calculation = Some(emptyCalculation))
+        val response = minimalCalculationR8bResponse.copy(calculation = Some(emptyCalculation))
         val result   = response.withoutTotalAllowanceAndDeductions
-        result shouldBe minimalCalculationResponse.copy(calculation = None)
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = None)
       }
     }
   }
@@ -42,16 +42,16 @@ class RetrieveCalculationResponseWithoutSpec extends UnitSpec with CalculationFi
     "calculation.isDefined returns true" should {
       "return the response with the calculation" in {
         val calculation = calcWithoutBasicExtension
-        val result      = minimalCalculationResponse.withoutBasicExtension
-        result shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        val result      = minimalCalculationR8bResponse.withoutBasicExtension
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = Some(calculation))
       }
     }
 
     "calculation.isDefined returns false" should {
       "return the response with no calculation" in {
-        val response = minimalCalculationResponse.copy(calculation = Some(emptyCalculation))
+        val response = minimalCalculationR8bResponse.copy(calculation = Some(emptyCalculation))
         val result   = response.withoutBasicExtension
-        result shouldBe minimalCalculationResponse.copy(calculation = None)
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = None)
       }
     }
   }
@@ -60,16 +60,16 @@ class RetrieveCalculationResponseWithoutSpec extends UnitSpec with CalculationFi
     "calculation.isDefined returns true" should {
       "return the response with the calculation" in {
         val calculation = calcWithoutOffPayrollWorker
-        val result      = minimalCalculationResponse.withoutOffPayrollWorker
-        result shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        val result      = minimalCalculationR8bResponse.withoutOffPayrollWorker
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = Some(calculation))
       }
     }
 
     "calculation.isDefined returns false" should {
       "return the response with no calculation" in {
-        val response = minimalCalculationResponse.copy(calculation = Some(emptyCalculation))
+        val response = minimalCalculationR8bResponse.copy(calculation = Some(emptyCalculation))
         val result   = response.withoutOffPayrollWorker
-        result shouldBe minimalCalculationResponse.copy(calculation = None)
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = None)
       }
     }
   }
@@ -78,16 +78,16 @@ class RetrieveCalculationResponseWithoutSpec extends UnitSpec with CalculationFi
     "calculation.isDefined returns true" should {
       "return the response with the calculation" in {
         val calculation = calcWithoutUnderLowerProfitThreshold
-        val result      = minimalCalculationResponse.withoutUnderLowerProfitThreshold
-        result shouldBe minimalCalculationResponse.copy(calculation = Some(calculation))
+        val result      = minimalCalculationR8bResponse.withoutUnderLowerProfitThreshold
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = Some(calculation))
       }
     }
 
     "calculation.isDefined returns false" should {
       "return the response with no calculation" in {
-        val response = minimalCalculationResponse.copy(calculation = Some(emptyCalculation))
+        val response = minimalCalculationR8bResponse.copy(calculation = Some(emptyCalculation))
         val result   = response.withoutOffPayrollWorker
-        result shouldBe minimalCalculationResponse.copy(calculation = None)
+        result shouldBe minimalCalculationR8bResponse.copy(calculation = None)
       }
     }
   }

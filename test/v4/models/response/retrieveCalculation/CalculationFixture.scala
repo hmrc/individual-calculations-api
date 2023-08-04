@@ -19,12 +19,15 @@ package v4.models.response.retrieveCalculation
 import api.models.domain.TaxYear
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v4.models.response.common.CalculationType.`inYear`
+import v4.models.response.common.IncomeSourceType
 import v4.models.response.retrieveCalculation.calculation.Calculation
 import v4.models.response.retrieveCalculation.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v4.models.response.retrieveCalculation.calculation.endOfYearEstimate.EndOfYearEstimate
+import v4.models.response.retrieveCalculation.calculation.otherIncome.{OtherIncome, PostCessationIncome, PostCessationReceipt}
 import v4.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, Reliefs}
 import v4.models.response.retrieveCalculation.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
-import v4.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
+import v4.models.response.retrieveCalculation.calculation.taxDeductedAtSource.TaxDeductedAtSource
+import v4.models.response.retrieveCalculation.inputs.{BusinessIncomeSource, IncomeSources, Inputs, PersonalInformation, SubmissionPeriod}
 import v4.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
@@ -173,11 +176,56 @@ trait CalculationFixture {
     foreignIncome = None,
     chargeableEventGainsIncome = None,
     savingsAndGainsIncome = None,
+    otherIncome = None,
     dividendsIncome = None,
     incomeSummaryTotals = None,
     taxCalculation = Some(taxCalculation),
     previousCalculation = None,
     endOfYearEstimate = Some(eoyEstimates),
+    lossesAndClaims = None
+  )
+
+  val taxDeductedAtSource: TaxDeductedAtSource =
+    TaxDeductedAtSource(None, None, None, None, None, None, None, None, None, None, taxTakenOffTradingIncome = Some(2000.00))
+
+  val otherIncome: OtherIncome =
+    OtherIncome(
+      totalOtherIncome = 2000.00,
+      postCessationIncome = Some(
+        PostCessationIncome(
+          totalPostCessationReceipts = 2000.00,
+          postCessationReceipts = Seq(PostCessationReceipt(amount = 100.00, taxYearIncomeToBeTaxed = "2019-20"))))
+    )
+
+  val calculationWithAdditionalFields: Calculation = Calculation(
+    reliefs = None,
+    allowancesAndDeductions = None,
+    taxDeductedAtSource = Some(taxDeductedAtSource),
+    giftAid = None,
+    royaltyPayments = None,
+    notionalTax = None,
+    marriageAllowanceTransferredIn = None,
+    pensionContributionReliefs = None,
+    pensionSavingsTaxCharges = None,
+    studentLoans = None,
+    codedOutUnderpayments = None,
+    foreignPropertyIncome = None,
+    businessProfitAndLoss = None,
+    employmentAndPensionsIncome = None,
+    employmentExpenses = None,
+    seafarersDeductions = None,
+    foreignTaxForFtcrNotClaimed = None,
+    stateBenefitsIncome = None,
+    shareSchemesIncome = None,
+    foreignIncome = None,
+    chargeableEventGainsIncome = None,
+    savingsAndGainsIncome = None,
+    otherIncome = Some(otherIncome),
+    dividendsIncome = None,
+    incomeSummaryTotals = None,
+    taxCalculation = None,
+    previousCalculation = None,
+    endOfYearEstimate = None,
     lossesAndClaims = None
   )
 
@@ -200,21 +248,57 @@ trait CalculationFixture {
   )
 
   val inputs: Inputs = Inputs(
-    PersonalInformation("", None, "UK", None, None, None, None, None),
+    PersonalInformation("", None, "UK", None, None, None, None, None, None),
     IncomeSources(None, None),
-    None,
-    None,
-    None,
-    None,
-    None,
-    None,
-    None
+    // @formatter:off
+    None, None, None, None,
+    None, None, None
+  )
+  // @formatter:on
+
+  val businessIncomeSourceWithAdditionalField: BusinessIncomeSource = BusinessIncomeSource(
+    incomeSourceId = "000000000000210",
+    incomeSourceType = IncomeSourceType.`self-employment`,
+    incomeSourceName = Some("string"),
+    accountingPeriodStartDate = "2018-04-06",
+    accountingPeriodEndDate = "2019-04-05",
+    source = "MTD-SA",
+    commencementDate = Some("2018-04-06"),
+    cessationDate = Some("2019-04-05"),
+    latestPeriodEndDate = "2021-12-02",
+    latestReceivedDateTime = "2021-12-02T15:25:48Z",
+    finalised = Some(true),
+    finalisationTimestamp = Some("2019-02-15T09:35:15.094Z"),
+    submissionPeriods = Some(
+      Seq(
+        SubmissionPeriod(
+          periodId = Some("001"),
+          startDate = "2018-04-06",
+          endDate = "2019-04-05",
+          receivedDateTime = "2019-02-15T09:35:04.843Z"
+        )))
   )
 
-  val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+  val inputsWithAdditionalFields: Inputs = Inputs(
+    PersonalInformation("", None, "UK", None, None, None, None, None, None),
+    IncomeSources(Some(Seq(businessIncomeSourceWithAdditionalField)), None),
+    // @formatter:off
+    None, None, None, None,
+    None, None, None
+  )
+  // @formatter:on
+
+  val minimalCalculationR8bResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,
     calculation = Some(calculationWithR8BData),
+    messages = None
+  )
+
+  val minimalCalculationAdditionalFieldsResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = metadata,
+    inputs = inputsWithAdditionalFields,
+    calculation = Some(calculationWithAdditionalFields),
     messages = None
   )
 
@@ -224,7 +308,7 @@ trait CalculationFixture {
     None, None, None, None, None, None,
     None, None, None, None, None, None,
     None, None, None, None, None, None,
-    None, None, None, None)
+    None, None, None, None, None)
 
   val calcWithoutEndOfYearEstimate: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
 
@@ -305,7 +389,7 @@ trait CalculationFixture {
     .parse(
       """
         |{
-        |  "metadata" : {
+        |  "metadata": {
         |    "calculationId": "",
         |    "taxYear": "2017-18",
         |    "requestedBy": "",
@@ -316,49 +400,120 @@ trait CalculationFixture {
         |    "periodFrom": "",
         |    "periodTo": ""
         |  },
-        |  "inputs" : {
+        |  "inputs": {
         |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "UK"
+        |      "identifier": "",
+        |      "taxRegime": "UK"
         |    },
         |    "incomeSources": {}
         |  },
         |  "calculation": {
-        |  "taxCalculation":{
-        |    "incomeTax":{
-        |       "totalIncomeReceivedFromAllSources":50,
-        |       "totalAllowancesAndDeductions":50,
-        |       "totalTaxableIncome":50,
-        |       "incomeTaxCharged":50
+        |    "taxCalculation": {
+        |      "incomeTax": {
+        |        "totalIncomeReceivedFromAllSources": 50,
+        |        "totalAllowancesAndDeductions": 50,
+        |        "totalTaxableIncome": 50,
+        |        "incomeTaxCharged": 50
+        |      },
+        |      "nics": {
+        |        "class2Nics": {
+        |          "underSmallProfitThreshold": true,
+        |          "underLowerProfitThreshold": true
+        |        }
+        |      },
+        |      "totalIncomeTaxAndNicsDue": 50
         |    },
-        |    "nics":{
-        |       "class2Nics":{
-        |          "underSmallProfitThreshold":true,
-        |          "underLowerProfitThreshold":true
-        |          }
-        |        },
-        |    "totalIncomeTaxAndNicsDue":50
-        |   },
-        |  "employmentAndPensionsIncome":{
-        |       "employmentAndPensionsIncomeDetail": [
-        |          { "offPayrollWorker": true }
+        |    "employmentAndPensionsIncome": {
+        |      "employmentAndPensionsIncomeDetail": [
+        |        {
+        |          "offPayrollWorker": true
+        |        }
         |      ]
         |    },
         |    "reliefs": {
-        |       "basicRateExtension": {
-        |       "totalBasicRateExtension": 2000.00
-        |       }
+        |      "basicRateExtension": {
+        |        "totalBasicRateExtension": 2000
+        |      }
         |    },
         |    "endOfYearEstimate": {
-        |       "totalAllowancesAndDeductions": 100
-        |     }
+        |      "totalAllowancesAndDeductions": 100
+        |    }
         |  }
         |}
     """.stripMargin
     )
     .as[JsObject]
 
-  val minimumCalculationResponseWithR8BDisabledJson: JsObject = Json
+  val responseAdditionalFieldsEnabledJson: JsObject = Json
+    .parse(
+      """
+    {
+      "metadata": {
+        "calculationId": "",
+        "taxYear": "2017-18",
+        "requestedBy": "",
+        "calculationReason": "",
+        "calculationType": "inYear",
+        "intentToSubmitFinalDeclaration": false,
+        "finalDeclaration": false,
+        "periodFrom": "",
+        "periodTo": ""
+      },
+      "inputs": {
+        "personalInformation": {
+          "identifier": "",
+          "taxRegime": "UK"
+        },
+        "incomeSources": {
+          "businessIncomeSources": [
+            {
+              "incomeSourceId": "000000000000210",
+              "incomeSourceType": "self-employment",
+              "incomeSourceName": "string",
+              "accountingPeriodStartDate": "2018-04-06",
+              "accountingPeriodEndDate": "2019-04-05",
+              "commencementDate": "2018-04-06",
+              "cessationDate": "2019-04-05",
+              "source": "MTD-SA",
+              "latestPeriodEndDate": "2021-12-02",
+              "latestReceivedDateTime": "2021-12-02T15:25:48Z",
+              "finalised": true,
+              "finalisationTimestamp": "2019-02-15T09:35:15.094Z",
+              "submissionPeriods": [
+                {
+                  "periodId": "001",
+                  "startDate": "2018-04-06",
+                  "endDate": "2019-04-05",
+                  "receivedDateTime": "2019-02-15T09:35:04.843Z"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "calculation": {
+        "otherIncome": {
+          "totalOtherIncome": 2000.00,
+          "postCessationIncome": {
+            "totalPostCessationReceipts": 2000.00,
+            "postCessationReceipts": [
+              {
+                "amount": 100.00,
+                "taxYearIncomeToBeTaxed": "2019-20"
+              }
+            ]
+          }
+        },
+        "taxDeductedAtSource": {
+          "taxTakenOffTradingIncome": 2000.00
+        }
+      }
+    }
+    """
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseWithSwitchesDisabledJson: JsObject = Json
     .parse(
       """
         |{
