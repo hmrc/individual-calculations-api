@@ -33,17 +33,43 @@ case class RetrieveCalculationResponse(
     messages: Option[Messages]
 ) {
 
+  def withoutR8bSpecificUpdates: RetrieveCalculationResponse =
+    this.withoutBasicExtension.withoutOffPayrollWorker.withoutTotalAllowanceAndDeductions
+
   def withoutBasicExtension: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
 
   def withoutOffPayrollWorker: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
 
+  def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
+
   def withoutUnderLowerProfitThreshold: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
 
-  def withoutTotalAllowanceAndDeductions: RetrieveCalculationResponse =
-    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
+  def withoutCessationDate: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs.withoutCessationDate, calculation, messages)
+  }
+
+  def withoutCommencementDate: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs.withoutCommencementDate, calculation, messages)
+  }
+
+  def withoutOtherIncome: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOtherIncome).filter(_.isDefined), messages)
+  }
+
+  def withoutTaxTakenOffTradingIncome: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
+  }
+
+  def withoutItsaStatus: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
+  }
+
+  def withoutAdditionalFieldsUpdates: RetrieveCalculationResponse =
+    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutTaxTakenOffTradingIncome.withoutItsaStatus
 
 }
 

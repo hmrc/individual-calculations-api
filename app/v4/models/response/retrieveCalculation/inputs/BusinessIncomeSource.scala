@@ -26,11 +26,27 @@ case class BusinessIncomeSource(incomeSourceId: String,
                                 accountingPeriodStartDate: String,
                                 accountingPeriodEndDate: String,
                                 source: String,
+                                commencementDate: Option[String],
+                                cessationDate: Option[String],
                                 latestPeriodEndDate: String,
                                 latestReceivedDateTime: String,
                                 finalised: Option[Boolean],
                                 finalisationTimestamp: Option[String],
-                                submissionPeriods: Option[Seq[SubmissionPeriod]])
+                                submissionPeriods: Option[Seq[SubmissionPeriod]]) {
+
+  val isDefined: Boolean =
+    !(incomeSourceName.isEmpty &&
+      commencementDate.isEmpty &&
+      cessationDate.isEmpty &&
+      finalised.isEmpty &&
+      finalisationTimestamp.isEmpty &&
+      finalisationTimestamp.isEmpty &&
+      submissionPeriods.isEmpty)
+
+  def withoutCessationDate: BusinessIncomeSource = copy(cessationDate = None)
+
+  def withoutCommencementDate: BusinessIncomeSource = copy(commencementDate = None)
+}
 
 case object BusinessIncomeSource {
 
@@ -43,4 +59,9 @@ case object BusinessIncomeSource {
   )
 
   implicit val format: OFormat[BusinessIncomeSource] = Json.format[BusinessIncomeSource]
+
+  def withoutCessationDateOption(businessIncomeSources: Option[Seq[BusinessIncomeSource]]): Option[Seq[BusinessIncomeSource]] = {
+    businessIncomeSources.map(_.map(_.withoutCessationDate).filter(_.isDefined))
+  }
+
 }

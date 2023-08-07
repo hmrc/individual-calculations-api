@@ -49,7 +49,9 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     )
 
   private val featureSwitches = FeatureSwitches()(appConfig)
+
   import featureSwitches.isR8bSpecificApiEnabled
+  import featureSwitches.isRetrieveSAAdditionalFieldsEnabled
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -67,7 +69,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withParser(parser)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>
-            updateModel(response)
+            val responseMaybeWithoutR8b = updateModelR8b(response)
+            updateModelAdditionalFields(responseMaybeWithoutR8b)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
@@ -84,7 +87,10 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
     }
 
-  private def updateModel(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isR8bSpecificApiEnabled) response else response.withoutBasicExtension.withoutTotalAllowanceAndDeductions.withoutOffPayrollWorker
+  private def updateModelR8b(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+    if (isR8bSpecificApiEnabled) response else response.withoutR8bSpecificUpdates
+
+  private def updateModelAdditionalFields(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+    if (isRetrieveSAAdditionalFieldsEnabled) response else response.withoutAdditionalFieldsUpdates
 
 }

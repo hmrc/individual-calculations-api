@@ -51,8 +51,10 @@ class RetrieveCalculationControllerSpec
 
   private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val taxYear                                 = "2017-18"
-  private val response                                = minimalCalculationResponse
-  private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val responseWithR8b                         = minimalCalculationR8bResponse
+  private val responseWithAdditionalFields            = minimalCalculationAdditionalFieldsResponse
+  private val mtdResponseWithR8BJson                  = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithAdditionalFieldsJson     = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
 
@@ -82,33 +84,55 @@ class RetrieveCalculationControllerSpec
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> true))
+          .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
-          .wrap(response, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, response))
-          .returns(HateoasWrapper(response, hateoaslinks))
+          .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
+          .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseJson))
+        runOkTest(OK, Some(mtdResponseWithR8BJson))
       }
 
-      "happy path with R8B feature switch disabled" in new Test {
+      "happy path with Additional Fields feature switch enabled" in new Test {
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
+
+        MockAppConfig.featureSwitches
+          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true))
+          .anyNumberOfTimes()
+
+        MockHateoasFactory
+          .wrap(
+            responseWithAdditionalFields,
+            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
+          .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
+
+        runOkTest(OK, Some(mtdResponseWithAdditionalFieldsJson))
+      }
+
+      "happy path with R8B and additional fields feature switches disabled" in new Test {
         val updatedRawData: RetrieveCalculationRawData   = rawData
-        val updatedResponse: RetrieveCalculationResponse = response.copy(calculation = Some(calculationWithR8BDisabled))
-        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithR8BDisabledJson ++ hateoaslinksJson
+        val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
+        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
         MockRetrieveCalculationParser
           .parseRequest(updatedRawData)
           .returns(Right(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false))
+          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -117,6 +141,7 @@ class RetrieveCalculationControllerSpec
 
         runOkTest(OK, Some(updatedMtdResponse))
       }
+
     }
 
     "return the error as per spec" when {
