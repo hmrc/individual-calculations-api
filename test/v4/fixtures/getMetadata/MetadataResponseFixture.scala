@@ -17,9 +17,9 @@
 package v4.fixtures.getMetadata
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v2.fixtures.getMessages.MessagesResponseFixture._
-import v2.models.response.common.{CalculationRequestor, CalculationType}
-import v2.models.response.getMetadata.MetadataResponse
+import v4.fixtures.getMessages.MessagesResponseFixture.messagesResponseJsonErrors
+import v4.models.response.common.{CalculationRequestor, CalculationType}
+import v4.models.response.getMetadata.MetadataResponse
 
 object MetadataResponseFixture {
 

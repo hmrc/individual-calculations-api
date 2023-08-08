@@ -28,6 +28,9 @@ trait HateoasLinks {
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
+//  private def baseCrystallisationUri(appConfig: AppConfig, nino: String, taxYear: TaxYear): String =
+//    s"/${appConfig.apiGatewayContext}/crystallisation/$nino/${taxYear.asMtd}"
+
   private def baseSaUriWithTaxYear(appConfig: AppConfig, nino: String, taxYear: TaxYear): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment/${taxYear.asMtd}"
 
@@ -67,5 +70,20 @@ trait HateoasLinks {
     method = POST,
     rel = SUBMIT_FINAL_DECLARATION
   )
+
+def getTaxableIncome(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/taxable-income", method = GET, rel = if (isSelf) SELF else TAXABLE_INCOME)
+
+  def getAllowances(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/allowances-deductions-reliefs", method = GET, rel = if (isSelf) SELF else ALLOWANCES)
+
+  def getEoyEstimate(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/end-of-year-estimate", method = GET, rel = if (isSelf) SELF else EOY_ESTIMATE)
+
+  def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
+    Link(href = baseSaUri(appConfig, nino) + s"/$calcId/messages", method = GET, rel = if (isSelf) SELF else MESSAGES)
+
+//  def crystallise(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link =
+//    Link(href = baseCrystallisationUri(appConfig, nino, taxYear) + "/crystallise", method = POST, rel = CRYSTALLISE)
 
 }

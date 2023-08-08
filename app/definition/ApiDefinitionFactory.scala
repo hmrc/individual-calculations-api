@@ -17,7 +17,7 @@
 package definition
 
 import config.AppConfig
-import routing.{Version, Version2, Version3, Version4}
+import routing.{Version, Version3, Version4}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 import utils.Logging
 
@@ -56,11 +56,6 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
         context = appConfig.apiGatewayContext,
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
-          APIVersion(
-            version = Version2,
-            status = buildAPIStatus(Version2),
-            endpointsEnabled = appConfig.endpointsEnabled(Version2)
-          ),
           APIVersion(
             version = Version3,
             status = buildAPIStatus(Version3),

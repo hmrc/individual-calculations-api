@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package routing
+package v4.models.response.getMetadata
 
-import play.api.http.HeaderNames.ACCEPT
-import play.api.test.FakeRequest
-import support.UnitSpec
+import play.api.libs.json.{Json, OFormat}
 
-class VersionSpec extends UnitSpec {
+case class MetadataExistence(incomeTaxAndNicsCalculated: Boolean = false,
+                             messages: Boolean = false,
+                             taxableIncome: Boolean = false,
+                             endOfYearEstimate: Boolean = false,
+                             allowancesDeductionsAndReliefs: Boolean = false)
 
-  "Versions" when {
-    "v3 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))) shouldBe Right(Version3)
-      }
-    }
-    "v4 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.4.0+json"))) shouldBe Right(Version4)
-      }
-    }
-  }
-
+object MetadataExistence {
+  implicit val format: OFormat[MetadataExistence] = Json.format[MetadataExistence]
 }

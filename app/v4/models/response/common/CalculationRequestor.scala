@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package routing
+package v4.models.response.common
 
-import play.api.http.HeaderNames.ACCEPT
-import play.api.test.FakeRequest
-import support.UnitSpec
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-class VersionSpec extends UnitSpec {
+sealed trait CalculationRequestor
 
-  "Versions" when {
-    "v3 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))) shouldBe Right(Version3)
-      }
-    }
-    "v4 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.4.0+json"))) shouldBe Right(Version4)
-      }
-    }
-  }
+object CalculationRequestor {
 
+  case object customer extends CalculationRequestor
+  case object hmrc     extends CalculationRequestor
+  case object agent    extends CalculationRequestor
+
+  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
 }
