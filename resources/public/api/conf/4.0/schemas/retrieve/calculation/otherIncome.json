@@ -3,7 +3,7 @@
   "type": "object",
   "description": "A breakdown of income received that does not belong to any other income type.",
   "required": [
-	"totalOtherIncome",
+	"totalOtherIncome"
   ],
   "properties": {
 	"totalOtherIncome": {
@@ -44,10 +44,10 @@
 				"type": "string",
 				"pattern": "^[0-9]{4}-[0-9]{2}$"
 			  }
-			},
-		  },
+			}
+		  }
 		}
-	  },
+	  }
 	}
   }
 }
