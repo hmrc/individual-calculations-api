@@ -28,9 +28,6 @@ trait HateoasLinks {
   private def baseSaUri(appConfig: AppConfig, nino: String): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment"
 
-//  private def baseCrystallisationUri(appConfig: AppConfig, nino: String, taxYear: TaxYear): String =
-//    s"/${appConfig.apiGatewayContext}/crystallisation/$nino/${taxYear.asMtd}"
-
   private def baseSaUriWithTaxYear(appConfig: AppConfig, nino: String, taxYear: TaxYear): String =
     s"/${appConfig.apiGatewayContext}/$nino/self-assessment/${taxYear.asMtd}"
 
@@ -83,7 +80,5 @@ def getTaxableIncome(appConfig: AppConfig, nino: String, calcId: String, isSelf:
   def getMessages(appConfig: AppConfig, nino: String, calcId: String, isSelf: Boolean): Link =
     Link(href = baseSaUri(appConfig, nino) + s"/$calcId/messages", method = GET, rel = if (isSelf) SELF else MESSAGES)
 
-//  def crystallise(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link =
-//    Link(href = baseCrystallisationUri(appConfig, nino, taxYear) + "/crystallise", method = POST, rel = CRYSTALLISE)
 
 }
