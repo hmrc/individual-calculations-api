@@ -31,7 +31,7 @@ import javax.inject.{Inject, Singleton}
   hb.registerHelper(
     "enabled",
     (featureName: String, _: Options) => {
-      if (fs.isEnabled(featureName) && appConfig.featureReleasedInProduction(featureName)) "true" else null // javascript "truthy"
+      if (fs.isEnabled(featureName) && fs.isReleasedInProduction(featureName)) "true" else null // javascript "truthy"
     }
   )
 
