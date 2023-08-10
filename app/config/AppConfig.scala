@@ -64,6 +64,7 @@ trait AppConfig {
   def apiStatus(version: Version): String
   def endpointsEnabled(version: String): Boolean
   def endpointsEnabled(version: Version): Boolean
+  def featureSwitchEnabledInProduction(feature: String): Boolean
   def featureSwitches: Configuration
 
   /** Currently only for OAS documentation.
@@ -112,11 +113,12 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   def featureSwitches: Configuration               = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
   def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"api.$version.endpoints.enabled")
   def endpointsEnabled(version: Version): Boolean  = config.getBoolean(s"api.${version.name}.endpoints.enabled")
-  def apiVersionReleasedInProduction(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
+  def featureSwitchEnabledInProduction(feature: String): Boolean = config.getBoolean(s"feature-switch.$feature.released-in-production")
+  def apiVersionReleasedInProduction(version: String): Boolean   = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
 
   def endpointReleasedInProduction(version: String, name: String): Boolean = {
     val versionReleasedInProd = apiVersionReleasedInProduction(version)
-    val path = s"api.$version.endpoints.released-in-production.$name"
+    val path                  = s"api.$version.endpoints.released-in-production.$name"
 
     val conf = configuration.underlying
     if (versionReleasedInProd && conf.hasPath(path)) config.getBoolean(path) else versionReleasedInProd

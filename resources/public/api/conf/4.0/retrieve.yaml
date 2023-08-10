@@ -45,9 +45,9 @@ get:
         application/json:
           schema:
             {{#if (enabled "retrieveSAAdditionalFields")}}
-            $ref: ./schemas/retrieve_response_with_additional_fields.json
-            {{else}}
             $ref: ./schemas/retrieve_response.json
+            {{else}}
+            $ref: ./schemas/retrieve_response_test_only.json
             {{/if}}
           examples:
             example-response:

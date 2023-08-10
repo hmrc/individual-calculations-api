@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "taxDeductedAtSource",
   "description": "Object representing amounts that have been deducted for tax at source in the retrieved tax calculation.",
   "type": "object",
   "properties": {
@@ -54,7 +55,7 @@
       "example": "2009.67"
     },
     "taxTakenOffTradingIncome": {
-      "description": "Other tax taken off trading income apart from CIS deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "[Test only] Other tax taken off trading income apart from CIS deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "example": "2000.58"
     }

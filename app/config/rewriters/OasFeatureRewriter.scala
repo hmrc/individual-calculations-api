@@ -31,8 +31,9 @@ import javax.inject.{Inject, Singleton}
   hb.registerHelper(
     "enabled",
     (featureName: String, _: Options) => {
-      if (fs.isEnabled(featureName)) "true" else null // javascript "truthy"
-    })
+      if (fs.isEnabled(featureName) && appConfig.featureSwitchEnabledInProduction(featureName)) "true" else null // javascript "truthy"
+    }
+  )
 
   val rewriteOasFeature: CheckAndRewrite = CheckAndRewrite(
     check = (version, _) => appConfig.endpointsEnabled(version),

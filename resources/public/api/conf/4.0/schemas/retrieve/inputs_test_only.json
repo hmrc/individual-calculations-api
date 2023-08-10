@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "inputs",
   "description": "Object containing the input data supplied for use in the retrieved tax calculation.",
   "type": "object",
   "properties": {
@@ -97,7 +98,7 @@
           "example": "AGvHTfRUPO"
         },
         "itsaStatus": {
-          "description": "The ITSA status for the tax year.",
+          "description": "[Test only] The ITSA status for the tax year.",
           "type": "string",
           "enum": [
             "No Status",
@@ -621,7 +622,7 @@
             ]
           },
           "commencementDate": {
-            "description": "The date the income source commenced.",
+            "description": "[Test only] The date the income source commenced.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
@@ -629,7 +630,7 @@
             ]
           },
           "cessationDate": {
-            "description": "The date the income source ceased.",
+            "description": "[Test only] The date the income source ceased.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"

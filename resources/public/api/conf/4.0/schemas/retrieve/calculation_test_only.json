@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "calculation",
   "description": "Object containing the tax calculation result.",
   "type": "object",
   "properties": {
@@ -10,7 +11,7 @@
       "$ref": "calculation/reliefs.json"
     },
     "taxDeductedAtSource": {
-      "$ref": "calculation/taxDeductedAtSourceWithAdditionalFields.json"
+      "$ref": "calculation/taxDeductedAtSourceTestOnly.json"
     },
     "giftAid": {
       "$ref": "calculation/giftAid.json"
@@ -70,7 +71,7 @@
       "$ref": "calculation/savingsAndGainsIncome.json"
     },
     "otherIncome": {
-      "$ref": "calculation/otherIncome.json"
+      "$ref": "calculation/otherIncomeTestOnly.json"
     },
     "dividendsIncome": {
       "$ref": "calculation/dividendsIncome.json"

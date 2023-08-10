@@ -7,10 +7,10 @@
       "$ref": "retrieve/metadata.json"
     },
     "inputs": {
-      "$ref": "retrieve/inputs_with_additional_fields.json"
+      "$ref": "retrieve/inputs_test_only.json"
     },
     "calculation": {
-      "$ref": "retrieve/calculation_with_additional_fields.json"
+      "$ref": "retrieve/calculation_test_only.json"
     },
     "messages": {
       "$ref": "retrieve/messages.json"

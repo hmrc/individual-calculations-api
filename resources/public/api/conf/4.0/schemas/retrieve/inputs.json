@@ -95,6 +95,19 @@
           "description": "The Unique Taxpayer Reference for the customer.",
           "type": "string",
           "example": "AGvHTfRUPO"
+        },
+        "itsaStatus": {
+          "description": "The ITSA status for the tax year.",
+          "type": "string",
+          "enum": [
+            "No Status",
+            "MTD Mandated",
+            "MTD Voluntary",
+            "Annual",
+            "Non Digital",
+            "Dormant",
+            "MTD Exempt"
+          ]
         }
       },
       "additionalProperties": false,
@@ -604,6 +617,22 @@
             "allOf": [
               {
                 "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
+          },
+          "commencementDate": {
+            "description": "The date the income source commenced.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "cessationDate": {
+            "description": "The date the income source ceased.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
               }
             ]
           },
