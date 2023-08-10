@@ -33,6 +33,7 @@ import v4.models.response.retrieveCalculation.calculation.incomeSummaryTotals.In
 import v4.models.response.retrieveCalculation.calculation.lossesAndClaims.LossesAndClaims
 import v4.models.response.retrieveCalculation.calculation.marriageAllowanceTransferredIn.MarriageAllowanceTransferredIn
 import v4.models.response.retrieveCalculation.calculation.notionalTax.NotionalTax
+import v4.models.response.retrieveCalculation.calculation.otherIncome.OtherIncome
 import v4.models.response.retrieveCalculation.calculation.pensionContributionReliefs.PensionContributionReliefs
 import v4.models.response.retrieveCalculation.calculation.pensionSavingsTaxCharges.PensionSavingsTaxCharges
 import v4.models.response.retrieveCalculation.calculation.previousCalculation.PreviousCalculation
@@ -69,6 +70,7 @@ case class Calculation(
     foreignIncome: Option[ForeignIncome],
     chargeableEventGainsIncome: Option[ChargeableEventGainsIncome],
     savingsAndGainsIncome: Option[SavingsAndGainsIncome],
+    otherIncome: Option[OtherIncome],
     dividendsIncome: Option[DividendsIncome],
     incomeSummaryTotals: Option[IncomeSummaryTotals],
     taxCalculation: Option[TaxCalculation],
@@ -87,6 +89,12 @@ case class Calculation(
 
   def withoutTotalAllowanceAndDeductions: Calculation =
     copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
+
+  def withoutTaxTakenOffTradingIncome: Calculation =
+    copy(taxDeductedAtSource = taxDeductedAtSource.map(_.withoutTaxTakenOffTradingIncome))
+
+  def withoutOtherIncome: Calculation =
+    copy(otherIncome = None)
 
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&
@@ -110,6 +118,7 @@ case class Calculation(
       foreignIncome.isEmpty &&
       chargeableEventGainsIncome.isEmpty &&
       savingsAndGainsIncome.isEmpty &&
+      otherIncome.isEmpty &&
       dividendsIncome.isEmpty &&
       incomeSummaryTotals.isEmpty &&
       taxCalculation.isEmpty &&
@@ -144,6 +153,7 @@ object Calculation {
     foreignIncome                  <- (JsPath \ "foreignIncome").readNullable[ForeignIncome]
     chargeableEventGainsIncome     <- (JsPath \ "chargeableEventGainsIncome").readNullable[ChargeableEventGainsIncome]
     savingsAndGainsIncome          <- (JsPath \ "savingsAndGainsIncome").readNullable[SavingsAndGainsIncome]
+    otherIncome                    <- (JsPath \ "otherIncome").readNullable[OtherIncome]
     dividendsIncome                <- (JsPath \ "dividendsIncome").readNullable[DividendsIncome]
     incomeSummaryTotals            <- (JsPath \ "incomeSummaryTotals").readNullable[IncomeSummaryTotals]
     taxCalculation                 <- (JsPath \ "taxCalculation").readNullable[TaxCalculation]
@@ -174,6 +184,7 @@ object Calculation {
       foreignIncome = foreignIncome,
       chargeableEventGainsIncome = chargeableEventGainsIncome,
       savingsAndGainsIncome = savingsAndGainsIncome,
+      otherIncome = otherIncome,
       dividendsIncome = dividendsIncome,
       incomeSummaryTotals = incomeSummaryTotals,
       taxCalculation = taxCalculation,
@@ -208,6 +219,7 @@ object Calculation {
         "foreignIncome"                  -> Json.toJson(o.foreignIncome),
         "chargeableEventGainsIncome"     -> Json.toJson(o.chargeableEventGainsIncome),
         "savingsAndGainsIncome"          -> Json.toJson(o.savingsAndGainsIncome),
+        "otherIncome"                    -> Json.toJson(o.otherIncome),
         "dividendsIncome"                -> Json.toJson(o.dividendsIncome),
         "incomeSummaryTotals"            -> Json.toJson(o.incomeSummaryTotals),
         "taxCalculation"                 -> Json.toJson(o.taxCalculation),

@@ -19,13 +19,12 @@ package v4.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
-//import play.api.http.Status._
+import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V4IntegrationBaseSpec
-import v4.stubs.{AuditStub, AuthStub,  MtdIdLookupStub}
-//import v4.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import v4.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends V4IntegrationBaseSpec {
 
@@ -83,20 +82,20 @@ class AuthISpec extends V4IntegrationBaseSpec {
       }
     }
 
-//    "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
-//
-//      "return 200" in new Test {
-//        override def setupStubs(): StubMapping = {
-//          AuditStub.audit()
-//          AuthStub.authorised()
-//          MtdIdLookupStub.ninoFound(nino)
-//          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
-//        }
-//
-//        val response: WSResponse = await(request().get())
-//        response.status shouldBe Status.OK
-//      }
-//    }
+    "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
+
+      "return 200" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
+        }
+
+        val response: WSResponse = await(request().get())
+        response.status shouldBe Status.OK
+      }
+    }
 
     "an MTD ID is successfully retrieve from the NINO and the user is NOT logged in" should {
 

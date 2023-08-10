@@ -38,7 +38,8 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
     "return a valid response" when {
       "a valid request is supplied" in new IfsTest with Test {
         def taxYear: TaxYear = preTysTaxYear
-        val outcome          = Right(ResponseWrapper(correlationId, minimalCalculationResponse))
+        val outcome: Right[Nothing, ResponseWrapper[RetrieveCalculationResponse]] =
+          Right(ResponseWrapper(correlationId, minimalCalculationR8bResponse))
 
         stubHttpResponse(outcome)
 
@@ -47,7 +48,8 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
 
       "a valid request with Tax Year Specific tax year is supplied" in new TysIfsTest with Test {
         def taxYear: TaxYear = tysTaxYear
-        val outcome          = Right(ResponseWrapper(correlationId, minimalCalculationResponse))
+        val outcome: Right[Nothing, ResponseWrapper[RetrieveCalculationResponse]] =
+          Right(ResponseWrapper(correlationId, minimalCalculationR8bResponse))
 
         stubTysHttpResponse(outcome)
 

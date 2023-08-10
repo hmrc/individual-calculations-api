@@ -75,7 +75,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           ""
         ),
         inputs = Inputs(
-          PersonalInformation("", None, "", None, None, None, None, None),
+          PersonalInformation("", None, "", None, None, None, None, None, Some("status")),
           IncomeSources(None, None),
           None,
           None,
