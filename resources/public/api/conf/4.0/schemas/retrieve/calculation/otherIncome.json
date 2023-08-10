@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
-  "description": '{{#if (enabled "retrieveSAAdditionalFields")}}{{else}}[Test only] {{/if}}A breakdown of income received that does not belong to any other income type.',
+  "description": '{{#unless (enabled "retrieveSAAdditionalFields")}}[Test only] {{/unless}}A breakdown of income received that does not belong to any other income type.',
   "required": [
 	"totalOtherIncome"
   ],

@@ -64,7 +64,7 @@ trait AppConfig {
   def apiStatus(version: Version): String
   def endpointsEnabled(version: String): Boolean
   def endpointsEnabled(version: Version): Boolean
-  def featureSwitchEnabledInProduction(feature: String): Boolean
+  def featureReleasedInProduction(feature: String): Boolean
   def featureSwitches: Configuration
 
   /** Currently only for OAS documentation.
@@ -113,8 +113,8 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
   def featureSwitches: Configuration               = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
   def endpointsEnabled(version: String): Boolean   = config.getBoolean(s"api.$version.endpoints.enabled")
   def endpointsEnabled(version: Version): Boolean  = config.getBoolean(s"api.${version.name}.endpoints.enabled")
-  def featureSwitchEnabledInProduction(feature: String): Boolean = config.getBoolean(s"feature-switch.$feature.released-in-production")
-  def apiVersionReleasedInProduction(version: String): Boolean   = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
+  def featureReleasedInProduction(feature: String): Boolean    = config.getBoolean(s"feature-switch.$feature.released-in-production")
+  def apiVersionReleasedInProduction(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
 
   def endpointReleasedInProduction(version: String, name: String): Boolean = {
     val versionReleasedInProd = apiVersionReleasedInProduction(version)

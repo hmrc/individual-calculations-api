@@ -97,7 +97,7 @@
           "example": "AGvHTfRUPO"
         },
         "itsaStatus": {
-          "description": '{{#if (enabled "retrieveSAAdditionalFields")}}{{else}}[Test only] {{/if}}The ITSA status for the tax year.',
+          "description": '{{#unless (enabled "retrieveSAAdditionalFields")}}[Test only] {{/unless}}The ITSA status for the tax year.',
           "type": "string",
           "enum": [
             "No Status",
@@ -621,7 +621,7 @@
             ]
           },
           "commencementDate": {
-            "description": '{{#if (enabled "retrieveSAAdditionalFields")}}{{else}}[Test only] {{/if}}The date the income source commenced.',
+            "description": '{{#unless (enabled "retrieveSAAdditionalFields")}}[Test only] {{/unless}}The date the income source commenced.',
             "allOf": [
               {
                 "$ref": "#/definitions/date"
@@ -629,7 +629,7 @@
             ]
           },
           "cessationDate": {
-            "description": '{{#if (enabled "retrieveSAAdditionalFields")}}{{else}}[Test only] {{/if}}The date the income source ceased.',
+            "description": '{{#unless (enabled "retrieveSAAdditionalFields")}}[Test only] {{/unless}}The date the income source ceased.',
             "allOf": [
               {
                 "$ref": "#/definitions/date"

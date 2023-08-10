@@ -58,8 +58,8 @@ trait MockAppConfig extends MockFactory {
     def endpointsEnabled(version: String): CallHandler[Boolean]  = (mockAppConfig.endpointsEnabled(_: String)).expects(version)
     def endpointsEnabled(version: Version): CallHandler[Boolean] = (mockAppConfig.endpointsEnabled(_: Version)).expects(version)
 
-    def featureSwitchEnabledInProduction(version: String): CallHandler[Boolean] =
-      (mockAppConfig.featureSwitchEnabledInProduction(_: String)).expects(version)
+    def featureReleasedInProduction(version: String): CallHandler[Boolean] =
+      (mockAppConfig.featureReleasedInProduction(_: String)).expects(version)
 
     def apiVersionReleasedInProduction(version: String): CallHandler[Boolean] =
       (mockAppConfig.apiVersionReleasedInProduction: String => Boolean).expects(version)
