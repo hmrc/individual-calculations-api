@@ -116,7 +116,7 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
 
   def endpointReleasedInProduction(version: String, name: String): Boolean = {
     val versionReleasedInProd = apiVersionReleasedInProduction(version)
-    val path = s"api.$version.endpoints.released-in-production.$name"
+    val path                  = s"api.$version.endpoints.released-in-production.$name"
 
     val conf = configuration.underlying
     if (versionReleasedInProd && conf.hasPath(path)) config.getBoolean(path) else versionReleasedInProd
