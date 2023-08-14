@@ -27,6 +27,9 @@
       "class2VoluntaryContributions": true,
       "marriageAllowance": "transferor",
       "uniqueTaxpayerReference": "AGvHTfRUPO"
+      {{#if (enabled "retrieveSAAdditionalFields")}}
+      ,"itsaStatus": "No status"
+      {{/if}}
     },
     "incomeSources": {
       "businessIncomeSources": [
@@ -37,6 +40,10 @@
           "accountingPeriodStartDate": "2021-04-06",
           "accountingPeriodEndDate": "2022-04-05",
           "source": "MTD-SA",
+          {{#if (enabled "retrieveSAAdditionalFields")}}
+          "cessationDate":"2021-04-06",
+          "commencementDate":"2022-04-05",
+          {{/if}}
           "latestPeriodEndDate": "2022-04-05",
           "latestReceivedDateTime": "2022-12-02T15:25:48.475Z",
           "finalised": true,
@@ -259,7 +266,10 @@
       "occupationalPensions": 5000.99,
       "stateBenefits": -99999999999.99,
       "specialWithholdingTaxOrUkTaxPaid": 5000.99,
-      "inYearAdjustmentCodedInLaterTaxYear": 5000.99
+      "inYearAdjustmentCodedInLaterTaxYear": 5000.99,
+      {{#if (enabled "retrieveSAAdditionalFields")}}
+      "taxTakenOffTradingIncome": 5000.99
+      {{/if}}
     },
     "giftAid": {
       "grossGiftAidPayments": 12500,
@@ -723,6 +733,20 @@
         }
       ]
     },
+    {{#if (enabled "retrieveSAAdditionalFields")}}
+    "otherIncome": {
+      "totalOtherIncome": 2000.00,
+      "postCessationIncome": {
+        "totalPostCessationReceipts": 2000.99,
+        "postCessationReceipts": [
+          {
+            "amount": 2000.00,
+            "taxYearIncomeToBeTaxed": "2019-20"
+          }
+        ]
+      }
+    },
+    {{/if}}
     "dividendsIncome": {
       "totalChargeableDividends": 12500,
       "totalUkDividends": 12500,
