@@ -20,37 +20,20 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status._
-import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.V4IntegrationBaseSpec
-import v4.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import support.V3IntegrationBaseSpec
+import v3.models.response.retrieveCalculation.CalculationFixture
+import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
-class AuthISpec extends V4IntegrationBaseSpec {
+class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
-    val nino: String          = "AA123456A"
-    val taxYear: String       = "2017-18"
-    val data: String          = "someData"
-    val correlationId: String = "X-123"
+    val nino: String  = "AA123456A"
+    val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment"
-    def backendUrl: String = uri
-
-    val responseBody: JsValue = Json.parse(
-      """
-        |{
-        |   "calculations":[
-        |      {
-        |         "id":"f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |         "calculationTimestamp":"2019-03-17T09:22:59Z",
-        |         "type":"inYear",
-        |         "requestedBy":"hmrc"
-        |      }
-        |   ]
-        |}
-       """.stripMargin
-    )
+    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
+    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
@@ -89,7 +72,7 @@ class AuthISpec extends V4IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, OK, responseBody)
+          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, calculationDownstreamJson)
         }
 
         val response: WSResponse = await(request().get())
