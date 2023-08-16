@@ -19,6 +19,7 @@ package v3.connectors
 import api.connectors.ConnectorSpec
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.http.UpstreamErrorResponse
 
 import scala.concurrent.Future
 
@@ -40,7 +41,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
 
   "submit" should {
     "return a success response" in new Test {
-      val outcome = Right(())
+      val outcome: Either[UpstreamErrorResponse, Unit] = Right(())
 
       MockHttpClient
         .post(
@@ -50,7 +51,8 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
         )
         .returns(Future.successful(Right(())))
 
-      await(connector.submitAsync(nino, notableEvent, body)) shouldBe outcome
+      val result: Either[UpstreamErrorResponse, Unit] = await(connector.submitAsync(nino, notableEvent, body))
+      result shouldBe outcome
     }
   }
 
