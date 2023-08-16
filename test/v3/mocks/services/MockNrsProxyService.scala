@@ -14,26 +14,25 @@
  * limitations under the License.
  */
 
-package v3.services
+package v3.mocks.services
 
-import api.services.ServiceSpec
-import v3.fixtures.nrs.NrsFixture
-import v3.mocks.connectors.MockNrsProxyConnector
+import org.scalamock.scalatest.MockFactory
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.HeaderCarrier
+import v3.services.NrsProxyService
 
-import scala.concurrent.Future
+trait MockNrsProxyService extends MockFactory {
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+  val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
+  object MockNrsProxyService {
 
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
+    def submitAsync(nino: String, notableEvent: String, body: JsValue): Unit = {
+      (mockNrsProxyService
+        .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
+        .expects(nino, *, *, *)
     }
+
   }
 
 }

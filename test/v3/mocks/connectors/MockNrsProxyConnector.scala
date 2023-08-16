@@ -32,7 +32,7 @@ trait MockNrsProxyConnector extends MockFactory {
 
     def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
       (mockNrsProxyConnector
-        .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
+        .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
         .expects(nino, notableEvent, body, *)
 
   }

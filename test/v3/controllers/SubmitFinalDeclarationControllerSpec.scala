@@ -40,6 +40,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockSubmitFinalDeclarationService
     with MockSubmitFinalDeclarationParser
     with MockAuditService
+    with MockNrsProxyService
     with MockIdGenerator {
 
   private val taxYear       = "2020-21"
@@ -53,6 +54,7 @@ class SubmitFinalDeclarationControllerSpec
       parser = mockSubmitFinalDeclarationParser,
       service = mockSubmitFinalDeclarationService,
       cc = cc,
+      nrsProxyService = mockNrsProxyService,
       auditService = mockAuditService,
       idGenerator = mockIdGenerator
     )
@@ -87,6 +89,9 @@ class SubmitFinalDeclarationControllerSpec
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
 
+        MockNrsProxyService
+          .submitAsync(nino, "itsa-crystallisation", requestData.toNrsJson)
+
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
@@ -110,6 +115,9 @@ class SubmitFinalDeclarationControllerSpec
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
+
+        MockNrsProxyService
+          .submitAsync(nino, "itsa-crystallisation", requestData.toNrsJson)
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)

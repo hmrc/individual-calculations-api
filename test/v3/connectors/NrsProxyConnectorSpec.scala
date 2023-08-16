@@ -50,7 +50,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
         )
         .returns(Future.successful(Right(())))
 
-      await(connector.submit(nino, notableEvent, body)) shouldBe outcome
+      await(connector.submitAsync(nino, notableEvent, body)) shouldBe outcome
     }
   }
 
