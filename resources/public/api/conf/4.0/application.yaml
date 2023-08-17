@@ -37,7 +37,7 @@ components:
   securitySchemes:
     User-Restricted:
       type: oauth2
-      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.qa.tax.service.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
+      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
       flows:
         authorizationCode:
           authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
