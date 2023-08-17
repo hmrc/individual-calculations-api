@@ -19,7 +19,7 @@ package v3.controllers
 import api.controllers._
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.{IdGenerator, Logging}
+import utils.IdGenerator
 import v3.controllers.requestParsers.SubmitFinalDeclarationParser
 import v3.models.request.SubmitFinalDeclarationRawData
 import v3.services._
@@ -33,11 +33,10 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   parser: SubmitFinalDeclarationParser,
                                                   service: SubmitFinalDeclarationService,
                                                   cc: ControllerComponents,
+                                                  nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
                                                   idGenerator: IdGenerator)(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc)
-    with BaseController
-    with Logging {
+    extends AuthorisedController(cc) {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
@@ -51,7 +50,10 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       val requestHandler =
         RequestHandler
           .withParser(parser)
-          .withService(service.submitFinalDeclaration)
+          .withService { parsedRequest =>
+            nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
+            service.submitFinalDeclaration(parsedRequest)
+          }
           .withNoContentResult()
           .withAuditing(AuditHandler(
             auditService,
