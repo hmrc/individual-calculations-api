@@ -23,7 +23,7 @@ import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 import support.V3IntegrationBaseSpec
-import v3.stubs._
+import stubs._
 
 class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
 

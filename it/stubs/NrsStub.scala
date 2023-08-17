@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package v4.stubs
+package stubs
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status._
+import play.api.libs.json.JsValue
 import support.WireMockMethods
 
-object AuditStub extends WireMockMethods {
+object NrsStub extends WireMockMethods {
 
-  private val auditUri: String = s"/write/audit.*"
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = status, body)
+  }
 
-  def audit(): StubMapping = {
-    when(method = POST, uri = auditUri)
-      .thenReturn(status = NO_CONTENT)
+  def onError(method: HTTPMethod, uri: String, errorStatus: Int, errorBody: String): StubMapping = {
+    when(method = method, uri = uri)
+      .thenReturn(status = errorStatus, errorBody)
   }
 
 }

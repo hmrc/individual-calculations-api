@@ -24,7 +24,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.models.response.retrieveCalculation.CalculationFixture
-import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 

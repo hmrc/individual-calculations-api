@@ -24,7 +24,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.models.response.retrieveCalculation.CalculationFixture
-import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 
@@ -32,7 +32,7 @@ class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
     val nino: String  = "AA123456A"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
+    def uri: String        \= s"/$nino/self-assessment/2017-18/$calculationId"
     def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping

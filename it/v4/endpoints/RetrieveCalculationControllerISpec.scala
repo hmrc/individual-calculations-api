@@ -23,8 +23,8 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 import support.V3IntegrationBaseSpec
-import v4.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
 

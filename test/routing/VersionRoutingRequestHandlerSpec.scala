@@ -84,8 +84,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   }
 
   "Routing requests with valid version" should {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.2.0+json")
-
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.3.0+json")
     handleWithDefaultRoutes()
   }
 
@@ -103,16 +102,12 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     "if the request ends with a trailing slash" when {
       "handler found" should {
         "use it" in new Test {
-          MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
-
           requestHandler.routeRequest(buildRequest("/")) shouldBe Some(DefaultHandler)
         }
       }
 
       "handler not found" should {
         "try without the trailing slash" in new Test {
-          MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
-
           requestHandler.routeRequest(buildRequest("")) shouldBe Some(DefaultHandler)
         }
       }

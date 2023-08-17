@@ -24,7 +24,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
-import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
 
 class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
 
