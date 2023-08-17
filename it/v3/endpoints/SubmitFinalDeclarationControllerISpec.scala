@@ -58,7 +58,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, downstreamUri, NO_CONTENT, Json.obj())
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, NO_CONTENT, Json.obj())
         }
 
         val response: WSResponse = await(request.post(EmptyBody))
@@ -118,7 +118,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, downstreamUri, backendStatus, errorBody(backendCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request.post(EmptyBody))

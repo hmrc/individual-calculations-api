@@ -56,7 +56,6 @@ sealed trait Version {
 case object Version3 extends Version {
   val name                                    = "3.0"
   val configName                              = "3"
-  override val maybePrevious: Option[Version] = None
 }
 
 case object Version4 extends Version {

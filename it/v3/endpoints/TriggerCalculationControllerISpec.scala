@@ -24,7 +24,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
-import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 
 class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
 
@@ -37,7 +37,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), OK, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
@@ -52,7 +52,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"false"), OK, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"false"), OK, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, None).post(EmptyBody))
@@ -67,7 +67,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), ACCEPTED, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), ACCEPTED, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
@@ -123,7 +123,7 @@ class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), backendStatus, errorBody(backendCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))

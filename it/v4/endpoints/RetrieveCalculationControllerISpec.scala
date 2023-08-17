@@ -23,7 +23,7 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.V3IntegrationBaseSpec
 
 class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
@@ -175,7 +175,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
             AuditStub.audit()
             AuthStub.authorised()
             MtdIdLookupStub.ninoFound(nino)
-            BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
+            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
           }
 
           val response: WSResponse = await(request.get())
@@ -189,7 +189,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
             AuditStub.audit()
             AuthStub.authorised()
             MtdIdLookupStub.ninoFound(nino)
-            BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
+            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
           }
 
           val response: WSResponse = await(request.get())
@@ -203,7 +203,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
             AuditStub.audit()
             AuthStub.authorised()
             MtdIdLookupStub.ninoFound(nino)
-            BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
+            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
           }
 
           val response: WSResponse = await(request.get())
@@ -217,7 +217,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
             AuditStub.audit()
             AuthStub.authorised()
             MtdIdLookupStub.ninoFound(nino)
-            BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
+            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
           }
 
           val response: WSResponse = await(request.get())
@@ -263,7 +263,7 @@ class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
                 AuditStub.audit()
                 AuthStub.authorised()
                 MtdIdLookupStub.ninoFound(nino)
-                BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
+                DownstreamStub.onError(DownstreamStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
               }
               val response: WSResponse = await(request.get())
               response.status shouldBe expectedStatus

@@ -85,7 +85,6 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
       .handlerFor(request)
       .orElse {
         if (request.path.endsWith("/")) {
-          println(router.documentation)
           val pathWithoutSlash        = request.path.dropRight(1)
           val requestWithModifiedPath = request.withTarget(request.target.withPath(pathWithoutSlash))
           router.handlerFor(requestWithModifiedPath)

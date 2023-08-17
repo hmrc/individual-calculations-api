@@ -26,7 +26,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.fixtures.ListCalculationsFixture
-import stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 
 class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCalculationsFixture {
 
@@ -90,7 +90,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -106,7 +106,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -120,7 +120,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -168,7 +168,7 @@ class ListCalculationsControllerISpec extends V3IntegrationBaseSpec with ListCal
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              BackendStub.onError(BackendStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
+              DownstreamStub.onError(DownstreamStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
 
             val response: WSResponse = await(request.get())
