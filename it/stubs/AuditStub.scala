@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package routing
+package stubs
 
-import play.api.http.HeaderNames.ACCEPT
-import play.api.test.FakeRequest
-import support.UnitSpec
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status._
+import support.WireMockMethods
 
-class VersionSpec extends UnitSpec {
+object AuditStub extends WireMockMethods {
 
-  "Versions" when {
-    "v3 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.3.0+json"))) shouldBe Right(Version3)
-      }
-    }
-    "v4 retrieved from a request header" must {
-      "work" in {
-        Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.4.0+json"))) shouldBe Right(Version4)
-      }
-    }
+  private val auditUri: String = s"/write/audit.*"
+
+  def audit(): StubMapping = {
+    when(method = POST, uri = auditUri)
+      .thenReturn(status = NO_CONTENT)
   }
 
 }

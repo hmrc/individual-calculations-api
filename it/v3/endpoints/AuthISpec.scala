@@ -24,7 +24,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import support.V3IntegrationBaseSpec
 import v3.models.response.retrieveCalculation.CalculationFixture
-import v3.stubs.{AuditStub, AuthStub, BackendStub, MtdIdLookupStub}
+import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 
 class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
 
@@ -72,7 +72,7 @@ class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          BackendStub.onSuccess(BackendStub.GET, backendUrl, Map(), OK, calculationDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, backendUrl, Map(), OK, calculationDownstreamJson)
         }
 
         val response: WSResponse = await(request().get())

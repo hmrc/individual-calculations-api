@@ -20,7 +20,7 @@ import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
-import routing.{Version2, Version3, Version4}
+import routing.{Version3, Version4}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -37,8 +37,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "called" should {
       "return a valid Definition case class" in new Test {
         MockAppConfig.featureSwitches.returns(Configuration.empty).anyNumberOfTimes()
-        MockAppConfig.apiStatus(Version2).returns("BETA")
-        MockAppConfig.endpointsEnabled(Version2).returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version3) returns "BETA"
         MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version4) returns "BETA"
@@ -68,11 +66,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             context = "api.gateway.context",
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
-              APIVersion(
-                version = Version2,
-                status = APIStatus.BETA,
-                endpointsEnabled = true
-              ),
               APIVersion(
                 version = Version3,
                 status = APIStatus.BETA,
@@ -112,15 +105,15 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockAppConfig.apiStatus(Version2) returns "BETA"
-        apiDefinitionFactory.buildAPIStatus(Version2) shouldBe BETA
+        MockAppConfig.apiStatus(Version3) returns "BETA"
+        apiDefinitionFactory.buildAPIStatus(Version3) shouldBe BETA
       }
     }
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.apiStatus(Version2) returns "ALPHA"
-        apiDefinitionFactory.buildAPIStatus(Version2) shouldBe ALPHA
+        MockAppConfig.apiStatus(Version3) returns "ALPHA"
+        apiDefinitionFactory.buildAPIStatus(Version3) shouldBe ALPHA
       }
     }
   }

@@ -44,6 +44,10 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
       testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
+    "return the correct TaxDeductedAtSource" in {
+      taxDeductedAtSource.withoutTaxTakenOffTradingIncome shouldBe taxDeductedAtSource.copy(taxTakenOffTradingIncome = None)
+    }
+
   }
 
   "LinksFactory" should {

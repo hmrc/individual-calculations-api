@@ -18,27 +18,12 @@ package api.models.errors
 
 import play.api.http.Status._
 
-import scala.collection.immutable.Seq
-
 // MtdError types that are common across MTD APIs.
 
 // Format Errors
 object NinoFormatError          extends MtdError("FORMAT_NINO", "The provided NINO is invalid", BAD_REQUEST)
 object TaxYearFormatError       extends MtdError("FORMAT_TAX_YEAR", "The provided tax year is invalid", BAD_REQUEST)
-object ToDateFormatError        extends MtdError(code = "FORMAT_TO_DATE", message = "The toDate format is invalid", BAD_REQUEST)
-object FromDateFormatError      extends MtdError(code = "FORMAT_FROM_DATE", message = "The fromDate format is invalid", BAD_REQUEST)
-object BusinessIdFormatError    extends MtdError("FORMAT_BUSINESS_ID", "The Business ID format is invalid", BAD_REQUEST)
-object PaymentIdFormatError     extends MtdError(code = "FORMAT_PAYMENT_ID", message = "The payment ID format is invalid", BAD_REQUEST)
-object TransactionIdFormatError extends MtdError(code = "FORMAT_TRANSACTION_ID", message = "The transaction ID format is invalid", BAD_REQUEST)
 
-object IdFormatError extends MtdError(code = "FORMAT_ID", message = "The ID format is invalid", BAD_REQUEST)
-
-object ValueFormatError extends MtdError("FORMAT_VALUE", "The value must be between 0 and 99999999999.99", BAD_REQUEST) {
-
-  def forPathAndRange(path: String, min: String, max: String): MtdError =
-    ValueFormatError.copy(paths = Some(Seq(path)), message = s"The value must be between $min and $max")
-
-}
 
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found", NOT_FOUND)
@@ -48,8 +33,6 @@ object InternalError extends MtdError("INTERNAL_SERVER_ERROR", "An internal serv
 object BadRequestError extends MtdError("INVALID_REQUEST", "Invalid request", BAD_REQUEST)
 
 object BVRError extends MtdError("BUSINESS_ERROR", "Business validation error", BAD_REQUEST)
-
-object ServiceUnavailableError extends MtdError("SERVICE_UNAVAILABLE", "Internal server error", INTERNAL_SERVER_ERROR)
 
 object InvalidHttpMethodError extends MtdError("INVALID_HTTP_METHOD", "Invalid HTTP method", METHOD_NOT_ALLOWED)
 
@@ -79,27 +62,6 @@ object RuleTaxYearRangeInvalidError
     extends MtdError("RULE_TAX_YEAR_RANGE_INVALID", "Tax year range invalid. A tax year range of one year is required", BAD_REQUEST)
 
 object RuleTaxYearNotEndedError extends MtdError("RULE_TAX_YEAR_NOT_ENDED", "Tax year not ended", BAD_REQUEST)
-object RuleDuplicateIdError     extends MtdError(code = "RULE_DUPLICATE_ID_NOT_ALLOWED", message = "Duplicate IDs are not allowed", BAD_REQUEST)
-
-object RuleFromDateNotSupportedError
-    extends MtdError(code = "RULE_FROM_DATE_NOT_SUPPORTED", message = "The specified from date is too early", BAD_REQUEST)
-
-object RuleMissingToDateError
-    extends MtdError(code = "MISSING_TO_DATE", message = "The fromDate has been provided, but toDate is missing", BAD_REQUEST)
-
-object MissingFromDateError
-    extends MtdError(code = "MISSING_FROM_DATE", message = "The toDate has been provided, but fromDate is missing", BAD_REQUEST)
-
-object RangeToDateBeforeFromDateError
-    extends MtdError(code = "RANGE_TO_DATE_BEFORE_FROM_DATE", message = "The toDate cannot be earlier than the fromDate", BAD_REQUEST)
-
-object RuleDateRangeInvalidError extends MtdError(code = "RULE_DATE_RANGE_INVALID", message = "The specified date range is invalid", BAD_REQUEST)
-object RuleInvalidDateRangeError extends MtdError(code = "RULE_INVALID_DATE_RANGE", message = "The provided date range is invalid", BAD_REQUEST)
-
-object RuleBusinessId
-    extends MtdError("RULE_BUSINESS_ID", "A Business ID must be supplied for a self-employment or a foreign property business type.", BAD_REQUEST)
-
-object NoTransactionDetailsFoundError extends MtdError(code = "NO_DETAILS_FOUND", message = "No transaction details found", BAD_REQUEST)
 
 object RuleIncorrectGovTestScenarioError
     extends MtdError(

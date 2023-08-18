@@ -319,6 +319,13 @@ trait CalculationFixture {
   val calcWithoutUnderLowerProfitThreshold: Calculation= emptyCalculation.copy(taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
   // @formatter:on
 
+  val minimalCalculationResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = metadata,
+    inputs = inputs,
+    calculation = Some(calculationWithR8BData),
+    messages = None
+  )
+
   val minimalCalculationResponseWithoutR8BData: RetrieveCalculationResponse = RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,

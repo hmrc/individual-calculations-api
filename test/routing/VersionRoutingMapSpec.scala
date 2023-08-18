@@ -23,29 +23,15 @@ import support.UnitSpec
 class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   val defaultRouter: Router = mock[Router]
-  val v2Routes: v2.Routes   = app.injector.instanceOf[v2.Routes]
   val v3Routes: v3.Routes   = app.injector.instanceOf[v3.Routes]
   val v4Routes: v4.Routes   = app.injector.instanceOf[v4.Routes]
 
   "map" when {
-    "routing to v2" should {
-      s"route to ${v2Routes.toString}" in {
-
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v2Router = v2Routes,
-          v3Router = v3Routes,
-          v4Router = v4Routes
-        )
-
-        versionRoutingMap.map(Version2) shouldBe v2Routes
-      }
+    "routing to v3 or v4" should {
 
       s"route to ${v3Routes.toString}" in {
-
         val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
           defaultRouter = defaultRouter,
-          v2Router = v2Routes,
           v3Router = v3Routes,
           v4Router = v4Routes
         )
@@ -57,7 +43,6 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 
         val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
           defaultRouter = defaultRouter,
-          v2Router = v2Routes,
           v3Router = v3Routes,
           v4Router = v4Routes
         )
