@@ -18,9 +18,11 @@ package v3.services
 
 import api.controllers.RequestContext
 import api.models
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
+import uk.gov.hmrc.http.HeaderCarrier
 import v3.connectors.RetrieveCalculationConnector
 import v3.models.request.RetrieveCalculationRequest
 import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
@@ -36,8 +38,16 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
     connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
-
   }
+
+//  def retrieveCalculation(nino: Nino, calculationId: CalculationId, taxYear: TaxYear)(implicit
+//      hc: HeaderCarrier,
+//      ec: ExecutionContext,
+//      correlationId: String) = {
+//
+//    val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+//    connector.retrieveCalculation(retrieveRequest)
+//  }
 
   private val downstreamErrorMap: Map[String, MtdError] = {
     val errors: Map[String, MtdError] = Map(

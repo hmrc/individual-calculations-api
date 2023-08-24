@@ -20,8 +20,8 @@ import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError, InternalError}
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
@@ -39,6 +39,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockMtdIdLookupService
     with MockSubmitFinalDeclarationService
     with MockSubmitFinalDeclarationParser
+      with MockRetrieveCalculationService
     with MockAuditService
     with MockNrsProxyService
     with MockIdGenerator {
@@ -53,6 +54,7 @@ class SubmitFinalDeclarationControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockSubmitFinalDeclarationParser,
       service = mockSubmitFinalDeclarationService,
+      retrieveService = mockRetrieveCalculationService,
       cc = cc,
       nrsProxyService = mockNrsProxyService,
       auditService = mockAuditService,
@@ -78,8 +80,13 @@ class SubmitFinalDeclarationControllerSpec
 
   }
 
+
+  // TODO first copy to v4
+  //  then complete the code there with the new v4 Controller etc,
+  //  then apply the changes back to here in v3
+
   private val rawData     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
+  private val requestData = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   "submit final declaration" should {
     "return a successful response" when {
@@ -90,16 +97,41 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Right(requestData))
 
         MockNrsProxyService
-          .submitAsync(nino, "itsa-crystallisation", requestData.toNrsJson)
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson) // TODO update for calc details
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
+        // TODO also setup the MockRetrieveCalcService
+
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
       }
+
+      "the request is valid but the Details lookup for NRS logging fails" in new Test {
+         // TODO
+
+
+        // TODO also setup the MockRetrieveCalcService, but make it return an MtdError
+        private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(retrieveDetailsRequestData)
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, InternalError))))
+
+
+        // fallback to just logging the calculationId:
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+
+        runOkTestWithAudit(
+          expectedStatus = NO_CONTENT
+        )
+
+      }
+
     }
 
     "return the error as per spec" when {
@@ -117,7 +149,7 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Right(requestData))
 
         MockNrsProxyService
-          .submitAsync(nino, "itsa-crystallisation", requestData.toNrsJson)
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
