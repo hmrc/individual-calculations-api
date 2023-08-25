@@ -28,7 +28,7 @@ import play.api.mvc.Result
 import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
 import v4.models.request._
-import v4.models.response.retrieveCalculation.{CalculationFixture}
+import v4.models.response.retrieveCalculation.CalculationFixture
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -87,7 +87,7 @@ class SubmitFinalDeclarationControllerSpec
   private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
-  "submit final declaration" should {
+  "V4-submit final declaration" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
 
@@ -109,9 +109,16 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
+
+        Thread.sleep(100)
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
+
+        // fallback to just logging the calculationId:
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
@@ -124,13 +131,11 @@ class SubmitFinalDeclarationControllerSpec
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, InternalError))))
 
-        // fallback to just logging the calculationId:
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
-
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
+
+        Thread.sleep(100)
       }
     }
 
@@ -155,7 +160,13 @@ class SubmitFinalDeclarationControllerSpec
           .submitFinalDeclaration(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
 
+        MockRetrieveCalculationService
+          .retrieveCalculation(retrieveDetailsRequestData)
+          .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
+
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
+
+        Thread.sleep(100)
       }
     }
 
