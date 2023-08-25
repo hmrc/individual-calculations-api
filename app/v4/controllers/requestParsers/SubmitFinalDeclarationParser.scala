@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v3.controllers.requestParsers
+package v4.controllers.requestParsers
 
 import api.controllers.requestParsers.RequestParser
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import v3.controllers.requestParsers.validators.RetrieveCalculationValidator
-import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.controllers.requestParsers.validators.SubmitFinalDeclarationValidator
+import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
 import javax.inject.Inject
 
-class RetrieveCalculationParser @Inject() (val validator: RetrieveCalculationValidator)
-    extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequest] {
+class SubmitFinalDeclarationParser @Inject()(val validator: SubmitFinalDeclarationValidator)
+    extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest] {
 
-  override protected def requestFor(data: RetrieveCalculationRawData): RetrieveCalculationRequest = {
-    RetrieveCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
+  override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequest = {
+    SubmitFinalDeclarationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
   }
 
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package v4.connectors
 
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
-import v3.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.Future
 

@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package v4.models.request
+package v4.services
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.request.RawData
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.HeaderCarrier
+import v4 .connectors.NrsProxyConnector
 
-case class RetrieveCalculationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
+import javax.inject.{Inject, Singleton}
 
-case class RetrieveCalculationRequest(nino: Nino, taxYear: TaxYear, calculationId: CalculationId)
+@Singleton
+class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+
+  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
+    connector.submitAsync(nino, notableEvent, body)
+  }
+
+}

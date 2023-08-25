@@ -21,23 +21,26 @@ import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v4.models.request.RetrieveCalculationRequest
-import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
-import v4.services.RetrieveCalculationService
+import v4.models.request.SubmitFinalDeclarationRequest
+import v4.services.SubmitFinalDeclarationService
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockRetrieveCalculationService extends MockFactory {
+trait MockSubmitFinalDeclarationService extends MockFactory {
 
-  val mockRetrieveCalculationService: RetrieveCalculationService = mock[RetrieveCalculationService]
+  val mockSubmitFinalDeclarationService: SubmitFinalDeclarationService = mock[SubmitFinalDeclarationService]
 
-  object MockRetrieveCalculationService {
+  object MockSubmitFinalDeclarationService {
 
-    def retrieveCalculation(
-        request: RetrieveCalculationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]]] = {
-      (mockRetrieveCalculationService
-        .retrieveCalculation(_: RetrieveCalculationRequest)(_: RequestContext, _: ExecutionContext))
-        .expects(request, *, *)
+    def submitFinalDeclaration(requestData: SubmitFinalDeclarationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+      (
+        mockSubmitFinalDeclarationService
+          .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(
+            _: RequestContext,
+            _: ExecutionContext
+          )
+        )
+        .expects(requestData, *, *)
     }
 
   }

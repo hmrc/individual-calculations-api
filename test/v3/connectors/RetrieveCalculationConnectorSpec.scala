@@ -17,7 +17,7 @@
 package v3.connectors
 
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
@@ -83,7 +83,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFix
   trait Test { _: ConnectorTest =>
     def taxYear: TaxYear
 
-    val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+    val request: RetrieveCalculationRequest = RetrieveCalculationRequest(nino, taxYear, CalculationId(calculationId))
 
     val connector: RetrieveCalculationConnector = new RetrieveCalculationConnector(
       http = mockHttpClient,

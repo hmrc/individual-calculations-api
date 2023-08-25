@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.services
+package v4.services
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{CalculationIdFormatError, DownstreamErrorCode, DownstreamErrors, ErrorWrapper, InternalError, MtdError, NinoFormatError, NotFoundError, RuleFinalDeclarationInProgressError, RuleFinalDeclarationReceivedError, RuleFinalDeclarationTaxYearError, RuleIncomeSourcesChangedError, RuleIncomeSourcesInvalidError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleSubmissionFailedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v3.mocks.connectors.MockSubmitFinalDeclarationConnector
-import v3.models.request.SubmitFinalDeclarationRequest
+import v4.mocks.connectors.MockSubmitFinalDeclarationConnector
+import v4.models.request.SubmitFinalDeclarationRequest
 
 import scala.concurrent.Future
 

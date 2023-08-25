@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package v4.controllers
 
 import api.controllers._
 import api.models.errors.InternalError
@@ -23,10 +23,10 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
-import v3.controllers.requestParsers.SubmitFinalDeclarationParser
-import v3.models.request.{RetrieveCalculationRequest, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
-import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
-import v3.services._
+import v4.controllers.requestParsers.SubmitFinalDeclarationParser
+import v4.models.request.{RetrieveCalculationRequest, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
+import v4.services._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -107,4 +107,3 @@ class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuth
   }
 
 }
-
