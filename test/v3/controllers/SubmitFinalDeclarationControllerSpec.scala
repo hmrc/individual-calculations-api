@@ -23,7 +23,6 @@ import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
-import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
@@ -47,8 +46,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockAuditService
     with MockNrsProxyService
     with MockIdGenerator
-    with CalculationFixture
-    with MockAppConfig {
+    with CalculationFixture {
 
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
@@ -64,8 +62,7 @@ class SubmitFinalDeclarationControllerSpec
       cc = cc,
       nrsProxyService = mockNrsProxyService,
       auditService = mockAuditService,
-      idGenerator = mockIdGenerator,
-      appConfig = mockAppConfig
+      idGenerator = mockIdGenerator
     )
 
     protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
@@ -91,13 +88,10 @@ class SubmitFinalDeclarationControllerSpec
   private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsResponseData = minimalCalculationResponse
-  private val MILLISECOND100              = 100
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
-
-        MockAppConfig.mtdNrsMaxRetries.returns(3)
 
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
@@ -118,12 +112,10 @@ class SubmitFinalDeclarationControllerSpec
           expectedStatus = NO_CONTENT
         )
 
-        Thread.sleep(MILLISECOND100)
+        Thread.sleep(100)
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
-        MockAppConfig.mtdNrsMaxRetries.returns(3)
-
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
@@ -140,7 +132,7 @@ class SubmitFinalDeclarationControllerSpec
           expectedStatus = NO_CONTENT
         )
 
-        Thread.sleep(MILLISECOND100)
+        Thread.sleep(100)
       }
     }
 
@@ -154,8 +146,6 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the service returns an error" in new Test {
-        MockAppConfig.mtdNrsMaxRetries.returns(3)
-
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -173,7 +163,7 @@ class SubmitFinalDeclarationControllerSpec
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
 
-        Thread.sleep(MILLISECOND100)
+        Thread.sleep(100)
       }
     }
 

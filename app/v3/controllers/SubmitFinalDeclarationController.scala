@@ -19,7 +19,6 @@ package v3.controllers
 import api.controllers._
 import api.models.errors.InternalError
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
-import config.AppConfig
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -41,13 +40,15 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator,
-                                                  appConfig: AppConfig)(implicit ec: ExecutionContext)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
+
+  private val maxNrsRetries = 3
+  private val interval      = 100
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -73,7 +74,9 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       requestHandler.handleRequest(rawData)
     }
 
-  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Unit = {
+  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequest)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
     retrieveCalculationDetails(parsedRequest).map {
@@ -91,15 +94,12 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
 
-    val MAX_NRS_RETRIES = appConfig.mtdNrsMaxRetries
-    val interval        = 100
-
     val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))
       case Left(error) =>
-        if (retry > MAX_NRS_RETRIES) {
+        if (retry > maxNrsRetries) {
           logger.warn(s"Error fetching Calculation details for NRS logging: ${error.correlationId}")
           error.copy(error = InternalError, errors = None)
           Future.successful(Left(error))
