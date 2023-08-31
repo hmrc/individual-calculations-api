@@ -80,7 +80,7 @@ class SubmitFinalDeclarationControllerSpec
           params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
           requestBody = None,
           `X-CorrelationId` = correlationId,
-          versionNumber = "4.0",
+          versionNumber = "3.0",
           auditResponse = auditResponse
         )
       )
@@ -91,8 +91,9 @@ class SubmitFinalDeclarationControllerSpec
   private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
+  private val MILLISECOND100              = 100
 
-  "submit final declaration" should {
+  "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
 
@@ -115,7 +116,7 @@ class SubmitFinalDeclarationControllerSpec
           expectedStatus = NO_CONTENT
         )
 
-        Thread.sleep(100)
+        Thread.sleep(MILLISECOND100)
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -139,7 +140,7 @@ class SubmitFinalDeclarationControllerSpec
           expectedStatus = NO_CONTENT
         )
 
-        Thread.sleep(100)
+        Thread.sleep(MILLISECOND100)
       }
     }
 
@@ -170,7 +171,7 @@ class SubmitFinalDeclarationControllerSpec
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
 
-        Thread.sleep(100)
+        Thread.sleep(MILLISECOND100)
       }
     }
 

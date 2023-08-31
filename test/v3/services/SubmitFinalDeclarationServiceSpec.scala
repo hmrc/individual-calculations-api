@@ -17,7 +17,28 @@
 package v3.services
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{CalculationIdFormatError, DownstreamErrorCode, DownstreamErrors, ErrorWrapper, InternalError, MtdError, NinoFormatError, NotFoundError, RuleFinalDeclarationInProgressError, RuleFinalDeclarationReceivedError, RuleFinalDeclarationTaxYearError, RuleIncomeSourcesChangedError, RuleIncomeSourcesInvalidError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleSubmissionFailedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.errors.{
+  CalculationIdFormatError,
+  DownstreamErrorCode,
+  DownstreamErrors,
+  ErrorWrapper,
+  InternalError,
+  MtdError,
+  NinoFormatError,
+  NotFoundError,
+  RuleFinalDeclarationInProgressError,
+  RuleFinalDeclarationReceivedError,
+  RuleFinalDeclarationTaxYearError,
+  RuleIncomeSourcesChangedError,
+  RuleIncomeSourcesInvalidError,
+  RuleIncorrectGovTestScenarioError,
+  RuleNoIncomeSubmissionsExistError,
+  RuleRecentSubmissionsExistError,
+  RuleResidencyChangedError,
+  RuleSubmissionFailedError,
+  RuleTaxYearNotSupportedError,
+  TaxYearFormatError
+}
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import v3.mocks.connectors.MockSubmitFinalDeclarationConnector
@@ -36,14 +57,14 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
   }
 
   "SubmitFinalDeclarationService" when {
-    val nino: Nino            = Nino("AA123456A")
-    val taxYear: TaxYear      = TaxYear.fromMtd("2019-20")
-    val calculationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+    val nino: Nino                   = Nino("AA123456A")
+    val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
+    val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
 
     val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
       nino,
       taxYear,
-      CalculationId(calculationId)
+      calculationId
     )
 
     "SubmitFinalDeclaration" must {
@@ -71,7 +92,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
           result shouldBe Left(ErrorWrapper(correlationId, error))
         }
 
-      val errors = Seq(
+      val errors = List(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_TAX_YEAR", TaxYearFormatError),
         ("INVALID_CALCID", CalculationIdFormatError),
@@ -92,7 +113,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
-      val extraDesErrors = Seq(
+      val extraDesErrors = List(
         ("INVALID_IDTYPE", InternalError),
         ("INVALID_IDVALUE", NinoFormatError),
         ("INVALID_TAXYEAR", TaxYearFormatError)

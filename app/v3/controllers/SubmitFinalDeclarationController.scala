@@ -19,6 +19,7 @@ package v3.controllers
 import api.controllers._
 import api.models.errors.InternalError
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
+import config.AppConfig
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -32,16 +33,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuthService,
-                                                 val lookupService: MtdIdLookupService,
-                                                 parser: SubmitFinalDeclarationParser,
-                                                 service: SubmitFinalDeclarationService,
-                                                 retrieveService: RetrieveCalculationService,
-                                                 cc: ControllerComponents,
-                                                 nrsProxyService: NrsProxyService,
-                                                 auditService: AuditService,
-                                                 idGenerator: IdGenerator)(implicit ec: ExecutionContext)
-  extends AuthorisedController(cc)
+class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAuthService,
+                                                  val lookupService: MtdIdLookupService,
+                                                  parser: SubmitFinalDeclarationParser,
+                                                  service: SubmitFinalDeclarationService,
+                                                  retrieveService: RetrieveCalculationService,
+                                                  cc: ControllerComponents,
+                                                  nrsProxyService: NrsProxyService,
+                                                  auditService: AuditService,
+                                                  idGenerator: IdGenerator,
+                                                  appConfig: AppConfig)(implicit ec: ExecutionContext)
+    extends AuthorisedController(cc)
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -76,7 +78,6 @@ class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuth
 
     retrieveCalculationDetails(parsedRequest).map {
       case Left(_) =>
-        // details lookup failed, so as a fallback, just send the calculation ID
         nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
 
       case Right(responseWrapper) =>
@@ -85,26 +86,28 @@ class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuth
     }
   }
 
-  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest,
-                                         retry: Int = 0)(implicit ctx: RequestContext,
-                                                         ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest, retry: Int = 0)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
+
+    val MAX_NRS_RETRIES = appConfig.mtdNrsMaxRetries
+    val interval        = 100
 
     val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))
       case Left(error) =>
-        if (retry <= 3) {
+        if (retry > MAX_NRS_RETRIES) {
           logger.warn(s"Error fetching Calculation details for NRS logging: ${error.correlationId}")
           error.copy(error = InternalError, errors = None)
           Future.successful(Left(error))
         } else {
-          Thread.sleep(100)
+          Thread.sleep(interval * 2 ^ retry)
           retrieveCalculationDetails(parsedRequest, retry = retry + 1)
         }
     }
   }
 
 }
-

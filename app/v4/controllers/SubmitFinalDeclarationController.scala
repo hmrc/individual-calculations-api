@@ -92,7 +92,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     import parsedRequest._
 
     val MAX_NRS_RETRIES = appConfig.mtdNrsMaxRetries
-    print("Test - " + MAX_NRS_RETRIES)
+    val interval        = 100
+
     val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
@@ -103,7 +104,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
           error.copy(error = InternalError, errors = None)
           Future.successful(Left(error))
         } else {
-          Thread.sleep(100)
+          Thread.sleep(interval * 2 ^ retry)
           retrieveCalculationDetails(parsedRequest, retry = retry + 1)
         }
     }

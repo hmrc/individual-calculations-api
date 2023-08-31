@@ -25,14 +25,14 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
-  val nino: String          = "AA111111A"
-  val taxYear: TaxYear      = TaxYear.fromMtd("2020-21")
-  val calculationId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+  val nino: Nino                   = Nino("AA111111A")
+  val taxYear: TaxYear             = TaxYear.fromMtd("2020-21")
+  val calculationId: CalculationId = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
 
   val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
-    Nino(nino),
+    nino,
     taxYear,
-    CalculationId(calculationId)
+    calculationId
   )
 
   trait Test {

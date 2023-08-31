@@ -17,7 +17,19 @@
 package v3.services
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{CalculationIdFormatError, DownstreamErrorCode, DownstreamErrors, ErrorWrapper, InternalError, MtdError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.errors.{
+  CalculationIdFormatError,
+  DownstreamErrorCode,
+  DownstreamErrors,
+  ErrorWrapper,
+  InternalError,
+  MtdError,
+  NinoFormatError,
+  NotFoundError,
+  RuleIncorrectGovTestScenarioError,
+  RuleTaxYearNotSupportedError,
+  TaxYearFormatError
+}
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
@@ -29,11 +41,11 @@ import scala.concurrent.Future
 
 class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture {
 
-  private val nino          = Nino("AA123456A")
-  private val taxYear       = "2019-20"
-  private val calculationId = "someCalcId"
+  private val nino: Nino                   = Nino("AA123456A")
+  private val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
+  private val calculationId: CalculationId = CalculationId("someCalcId")
 
-  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, taxYear, calculationId)
   val response: RetrieveCalculationResponse = minimalCalculationResponse
 
   trait Test extends MockRetrieveCalculationConnector {
