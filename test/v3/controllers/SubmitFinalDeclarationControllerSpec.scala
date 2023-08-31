@@ -111,8 +111,6 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
-
-        Thread.sleep(100)
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -131,8 +129,6 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
-
-        Thread.sleep(100)
       }
     }
 
@@ -162,8 +158,6 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
-
-        Thread.sleep(100)
       }
     }
 

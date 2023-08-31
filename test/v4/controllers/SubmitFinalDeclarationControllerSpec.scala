@@ -91,12 +91,12 @@ class SubmitFinalDeclarationControllerSpec
     "return a successful response" when {
       "the request received is valid" in new Test {
 
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
+
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -109,8 +109,6 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
-
-        Thread.sleep(100)
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -129,8 +127,6 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
-
-        Thread.sleep(100)
       }
     }
 
@@ -145,12 +141,12 @@ class SubmitFinalDeclarationControllerSpec
 
       "the service returns an error" in new Test {
 
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -161,8 +157,6 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
-
-        Thread.sleep(100)
       }
     }
 
