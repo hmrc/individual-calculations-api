@@ -125,7 +125,7 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
 
   // NRS Config
   val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
-  val mtdNrsMaxRetries: Int      = config.getInt("mtd-api-nrs-proxy.max_retries")
+  val mtdNrsMaxRetries: Int      = config.getInt("maxNrsRetries")
 }
 
 trait FixedConfig {

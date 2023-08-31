@@ -68,8 +68,6 @@ class SubmitFinalDeclarationControllerSpec
       appConfig = mockAppConfig
     )
 
-    MockAppConfig.mtdNrsMaxRetries.returns(3)
-
     protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
 
     override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
@@ -99,6 +97,8 @@ class SubmitFinalDeclarationControllerSpec
     "return a successful response" when {
       "the request received is valid" in new Test {
 
+        MockAppConfig.mtdNrsMaxRetries.returns(3)
+
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
@@ -122,9 +122,7 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+        MockAppConfig.mtdNrsMaxRetries.returns(3)
 
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
@@ -156,6 +154,8 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the service returns an error" in new Test {
+        MockAppConfig.mtdNrsMaxRetries.returns(3)
+
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
