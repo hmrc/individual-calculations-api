@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v3.mocks.services
+package v4.mocks.services
 
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.services.NrsProxyService
+import v4.services.NrsProxyService
 
 trait MockNrsProxyService extends MockFactory {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v3.controllers
+package v4.controllers
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
@@ -25,12 +25,10 @@ import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxY
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
-import v3.mocks.services._
-import v3.models.request._
-import v3.models.request.RetrieveCalculationRequest
-import v3.models.request.SubmitFinalDeclarationRawData
-import v3.models.response.retrieveCalculation.CalculationFixture
+import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
+import v4.mocks.services._
+import v4.models.request._
+import v4.models.response.retrieveCalculation.CalculationFixture
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -87,18 +85,18 @@ class SubmitFinalDeclarationControllerSpec
   private val rawData                     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
   private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsResponseData = minimalCalculationResponse
+  private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
 
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
+
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -142,12 +140,13 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the service returns an error" in new Test {
-        MockSubmitFinalDeclarationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
 
         MockNrsProxyService
           .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+
+        MockSubmitFinalDeclarationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)

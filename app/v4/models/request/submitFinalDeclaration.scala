@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package v3.mocks.services
+package v4.models.request
 
-import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.HeaderCarrier
-import v3.services.NrsProxyService
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.request.RawData
+import play.api.libs.json.{JsValue, Json}
 
-trait MockNrsProxyService extends MockFactory {
+case class SubmitFinalDeclarationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 
-  val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
-
-  object MockNrsProxyService {
-
-    def submit(nino: String, notableEvent: String, body: JsValue): Unit = {
-      (mockNrsProxyService
-        .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, *, *, *)
-    }
-
-  }
-
+case class SubmitFinalDeclarationRequest(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) {
+  def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 }

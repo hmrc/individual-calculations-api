@@ -16,9 +16,9 @@
 
 package v3.models.request
 
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.request.RawData
 
 case class RetrieveCalculationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 
-case class RetrieveCalculationRequest(nino: Nino, taxYear: TaxYear, calculationId: String)
+case class RetrieveCalculationRequest(nino: Nino, taxYear: TaxYear, calculationId: CalculationId)

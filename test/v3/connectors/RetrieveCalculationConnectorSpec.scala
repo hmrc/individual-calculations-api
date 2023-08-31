@@ -17,7 +17,7 @@
 package v3.connectors
 
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
@@ -28,8 +28,8 @@ import scala.concurrent.Future
 
 class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFixture {
 
-  val nino: Nino            = Nino("AA123456A")
-  val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  val nino: Nino                   = Nino("AA123456A")
+  val calculationId: CalculationId = CalculationId("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
   private val preTysTaxYear = TaxYear.fromMtd("2018-19")
   private val tysTaxYear    = TaxYear.fromMtd("2023-24")

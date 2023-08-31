@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.services
+package v4.services
 
 import api.controllers.RequestContext
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
-import v3.connectors.SubmitFinalDeclarationConnector
-import v3.models.request.SubmitFinalDeclarationRequest
+import v4.connectors.SubmitFinalDeclarationConnector
+import v4.models.request.SubmitFinalDeclarationRequest
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

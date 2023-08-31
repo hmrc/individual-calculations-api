@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v3.connectors
+package v4.connectors
 
 import api.connectors.DownstreamUri.IfsUri
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.models.domain.EmptyJsonBody
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v3.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequest
 import api.connectors.httpparsers.StandardDownstreamHttpParser._
 
 import javax.inject.{Inject, Singleton}

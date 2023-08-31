@@ -36,7 +36,6 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
     connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
-
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {

@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package v3.mocks.services
+package v4.services
 
-import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.services.NrsProxyService
+import v4 .connectors.NrsProxyConnector
 
-trait MockNrsProxyService extends MockFactory {
+import javax.inject.{Inject, Singleton}
 
-  val mockNrsProxyService: NrsProxyService = mock[NrsProxyService]
+@Singleton
+class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
-  object MockNrsProxyService {
-
-    def submit(nino: String, notableEvent: String, body: JsValue): Unit = {
-      (mockNrsProxyService
-        .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, *, *, *)
-    }
-
+  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
+    connector.submitAsync(nino, notableEvent, body)
   }
 
 }
