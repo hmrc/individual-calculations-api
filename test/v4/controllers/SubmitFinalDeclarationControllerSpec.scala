@@ -29,9 +29,12 @@ import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
 import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
+import org.scalatest.concurrent.{Eventually}
 
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.language.postfixOps
 
 class SubmitFinalDeclarationControllerSpec
     extends ControllerBaseSpec
@@ -44,7 +47,8 @@ class SubmitFinalDeclarationControllerSpec
     with MockAuditService
     with MockNrsProxyService
     with MockIdGenerator
-    with CalculationFixture {
+    with CalculationFixture
+    with Eventually {
 
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
@@ -87,12 +91,17 @@ class SubmitFinalDeclarationControllerSpec
   private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
+  implicit override val patienceConfig: PatienceConfig =
+    PatienceConfig(timeout = scaled(15 seconds), interval = scaled(100 milliseconds))
+
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
 
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
+        eventually {
+          MockNrsProxyService
+            .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
+        }
 
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
@@ -140,9 +149,10 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the service returns an error" in new Test {
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+        eventually {
+          MockNrsProxyService
+            .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
+        }
 
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
