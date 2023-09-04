@@ -29,12 +29,9 @@ import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
 import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
-import org.scalatest.concurrent.{Eventually}
 
-import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.language.postfixOps
 
 class SubmitFinalDeclarationControllerSpec
     extends ControllerBaseSpec
@@ -47,8 +44,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockAuditService
     with MockNrsProxyService
     with MockIdGenerator
-    with CalculationFixture
-    with Eventually {
+    with CalculationFixture {
 
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
@@ -92,9 +88,6 @@ class SubmitFinalDeclarationControllerSpec
 
   private val retrieveDetailsResponseData =
     minimalCalculationR8bResponse.copy(metadata = minimalCalculationResponse.metadata.copy(calculationId = calculationId))
-
-  implicit override val patienceConfig: PatienceConfig =
-    PatienceConfig(timeout = scaled(1 second), interval = scaled(100 milliseconds))
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
