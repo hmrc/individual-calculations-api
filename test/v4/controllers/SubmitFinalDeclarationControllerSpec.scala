@@ -86,13 +86,15 @@ class SubmitFinalDeclarationControllerSpec
 
   }
 
-  private val rawData                     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsResponseData = minimalCalculationR8bResponse
+  private val rawData                    = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
+  private val requestData                = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+
+  private val retrieveDetailsResponseData =
+    minimalCalculationR8bResponse.copy(metadata = minimalCalculationResponse.metadata.copy(calculationId = calculationId))
 
   implicit override val patienceConfig: PatienceConfig =
-    PatienceConfig(timeout = scaled(1 seconds), interval = scaled(100 milliseconds))
+    PatienceConfig(timeout = scaled(1 second), interval = scaled(100 milliseconds))
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
@@ -110,14 +112,16 @@ class SubmitFinalDeclarationControllerSpec
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
-        eventually {
-          MockNrsProxyService
-            .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
-        }
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
 
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
+
+        withClue("This allows the async Retrieve Details to complete before the mock expectations are checked.") {
+          Thread.sleep(500)
+        }
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -136,6 +140,10 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT
         )
+
+        withClue("This allows the async Retrieve Details to complete before the mock expectations are checked.") {
+          Thread.sleep(500)
+        }
       }
     }
 
@@ -149,10 +157,8 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the service returns an error" in new Test {
-        eventually {
-          MockNrsProxyService
-            .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
-        }
+        MockNrsProxyService
+          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
 
         MockSubmitFinalDeclarationParser
           .parseRequest(rawData)
@@ -167,6 +173,10 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
+
+        withClue("This allows the async Retrieve Details to complete before the mock expectations are checked.") {
+          Thread.sleep(500)
+        }
       }
     }
 
