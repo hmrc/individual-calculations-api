@@ -92,16 +92,11 @@ class SubmitFinalDeclarationControllerSpec
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
   implicit override val patienceConfig: PatienceConfig =
-    PatienceConfig(timeout = scaled(15 seconds), interval = scaled(100 milliseconds))
+    PatienceConfig(timeout = scaled(1 seconds), interval = scaled(100 milliseconds))
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
-
-        eventually {
-          MockNrsProxyService
-            .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
-        }
 
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
@@ -114,6 +109,11 @@ class SubmitFinalDeclarationControllerSpec
         MockRetrieveCalculationService
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
+
+        eventually {
+          MockNrsProxyService
+            .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
+        }
 
         runOkTestWithAudit(
           expectedStatus = NO_CONTENT

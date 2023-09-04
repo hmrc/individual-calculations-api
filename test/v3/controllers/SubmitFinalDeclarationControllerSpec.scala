@@ -94,7 +94,7 @@ class SubmitFinalDeclarationControllerSpec
   private val retrieveDetailsResponseData = minimalCalculationResponse
 
   implicit override val patienceConfig: PatienceConfig =
-    PatienceConfig(timeout = scaled(15 seconds), interval = scaled(100 milliseconds))
+    PatienceConfig(timeout = scaled(1 seconds), interval = scaled(100 milliseconds))
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
