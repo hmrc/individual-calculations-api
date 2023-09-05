@@ -84,12 +84,10 @@ class SubmitFinalDeclarationControllerSpec
 
   }
 
-  private val rawData                    = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData                = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-
-  private val retrieveDetailsResponseData =
-    minimalCalculationResponse.copy(metadata = minimalCalculationResponse.metadata.copy(calculationId = calculationId))
+  private val rawData                     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
+  private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsResponseData = minimalCalculationResponse
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
