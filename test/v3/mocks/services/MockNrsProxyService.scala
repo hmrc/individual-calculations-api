@@ -16,6 +16,7 @@
 
 package v3.mocks.services
 
+import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
@@ -27,10 +28,11 @@ trait MockNrsProxyService extends MockFactory {
 
   object MockNrsProxyService {
 
-    def submit(nino: String, notableEvent: String, body: JsValue): Unit = {
+    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[_] = {
       (mockNrsProxyService
         .submit(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, *, *, *)
+        .expects(nino, notableEvent, *, *)
+        .returns(())
     }
 
   }
