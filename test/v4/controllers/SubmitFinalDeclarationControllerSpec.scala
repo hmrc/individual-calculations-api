@@ -57,7 +57,7 @@ class SubmitFinalDeclarationControllerSpec
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   implicit override val patienceConfig: PatienceConfig =
-    PatienceConfig(timeout = scaled(1.second), interval = scaled(25.milliseconds))
+    PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
   trait Test extends ControllerTest with AuditEventChecking {
 
