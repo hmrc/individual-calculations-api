@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package v4.mocks.services
+package v4.services
 
 import play.api.libs.json.JsValue
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v4.mocks.connectors.MockNrsProxyConnector
-import v4.services.NrsProxyService
 
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -35,9 +34,12 @@ trait StubNrsProxyService { _: MockNrsProxyConnector with UnitSpec =>
 
   }
 
-  def verifyNrsProxyService(expectations: NrsProxyCall*): Unit = called should contain theSameElementsAs expectations
-  def verifyNrsProxyServiceNotCalled(): Unit                   = called shouldBe empty
-  def resetNrsProxyService(): Unit                             = called.clear()
+  def verifyNrsProxyService(expectations: NrsProxyCall*): Unit = {
+    if (called.isEmpty) fail(s"No calls were made to this service, expected ${expectations.length}")
+    called should contain theSameElementsAs expectations
+  }
+
+  def resetNrsProxyService(): Unit = called.clear()
 
   protected case class NrsProxyCall(nino: String, notableEvent: String, body: JsValue)
 }

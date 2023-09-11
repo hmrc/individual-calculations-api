@@ -32,6 +32,7 @@ import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
 import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
+import v4.services.StubNrsProxyService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -103,7 +104,6 @@ class SubmitFinalDeclarationControllerSpec
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
-
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
@@ -135,11 +135,18 @@ class SubmitFinalDeclarationControllerSpec
         MockRetrieveCalculationService
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, InternalError))))
+          .anyNumberOfTimes()
 
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
 
+        private val minimalNrsData = Json.parse(s"""
+            |{
+            |  "calculationId": "$calculationId"
+            |}
+            |""".stripMargin)
+
         eventually {
-          verifyNrsProxyServiceNotCalled()
+          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", minimalNrsData))
         }
       }
     }
