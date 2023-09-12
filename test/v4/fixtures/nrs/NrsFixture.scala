@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package v4.services
+package v4.fixtures.nrs
 
-import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.HeaderCarrier
-import v4.connectors.NrsProxyConnector
+import play.api.libs.json.{JsValue, Json}
 
-import javax.inject.{Inject, Singleton}
+trait NrsFixture {
+  val nino: String = "AA111111A"
+  val event        = "some-event"
 
-@Singleton
-class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
-
-  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
-    connector.submitAsync(nino, notableEvent, body)
-  }
-
+  val body: JsValue = Json.parse("""{"a": "A", "b": 1 }""")
 }

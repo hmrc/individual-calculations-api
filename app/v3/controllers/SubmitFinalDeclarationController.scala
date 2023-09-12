@@ -47,8 +47,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
 
-  private val maxNrsRetries = 3
-  private val interval      = 100
+  private val maxNrsAttempts = 3
+  private val interval       = 100
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -79,17 +79,16 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
-    retrieveCalculationDetails(parsedRequest).map {
+    retrieveCalculationDetails(parsedRequest) map {
       case Left(_) =>
         nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
 
       case Right(responseWrapper) =>
-        val details: RetrieveCalculationResponse = responseWrapper.responseData
-        nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(details))
+        nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(responseWrapper.responseData))
     }
   }
 
-  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest, retry: Int = 0)(implicit
+  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest, attempt: Int = 1)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
@@ -98,14 +97,14 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))
+
       case Left(error) =>
-        if (retry > maxNrsRetries) {
-          logger.warn(s"Error fetching Calculation details for NRS logging: ${error.correlationId}")
-          error.copy(error = InternalError, errors = None)
-          Future.successful(Left(error))
+        if (attempt <= maxNrsAttempts) {
+          Thread.sleep(interval)
+          retrieveCalculationDetails(parsedRequest, attempt + 1)
         } else {
-          Thread.sleep(interval * 2 ^ retry)
-          retrieveCalculationDetails(parsedRequest, retry = retry + 1)
+          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
+          Future.successful(Left(error.copy(error = InternalError, errors = None)))
         }
     }
   }
