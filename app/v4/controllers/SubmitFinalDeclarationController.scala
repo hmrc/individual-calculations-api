@@ -99,7 +99,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
         Future.successful(Right(result))
 
       case Left(error) =>
-        if (attempt < maxNrsAttempts) {
+        if (attempt <= maxNrsAttempts) {
           Thread.sleep(interval)
           retrieveCalculationDetails(parsedRequest, attempt + 1)
         } else {
