@@ -139,14 +139,14 @@ class SubmitFinalDeclarationControllerSpec
 
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
 
-        private val minimalNrsData = Json.parse(s"""
+        private val fallbackNrsPayload = Json.parse(s"""
             |{
             |  "calculationId": "$calculationId"
             |}
             |""".stripMargin)
 
         eventually {
-          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", minimalNrsData))
+          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", fallbackNrsPayload))
         }
       }
     }

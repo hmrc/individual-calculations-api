@@ -103,7 +103,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
           Thread.sleep(interval)
           retrieveCalculationDetails(parsedRequest, attempt + 1)
         } else {
-          logger.warn(s"Error fetching Calculation details for NRS logging: ${error.correlationId}")
+          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
           Future.successful(Left(error.copy(error = InternalError, errors = None)))
         }
     }

@@ -48,7 +48,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
 
   private val maxNrsAttempts = 3
-  private val interval      = 100
+  private val interval       = 100
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -103,7 +103,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
           Thread.sleep(interval)
           retrieveCalculationDetails(parsedRequest, attempt + 1)
         } else {
-          logger.warn(s"Error fetching Calculation details for NRS logging: ${error.correlationId}")
+          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
           Future.successful(Left(error.copy(error = InternalError, errors = None)))
         }
     }
