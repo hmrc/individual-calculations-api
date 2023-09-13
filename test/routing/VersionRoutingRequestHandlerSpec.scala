@@ -42,6 +42,8 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   object DefaultHandler extends Handler
   object V3Handler      extends Handler
   object V4Handler      extends Handler
+  object V5Handler      extends Handler
+
 
   private val defaultRouter = Router.from { case GET(p"") =>
     DefaultHandler
@@ -55,9 +57,13 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     V4Handler
   }
 
+  private val v5Router = Router.from { case GET(p"/v5") =>
+    V5Handler
+  }
+
   private val routingMap: VersionRoutingMap = new VersionRoutingMap {
     override val defaultRouter: Router     = test.defaultRouter
-    override val map: Map[Version, Router] = Map(Version3 -> v3Router, Version4 -> v4Router)
+    override val map: Map[Version, Router] = Map(Version3 -> v3Router, Version4 -> v4Router, Version5 -> v5Router)
   }
 
   class Test(implicit acceptHeader: Option[String]) {
@@ -96,6 +102,11 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   "Routing requests with v4" should {
     implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.4.0+json")
     handleWithVersionRoutes("/v4", V4Handler, Version4)
+  }
+
+  "Routing requests with v5" should {
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
+    handleWithVersionRoutes("/v5", V5Handler, Version5)
   }
 
   private def handleWithDefaultRoutes()(implicit acceptHeader: Option[String]): Unit = {
@@ -150,7 +161,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   }
 
   "Routing requests with unsupported version" should {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.6.0+json")
 
     "return 404" in new Test {
       private val request = buildRequest("/v3")
@@ -165,7 +176,7 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
   }
 
   "Routing requests for supported version but not enabled" when {
-    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.5.0+json")
+    implicit val acceptHeader: Some[String] = Some("application/vnd.hmrc.6.0+json")
 
     "the version has a route for the resource" must {
       "return 404 Not Found" in new Test {
