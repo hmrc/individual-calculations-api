@@ -22,10 +22,10 @@ import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import support.V3IntegrationBaseSpec
+import support.IntegrationBaseSpec
 import stubs._
 
-class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
+class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
