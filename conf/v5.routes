@@ -1,5 +1,7 @@
+#V5 endpoints
+GET       /:nino/self-assessment/:taxYear/:calculationId                          v5.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
+
 #V4 endpoints
-GET       /:nino/self-assessment/:taxYear/:calculationId                          v4.controllers.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 POST      /:nino/self-assessment/:taxYear/:calculationId/final-declaration        v4.controllers.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String)
 
 #V3 endpoints
