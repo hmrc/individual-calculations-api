@@ -44,7 +44,7 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
   val updatedModel: EmploymentAndPensionsIncome                        = model.copy(employmentAndPensionsIncomeDetail = None)
 
   "withoutOffPayrollWorker" when {
-    "employmentAndPensionIncome.isDefined returns true" should {
+    "employmentAndPensionIncome is defined, returns true" should {
       "employmentAndPensionDetail should be Some(_)" in {
         val employmentAndPensionsIncome: EmploymentAndPensionsIncome =
           model.copy(employmentAndPensionsIncomeDetail = Some(Seq(detailWithIncomeSource)))
@@ -52,10 +52,18 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
         result.employmentAndPensionsIncomeDetail shouldBe Some(Seq(updatedDetailWithIncomeSource))
       }
     }
-    "employmentAndPensionIncome.isDefined returns false" should {
+    "employmentAndPensionIncome is defined, returns false" should {
       "employmentAndPensionDetail should be None" in {
         val employmentAndPensionsIncome: EmploymentAndPensionsIncome = model
         val result                                                   = employmentAndPensionsIncome.withoutOffPayrollWorker
+        result.employmentAndPensionsIncomeDetail shouldBe None
+      }
+    }
+
+    "employmentAndPensionIncome is not defined, returns false" should {
+      "employmentAndPensionDetail should be None" in {
+        val employmentAndPensionsIncome: EmploymentAndPensionsIncome = updatedModel
+        val result = employmentAndPensionsIncome.withoutOffPayrollWorker
         result.employmentAndPensionsIncomeDetail shouldBe None
       }
     }

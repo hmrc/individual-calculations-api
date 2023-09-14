@@ -59,6 +59,14 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
         result.employmentAndPensionsIncomeDetail shouldBe None
       }
     }
+
+    "employmentAndPensionIncome is not defined, returns false" should {
+      "employmentAndPensionDetail should be None" in {
+        val employmentAndPensionsIncome: EmploymentAndPensionsIncome = updatedModel
+        val result = employmentAndPensionsIncome.withoutOffPayrollWorker
+        result.employmentAndPensionsIncomeDetail shouldBe None
+      }
+    }
   }
 
 }
