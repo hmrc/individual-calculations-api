@@ -200,7 +200,7 @@ trait CalculationFixture {
   val calculationWithAdditionalFields: Calculation = Calculation(
     reliefs = None,
     allowancesAndDeductions = None,
-    taxDeductedAtSource = Some(taxDeductedAtSource),
+    taxDeductedAtSource = None,
     giftAid = None,
     royaltyPayments = None,
     notionalTax = None,
@@ -221,6 +221,38 @@ trait CalculationFixture {
     chargeableEventGainsIncome = None,
     savingsAndGainsIncome = None,
     otherIncome = Some(otherIncome),
+    dividendsIncome = None,
+    incomeSummaryTotals = None,
+    taxCalculation = None,
+    previousCalculation = None,
+    endOfYearEstimate = None,
+    lossesAndClaims = None
+  )
+
+  val calculationWithCl290Enabled: Calculation = Calculation(
+    reliefs = None,
+    allowancesAndDeductions = None,
+    taxDeductedAtSource = Some(taxDeductedAtSource),
+    giftAid = None,
+    royaltyPayments = None,
+    notionalTax = None,
+    marriageAllowanceTransferredIn = None,
+    pensionContributionReliefs = None,
+    pensionSavingsTaxCharges = None,
+    studentLoans = None,
+    codedOutUnderpayments = None,
+    foreignPropertyIncome = None,
+    businessProfitAndLoss = None,
+    employmentAndPensionsIncome = None,
+    employmentExpenses = None,
+    seafarersDeductions = None,
+    foreignTaxForFtcrNotClaimed = None,
+    stateBenefitsIncome = None,
+    shareSchemesIncome = None,
+    foreignIncome = None,
+    chargeableEventGainsIncome = None,
+    savingsAndGainsIncome = None,
+    otherIncome = None,
     dividendsIncome = None,
     incomeSummaryTotals = None,
     taxCalculation = None,
@@ -299,6 +331,13 @@ trait CalculationFixture {
     metadata = metadata,
     inputs = inputsWithAdditionalFields,
     calculation = Some(calculationWithAdditionalFields),
+    messages = None
+  )
+
+  val minimalCalculationCl290EnabledResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = metadata,
+    inputs = inputs,
+    calculation = Some(calculationWithCl290Enabled),
     messages = None
   )
 
@@ -511,13 +550,44 @@ trait CalculationFixture {
               }
             ]
           }
-        },
-        "taxDeductedAtSource": {
-          "taxTakenOffTradingIncome": 2000.00
         }
       }
     }
     """
+    )
+    .as[JsObject]
+
+  val minimumResponseCl290EnabledJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |   "metadata":{
+        |      "calculationId":"",
+        |      "taxYear":"2017-18",
+        |      "requestedBy":"",
+        |      "calculationReason":"",
+        |      "calculationType":"inYear",
+        |      "intentToSubmitFinalDeclaration":false,
+        |      "finalDeclaration":false,
+        |      "periodFrom":"",
+        |      "periodTo":""
+        |   },
+        |   "inputs":{
+        |      "personalInformation":{
+        |         "identifier":"",
+        |         "taxRegime":"UK"
+        |      },
+        |      "incomeSources":{
+        |
+        |      }
+        |   },
+        |   "calculation":{
+        |      "taxDeductedAtSource":{
+        |         "taxTakenOffTradingIncome":2000.00
+        |      }
+        |   }
+        |}
+    """.stripMargin
     )
     .as[JsObject]
 
