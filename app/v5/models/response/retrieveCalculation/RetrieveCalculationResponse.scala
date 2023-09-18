@@ -69,7 +69,7 @@ case class RetrieveCalculationResponse(
   }
 
   def withoutAdditionalFieldsUpdates: RetrieveCalculationResponse =
-    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutTaxTakenOffTradingIncome.withoutItsaStatus
+    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
 
 }
 
