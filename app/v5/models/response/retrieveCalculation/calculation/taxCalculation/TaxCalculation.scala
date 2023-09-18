@@ -25,7 +25,7 @@ case class TaxCalculation(
     saUnderpaymentsCodedOut: Option[BigDecimal],
     totalIncomeTaxNicsCharged: Option[BigDecimal],
     totalStudentLoansRepaymentAmount: Option[BigDecimal],
-    totalAnnuityPaymentsTaxCharged: Option[BigInt],
+    totalAnnuityPaymentsTaxCharged: Option[BigDecimal],
     totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
     totalTaxDeducted: Option[BigDecimal],
     totalIncomeTaxAndNicsDue: Option[BigDecimal],
