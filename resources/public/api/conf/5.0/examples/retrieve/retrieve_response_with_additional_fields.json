@@ -918,7 +918,7 @@
       },
       "totalTaxDeductedBeforeCodingOut": 5000.99,
       "saUnderpaymentsCodedOut": 5000.99,
-      "totalAnnuityPaymentsTaxCharged": 12500,
+      "totalAnnuityPaymentsTaxCharged": 12500.99,
       "totalRoyaltyPaymentsTaxCharged": 5000.99,
       "totalIncomeTaxNicsCharged": -99999999999.99,
       "totalStudentLoansRepaymentAmount": 5000.99,
