@@ -17,7 +17,6 @@
 package v5.services
 
 import api.controllers.RequestContext
-import api.models
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
@@ -43,18 +42,18 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
     val errors: Map[String, MtdError] = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
-      "INVALID_CORRELATIONID"     -> models.errors.InternalError,
-      "INVALID_CONSUMERID"        -> models.errors.InternalError,
+      "INVALID_CORRELATIONID"     -> InternalError,
+      "INVALID_CONSUMERID"        -> InternalError,
       "NO_DATA_FOUND"             -> NotFoundError,
-      "SERVER_ERROR"              -> models.errors.InternalError,
-      "SERVICE_UNAVAILABLE"       -> models.errors.InternalError,
+      "SERVER_ERROR"              -> InternalError,
+      "SERVICE_UNAVAILABLE"       -> InternalError,
       "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
     )
 
     val extraTysErrors: Map[String, MtdError] = Map(
       "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> models.errors.InternalError,
-      "INVALID_CONSUMER_ID"    -> models.errors.InternalError,
+      "INVALID_CORRELATION_ID" -> InternalError,
+      "INVALID_CONSUMER_ID"    -> InternalError,
       "NOT_FOUND"              -> NotFoundError,
       "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
     )
