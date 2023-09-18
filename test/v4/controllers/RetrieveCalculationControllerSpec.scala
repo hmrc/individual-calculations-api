@@ -20,7 +20,7 @@ import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
@@ -53,10 +53,12 @@ class RetrieveCalculationControllerSpec
   private val taxYear                                 = "2017-18"
   private val responseWithR8b                         = minimalCalculationR8bResponse
   private val responseWithAdditionalFields            = minimalCalculationAdditionalFieldsResponse
+  private val responseWithCl290Enabled                = minimalCalculationCl290EnabledResponse
   private val mtdResponseWithR8BJson                  = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
   private val mtdResponseWithAdditionalFieldsJson     = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithCl290EnabledJson         = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId)
+  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   trait Test extends ControllerTest {
 
@@ -64,7 +66,7 @@ class RetrieveCalculationControllerSpec
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveCalculationParser,
-      service = mockService,
+      service = mockRetrieveCalculationService,
       appConfig = mockAppConfig,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
@@ -87,7 +89,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false))
+          .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -107,7 +109,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true))
+          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true, "cl290.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -119,7 +121,27 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithAdditionalFieldsJson))
       }
 
-      "happy path with R8B and additional fields feature switches disabled" in new Test {
+      "happy path with cl290 feature switch enabled" in new Test {
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
+
+        MockAppConfig.featureSwitches
+          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> true))
+          .anyNumberOfTimes()
+
+        MockHateoasFactory
+          .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
+          .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
+
+        runOkTest(OK, Some(mtdResponseWithCl290EnabledJson))
+      }
+
+      "happy path with R8B, additional fields, and cl290 feature switches disabled" in new Test {
         val updatedRawData: RetrieveCalculationRawData   = rawData
         val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
         val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
@@ -132,7 +154,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false))
+          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory

@@ -17,7 +17,7 @@
 package v3.controllers.requestParsers
 
 import api.controllers.requestParsers.RequestParser
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import v3.controllers.requestParsers.validators.SubmitFinalDeclarationValidator
 import v3.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
 
@@ -27,7 +27,7 @@ class SubmitFinalDeclarationParser @Inject() (val validator: SubmitFinalDeclarat
     extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest] {
 
   override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequest = {
-    SubmitFinalDeclarationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.calculationId)
+    SubmitFinalDeclarationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
   }
 
 }

@@ -17,7 +17,7 @@
 package v3.controllers.requestParsers
 
 import api.controllers.requestParsers.RequestParser
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import v3.controllers.requestParsers.validators.RetrieveCalculationValidator
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 
@@ -27,7 +27,7 @@ class RetrieveCalculationParser @Inject() (val validator: RetrieveCalculationVal
     extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequest] {
 
   override protected def requestFor(data: RetrieveCalculationRawData): RetrieveCalculationRequest = {
-    RetrieveCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), data.calculationId)
+    RetrieveCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
   }
 
 }

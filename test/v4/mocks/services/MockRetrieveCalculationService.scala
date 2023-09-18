@@ -29,13 +29,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockRetrieveCalculationService extends MockFactory {
 
-  val mockService: RetrieveCalculationService = mock[RetrieveCalculationService]
+  val mockRetrieveCalculationService: RetrieveCalculationService = mock[RetrieveCalculationService]
 
   object MockRetrieveCalculationService {
 
     def retrieveCalculation(
         request: RetrieveCalculationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]]] = {
-      (mockService
+      (mockRetrieveCalculationService
         .retrieveCalculation(_: RetrieveCalculationRequest)(_: RequestContext, _: ExecutionContext))
         .expects(request, *, *)
     }

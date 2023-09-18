@@ -16,10 +16,20 @@
 
 package utils
 
-import api.models.errors.{BadRequestError, ClientNotAuthorisedError, InternalError, InvalidBodyTypeError, InvalidHttpMethodError, NotFoundError}
+import api.models.errors.{
+  BadRequestError,
+  ClientNotAuthorisedError,
+  InternalError,
+  InvalidBodyTypeError,
+  InvalidHttpMethodError,
+  MtdError,
+  NotFoundError
+}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.Status
+import play.api.http.Status.BAD_REQUEST
+import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsEmpty, RequestHeader}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -122,6 +132,15 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
         status(result) shouldBe METHOD_NOT_ALLOWED
 
         contentAsJson(result) shouldBe InvalidHttpMethodError.asJson
+      }
+    }
+
+    "return 400 with error body" when {
+      "any other error" in new Test() {
+        private val result = handler.onClientError(requestHeader, IM_A_TEAPOT, "test")
+        status(result) shouldBe BAD_REQUEST
+
+        contentAsJson(result) shouldBe Json.toJson(MtdError("INVALID_REQUEST", "test", BAD_REQUEST))
       }
     }
   }

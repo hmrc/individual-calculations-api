@@ -22,11 +22,11 @@ import play.api.http.Status
 import play.api.http.Status._
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.V3IntegrationBaseSpec
+import support.IntegrationBaseSpec
 import v3.models.response.retrieveCalculation.CalculationFixture
 import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 
-class AuthISpec extends V3IntegrationBaseSpec with CalculationFixture {
+class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
     val nino: String  = "AA123456A"

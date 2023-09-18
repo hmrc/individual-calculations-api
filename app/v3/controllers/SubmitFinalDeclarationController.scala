@@ -17,29 +17,38 @@
 package v3.controllers
 
 import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import api.models.errors.InternalError
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.IdGenerator
+import uk.gov.hmrc.http.HeaderCarrier
+import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.SubmitFinalDeclarationParser
-import v3.models.request.SubmitFinalDeclarationRawData
+import v3.models.request.{RetrieveCalculationRequest, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v3.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v3.services._
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAuthService,
                                                   val lookupService: MtdIdLookupService,
                                                   parser: SubmitFinalDeclarationParser,
                                                   service: SubmitFinalDeclarationService,
+                                                  retrieveService: RetrieveCalculationService,
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
                                                   idGenerator: IdGenerator)(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc) {
+    extends AuthorisedController(cc)
+    with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
+
+  private val maxNrsAttempts = 3
+  private val interval       = 100
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -51,7 +60,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
         RequestHandler
           .withParser(parser)
           .withService { parsedRequest =>
-            nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
+            updateNrs(nino, parsedRequest)
             service.submitFinalDeclaration(parsedRequest)
           }
           .withNoContentResult()
@@ -64,5 +73,40 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
 
       requestHandler.handleRequest(rawData)
     }
+
+  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequest)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Unit] = {
+    implicit val hc: HeaderCarrier = ctx.hc
+
+    retrieveCalculationDetails(parsedRequest) map {
+      case Left(_) =>
+        nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
+
+      case Right(responseWrapper) =>
+        nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(responseWrapper.responseData))
+    }
+  }
+
+  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest, attempt: Int = 1)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+    import parsedRequest._
+
+    val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+    retrieveService.retrieveCalculation(retrieveRequest).flatMap {
+      case Right(result) =>
+        Future.successful(Right(result))
+
+      case Left(error) =>
+        if (attempt <= maxNrsAttempts) {
+          Thread.sleep(interval)
+          retrieveCalculationDetails(parsedRequest, attempt + 1)
+        } else {
+          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
+          Future.successful(Left(error.copy(error = InternalError, errors = None)))
+        }
+    }
+  }
 
 }

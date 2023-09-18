@@ -16,7 +16,7 @@
 
 package v4.controllers.requestParsers
 
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v4.mocks.validators.MockRetrieveCalculationValidator
@@ -39,7 +39,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         val data: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), calculationId))
+        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId)))
       }
     }
 

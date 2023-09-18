@@ -22,10 +22,10 @@ import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import support.V3IntegrationBaseSpec
+import support.IntegrationBaseSpec
 import stubs._
 
-class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
+class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
@@ -92,7 +92,7 @@ class SubmitFinalDeclarationControllerISpec extends V3IntegrationBaseSpec {
         }
       }
 
-      val input = Seq(
+      val input = List(
         ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
         ("AA123456A", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
         ("AA123456A", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),

@@ -16,18 +16,14 @@
 
 package v3.models.request
 
-import api.models.domain.{Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.request.RawData
 import play.api.libs.json.{JsValue, Json}
 
 case class SubmitFinalDeclarationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 
-case class SubmitFinalDeclarationRequest(nino: Nino, taxYear: TaxYear, calculationId: String) {
+case class SubmitFinalDeclarationRequest(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) {
 
-  def toNrsJson: JsValue = {
-    Json.obj(
-      "calculationId" -> calculationId
-    )
-  }
+  def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 
 }
