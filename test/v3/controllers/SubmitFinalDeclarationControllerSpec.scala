@@ -23,20 +23,25 @@ import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
+import org.scalatest.BeforeAndAfterEach
+import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import v3.mocks.connectors.MockNrsProxyConnector
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v3.mocks.services._
 import v3.models.request._
-import v3.models.request.RetrieveCalculationRequest
-import v3.models.request.SubmitFinalDeclarationRawData
 import v3.models.response.retrieveCalculation.CalculationFixture
+import v3.services.StubNrsProxyService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.concurrent.duration._
 
 class SubmitFinalDeclarationControllerSpec
     extends ControllerBaseSpec
+    with Eventually
+    with BeforeAndAfterEach
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -44,12 +49,16 @@ class SubmitFinalDeclarationControllerSpec
     with MockSubmitFinalDeclarationParser
     with MockRetrieveCalculationService
     with MockAuditService
-    with MockNrsProxyService
+    with MockNrsProxyConnector
+    with StubNrsProxyService
     with MockIdGenerator
     with CalculationFixture {
 
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
+
+  implicit override val patienceConfig: PatienceConfig =
+    PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
   trait Test extends ControllerTest with AuditEventChecking {
 
@@ -60,7 +69,7 @@ class SubmitFinalDeclarationControllerSpec
       service = mockSubmitFinalDeclarationService,
       retrieveService = mockRetrieveCalculationService,
       cc = cc,
-      nrsProxyService = mockNrsProxyService,
+      nrsProxyService = stubNrsProxyService,
       auditService = mockAuditService,
       idGenerator = mockIdGenerator
     )
@@ -84,21 +93,20 @@ class SubmitFinalDeclarationControllerSpec
 
   }
 
-  private val rawData                     = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData                 = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData  = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  override protected def beforeEach(): Unit = resetNrsProxyService()
+
+  private val rawData                    = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
+  private val requestData                = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+
   private val retrieveDetailsResponseData = minimalCalculationResponse
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
-
         MockSubmitFinalDeclarationParser
           .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
           .returns(Right(requestData))
-
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -108,9 +116,11 @@ class SubmitFinalDeclarationControllerSpec
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
-        runOkTestWithAudit(
-          expectedStatus = NO_CONTENT
-        )
+        runOkTestWithAudit(expectedStatus = NO_CONTENT)
+
+        eventually {
+          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
+        }
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -125,10 +135,19 @@ class SubmitFinalDeclarationControllerSpec
         MockRetrieveCalculationService
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, InternalError))))
+          .anyNumberOfTimes()
 
-        runOkTestWithAudit(
-          expectedStatus = NO_CONTENT
-        )
+        runOkTestWithAudit(expectedStatus = NO_CONTENT)
+
+        private val fallbackNrsPayload = Json.parse(s"""
+            |{
+            |  "calculationId": "$calculationId"
+            |}
+            |""".stripMargin)
+
+        eventually {
+          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", fallbackNrsPayload))
+        }
       }
     }
 
@@ -146,9 +165,6 @@ class SubmitFinalDeclarationControllerSpec
           .parseRequest(rawData)
           .returns(Right(requestData))
 
-        MockNrsProxyService
-          .submit(nino, "itsa-crystallisation", requestData.toNrsJson)
-
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
@@ -158,6 +174,10 @@ class SubmitFinalDeclarationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
 
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
+
+        eventually {
+          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
+        }
       }
     }
 

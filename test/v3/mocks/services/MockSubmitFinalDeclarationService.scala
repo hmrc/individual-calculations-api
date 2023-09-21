@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait MockSubmitFinalDeclarationService extends MockFactory {
 
-  val mockSubmitFinalDeclarationService: SubmitFinalDeclarationService = mock[SubmitFinalDeclarationService]
+  protected val mockSubmitFinalDeclarationService: SubmitFinalDeclarationService = mock[SubmitFinalDeclarationService]
 
   object MockSubmitFinalDeclarationService {
 

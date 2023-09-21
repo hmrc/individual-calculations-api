@@ -266,9 +266,9 @@
       "occupationalPensions": 5000.99,
       "stateBenefits": -99999999999.99,
       "specialWithholdingTaxOrUkTaxPaid": 5000.99,
-      "inYearAdjustmentCodedInLaterTaxYear": 5000.99,
-      {{#if (enabled "retrieveSAAdditionalFields")}}
-      "taxTakenOffTradingIncome": 5000.99
+      "inYearAdjustmentCodedInLaterTaxYear": 5000.99
+      {{#if (enabled "cl290")}}
+      ,"taxTakenOffTradingIncome": 5000.99
       {{/if}}
     },
     "giftAid": {

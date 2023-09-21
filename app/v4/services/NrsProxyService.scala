@@ -18,7 +18,7 @@ package v4.services
 
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
-import v4 .connectors.NrsProxyConnector
+import v4.connectors.NrsProxyConnector
 
 import javax.inject.{Inject, Singleton}
 

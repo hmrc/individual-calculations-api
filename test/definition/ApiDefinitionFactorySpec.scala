@@ -20,7 +20,7 @@ import config.ConfidenceLevelConfig
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
-import routing.{Version3, Version4}
+import routing.{Version3, Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -41,6 +41,8 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version4) returns "BETA"
         MockAppConfig.endpointsEnabled(Version4).returns(true).anyNumberOfTimes()
+        MockAppConfig.apiStatus(Version5) returns "BETA"
+        MockAppConfig.endpointsEnabled(Version5).returns(true).anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled
           .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
           .anyNumberOfTimes()
@@ -73,6 +75,11 @@ class ApiDefinitionFactorySpec extends UnitSpec {
               ),
               APIVersion(
                 version = Version4,
+                status = APIStatus.BETA,
+                endpointsEnabled = true
+              ),
+              APIVersion(
+                version = Version5,
                 status = APIStatus.BETA,
                 endpointsEnabled = true
               )
@@ -112,7 +119,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.apiStatus(Version3) returns "ALPHA"
+        MockAppConfig.apiStatus(Version3) returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus(Version3) shouldBe ALPHA
       }
     }

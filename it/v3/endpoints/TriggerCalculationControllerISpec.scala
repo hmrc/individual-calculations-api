@@ -23,10 +23,10 @@ import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.V3IntegrationBaseSpec
+import support.IntegrationBaseSpec
 import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 
-class TriggerCalculationControllerISpec extends V3IntegrationBaseSpec {
+class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
   "Calling the triggerCalculation endpoint" should {
 

@@ -24,9 +24,9 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import support.V3IntegrationBaseSpec
+import support.IntegrationBaseSpec
 
-class RetrieveCalculationControllerISpec extends V3IntegrationBaseSpec {
+class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
     val nino: String          = "AA123456A"
