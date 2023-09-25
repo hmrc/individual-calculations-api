@@ -44,20 +44,12 @@ get:
       content:
         application/json:
           schema:
-            {{#if (enabled "retrieveSAAdditionalFields")}}
-            $ref: ./schemas/retrieve_response_with_additional_fields.json
-            {{else}}
             $ref: ./schemas/retrieve_response.json
-            {{/if}}
           examples:
             example-response:
               description: Example Response
               value:
-                {{#if (enabled "retrieveSAAdditionalFields")}}
-                $ref: ./examples/retrieve/retrieve_response_with_additional_fields.json
-                {{else}}
                 $ref: ./examples/retrieve/retrieve_response.json
-                {{/if}}
 
     400:
       description: Bad request

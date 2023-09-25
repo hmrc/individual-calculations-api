@@ -95,9 +95,10 @@
           "description": "The Unique Taxpayer Reference for the customer.",
           "type": "string",
           "example": "AGvHTfRUPO"
-        },
-        "itsaStatus": {
-          "description": "{{#unless (enabled 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The ITSA status for the tax year.",
+        }
+        {{#if (enabled 'retrieveSAAdditionalFields')}}
+        ,"itsaStatus": {
+          "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The ITSA status for the tax year.",
           "type": "string",
           "enum": [
             "No Status",
@@ -109,6 +110,7 @@
             "MTD Exempt"
           ]
         }
+        {{/if}}
       },
       "additionalProperties": false,
       "required": [
@@ -620,8 +622,9 @@
               }
             ]
           },
+          {{#if (enabled 'retrieveSAAdditionalFields')}}
           "commencementDate": {
-            "description": "{{#unless (enabled 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source commenced.",
+            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source commenced.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
@@ -629,13 +632,14 @@
             ]
           },
           "cessationDate": {
-            "description": "{{#unless (enabled 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source ceased.",
+            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source ceased.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
               }
             ]
           },
+          {{/if}}
           "latestPeriodEndDate": {
             "description": "The end date of the period for which income has been submitted for the income source.",
             "allOf": [

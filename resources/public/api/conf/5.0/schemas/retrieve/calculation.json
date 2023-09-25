@@ -69,9 +69,11 @@
     "savingsAndGainsIncome": {
       "$ref": "calculation/savingsAndGainsIncome.json"
     },
+    {{#if (enabled 'retrieveSAAdditionalFields')}}
     "otherIncome": {
       "$ref": "calculation/otherIncome.json"
     },
+    {{/if}}
     "dividendsIncome": {
       "$ref": "calculation/dividendsIncome.json"
     },
