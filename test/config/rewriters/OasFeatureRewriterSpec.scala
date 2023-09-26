@@ -24,15 +24,11 @@ import support.UnitSpec
 
 class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
 
-  private def setupCheckAndRewrite(oasFeatureEnabled: Boolean,
-                                   oasFeatureEnabledInProd: Boolean,
-                                   versionEnabled: Boolean): (CheckRewrite, Rewriter) = {
+  private def setupCheckAndRewrite(oasFeatureEnabled: Boolean, oasFeatureEnabledInProd: Boolean): (CheckRewrite, Rewriter) = {
     MockAppConfig.featureSwitches returns Configuration(
       "oasFeature.enabled"                -> oasFeatureEnabled,
       "oasFeature.released-in-production" -> oasFeatureEnabledInProd
     )
-
-    MockAppConfig.endpointsEnabled("1.0").anyNumberOfTimes() returns versionEnabled
 
     val rewriter = new OasFeatureRewriter()(mockAppConfig)
     rewriter.rewriteOasFeature.asTuple
@@ -40,35 +36,31 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
 
   "check and rewrite" should {
     "indicate whether it wants to rewrite the file" when {
-      "1.0 endpoints are disabled" in {
-        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = true, versionEnabled = false)
-
-        val result = check("1.0", "any-file.yaml")
-        result shouldBe false
-      }
-
-      "1.0 endpoints and feature switch in prod are enabled" in {
-        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = true, versionEnabled = true)
+      "feature is enabled both in environment and in prod" in {
+        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = true)
 
         val result = check("1.0", "any-file.yaml")
         result shouldBe true
       }
 
-      "1.0 endpoints are enabled and feature switch in prod is disabled" in {
-        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = false, versionEnabled = true)
+      "feature is enabled in environment but disabled in prod" in {
+        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = false)
 
         val result = check("1.0", "any-file.yaml")
         result shouldBe true
       }
 
-      "common is provided as the version" in {
-        MockAppConfig.featureSwitches returns Configuration()
+      "feature disabled in environment and in prod" in {
+        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureEnabledInProd = false)
 
-        val rewriter   = new OasFeatureRewriter()(mockAppConfig)
-        val (check, _) = rewriter.rewriteOasFeature.asTuple
+        val result = check("1.0", "any-file.yaml")
+        result shouldBe true
+      }
+      "feature disabled in environment and and enabled in prod" in {
+        val (check, _) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureEnabledInProd = true)
 
-        val result = check("common", "oasFeature")
-        result shouldBe false
+        val result = check("1.0", "any-file.yaml")
+        result shouldBe true
       }
     }
 
@@ -82,7 +74,7 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
           |  A National Insurance number and tax year must be provided.
           |
           |  ### Test data
-          |  {{#if (enabled "oasFeature")}}
+          |  {{#if (releasedInProduction "oasFeature")}}
           |  <p>Scenario simulations using Gov-Test-Scenario headers ARE ONLY AVAILABLE IN the sandbox environment.</p>
           |  {{else}}
           |  <p>Scenario simulations using Gov-Test-Scenario headers are only available in the sandbox environment.</p>
@@ -93,7 +85,7 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
           |""".stripMargin
 
       "the feature isn't enabled" in {
-        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureEnabledInProd = false, versionEnabled = true)
+        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureEnabledInProd = false)
 
         val expected =
           s"""
@@ -116,7 +108,7 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
       }
 
       "the feature is enabled in environment but not in prod" in {
-        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = false, versionEnabled = true)
+        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = false)
 
         val expected =
           s"""
@@ -139,7 +131,7 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
       }
 
       "the feature is enabled in environment and in prod" in {
-        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = true, versionEnabled = true)
+        val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureEnabledInProd = true)
 
         val expected =
           s"""
