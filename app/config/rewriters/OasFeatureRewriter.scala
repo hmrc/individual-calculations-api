@@ -31,6 +31,7 @@ import javax.inject.{Inject, Singleton}
   /*
     enabled - is this feature enabled in the current env (ET/sandbox)
     - use this to determine whether to show a feature
+    - or with HB "if" to determine whether to include the feature in an example JSON response
    */
   hb.registerHelper(
     "enabled",
@@ -41,7 +42,6 @@ import javax.inject.{Inject, Singleton}
   /*
   releasedInProduction - is this feature enabled here AND in prod
     - use this with HB "unless" to determine whether to show "Test only"
-    - or with HB "if" to determine whether to include the feature in an example JSON response
    */
   hb.registerHelper(
     "releasedInProduction",
