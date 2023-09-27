@@ -48,11 +48,12 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
         result shouldBe true
       }
     }
+  }
 
-    "rewrite" when {
+  "rewrite" should {
 
-      val yaml =
-        """
+    val yaml =
+      """
           |summary: Retrieve Employment Expenses
           |description: |
           |  This endpoint enables you to retrieve existing employment expenses.
@@ -67,61 +68,57 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
           |  - Employment Expenses
           |""".stripMargin
 
-      /*
-       * Test if oas Feature is disabled and prod is false
-       * true true - show the field without test only
-       * true false - show field with test only
-       * false true - dont show the field
-       * false false - dont show field
-       *
-       * */
-
+    "show the field without [Test Only]" when {
       "the feature is enabled in environment and in prod" in {
         val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureReleasedInProd = true)
 
         val expected =
           s"""
-             |summary: Retrieve Employment Expenses
-             |description: |
-             |  This endpoint enables you to retrieve existing employment expenses.
-             |  A National Insurance number and tax year must be provided.
-             |
-             |  ### Test data
-             |${" "}${" "}
-             |  <p>Scenario simulations using Gov-Test-Scenario headers are only available in the sandbox environment.</p>
-             |${" "}${" "}
-             |
-             |tags:
-             |  - Employment Expenses
-             |""".stripMargin
+               |summary: Retrieve Employment Expenses
+               |description: |
+               |  This endpoint enables you to retrieve existing employment expenses.
+               |  A National Insurance number and tax year must be provided.
+               |
+               |  ### Test data
+               |${" "}${" "}
+               |  <p>Scenario simulations using Gov-Test-Scenario headers are only available in the sandbox environment.</p>
+               |${" "}${" "}
+               |
+               |tags:
+               |  - Employment Expenses
+               |""".stripMargin
 
         val result = rewrite("/...", "something.yaml", yaml)
         result shouldBe expected
       }
+    }
 
+    "show the field with [Test Only]" when {
       "the feature is enabled in environment but not in prod" in {
         val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = true, oasFeatureReleasedInProd = false)
 
         val expected =
           s"""
-             |summary: Retrieve Employment Expenses
-             |description: |
-             |  This endpoint enables you to retrieve existing employment expenses.
-             |  A National Insurance number and tax year must be provided.
-             |
-             |  ### Test data
-             |${" "}${" "}
-             |  <p>[Test Only] Scenario simulations using Gov-Test-Scenario headers are only available in the sandbox environment.</p>
-             |${" "}${" "}
-             |
-             |tags:
-             |  - Employment Expenses
-             |""".stripMargin
+               |summary: Retrieve Employment Expenses
+               |description: |
+               |  This endpoint enables you to retrieve existing employment expenses.
+               |  A National Insurance number and tax year must be provided.
+               |
+               |  ### Test data
+               |${" "}${" "}
+               |  <p>[Test Only] Scenario simulations using Gov-Test-Scenario headers are only available in the sandbox environment.</p>
+               |${" "}${" "}
+               |
+               |tags:
+               |  - Employment Expenses
+               |""".stripMargin
 
         val result = rewrite("/...", "something.yaml", yaml)
         result shouldBe expected
       }
+    }
 
+    "not show the field" when {
       "the feature is disabled in environment but enabled in prod" in {
         val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureReleasedInProd = true)
 
@@ -143,7 +140,7 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
         result shouldBe expected
       }
 
-      "the feature isn't enabled" in {
+      "the feature isn't enabled in environment and prod" in {
         val (_, rewrite) = setupCheckAndRewrite(oasFeatureEnabled = false, oasFeatureReleasedInProd = false)
 
         val expected =
