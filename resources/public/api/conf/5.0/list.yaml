@@ -14,6 +14,7 @@ get:
     |------------------------------------|---------------------------------------------|
     | N/A - DEFAULT                      | Simulates success response.                 |
     | NOT_FOUND                          | Simulates the scenario where no data is found. |
+    | DYNAMIC                            | The following response parameters will be based on the data submitted in the request: <br><br/> &bull; taxYear <br/> &bull; calculationTimestamp <br/> &bull; finalDeclarationTimestamp |
 
 
   parameters:

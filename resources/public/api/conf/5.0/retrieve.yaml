@@ -21,6 +21,7 @@ get:
     | UK_SE_GIFTAID_EXAMPLE              | Simulates an example tax calculation for a UK Self-Employment business with Gift Aid. |
     | UK_SE_SAVINGS_EXAMPLE              | Simulates an example tax calculation for a UK Self-Employment business with Savings. |
     | SCOT_SE_DIVIDENDS_EXAMPLE          | Simulates an example tax calculation for a Scottish Self-Employment business with Dividends. |
+    | DYNAMIC                            | The date fields in the response are made dynamic based on the tax year passed within the request.<br><br/> The dynamic response will work for tax years (taxYear) starting 2023-24 onwards. For any previous tax years supplied, it will result in a HTTP 400 (RULE_INCORRECT_GOV_TEST_SCENARIO) error being returned. |
 
 
   parameters:
