@@ -17,6 +17,7 @@
 package config
 
 import io.swagger.v3.parser.OpenAPIV3Parser
+import play.api.http.Status
 import play.api.http.Status.OK
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
@@ -77,7 +78,6 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
 
   "GET /api/definition" should {
     "return a 200 with the correct response body" in {
-
       val response: WSResponse = await(buildRequest("/api/definition").get())
       response.status shouldBe OK
       Json.parse(response.body) shouldBe apiDefinitionJson
@@ -87,9 +87,10 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
   "an OAS documentation request" must {
     Seq(Version3, Version4, Version5).foreach { version =>
       s"return the documentation for $version" in {
-        val response = get(s"/api/conf/${version.name}/application.yaml")
+        val response = get(s"/api/conf/$version/application.yaml")
+        response.status shouldBe Status.OK
 
-        val body         = response.body[String]
+        val body         = response.body
         val parserResult = Try(new OpenAPIV3Parser().readContents(body))
         parserResult.isSuccess shouldBe true
 
@@ -98,7 +99,20 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
         withClue(s"If v${version.name} endpoints are enabled in application.conf, remove the [test only] from this test: ") {
           openAPI.getInfo.getTitle shouldBe "Individual Calculations (MTD)"
         }
-        openAPI.getInfo.getVersion shouldBe version.toString
+        openAPI.getInfo.getVersion shouldBe version.name
+      }
+
+      s"return the documentation with the correct accept header for version $version" in {
+        val response = get(s"/api/conf/${version.name}/common/headers.yaml")
+        response.status shouldBe Status.OK
+
+        val body        = response.body
+        val headerRegex = """(?s).*?application/vnd\.hmrc\.(\d+\.\d+)\+json.*?""".r
+        val header      = headerRegex.findFirstMatchIn(body)
+        header.isDefined shouldBe true
+
+        val versionFromHeader = header.get.group(1)
+        versionFromHeader shouldBe version.name
       }
     }
   }
