@@ -60,6 +60,16 @@ class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
         val result = check("1.0", "any-file.yaml")
         result shouldBe true
       }
+
+      "common is provided as the version" in {
+        MockAppConfig.featureSwitches returns Configuration()
+
+        val rewriter   = new OasFeatureRewriter()(mockAppConfig)
+        val (check, _) = rewriter.rewriteOasFeature.asTuple
+
+        val result = check("common", "oasFeature")
+        result shouldBe false
+      }
     }
 
     "rewrite" when {

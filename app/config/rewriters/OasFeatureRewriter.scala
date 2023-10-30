@@ -36,7 +36,7 @@ import javax.inject.{Inject, Singleton}
   )
 
   val rewriteOasFeature: CheckAndRewrite = CheckAndRewrite(
-    check = (version, _) => appConfig.endpointsEnabled(version),
+    check = (version, _) => if (version == "common") false else appConfig.endpointsEnabled(version),
     rewrite = (_, _, contents) => rewrite(contents, fs)
   )
 
