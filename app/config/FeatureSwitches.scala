@@ -23,6 +23,7 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
   val isR8bSpecificApiEnabled: Boolean             = isConfigTrue("r8b-api.enabled")
   val isRetrieveSAAdditionalFieldsEnabled: Boolean = isConfigTrue("retrieveSAAdditionalFields.enabled")
   val isCl290Enabled: Boolean                      = isConfigTrue("cl290.enabled")
+  val isBasicRateDivergence: Boolean               = isConfigTrue("basicRateDivergence.enabled")
 
   def isReleasedInProduction(feature: String): Boolean = isConfigTrue(feature + ".released-in-production")
 

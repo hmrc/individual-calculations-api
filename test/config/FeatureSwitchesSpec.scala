@@ -31,28 +31,39 @@ class FeatureSwitchesSpec extends UnitSpec {
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
+        featureSwitches.isBasicRateDivergence shouldBe true
 
       }
 
       "enabled" in {
-        val configuration   = Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> true, "cl290.enabled" -> true)
+        val configuration = Configuration(
+          "r8b-api.enabled"                    -> true,
+          "retrieveSAAdditionalFields.enabled" -> true,
+          "cl290.enabled"                      -> true,
+          "basicRateDivergence.enabled"        -> true)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
+        featureSwitches.isBasicRateDivergence shouldBe true
 
       }
     }
 
     "be false" when {
       "disabled" in {
-        val configuration   = Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false,"cl290.enabled" -> false)
+        val configuration = Configuration(
+          "r8b-api.enabled"                    -> false,
+          "retrieveSAAdditionalFields.enabled" -> false,
+          "cl290.enabled"                      -> false,
+          "basicRateDivergence.enabled"        -> false)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe false
         featureSwitches.isCl290Enabled shouldBe false
+        featureSwitches.isBasicRateDivergence shouldBe false
       }
     }
   }
