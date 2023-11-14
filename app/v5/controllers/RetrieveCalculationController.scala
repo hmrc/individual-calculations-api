@@ -17,6 +17,7 @@
 package v5.controllers
 
 import api.controllers._
+import api.models.domain.TaxYear
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
@@ -71,7 +72,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             val responseMaybeWithoutR8b              = updateModelR8b(response)
             val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
             val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
-            updateModelBasicRateDivergence(responseMaybeWithoutCl290)
+            updateModelBasicRateDivergence(rawData, responseMaybeWithoutCl290)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
@@ -97,7 +98,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
   private def updateModelCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
-  private def updateModelBasicRateDivergence(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isBasicRateDivergenceEnabled && response.metadata.taxYear.is2025) response else response.withoutBasicRateDivergenceUpdates
+  private def updateModelBasicRateDivergence(rawData: RetrieveCalculationRawData,
+                                             response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(rawData.taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
+  }
 }
-

@@ -49,8 +49,7 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear       = "2017-18"
+  private val calculationId                                 = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val responseWithR8b                               = minimalCalculationR8bResponse
   private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
   private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
@@ -59,10 +58,11 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
-  private val rawData: RetrieveCalculationRawData           = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   trait Test extends ControllerTest {
+    def taxYear: String
+    def rawData: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
+    def requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
     lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
@@ -79,9 +79,17 @@ class RetrieveCalculationControllerSpec
 
   }
 
+  trait NonTysTest extends Test {
+    def taxYear: String                                       = "2017-18"
+  }
+
+  trait TysTest extends Test {
+    def taxYear: String                                       = "2024-25"
+  }
+
   "handleRequest" should {
     "return OK with the calculation" when {
-      "happy path with R8B feature switch enabled" in new Test {
+      "happy path with R8B feature switch enabled" in new NonTysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -106,7 +114,7 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithR8BJson))
       }
 
-      "happy path with Additional Fields feature switch enabled" in new Test {
+      "happy path with Additional Fields feature switch enabled" in new NonTysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -133,7 +141,7 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithAdditionalFieldsJson))
       }
 
-      "happy path with cl290 feature switch enabled" in new Test {
+      "happy path with cl290 feature switch enabled" in new NonTysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -158,8 +166,7 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithCl290EnabledJson))
       }
 
-      "happy path with BasicRateDivergence feature switch enabled and TYS" in new Test {
-
+      "happy path with BasicRateDivergence feature switch enabled and TYS (2025)" in new TysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
@@ -187,7 +194,7 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithBasicRateDivergenceEnabledJson))
       }
 
-      "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new Test {
+      "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
         val updatedRawData: RetrieveCalculationRawData   = rawData
         val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
         val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
@@ -218,7 +225,7 @@ class RetrieveCalculationControllerSpec
     }
 
     "return the error as per spec" when {
-      "the parser validation fails" in new Test {
+      "the parser validation fails" in new NonTysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
@@ -229,7 +236,7 @@ class RetrieveCalculationControllerSpec
         runErrorTest(NinoFormatError)
       }
 
-      "the service returns an error" in new Test {
+      "the service returns an error" in new NonTysTest {
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
