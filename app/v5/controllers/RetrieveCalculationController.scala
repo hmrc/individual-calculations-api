@@ -98,6 +98,6 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
   private def updateModelBasicRateDivergence(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isBasicRateDivergenceEnabled && response.metadata.taxYear.useTaxYearSpecificApi) response else response.withoutBasicRateDivergenceUpdates
-
+    if (isBasicRateDivergenceEnabled && response.metadata.taxYear.is2025) response else response.withoutBasicRateDivergenceUpdates
 }
+
