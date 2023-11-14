@@ -51,7 +51,6 @@ class RetrieveCalculationControllerSpec
 
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val taxYear       = "2017-18"
-  // private val taxYearTys                                = "2024-25"
   private val responseWithR8b                               = minimalCalculationR8bResponse
   private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
   private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
