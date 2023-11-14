@@ -81,6 +81,12 @@ case class Calculation(
 
   def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
 
+  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Calculation =
+    copy(reliefs = reliefs.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers).filter(_.isDefined))
+
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Calculation =
+    copy(taxCalculation = taxCalculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers))
+
   def withoutUnderLowerProfitThreshold: Calculation =
     copy(taxCalculation = taxCalculation.map(_.withoutUnderLowerProfitThreshold))
 

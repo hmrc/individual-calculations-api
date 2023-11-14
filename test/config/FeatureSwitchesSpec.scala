@@ -31,7 +31,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
-        featureSwitches.isBasicRateDivergence shouldBe true
+        featureSwitches.isBasicRateDivergenceEnabled shouldBe true
 
       }
 
@@ -46,7 +46,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
-        featureSwitches.isBasicRateDivergence shouldBe true
+        featureSwitches.isBasicRateDivergenceEnabled shouldBe true
 
       }
     }
@@ -63,7 +63,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe false
         featureSwitches.isCl290Enabled shouldBe false
-        featureSwitches.isBasicRateDivergence shouldBe false
+        featureSwitches.isBasicRateDivergenceEnabled shouldBe false
       }
     }
   }

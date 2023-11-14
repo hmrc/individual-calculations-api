@@ -49,15 +49,18 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear                                 = "2017-18"
-  private val responseWithR8b                         = minimalCalculationR8bResponse
-  private val responseWithAdditionalFields            = minimalCalculationAdditionalFieldsResponse
-  private val responseWithCl290Enabled                = minimalCalculationCl290EnabledResponse
-  private val mtdResponseWithR8BJson                  = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithAdditionalFieldsJson     = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithCl290EnabledJson         = minimumResponseCl290EnabledJson ++ hateoaslinksJson
-  private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
+  private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear       = "2017-18"
+  // private val taxYearTys                                = "2024-25"
+  private val responseWithR8b                               = minimalCalculationR8bResponse
+  private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
+  private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
+  private val responseWithBasicRateDivergenceEnabled        = minimalCalculationBasicRateDivergenceEnabledResponse
+  private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
+  private val rawData: RetrieveCalculationRawData           = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   trait Test extends ControllerTest {
@@ -89,7 +92,12 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
+          .returns(
+            Configuration(
+              "r8b-api.enabled"                    -> true,
+              "retrieveSAAdditionalFields.enabled" -> false,
+              "cl290.enabled"                      -> false,
+              "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -109,7 +117,12 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true, "cl290.enabled" -> false))
+          .returns(
+            Configuration(
+              "r8b-api.enabled"                    -> false,
+              "retrieveSAAdditionalFields.enabled" -> true,
+              "cl290.enabled"                      -> false,
+              "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -131,7 +144,12 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> true))
+          .returns(
+            Configuration(
+              "r8b-api.enabled"                    -> false,
+              "retrieveSAAdditionalFields.enabled" -> false,
+              "cl290.enabled"                      -> true,
+              "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory
@@ -141,7 +159,36 @@ class RetrieveCalculationControllerSpec
         runOkTest(OK, Some(mtdResponseWithCl290EnabledJson))
       }
 
-      "happy path with R8B and additional fields, and cl290 feature switches disabled" in new Test {
+      "happy path with BasicRateDivergence feature switch enabled and TYS" in new Test {
+
+        MockRetrieveCalculationParser
+          .parseRequest(rawData)
+          .returns(Right(requestData))
+
+        MockRetrieveCalculationService
+          .retrieveCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithBasicRateDivergenceEnabled))))
+
+        MockAppConfig.featureSwitches
+          .returns(
+            Configuration(
+              "r8b-api.enabled"                    -> false,
+              "retrieveSAAdditionalFields.enabled" -> false,
+              "cl290.enabled"                      -> false,
+              "basicRateDivergence.enabled"        -> true))
+          .anyNumberOfTimes()
+
+        MockHateoasFactory
+          .wrap(
+            responseWithBasicRateDivergenceEnabled,
+            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithBasicRateDivergenceEnabled)
+          )
+          .returns(HateoasWrapper(responseWithBasicRateDivergenceEnabled, hateoaslinks))
+
+        runOkTest(OK, Some(mtdResponseWithBasicRateDivergenceEnabledJson))
+      }
+
+      "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new Test {
         val updatedRawData: RetrieveCalculationRawData   = rawData
         val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
         val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
@@ -154,7 +201,12 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockAppConfig.featureSwitches
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
+          .returns(
+            Configuration(
+              "r8b-api.enabled"                    -> false,
+              "retrieveSAAdditionalFields.enabled" -> false,
+              "cl290.enabled"                      -> false,
+              "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
         MockHateoasFactory

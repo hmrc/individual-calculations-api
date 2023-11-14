@@ -50,7 +50,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   private val featureSwitches = FeatureSwitches()(appConfig)
 
-  import featureSwitches.{isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
+  import featureSwitches.{isBasicRateDivergenceEnabled, isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -70,7 +70,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
             val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
-            updateModelCl290(responseMaybeWithoutAdditionalFields)
+            val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
+            updateModelBasicRateDivergence(responseMaybeWithoutCl290)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
@@ -95,5 +96,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   private def updateModelCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
+
+  private def updateModelBasicRateDivergence(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+    if (isBasicRateDivergenceEnabled && response.metadata.taxYear.useTaxYearSpecificApi) response else response.withoutBasicRateDivergenceUpdates
 
 }

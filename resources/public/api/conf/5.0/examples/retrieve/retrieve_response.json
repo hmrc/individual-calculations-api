@@ -254,7 +254,12 @@
         "totalBasicRateExtension": 2010.58,
         "giftAidRelief": 3000,
         "pensionContributionReliefs": 5000.58
+      },
+      {{#if (enabled "basicRateDivergence")}}
+      "giftAidTaxReductionWhereBasicRateDiffers": {
+        "amount": 2000.58
       }
+      {{/if}}
     },
     "taxDeductedAtSource": {
       "bbsi": 5000.99,
@@ -889,7 +894,10 @@
         "totalPensionSavingsTaxCharges": 5000.99,
         "statePensionLumpSumCharges": 5000.99,
         "payeUnderpaymentsCodedOut": 5000.99,
-        "totalIncomeTaxDue": 5000.99
+        "totalIncomeTaxDue": 5000.99,
+        {{#if (enabled "basicRateDivergence")}}
+        "giftAidTaxChargeWhereBasicRateDiffers": 2000.58
+        {{/if}}
       },
       "nics": {
         "class2Nics": {

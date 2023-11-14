@@ -37,8 +37,11 @@ case class IncomeTax(
     totalPensionSavingsTaxCharges: Option[BigDecimal],
     statePensionLumpSumCharges: Option[BigDecimal],
     payeUnderpaymentsCodedOut: Option[BigDecimal],
-    totalIncomeTaxDue: Option[BigDecimal]
-)
+    totalIncomeTaxDue: Option[BigDecimal],
+    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal]
+) {
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: IncomeTax = copy(giftAidTaxChargeWhereBasicRateDiffers = None)
+}
 
 object IncomeTax {
   implicit val format: Format[IncomeTax] = Json.format

@@ -31,7 +31,7 @@ class TaxCalculationSpec extends UnitSpec with TaxCalculationFixture with JsonEr
     }
 
     "have the correct fields optional" when {
-      testJsonAllPropertiesOptionalExcept[TaxCalculation](taxCalculationDownstreamJson)("incomeTax")
+      testJsonAllPropertiesOptional[TaxCalculation](taxCalculationDownstreamJson)
     }
   }
 

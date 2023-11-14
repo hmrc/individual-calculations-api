@@ -24,10 +24,10 @@ import v5.models.response.retrieveCalculation.calculation.Calculation
 import v5.models.response.retrieveCalculation.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v5.models.response.retrieveCalculation.calculation.endOfYearEstimate.EndOfYearEstimate
 import v5.models.response.retrieveCalculation.calculation.otherIncome.{OtherIncome, PostCessationIncome, PostCessationReceipt}
-import v5.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, Reliefs}
+import v5.models.response.retrieveCalculation.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
 import v5.models.response.retrieveCalculation.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v5.models.response.retrieveCalculation.calculation.taxDeductedAtSource.TaxDeductedAtSource
-import v5.models.response.retrieveCalculation.inputs.{BusinessIncomeSource, IncomeSources, Inputs, PersonalInformation, SubmissionPeriod}
+import v5.models.response.retrieveCalculation.inputs._
 import v5.models.response.retrieveCalculation.metadata.Metadata
 
 trait CalculationFixture {
@@ -48,8 +48,12 @@ trait CalculationFixture {
     residentialFinanceCosts = None,
     foreignTaxCreditRelief = None,
     topSlicingRelief = None,
-    reliefsClaimed = None
+    reliefsClaimed = None,
+    giftAidTaxReductionWhereBasicRateDiffers = None
   )
+
+  val reliefsWithBasicRateDivergenceData: Reliefs =
+    reliefs.copy(basicRateExtension = None, giftAidTaxReductionWhereBasicRateDiffers = Some(GiftAidTaxReductionWhereBasicRateDiffers(Some(2000.25))))
 
   val class2Nics: Class2Nics = Class2Nics(
     amount = None,
@@ -86,11 +90,14 @@ trait CalculationFixture {
     totalPensionSavingsTaxCharges = None,
     statePensionLumpSumCharges = None,
     payeUnderpaymentsCodedOut = None,
-    totalIncomeTaxDue = None
+    totalIncomeTaxDue = None,
+    giftAidTaxChargeWhereBasicRateDiffers = None
   )
 
+  val incomeTaxWithBasicRateDivergenceData: IncomeTax = incomeTax.copy(giftAidTaxChargeWhereBasicRateDiffers = Some(2000.25))
+
   val taxCalculation: TaxCalculation = TaxCalculation(
-    incomeTax = incomeTax,
+    incomeTax = Some(incomeTax),
     nics = Some(nics),
     totalTaxDeductedBeforeCodingOut = None,
     saUnderpaymentsCodedOut = None,
@@ -103,6 +110,8 @@ trait CalculationFixture {
     capitalGainsTax = None,
     totalIncomeTaxAndNicsAndCgt = None
   )
+
+  val taxCalculationWithBasicRateDivergenceData: TaxCalculation = taxCalculation.copy(incomeTax = Some(incomeTaxWithBasicRateDivergenceData))
 
   val taxCalculationWithoutUnderLowerProfitThreshold: TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
 
@@ -261,6 +270,38 @@ trait CalculationFixture {
     lossesAndClaims = None
   )
 
+  val calculationWithBasicRateDivergenceEnabled: Calculation = Calculation(
+    reliefs = Some(reliefsWithBasicRateDivergenceData),
+    allowancesAndDeductions = None,
+    taxDeductedAtSource = None,
+    giftAid = None,
+    royaltyPayments = None,
+    notionalTax = None,
+    marriageAllowanceTransferredIn = None,
+    pensionContributionReliefs = None,
+    pensionSavingsTaxCharges = None,
+    studentLoans = None,
+    codedOutUnderpayments = None,
+    foreignPropertyIncome = None,
+    businessProfitAndLoss = None,
+    employmentAndPensionsIncome = None,
+    employmentExpenses = None,
+    seafarersDeductions = None,
+    foreignTaxForFtcrNotClaimed = None,
+    stateBenefitsIncome = None,
+    shareSchemesIncome = None,
+    foreignIncome = None,
+    chargeableEventGainsIncome = None,
+    savingsAndGainsIncome = None,
+    otherIncome = None,
+    dividendsIncome = None,
+    incomeSummaryTotals = None,
+    taxCalculation = Some(taxCalculationWithBasicRateDivergenceData),
+    previousCalculation = None,
+    endOfYearEstimate = None,
+    lossesAndClaims = None
+  )
+
   val calculationWithR8BDisabled: Calculation =
     calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
 
@@ -278,6 +319,7 @@ trait CalculationFixture {
     periodFrom = "",
     periodTo = ""
   )
+  val metadataWithBasicRateDivergenceData: Metadata = metadata.copy(taxYear = TaxYear.fromDownstream("2025"))
 
   val inputs: Inputs = Inputs(
     PersonalInformation("", None, "UK", None, None, None, None, None, None),
@@ -338,6 +380,13 @@ trait CalculationFixture {
     metadata = metadata,
     inputs = inputs,
     calculation = Some(calculationWithCl290Enabled),
+    messages = None
+  )
+
+  val minimalCalculationBasicRateDivergenceEnabledResponse: RetrieveCalculationResponse = RetrieveCalculationResponse(
+    metadata = metadataWithBasicRateDivergenceData,
+    inputs = inputs,
+    calculation = Some(calculationWithBasicRateDivergenceEnabled),
     messages = None
   )
 
@@ -588,6 +637,56 @@ trait CalculationFixture {
         |   }
         |}
     """.stripMargin
+    )
+    .as[JsObject]
+
+  val minimumCalculationResponseBasicRateDivergenceEnabledJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2024-25",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |  "calculation": {
+        |    "taxCalculation": {
+        |      "incomeTax": {
+        |        "totalIncomeReceivedFromAllSources": 50,
+        |        "totalAllowancesAndDeductions": 50,
+        |        "totalTaxableIncome": 50,
+        |        "incomeTaxCharged": 50,
+        |        "giftAidTaxChargeWhereBasicRateDiffers":2000.25
+        |      },
+        |      "nics": {
+        |        "class2Nics": {
+        |          "underSmallProfitThreshold": true,
+        |          "underLowerProfitThreshold": true
+        |        }
+        |      },
+        |      "totalIncomeTaxAndNicsDue": 50
+        |    },
+        |    "reliefs": {
+        |      "giftAidTaxReductionWhereBasicRateDiffers": {
+        |         "amount": 2000.25
+        |      }
+        |    }
+        |  }
+        |}
+""".stripMargin
     )
     .as[JsObject]
 

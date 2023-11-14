@@ -68,9 +68,17 @@ case class RetrieveCalculationResponse(
     RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
   }
 
+  def withoutGiftAidTaxReductionWhereBasicRateDiffers: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
+
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
+
+  def withoutBasicRateDivergenceUpdates: RetrieveCalculationResponse =
+    this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
+
   def withoutAdditionalFieldsUpdates: RetrieveCalculationResponse =
     this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
-
 }
 
 object RetrieveCalculationResponse extends HateoasLinks {
