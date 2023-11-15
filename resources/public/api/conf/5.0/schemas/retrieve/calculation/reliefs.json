@@ -417,7 +417,7 @@
           "example": "2000.58"
         }
       }
-    },
+    }
     {{/if}}
   },
   "additionalProperties": false
