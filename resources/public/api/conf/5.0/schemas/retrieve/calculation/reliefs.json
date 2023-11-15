@@ -405,9 +405,9 @@
           "example": "5000.58"
         }
       }
-    },
+    }
     {{#if (enabled "basicRateDivergence")}}
-    "giftAidTaxReductionWhereBasicRateDiffers": {
+    ,"giftAidTaxReductionWhereBasicRateDiffers": {
       "type": "object",
       "description": "Gift Aid tax reduction because Scottish or Welsh Basic Rate is above the Basic Rate at which charities have obtained relief.",
       "properties": {
@@ -417,7 +417,7 @@
           "example": "2000.58"
         }
       }
-    },
+    }
     {{/if}}
   },
   "additionalProperties": false
