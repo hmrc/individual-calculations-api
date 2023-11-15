@@ -19,7 +19,7 @@ package v5.models.response.retrieveCalculation.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class TaxCalculation(
-    incomeTax: IncomeTax,
+    incomeTax: Option[IncomeTax],
     nics: Option[Nics],
     totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
     saUnderpaymentsCodedOut: Option[BigDecimal],
@@ -36,6 +36,8 @@ case class TaxCalculation(
   def withoutUnderLowerProfitThreshold: TaxCalculation =
     copy(nics = nics.map(_.withoutUnderLowerProfitThreshold).filter(_.isDefined))
 
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: TaxCalculation =
+    copy(incomeTax = incomeTax.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers))
 }
 
 object TaxCalculation {
