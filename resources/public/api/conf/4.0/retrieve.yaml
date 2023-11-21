@@ -5,6 +5,8 @@ get:
   description: |
     This endpoint allows the developer to retrieve all the tax calculation data 
     for a given National Insurance number and Calculation ID.
+    
+    Note: if the calculation has been triggered recently and has not yet completed, this endpoint will return 404 Not Found.
 
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
