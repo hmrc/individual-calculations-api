@@ -12,7 +12,7 @@ components:
         
         Where no tax year is provided, it will default to the current tax year.
         
-        <p style="font-weight:bold"For periodIds for tax years 2023-24 and onwards, taxYear is mandatory and a 404 is returned if not provided. It must not be provided for a periodId relating to an earlier tax year.</p>
+        <p style="font-weight:bold">For periodIds for tax years 2023-24 and onwards, taxYear is mandatory and a 404 is returned if not provided. It must not be provided for a periodId relating to an earlier tax year.</p>
       schema:
         type: string
         example: "2023-24"
