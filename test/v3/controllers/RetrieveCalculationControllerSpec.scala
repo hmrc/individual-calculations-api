@@ -35,6 +35,7 @@ import v3.mocks.services.MockRetrieveCalculationService
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -60,8 +61,8 @@ class RetrieveCalculationControllerSpec
 
   trait Test extends ControllerTest {
 
-    implicit val appConfig: AppConfig                 = mockAppConfig
-    implicit val apiVersion: Version                  = Version3
+    implicit val appConfig: AppConfig = mockAppConfig
+    implicit val apiVersion: Version  = Version3
 
     lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
@@ -74,6 +75,16 @@ class RetrieveCalculationControllerSpec
     )
 
     protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
 
   }
 
@@ -128,6 +139,7 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
@@ -139,6 +151,7 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()

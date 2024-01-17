@@ -34,6 +34,7 @@ import v3.mocks.services.MockListCalculationsService
 import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 import v3.models.response.listCalculations.{ListCalculationsHateoasData, ListCalculationsResponse}
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -50,10 +51,10 @@ class ListCalculationsControllerSpec
     with ListCalculationsFixture {
   val taxYear: Option[String]          = Some("2020-21")
   val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
+  implicit val appConfig: AppConfig    = mockAppConfig
+  implicit val apiVersion: Version     = Version3
 
   class Test extends ControllerTest {
-    implicit val appConfig: AppConfig = mockAppConfig
-    implicit val apiVersion: Version  = Version3
 
     val taxYear: Option[String] = rawData.taxYear
 
@@ -73,6 +74,16 @@ class ListCalculationsControllerSpec
     )
 
     override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
   }
 
   "ListCalculationsController" when {

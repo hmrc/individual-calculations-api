@@ -37,6 +37,7 @@ import v3.models.request._
 import v3.models.response.retrieveCalculation.CalculationFixture
 import v3.services.StubNrsProxyService
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -64,9 +65,10 @@ class SubmitFinalDeclarationControllerSpec
   implicit override val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
+  implicit val appConfig: AppConfig = mockAppConfig
+  implicit val apiVersion: Version  = Version3
+
   trait Test extends ControllerTest with AuditEventChecking {
-    implicit val appConfig: AppConfig = mockAppConfig
-    implicit val apiVersion: Version  = Version3
 
     val controller = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,
@@ -96,6 +98,16 @@ class SubmitFinalDeclarationControllerSpec
           auditResponse = auditResponse
         )
       )
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
 
   }
 

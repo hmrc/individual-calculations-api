@@ -35,6 +35,7 @@ import v3.mocks.services.MockTriggerCalculationService
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v3.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -74,9 +75,10 @@ class TriggerCalculationControllerSpec
   val requestDataWithFinalDeclaration: TriggerCalculationRequest      = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = true)
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
 
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version3
+
   trait Test extends ControllerTest with AuditEventChecking {
-    implicit val appConfig: AppConfig                 = mockAppConfig
-    implicit val apiVersion: Version                  = Version3
 
     val finalDeclaration: Option[String] = None
 
@@ -107,6 +109,16 @@ class TriggerCalculationControllerSpec
           auditResponse = auditResponse
         )
       )
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
 
   }
 

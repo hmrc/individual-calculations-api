@@ -35,6 +35,7 @@ import v5.mocks.services.MockRetrieveCalculationService
 import v5.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 import v5.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -61,10 +62,10 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
 
-  trait Test extends ControllerTest {
-    implicit val appConfig: AppConfig = mockAppConfig
-    implicit val apiVersion: Version  = Version3
+  implicit val appConfig: AppConfig = mockAppConfig
+  implicit val apiVersion: Version  = Version3
 
+  trait Test extends ControllerTest {
     def taxYear: String
     def rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
     def requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
@@ -80,6 +81,16 @@ class RetrieveCalculationControllerSpec
     )
 
     protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
 
   }
 

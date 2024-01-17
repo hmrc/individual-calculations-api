@@ -29,7 +29,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import routing.{Version, Version3}
+import routing.{Version, Version4}
 import v4.mocks.connectors.MockNrsProxyConnector
 import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
@@ -37,6 +37,7 @@ import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
 import v4.services.StubNrsProxyService
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -64,10 +65,10 @@ class SubmitFinalDeclarationControllerSpec
   implicit override val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
-  trait Test extends ControllerTest with AuditEventChecking {
+  implicit val appConfig: AppConfig = mockAppConfig
+  implicit val apiVersion: Version  = Version4
 
-    implicit val appConfig: AppConfig = mockAppConfig
-    implicit val apiVersion: Version  = Version3
+  trait Test extends ControllerTest with AuditEventChecking {
 
     val controller = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,
@@ -97,6 +98,16 @@ class SubmitFinalDeclarationControllerSpec
           auditResponse = auditResponse
         )
       )
+
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
 
   }
 
