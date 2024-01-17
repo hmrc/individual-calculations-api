@@ -34,12 +34,15 @@ import play.api.http.{HeaderNames, Status}
 import play.api.libs.json.{JsString, Json, OWrites}
 import play.api.mvc.AnyContent
 import play.api.test.{FakeRequest, ResultExtractors}
+import routing.{Version, Version3}
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.ControllerSpecHateoasSupport
 import v3.hateoas.HateoasLinksFactory
+import mocks.MockAppConfig
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -51,7 +54,8 @@ class RequestHandlerSpec
     with Status
     with HeaderNames
     with ResultExtractors
-    with ControllerSpecHateoasSupport {
+    with ControllerSpecHateoasSupport
+    with MockAppConfig {
 
   private val successResponseJson = Json.obj("result" -> "SUCCESS!")
   private val successCode         = Status.ACCEPTED
@@ -77,6 +81,8 @@ class RequestHandlerSpec
   implicit val ctx: RequestContext                  = RequestContext.from(mockIdGenerator, endpointLogContext)
   private val userDetails                           = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
   implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, FakeRequest())
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version3
 
   trait DummyService {
     def service(input: Input.type)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Output.type]]
@@ -103,6 +109,16 @@ class RequestHandlerSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
+        MockAppConfig
+          .isApiDeprecated(apiVersion)
+          .returns(false)
+          .anyNumberOfTimes()
+
+        MockAppConfig
+          .sunsetDate(apiVersion)
+          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+          .anyNumberOfTimes()
+
         val result = requestHandler.handleRequest(InputRaw)
 
         contentAsJson(result) shouldBe successResponseJson
@@ -119,6 +135,16 @@ class RequestHandlerSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
+        MockAppConfig
+          .isApiDeprecated(apiVersion)
+          .returns(false)
+          .anyNumberOfTimes()
+
+        MockAppConfig
+          .sunsetDate(apiVersion)
+          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+          .anyNumberOfTimes()
+
         val result = requestHandler.handleRequest(InputRaw)
 
         contentAsString(result) shouldBe ""
@@ -134,6 +160,16 @@ class RequestHandlerSpec
 
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
+
+        MockAppConfig
+          .isApiDeprecated(apiVersion)
+          .returns(false)
+          .anyNumberOfTimes()
+
+        MockAppConfig
+          .sunsetDate(apiVersion)
+          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+          .anyNumberOfTimes()
 
         MockHateoasFactory.wrap(Output, HData) returns hateoas.HateoasWrapper(Output, hateoaslinks)
 
@@ -154,6 +190,16 @@ class RequestHandlerSpec
 
         parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
 
+        MockAppConfig
+          .isApiDeprecated(apiVersion)
+          .returns(false)
+          .anyNumberOfTimes()
+
+        MockAppConfig
+          .sunsetDate(apiVersion)
+          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+          .anyNumberOfTimes()
+
         val result = requestHandler.handleRequest(InputRaw)
 
         contentAsJson(result) shouldBe NinoFormatError.asJson
@@ -171,6 +217,16 @@ class RequestHandlerSpec
 
         parseRequest returns Right(Input)
         service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
+
+        MockAppConfig
+          .isApiDeprecated(apiVersion)
+          .returns(false)
+          .anyNumberOfTimes()
+
+        MockAppConfig
+          .sunsetDate(apiVersion)
+          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+          .anyNumberOfTimes()
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -202,6 +258,14 @@ class RequestHandlerSpec
         .withService(mockService.service)
         .withPlainJsonResult(successCode)
 
+      MockAppConfig
+        .isApiDeprecated(apiVersion) returns false
+
+      MockAppConfig
+        .sunsetDate(apiVersion)
+        .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+        .anyNumberOfTimes()
+
       def verifyAudit(correlationId: String, auditResponse: AuditResponse): CallHandler[Future[AuditResult]] =
         MockedAuditService.verifyAuditEvent(
           AuditEvent(
@@ -217,6 +281,14 @@ class RequestHandlerSpec
 
             parseRequest returns Right(Input)
             service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
+
+            MockAppConfig
+              .isApiDeprecated(apiVersion) returns false
+
+            MockAppConfig
+              .sunsetDate(apiVersion)
+              .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+              .anyNumberOfTimes()
 
             val result = requestHandler.handleRequest(InputRaw)
 
@@ -235,6 +307,14 @@ class RequestHandlerSpec
             parseRequest returns Right(Input)
             service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
+            MockAppConfig
+              .isApiDeprecated(apiVersion) returns false
+
+            MockAppConfig
+              .sunsetDate(apiVersion)
+              .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+              .anyNumberOfTimes()
+
             val result = requestHandler.handleRequest(InputRaw)
 
             contentAsJson(result) shouldBe successResponseJson
@@ -252,6 +332,14 @@ class RequestHandlerSpec
 
           parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
 
+          MockAppConfig
+            .isApiDeprecated(apiVersion) returns false
+
+          MockAppConfig
+            .sunsetDate(apiVersion)
+            .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+            .anyNumberOfTimes()
+
           val result = requestHandler.handleRequest(InputRaw)
 
           contentAsJson(result) shouldBe NinoFormatError.asJson
@@ -268,6 +356,14 @@ class RequestHandlerSpec
 
           parseRequest returns Right(Input)
           service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
+
+          MockAppConfig
+            .isApiDeprecated(apiVersion) returns false
+
+          MockAppConfig
+            .sunsetDate(apiVersion)
+            .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+            .anyNumberOfTimes()
 
           val result = requestHandler.handleRequest(InputRaw)
 

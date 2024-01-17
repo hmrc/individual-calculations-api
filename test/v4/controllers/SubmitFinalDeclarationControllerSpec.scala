@@ -23,10 +23,13 @@ import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
+import config.AppConfig
+import mocks.MockAppConfig
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import routing.{Version, Version3}
 import v4.mocks.connectors.MockNrsProxyConnector
 import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
@@ -52,6 +55,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockNrsProxyConnector
     with StubNrsProxyService
     with MockIdGenerator
+    with MockAppConfig
     with CalculationFixture {
 
   private val taxYear       = "2020-21"
@@ -61,6 +65,9 @@ class SubmitFinalDeclarationControllerSpec
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
   trait Test extends ControllerTest with AuditEventChecking {
+
+    implicit val appConfig: AppConfig = mockAppConfig
+    implicit val apiVersion: Version  = Version3
 
     val controller = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,

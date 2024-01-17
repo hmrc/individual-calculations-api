@@ -24,10 +24,12 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
+import config.AppConfig
 import mocks.MockAppConfig
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
+import routing.{Version, Version3}
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
 import v3.mocks.services.MockRetrieveCalculationService
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -58,12 +60,14 @@ class RetrieveCalculationControllerSpec
 
   trait Test extends ControllerTest {
 
+    implicit val appConfig: AppConfig                 = mockAppConfig
+    implicit val apiVersion: Version                  = Version3
+
     lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveCalculationParser,
       service = mockRetrieveCalculationService,
-      appConfig = mockAppConfig,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator

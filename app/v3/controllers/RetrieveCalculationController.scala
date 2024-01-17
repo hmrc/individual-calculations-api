@@ -20,6 +20,7 @@ import api.controllers._
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
@@ -30,14 +31,14 @@ import v3.services.RetrieveCalculationService
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
-                                               val lookupService: MtdIdLookupService,
-                                               appConfig: AppConfig,
-                                               parser: RetrieveCalculationParser,
-                                               service: RetrieveCalculationService,
-                                               hateoasFactory: HateoasFactory,
-                                               cc: ControllerComponents,
-                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+class RetrieveCalculationController @Inject() (
+    val authService: EnrolmentsAuthService,
+    val lookupService: MtdIdLookupService,
+    parser: RetrieveCalculationParser,
+    service: RetrieveCalculationService,
+    hateoasFactory: HateoasFactory,
+    cc: ControllerComponents,
+    val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

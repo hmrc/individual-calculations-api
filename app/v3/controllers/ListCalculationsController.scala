@@ -18,7 +18,9 @@ package v3.controllers
 
 import api.controllers._
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.ListCalculationsParser
 import v3.hateoas.HateoasFactory
@@ -30,13 +32,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class ListCalculationsController @Inject() (val authService: EnrolmentsAuthService,
-                                            val lookupService: MtdIdLookupService,
-                                            parser: ListCalculationsParser,
-                                            service: ListCalculationsService,
-                                            hateoasFactory: HateoasFactory,
-                                            cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+class ListCalculationsController @Inject() (
+    val authService: EnrolmentsAuthService,
+    val lookupService: MtdIdLookupService,
+    parser: ListCalculationsParser,
+    service: ListCalculationsService,
+    hateoasFactory: HateoasFactory,
+    cc: ControllerComponents,
+    val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

@@ -24,7 +24,10 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
+import config.AppConfig
+import mocks.MockAppConfig
 import play.api.mvc.Result
+import routing.{Version, Version3}
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.requestParsers.MockListCalculationsParser
 import v3.mocks.services.MockListCalculationsService
@@ -43,11 +46,14 @@ class ListCalculationsControllerSpec
     with MockListCalculationsService
     with MockHateoasFactory
     with MockIdGenerator
+    with MockAppConfig
     with ListCalculationsFixture {
   val taxYear: Option[String]          = Some("2020-21")
   val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
 
   class Test extends ControllerTest {
+    implicit val appConfig: AppConfig = mockAppConfig
+    implicit val apiVersion: Version  = Version3
 
     val taxYear: Option[String] = rawData.taxYear
 

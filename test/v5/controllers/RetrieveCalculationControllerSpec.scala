@@ -24,10 +24,12 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
+import config.AppConfig
 import mocks.MockAppConfig
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
+import routing.{Version, Version3}
 import v5.mocks.requestParsers.MockRetrieveCalculationParser
 import v5.mocks.services.MockRetrieveCalculationService
 import v5.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -60,8 +62,11 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
 
   trait Test extends ControllerTest {
+    implicit val appConfig: AppConfig = mockAppConfig
+    implicit val apiVersion: Version  = Version3
+
     def taxYear: String
-    def rawData: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
+    def rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
     def requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
     lazy val controller = new RetrieveCalculationController(
@@ -69,7 +74,6 @@ class RetrieveCalculationControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveCalculationParser,
       service = mockRetrieveCalculationService,
-      appConfig = mockAppConfig,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator
@@ -80,11 +84,11 @@ class RetrieveCalculationControllerSpec
   }
 
   trait NonTysTest extends Test {
-    def taxYear: String                                       = "2017-18"
+    def taxYear: String = "2017-18"
   }
 
   trait TysTest extends Test {
-    def taxYear: String                                       = "2024-25"
+    def taxYear: String = "2024-25"
   }
 
   "handleRequest" should {

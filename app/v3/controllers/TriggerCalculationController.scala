@@ -19,8 +19,10 @@ package v3.controllers
 import api.controllers._
 import api.models.audit.GenericAuditDetail
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import config.AppConfig
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.TriggerCalculationParser
 import v3.hateoas.HateoasFactory
@@ -38,7 +40,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               val idGenerator: IdGenerator,
                                               hateoasFactory: HateoasFactory,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

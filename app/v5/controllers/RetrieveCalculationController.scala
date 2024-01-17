@@ -21,6 +21,7 @@ import api.models.domain.TaxYear
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v3.hateoas.HateoasFactory
 import v5.controllers.requestParsers.RetrieveCalculationParser
@@ -33,12 +34,11 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               appConfig: AppConfig,
                                                parser: RetrieveCalculationParser,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
-                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

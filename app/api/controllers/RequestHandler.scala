@@ -23,19 +23,28 @@ import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import cats.data.EitherT
 import cats.implicits._
+import config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
+import routing.Version
 import utils.Logging
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import scala.concurrent.{ExecutionContext, Future}
 
 trait RequestHandler[InputRaw <: RawData] {
 
-  def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result]
-
+  def handleRequest(rawData: InputRaw)(implicit
+      ctx: RequestContext,
+      request: UserRequest[_],
+      ec: ExecutionContext,
+      appConfig: AppConfig,
+      apiVersion: Version): Future[Result]
 }
 
 object RequestHandler {
@@ -58,10 +67,15 @@ object RequestHandler {
       errorHandling: ErrorHandling = ErrorHandling.Default,
       resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
       auditHandler: Option[AuditHandler] = None,
-      modelHandler: Option[(Output) => Output] = None
+      modelHandler: Option[Output => Output] = None
   ) extends RequestHandler[InputRaw] {
 
-    def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] =
+    def handleRequest(rawData: InputRaw)(implicit
+        ctx: RequestContext,
+        request: UserRequest[_],
+        ec: ExecutionContext,
+        appConfig: AppConfig,
+        apiVersion: Version): Future[Result] =
       Delegate.handleRequest(rawData)
 
     def withErrorHandling(errorHandling: ErrorHandling): RequestHandlerBuilder[InputRaw, Input, Output] =
@@ -70,7 +84,7 @@ object RequestHandler {
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(auditHandler = Some(auditHandler))
 
-    def withModelHandling(modelHandler: (Output) => Output): RequestHandlerBuilder[InputRaw, Input, Output] =
+    def withModelHandling(modelHandler: Output => Output): RequestHandlerBuilder[InputRaw, Input, Output] =
       copy(modelHandler = Option(modelHandler))
 
     /** Shorthand for
@@ -118,19 +132,46 @@ object RequestHandler {
 
       implicit class Response(result: Result) {
 
-        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
+        private val HttpDateFormatter = DateTimeFormatter
+          .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
+          .withZone(ZoneId.of("UTC"))
 
-          val newHeaders: Seq[(String, String)] = responseHeaders ++ Seq(
-            "X-CorrelationId"        -> correlationId,
-            "X-Content-Type-Options" -> "nosniff"
-          )
+        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*)(implicit appConfig: AppConfig, apiVersion: Version): Result = {
+          val maybeDeprecatedHeader =
+            if (appConfig.isApiDeprecated(apiVersion))
+              List(
+                "Deprecation" -> s"${HttpDateFormatter.format(appConfig.deprecatedOn(apiVersion).get)}",
+                "Link"        -> s"${appConfig.apiDocumentationUrl}"
+              )
+            else Nil
 
-          result.copy(header = result.header.copy(headers = result.header.headers ++ newHeaders))
+          val maybeSunsetHeader =
+            if (appConfig.sunsetDate(apiVersion).nonEmpty) {
+              List("Sunset" -> s"${HttpDateFormatter.format(appConfig.sunsetDate(apiVersion).get)}")
+            } else if (appConfig.sunsetDate(apiVersion).isEmpty && appConfig.sunsetEnabled(apiVersion)) {
+              List("Sunset" -> s"${HttpDateFormatter.format(appConfig.deprecatedOn(apiVersion).get.plusMonths(6))}")
+            } else Nil
+
+          val headers =
+            responseHeaders ++
+              List(
+                "X-CorrelationId"        -> correlationId,
+                "X-Content-Type-Options" -> "nosniff"
+              ) ++
+              maybeDeprecatedHeader ++
+              maybeSunsetHeader
+
+          result.copy(header = result.header.copy(headers = result.header.headers ++ headers))
         }
 
       }
 
-      def handleRequest(rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
+      def handleRequest(rawData: InputRaw)(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext,
+          appConfig: AppConfig,
+          apiVersion: Version): Future[Result] = {
 
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
@@ -156,12 +197,14 @@ object RequestHandler {
         }.merge
       }
 
-      private def doWithContext[A](ctx: RequestContext)(f: RequestContext => A) = f(ctx)
+      private def doWithContext[A](ctx: RequestContext)(f: RequestContext => A): A = f(ctx)
 
       private def handleSuccess(rawData: InputRaw, parsedRequest: Input, serviceResponse: ResponseWrapper[Output])(implicit
           ctx: RequestContext,
           request: UserRequest[_],
-          ec: ExecutionContext): Result = {
+          ec: ExecutionContext,
+          appConfig: AppConfig,
+          apiVersion: Version): Result = {
         logger.info(
           s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
             s"Success response received with CorrelationId: ${ctx.correlationId}")
@@ -184,7 +227,12 @@ object RequestHandler {
           creator.performAudit(request.userDetails, httpStatus, response)
         }
 
-      private def handleFailure(errorWrapper: ErrorWrapper)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext) = {
+      private def handleFailure(errorWrapper: ErrorWrapper)(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext,
+          appConfig: AppConfig,
+          apiVersion: Version) = {
         logger.warn(
           s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: ${ctx.correlationId}")
@@ -205,8 +253,12 @@ object RequestHandler {
         InternalServerError(Json.toJson(InternalError))
       }
 
-      def handleRequestWithModelUpdate(
-          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext): Future[Result] = {
+      def handleRequestWithModelUpdate(rawData: InputRaw)(implicit
+          ctx: RequestContext,
+          request: UserRequest[_],
+          ec: ExecutionContext,
+          appConfig: AppConfig,
+          apiVersion: Version): Future[Result] = {
 
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +

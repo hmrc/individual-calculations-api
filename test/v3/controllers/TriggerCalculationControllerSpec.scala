@@ -25,8 +25,11 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
+import config.AppConfig
+import mocks.MockAppConfig
 import play.api.libs.json._
 import play.api.mvc.Result
+import routing.{Version, Version3}
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.MockTriggerCalculationService
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
@@ -44,7 +47,8 @@ class TriggerCalculationControllerSpec
     with MockTriggerCalculationParser
     with MockHateoasFactory
     with MockAuditService
-    with MockIdGenerator {
+    with MockIdGenerator
+    with MockAppConfig {
 
   private val taxYear       = TaxYear.fromMtd("2017-18")
   private val rawTaxYear    = taxYear.asMtd
@@ -71,6 +75,9 @@ class TriggerCalculationControllerSpec
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
 
   trait Test extends ControllerTest with AuditEventChecking {
+    implicit val appConfig: AppConfig                 = mockAppConfig
+    implicit val apiVersion: Version                  = Version3
+
     val finalDeclaration: Option[String] = None
 
     val controller = new TriggerCalculationController(
