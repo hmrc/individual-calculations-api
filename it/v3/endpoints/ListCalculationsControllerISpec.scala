@@ -17,7 +17,16 @@
 package v3.endpoints
 
 import api.models.domain.TaxYear
-import api.models.errors.{InternalError, MtdError, NinoFormatError, NotFoundError, RuleIncorrectGovTestScenarioError, RuleTaxYearNotSupportedError, RuleTaxYearRangeInvalidError, TaxYearFormatError}
+import api.models.errors.{
+  InternalError,
+  MtdError,
+  NinoFormatError,
+  NotFoundError,
+  RuleIncorrectGovTestScenarioError,
+  RuleTaxYearNotSupportedError,
+  RuleTaxYearRangeInvalidError,
+  TaxYearFormatError
+}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._

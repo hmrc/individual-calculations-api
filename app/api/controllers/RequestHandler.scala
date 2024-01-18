@@ -32,7 +32,7 @@ import routing.Version
 import utils.Logging
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
-import java.time.ZoneId
+import java.time.{LocalDateTime, ZoneId}
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import scala.concurrent.{ExecutionContext, Future}
@@ -45,6 +45,7 @@ trait RequestHandler[InputRaw <: RawData] {
       ec: ExecutionContext,
       appConfig: AppConfig,
       apiVersion: Version): Future[Result]
+
 }
 
 object RequestHandler {
@@ -130,27 +131,36 @@ object RequestHandler {
     // Scoped as a private delegate so as to keep the logic completely separate from the configuration
     private object Delegate extends RequestHandler[InputRaw] with Logging with RequestContextImplicits {
 
-      implicit class Response(result: Result) {
+      implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
-        private val HttpDateFormatter = DateTimeFormatter
+        private def imfDateFormatter(dateTime: LocalDateTime) = DateTimeFormatter
           .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
           .withZone(ZoneId.of("UTC"))
+          .format(dateTime)
 
-        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*)(implicit appConfig: AppConfig, apiVersion: Version): Result = {
-          val maybeDeprecatedHeader =
-            if (appConfig.isApiDeprecated(apiVersion))
-              List(
-                "Deprecation" -> s"${HttpDateFormatter.format(appConfig.deprecatedOn(apiVersion).get)}",
-                "Link"        -> s"${appConfig.apiDocumentationUrl}"
-              )
-            else Nil
+        private val isApiDeprecated: Boolean            = appConfig.isApiDeprecated(apiVersion)
+        private val deprecatedOn: Option[LocalDateTime] = appConfig.deprecatedOn(apiVersion)
+        private val sunsetDate: Option[LocalDateTime]   = appConfig.sunsetDate(apiVersion)
+        private val sunsetEnabled: Boolean              = appConfig.isSunsetEnabled(apiVersion)
+
+        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
+
+          val maybeDeprecatedHeader: List[(String, String)] = {
+            Option(deprecatedOn)
+              .map(deprecatedOn =>
+                List(
+                  "Deprecation" -> s"${if (deprecatedOn.isDefined) imfDateFormatter(deprecatedOn.getOrElse(LocalDateTime.now())) else isApiDeprecated}",
+                  "Link"        -> s"${appConfig.apiDocumentationUrl}"
+                ))
+              .getOrElse(Nil)
+          }
 
           val maybeSunsetHeader =
-            if (appConfig.sunsetDate(apiVersion).nonEmpty) {
-              List("Sunset" -> s"${HttpDateFormatter.format(appConfig.sunsetDate(apiVersion).get)}")
-            } else if (appConfig.sunsetDate(apiVersion).isEmpty && appConfig.sunsetEnabled(apiVersion)) {
-              List("Sunset" -> s"${HttpDateFormatter.format(appConfig.deprecatedOn(apiVersion).get.plusMonths(6))}")
-            } else Nil
+            if (sunsetDate.nonEmpty)
+              List("Sunset" -> s"${imfDateFormatter(sunsetDate.orNull)}")
+            else if (sunsetDate.isEmpty && sunsetEnabled)
+              List("Sunset" -> s"${imfDateFormatter(deprecatedOn.map(_.plusMonths(6)).orNull)}")
+            else Nil
 
           val headers =
             responseHeaders ++

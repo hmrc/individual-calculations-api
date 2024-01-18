@@ -88,6 +88,33 @@ class RequestHandlerSpec
     def service(input: Input.type)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Output.type]]
   }
 
+  class Test {
+    MockAppConfig
+      .isApiDeprecated(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+    
+    MockAppConfig
+      .deprecatedOn(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .sunsetDate(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .isSunsetEnabled(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .apiDocumentationUrl()
+      .returns("")
+      .anyNumberOfTimes()
+  }
+
   private val mockService = mock[DummyService]
 
   private def service =
@@ -100,7 +127,7 @@ class RequestHandlerSpec
 
   "RequestHandler" when {
     "a request is successful" must {
-      "return the correct response" in {
+      "return the correct response" in new Test {
         val requestHandler = RequestHandler
           .withParser(mockParser)
           .withService(mockService.service)
@@ -109,16 +136,6 @@ class RequestHandlerSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
-        MockAppConfig
-          .isApiDeprecated(apiVersion)
-          .returns(false)
-          .anyNumberOfTimes()
-
-        MockAppConfig
-          .sunsetDate(apiVersion)
-          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-          .anyNumberOfTimes()
-
         val result = requestHandler.handleRequest(InputRaw)
 
         contentAsJson(result) shouldBe successResponseJson
@@ -126,7 +143,7 @@ class RequestHandlerSpec
         status(result) shouldBe successCode
       }
 
-      "return no content if required" in {
+      "return no content if required" in new Test {
         val requestHandler = RequestHandler
           .withParser(mockParser)
           .withService(mockService.service)
@@ -135,16 +152,6 @@ class RequestHandlerSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
-        MockAppConfig
-          .isApiDeprecated(apiVersion)
-          .returns(false)
-          .anyNumberOfTimes()
-
-        MockAppConfig
-          .sunsetDate(apiVersion)
-          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-          .anyNumberOfTimes()
-
         val result = requestHandler.handleRequest(InputRaw)
 
         contentAsString(result) shouldBe ""
@@ -152,7 +159,7 @@ class RequestHandlerSpec
         status(result) shouldBe NO_CONTENT
       }
 
-      "wrap the response with hateoas links if required§" in {
+      "wrap the response with hateoas links if required§" in new Test {
         val requestHandler = RequestHandler
           .withParser(mockParser)
           .withService(mockService.service)
@@ -160,16 +167,6 @@ class RequestHandlerSpec
 
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-        MockAppConfig
-          .isApiDeprecated(apiVersion)
-          .returns(false)
-          .anyNumberOfTimes()
-
-        MockAppConfig
-          .sunsetDate(apiVersion)
-          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-          .anyNumberOfTimes()
 
         MockHateoasFactory.wrap(Output, HData) returns hateoas.HateoasWrapper(Output, hateoaslinks)
 
@@ -182,23 +179,13 @@ class RequestHandlerSpec
     }
 
     "a request fails with validation errors" must {
-      "return the errors" in {
+      "return the errors" in new Test {
         val requestHandler = RequestHandler
           .withParser(mockParser)
           .withService(mockService.service)
           .withPlainJsonResult(successCode)
 
         parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
-
-        MockAppConfig
-          .isApiDeprecated(apiVersion)
-          .returns(false)
-          .anyNumberOfTimes()
-
-        MockAppConfig
-          .sunsetDate(apiVersion)
-          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-          .anyNumberOfTimes()
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -209,7 +196,7 @@ class RequestHandlerSpec
     }
 
     "a request fails with service errors" must {
-      "return the errors" in {
+      "return the errors" in new Test {
         val requestHandler = RequestHandler
           .withParser(mockParser)
           .withService(mockService.service)
@@ -217,16 +204,6 @@ class RequestHandlerSpec
 
         parseRequest returns Right(Input)
         service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
-
-        MockAppConfig
-          .isApiDeprecated(apiVersion)
-          .returns(false)
-          .anyNumberOfTimes()
-
-        MockAppConfig
-          .sunsetDate(apiVersion)
-          .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-          .anyNumberOfTimes()
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -258,14 +235,6 @@ class RequestHandlerSpec
         .withService(mockService.service)
         .withPlainJsonResult(successCode)
 
-      MockAppConfig
-        .isApiDeprecated(apiVersion) returns false
-
-      MockAppConfig
-        .sunsetDate(apiVersion)
-        .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-        .anyNumberOfTimes()
-
       def verifyAudit(correlationId: String, auditResponse: AuditResponse): CallHandler[Future[AuditResult]] =
         MockedAuditService.verifyAuditEvent(
           AuditEvent(
@@ -276,19 +245,11 @@ class RequestHandlerSpec
 
       "a request is successful" when {
         "no response is to be audited" must {
-          "audit without the response" in {
+          "audit without the response" in new Test {
             val requestHandler = basicRequestHandler.withAuditing(auditHandler())
 
             parseRequest returns Right(Input)
             service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-            MockAppConfig
-              .isApiDeprecated(apiVersion) returns false
-
-            MockAppConfig
-              .sunsetDate(apiVersion)
-              .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-              .anyNumberOfTimes()
 
             val result = requestHandler.handleRequest(InputRaw)
 
@@ -301,19 +262,11 @@ class RequestHandlerSpec
         }
 
         "the response is to be audited" must {
-          "audit with the response" in {
+          "audit with the response" in new Test {
             val requestHandler = basicRequestHandler.withAuditing(auditHandler(includeResponse = true))
 
             parseRequest returns Right(Input)
             service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-            MockAppConfig
-              .isApiDeprecated(apiVersion) returns false
-
-            MockAppConfig
-              .sunsetDate(apiVersion)
-              .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-              .anyNumberOfTimes()
 
             val result = requestHandler.handleRequest(InputRaw)
 
@@ -327,18 +280,10 @@ class RequestHandlerSpec
       }
 
       "a request fails with validation errors" must {
-        "audit the failure" in {
+        "audit the failure" in new Test {
           val requestHandler = basicRequestHandler.withAuditing(auditHandler())
 
           parseRequest returns Left(errors.ErrorWrapper(generatedCorrelationId, NinoFormatError))
-
-          MockAppConfig
-            .isApiDeprecated(apiVersion) returns false
-
-          MockAppConfig
-            .sunsetDate(apiVersion)
-            .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-            .anyNumberOfTimes()
 
           val result = requestHandler.handleRequest(InputRaw)
 
@@ -351,19 +296,11 @@ class RequestHandlerSpec
       }
 
       "a request fails with service errors" must {
-        "audit the failure" in {
+        "audit the failure" in new Test {
           val requestHandler = basicRequestHandler.withAuditing(auditHandler())
 
           parseRequest returns Right(Input)
           service returns Future.successful(Left(errors.ErrorWrapper(serviceCorrelationId, NinoFormatError)))
-
-          MockAppConfig
-            .isApiDeprecated(apiVersion) returns false
-
-          MockAppConfig
-            .sunsetDate(apiVersion)
-            .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-            .anyNumberOfTimes()
 
           val result = requestHandler.handleRequest(InputRaw)
 

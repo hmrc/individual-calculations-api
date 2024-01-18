@@ -62,7 +62,8 @@ trait MockAppConfig extends MockFactory {
     def isApiDeprecated(version: Version): CallHandler[Boolean]            = (mockAppConfig.isApiDeprecated(_: Version)).expects(version)
     def deprecatedOn(version: Version): CallHandler[Option[LocalDateTime]] = (mockAppConfig.deprecatedOn(_: Version)).expects(version)
     def sunsetDate(version: Version): CallHandler[Option[LocalDateTime]]   = (mockAppConfig.sunsetDate(_: Version)).expects(version)
-    def sunsetEnabled(version: Version): CallHandler[Boolean]              = (mockAppConfig.sunsetEnabled(_: Version)).expects(version)
+    def isSunsetEnabled(version: Version): CallHandler[Boolean]            = (mockAppConfig.isSunsetEnabled(_: Version)).expects(version)
+    def apiDocumentationUrl(): CallHandler[String]                         = (() => mockAppConfig.apiDocumentationUrl: String).expects()
 
     def apiVersionReleasedInProduction(version: String): CallHandler[Boolean] =
       (mockAppConfig.apiVersionReleasedInProduction: String => Boolean).expects(version)

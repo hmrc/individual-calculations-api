@@ -77,7 +77,7 @@ trait AppConfig {
 
   def sunsetDate(version: Version): Option[LocalDateTime]
 
-  def sunsetEnabled(version: Version): Boolean
+  def isSunsetEnabled(version: Version): Boolean
 
   /** Currently only for OAS documentation.
     */
@@ -133,23 +133,24 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
     .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
     .toFormatter()
 
-  def deprecatedOn(version: Version): Option[LocalDateTime] = configuration.getOptional[String](s"api.$version.deprecatedOn") match {
-    case Some(value) => Some(LocalDateTime.parse(value, DATE_FORMATTER))
-    case None        => None
-  }
+  def deprecatedOn(version: Version): Option[LocalDateTime] =
+    configuration
+      .getOptional[String](s"api.$version.deprecatedOn")
+      .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
 
-  def sunsetDate(version: Version): Option[LocalDateTime] = configuration.getOptional[String](s"api.$version.sunsetDate") match {
-    case Some(value) => Some(LocalDateTime.parse(value, DATE_FORMATTER))
-    case None        => None
-  }
+  def sunsetDate(version: Version): Option[LocalDateTime] =
+    configuration
+      .getOptional[String](s"api.$version.sunsetDate")
+      .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
 
-  override def sunsetEnabled(version: Version): Boolean = configuration.getOptional[Boolean](s"api.$version.sunsetEnabled") match {
-    case Some(value) => value
-    case None        => true
-  }
+  def isSunsetEnabled(version: Version): Boolean =
+    configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
+
   def apiVersionReleasedInProduction(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
+
   val apiDocumentationUrl: String =
     config.getConfString("api.documentation-url", defString = "https://developer.service.hmrc.gov.uk/api-documentation/docs/api")
+
   def endpointReleasedInProduction(version: String, name: String): Boolean = {
     val versionReleasedInProd = apiVersionReleasedInProduction(version)
     val path                  = s"api.$version.endpoints.released-in-production.$name"

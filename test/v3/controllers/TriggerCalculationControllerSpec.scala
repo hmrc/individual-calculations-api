@@ -116,8 +116,23 @@ class TriggerCalculationControllerSpec
       .anyNumberOfTimes()
 
     MockAppConfig
+      .deprecatedOn(apiVersion)
+      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
+
+    MockAppConfig
       .sunsetDate(apiVersion)
       .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .isSunsetEnabled(apiVersion)
+      .returns(false)
+      .anyNumberOfTimes()
+
+    MockAppConfig
+      .apiDocumentationUrl()
+      .returns("")
       .anyNumberOfTimes()
 
   }
