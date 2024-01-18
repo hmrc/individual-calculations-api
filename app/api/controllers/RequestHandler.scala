@@ -133,7 +133,7 @@ object RequestHandler {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
-        private def imfDateFormatter(dateTime: LocalDateTime) = DateTimeFormatter
+        private def imfDateFormatter(dateTime: LocalDateTime): String = DateTimeFormatter
           .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
           .withZone(ZoneId.of("UTC"))
           .format(dateTime)
@@ -149,17 +149,17 @@ object RequestHandler {
             Option(deprecatedOn)
               .map(deprecatedOn =>
                 List(
-                  "Deprecation" -> s"${if (deprecatedOn.isDefined) imfDateFormatter(deprecatedOn.getOrElse(LocalDateTime.now())) else isApiDeprecated}",
-                  "Link"        -> s"${appConfig.apiDocumentationUrl}"
+                  "Deprecation" -> s"${if (deprecatedOn.nonEmpty) imfDateFormatter(deprecatedOn.getOrElse(LocalDateTime.now())) else isApiDeprecated}",
+                  "Link" -> appConfig.apiDocumentationUrl
                 ))
               .getOrElse(Nil)
           }
 
           val maybeSunsetHeader =
             if (sunsetDate.nonEmpty)
-              List("Sunset" -> s"${imfDateFormatter(sunsetDate.orNull)}")
+              List("Sunset" -> imfDateFormatter(sunsetDate.orNull))
             else if (sunsetDate.isEmpty && sunsetEnabled)
-              List("Sunset" -> s"${imfDateFormatter(deprecatedOn.map(_.plusMonths(6)).orNull)}")
+              List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6)).orNull))
             else Nil
 
           val headers =
