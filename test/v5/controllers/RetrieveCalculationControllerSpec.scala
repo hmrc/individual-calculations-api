@@ -29,7 +29,7 @@ import mocks.MockAppConfig
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
-import routing.{Version, Version3}
+import routing.{Version, Version5}
 import v5.mocks.requestParsers.MockRetrieveCalculationParser
 import v5.mocks.services.MockRetrieveCalculationService
 import v5.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -63,7 +63,7 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
 
   implicit val appConfig: AppConfig = mockAppConfig
-  implicit val apiVersion: Version  = Version3
+  implicit val apiVersion: Version  = Version5
 
   trait Test extends ControllerTest {
     def taxYear: String

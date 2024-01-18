@@ -22,7 +22,7 @@ import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
+import routing.{Version, Version3}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.TriggerCalculationParser
 import v3.hateoas.HateoasFactory
@@ -40,7 +40,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               val idGenerator: IdGenerator,
                                               hateoasFactory: HateoasFactory,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -53,6 +53,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
   def triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
+      implicit val apiVersion: Version = Version.from(request, orElse = Version3)
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)

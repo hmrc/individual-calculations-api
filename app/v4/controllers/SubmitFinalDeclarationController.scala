@@ -22,7 +22,7 @@ import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, Se
 import config.AppConfig
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
+import routing.{Version, Version4}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
 import v4.controllers.requestParsers.SubmitFinalDeclarationParser
@@ -42,7 +42,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig, apiVersion: Version)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 
@@ -54,6 +54,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
+      implicit val apiVersion: Version = Version.from(request, orElse = Version4)
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData = SubmitFinalDeclarationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)

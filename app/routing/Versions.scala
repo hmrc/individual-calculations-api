@@ -22,6 +22,9 @@ import play.api.mvc.RequestHeader
 
 object Version {
 
+  def from(request: RequestHeader, orElse: Version): Version =
+    Versions.getFromRequest(request).getOrElse(orElse)
+
   implicit object VersionWrites extends Writes[Version] {
 
     def writes(version: Version): JsValue = version match {
