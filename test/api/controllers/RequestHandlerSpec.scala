@@ -89,11 +89,12 @@ class RequestHandlerSpec
   }
 
   class Test {
+
     MockAppConfig
       .isApiDeprecated(apiVersion)
       .returns(false)
       .anyNumberOfTimes()
-    
+
     MockAppConfig
       .deprecatedOn(apiVersion)
       .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
@@ -212,6 +213,34 @@ class RequestHandlerSpec
         status(result) shouldBe NinoFormatError.httpStatus
       }
     }
+
+//    "a request fails with thrown exception" must {
+//      "return the errors" in new Test {
+//        val requestHandler = RequestHandler
+//          .withParser(mockParser)
+//          .withService(mockService.service)
+//          .withPlainJsonResult(successCode)
+//
+//        MockAppConfig.isApiDeprecated(Version3) returns true
+//        MockAppConfig.deprecatedOn(Version3) returns None
+//        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
+//
+//        val result = requestHandler.handleRequest(InputRaw)
+//
+//        val exception: Exception = intercept[Exception] {
+//          result
+//        }
+//
+//        val cause: Throwable = exception.getCause
+//        cause shouldBe a[Exception]
+//        cause.getMessage shouldBe "deprecatedOn date is required"
+//
+//        contentAsJson(result) shouldBe InternalError.asJson
+//        header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
+//        status(result) shouldBe InternalError.httpStatus
+//
+//      }
+//    }
 
     "auditing is configured" when {
       val params = Map("param" -> "value")

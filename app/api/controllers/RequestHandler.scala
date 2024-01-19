@@ -140,7 +140,6 @@ object RequestHandler {
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
           val maybeDeprecatedHeader: List[(String, String)] = {
-
             if (isApiDeprecated) {
               deprecatedOn
                 .map(deprecatedOn =>

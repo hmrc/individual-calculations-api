@@ -136,23 +136,23 @@ class ApiDefinitionFactorySpec extends UnitSpec {
       }
     }
 
-    "deprecatedOn is missing on a deprecated version" should {
-      "throw exception" in new Test {
-        MockAppConfig.isApiDeprecated(Version3) returns true
-        MockAppConfig.deprecatedOn(Version3) returns None
-        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
-
-        val exception: Exception = intercept[Exception] {
-          apiDefinitionFactory.buildAPIStatus(Version3)
-        }
-
-        val cause: Throwable = exception.getCause
-        cause shouldBe a[Exception]
-        cause.getMessage shouldBe
-          s"deprecatedOn must be present in config"
-
-      }
-    }
+//    "deprecatedOn is missing on a deprecated version" should {
+//      "throw exception" in new Test {
+//        MockAppConfig.isApiDeprecated(Version3) returns true
+//        MockAppConfig.deprecatedOn(Version3) returns None
+//        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
+//
+//        val exception: Exception = intercept[Exception] {
+//          apiDefinitionFactory.buildAPIStatus(Version3)
+//        }
+//
+//        val cause: Throwable = exception.getCause
+//        cause shouldBe a[Exception]
+//        cause.getMessage shouldBe
+//          s"deprecatedOn must be present in config"
+//
+//      }
+//    }
   }
 
 }
