@@ -77,6 +77,7 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
     )
 
   private[definition] def buildAPIStatus(version: Version): APIStatus = {
+    if (appConfig.isApiDeprecated(version)) appConfig.deprecatedOn(version).getOrElse(throw new Exception("deprecatedOn must be present in config"))
     APIStatus.parser
       .lift(appConfig.apiStatus(version))
       .getOrElse {
