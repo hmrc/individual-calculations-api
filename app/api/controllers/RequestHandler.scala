@@ -156,13 +156,13 @@ object RequestHandler {
               List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
             else Nil
 
-          val maybeSunsetHeaderPattern = (sunsetDate, isSunsetEnabled) match {
-            case (sd, true)    => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
-            case (sd, false)   => ???
-            case (None, true)  => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
-            case (None, false) => ???
-            case _             => ???
-          }
+//          val maybeSunsetHeaderPattern = (sunsetDate, isSunsetEnabled) match {
+//            case (sd, true)    => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
+//            case (sd, false)   => ???
+//            case (None, true)  => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
+//            case (None, false) => ???
+//            case _             => ???
+//          }
 
           val headers =
             responseHeaders ++
