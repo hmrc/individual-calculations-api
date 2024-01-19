@@ -236,7 +236,7 @@ class RequestHandlerSpec
 //        cause.getMessage shouldBe "deprecatedOn date is required"
 //
 //        contentAsJson(result) shouldBe InternalError.asJson
-//        header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
+//        header("Deprecation", result) shouldBe None
 //        status(result) shouldBe InternalError.httpStatus
 //
 //      }
