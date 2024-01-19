@@ -17,7 +17,7 @@
 package definition
 
 import config.ConfidenceLevelConfig
-import definition.APIStatus.{ALPHA, BETA, DEPRECATED}
+import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import routing.{Version3, Version4, Version5}
@@ -121,7 +121,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
         MockAppConfig.isApiDeprecated(Version5) returns false
-        MockAppConfig.deprecatedOn(Version5) returns Some(LocalDateTime.now())
+        MockAppConfig.deprecatedOn(Version5) returns None
         MockAppConfig.apiStatus(Version5) returns "BETA"
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe BETA
       }
@@ -130,7 +130,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
         MockAppConfig.isApiDeprecated(Version5) returns false
-        MockAppConfig.deprecatedOn(Version5) returns Some(LocalDateTime.now())
+        MockAppConfig.deprecatedOn(Version5) returns None
         MockAppConfig.apiStatus(Version5) returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe ALPHA
       }
@@ -139,10 +139,18 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "deprecatedOn is missing on a deprecated version" should {
       "throw exception" in new Test {
         MockAppConfig.isApiDeprecated(Version3) returns true
-        MockAppConfig.deprecatedOn(Version3) returns Some(LocalDateTime.now())
+        MockAppConfig.deprecatedOn(Version3) returns None
         MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
 
-        apiDefinitionFactory.buildAPIStatus(Version3) shouldBe DEPRECATED
+        val exception: Exception = intercept[Exception] {
+          apiDefinitionFactory.buildAPIStatus(Version3)
+        }
+
+        val cause: Throwable = exception.getCause
+        cause shouldBe a[Exception]
+        cause.getMessage shouldBe
+          s"deprecatedOn must be present in config"
+
       }
     }
   }
