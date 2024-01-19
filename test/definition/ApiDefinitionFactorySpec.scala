@@ -24,6 +24,8 @@ import routing.{Version3, Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
+import java.time.LocalDateTime
+
 class ApiDefinitionFactorySpec extends UnitSpec {
 
   class Test extends MockHttpClient with MockAppConfig {
@@ -39,10 +41,16 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.featureSwitches.returns(Configuration.empty).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version3) returns "BETA"
         MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
+        MockAppConfig.isApiDeprecated(Version3).returns(true).anyNumberOfTimes()
+        MockAppConfig.deprecatedOn(Version3).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version4) returns "BETA"
         MockAppConfig.endpointsEnabled(Version4).returns(true).anyNumberOfTimes()
+        MockAppConfig.isApiDeprecated(Version4).returns(true).anyNumberOfTimes()
+        MockAppConfig.deprecatedOn(Version4).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version5) returns "BETA"
         MockAppConfig.endpointsEnabled(Version5).returns(true).anyNumberOfTimes()
+        MockAppConfig.isApiDeprecated(Version5).returns(true).anyNumberOfTimes()
+        MockAppConfig.deprecatedOn(Version5).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled
           .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
           .anyNumberOfTimes()
