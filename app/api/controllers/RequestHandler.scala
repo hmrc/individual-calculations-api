@@ -29,12 +29,11 @@ import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import routing.Version
+import utils.DateUtils.imfDateFormatter
 import utils.Logging
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
-import java.time.{LocalDateTime, ZoneId}
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.time.LocalDateTime
 import scala.concurrent.{ExecutionContext, Future}
 
 trait RequestHandler[InputRaw <: RawData] {
@@ -133,15 +132,10 @@ object RequestHandler {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
-        private def imfDateFormatter(dateTime: LocalDateTime): String = DateTimeFormatter
-          .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
-          .withZone(ZoneId.of("UTC"))
-          .format(dateTime)
-
         private val isApiDeprecated: Boolean            = appConfig.isApiDeprecated(apiVersion)
         private val deprecatedOn: Option[LocalDateTime] = appConfig.deprecatedOn(apiVersion)
         private val sunsetDate: Option[LocalDateTime]   = appConfig.sunsetDate(apiVersion)
-        private val sunsetEnabled: Boolean              = appConfig.isSunsetEnabled(apiVersion)
+        private val isSunsetEnabled: Boolean            = appConfig.isSunsetEnabled(apiVersion)
 
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
@@ -157,10 +151,18 @@ object RequestHandler {
 
           val maybeSunsetHeader =
             if (sunsetDate.nonEmpty)
-              List("Sunset" -> imfDateFormatter(sunsetDate.orNull))
-            else if (sunsetDate.isEmpty && sunsetEnabled)
-              List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6)).orNull))
+              List("Sunset" -> imfDateFormatter(sunsetDate.getOrElse(LocalDateTime.now())))
+            else if (sunsetDate.isEmpty && isSunsetEnabled)
+              List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
             else Nil
+
+          val maybeSunsetHeaderPattern = (sunsetDate, isSunsetEnabled) match {
+            case (sd, true)    => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
+            case (sd, false)   => ???
+            case (None, true)  => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
+            case (None, false) => ???
+            case _             => ???
+          }
 
           val headers =
             responseHeaders ++

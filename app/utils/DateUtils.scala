@@ -16,7 +16,9 @@
 
 package utils
 
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime, ZoneId}
+import java.util.Locale
 
 object DateUtils {
 
@@ -31,5 +33,8 @@ object DateUtils {
         s"${currentDate.getYear.-(1)}-${currentDate.getYear.toString.drop(2)}"
       }
   }
-
+  def imfDateFormatter(dateTime: LocalDateTime): String = DateTimeFormatter
+    .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
+    .withZone(ZoneId.of("UTC"))
+    .format(dateTime)
 }
