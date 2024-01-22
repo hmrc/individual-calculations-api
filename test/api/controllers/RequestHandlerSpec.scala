@@ -22,7 +22,7 @@ import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.MockAuditService
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails
-import api.models.errors.NinoFormatError
+import api.models.errors._
 import api.models.hateoas.{HateoasData, Link}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
@@ -30,7 +30,7 @@ import api.models.{errors, hateoas}
 import api.services.ServiceOutcome
 import cats.implicits.catsSyntaxValidatedId
 import config.AppConfig
-import config.Deprecation.NotDeprecated
+import config.Deprecation._
 import mocks.MockAppConfig
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, Status}
@@ -44,6 +44,7 @@ import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.ControllerSpecHateoasSupport
 import v3.hateoas.HateoasLinksFactory
 
+import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -94,7 +95,7 @@ class RequestHandlerSpec
 
     MockAppConfig
       .deprecationFor(apiVersion)
-      .returns(NotDeprecated.valid)
+      .returns(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))).valid)
       .anyNumberOfTimes()
 
     MockAppConfig
@@ -146,6 +147,24 @@ class RequestHandlerSpec
         contentAsString(result) shouldBe ""
         header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
         status(result) shouldBe NO_CONTENT
+      }
+
+      "return the correct response with deprecation headers" in new Test {
+        val requestHandler = RequestHandler
+          .withParser(mockParser)
+          .withService(mockService.service)
+          .withPlainJsonResult(successCode)
+
+        parseRequest returns Right(Input)
+        service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
+
+        val result = requestHandler.handleRequest(InputRaw)
+
+        contentAsJson(result) shouldBe successResponseJson
+        header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
+        header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 UTC")
+        header("Sunset", result) shouldBe Some("Wed, 17 Jan 2024 12:00:00 UTC")
+        status(result) shouldBe successCode
       }
 
       "wrap the response with hateoas links if required§" in new Test {
@@ -201,33 +220,6 @@ class RequestHandlerSpec
         status(result) shouldBe NinoFormatError.httpStatus
       }
     }
-
-//    "a request fails with thrown exception" must {
-    //      "return the errors" in new Test {
-    //        val requestHandler = RequestHandler
-    //          .withParser(mockParser)
-    //          .withService(mockService.service)
-    //          .withPlainJsonResult(successCode)
-    //
-    //        MockAppConfig.deprecationFor(apiVersion).returns(NotDeprecated.valid).anyNumberOfTimes()
-    //        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
-    //
-    //        val result = requestHandler.handleRequest(InputRaw)
-    //
-    //        val exception: Exception = intercept[Exception] {
-    //          result
-    //        }
-    //
-    //        val cause: Throwable = exception.getCause
-    //        cause shouldBe a[Exception]
-    //        cause.getMessage shouldBe "deprecatedOn date is required"
-    //
-    //        contentAsJson(result) shouldBe InternalError.asJson
-    //        header("Deprecation", result) shouldBe None
-    //        status(result) shouldBe InternalError.httpStatus
-    //
-    //      }
-    //    }
 
     "auditing is configured" when {
       val params = Map("param" -> "value")

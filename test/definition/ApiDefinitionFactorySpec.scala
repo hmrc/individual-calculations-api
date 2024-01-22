@@ -18,13 +18,15 @@ package definition
 
 import cats.implicits.catsSyntaxValidatedId
 import config.ConfidenceLevelConfig
-import config.Deprecation.NotDeprecated
+import config.Deprecation.{Deprecated, NotDeprecated}
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import routing.{Version3, Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
+
+import java.time.LocalDateTime
 
 class ApiDefinitionFactorySpec extends UnitSpec {
 
@@ -38,16 +40,13 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
+        Seq(Version3, Version4, Version5)
+          .foreach { version =>
+            MockAppConfig.apiStatus(version).returns("BETA")
+            MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
+            MockAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
+          }
         MockAppConfig.featureSwitches.returns(Configuration.empty).anyNumberOfTimes()
-        MockAppConfig.apiStatus(Version3) returns "BETA"
-        MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecationFor(Version3).returns(NotDeprecated.valid).anyNumberOfTimes()
-        MockAppConfig.apiStatus(Version4) returns "BETA"
-        MockAppConfig.endpointsEnabled(Version4).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecationFor(Version4).returns(NotDeprecated.valid).anyNumberOfTimes()
-        MockAppConfig.apiStatus(Version5) returns "BETA"
-        MockAppConfig.endpointsEnabled(Version5).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecationFor(Version5).returns(NotDeprecated.valid).anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled
           .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
           .anyNumberOfTimes()
@@ -118,6 +117,10 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
         MockAppConfig.apiStatus(Version5) returns "BETA"
+        MockAppConfig
+          .deprecationFor(Version5)
+          .returns(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))).valid)
+          .anyNumberOfTimes()
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe BETA
       }
     }
@@ -125,27 +128,30 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
         MockAppConfig.apiStatus(Version5) returns "ALPHO"
+        MockAppConfig
+          .deprecationFor(Version5)
+          .returns(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))).valid)
+          .anyNumberOfTimes()
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe ALPHA
       }
     }
 
-//    "deprecatedOn is missing on a deprecated version" should {
-//      "throw exception" in new Test {
-//        MockAppConfig.isApiDeprecated(Version3) returns true
-//        MockAppConfig.deprecatedOn(Version3) returns None
-//        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
-//
-//        val exception: Exception = intercept[Exception] {
-//          apiDefinitionFactory.buildAPIStatus(Version3)
-//        }
-//
-//        val cause: Throwable = exception.getCause
-//        cause shouldBe a[Exception]
-//        cause.getMessage shouldBe
-//          s"deprecatedOn must be present in config"
-//
-//      }
-//    }
+    "the 'deprecatedOn' parameter is missing for a deprecated version" should {
+      "throw exception" in new Test {
+        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
+        MockAppConfig
+          .deprecationFor(Version3)
+          .returns("deprecatedOn date is required for a deprecated version".invalid)
+          .anyNumberOfTimes()
+
+        val exception: Exception = intercept[Exception] {
+          apiDefinitionFactory.buildAPIStatus(Version3)
+        }
+
+        val exceptionMessage: String = exception.getMessage
+        exceptionMessage shouldBe "deprecatedOn date is required for a deprecated version"
+      }
+    }
   }
 
 }

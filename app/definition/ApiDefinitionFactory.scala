@@ -16,6 +16,7 @@
 
 package definition
 
+import cats.data.Validated.Invalid
 import config.AppConfig
 import routing.{Version, Version3, Version4, Version5}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -77,7 +78,7 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
     )
 
   private[definition] def buildAPIStatus(version: Version): APIStatus = {
-    // checkDeprecatedOn(version)
+    checkDeprecatedFor(version)
     APIStatus.parser
       .lift(appConfig.apiStatus(version))
       .getOrElse {
@@ -86,9 +87,9 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
       }
   }
 
-//  private[definition] def checkDeprecatedOn(version: Version) = {
-//    if (appConfig.isApiDeprecated(version) && appConfig.deprecatedOn(version).isEmpty) throw new Exception("deprecatedOn must be present in config")
-//    else None
-//  }
+  private def checkDeprecatedFor(version: Version) = appConfig.deprecationFor(version) match {
+    case Invalid(error) => throw new Exception(error)
+    case _              => Nil
+  }
 
 }

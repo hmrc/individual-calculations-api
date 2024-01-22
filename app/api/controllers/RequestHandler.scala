@@ -22,10 +22,10 @@ import api.models.hateoas.{HateoasData, HateoasWrapper}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import cats.data.EitherT
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.Validated.Valid
 import cats.implicits._
 import config.AppConfig
-import config.Deprecation.{Deprecated, NotDeprecated}
+import config.Deprecation.Deprecated
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
@@ -125,11 +125,9 @@ object RequestHandler {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
-        private val deprecationFor = appConfig.deprecationFor(apiVersion)
+        private def withDeprecationHeaders: List[(String, String)] = {
 
-        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
-
-          val maybeDeprecationHeaders: List[(String, String)] = deprecationFor match {
+          appConfig.deprecationFor(apiVersion) match {
             case Valid(Deprecated(deprecatedOn, Some(sunsetDate))) =>
               List(
                 "Deprecation" -> formatImf(deprecatedOn),
@@ -141,9 +139,11 @@ object RequestHandler {
                 "Deprecation" -> formatImf(deprecatedOn),
                 "Link"        -> appConfig.apiDocumentationUrl
               )
-            case Valid(NotDeprecated) => Nil
-            case Invalid(error)       => throw new Exception(error)
+            case _ => Nil
           }
+        }
+
+        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
           val headers =
             responseHeaders ++
@@ -151,7 +151,7 @@ object RequestHandler {
                 "X-CorrelationId"        -> correlationId,
                 "X-Content-Type-Options" -> "nosniff"
               ) ++
-              maybeDeprecationHeaders
+              withDeprecationHeaders
 
           result.copy(header = result.header.copy(headers = result.header.headers ++ headers))
         }
