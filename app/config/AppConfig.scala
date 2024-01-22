@@ -74,14 +74,6 @@ trait AppConfig {
 
   def apiDocumentationUrl: String
 
-//  def isApiDeprecated(version: Version): Boolean = apiStatus(version) == "DEPRECATED"
-//
-//  def deprecatedOn(version: Version): Option[LocalDateTime]
-//
-//  def sunsetDate(version: Version): Option[LocalDateTime]
-//
-//  def isSunsetEnabled(version: Version): Boolean
-
   def deprecationFor(version: Version): Validated[String, Deprecation]
 
   /** Currently only for OAS documentation.
@@ -158,16 +150,13 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
       configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
 
     if (isApiDeprecated) {
-      def checkDeprecatedOn(sunsetDate: Option[LocalDateTime]): Validated[String, Deprecated] =
-        deprecatedOn
-          .map(deprecatedOn => Deprecated(deprecatedOn, sunsetDate).valid)
-          .getOrElse("deprecatedOn date is required for a deprecated version".invalid)
-
-      (sunsetDate, isSunsetEnabled) match {
-        case (sunsetDate, true) if (sunsetDate.nonEmpty) => checkDeprecatedOn(sunsetDate)
-        case (None, true)                                => checkDeprecatedOn(deprecatedOn.map(_.plusMonths(6).plusDays(1)))
-        case _                                           => checkDeprecatedOn(None)
-
+      // TODO Can sunset date be equal to deprecatedOn date?
+      (deprecatedOn, sunsetDate, isSunsetEnabled) match {
+        case (Some(dO), Some(sD), true) if sD.isAfter(dO) => Deprecated(dO, Some(sD)).valid
+        case (Some(dO), None, true)                       => Deprecated(dO, Some(dO.plusMonths(6).plusDays(1))).valid
+        case (Some(dO), _, false)                         => Deprecated(dO, None).valid
+        case (Some(_), Some(_), true)                     => "sunsetDate must be later than deprecatedOn date for a deprecated version".invalid
+        case _                                            => "deprecatedOn date is required for a deprecated version".invalid
       }
 
     } else NotDeprecated.valid

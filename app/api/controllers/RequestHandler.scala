@@ -130,10 +130,15 @@ object RequestHandler {
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
           val maybeDeprecationHeaders: List[(String, String)] = deprecationFor match {
-            case Valid(Deprecated(deprecatedOn, sunsetDate)) =>
+            case Valid(Deprecated(deprecatedOn, Some(sunsetDate))) =>
               List(
                 "Deprecation" -> formatImf(deprecatedOn),
-                "Sunset"      -> sunsetDate.map(sunsetDate => formatImf(sunsetDate)).getOrElse(""),
+                "Sunset"      -> formatImf(sunsetDate),
+                "Link"        -> appConfig.apiDocumentationUrl
+              )
+            case Valid(Deprecated(deprecatedOn, None)) =>
+              List(
+                "Deprecation" -> formatImf(deprecatedOn),
                 "Link"        -> appConfig.apiDocumentationUrl
               )
             case Valid(NotDeprecated) => Nil

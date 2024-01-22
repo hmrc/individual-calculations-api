@@ -203,32 +203,31 @@ class RequestHandlerSpec
     }
 
 //    "a request fails with thrown exception" must {
-//      "return the errors" in new Test {
-//        val requestHandler = RequestHandler
-//          .withParser(mockParser)
-//          .withService(mockService.service)
-//          .withPlainJsonResult(successCode)
-//
-//        MockAppConfig.isApiDeprecated(Version3) returns true
-//        MockAppConfig.deprecatedOn(Version3) returns None
-//        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
-//
-//        val result = requestHandler.handleRequest(InputRaw)
-//
-//        val exception: Exception = intercept[Exception] {
-//          result
-//        }
-//
-//        val cause: Throwable = exception.getCause
-//        cause shouldBe a[Exception]
-//        cause.getMessage shouldBe "deprecatedOn date is required"
-//
-//        contentAsJson(result) shouldBe InternalError.asJson
-//        header("Deprecation", result) shouldBe None
-//        status(result) shouldBe InternalError.httpStatus
-//
-//      }
-//    }
+    //      "return the errors" in new Test {
+    //        val requestHandler = RequestHandler
+    //          .withParser(mockParser)
+    //          .withService(mockService.service)
+    //          .withPlainJsonResult(successCode)
+    //
+    //        MockAppConfig.deprecationFor(apiVersion).returns(NotDeprecated.valid).anyNumberOfTimes()
+    //        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
+    //
+    //        val result = requestHandler.handleRequest(InputRaw)
+    //
+    //        val exception: Exception = intercept[Exception] {
+    //          result
+    //        }
+    //
+    //        val cause: Throwable = exception.getCause
+    //        cause shouldBe a[Exception]
+    //        cause.getMessage shouldBe "deprecatedOn date is required"
+    //
+    //        contentAsJson(result) shouldBe InternalError.asJson
+    //        header("Deprecation", result) shouldBe None
+    //        status(result) shouldBe InternalError.httpStatus
+    //
+    //      }
+    //    }
 
     "auditing is configured" when {
       val params = Map("param" -> "value")
