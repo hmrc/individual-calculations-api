@@ -18,7 +18,7 @@ package utils
 
 import support.UnitSpec
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class DateUtilsSpec extends UnitSpec {
 
@@ -34,6 +34,14 @@ class DateUtilsSpec extends UnitSpec {
 
       "no tax year is supplied and the date is 6th April of the current year" in {
         DateUtils.getTaxYear(None, LocalDate.parse("2019-04-06")) shouldBe "2019-20"
+      }
+    }
+  }
+
+  "formatImf" should {
+    "Date/time in format [EEE, dd MMM yyyy HH:mm:ss z]" when {
+      "LocalDateTime is supplied" in {
+        DateUtils.formatImf(LocalDateTime.of(2023, 1, 17, 12, 0)) shouldBe "Tue, 17 Jan 2023 12:00:00 UTC"
       }
     }
   }
