@@ -16,12 +16,11 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
@@ -30,15 +29,13 @@ import config.AppConfig
 import mocks.MockAppConfig
 import play.api.http.HeaderNames
 import play.api.libs.json._
-import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import routing.Version
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.MockTriggerCalculationService
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
 import v3.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 
-import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -78,14 +75,10 @@ class TriggerCalculationControllerSpec
   val requestDataWithFinalDeclaration: TriggerCalculationRequest      = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = true)
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
 
-  private val userDetails = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.3.0+json")
 
-  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
-
-  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
-  implicit val appConfig: AppConfig                 = mockAppConfig
-  implicit val apiVersion: Version                  = Version(userRequest)
+  implicit val appConfig: AppConfig = mockAppConfig
 
   trait Test extends ControllerTest with AuditEventChecking {
 
@@ -118,31 +111,6 @@ class TriggerCalculationControllerSpec
           auditResponse = auditResponse
         )
       )
-
-    MockAppConfig
-      .isApiDeprecated(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .deprecatedOn(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .sunsetDate(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .isSunsetEnabled(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .apiDocumentationUrl()
-      .returns("")
-      .anyNumberOfTimes()
 
   }
 

@@ -28,7 +28,9 @@ import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import api.models.{errors, hateoas}
 import api.services.ServiceOutcome
+import cats.implicits.catsSyntaxValidatedId
 import config.AppConfig
+import config.Deprecation.NotDeprecated
 import mocks.MockAppConfig
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, Status}
@@ -42,7 +44,6 @@ import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.ControllerSpecHateoasSupport
 import v3.hateoas.HateoasLinksFactory
 
-import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -92,23 +93,8 @@ class RequestHandlerSpec
   class Test {
 
     MockAppConfig
-      .isApiDeprecated(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .deprecatedOn(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .sunsetDate(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .isSunsetEnabled(apiVersion)
-      .returns(false)
+      .deprecationFor(apiVersion)
+      .returns(NotDeprecated.valid)
       .anyNumberOfTimes()
 
     MockAppConfig

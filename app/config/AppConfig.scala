@@ -16,7 +16,10 @@
 
 package config
 
+import cats.data.Validated
+import cats.implicits.catsSyntaxValidatedId
 import com.typesafe.config.Config
+import config.Deprecation.{Deprecated, NotDeprecated}
 import play.api.{ConfigLoader, Configuration}
 import routing.Version
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -71,13 +74,15 @@ trait AppConfig {
 
   def apiDocumentationUrl: String
 
-  def isApiDeprecated(version: Version): Boolean = apiStatus(version) == "DEPRECATED"
+//  def isApiDeprecated(version: Version): Boolean = apiStatus(version) == "DEPRECATED"
+//
+//  def deprecatedOn(version: Version): Option[LocalDateTime]
+//
+//  def sunsetDate(version: Version): Option[LocalDateTime]
+//
+//  def isSunsetEnabled(version: Version): Boolean
 
-  def deprecatedOn(version: Version): Option[LocalDateTime]
-
-  def sunsetDate(version: Version): Option[LocalDateTime]
-
-  def isSunsetEnabled(version: Version): Boolean
+  def deprecationFor(version: Version): Validated[String, Deprecation]
 
   /** Currently only for OAS documentation.
     */
@@ -136,23 +141,43 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
     .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 59)
     .toFormatter()
 
-  def deprecatedOn(version: Version): Option[LocalDateTime] =
-    configuration
-      .getOptional[String](s"api.$version.deprecatedOn")
-      .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
+  def deprecationFor(version: Version): Validated[String, Deprecation] = {
+    val isApiDeprecated: Boolean = apiStatus(version) == "DEPRECATED"
 
-  def sunsetDate(version: Version): Option[LocalDateTime] =
-    configuration
-      .getOptional[String](s"api.$version.sunsetDate")
-      .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
+    val deprecatedOn: Option[LocalDateTime] =
+      configuration
+        .getOptional[String](s"api.$version.deprecatedOn")
+        .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
 
-  def isSunsetEnabled(version: Version): Boolean =
-    configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
+    val sunsetDate: Option[LocalDateTime] =
+      configuration
+        .getOptional[String](s"api.$version.sunsetDate")
+        .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
+
+    val isSunsetEnabled: Boolean =
+      configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
+
+    if (isApiDeprecated) {
+      def checkDeprecatedOn(sunsetDate: Option[LocalDateTime]): Validated[String, Deprecated] =
+        deprecatedOn
+          .map(deprecatedOn => Deprecated(deprecatedOn, sunsetDate).valid)
+          .getOrElse("deprecatedOn date is required for a deprecated version".invalid)
+
+      (sunsetDate, isSunsetEnabled) match {
+        case (sunsetDate, true) if (sunsetDate.nonEmpty) => checkDeprecatedOn(sunsetDate)
+        case (None, true)                                => checkDeprecatedOn(deprecatedOn.map(_.plusMonths(6).plusDays(1)))
+        case _                                           => checkDeprecatedOn(None)
+
+      }
+
+    } else NotDeprecated.valid
+
+  }
 
   def apiVersionReleasedInProduction(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.api-released-in-production")
 
   val apiDocumentationUrl: String =
-    config.getConfString("api.documentation-url", defString = s"https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/${appName}")
+    config.getConfString("api.documentation-url", defString = s"https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/$appName")
 
   def endpointReleasedInProduction(version: String, name: String): Boolean = {
     val versionReleasedInProd = apiVersionReleasedInProduction(version)

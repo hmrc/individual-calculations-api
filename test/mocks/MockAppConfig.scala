@@ -16,13 +16,12 @@
 
 package mocks
 
-import config.{AppConfig, ConfidenceLevelConfig}
+import cats.data.Validated
+import config.{AppConfig, ConfidenceLevelConfig, Deprecation}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import play.api.Configuration
 import routing.Version
-
-import java.time.LocalDateTime
 
 trait MockAppConfig extends MockFactory {
   val mockAppConfig: AppConfig = mock[AppConfig]
@@ -54,16 +53,13 @@ trait MockAppConfig extends MockFactory {
     def tysIfsEnvironmentHeaders: CallHandler[Option[Seq[String]]] = (() => mockAppConfig.tysIfsEnvironmentHeaders: Option[Seq[String]]).expects()
 
     // API Config
-    def featureSwitches: CallHandler[Configuration]                        = (() => mockAppConfig.featureSwitches: Configuration).expects()
-    def apiGatewayContext: CallHandler[String]                             = (() => mockAppConfig.apiGatewayContext: String).expects()
-    def apiStatus(version: Version): CallHandler[String]                   = (mockAppConfig.apiStatus(_: Version)).expects(version)
-    def endpointsEnabled(version: String): CallHandler[Boolean]            = (mockAppConfig.endpointsEnabled(_: String)).expects(version)
-    def endpointsEnabled(version: Version): CallHandler[Boolean]           = (mockAppConfig.endpointsEnabled(_: Version)).expects(version)
-    def isApiDeprecated(version: Version): CallHandler[Boolean]            = (mockAppConfig.isApiDeprecated(_: Version)).expects(version)
-    def deprecatedOn(version: Version): CallHandler[Option[LocalDateTime]] = (mockAppConfig.deprecatedOn(_: Version)).expects(version)
-    def sunsetDate(version: Version): CallHandler[Option[LocalDateTime]]   = (mockAppConfig.sunsetDate(_: Version)).expects(version)
-    def isSunsetEnabled(version: Version): CallHandler[Boolean]            = (mockAppConfig.isSunsetEnabled(_: Version)).expects(version)
-    def apiDocumentationUrl(): CallHandler[String]                         = (() => mockAppConfig.apiDocumentationUrl: String).expects()
+    def featureSwitches: CallHandler[Configuration]                                   = (() => mockAppConfig.featureSwitches: Configuration).expects()
+    def apiGatewayContext: CallHandler[String]                                        = (() => mockAppConfig.apiGatewayContext: String).expects()
+    def apiStatus(version: Version): CallHandler[String]                              = (mockAppConfig.apiStatus(_: Version)).expects(version)
+    def endpointsEnabled(version: String): CallHandler[Boolean]                       = (mockAppConfig.endpointsEnabled(_: String)).expects(version)
+    def endpointsEnabled(version: Version): CallHandler[Boolean]                      = (mockAppConfig.endpointsEnabled(_: Version)).expects(version)
+    def deprecationFor(version: Version): CallHandler[Validated[String, Deprecation]] = (mockAppConfig.deprecationFor(_: Version)).expects(version)
+    def apiDocumentationUrl(): CallHandler[String]                                    = (() => mockAppConfig.apiDocumentationUrl: String).expects()
 
     def apiVersionReleasedInProduction(version: String): CallHandler[Boolean] =
       (mockAppConfig.apiVersionReleasedInProduction: String => Boolean).expects(version)

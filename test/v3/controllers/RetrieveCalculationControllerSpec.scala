@@ -16,11 +16,10 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.auth.UserDetails
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
@@ -30,15 +29,13 @@ import mocks.MockAppConfig
 import play.api.Configuration
 import play.api.http.HeaderNames
 import play.api.libs.json.JsObject
-import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import routing.Version
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
 import v3.mocks.services.MockRetrieveCalculationService
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
 import v3.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
-import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -61,14 +58,11 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val userDetails                             = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
 
-  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.3.0+json")
 
-  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
-  implicit val appConfig: AppConfig                 = mockAppConfig
-  implicit val apiVersion: Version                  = Version(userRequest)
+  implicit val appConfig: AppConfig = mockAppConfig
 
   trait Test extends ControllerTest {
 
@@ -83,31 +77,6 @@ class RetrieveCalculationControllerSpec
     )
 
     protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
-
-    MockAppConfig
-      .isApiDeprecated(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .deprecatedOn(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .sunsetDate(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .isSunsetEnabled(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .apiDocumentationUrl()
-      .returns("")
-      .anyNumberOfTimes()
 
   }
 

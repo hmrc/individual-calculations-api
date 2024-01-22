@@ -16,15 +16,15 @@
 
 package definition
 
+import cats.implicits.catsSyntaxValidatedId
 import config.ConfidenceLevelConfig
+import config.Deprecation.NotDeprecated
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import routing.{Version3, Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
-
-import java.time.LocalDateTime
 
 class ApiDefinitionFactorySpec extends UnitSpec {
 
@@ -41,16 +41,13 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.featureSwitches.returns(Configuration.empty).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version3) returns "BETA"
         MockAppConfig.endpointsEnabled(Version3).returns(true).anyNumberOfTimes()
-        MockAppConfig.isApiDeprecated(Version3).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecatedOn(Version3).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
+        MockAppConfig.deprecationFor(Version3).returns(NotDeprecated.valid).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version4) returns "BETA"
         MockAppConfig.endpointsEnabled(Version4).returns(true).anyNumberOfTimes()
-        MockAppConfig.isApiDeprecated(Version4).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecatedOn(Version4).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
+        MockAppConfig.deprecationFor(Version4).returns(NotDeprecated.valid).anyNumberOfTimes()
         MockAppConfig.apiStatus(Version5) returns "BETA"
         MockAppConfig.endpointsEnabled(Version5).returns(true).anyNumberOfTimes()
-        MockAppConfig.isApiDeprecated(Version5).returns(true).anyNumberOfTimes()
-        MockAppConfig.deprecatedOn(Version5).returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0))).anyNumberOfTimes()
+        MockAppConfig.deprecationFor(Version5).returns(NotDeprecated.valid).anyNumberOfTimes()
         MockAppConfig.confidenceLevelCheckEnabled
           .returns(ConfidenceLevelConfig(confidenceLevel = confidenceLevel, definitionEnabled = true, authValidationEnabled = true))
           .anyNumberOfTimes()
@@ -120,8 +117,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockAppConfig.isApiDeprecated(Version5) returns false
-        MockAppConfig.deprecatedOn(Version5) returns None
         MockAppConfig.apiStatus(Version5) returns "BETA"
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe BETA
       }
@@ -129,8 +124,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.isApiDeprecated(Version5) returns false
-        MockAppConfig.deprecatedOn(Version5) returns None
         MockAppConfig.apiStatus(Version5) returns "ALPHO"
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe ALPHA
       }

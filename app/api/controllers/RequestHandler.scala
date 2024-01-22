@@ -22,8 +22,10 @@ import api.models.hateoas.{HateoasData, HateoasWrapper}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import cats.data.EitherT
+import cats.data.Validated.{Invalid, Valid}
 import cats.implicits._
 import config.AppConfig
+import config.Deprecation.{Deprecated, NotDeprecated}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
@@ -33,7 +35,6 @@ import utils.DateUtils.formatImf
 import utils.Logging
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
-import java.time.LocalDateTime
 import scala.concurrent.{ExecutionContext, Future}
 
 trait RequestHandler[InputRaw <: RawData] {
@@ -124,41 +125,19 @@ object RequestHandler {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
-        private val isApiDeprecated: Boolean            = appConfig.isApiDeprecated(apiVersion)
-        private val deprecatedOn: Option[LocalDateTime] = appConfig.deprecatedOn(apiVersion)
-        private val sunsetDate: Option[LocalDateTime]   = appConfig.sunsetDate(apiVersion)
-        private val isSunsetEnabled: Boolean            = appConfig.isSunsetEnabled(apiVersion)
+        private val deprecationFor = appConfig.deprecationFor(apiVersion)
 
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
-          def maybeDeprecationHeaders: List[(String, String)] = {
-            if (isApiDeprecated) {
-              val maybeDeprecatedHeader =
-                deprecatedOn
-                  .map(deprecatedOn =>
-                    List(
-                      "Deprecation" -> formatImf(deprecatedOn),
-                      "Link"        -> appConfig.apiDocumentationUrl
-                    ))
-                  .getOrElse(throw new Exception("deprecatedOn date is required"))
-
-              // TODO refactor
-//              val maybeSunsetHeader = (sunsetDate, isSunsetEnabled) match {
-//                case (sd, true)   => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
-//                case (None, true) => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
-//                case _            => Nil
-//              }
-
-              val maybeSunsetHeader =
-                if (sunsetDate.nonEmpty)
-                  List("Sunset" -> formatImf(sunsetDate.getOrElse(LocalDateTime.now())))
-                else if (sunsetDate.isEmpty && isSunsetEnabled)
-                  List("Sunset" -> formatImf(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
-                else Nil
-
-              maybeDeprecatedHeader ++ maybeSunsetHeader
-
-            } else Nil
+          val maybeDeprecationHeaders: List[(String, String)] = deprecationFor match {
+            case Valid(Deprecated(deprecatedOn, sunsetDate)) =>
+              List(
+                "Deprecation" -> formatImf(deprecatedOn),
+                "Sunset"      -> sunsetDate.map(sunsetDate => formatImf(sunsetDate)).getOrElse(""),
+                "Link"        -> appConfig.apiDocumentationUrl
+              )
+            case Valid(NotDeprecated) => Nil
+            case Invalid(error)       => throw new Exception(error)
           }
 
           val headers =

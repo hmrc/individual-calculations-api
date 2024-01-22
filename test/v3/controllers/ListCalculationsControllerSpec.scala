@@ -16,28 +16,24 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
 import config.AppConfig
-import mocks.MockAppConfig
 import play.api.http.HeaderNames
-import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.FakeRequest
-import routing.Version
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.requestParsers.MockListCalculationsParser
 import v3.mocks.services.MockListCalculationsService
 import v3.models.request.{ListCalculationsRawData, ListCalculationsRequest}
 import v3.models.response.listCalculations.{ListCalculationsHateoasData, ListCalculationsResponse}
 
-import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -50,18 +46,14 @@ class ListCalculationsControllerSpec
     with MockListCalculationsService
     with MockHateoasFactory
     with MockIdGenerator
-    with MockAppConfig
     with ListCalculationsFixture {
   val taxYear: Option[String]          = Some("2020-21")
   val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
-  private val userDetails              = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
 
-  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.3.0+json")
 
-  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
-  implicit val appConfig: AppConfig                 = mockAppConfig
-  implicit val apiVersion: Version                  = Version(userRequest)
+  implicit val appConfig: AppConfig = mockAppConfig
 
   class Test extends ControllerTest {
 
@@ -83,26 +75,6 @@ class ListCalculationsControllerSpec
     )
 
     override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
-
-    MockAppConfig
-      .isApiDeprecated(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .deprecatedOn(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .sunsetDate(apiVersion)
-      .returns(Some(LocalDateTime.of(2023, 1, 17, 12, 0)))
-      .anyNumberOfTimes()
-
-    MockAppConfig
-      .isSunsetEnabled(apiVersion)
-      .returns(false)
-      .anyNumberOfTimes()
 
     MockAppConfig
       .apiDocumentationUrl()
