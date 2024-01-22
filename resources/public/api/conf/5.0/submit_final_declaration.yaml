@@ -44,6 +44,10 @@ post:
       headers:
         X-CorrelationId:
           $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
 
     400:
       description: Bad request

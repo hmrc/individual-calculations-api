@@ -33,8 +33,11 @@ object DateUtils {
         s"${currentDate.getYear.-(1)}-${currentDate.getYear.toString.drop(2)}"
       }
   }
-  def imfDateFormatter(dateTime: LocalDateTime): String = DateTimeFormatter
+
+  private val imfFormatter: DateTimeFormatter = DateTimeFormatter
     .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
     .withZone(ZoneId.of("UTC"))
-    .format(dateTime)
+
+  def formatImf(dateTime: LocalDateTime): String = imfFormatter.format(dateTime)
+
 }

@@ -16,10 +16,11 @@
 
 package v5.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.models.auth.UserDetails
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
@@ -27,9 +28,11 @@ import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.MockAppConfig
 import play.api.Configuration
+import play.api.http.HeaderNames
 import play.api.libs.json.JsObject
-import play.api.mvc.Result
-import routing.{Version, Version5}
+import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import routing.Version
 import v5.mocks.requestParsers.MockRetrieveCalculationParser
 import v5.mocks.services.MockRetrieveCalculationService
 import v5.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -62,8 +65,14 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
 
-  implicit val appConfig: AppConfig = mockAppConfig
-  implicit val apiVersion: Version  = Version5
+  private val userDetails = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.5.0+json")
+
+  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version(userRequest)
 
   trait Test extends ControllerTest {
     def taxYear: String

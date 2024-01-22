@@ -67,8 +67,18 @@ components:
         name: "Deprecation"
         in: header
         description: |
-          Only in sandbox environment. See Test Data table for all header values.
+          The date/time when the resource will be deprecated.
         schema:
           type: string
-          example: "-"
+          example: "Sun, 01 Jan 2023 23:59:59 UTC"
         required: false
+
+        sunsetHeader:
+          name: "Sunset"
+          in: header
+          description: |
+            The earliest date/time that the resource might be unresponsive after deprecation.
+          schema:
+            type: string
+            example: "Sun, 02 Jul 2023 23:59:59 UTC"
+          required: false

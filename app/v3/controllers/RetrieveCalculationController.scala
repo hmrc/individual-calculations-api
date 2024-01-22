@@ -20,7 +20,6 @@ import api.controllers._
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.{Version, Version3}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.RetrieveCalculationParser
 import v3.hateoas.HateoasFactory
@@ -31,14 +30,13 @@ import v3.services.RetrieveCalculationService
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class RetrieveCalculationController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    parser: RetrieveCalculationParser,
-    service: RetrieveCalculationService,
-    hateoasFactory: HateoasFactory,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
+class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
+                                               val lookupService: MtdIdLookupService,
+                                               parser: RetrieveCalculationParser,
+                                               service: RetrieveCalculationService,
+                                               hateoasFactory: HateoasFactory,
+                                               cc: ControllerComponents,
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -54,7 +52,6 @@ class RetrieveCalculationController @Inject() (
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      implicit val apiVersion: Version = Version.from(request, orElse = Version3)
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData =

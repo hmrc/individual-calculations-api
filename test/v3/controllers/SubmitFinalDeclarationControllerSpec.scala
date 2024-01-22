@@ -16,10 +16,11 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
 import api.mocks.MockIdGenerator
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.auth.UserDetails
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
@@ -27,9 +28,11 @@ import config.AppConfig
 import mocks.MockAppConfig
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
+import play.api.http.HeaderNames
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
-import routing.{Version, Version3}
+import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import routing.Version
 import v3.mocks.connectors.MockNrsProxyConnector
 import v3.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v3.mocks.services._
@@ -65,8 +68,14 @@ class SubmitFinalDeclarationControllerSpec
   implicit override val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
-  implicit val appConfig: AppConfig = mockAppConfig
-  implicit val apiVersion: Version  = Version3
+  private val userDetails = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+
+  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version(userRequest)
 
   trait Test extends ControllerTest with AuditEventChecking {
 

@@ -23,7 +23,7 @@ import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationR
 
 import javax.inject.Inject
 
-class SubmitFinalDeclarationParser @Inject()(val validator: SubmitFinalDeclarationValidator)
+class SubmitFinalDeclarationParser @Inject() (val validator: SubmitFinalDeclarationValidator)
     extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest] {
 
   override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequest = {

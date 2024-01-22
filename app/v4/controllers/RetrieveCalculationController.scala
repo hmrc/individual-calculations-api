@@ -20,7 +20,6 @@ import api.controllers._
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.{Version, Version4}
 import utils.{IdGenerator, Logging}
 import v3.hateoas.HateoasFactory
 import v4.controllers.requestParsers.RetrieveCalculationParser
@@ -54,7 +53,6 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
-      implicit val apiVersion: Version = Version.from(request, orElse = Version4)
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val rawData =

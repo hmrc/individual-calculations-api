@@ -29,7 +29,7 @@ import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import routing.Version
-import utils.DateUtils.imfDateFormatter
+import utils.DateUtils.formatImf
 import utils.Logging
 import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
@@ -38,12 +38,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 trait RequestHandler[InputRaw <: RawData] {
 
-  def handleRequest(rawData: InputRaw)(implicit
-      ctx: RequestContext,
-      request: UserRequest[_],
-      ec: ExecutionContext,
-      appConfig: AppConfig,
-      apiVersion: Version): Future[Result]
+  def handleRequest(
+      rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result]
 
 }
 
@@ -70,12 +66,8 @@ object RequestHandler {
       modelHandler: Option[Output => Output] = None
   ) extends RequestHandler[InputRaw] {
 
-    def handleRequest(rawData: InputRaw)(implicit
-        ctx: RequestContext,
-        request: UserRequest[_],
-        ec: ExecutionContext,
-        appConfig: AppConfig,
-        apiVersion: Version): Future[Result] =
+    def handleRequest(
+        rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] =
       Delegate.handleRequest(rawData)
 
     def withErrorHandling(errorHandling: ErrorHandling): RequestHandlerBuilder[InputRaw, Input, Output] =
@@ -139,32 +131,35 @@ object RequestHandler {
 
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
-          val maybeDeprecatedHeader: List[(String, String)] = {
+          def maybeDeprecationHeaders: List[(String, String)] = {
             if (isApiDeprecated) {
-              deprecatedOn
-                .map(deprecatedOn =>
-                  List(
-                    "Deprecation" -> imfDateFormatter(deprecatedOn),
-                    "Link"        -> appConfig.apiDocumentationUrl
-                  ))
-                .getOrElse(throw new Exception("deprecatedOn date is required"))
+              val maybeDeprecatedHeader =
+                deprecatedOn
+                  .map(deprecatedOn =>
+                    List(
+                      "Deprecation" -> formatImf(deprecatedOn),
+                      "Link"        -> appConfig.apiDocumentationUrl
+                    ))
+                  .getOrElse(throw new Exception("deprecatedOn date is required"))
+
+              // TODO refactor
+//              val maybeSunsetHeader = (sunsetDate, isSunsetEnabled) match {
+//                case (sd, true)   => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
+//                case (None, true) => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
+//                case _            => Nil
+//              }
+
+              val maybeSunsetHeader =
+                if (sunsetDate.nonEmpty)
+                  List("Sunset" -> formatImf(sunsetDate.getOrElse(LocalDateTime.now())))
+                else if (sunsetDate.isEmpty && isSunsetEnabled)
+                  List("Sunset" -> formatImf(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
+                else Nil
+
+              maybeDeprecatedHeader ++ maybeSunsetHeader
+
             } else Nil
           }
-
-          val maybeSunsetHeader =
-            if (sunsetDate.nonEmpty)
-              List("Sunset" -> imfDateFormatter(sunsetDate.getOrElse(LocalDateTime.now())))
-            else if (sunsetDate.isEmpty && isSunsetEnabled)
-              List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
-            else Nil
-
-//          val maybeSunsetHeaderPattern = (sunsetDate, isSunsetEnabled) match {
-//            case (sd, true)    => List("Sunset" -> imfDateFormatter(sd.getOrElse(LocalDateTime.now())))
-//            case (sd, false)   => ???
-//            case (None, true)  => List("Sunset" -> imfDateFormatter(deprecatedOn.map(_.plusMonths(6).plusDays(1)).getOrElse(LocalDateTime.now())))
-//            case (None, false) => ???
-//            case _             => ???
-//          }
 
           val headers =
             responseHeaders ++
@@ -172,20 +167,15 @@ object RequestHandler {
                 "X-CorrelationId"        -> correlationId,
                 "X-Content-Type-Options" -> "nosniff"
               ) ++
-              maybeDeprecatedHeader ++
-              maybeSunsetHeader
+              maybeDeprecationHeaders
 
           result.copy(header = result.header.copy(headers = result.header.headers ++ headers))
         }
 
       }
 
-      def handleRequest(rawData: InputRaw)(implicit
-          ctx: RequestContext,
-          request: UserRequest[_],
-          ec: ExecutionContext,
-          appConfig: AppConfig,
-          apiVersion: Version): Future[Result] = {
+      def handleRequest(
+          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] = {
 
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
@@ -217,8 +207,10 @@ object RequestHandler {
           ctx: RequestContext,
           request: UserRequest[_],
           ec: ExecutionContext,
-          appConfig: AppConfig,
-          apiVersion: Version): Result = {
+          appConfig: AppConfig): Result = {
+
+        implicit val apiVersion: Version = Version(request)
+
         logger.info(
           s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
             s"Success response received with CorrelationId: ${ctx.correlationId}")
@@ -241,12 +233,11 @@ object RequestHandler {
           creator.performAudit(request.userDetails, httpStatus, response)
         }
 
-      private def handleFailure(errorWrapper: ErrorWrapper)(implicit
-          ctx: RequestContext,
-          request: UserRequest[_],
-          ec: ExecutionContext,
-          appConfig: AppConfig,
-          apiVersion: Version) = {
+      private def handleFailure(
+          errorWrapper: ErrorWrapper)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig) = {
+
+        implicit val apiVersion: Version = Version(request)
+
         logger.warn(
           s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] - " +
             s"Error response received with CorrelationId: ${ctx.correlationId}")
@@ -267,12 +258,8 @@ object RequestHandler {
         InternalServerError(Json.toJson(InternalError))
       }
 
-      def handleRequestWithModelUpdate(rawData: InputRaw)(implicit
-          ctx: RequestContext,
-          request: UserRequest[_],
-          ec: ExecutionContext,
-          appConfig: AppConfig,
-          apiVersion: Version): Future[Result] = {
+      def handleRequestWithModelUpdate(
+          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] = {
 
         logger.info(
           message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +

@@ -16,10 +16,11 @@
 
 package v4.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.models.auth.UserDetails
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
@@ -27,9 +28,11 @@ import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.MockAppConfig
 import play.api.Configuration
+import play.api.http.HeaderNames
 import play.api.libs.json.JsObject
-import play.api.mvc.Result
-import routing.{Version, Version4}
+import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import routing.Version
 import v4.mocks.requestParsers.MockRetrieveCalculationParser
 import v4.mocks.services.MockRetrieveCalculationService
 import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -63,8 +66,14 @@ class RetrieveCalculationControllerSpec
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
-  implicit val appConfig: AppConfig = mockAppConfig
-  implicit val apiVersion: Version  = Version4
+  private val userDetails = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.4.0+json")
+
+  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version(userRequest)
 
   trait Test extends ControllerTest {
 
@@ -122,7 +131,6 @@ class RetrieveCalculationControllerSpec
           .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
           .anyNumberOfTimes()
 
-
         MockHateoasFactory
           .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
           .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
@@ -142,7 +150,6 @@ class RetrieveCalculationControllerSpec
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true, "cl290.enabled" -> false))
           .anyNumberOfTimes()
-
 
         MockHateoasFactory
           .wrap(
@@ -165,7 +172,6 @@ class RetrieveCalculationControllerSpec
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> true))
           .anyNumberOfTimes()
-
 
         MockHateoasFactory
           .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
@@ -190,7 +196,6 @@ class RetrieveCalculationControllerSpec
           .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
           .anyNumberOfTimes()
 
-
         MockHateoasFactory
           .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
           .returns(HateoasWrapper(updatedResponse, hateoaslinks))
@@ -210,7 +215,6 @@ class RetrieveCalculationControllerSpec
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
-
         runErrorTest(NinoFormatError)
       }
 
@@ -222,7 +226,6 @@ class RetrieveCalculationControllerSpec
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
-
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)

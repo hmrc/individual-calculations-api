@@ -29,18 +29,18 @@ import api.models.request.RawData
 import api.models.{errors, hateoas}
 import api.services.ServiceOutcome
 import config.AppConfig
+import mocks.MockAppConfig
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, Status}
 import play.api.libs.json.{JsString, Json, OWrites}
-import play.api.mvc.AnyContent
+import play.api.mvc.{AnyContent, AnyContentAsEmpty}
 import play.api.test.{FakeRequest, ResultExtractors}
-import routing.{Version, Version3}
+import routing.Version
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import v3.controllers.ControllerSpecHateoasSupport
 import v3.hateoas.HateoasLinksFactory
-import mocks.MockAppConfig
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -77,12 +77,13 @@ class RequestHandlerSpec
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SomeController", endpointName = "someEndpoint")
 
-  implicit val hc: HeaderCarrier                    = HeaderCarrier()
-  implicit val ctx: RequestContext                  = RequestContext.from(mockIdGenerator, endpointLogContext)
-  private val userDetails                           = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
-  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, FakeRequest())
-  implicit val appConfig: AppConfig                 = mockAppConfig
-  implicit val apiVersion: Version                  = Version3
+  implicit val hc: HeaderCarrier                               = HeaderCarrier()
+  implicit val ctx: RequestContext                             = RequestContext.from(mockIdGenerator, endpointLogContext)
+  private val userDetails                                      = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+  private val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+  implicit val userRequest: UserRequest[AnyContent]            = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                            = mockAppConfig
+  implicit val apiVersion: Version                             = Version(userRequest)
 
   trait DummyService {
     def service(input: Input.type)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Output.type]]
@@ -114,6 +115,7 @@ class RequestHandlerSpec
       .apiDocumentationUrl()
       .returns("")
       .anyNumberOfTimes()
+
   }
 
   private val mockService = mock[DummyService]

@@ -16,18 +16,21 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.models.auth.UserDetails
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.MockAppConfig
-import play.api.mvc.Result
-import routing.{Version, Version3}
+import play.api.http.HeaderNames
+import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import routing.Version
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.requestParsers.MockListCalculationsParser
 import v3.mocks.services.MockListCalculationsService
@@ -51,8 +54,14 @@ class ListCalculationsControllerSpec
     with ListCalculationsFixture {
   val taxYear: Option[String]          = Some("2020-21")
   val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
-  implicit val appConfig: AppConfig    = mockAppConfig
-  implicit val apiVersion: Version     = Version3
+  private val userDetails              = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+
+  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version(userRequest)
 
   class Test extends ControllerTest {
 
@@ -99,6 +108,7 @@ class ListCalculationsControllerSpec
       .apiDocumentationUrl()
       .returns("")
       .anyNumberOfTimes()
+
   }
 
   "ListCalculationsController" when {

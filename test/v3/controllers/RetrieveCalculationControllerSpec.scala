@@ -16,10 +16,11 @@
 
 package v3.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner, UserRequest}
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.models.auth.UserDetails
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
@@ -27,9 +28,11 @@ import api.models.outcomes.ResponseWrapper
 import config.AppConfig
 import mocks.MockAppConfig
 import play.api.Configuration
+import play.api.http.HeaderNames
 import play.api.libs.json.JsObject
-import play.api.mvc.Result
-import routing.{Version, Version3}
+import play.api.mvc.{AnyContent, AnyContentAsEmpty, Result}
+import play.api.test.FakeRequest
+import routing.Version
 import v3.mocks.requestParsers.MockRetrieveCalculationParser
 import v3.mocks.services.MockRetrieveCalculationService
 import v3.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -58,11 +61,16 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseJson                         = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val userDetails                             = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
+
+  override lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+
+  implicit val userRequest: UserRequest[AnyContent] = UserRequest[AnyContent](userDetails, fakeRequest)
+  implicit val appConfig: AppConfig                 = mockAppConfig
+  implicit val apiVersion: Version                  = Version(userRequest)
 
   trait Test extends ControllerTest {
-
-    implicit val appConfig: AppConfig = mockAppConfig
-    implicit val apiVersion: Version  = Version3
 
     lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
