@@ -53,6 +53,26 @@ components:
         example: c75f40a6-a3df-4429-a697-471eeec46435
       required: true
 
+    deprecationHeader:
+      name: "Deprecation"
+      in: header
+      description: |
+        The date/time when the resource will be deprecated.
+      schema:
+        type: string
+        example: "Sun, 01 Jan 2023 23:59:59 UTC"
+      required: false
+
+    sunsetHeader:
+      name: "Sunset"
+      in: header
+      description: |
+        The earliest date/time that the resource might be unresponsive after deprecation.
+      schema:
+        type: string
+        example: "Sun, 02 Jul 2023 23:59:59 UTC"
+      required: false
+
     testScenarioHeader:
       name: "Gov-Test-Scenario"
       in: header
@@ -63,22 +83,4 @@ components:
         example: "-"
       required: false
 
-      deprecationHeader:
-        name: "Deprecation"
-        in: header
-        description: |
-          The date/time when the resource will be deprecated.
-        schema:
-          type: string
-          example: "Sun, 01 Jan 2023 23:59:59 UTC"
-        required: false
 
-        sunsetHeader:
-          name: "Sunset"
-          in: header
-          description: |
-            The earliest date/time that the resource might be unresponsive after deprecation.
-          schema:
-            type: string
-            example: "Sun, 02 Jul 2023 23:59:59 UTC"
-          required: false
