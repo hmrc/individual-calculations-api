@@ -18,6 +18,7 @@ package v3.controllers
 
 import api.controllers._
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v3.controllers.requestParsers.ListCalculationsParser
@@ -36,7 +37,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
                                             service: ListCalculationsService,
                                             hateoasFactory: HateoasFactory,
                                             cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

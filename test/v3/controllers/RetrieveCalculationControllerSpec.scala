@@ -24,7 +24,6 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
-import mocks.MockAppConfig
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
@@ -44,7 +43,6 @@ class RetrieveCalculationControllerSpec
     with MockRetrieveCalculationParser
     with MockHateoasFactory
     with MockRetrieveCalculationService
-    with MockAppConfig
     with MockAuditService
     with MockIdGenerator
     with CalculationFixture {
@@ -63,7 +61,6 @@ class RetrieveCalculationControllerSpec
       lookupService = mockMtdIdLookupService,
       parser = mockRetrieveCalculationParser,
       service = mockRetrieveCalculationService,
-      appConfig = mockAppConfig,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator
@@ -124,6 +121,7 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
@@ -135,6 +133,7 @@ class RetrieveCalculationControllerSpec
         MockRetrieveCalculationParser
           .parseRequest(rawData)
           .returns(Right(requestData))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()

@@ -33,12 +33,11 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               appConfig: AppConfig,
                                                parser: RetrieveCalculationParser,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
-                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                               val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -102,4 +101,5 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                              response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
     if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(rawData.taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
   }
+
 }

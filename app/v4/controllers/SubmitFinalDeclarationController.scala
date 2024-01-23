@@ -19,6 +19,7 @@ package v4.controllers
 import api.controllers._
 import api.models.errors.InternalError
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
+import config.AppConfig
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -40,7 +41,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

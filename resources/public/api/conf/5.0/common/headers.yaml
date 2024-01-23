@@ -53,6 +53,36 @@ components:
         example: c75f40a6-a3df-4429-a697-471eeec46435
       required: true
 
+    linkHeader:
+      name: "Link"
+      in: header
+      description: |
+        See the API documentation:
+      schema:
+        type: string
+        example: "https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-calculations-api"
+      required: false
+
+    deprecationHeader:
+      name: "Deprecation"
+      in: header
+      description: |
+        The deprecation date/time for this endpoint.
+      schema:
+        type: string
+        example: "Sun, 01 Jan 2023 23:59:59 UTC"
+      required: false
+
+    sunsetHeader:
+      name: "Sunset"
+      in: header
+      description: |
+        The earliest date/time this endpoint will become unavailable after deprecation.
+      schema:
+        type: string
+        example: "Sun, 02 Jul 2023 23:59:59 UTC"
+      required: false
+
     testScenarioHeader:
       name: "Gov-Test-Scenario"
       in: header
@@ -62,3 +92,5 @@ components:
         type: string
         example: "-"
       required: false
+
+

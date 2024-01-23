@@ -71,6 +71,7 @@ class TriggerCalculationControllerSpec
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
 
   trait Test extends ControllerTest with AuditEventChecking {
+
     val finalDeclaration: Option[String] = None
 
     val controller = new TriggerCalculationController(
