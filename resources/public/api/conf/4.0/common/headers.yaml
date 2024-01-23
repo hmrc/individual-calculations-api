@@ -57,7 +57,7 @@ components:
       name: "Link"
       in: header
       description: |
-        See API documentation here.
+        See the API documentation:
       schema:
         type: string
         example: "https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individual-calculations-api"
