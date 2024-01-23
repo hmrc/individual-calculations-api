@@ -150,13 +150,15 @@ class AppConfigImpl @Inject() (config: ServicesConfig, configuration: Configurat
       configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
 
     if (isApiDeprecated) {
-      // TODO Can sunset date be equal to deprecatedOn date?
       (deprecatedOn, sunsetDate, isSunsetEnabled) match {
-        case (Some(dO), Some(sD), true) if sD.isAfter(dO) => Deprecated(dO, Some(sD)).valid
-        case (Some(dO), None, true)                       => Deprecated(dO, Some(dO.plusMonths(6).plusDays(1))).valid
-        case (Some(dO), _, false)                         => Deprecated(dO, None).valid
-        case (Some(_), Some(_), true)                     => "sunsetDate must be later than deprecatedOn date for a deprecated version".invalid
-        case _                                            => "deprecatedOn date is required for a deprecated version".invalid
+        case (Some(dO), Some(sD), true) =>
+          if (sD.isAfter(dO))
+            Deprecated(dO, Some(sD)).valid
+          else
+            s"sunsetDate must be later than deprecatedOn date for a deprecated version $version".invalid
+        case (Some(dO), None, true) => Deprecated(dO, Some(dO.plusMonths(6).plusDays(1))).valid
+        case (Some(dO), _, false)   => Deprecated(dO, None).valid
+        case _                      => "deprecatedOn date is required for a deprecated version".invalid
       }
 
     } else NotDeprecated.valid

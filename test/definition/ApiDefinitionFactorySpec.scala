@@ -18,15 +18,13 @@ package definition
 
 import cats.implicits.catsSyntaxValidatedId
 import config.ConfidenceLevelConfig
-import config.Deprecation.{Deprecated, NotDeprecated}
+import config.Deprecation.NotDeprecated
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
 import routing.{Version3, Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
-
-import java.time.LocalDateTime
 
 class ApiDefinitionFactorySpec extends UnitSpec {
 
@@ -119,7 +117,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.apiStatus(Version5) returns "BETA"
         MockAppConfig
           .deprecationFor(Version5)
-          .returns(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))).valid)
+          .returns(NotDeprecated.valid)
           .anyNumberOfTimes()
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe BETA
       }
@@ -130,7 +128,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         MockAppConfig.apiStatus(Version5) returns "ALPHO"
         MockAppConfig
           .deprecationFor(Version5)
-          .returns(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))).valid)
+          .returns(NotDeprecated.valid)
           .anyNumberOfTimes()
         apiDefinitionFactory.buildAPIStatus(Version5) shouldBe ALPHA
       }

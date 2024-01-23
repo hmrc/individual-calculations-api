@@ -25,12 +25,8 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
-import config.AppConfig
-import mocks.MockAppConfig
-import play.api.http.HeaderNames
 import play.api.libs.json._
-import play.api.mvc.{AnyContentAsEmpty, Result}
-import play.api.test.FakeRequest
+import play.api.mvc.Result
 import v3.mocks.requestParsers.MockTriggerCalculationParser
 import v3.mocks.services.MockTriggerCalculationService
 import v3.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
@@ -48,8 +44,7 @@ class TriggerCalculationControllerSpec
     with MockTriggerCalculationParser
     with MockHateoasFactory
     with MockAuditService
-    with MockIdGenerator
-    with MockAppConfig {
+    with MockIdGenerator {
 
   private val taxYear       = TaxYear.fromMtd("2017-18")
   private val rawTaxYear    = taxYear.asMtd
@@ -74,11 +69,6 @@ class TriggerCalculationControllerSpec
 
   val requestDataWithFinalDeclaration: TriggerCalculationRequest      = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = true)
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
-
-  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.3.0+json")
-
-  implicit val appConfig: AppConfig = mockAppConfig
 
   trait Test extends ControllerTest with AuditEventChecking {
 

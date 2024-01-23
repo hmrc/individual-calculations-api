@@ -78,7 +78,7 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
     )
 
   private[definition] def buildAPIStatus(version: Version): APIStatus = {
-    checkDeprecatedFor(version)
+    checkDeprecationConfigFor(version)
     APIStatus.parser
       .lift(appConfig.apiStatus(version))
       .getOrElse {
@@ -87,9 +87,9 @@ class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
       }
   }
 
-  private def checkDeprecatedFor(version: Version) = appConfig.deprecationFor(version) match {
+  private def checkDeprecationConfigFor(version: Version): Unit = appConfig.deprecationFor(version) match {
     case Invalid(error) => throw new Exception(error)
-    case _              => Nil
+    case _              => ()
   }
 
 }

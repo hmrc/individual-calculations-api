@@ -24,10 +24,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
-import config.AppConfig
-import play.api.http.HeaderNames
-import play.api.mvc.{AnyContentAsEmpty, Result}
-import play.api.test.FakeRequest
+import play.api.mvc.Result
 import v3.fixtures.ListCalculationsFixture
 import v3.mocks.requestParsers.MockListCalculationsParser
 import v3.mocks.services.MockListCalculationsService
@@ -50,11 +47,6 @@ class ListCalculationsControllerSpec
   val taxYear: Option[String]          = Some("2020-21")
   val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
 
-  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.3.0+json")
-
-  implicit val appConfig: AppConfig = mockAppConfig
-
   class Test extends ControllerTest {
 
     val taxYear: Option[String] = rawData.taxYear
@@ -75,12 +67,6 @@ class ListCalculationsControllerSpec
     )
 
     override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
-
-    MockAppConfig
-      .apiDocumentationUrl()
-      .returns("")
-      .anyNumberOfTimes()
-
   }
 
   "ListCalculationsController" when {

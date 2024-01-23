@@ -24,13 +24,9 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
-import config.AppConfig
-import mocks.MockAppConfig
 import play.api.Configuration
-import play.api.http.HeaderNames
 import play.api.libs.json.JsObject
-import play.api.mvc.{AnyContentAsEmpty, Result}
-import play.api.test.FakeRequest
+import play.api.mvc.Result
 import v4.mocks.requestParsers.MockRetrieveCalculationParser
 import v4.mocks.services.MockRetrieveCalculationService
 import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
@@ -47,7 +43,6 @@ class RetrieveCalculationControllerSpec
     with MockRetrieveCalculationParser
     with MockHateoasFactory
     with MockRetrieveCalculationService
-    with MockAppConfig
     with MockAuditService
     with MockIdGenerator
     with CalculationFixture {
@@ -62,11 +57,6 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithCl290EnabledJson         = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
   private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-
-  override implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.4.0+json")
-
-  implicit val appConfig: AppConfig = mockAppConfig
 
   trait Test extends ControllerTest {
 
