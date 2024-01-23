@@ -48,6 +48,8 @@ post:
           $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
         Sunset:
           $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
 
     400:
       description: Bad request

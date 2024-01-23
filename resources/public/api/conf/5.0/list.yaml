@@ -38,6 +38,8 @@ get:
           $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
         Sunset:
           $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
       content:
         application/json:
           schema:
