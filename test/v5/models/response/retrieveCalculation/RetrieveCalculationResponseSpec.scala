@@ -16,13 +16,13 @@
 
 package v5.models.response.retrieveCalculation
 
+import api.hateoas.HateoasFactory
 import api.models.domain.TaxYear
 import api.models.hateoas.Method.{GET, POST}
 import api.models.hateoas.{HateoasWrapper, Link}
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
-import v3.hateoas.HateoasFactory
 import v5.models.response.common.CalculationType
 import v5.models.response.retrieveCalculation.RetrieveCalculationResponse._
 import v5.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}

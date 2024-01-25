@@ -34,7 +34,7 @@ import play.api.test.{FakeRequest, ResultExtractors}
 import routing.{Version, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v3.controllers.ControllerSpecHateoasSupport
+import v4.controllers.ControllerSpecHateoasSupport
 
 import scala.concurrent.Future
 

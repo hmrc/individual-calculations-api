@@ -17,12 +17,12 @@
 package v5.controllers
 
 import api.controllers._
+import api.hateoas.HateoasFactory
 import api.models.domain.TaxYear
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v3.hateoas.HateoasFactory
 import v5.controllers.requestParsers.RetrieveCalculationParser
 import v5.models.request.RetrieveCalculationRawData
 import v5.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}

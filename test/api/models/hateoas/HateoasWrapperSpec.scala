@@ -18,7 +18,7 @@ package api.models.hateoas
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v3.fixtures.hateoas.HateoasWrapperFixture._
+import v4.fixtures.hateoas.HateoasWrapperFixture._
 
 class HateoasWrapperSpec extends UnitSpec {
 

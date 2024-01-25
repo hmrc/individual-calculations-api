@@ -16,11 +16,11 @@
 
 package v5.models.response.retrieveCalculation
 
+import api.hateoas.{HateoasLinks, HateoasLinksFactory}
 import api.models.domain.TaxYear
 import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
-import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v5.models.response.retrieveCalculation.calculation._
 import v5.models.response.retrieveCalculation.inputs.Inputs
 import v5.models.response.retrieveCalculation.messages.Messages
@@ -48,6 +48,22 @@ case class RetrieveCalculationResponse(
   def withoutUnderLowerProfitThreshold: RetrieveCalculationResponse =
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
 
+  def withoutTaxTakenOffTradingIncome: RetrieveCalculationResponse = {
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
+  }
+
+  def withoutBasicRateDivergenceUpdates: RetrieveCalculationResponse =
+    this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
+
+  def withoutGiftAidTaxReductionWhereBasicRateDiffers: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
+
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: RetrieveCalculationResponse =
+    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
+
+  def withoutAdditionalFieldsUpdates: RetrieveCalculationResponse =
+    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
+
   def withoutCessationDate: RetrieveCalculationResponse = {
     RetrieveCalculationResponse(metadata, inputs.withoutCessationDate, calculation, messages)
   }
@@ -60,25 +76,10 @@ case class RetrieveCalculationResponse(
     RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOtherIncome).filter(_.isDefined), messages)
   }
 
-  def withoutTaxTakenOffTradingIncome: RetrieveCalculationResponse = {
-    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
-  }
-
   def withoutItsaStatus: RetrieveCalculationResponse = {
     RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
   }
 
-  def withoutGiftAidTaxReductionWhereBasicRateDiffers: RetrieveCalculationResponse =
-    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
-
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: RetrieveCalculationResponse =
-    RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
-
-  def withoutBasicRateDivergenceUpdates: RetrieveCalculationResponse =
-    this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
-
-  def withoutAdditionalFieldsUpdates: RetrieveCalculationResponse =
-    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
 }
 
 object RetrieveCalculationResponse extends HateoasLinks {

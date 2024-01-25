@@ -17,6 +17,7 @@
 package api.controllers
 
 import api.controllers.requestParsers.RequestParser
+import api.hateoas.{HateoasFactory, HateoasLinksFactory}
 import api.models.errors.{ErrorWrapper, InternalError}
 import api.models.hateoas.{HateoasData, HateoasWrapper}
 import api.models.outcomes.ResponseWrapper
@@ -33,7 +34,6 @@ import play.api.mvc.Results.InternalServerError
 import routing.Version
 import utils.DateUtils.formatImf
 import utils.Logging
-import v3.hateoas.{HateoasFactory, HateoasLinksFactory}
 
 import scala.concurrent.{ExecutionContext, Future}
 
