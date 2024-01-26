@@ -121,8 +121,14 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
       "handler found" should {
         "use it" in new Test {
           MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
-
           requestHandler.routeRequest(buildRequest(s"$path/")) shouldBe Some(handler)
+        }
+      }
+
+      "handler not found" should {
+        "try without the trailing slash" in new Test {
+          MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
+          requestHandler.routeRequest(buildRequest(s"$path")) shouldBe Some(handler)
         }
       }
     }
