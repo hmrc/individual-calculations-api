@@ -60,8 +60,4 @@ case object BusinessIncomeSource {
 
   implicit val format: OFormat[BusinessIncomeSource] = Json.format[BusinessIncomeSource]
 
-  def withoutCessationDateOption(businessIncomeSources: Option[Seq[BusinessIncomeSource]]): Option[Seq[BusinessIncomeSource]] = {
-    businessIncomeSources.map(_.map(_.withoutCessationDate).filter(_.isDefined))
-  }
-
 }

@@ -17,12 +17,12 @@
 package definition
 
 import definition.APIStatus.ALPHA
-import routing.Version3
+import routing.Version4
 import support.UnitSpec
 
 class ApiDefinitionSpec extends UnitSpec {
 
-  val apiVersion: APIVersion       = APIVersion(Version3, ALPHA, endpointsEnabled = false)
+  val apiVersion: APIVersion       = APIVersion(Version4, ALPHA, endpointsEnabled = false)
   val apiDefinition: APIDefinition = APIDefinition("b", "c", "d", Seq("e"), Seq(apiVersion), Some(false))
 
   "APIDefinition" when {

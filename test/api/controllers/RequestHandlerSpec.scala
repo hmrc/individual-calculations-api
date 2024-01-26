@@ -83,7 +83,7 @@ class RequestHandlerSpec
   implicit val hc: HeaderCarrier                               = HeaderCarrier()
   implicit val ctx: RequestContext                             = RequestContext.from(mockIdGenerator, endpointLogContext)
   private val userDetails                                      = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
-  private val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+  private val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.4.0+json")
   implicit val userRequest: UserRequest[AnyContent]            = UserRequest[AnyContent](userDetails, fakeRequest)
   implicit val appConfig: AppConfig                            = mockAppConfig
   implicit val apiVersion: Version                             = Version(userRequest)

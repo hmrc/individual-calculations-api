@@ -125,6 +125,19 @@ object RequestHandler {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 
+        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
+
+          val headers =
+            responseHeaders ++
+              List(
+                "X-CorrelationId"        -> correlationId,
+                "X-Content-Type-Options" -> "nosniff"
+              ) ++
+              withDeprecationHeaders
+
+          result.copy(header = result.header.copy(headers = result.header.headers ++ headers))
+        }
+
         private def withDeprecationHeaders: List[(String, String)] = {
 
           appConfig.deprecationFor(apiVersion) match {
@@ -141,19 +154,6 @@ object RequestHandler {
               )
             case _ => Nil
           }
-        }
-
-        def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
-
-          val headers =
-            responseHeaders ++
-              List(
-                "X-CorrelationId"        -> correlationId,
-                "X-Content-Type-Options" -> "nosniff"
-              ) ++
-              withDeprecationHeaders
-
-          result.copy(header = result.header.copy(headers = result.header.headers ++ headers))
         }
 
       }
@@ -240,28 +240,6 @@ object RequestHandler {
           s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
             s"Unhandled error: $errorWrapper")
         InternalServerError(Json.toJson(InternalError))
-      }
-
-      def handleRequestWithModelUpdate(
-          rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] = {
-
-        logger.info(
-          message = s"[${ctx.endpointLogContext.controllerName}][${ctx.endpointLogContext.endpointName}] " +
-            s"with correlationId : ${ctx.correlationId}")
-
-        val result =
-          for {
-            parsedRequest   <- EitherT.fromEither[Future](parser.parseRequest(rawData))
-            serviceResponse <- EitherT(service(parsedRequest))
-          } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-            handleSuccess(rawData, parsedRequest, serviceResponse)
-          }
-
-        result.leftMap { errorWrapper =>
-          doWithContext(ctx.withCorrelationId(errorWrapper.correlationId)) { implicit ctx: RequestContext =>
-            handleFailure(errorWrapper)
-          }
-        }.merge
       }
 
     }
