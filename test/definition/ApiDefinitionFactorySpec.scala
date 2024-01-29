@@ -22,23 +22,23 @@ import config.Deprecation.NotDeprecated
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
-import routing.{Version3, Version4, Version5}
+import routing.{Version4, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 class ApiDefinitionFactorySpec extends UnitSpec {
+
+  private val confidenceLevel: ConfidenceLevel = ConfidenceLevel.L200
 
   class Test extends MockHttpClient with MockAppConfig {
     val apiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
     MockAppConfig.apiGatewayContext returns "api.gateway.context"
   }
 
-  private val confidenceLevel: ConfidenceLevel = ConfidenceLevel.L200
-
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        Seq(Version3, Version4, Version5)
+        Seq(Version4, Version5)
           .foreach { version =>
             MockAppConfig.apiStatus(version).returns("BETA")
             MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
@@ -70,11 +70,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
             context = "api.gateway.context",
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
-              APIVersion(
-                version = Version3,
-                status = APIStatus.BETA,
-                endpointsEnabled = true
-              ),
               APIVersion(
                 version = Version4,
                 status = APIStatus.BETA,
@@ -136,14 +131,14 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'deprecatedOn' parameter is missing for a deprecated version" should {
       "throw exception" in new Test {
-        MockAppConfig.apiStatus(Version3) returns "DEPRECATED"
+        MockAppConfig.apiStatus(Version4) returns "DEPRECATED"
         MockAppConfig
-          .deprecationFor(Version3)
+          .deprecationFor(Version4)
           .returns("deprecatedOn date is required for a deprecated version".invalid)
           .anyNumberOfTimes()
 
         val exception: Exception = intercept[Exception] {
-          apiDefinitionFactory.buildAPIStatus(Version3)
+          apiDefinitionFactory.buildAPIStatus(Version4)
         }
 
         val exceptionMessage: String = exception.getMessage

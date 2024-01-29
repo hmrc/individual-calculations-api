@@ -17,11 +17,11 @@
 package v4.controllers
 
 import api.controllers._
+import api.hateoas.HateoasFactory
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v3.hateoas.HateoasFactory
 import v4.controllers.requestParsers.RetrieveCalculationParser
 import v4.models.request.RetrieveCalculationRawData
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
