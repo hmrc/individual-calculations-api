@@ -22,9 +22,9 @@ import play.api.http.Status
 import play.api.http.Status._
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import support.IntegrationBaseSpec
-import v3.models.response.retrieveCalculation.CalculationFixture
 import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import support.IntegrationBaseSpec
+import v4.models.response.retrieveCalculation.CalculationFixture
 
 class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
 
@@ -32,7 +32,6 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
     val nino: String  = "AA123456A"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
     def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping
@@ -45,6 +44,8 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
           (AUTHORIZATION, "Bearer 123")
         )
     }
+
+    def uri: String = s"/$nino/self-assessment/2017-18/$calculationId"
 
   }
 

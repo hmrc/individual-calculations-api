@@ -34,14 +34,11 @@ trait VersionRoutingMap {
 }
 
 // Add routes corresponding to available versions...
-case class VersionRoutingMapImpl @Inject() (defaultRouter: Router, v3Router: v3.Routes, v4Router: v4.Routes, v5Router: v5.Routes)
-    extends VersionRoutingMap {
+case class VersionRoutingMapImpl @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes) extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
-    Version3 -> v3Router,
     Version4 -> v4Router,
     Version5 -> v5Router
-
   )
 
 }

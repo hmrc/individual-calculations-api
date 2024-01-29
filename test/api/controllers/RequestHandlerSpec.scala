@@ -17,6 +17,7 @@
 package api.controllers
 
 import api.controllers.requestParsers.RequestParser
+import api.hateoas.HateoasLinksFactory
 import api.mocks.MockIdGenerator
 import api.mocks.hateoas.MockHateoasFactory
 import api.mocks.services.MockAuditService
@@ -42,8 +43,7 @@ import routing.Version
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
-import v3.controllers.ControllerSpecHateoasSupport
-import v3.hateoas.HateoasLinksFactory
+import v4.controllers.ControllerSpecHateoasSupport
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -83,7 +83,7 @@ class RequestHandlerSpec
   implicit val hc: HeaderCarrier                               = HeaderCarrier()
   implicit val ctx: RequestContext                             = RequestContext.from(mockIdGenerator, endpointLogContext)
   private val userDetails                                      = UserDetails("mtdId", "Individual", Some("agentReferenceNumber"))
-  private val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.3.0+json")
+  private val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withHeaders(HeaderNames.ACCEPT -> "application/vnd.hmrc.4.0+json")
   implicit val userRequest: UserRequest[AnyContent]            = UserRequest[AnyContent](userDetails, fakeRequest)
   implicit val appConfig: AppConfig                            = mockAppConfig
   implicit val apiVersion: Version                             = Version(userRequest)

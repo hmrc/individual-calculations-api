@@ -16,11 +16,11 @@
 
 package v4.models.response.retrieveCalculation
 
+import api.hateoas.{HateoasLinks, HateoasLinksFactory}
 import api.models.domain.TaxYear
 import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
-import v3.hateoas.{HateoasLinks, HateoasLinksFactory}
 import v4.models.response.retrieveCalculation.calculation._
 import v4.models.response.retrieveCalculation.inputs.Inputs
 import v4.models.response.retrieveCalculation.messages.Messages
