@@ -24,24 +24,30 @@ class DateUtilsSpec extends UnitSpec {
 
   "getTaxYear" should {
     "return a tax year" when {
-      "mtd formatted string tax year is supplied" in {
-        DateUtils.getTaxYear(Some("2018-19"), LocalDate.now()) shouldBe "2018-19"
+      "given an MTD tax year" in {
+        val result = DateUtils.getTaxYear(Some("2018-19"), LocalDate.now())
+        result shouldBe "2018-19"
       }
 
-      "no tax year is supplied and the date is 5th April of the current year" in {
-        DateUtils.getTaxYear(None, LocalDate.parse("2019-04-05")) shouldBe "2018-19"
+      "given date 5th April of the current year but no tax year" in {
+        val result = DateUtils.getTaxYear(None, LocalDate.parse("2019-04-05"))
+        result shouldBe "2018-19"
       }
 
-      "no tax year is supplied and the date is 6th April of the current year" in {
-        DateUtils.getTaxYear(None, LocalDate.parse("2019-04-06")) shouldBe "2019-20"
+      "given date 6th April of the current year but no tax year" in {
+        val result = DateUtils.getTaxYear(None, LocalDate.parse("2019-04-06"))
+        result shouldBe "2019-20"
       }
     }
   }
 
-  "formatImf" should {
-    "Date/time in format [EEE, dd MMM yyyy HH:mm:ss z]" when {
-      "LocalDateTime is supplied" in {
-        DateUtils.formatImf(LocalDateTime.of(2023, 1, 17, 12, 0)) shouldBe "Tue, 17 Jan 2023 12:00:00 UTC"
+  "longDateTimestampGmt" should {
+    "return Date/time in format [EEE, dd MMM yyyy HH:mm:ss z]" when {
+      "given a LocalDateTime" in {
+        val result = DateUtils.longDateTimestampGmt(
+          LocalDateTime.of(2023, 1, 17, 12, 0)
+        )
+        result shouldBe "Tue, 17 Jan 2023 12:00:00 GMT"
       }
     }
   }

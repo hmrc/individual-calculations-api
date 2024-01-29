@@ -41,7 +41,6 @@ case class VersionRoutingMapImpl @Inject() (defaultRouter: Router, v3Router: v3.
     Version3 -> v3Router,
     Version4 -> v4Router,
     Version5 -> v5Router
-
   )
 
 }

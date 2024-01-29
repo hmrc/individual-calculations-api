@@ -176,15 +176,21 @@ class RequestHandlerSpec
           parseRequest returns Right(Input)
           service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
-          mockDeprecation(Deprecated(LocalDateTime.of(2023, 1, 17, 12, 0), Some(LocalDateTime.of(2024, 1, 17, 12, 0))))
+          mockDeprecation(
+            Deprecated(
+              LocalDateTime.of(2023, 1, 17, 12, 0),
+              Some(LocalDateTime.of(2024, 1, 17, 12, 0))
+            )
+          )
+
           MockAppConfig.apiDocumentationUrl().returns("http://someUrl").anyNumberOfTimes()
 
           val result = requestHandler.handleRequest(InputRaw)
 
           contentAsJson(result) shouldBe successResponseJson
           header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
-          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 UTC")
-          header("Sunset", result) shouldBe Some("Wed, 17 Jan 2024 12:00:00 UTC")
+          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
+          header("Sunset", result) shouldBe Some("Wed, 17 Jan 2024 12:00:00 GMT")
           header("Link", result) shouldBe Some("http://someUrl")
           status(result) shouldBe successCode
         }
@@ -205,7 +211,7 @@ class RequestHandlerSpec
 
           contentAsJson(result) shouldBe successResponseJson
           header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
-          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 UTC")
+          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
           header("Sunset", result) shouldBe None
           header("Link", result) shouldBe Some("http://someUrl")
           status(result) shouldBe successCode
