@@ -32,7 +32,7 @@ import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.Result
 import play.api.mvc.Results.InternalServerError
 import routing.Version
-import utils.DateUtils.formatImf
+import utils.DateUtils.longDateTimestampGmt
 import utils.Logging
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -143,13 +143,13 @@ object RequestHandler {
           appConfig.deprecationFor(apiVersion) match {
             case Valid(Deprecated(deprecatedOn, Some(sunsetDate))) =>
               List(
-                "Deprecation" -> formatImf(deprecatedOn),
-                "Sunset"      -> formatImf(sunsetDate),
+                "Deprecation" -> longDateTimestampGmt(deprecatedOn),
+                "Sunset"      -> longDateTimestampGmt(sunsetDate),
                 "Link"        -> appConfig.apiDocumentationUrl
               )
             case Valid(Deprecated(deprecatedOn, None)) =>
               List(
-                "Deprecation" -> formatImf(deprecatedOn),
+                "Deprecation" -> longDateTimestampGmt(deprecatedOn),
                 "Link"        -> appConfig.apiDocumentationUrl
               )
             case _ => Nil

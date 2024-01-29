@@ -22,6 +22,10 @@ import java.util.Locale
 
 object DateUtils {
 
+  private val longDateTimeFormatGmt: DateTimeFormatter = DateTimeFormatter
+    .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
+    .withZone(ZoneId.of("GMT"))
+
   def getTaxYear(taxYearOpt: Option[String], currentDate: LocalDate): String = taxYearOpt match {
     case Some(taxYear) => taxYear
     case None =>
@@ -34,10 +38,5 @@ object DateUtils {
       }
   }
 
-  private val imfFormatter: DateTimeFormatter = DateTimeFormatter
-    .ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
-    .withZone(ZoneId.of("UTC"))
-
-  def formatImf(dateTime: LocalDateTime): String = imfFormatter.format(dateTime)
-
+  def longDateTimestampGmt(dateTime: LocalDateTime): String = longDateTimeFormatGmt.format(dateTime)
 }
