@@ -16,4 +16,4 @@ For information on how to connect to this API [see the Income Tax MTD end-to-end
 
 
 > **Deprecation Notice:**
->  v2 and v3 are now deprecated. Please migrate to v4 for expanded functionality and long-term support.
+>  v4 is now deprecated. Please migrate to v5 for expanded functionality and long-term support.
