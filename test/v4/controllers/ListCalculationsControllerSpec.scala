@@ -87,19 +87,19 @@ class ListCalculationsControllerSpec
               ListCalculationsResponse(Seq(HateoasWrapper(
                 calculationModel,
                 Seq(Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}/${calculationModel.calculationId}",
                   rel = RelType.SELF,
                   method = Method.GET
                 ))
               ))),
               Seq(
                 Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}",
                   rel = RelType.TRIGGER,
                   method = Method.POST
                 ),
                 Link(
-                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${taxYear.get}",
+                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${this.taxYear.get}",
                   rel = RelType.SELF,
                   method = Method.GET
                 )
@@ -107,7 +107,7 @@ class ListCalculationsControllerSpec
             )
           )
 
-        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, taxYear.get)))
+        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, this.taxYear.get)))
       }
     }
 
