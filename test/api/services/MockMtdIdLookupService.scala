@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-package api.mocks.services
+package api.services
 
-import api.models.audit.AuditEvent
-import api.services.AuditService
+import api.connectors.MtdIdLookupOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditResult
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockAuditService extends MockFactory {
+trait MockMtdIdLookupService extends MockFactory {
 
-  val mockAuditService: AuditService = stub[AuditService]
+  val mockMtdIdLookupService: MtdIdLookupService = mock[MtdIdLookupService]
 
-  object MockedAuditService {
+  object MockedMtdIdLookupService {
 
-    def verifyAuditEvent[T](event: AuditEvent[T]): CallHandler[Future[AuditResult]] = {
-      (mockAuditService
-        .auditEvent(_: AuditEvent[T])(_: HeaderCarrier, _: ExecutionContext, _: Writes[T]))
-        .verify(event, *, *, *)
-        .returning(Future.successful(AuditResult.Success))
+    def lookup(nino: String): CallHandler[Future[MtdIdLookupOutcome]] = {
+      (mockMtdIdLookupService
+        .lookup(_: String)(_: HeaderCarrier, _: ExecutionContext))
+        .expects(nino, *, *)
     }
 
   }

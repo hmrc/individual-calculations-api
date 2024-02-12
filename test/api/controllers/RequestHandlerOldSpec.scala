@@ -17,10 +17,8 @@
 package api.controllers
 
 import api.controllers.requestParsers.RequestParser
-import api.hateoas.HateoasLinksFactory
+import api.hateoas.{HateoasLinksFactory, MockHateoasFactory}
 import api.mocks.MockIdGenerator
-import api.mocks.hateoas.MockHateoasFactory
-import api.mocks.services.MockAuditService
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails
 import api.models.errors._
@@ -28,7 +26,7 @@ import api.models.hateoas.{HateoasData, Link}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import api.models.{errors, hateoas}
-import api.services.ServiceOutcome
+import api.services.{MockAuditService, ServiceOutcome}
 import cats.data.Validated
 import cats.implicits.catsSyntaxValidatedId
 import config.Deprecation._
@@ -49,7 +47,7 @@ import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class RequestHandlerSpec
+class RequestHandlerOldSpec
     extends UnitSpec
     with MockAuditService
     with MockHateoasFactory

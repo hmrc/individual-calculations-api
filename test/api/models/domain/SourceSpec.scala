@@ -16,19 +16,14 @@
 
 package api.models.domain
 
-import play.api.libs.json.{JsValue, Json}
+import api.models.domain.Source.`MTD-SA`
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
 
-class EmptyJsonBodySpec extends UnitSpec {
+class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
-  }
+  testRoundTrip[Source](
+    ("MTD-SA", `MTD-SA`)
+  )
 
 }

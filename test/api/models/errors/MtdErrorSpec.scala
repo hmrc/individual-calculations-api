@@ -16,25 +16,50 @@
 
 package api.models.errors
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.http.Status.BAD_REQUEST
+import play.api.libs.json.Json
 import support.UnitSpec
 
 class MtdErrorSpec extends UnitSpec {
 
-  "MtdError" when {
+  private val error = MtdError("CODE", "some message", BAD_REQUEST)
 
-    val json: JsValue = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
+  "writes" should {
+    "generate the correct JSON" in {
+      Json.toJson(error) shouldBe Json.parse(
+        """
+          |{
+          |   "code": "CODE",
+          |   "message": "some message"
+          |}
+        """.stripMargin
+      )
+    }
+  }
 
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson(NinoFormatError) shouldBe json
+  "maybeWithExtraPath" should {
+    "add an extra path to the error" when {
+      "a path is provided" in {
+        val result = error.maybeWithExtraPath(Some("extra path")).paths
+        result shouldBe Some(List("extra path"))
+      }
+    }
+  }
+
+  "withExtraPath" when {
+    "paths are undefined" should {
+      "create a new error with paths" in {
+        val result = error.withExtraPath("aPath")
+        result shouldBe error.withPath("aPath")
+      }
+    }
+
+    "paths are defined" should {
+      "add the new path to the existing list of paths" in {
+        val dummyErrorWithPaths: MtdError = error.withPath("aPath")
+
+        val result = dummyErrorWithPaths.withExtraPath("aPath2")
+        result shouldBe dummyErrorWithPaths.withPaths(List("aPath", "aPath2"))
       }
     }
   }

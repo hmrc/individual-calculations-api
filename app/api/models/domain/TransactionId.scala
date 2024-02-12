@@ -16,19 +16,8 @@
 
 package api.models.domain
 
-import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+case class TransactionId(transactionId: String) {
 
-class EmptyJsonBodySpec extends UnitSpec {
-
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
-  }
+  override def toString: String = transactionId
 
 }

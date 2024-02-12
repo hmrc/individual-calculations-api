@@ -14,33 +14,9 @@
  * limitations under the License.
  */
 
-package api.models.hateoas
+package api.models.domain
 
-import api.models.hateoas.Method.GET
-import api.models.hateoas.RelType._
-import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
-
-class LinkSpec extends UnitSpec {
-
-  val linkModel: Link = Link(href = "aRef", method = GET, rel = SELF)
-
-  val linkJson: JsValue = Json.parse(
-    """
-      |{
-      |  "href" : "aRef",
-      |  "method" : "GET",
-      |  "rel" : "self"
-      |}
-    """.stripMargin
-  )
-
-  "Link" when {
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        Json.toJson(linkModel) shouldBe linkJson
-      }
-    }
-  }
-
+case class BusinessId(businessId: String) {
+  override def toString: String = businessId
 }
+

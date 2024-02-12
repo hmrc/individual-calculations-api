@@ -18,10 +18,10 @@ package api.controllers
 
 import api.controllers.ControllerTestRunner.validNino
 import api.mocks.MockIdGenerator
-import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails
 import api.models.errors.MtdError
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import cats.implicits.catsSyntaxValidatedId
 import config.AppConfig
 import config.Deprecation.NotDeprecated

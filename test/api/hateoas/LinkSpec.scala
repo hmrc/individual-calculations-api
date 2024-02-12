@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-package api.models.domain
+package api.hateoas
 
+import api.models.hateoas.Link
+import api.models.hateoas.Method.GET
+import api.models.hateoas.RelType._
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
-class EmptyJsonBodySpec extends UnitSpec {
+class LinkSpec extends UnitSpec {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
+  val linkModel: Link = Link(href = "aRef", method = GET, rel = SELF)
+
+  val linkJson: JsValue = Json.parse(
+    """
+      |{
+      |  "href" : "aRef",
+      |  "method" : "GET",
+      |  "rel" : "self"
+      |}
+    """.stripMargin
+  )
+
+  "Link" when {
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        Json.toJson(linkModel) shouldBe linkJson
       }
     }
   }

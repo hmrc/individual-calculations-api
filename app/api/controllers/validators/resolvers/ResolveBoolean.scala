@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package api.models.domain
+package api.controllers.validators.resolvers
 
-import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import api.models.errors.MtdError
+import cats.data.Validated
+import cats.implicits.catsSyntaxOption
 
-class EmptyJsonBodySpec extends UnitSpec {
+case class ResolveBoolean(error: MtdError) extends ResolverSupport {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
+  def apply(value: String): Validated[Seq[MtdError], Boolean] =
+    value.toBooleanOption.toValid(List(error))
+
+}
+
+object ResolveBoolean {
+
+  def apply(value: String, error: MtdError): Validated[Seq[MtdError], Boolean] = {
+    val resolver = ResolveBoolean(error)
+    resolver(value)
   }
 
 }

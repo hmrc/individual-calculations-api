@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package api.models.domain
+package api.hateoas
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v4.fixtures.hateoas.HateoasWrapperFixture._
 
-class EmptyJsonBodySpec extends UnitSpec {
+class HateoasWrapperSpec extends UnitSpec {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
+  "HateoasWrapper" when {
+    "written to JSON with links" should {
+      "produce the expected JsObject" in {
+        Json.toJson(hateoasWrapperModelWithLinks) shouldBe hateoasWrapperJsonWithLinks
+      }
+    }
+
+    "written to JSON without links" should {
+      "produce the expected JsObject" in {
+        Json.toJson(hateoasWrapperModelWithoutLinks) shouldBe hateoasWrapperJsonWithoutLinks
       }
     }
   }

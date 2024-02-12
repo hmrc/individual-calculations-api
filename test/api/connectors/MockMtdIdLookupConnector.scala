@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package api.mocks.connectors
+package api.connectors
 
-import api.connectors.{MtdIdLookupConnector, MtdIdLookupOutcome}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier

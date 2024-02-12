@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-package api.models.hateoas
+package api.models.domain
 
-import play.api.libs.json.Json
 import support.UnitSpec
-import v4.fixtures.hateoas.HateoasWrapperFixture._
 
-class HateoasWrapperSpec extends UnitSpec {
+class BusinessIdSpec extends UnitSpec {
 
-  "HateoasWrapper" when {
-    "written to JSON with links" should {
-      "produce the expected JsObject" in {
-        Json.toJson(hateoasWrapperModelWithLinks) shouldBe hateoasWrapperJsonWithLinks
-      }
-    }
-
-    "written to JSON without links" should {
-      "produce the expected JsObject" in {
-        Json.toJson(hateoasWrapperModelWithoutLinks) shouldBe hateoasWrapperJsonWithoutLinks
-      }
+  "toString" should {
+    "return the BusinessId value" in {
+      val result = BusinessId("some id").toString
+      result shouldBe "some id"
     }
   }
 
 }
+

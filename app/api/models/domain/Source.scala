@@ -16,19 +16,14 @@
 
 package api.models.domain
 
-import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import play.api.libs.json
+import utils.enums.Enums
 
-class EmptyJsonBodySpec extends UnitSpec {
+sealed trait Source
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
-  }
+object Source {
+  case object `MTD-SA` extends Source
 
+  implicit val format: json.Format[Source] = Enums.format[Source]
 }
+

@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package api.models.domain
+package api.hateoas
 
-import play.api.libs.json.{JsValue, Json}
+import api.models.hateoas.Method
+import api.models.hateoas.Method._
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
 
-class EmptyJsonBodySpec extends UnitSpec {
+class MethodSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
-  }
+  testRoundTrip[Method](
+    ("GET", GET),
+    ("POST", POST),
+    ("DELETE", DELETE)
+  )
 
 }

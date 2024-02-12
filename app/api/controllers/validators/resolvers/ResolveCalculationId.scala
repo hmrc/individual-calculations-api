@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package api.models.domain
+package api.controllers.validators.resolvers
 
-import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import api.models.domain.CalculationId
+import api.models.errors.{CalculationIdFormatError, MtdError}
+import cats.data.Validated
 
-class EmptyJsonBodySpec extends UnitSpec {
+object ResolveCalculationId extends ResolverSupport {
 
-  "EmptyJsonBody.writes" should {
-    "return an empty JSON body" when {
-      "called" in {
-        val json            = EmptyJsonBody
-        val result: JsValue = Json.toJson(json)(EmptyJsonBody.writes)
-        result shouldBe Json.obj()
-      }
-    }
-  }
+  private val calculationIdRegex = """^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$""".r
+
+  val resolver: Resolver[String, CalculationId] =
+    ResolveStringPattern(calculationIdRegex, CalculationIdFormatError).resolver.map(CalculationId)
+
+  def apply(value: String): Validated[Seq[MtdError], CalculationId] = resolver(value)
 
 }
+

@@ -22,6 +22,9 @@ import play.api.mvc.RequestHeader
 
 object Version {
 
+  def from(request: RequestHeader, orElse: Version): Version =
+    Versions.getFromRequest(request).getOrElse(orElse)
+
   def apply(request: RequestHeader): Version =
     Versions.getFromRequest(request).getOrElse(throw new Exception("Missing or unsupported version found in request accept header"))
 
@@ -50,20 +53,15 @@ object Version {
 
 sealed trait Version {
   val name: String
-  val configName: String
-  val maybePrevious: Option[Version] = None
-  override def toString: String      = name
+  override def toString: String = name
 }
 
 case object Version4 extends Version {
-  val name       = "4.0"
-  val configName = "4"
+  val name = "4.0"
 }
 
 case object Version5 extends Version {
-  override val maybePrevious: Option[Version] = Some(Version4)
-  val name                                    = "5.0"
-  val configName                              = "5"
+  val name = "5.0"
 }
 
 object Versions {

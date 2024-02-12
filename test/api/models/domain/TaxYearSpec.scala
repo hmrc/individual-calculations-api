@@ -16,6 +16,7 @@
 
 package api.models.domain
 
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 import java.time.{LocalDate, ZoneId}
@@ -40,52 +41,44 @@ class TaxYearSpec extends UnitSpec {
       }
     }
 
-    "constructed from localDate" should {
-      "be the expected year, taking into account the UK tax year start date" in {
-        def test(datesAndExpectedYears: Seq[(LocalDate, Int)]): Unit = {
-          datesAndExpectedYears.foreach { case (date, expectedYear) =>
-            withClue(s"Given $date:") {
-              val result = TaxYear.fromLocalDate(date)
-              result.year shouldBe expectedYear
+    "constructed from a date" when {
+      val input = List(
+        "2025-01-01" -> 2025,
+        "2025-04-01" -> 2025,
+        "2025-04-06" -> 2026,
+        "2023-06-01" -> 2024,
+        "2026-01-01" -> 2026,
+        "2021-12-31" -> 2022
+      )
+
+      "the date is an ISO string" must {
+        "be the expected year, taking into account the UK tax year start date" in {
+          def test(datesAndExpectedYears: Seq[(String, Int)]): Unit = {
+            datesAndExpectedYears.foreach { case (date, expectedYear) =>
+              withClue(s"Given $date:") {
+                val result = TaxYear.fromIso(date)
+                result.year shouldBe expectedYear
+              }
             }
           }
+
+          test(input)
         }
-
-        val input = List(
-          LocalDate.of(2025, 1, 1)   -> 2025,
-          LocalDate.of(2025, 4, 1)   -> 2025,
-          LocalDate.of(2025, 4, 6)   -> 2026,
-          LocalDate.of(2023, 6, 1)   -> 2024,
-          LocalDate.of(2026, 1, 1)   -> 2026,
-          LocalDate.of(2021, 12, 31) -> 2022
-        )
-
-        test(input)
       }
-    }
 
-    "constructed from an ISO date" should {
-      "be the expected year, taking into account the UK tax year start date" in {
-
-        def test(datesAndExpectedYears: Seq[(String, Int)]): Unit = {
-          datesAndExpectedYears.foreach { case (date, expectedYear) =>
-            withClue(s"Given $date:") {
-              val result = TaxYear.fromIso(date)
-              result.year shouldBe expectedYear
+      "the date is a LocalDate" must {
+        "be the expected year, taking into account the UK tax year start date" in {
+          def test(datesAndExpectedYears: Seq[(String, Int)]): Unit = {
+            datesAndExpectedYears.foreach { case (date, expectedYear) =>
+              withClue(s"Given $date:") {
+                val result = TaxYear.containing(LocalDate.parse(date))
+                result.year shouldBe expectedYear
+              }
             }
           }
+
+          test(input)
         }
-
-        val input = List(
-          "2025-01-01" -> 2025,
-          "2025-04-01" -> 2025,
-          "2025-04-06" -> 2026,
-          "2023-06-01" -> 2024,
-          "2026-01-01" -> 2026,
-          "2021-12-31" -> 2022
-        )
-
-        test(input)
       }
     }
 
@@ -126,6 +119,49 @@ class TaxYearSpec extends UnitSpec {
         taxYear shouldBe TaxYear.fromDownstream("2022")
         taxYear should not be TaxYear.fromDownstream("2021")
       }
+    }
+
+    val requestJson: JsValue = Json.parse("""
+                                         "2018-19"
+                                          """.stripMargin)
+
+    val model: TaxYear = TaxYear.fromMtd("2018-19")
+
+    "written to JSON" should {
+      "return the expected JsValue" in {
+        Json.toJson(model) shouldBe requestJson
+      }
+    }
+  }
+
+  "TaxYear.currentTaxYear()" should {
+    "return the current tax year" in {
+      val today = LocalDate.now(ZoneId.of("UTC"))
+      val year  = today.getYear
+
+      val expectedYear = {
+        val taxYearStartDate = LocalDate.of(year, 4, 6)
+        if (today.isBefore(taxYearStartDate)) year else year + 1
+      }
+
+      val result = TaxYear.currentTaxYear()
+      result.year shouldBe expectedYear
+    }
+  }
+
+  "getting the start and end" must {
+    "get April 5th and April 6th when ending on non-leap years" in {
+      val taxYear = TaxYear.ending(2023)
+
+      taxYear.startDate shouldBe LocalDate.parse("2022-04-06")
+      taxYear.endDate shouldBe LocalDate.parse("2023-04-05")
+    }
+
+    "get April 5th and April 6th when ending on leap years" in {
+      val taxYear = TaxYear.ending(2020)
+
+      taxYear.startDate shouldBe LocalDate.parse("2019-04-06")
+      taxYear.endDate shouldBe LocalDate.parse("2020-04-05")
     }
   }
 

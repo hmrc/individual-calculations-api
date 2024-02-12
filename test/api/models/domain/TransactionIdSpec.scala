@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package api.models.hateoas
+package api.models.domain
 
-import api.models.hateoas.Method._
 import support.UnitSpec
-import utils.enums.EnumJsonSpecSupport
 
-class MethodSpec extends UnitSpec with EnumJsonSpecSupport {
+class TransactionIdSpec extends UnitSpec {
 
-  testRoundTrip[Method](
-    ("GET", GET),
-    ("POST", POST),
-    ("DELETE", DELETE)
-  )
+  "toString" should {
+    "return the TransactionId value" in {
+      val result = TransactionId("some id").toString
+      result shouldBe "some id"
+    }
+  }
 
 }
