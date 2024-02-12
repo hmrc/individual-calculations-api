@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.AppConfig
+import play.api.Environment
 import play.api.http.{AcceptEncoding, HttpErrorHandler}
 import play.api.mvc.{Action, AnyContent, RequestHeader, Result}
 import play.utils.{InvalidUriEncodingException, Resources}
@@ -31,8 +31,8 @@ trait Rewriter {
 }
 
 @Singleton
-class RewriteableAssets @Inject() (errorHandler: HttpErrorHandler, meta: AssetsMetadata, appConfig: AppConfig)(implicit ec: ExecutionContext)
-    extends Assets(errorHandler, meta) {
+class RewriteableAssets @Inject() (errorHandler: HttpErrorHandler, meta: AssetsMetadata, env: Environment)(implicit ec: ExecutionContext)
+    extends Assets(errorHandler, meta, env) {
   import meta._
 
   /** If no rewriters, Play's own static Assets.assetAt() will be called.
@@ -68,7 +68,7 @@ class RewriteableAssets @Inject() (errorHandler: HttpErrorHandler, meta: AssetsM
       case Some((assetInfo, acceptEncoding)) =>
         val connection = assetInfo.url(acceptEncoding).openConnection()
         // Make sure it's not a directory
-        if (Resources.isUrlConnectionADirectory(connection)) {
+        if (Resources.isUrlConnectionADirectory(getClass.getClassLoader, connection)) {
           Resources.closeUrlConnection(connection)
           notFound
         } else
