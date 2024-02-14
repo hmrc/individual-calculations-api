@@ -18,10 +18,10 @@ package api.controllers
 
 import api.controllers.ControllerTestRunner.validNino
 import api.mocks.MockIdGenerator
-import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetailOld}
 import api.models.auth.UserDetails
 import api.models.errors.MtdError
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import cats.implicits.catsSyntaxValidatedId
 import config.AppConfig
 import config.Deprecation.NotDeprecated
@@ -34,7 +34,6 @@ import play.api.test.{FakeRequest, ResultExtractors}
 import routing.{Version, Version5}
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v4.controllers.ControllerSpecHateoasSupport
 
 import scala.concurrent.Future
 
@@ -105,7 +104,7 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
   trait AuditEventChecking {
     _: ControllerTest =>
 
-    protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail]
+    protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetailOld]
 
     protected def runOkTestWithAudit(expectedStatus: Int,
                                      maybeExpectedResponseBody: Option[JsValue] = None,

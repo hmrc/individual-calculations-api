@@ -16,12 +16,12 @@
 
 package v4.controllers.requestParsers.validators
 
-import api.controllers.requestParsers.validators.Validator
+import api.controllers.requestParsers.validators.ValidatorOld
 import api.controllers.requestParsers.validators.validations.{NinoValidation, TaxYearNotSupportedValidation, TaxYearValidation}
 import api.models.errors.MtdError
 import v4.models.request.ListCalculationsRawData
 
-class ListCalculationsValidator extends Validator[ListCalculationsRawData] {
+class ListCalculationsValidator extends ValidatorOld[ListCalculationsRawData] {
 
   private val validationSet = List(parserValidation, ruleValidation)
 

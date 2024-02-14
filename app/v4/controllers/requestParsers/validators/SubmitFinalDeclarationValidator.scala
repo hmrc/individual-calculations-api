@@ -16,12 +16,12 @@
 
 package v4.controllers.requestParsers.validators
 
-import api.controllers.requestParsers.validators.Validator
+import api.controllers.requestParsers.validators.ValidatorOld
 import api.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation, TaxYearValidation}
 import api.models.errors.MtdError
 import v4.models.request.SubmitFinalDeclarationRawData
 
-class SubmitFinalDeclarationValidator extends Validator[SubmitFinalDeclarationRawData] {
+class SubmitFinalDeclarationValidator extends ValidatorOld[SubmitFinalDeclarationRawData] {
 
   private val validationSet = List(parserValidation)
 

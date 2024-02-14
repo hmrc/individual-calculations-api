@@ -18,7 +18,7 @@ package v4.controllers
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.models.audit.GenericAuditDetail
+import api.models.audit.GenericAuditDetailOld
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.libs.json.{JsValue, Json}
@@ -57,7 +57,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)
 
       val requestHandler =
-        RequestHandler
+        RequestHandlerOld
           .withParser(parser)
           .withService(service.triggerCalculation)
           .withHateoasResultFrom(hateoasFactory)(
@@ -71,11 +71,11 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             },
             successStatus = ACCEPTED
           )
-          .withAuditing(AuditHandler.custom(
+          .withAuditing(AuditHandlerOld.custom(
             auditService,
             auditType = "TriggerASelfAssessmentTaxCalculation",
             transactionName = "trigger-a-self-assessment-tax-calculation",
-            auditDetailCreator = GenericAuditDetail.auditDetailCreator(
+            auditDetailCreator = GenericAuditDetailOld.auditDetailCreator(
               params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}")),
             requestBody = None,
             responseBodyMap = auditResponseBody

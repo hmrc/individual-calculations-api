@@ -16,7 +16,9 @@
 
 package api.controllers
 
+import api.models.errors.{ErrorWrapper, NotFoundError}
 import play.api.Logger
+import play.api.http.Status.NOT_FOUND
 import play.api.mvc.Results
 import support.UnitSpec
 import utils.Logging
@@ -27,18 +29,30 @@ class BaseControllerSpec extends UnitSpec {
     override lazy val logger: Logger = Logger("test-logger")
   }
 
-  object TestController extends BaseController with MockLogging {}
+  class TestController extends BaseController with MockLogging {}
 
   "BaseController" should {
 
-    "add headers to response" in {
+    "add headers to response" in new TestController {
       val correlationId   = "testCorrelationId"
       val responseHeaders = Seq("X-Other-Header" -> "testHeaderValue")
 
-      val result = TestController.Response(Results.Ok).withApiHeaders(correlationId, responseHeaders: _*)
+      val result = Response(Results.Ok).withApiHeaders(correlationId, responseHeaders: _*)
 
       result.header.headers.get("X-CorrelationId") shouldBe Some("testCorrelationId")
       result.header.headers.get("X-Other-Header") shouldBe Some("testHeaderValue")
+      result.header.headers.get("X-Content-Type-Options") shouldBe Some("nosniff")
+    }
+
+    "return the correct error response" in new TestController {
+      val correlationId                      = "testCorrelationId"
+      val notFoundErrorWrapper: ErrorWrapper = ErrorWrapper(correlationId, NotFoundError)
+      val endpointLogContext                 = EndpointLogContext("cn", "en")
+
+      val result = errorResult(notFoundErrorWrapper)(endpointLogContext)
+
+      result.header.status shouldBe NOT_FOUND
+      result.header.headers.get("X-CorrelationId") shouldBe Some("testCorrelationId")
       result.header.headers.get("X-Content-Type-Options") shouldBe Some("nosniff")
     }
 

@@ -17,9 +17,9 @@
 package api.controllers.requestParsers.validators.validations
 
 import api.models.errors.RuleIncorrectOrEmptyBodyError
+import api.models.utils.JsonErrorValidators
 import play.api.libs.json.{Json, OFormat}
 import support.UnitSpec
-import v4.models.utils.JsonErrorValidators
 
 class JsonFormatValidationSpec extends UnitSpec with JsonErrorValidators {
 

@@ -16,9 +16,8 @@
 
 package v4.models.response.triggerCalculation
 
-import api.hateoas.{HateoasLinks, HateoasLinksFactory}
+import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
-import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json._
 

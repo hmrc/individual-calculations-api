@@ -17,31 +17,36 @@
 package routing
 
 import play.api.http.HeaderNames.ACCEPT
+import play.api.libs.json.Writes._
 import play.api.libs.json._
 import play.api.mvc.RequestHeader
 
 object Version {
 
+  def from(request: RequestHeader, orElse: Version): Version =
+    Versions.getFromRequest(request).getOrElse(orElse)
+
   def apply(request: RequestHeader): Version =
     Versions.getFromRequest(request).getOrElse(throw new Exception("Missing or unsupported version found in request accept header"))
 
-  implicit object VersionWrites extends Writes[Version] {
-
-    def writes(version: Version): JsValue = version match {
-      case Version4 => Json.toJson(Version4.name)
-      case Version5 => Json.toJson(Version5.name)
-    }
+  object VersionWrites extends Writes[Version] {
+    def writes(version: Version): JsValue = version.asJson
 
   }
 
-  implicit object VersionReads extends Reads[Version] {
+  object VersionReads extends Reads[Version] {
 
+    /** @param version
+      *   expecting a JsString e.g. "1.0"
+      */
     override def reads(version: JsValue): JsResult[Version] =
-      version.validate[String].flatMap {
-        case Version4.name => JsSuccess(Version4)
-        case Version5.name => JsSuccess(Version5)
-        case _             => JsError("Unrecognised version")
-      }
+      version
+        .validate[String]
+        .flatMap(name =>
+          Versions.getFrom(name) match {
+            case Left(_)        => JsError("Version not recognised")
+            case Right(version) => JsSuccess(version)
+          })
 
   }
 
@@ -50,20 +55,16 @@ object Version {
 
 sealed trait Version {
   val name: String
-  val configName: String
-  val maybePrevious: Option[Version] = None
-  override def toString: String      = name
+  lazy val asJson: JsValue      = Json.toJson(name)
+  override def toString: String = name
 }
 
 case object Version4 extends Version {
-  val name       = "4.0"
-  val configName = "4"
+  val name = "4.0"
 }
 
 case object Version5 extends Version {
-  override val maybePrevious: Option[Version] = Some(Version4)
-  val name                                    = "5.0"
-  val configName                              = "5"
+  val name = "5.0"
 }
 
 object Versions {
@@ -84,7 +85,7 @@ object Versions {
   private def getFrom(headers: Seq[(String, String)]): Either[GetFromRequestError, String] =
     headers.collectFirst { case (ACCEPT, versionRegex(ver)) => ver }.toRight(left = InvalidHeader)
 
-  private def getFrom(name: String): Either[GetFromRequestError, Version] =
+  def getFrom(name: String): Either[GetFromRequestError, Version] =
     versionsByName.get(name).toRight(left = VersionNotFound)
 
 }

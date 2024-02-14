@@ -29,9 +29,7 @@ object Values {
 
   object MkValues {
 
-    implicit def values[E, Impls <: Coproduct](implicit
-        @nowarn("msg=parameter value gen") gen: Generic.Aux[E, Impls],
-        v: Aux[E, Impls]): MkValues[E] =
+    implicit def values[E, Impls <: Coproduct](implicit @nowarn("msg=parameter gen") gen: Generic.Aux[E, Impls], v: Aux[E, Impls]): MkValues[E] =
       new MkValues[E] {
         def values: List[E] = v.values
       }

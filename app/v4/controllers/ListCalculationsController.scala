@@ -54,10 +54,10 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
       val rawData = ListCalculationsRawData(nino, taxYear)
 
       val requestHandler =
-        RequestHandler
+        RequestHandlerOld
           .withParser(parser)
           .withService(service.list)
-          .withResultCreator(ResultCreator.hateoasListWrapping(hateoasFactory)((parsedRequest, _) =>
+          .withResultCreator(ResultCreatorOld.hateoasListWrapping(hateoasFactory)((parsedRequest, _) =>
             ListCalculationsHateoasData(nino, parsedRequest.taxYear)))
 
       requestHandler.handleRequest(rawData)

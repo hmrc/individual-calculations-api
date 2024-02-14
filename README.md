@@ -13,7 +13,7 @@ The Individual Calculations API allows a developer to:
 
 - Scala 2.13.x
 - Java 11
-- sbt 1.7.x
+- sbt 1.9.x
 - [Service Manager V2](https://github.com/hmrc/sm2)
 
 ## Development Setup

@@ -16,8 +16,8 @@
 
 package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
+import api.models.utils.JsonErrorValidators
 import support.UnitSpec
-import v4.models.utils.JsonErrorValidators
 
 class NicsSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 

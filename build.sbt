@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import sbt._
+import sbt.*
 import uk.gov.hmrc.DefaultBuildSettings.{addTestReportOption, defaultSettings}
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
@@ -28,8 +28,8 @@ lazy val microservice = Project(appName, file("."))
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test(),
     retrieveManaged                 := true,
     update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(warnScalaVersionEviction = false),
-    scalaVersion                    := "2.13.8",
-    scalacOptions ++= List("-Xfatal-warnings", "-Wconf:src=routes/.*:silent", "-feature", "-language:higherKinds")
+    scalaVersion                    := "2.13.12",
+    scalacOptions ++= List("-language:higherKinds", "-Xlint:-byname-implicit", "-Xfatal-warnings", "-Wconf:src=routes/.*:silent", "-feature")
   )
   .settings(
     Compile / unmanagedResourceDirectories += baseDirectory.value / "resources"
@@ -38,8 +38,8 @@ lazy val microservice = Project(appName, file("."))
   .settings(CodeCoverageSettings.settings: _*)
   .settings(defaultSettings(): _*)
   .configs(ItTest)
+  .settings(inConfig(ItTest)(Defaults.itSettings): _*)
   .settings(
-    inConfig(ItTest)(Defaults.itSettings ++ headerSettings(ItTest) ++ automateHeaderSettings(ItTest) ++ ScalafmtPlugin.scalafmtConfigSettings),
     ItTest / fork                       := true,
     ItTest / unmanagedSourceDirectories := Seq((ItTest / baseDirectory).value / "it"),
     ItTest / unmanagedClasspath += baseDirectory.value / "resources",
@@ -55,7 +55,7 @@ lazy val microservice = Project(appName, file("."))
 
 val appName = "individual-calculations-api"
 
-dependencyUpdatesFilter -= moduleFilter(organization = "com.typesafe.play")
+dependencyUpdatesFilter -= moduleFilter(organization = "org.playframework")
 dependencyUpdatesFilter -= moduleFilter(name = "scala-library")
 dependencyUpdatesFilter -= moduleFilter(name = "flexmark-all")
 dependencyUpdatesFilter -= moduleFilter(name = "scalatestplus-play")

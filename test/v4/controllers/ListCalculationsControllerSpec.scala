@@ -17,13 +17,13 @@
 package v4.controllers
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.hateoas
+import api.hateoas.{HateoasWrapper, Method, MockHateoasFactory, RelType}
 import api.mocks.MockIdGenerator
-import api.mocks.hateoas.MockHateoasFactory
-import api.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
+import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.mvc.Result
 import v4.fixtures.ListCalculationsFixture
 import v4.mocks.requestParsers.MockListCalculationsParser
@@ -86,20 +86,20 @@ class ListCalculationsControllerSpec
             HateoasWrapper(
               ListCalculationsResponse(Seq(HateoasWrapper(
                 calculationModel,
-                Seq(Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
+                Seq(hateoas.Link(
+                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}/${calculationModel.calculationId}",
                   rel = RelType.SELF,
                   method = Method.GET
                 ))
               ))),
               Seq(
-                Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
+                hateoas.Link(
+                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}",
                   rel = RelType.TRIGGER,
                   method = Method.POST
                 ),
-                Link(
-                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${taxYear.get}",
+                hateoas.Link(
+                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${this.taxYear.get}",
                   rel = RelType.SELF,
                   method = Method.GET
                 )
@@ -107,7 +107,7 @@ class ListCalculationsControllerSpec
             )
           )
 
-        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, taxYear.get)))
+        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, this.taxYear.get)))
       }
     }
 

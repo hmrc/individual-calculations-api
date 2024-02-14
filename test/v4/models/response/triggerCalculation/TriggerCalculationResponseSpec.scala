@@ -16,10 +16,10 @@
 
 package v4.models.response.triggerCalculation
 
-import api.hateoas.HateoasFactory
+import api.hateoas
+import api.hateoas.Method.GET
+import api.hateoas.{HateoasFactory, HateoasWrapper}
 import api.models.domain.TaxYear
-import api.models.hateoas.Method.GET
-import api.models.hateoas.{HateoasWrapper, Link}
 import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
@@ -74,8 +74,8 @@ class TriggerCalculationResponseSpec extends UnitSpec {
           HateoasWrapper(
             triggerCalculationResponseModel,
             Seq(
-              Link(s"/individuals/calculations/$nino/self-assessment?taxYear=2020-21", GET, "list"),
-              Link(s"/individuals/calculations/$nino/self-assessment/2020-21/$calculationId", GET, "self")
+              hateoas.Link(s"/individuals/calculations/$nino/self-assessment?taxYear=2020-21", GET, "list"),
+              hateoas.Link(s"/individuals/calculations/$nino/self-assessment/2020-21/$calculationId", GET, "self")
             )
           )
       }
