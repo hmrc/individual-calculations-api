@@ -17,11 +17,10 @@
 package v4.controllers
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.hateoas.MockHateoasFactory
+import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import api.models.hateoas.HateoasWrapper
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.Configuration

@@ -16,8 +16,9 @@
 
 package v4.fixtures.hateoas
 
-import api.models.hateoas.Method.GET
-import api.models.hateoas.{HateoasWrapper, Link}
+import api.hateoas
+import api.hateoas.HateoasWrapper
+import api.hateoas.Method.GET
 import play.api.libs.json.{JsValue, Json, OWrites}
 
 object HateoasWrapperFixture {
@@ -26,7 +27,7 @@ object HateoasWrapperFixture {
     HateoasWrapper(
       payload = TestMtdResponse(field1 = "value1", field2 = 1),
       links = Seq(
-        Link(
+        hateoas.Link(
           href = "/some/resource",
           method = GET,
           rel = "thing"

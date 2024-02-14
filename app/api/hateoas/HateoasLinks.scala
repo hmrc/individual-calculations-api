@@ -16,10 +16,10 @@
 
 package api.hateoas
 
+import api.hateoas
 import api.models.domain.TaxYear
-import api.models.hateoas.Link
-import api.models.hateoas.Method._
-import api.models.hateoas.RelType._
+import Method._
+import RelType._
 import config.AppConfig
 
 trait HateoasLinks {
@@ -32,7 +32,7 @@ trait HateoasLinks {
 
   // API resource links
 
-  def trigger(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link = Link(
+  def trigger(appConfig: AppConfig, nino: String, taxYear: TaxYear): Link = hateoas.Link(
     href = baseSaUriWithTaxYear(appConfig, nino, taxYear),
     method = POST,
     rel = TRIGGER
@@ -41,16 +41,16 @@ trait HateoasLinks {
   def list(appConfig: AppConfig, nino: String, taxYear: TaxYear, isSelf: Boolean): Link = {
     val href = baseSaUri(appConfig, nino) + s"?taxYear=${taxYear.asMtd}"
 
-    Link(href = href, method = GET, rel = if (isSelf) SELF else LIST)
+    hateoas.Link(href = href, method = GET, rel = if (isSelf) SELF else LIST)
   }
 
-  def retrieve(appConfig: AppConfig, nino: String, taxYear: TaxYear, calculationId: String): Link = Link(
+  def retrieve(appConfig: AppConfig, nino: String, taxYear: TaxYear, calculationId: String): Link = hateoas.Link(
     href = baseSaUriWithTaxYear(appConfig, nino, taxYear) + s"/$calculationId",
     method = GET,
     rel = SELF
   )
 
-  def submitFinalDeclaration(appConfig: AppConfig, nino: String, taxYear: TaxYear, calculationId: String): Link = Link(
+  def submitFinalDeclaration(appConfig: AppConfig, nino: String, taxYear: TaxYear, calculationId: String): Link = hateoas.Link(
     href = s"${baseSaUriWithTaxYear(appConfig, nino, taxYear)}/$calculationId/final-declaration",
     method = POST,
     rel = SUBMIT_FINAL_DECLARATION

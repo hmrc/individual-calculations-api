@@ -16,9 +16,8 @@
 
 package v4.models.response.listCalculations
 
-import api.hateoas.{HateoasLinks, HateoasListLinksFactory}
+import api.hateoas.{HateoasData, HateoasLinks, HateoasListLinksFactory, Link}
 import api.models.domain.TaxYear
-import api.models.hateoas.{HateoasData, Link}
 import cats.Functor
 import config.AppConfig
 import play.api.libs.json._

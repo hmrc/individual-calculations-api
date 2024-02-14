@@ -16,10 +16,10 @@
 
 package v4.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
+import api.models.utils.JsonErrorValidators
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v4.models.response.common.IncomeSourceType.`foreign-savings-and-gains`
-import v4.models.utils.JsonErrorValidators
 
 class ForeignSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
 

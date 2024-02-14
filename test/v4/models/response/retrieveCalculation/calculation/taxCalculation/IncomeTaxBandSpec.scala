@@ -16,9 +16,9 @@
 
 package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
+import api.models.utils.JsonErrorValidators
 import play.api.libs.json.JsObject
 import support.UnitSpec
-import v4.models.utils.JsonErrorValidators
 
 class IncomeTaxBandSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 

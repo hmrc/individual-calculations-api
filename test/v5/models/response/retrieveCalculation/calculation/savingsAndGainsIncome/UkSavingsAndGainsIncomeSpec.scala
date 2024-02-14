@@ -16,10 +16,10 @@
 
 package v5.models.response.retrieveCalculation.calculation.savingsAndGainsIncome
 
+import api.models.utils.JsonErrorValidators
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import v5.models.response.common.IncomeSourceType
-import v5.models.utils.JsonErrorValidators
 
 class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
 

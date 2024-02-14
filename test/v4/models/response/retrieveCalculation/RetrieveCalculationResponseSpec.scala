@@ -16,10 +16,11 @@
 
 package v4.models.response.retrieveCalculation
 
-import api.hateoas.HateoasFactory
+import api.hateoas
+import api.hateoas.Method.{GET, POST}
+import api.hateoas.{HateoasFactory, HateoasWrapper}
 import api.models.domain.TaxYear
-import api.models.hateoas.Method.{GET, POST}
-import api.models.hateoas.{HateoasWrapper, Link}
+import api.models.utils.JsonErrorValidators
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
@@ -28,7 +29,6 @@ import v4.models.response.retrieveCalculation.RetrieveCalculationResponse._
 import v4.models.response.retrieveCalculation.inputs.{IncomeSources, Inputs, PersonalInformation}
 import v4.models.response.retrieveCalculation.messages.{Message, Messages}
 import v4.models.response.retrieveCalculation.metadata.Metadata
-import v4.models.utils.JsonErrorValidators
 
 class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
 
@@ -110,9 +110,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -133,9 +133,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -156,9 +156,9 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId/final-declaration", POST, "submit-final-declaration")
           )
         )
       }
@@ -182,8 +182,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }
@@ -204,8 +204,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }
@@ -226,8 +226,8 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
           )) shouldBe HateoasWrapper(
           model,
           Seq(
-            Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
-            Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22", POST, "trigger"),
+            hateoas.Link(s"/some-context/$nino/self-assessment/2021-22/$calculationId", GET, "self")
           )
         )
       }

@@ -16,8 +16,7 @@
 
 package api.hateoas
 
-import api.models.hateoas.Method
-import api.models.hateoas.Method._
+import Method._
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 

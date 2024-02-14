@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package mocks
+package api.hateoas
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import utils.CurrentDateProvider
-
-import java.time.LocalDate
-
-trait MockCurrentDateProvider extends MockFactory {
-
-  val mockCurrentDateProvider: CurrentDateProvider = mock[CurrentDateProvider]
-
-  object MockCurrentDateProvider {
-
-    def getCurrentDate: CallHandler[LocalDate] = (() => mockCurrentDateProvider.getCurrentDate).expects()
-  }
-
-}
+/** Marker trait that represents data to be used as parameters to the links that are to be returned for a particular endpoint. This data may be
+  * identifiers (e.g. nino and/or other resource id) to embed in links, or data from the response that determines whether or not a particular link
+  * should be returned in certain scenarios.
+  */
+trait HateoasData

@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-package utils
+package api.controllers
 
-import java.time.LocalDate
-import javax.inject.{Inject, Singleton}
+import api.hateoas
+import api.hateoas.Link
+import api.hateoas.Method.GET
+import play.api.libs.json.{JsObject, Json}
 
-@Singleton
-class CurrentDateProvider @Inject() () {
-  def getCurrentDate: LocalDate = LocalDate.now()
+trait ControllerSpecHateoasSupport {
+
+  val hateoaslinks: Seq[Link] = Seq(hateoas.Link(href = "/foo/bar", method = GET, rel = "test-relationship"))
+
+  val hateoaslinksJson: JsObject = Json
+    .parse("""
+        |{
+        |  "links": [{
+        |    "href": "/foo/bar",
+        |    "method": "GET",
+        |    "rel": "test-relationship"
+        |  }]
+        |}""".stripMargin)
+    .as[JsObject]
+
 }

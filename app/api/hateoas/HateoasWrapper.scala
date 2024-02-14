@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package api.models.hateoas
+package api.hateoas
 
 import play.api.libs.json.{JsObject, Json, OWrites, Writes}
 

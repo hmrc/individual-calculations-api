@@ -17,15 +17,14 @@
 package api.controllers
 
 import api.controllers.requestParsers.RequestParser
-import api.hateoas.{HateoasLinksFactory, MockHateoasFactory}
+import api.hateoas._
 import api.mocks.MockIdGenerator
-import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetailOld}
 import api.models.auth.UserDetails
+import api.models.errors
 import api.models.errors._
-import api.models.hateoas.{HateoasData, Link}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
-import api.models.{errors, hateoas}
 import api.services.{MockAuditService, ServiceOutcome}
 import cats.data.Validated
 import cats.implicits.catsSyntaxValidatedId
@@ -41,7 +40,6 @@ import routing.Version
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
-import v4.controllers.ControllerSpecHateoasSupport
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -109,7 +107,7 @@ class RequestHandlerOldSpec
   "RequestHandler" when {
     "a request is successful" must {
       "return the correct response" in {
-        val requestHandler = RequestHandler
+        val requestHandler = RequestHandlerOld
           .withParser(mockParser)
           .withService(mockService.service)
           .withPlainJsonResult(successCode)
@@ -126,7 +124,7 @@ class RequestHandlerOldSpec
       }
 
       "return no content if required" in {
-        val requestHandler = RequestHandler
+        val requestHandler = RequestHandlerOld
           .withParser(mockParser)
           .withService(mockService.service)
           .withNoContentResult()
@@ -143,7 +141,7 @@ class RequestHandlerOldSpec
       }
 
       "wrap the response with hateoas links if required§" in {
-        val requestHandler = RequestHandler
+        val requestHandler = RequestHandlerOld
           .withParser(mockParser)
           .withService(mockService.service)
           .withHateoasResult(mockHateoasFactory)(HData, successCode)
@@ -152,7 +150,7 @@ class RequestHandlerOldSpec
         parseRequest returns Right(Input)
         service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
 
-        MockHateoasFactory.wrap(Output, HData) returns hateoas.HateoasWrapper(Output, hateoaslinks)
+        MockHateoasFactory.wrap(Output, HData) returns HateoasWrapper(Output, hateoaslinks)
 
         val result = requestHandler.handleRequest(InputRaw)
 
@@ -166,7 +164,7 @@ class RequestHandlerOldSpec
       "return the correct response" when {
         "deprecatedOn and sunsetDate exists" in {
 
-          val requestHandler = RequestHandler
+          val requestHandler = RequestHandlerOld
             .withParser(mockParser)
             .withService(mockService.service)
             .withPlainJsonResult(successCode)
@@ -194,7 +192,7 @@ class RequestHandlerOldSpec
         }
 
         "only deprecatedOn exists" in {
-          val requestHandler = RequestHandler
+          val requestHandler = RequestHandlerOld
             .withParser(mockParser)
             .withService(mockService.service)
             .withPlainJsonResult(successCode)
@@ -219,7 +217,7 @@ class RequestHandlerOldSpec
 
     "a request fails with validation errors" must {
       "return the errors" in {
-        val requestHandler = RequestHandler
+        val requestHandler = RequestHandlerOld
           .withParser(mockParser)
           .withService(mockService.service)
           .withPlainJsonResult(successCode)
@@ -237,7 +235,7 @@ class RequestHandlerOldSpec
 
     "a request fails with service errors" must {
       "return the errors" in {
-        val requestHandler = RequestHandler
+        val requestHandler = RequestHandlerOld
           .withParser(mockParser)
           .withService(mockService.service)
           .withPlainJsonResult(successCode)
@@ -262,7 +260,7 @@ class RequestHandlerOldSpec
 
       val requestBody = Some(JsString("REQUEST BODY"))
 
-      def auditHandler(includeResponse: Boolean = false): AuditHandler = AuditHandler(
+      def auditHandler(includeResponse: Boolean = false): AuditHandlerOld = AuditHandlerOld(
         mockAuditService,
         auditType = auditType,
         transactionName = txName,
@@ -271,7 +269,7 @@ class RequestHandlerOldSpec
         includeResponse = includeResponse
       )
 
-      val basicRequestHandler = RequestHandler
+      val basicRequestHandler = RequestHandlerOld
         .withParser(mockParser)
         .withService(mockService.service)
         .withPlainJsonResult(successCode)
@@ -281,7 +279,7 @@ class RequestHandlerOldSpec
           AuditEvent(
             auditType = auditType,
             transactionName = txName,
-            GenericAuditDetail(userDetails, params = params, requestBody = requestBody, `X-CorrelationId` = correlationId, auditResponse)
+            GenericAuditDetailOld(userDetails, params = params, requestBody = requestBody, `X-CorrelationId` = correlationId, auditResponse)
           ))
 
       "a request is successful" when {

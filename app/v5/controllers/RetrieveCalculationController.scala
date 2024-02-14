@@ -64,7 +64,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
         )
 
       val requestHandler =
-        RequestHandler
+        RequestHandlerOld
           .withParser(parser)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>

@@ -16,9 +16,9 @@
 
 package v4.models.response.listCalculations
 
-import api.hateoas.HateoasFactory
+import api.hateoas
+import api.hateoas.{HateoasFactory, HateoasWrapper, Method, RelType}
 import api.models.domain.TaxYear
-import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
@@ -57,19 +57,19 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
               HateoasWrapper(
                 calculationModel,
                 Seq(
-                  Link(
+                  hateoas.Link(
                     href = s"/individuals/calculations/someNino/self-assessment/2020-21/$calcId",
                     rel = RelType.SELF,
                     method = Method.GET
                   )
                 )))),
           links = Seq(
-            Link(
+            hateoas.Link(
               href = s"/individuals/calculations/someNino/self-assessment/2020-21",
               rel = RelType.TRIGGER,
               method = Method.POST
             ),
-            Link(
+            hateoas.Link(
               href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
               rel = RelType.SELF,
               method = Method.GET
@@ -86,12 +86,12 @@ class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture
         HateoasWrapper(
           payload = ListCalculationsResponse(Seq(HateoasWrapper(calculationWithoutTaxYear, Seq()))),
           links = Seq(
-            Link(
+            hateoas.Link(
               href = s"/individuals/calculations/someNino/self-assessment/2020-21",
               rel = RelType.TRIGGER,
               method = Method.POST
             ),
-            Link(
+            hateoas.Link(
               href = "/individuals/calculations/someNino/self-assessment?taxYear=2020-21",
               rel = RelType.SELF,
               method = Method.GET

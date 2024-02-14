@@ -16,15 +16,15 @@
 
 package api.hateoas
 
-import api.models.hateoas.Link
-import api.models.hateoas.Method.GET
-import api.models.hateoas.RelType._
+import api.hateoas
+import Method.GET
+import RelType._
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class LinkSpec extends UnitSpec {
 
-  val linkModel: Link = Link(href = "aRef", method = GET, rel = SELF)
+  val linkModel: Link = hateoas.Link(href = "aRef", method = GET, rel = SELF)
 
   val linkJson: JsValue = Json.parse(
     """

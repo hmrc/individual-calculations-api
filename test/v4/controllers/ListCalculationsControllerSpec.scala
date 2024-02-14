@@ -17,11 +17,11 @@
 package v4.controllers
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.hateoas.MockHateoasFactory
+import api.hateoas
+import api.hateoas.{HateoasWrapper, Method, MockHateoasFactory, RelType}
 import api.mocks.MockIdGenerator
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import api.models.hateoas.{HateoasWrapper, Link, Method, RelType}
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.mvc.Result
@@ -86,19 +86,19 @@ class ListCalculationsControllerSpec
             HateoasWrapper(
               ListCalculationsResponse(Seq(HateoasWrapper(
                 calculationModel,
-                Seq(Link(
+                Seq(hateoas.Link(
                   href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}/${calculationModel.calculationId}",
                   rel = RelType.SELF,
                   method = Method.GET
                 ))
               ))),
               Seq(
-                Link(
+                hateoas.Link(
                   href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}",
                   rel = RelType.TRIGGER,
                   method = Method.POST
                 ),
-                Link(
+                hateoas.Link(
                   href = s"/individuals/calculations/$nino/self-assessment?taxYear=${this.taxYear.get}",
                   rel = RelType.SELF,
                   method = Method.GET

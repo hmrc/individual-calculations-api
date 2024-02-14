@@ -16,9 +16,8 @@
 
 package v5.models.response.retrieveCalculation
 
-import api.hateoas.{HateoasLinks, HateoasLinksFactory}
+import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
-import api.models.hateoas.{HateoasData, Link}
 import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.models.response.retrieveCalculation.calculation._

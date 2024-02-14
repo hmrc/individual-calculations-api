@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v4.models.utils
+package api.models.utils
 
 import play.api.libs.json._
 import support.UnitSpec

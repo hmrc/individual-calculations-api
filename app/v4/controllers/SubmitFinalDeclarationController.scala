@@ -58,14 +58,14 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       val rawData = SubmitFinalDeclarationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)
 
       val requestHandler =
-        RequestHandler
+        RequestHandlerOld
           .withParser(parser)
           .withService { parsedRequest =>
             updateNrs(nino, parsedRequest)
             service.submitFinalDeclaration(parsedRequest)
           }
           .withNoContentResult()
-          .withAuditing(AuditHandler(
+          .withAuditing(AuditHandlerOld(
             auditService,
             auditType = "SubmitAFinalDeclaration",
             transactionName = "submit-a-final-declaration",

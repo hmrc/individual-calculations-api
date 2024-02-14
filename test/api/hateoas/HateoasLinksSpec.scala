@@ -16,9 +16,9 @@
 
 package api.hateoas
 
+import api.hateoas
 import api.models.domain.TaxYear
-import api.models.hateoas.Link
-import api.models.hateoas.Method.{GET, POST}
+import Method.{GET, POST}
 import mocks.MockAppConfig
 import support.UnitSpec
 
@@ -36,7 +36,7 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
       "return the correct link" in new Test {
         val result       = trigger(mockAppConfig, nino, taxYear)
         val expectedHref = s"/context/$nino/self-assessment/2022-23"
-        result shouldBe Link(href = expectedHref, method = POST, rel = "trigger")
+        result shouldBe hateoas.Link(href = expectedHref, method = POST, rel = "trigger")
       }
     }
 
@@ -44,13 +44,13 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
       "return the correct link with isSelf true" in new Test {
         val result       = list(mockAppConfig, nino, taxYear, isSelf = true)
         val expectedHref = s"/context/$nino/self-assessment?taxYear=2022-23"
-        result shouldBe Link(href = expectedHref, method = GET, rel = "self")
+        result shouldBe hateoas.Link(href = expectedHref, method = GET, rel = "self")
       }
 
       "return the correct link with isSelf false" in new Test {
         val result       = list(mockAppConfig, nino, taxYear, isSelf = false)
         val expectedHref = s"/context/$nino/self-assessment?taxYear=2022-23"
-        result shouldBe Link(href = expectedHref, method = GET, rel = "list")
+        result shouldBe hateoas.Link(href = expectedHref, method = GET, rel = "list")
       }
     }
 
@@ -58,7 +58,7 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
       "return the correct link" in new Test {
         val result       = retrieve(mockAppConfig, nino, taxYear, "calcId")
         val expectedHref = s"/context/$nino/self-assessment/2022-23/calcId"
-        result shouldBe Link(href = expectedHref, method = GET, rel = "self")
+        result shouldBe hateoas.Link(href = expectedHref, method = GET, rel = "self")
       }
     }
 
@@ -66,7 +66,7 @@ class HateoasLinksSpec extends UnitSpec with MockAppConfig {
       "return the correct link" in new Test {
         val result       = submitFinalDeclaration(mockAppConfig, nino, taxYear, "calcId")
         val expectedHref = s"/context/$nino/self-assessment/2022-23/calcId/final-declaration"
-        result shouldBe Link(href = expectedHref, method = POST, rel = "submit-final-declaration")
+        result shouldBe hateoas.Link(href = expectedHref, method = POST, rel = "submit-final-declaration")
       }
     }
   }

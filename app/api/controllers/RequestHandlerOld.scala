@@ -17,9 +17,8 @@
 package api.controllers
 
 import api.controllers.requestParsers.RequestParser
-import api.hateoas.{HateoasFactory, HateoasLinksFactory}
+import api.hateoas.{HateoasData, HateoasFactory, HateoasLinksFactory, HateoasWrapper}
 import api.models.errors.{ErrorWrapper, InternalError}
-import api.models.hateoas.{HateoasData, HateoasWrapper}
 import api.models.outcomes.ResponseWrapper
 import api.models.request.RawData
 import cats.data.EitherT
@@ -37,47 +36,47 @@ import utils.Logging
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait RequestHandler[InputRaw <: RawData] {
+trait RequestHandlerOld[InputRaw <: RawData] {
 
   def handleRequest(
       rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result]
 
 }
 
-object RequestHandler {
+object RequestHandlerOld {
 
   def withParser[InputRaw <: RawData, Input](parser: RequestParser[InputRaw, Input]): ParserOnlyBuilder[InputRaw, Input] =
     new ParserOnlyBuilder[InputRaw, Input](parser)
 
   // Intermediate class so that the compiler can separately capture the InputRaw and Input types here, and the Output type later
-  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandler] (parser: RequestParser[InputRaw, Input]) {
+  class ParserOnlyBuilder[InputRaw <: RawData, Input] private[RequestHandlerOld] (parser: RequestParser[InputRaw, Input]) {
 
     def withService[Output](
-        serviceFunction: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      RequestHandlerBuilder(parser, serviceFunction)
+        serviceFunction: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]]): RequestHandlerOldBuilder[InputRaw, Input, Output] =
+      RequestHandlerOldBuilder(parser, serviceFunction)
 
   }
 
-  case class RequestHandlerBuilder[InputRaw <: RawData, Input, Output] private[RequestHandler] (
+  case class RequestHandlerOldBuilder[InputRaw <: RawData, Input, Output] private[RequestHandlerOld] (
       parser: RequestParser[InputRaw, Input],
       service: Input => Future[Either[ErrorWrapper, ResponseWrapper[Output]]],
       errorHandling: ErrorHandling = ErrorHandling.Default,
-      resultCreator: ResultCreator[InputRaw, Input, Output] = ResultCreator.noContent[InputRaw, Input, Output](),
-      auditHandler: Option[AuditHandler] = None,
+      resultCreator: ResultCreatorOld[InputRaw, Input, Output] = ResultCreatorOld.noContent[InputRaw, Input, Output](),
+      auditHandler: Option[AuditHandlerOld] = None,
       modelHandler: Option[Output => Output] = None
-  ) extends RequestHandler[InputRaw] {
+  ) extends RequestHandlerOld[InputRaw] {
 
     def handleRequest(
         rawData: InputRaw)(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] =
       Delegate.handleRequest(rawData)
 
-    def withErrorHandling(errorHandling: ErrorHandling): RequestHandlerBuilder[InputRaw, Input, Output] =
+    def withErrorHandling(errorHandling: ErrorHandling): RequestHandlerOldBuilder[InputRaw, Input, Output] =
       copy(errorHandling = errorHandling)
 
-    def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[InputRaw, Input, Output] =
+    def withAuditing(auditHandler: AuditHandlerOld): RequestHandlerOldBuilder[InputRaw, Input, Output] =
       copy(auditHandler = Some(auditHandler))
 
-    def withModelHandling(modelHandler: Output => Output): RequestHandlerBuilder[InputRaw, Input, Output] =
+    def withModelHandling(modelHandler: Output => Output): RequestHandlerOldBuilder[InputRaw, Input, Output] =
       copy(modelHandler = Option(modelHandler))
 
     /** Shorthand for
@@ -85,16 +84,16 @@ object RequestHandler {
       * withResultCreator(ResultCreator.plainJson(successStatus))
       * }}}
       */
-    def withPlainJsonResult(successStatus: Int = Status.OK)(implicit ws: Writes[Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      withResultCreator(ResultCreator.plainJson(successStatus))
+    def withPlainJsonResult(successStatus: Int = Status.OK)(implicit ws: Writes[Output]): RequestHandlerOldBuilder[InputRaw, Input, Output] =
+      withResultCreator(ResultCreatorOld.plainJson(successStatus))
 
     /** Shorthand for
       * {{{
       * withResultCreator(ResultCreator.noContent)
       * }}}
       */
-    def withNoContentResult(successStatus: Int = Status.NO_CONTENT): RequestHandlerBuilder[InputRaw, Input, Output] =
-      withResultCreator(ResultCreator.noContent(successStatus))
+    def withNoContentResult(successStatus: Int = Status.NO_CONTENT): RequestHandlerOldBuilder[InputRaw, Input, Output] =
+      withResultCreator(ResultCreatorOld.noContent(successStatus))
 
     /** Shorthand for
       * {{{
@@ -104,10 +103,10 @@ object RequestHandler {
     def withHateoasResultFrom[HData <: HateoasData](
         hateoasFactory: HateoasFactory)(data: (Input, Output) => HData, successStatus: Int = Status.OK)(implicit
         linksFactory: HateoasLinksFactory[Output, HData],
-        writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)(data))
+        writes: Writes[HateoasWrapper[Output]]): RequestHandlerOldBuilder[InputRaw, Input, Output] =
+      withResultCreator(ResultCreatorOld.hateoasWrapping(hateoasFactory, successStatus)(data))
 
-    def withResultCreator(resultCreator: ResultCreator[InputRaw, Input, Output]): RequestHandlerBuilder[InputRaw, Input, Output] =
+    def withResultCreator(resultCreator: ResultCreatorOld[InputRaw, Input, Output]): RequestHandlerOldBuilder[InputRaw, Input, Output] =
       copy(resultCreator = resultCreator)
 
     /** Shorthand for
@@ -117,11 +116,11 @@ object RequestHandler {
       */
     def withHateoasResult[HData <: HateoasData](hateoasFactory: HateoasFactory)(data: HData, successStatus: Int = Status.OK)(implicit
         linksFactory: HateoasLinksFactory[Output, HData],
-        writes: Writes[HateoasWrapper[Output]]): RequestHandlerBuilder[InputRaw, Input, Output] =
-      withResultCreator(ResultCreator.hateoasWrapping(hateoasFactory, successStatus)((_, _) => data))
+        writes: Writes[HateoasWrapper[Output]]): RequestHandlerOldBuilder[InputRaw, Input, Output] =
+      withResultCreator(ResultCreatorOld.hateoasWrapping(hateoasFactory, successStatus)((_, _) => data))
 
     // Scoped as a private delegate so as to keep the logic completely separate from the configuration
-    private object Delegate extends RequestHandler[InputRaw] with Logging with RequestContextImplicits {
+    private object Delegate extends RequestHandlerOld[InputRaw] with Logging with RequestContextImplicits {
 
       implicit class Response(result: Result)(implicit appConfig: AppConfig, apiVersion: Version) {
 

@@ -17,7 +17,7 @@
 package routing
 
 import play.api.http.HeaderNames.ACCEPT
-import play.api.libs.json.{JsError, JsResult, JsString, JsSuccess, JsValue}
+import play.api.libs.json._
 import play.api.test.FakeRequest
 import routing.Version.VersionReads
 import support.UnitSpec
@@ -33,6 +33,19 @@ class VersionSpec extends UnitSpec {
     "v5 retrieved from a request header" must {
       "work" in {
         Versions.getFromRequest(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.5.0+json"))) shouldBe Right(Version5)
+      }
+    }
+  }
+
+  "Version" when {
+    "v4 is retrieved from a request header or is given as an alternative" must {
+      "work" in {
+        Version.from(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.4.0+json")), Version4) shouldBe Version4
+      }
+    }
+    "v5 is retrieved from a request header or is given as an alternative" must {
+      "work" in {
+        Version.from(FakeRequest().withHeaders((ACCEPT, "application/vnd.hmrc.3.0+json")), Version5) shouldBe Version5
       }
     }
   }

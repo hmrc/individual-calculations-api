@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package api.models.hateoas
+package api.hateoas
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class Link(href: String, method: Method, rel: String)
+sealed trait Method
 
-object Link {
-  implicit val format: OFormat[Link] = Json.format[Link]
+object Method {
+
+  case object GET    extends Method
+  case object POST   extends Method
+  case object DELETE extends Method
+
+  implicit val format: Format[Method] = Enums.format[Method]
 }
