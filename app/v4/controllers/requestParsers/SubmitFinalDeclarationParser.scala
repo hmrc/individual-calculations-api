@@ -19,15 +19,15 @@ package v4.controllers.requestParsers
 import api.controllers.requestParsers.RequestParser
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import v4.controllers.requestParsers.validators.SubmitFinalDeclarationValidator
-import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData}
 
 import javax.inject.Inject
 
 class SubmitFinalDeclarationParser @Inject() (val validator: SubmitFinalDeclarationValidator)
-    extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest] {
+    extends RequestParser[SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData] {
 
-  override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequest = {
-    SubmitFinalDeclarationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
+  override protected def requestFor(data: SubmitFinalDeclarationRawData): SubmitFinalDeclarationRequestData = {
+    SubmitFinalDeclarationRequestData(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
   }
 
 }

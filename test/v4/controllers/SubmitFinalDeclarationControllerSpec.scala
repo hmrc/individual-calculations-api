@@ -96,8 +96,8 @@ class SubmitFinalDeclarationControllerSpec
   override protected def beforeEach(): Unit = resetNrsProxyService()
 
   private val rawData                    = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData                = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val requestData                = SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData = RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 

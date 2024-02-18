@@ -28,7 +28,7 @@ import play.api.libs.json.JsObject
 import play.api.mvc.Result
 import v4.mocks.requestParsers.MockRetrieveCalculationParser
 import v4.mocks.services.MockRetrieveCalculationService
-import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequestData}
 import v4.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -55,7 +55,7 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithAdditionalFieldsJson     = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
   private val mtdResponseWithCl290EnabledJson         = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val requestData: RetrieveCalculationRequestData = RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   trait Test extends ControllerTest {
 

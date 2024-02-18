@@ -21,7 +21,7 @@ import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v4.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequestData
 import v4.services.SubmitFinalDeclarationService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,10 +32,10 @@ trait MockSubmitFinalDeclarationService extends MockFactory {
 
   object MockSubmitFinalDeclarationService {
 
-    def submitFinalDeclaration(requestData: SubmitFinalDeclarationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+    def submitFinalDeclaration(requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
       (
         mockSubmitFinalDeclarationService
-          .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(
+          .submitFinalDeclaration(_: SubmitFinalDeclarationRequestData)(
             _: RequestContext,
             _: ExecutionContext
           )

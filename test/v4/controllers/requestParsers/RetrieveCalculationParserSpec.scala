@@ -20,7 +20,7 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v4.mocks.validators.MockRetrieveCalculationValidator
-import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequestData}
 
 class RetrieveCalculationParserSpec extends UnitSpec {
 
@@ -39,7 +39,7 @@ class RetrieveCalculationParserSpec extends UnitSpec {
         val data: RetrieveCalculationRawData = RetrieveCalculationRawData(nino, taxYear, calculationId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId)))
+        parser.parseRequest(data) shouldBe Right(RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId)))
       }
     }
 

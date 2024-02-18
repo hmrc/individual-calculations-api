@@ -20,7 +20,7 @@ import api.models.errors.ErrorWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v4.controllers.requestParsers.TriggerCalculationParser
-import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequestData}
 
 trait MockTriggerCalculationParser extends MockFactory {
 
@@ -28,7 +28,7 @@ trait MockTriggerCalculationParser extends MockFactory {
 
   object MockTriggerCalculationParser {
 
-    def parseRequest(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequest]] = {
+    def parseRequest(data: TriggerCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerCalculationRequestData]] = {
       (mockTriggerCalculationParser.parseRequest(_: TriggerCalculationRawData)(_: String)).expects(data, *)
     }
 

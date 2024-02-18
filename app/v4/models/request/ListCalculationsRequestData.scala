@@ -21,4 +21,4 @@ import api.models.request.RawData
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 
-case class ListCalculationsRequest(nino: Nino, taxYear: TaxYear)
+case class ListCalculationsRequestData(nino: Nino, taxYear: TaxYear)

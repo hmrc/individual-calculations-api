@@ -20,7 +20,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v4.mocks.validators.MockTriggerCalculationValidator
-import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequestData}
 
 class TriggerCalculationParserSpec extends UnitSpec {
 
@@ -39,14 +39,14 @@ class TriggerCalculationParserSpec extends UnitSpec {
         val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, Some(finalDeclaration))
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = true))
+        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = true))
       }
 
       "default final declaration to false" in new Test {
         val data: TriggerCalculationRawData = TriggerCalculationRawData(nino, taxYear, None)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = false))
+        parser.parseRequest(data) shouldBe Right(TriggerCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), finalDeclaration = false))
       }
     }
 

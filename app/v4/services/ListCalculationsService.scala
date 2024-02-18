@@ -22,7 +22,7 @@ import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v4.connectors.ListCalculationsConnector
-import v4.models.request.ListCalculationsRequest
+import v4.models.request.ListCalculationsRequestData
 import v4.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
 import javax.inject.{Inject, Singleton}
@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends BaseService {
 
-  def list(request: ListCalculationsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[ListCalculations]] = {
+  def list(request: ListCalculationsRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[ListCalculations]] = {
 
     connector.list(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 

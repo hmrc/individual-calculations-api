@@ -25,7 +25,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
 import v4.controllers.requestParsers.SubmitFinalDeclarationParser
-import v4.models.request.{RetrieveCalculationRequest, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v4.models.request.{RetrieveCalculationRequestData, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData}
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v4.services._
 
@@ -75,9 +75,9 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       requestHandler.handleRequest(rawData)
     }
 
-  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequest)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[Unit] = {
+  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequestData)(implicit
+                                                                                        ctx: RequestContext,
+                                                                                        ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
     retrieveCalculationDetails(parsedRequest) map {
@@ -89,12 +89,12 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     }
   }
 
-  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequest, attempt: Int = 1)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequestData, attempt: Int = 1)(implicit
+                                                                                                             ctx: RequestContext,
+                                                                                                             ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
 
-    val retrieveRequest = RetrieveCalculationRequest(nino, taxYear, calculationId)
+    val retrieveRequest = RetrieveCalculationRequestData(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))

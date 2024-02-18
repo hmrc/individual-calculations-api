@@ -20,7 +20,7 @@ import api.models.errors.ErrorWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v4.controllers.requestParsers.SubmitFinalDeclarationParser
-import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData}
 
 trait MockSubmitFinalDeclarationParser extends MockFactory {
 
@@ -28,7 +28,7 @@ trait MockSubmitFinalDeclarationParser extends MockFactory {
 
   object MockSubmitFinalDeclarationParser {
 
-    def parseRequest(data: SubmitFinalDeclarationRawData): CallHandler[Either[ErrorWrapper, SubmitFinalDeclarationRequest]] = {
+    def parseRequest(data: SubmitFinalDeclarationRawData): CallHandler[Either[ErrorWrapper, SubmitFinalDeclarationRequestData]] = {
       (mockSubmitFinalDeclarationParser.parseRequest(_: SubmitFinalDeclarationRawData)(_: String)).expects(data, *)
     }
 

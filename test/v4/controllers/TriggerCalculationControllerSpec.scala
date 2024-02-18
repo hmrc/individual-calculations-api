@@ -28,7 +28,7 @@ import play.api.libs.json._
 import play.api.mvc.Result
 import v4.mocks.requestParsers.MockTriggerCalculationParser
 import v4.mocks.services.MockTriggerCalculationService
-import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequestData}
 import v4.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -50,8 +50,8 @@ class TriggerCalculationControllerSpec
   val rawDataWithFinalDeclaration: TriggerCalculationRawData          = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("true"))
   val rawDataWithFinalDeclarationFalse: TriggerCalculationRawData     = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("false"))
   val rawDataWithFinalDeclarationUndefined: TriggerCalculationRawData = TriggerCalculationRawData(nino, rawTaxYear, None)
-  val requestDataWithFinalDeclaration: TriggerCalculationRequest      = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = true)
-  val requestDataWithFinalDeclarationFalse: TriggerCalculationRequest = TriggerCalculationRequest(Nino(nino), taxYear, finalDeclaration = false)
+  val requestDataWithFinalDeclaration: TriggerCalculationRequestData      = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
+  val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
   private val calculationId                                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val response: TriggerCalculationResponse                    = TriggerCalculationResponse(calculationId)
 
@@ -103,7 +103,7 @@ class TriggerCalculationControllerSpec
   "handleRequest" should {
     "return ACCEPTED with a calculationId" when {
 
-      def happyPath(rawData: TriggerCalculationRawData, requestData: TriggerCalculationRequest): Unit = new Test {
+      def happyPath(rawData: TriggerCalculationRawData, requestData: TriggerCalculationRequestData): Unit = new Test {
 
         override val finalDeclaration: Option[String] = rawData.finalDeclaration
 

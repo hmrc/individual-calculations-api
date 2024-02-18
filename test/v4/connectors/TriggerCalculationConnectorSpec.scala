@@ -20,7 +20,7 @@ import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.Json
-import v4.models.request.TriggerCalculationRequest
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.Future
@@ -51,7 +51,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
-        val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
+        val request: TriggerCalculationRequestData = TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -63,7 +63,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new TysIfsTest with Test {
-      val request: TriggerCalculationRequest = TriggerCalculationRequest(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
+      val request: TriggerCalculationRequestData = TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
       val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
       willPost(

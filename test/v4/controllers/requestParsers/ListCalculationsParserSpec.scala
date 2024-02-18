@@ -22,7 +22,7 @@ import api.models.errors.{ErrorWrapper, NinoFormatError}
 import mocks.MockAppConfig
 import support.UnitSpec
 import v4.mocks.validators.MockListCalculationsValidator
-import v4.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v4.models.request.{ListCalculationsRawData, ListCalculationsRequestData}
 
 class ListCalculationsParserSpec extends UnitSpec {
 
@@ -39,8 +39,8 @@ class ListCalculationsParserSpec extends UnitSpec {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111A", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(Nil)
 
-        val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
-        result shouldBe Right(ListCalculationsRequest(nino, TaxYear.fromMtd("2018-19")))
+        val result: Either[ErrorWrapper, ListCalculationsRequestData] = parser.parseRequest(rawData)
+        result shouldBe Right(ListCalculationsRequestData(nino, TaxYear.fromMtd("2018-19")))
       }
     }
 
@@ -50,8 +50,8 @@ class ListCalculationsParserSpec extends UnitSpec {
         MockListCalculationsValidator.validate(rawData).returns(Nil)
         val expectedTaxYear = TaxYear.now()
 
-        val result: Either[ErrorWrapper, ListCalculationsRequest] = parser.parseRequest(rawData)
-        result shouldBe Right(ListCalculationsRequest(nino, expectedTaxYear))
+        val result: Either[ErrorWrapper, ListCalculationsRequestData] = parser.parseRequest(rawData)
+        result shouldBe Right(ListCalculationsRequestData(nino, expectedTaxYear))
       }
     }
 
@@ -60,7 +60,7 @@ class ListCalculationsParserSpec extends UnitSpec {
         val rawData: ListCalculationsRawData = ListCalculationsRawData("AA111111", Some("2018-19"))
         MockListCalculationsValidator.validate(rawData).returns(List(NinoFormatError))
 
-        val result: Either[ErrorWrapper, ListCalculationsRequest] =
+        val result: Either[ErrorWrapper, ListCalculationsRequestData] =
           parser.parseRequest(ListCalculationsRawData("AA111111", Some("2018-19")))
         result shouldBe Left(errors.ErrorWrapper("a1e8057e-fbbc-47a8-a8b4-78d9f015c253", NinoFormatError, None))
       }

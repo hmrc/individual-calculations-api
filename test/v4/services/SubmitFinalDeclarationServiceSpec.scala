@@ -42,7 +42,7 @@ import api.models.errors.{
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import v4.mocks.connectors.MockSubmitFinalDeclarationConnector
-import v4.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future
 
@@ -61,7 +61,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
     val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
     val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
 
-    val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
+    val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
       nino,
       taxYear,
       calculationId

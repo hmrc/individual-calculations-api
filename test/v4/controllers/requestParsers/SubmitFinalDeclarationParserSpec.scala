@@ -20,7 +20,7 @@ import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import support.UnitSpec
 import v4.mocks.validators.MockSubmitFinalDeclarationTriggerValidator
-import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequest}
+import v4.models.request.{SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData}
 
 class SubmitFinalDeclarationParserSpec extends UnitSpec {
 
@@ -40,7 +40,7 @@ class SubmitFinalDeclarationParserSpec extends UnitSpec {
         val data: SubmitFinalDeclarationRawData = SubmitFinalDeclarationRawData(nino, taxYear, calcId)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calcId)))
+        parser.parseRequest(data) shouldBe Right(SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calcId)))
       }
     }
 

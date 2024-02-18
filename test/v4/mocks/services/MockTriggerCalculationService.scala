@@ -21,7 +21,7 @@ import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v4.models.request.TriggerCalculationRequest
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
 import v4.services.TriggerCalculationService
 
@@ -34,9 +34,9 @@ trait MockTriggerCalculationService extends MockFactory {
   object MockTriggerCalculationService {
 
     def triggerCalculation(
-        request: TriggerCalculationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]]] = {
+        request: TriggerCalculationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]]] = {
       (mockService
-        .triggerCalculation(_: TriggerCalculationRequest)(_: RequestContext, _: ExecutionContext))
+        .triggerCalculation(_: TriggerCalculationRequestData)(_: RequestContext, _: ExecutionContext))
         .expects(request, *, *)
     }
 

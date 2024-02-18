@@ -19,17 +19,17 @@ package v4.controllers.requestParsers
 import api.controllers.requestParsers.RequestParser
 import api.models.domain.{Nino, TaxYear}
 import v4.controllers.requestParsers.validators.ListCalculationsValidator
-import v4.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v4.models.request.{ListCalculationsRawData, ListCalculationsRequestData}
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class ListCalculationsParser @Inject() (val validator: ListCalculationsValidator)
-    extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+    extends RequestParser[ListCalculationsRawData, ListCalculationsRequestData] {
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest = {
+  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequestData = {
     val taxYear = data.taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
-    ListCalculationsRequest(Nino(data.nino), taxYear)
+    ListCalculationsRequestData(Nino(data.nino), taxYear)
   }
 
 }

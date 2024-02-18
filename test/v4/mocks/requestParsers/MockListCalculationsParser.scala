@@ -20,14 +20,14 @@ import api.models.errors.ErrorWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v4.controllers.requestParsers.ListCalculationsParser
-import v4.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v4.models.request.{ListCalculationsRawData, ListCalculationsRequestData}
 
 trait MockListCalculationsParser extends MockFactory {
   val mockListCalculationsParser: ListCalculationsParser = mock[ListCalculationsParser]
 
   object MockListCalculationsParser {
 
-    def parseRequest(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequest]] = {
+    def parseRequest(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequestData]] = {
       (mockListCalculationsParser
         .parseRequest(_: ListCalculationsRawData)(_: String))
         .expects(data, *)

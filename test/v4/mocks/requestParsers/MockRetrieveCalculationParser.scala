@@ -20,7 +20,7 @@ import api.models.errors.ErrorWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v4.controllers.requestParsers.RetrieveCalculationParser
-import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequestData}
 
 trait MockRetrieveCalculationParser extends MockFactory {
 
@@ -28,7 +28,7 @@ trait MockRetrieveCalculationParser extends MockFactory {
 
   object MockRetrieveCalculationParser {
 
-    def parseRequest(data: RetrieveCalculationRawData): CallHandler[Either[ErrorWrapper, RetrieveCalculationRequest]] = {
+    def parseRequest(data: RetrieveCalculationRawData): CallHandler[Either[ErrorWrapper, RetrieveCalculationRequestData]] = {
       (mockRetrieveCalculationParser.parseRequest(_: RetrieveCalculationRawData)(_: String)).expects(data, *)
     }
 

@@ -22,6 +22,6 @@ import play.api.libs.json.{JsValue, Json}
 
 case class SubmitFinalDeclarationRawData(nino: String, taxYear: String, calculationId: String) extends RawData
 
-case class SubmitFinalDeclarationRequest(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) {
+case class SubmitFinalDeclarationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) {
   def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 }

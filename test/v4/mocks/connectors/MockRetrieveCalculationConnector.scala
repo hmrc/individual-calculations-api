@@ -21,7 +21,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v4.connectors.RetrieveCalculationConnector
-import v4.models.request.RetrieveCalculationRequest
+import v4.models.request.RetrieveCalculationRequestData
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,9 +32,9 @@ trait MockRetrieveCalculationConnector extends MockFactory {
 
   object MockRetrieveCalculationConnector {
 
-    def retrieveCalculation(request: RetrieveCalculationRequest): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]] = {
+    def retrieveCalculation(request: RetrieveCalculationRequestData): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]] = {
       (mockConnector
-        .retrieveCalculation(_: RetrieveCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .retrieveCalculation(_: RetrieveCalculationRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
 

@@ -19,19 +19,19 @@ package v4.controllers.requestParsers
 import api.controllers.requestParsers.RequestParser
 import api.models.domain.{Nino, TaxYear}
 import v4.controllers.requestParsers.validators.TriggerCalculationValidator
-import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequest}
+import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequestData}
 
 import javax.inject.Inject
 
 class TriggerCalculationParser @Inject() (val validator: TriggerCalculationValidator)
-    extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequest] {
+    extends RequestParser[TriggerCalculationRawData, TriggerCalculationRequestData] {
 
-  override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequest = {
+  override protected def requestFor(data: TriggerCalculationRawData): TriggerCalculationRequestData = {
     val nino             = Nino(data.nino)
     val taxYear          = TaxYear.fromMtd(data.taxYear)
     val finalDeclaration = data.finalDeclaration.exists(_.toBoolean)
 
-    TriggerCalculationRequest(nino, taxYear, finalDeclaration)
+    TriggerCalculationRequestData(nino, taxYear, finalDeclaration)
   }
 
 }

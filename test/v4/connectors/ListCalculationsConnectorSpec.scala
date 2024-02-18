@@ -21,7 +21,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import v4.fixtures.ListCalculationsFixture
-import v4.models.request.ListCalculationsRequest
+import v4.models.request.ListCalculationsRequestData
 import v4.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
 import scala.concurrent.Future
@@ -32,8 +32,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with ListCalculationsF
   val taxYear: TaxYear    = TaxYear.fromMtd("2018-19")
   val tysTaxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-  val request: ListCalculationsRequest    = ListCalculationsRequest(nino, taxYear)
-  val tysRequest: ListCalculationsRequest = ListCalculationsRequest(nino, tysTaxYear)
+  val request: ListCalculationsRequestData    = ListCalculationsRequestData(nino, taxYear)
+  val tysRequest: ListCalculationsRequestData = ListCalculationsRequestData(nino, tysTaxYear)
 
   trait Test { _: ConnectorTest =>
 

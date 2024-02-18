@@ -21,7 +21,7 @@ import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v4.connectors.TriggerCalculationConnector
-import v4.models.request.TriggerCalculationRequest
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
 
 import javax.inject.{Inject, Singleton}
@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class TriggerCalculationService @Inject() (connector: TriggerCalculationConnector) extends BaseService {
 
   def triggerCalculation(
-      request: TriggerCalculationRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
+      request: TriggerCalculationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
     connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

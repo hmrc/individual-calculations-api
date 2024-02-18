@@ -19,15 +19,15 @@ package v4.controllers.requestParsers
 import api.controllers.requestParsers.RequestParser
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import v4.controllers.requestParsers.validators.RetrieveCalculationValidator
-import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequestData}
 
 import javax.inject.Inject
 
 class RetrieveCalculationParser @Inject() (val validator: RetrieveCalculationValidator)
-    extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequest] {
+    extends RequestParser[RetrieveCalculationRawData, RetrieveCalculationRequestData] {
 
-  override protected def requestFor(data: RetrieveCalculationRawData): RetrieveCalculationRequest = {
-    RetrieveCalculationRequest(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
+  override protected def requestFor(data: RetrieveCalculationRawData): RetrieveCalculationRequestData = {
+    RetrieveCalculationRequestData(Nino(data.nino), TaxYear.fromMtd(data.taxYear), CalculationId(data.calculationId))
   }
 
 }

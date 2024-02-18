@@ -28,7 +28,7 @@ import play.api.mvc.Result
 import v4.fixtures.ListCalculationsFixture
 import v4.mocks.requestParsers.MockListCalculationsParser
 import v4.mocks.services.MockListCalculationsService
-import v4.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v4.models.request.{ListCalculationsRawData, ListCalculationsRequestData}
 import v4.models.response.listCalculations.{ListCalculationsHateoasData, ListCalculationsResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -49,7 +49,7 @@ class ListCalculationsControllerSpec
 
   class Test extends ControllerTest {
 
-    lazy val request: ListCalculationsRequest = ListCalculationsRequest(
+    lazy val request: ListCalculationsRequestData = ListCalculationsRequestData(
       nino = Nino(nino),
       taxYear = taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
     )
