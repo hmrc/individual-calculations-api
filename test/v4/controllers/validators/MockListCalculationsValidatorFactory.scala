@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-package v4.models.request
+package v4.controllers.validators
 
-import api.models.domain.{Nino, TaxYear}
+import api.controllers.validators.{MockValidatorFactory, Validator}
+import org.scalamock.handlers.CallHandler
+import v4.models.request.ListCalculationsRequestData
 
-case class ListCalculationsRequestData(nino: Nino, taxYear: TaxYear)
+trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {
+
+  val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
+
+  def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
+    (mockListCalculationsFactory.validator(_: String, _: Option[String])).expects(*, *)
+
+}
