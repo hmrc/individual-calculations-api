@@ -19,9 +19,9 @@ package v4.controllers.validators
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors._
 import support.UnitSpec
-import v4.models.request.RetrieveCalculationRequestData
+import v4.models.request.SubmitFinalDeclarationRequestData
 
-class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
+class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
@@ -33,16 +33,16 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
   private val parsedTaxYear       = TaxYear.fromMtd(validTaxYear)
   private val parsedCalculationId = CalculationId(validCalculationId)
 
-  val validatorFactory = new RetrieveCalculationValidatorFactory
+  val validatorFactory = new SubmitFinalDeclarationValidatorFactory
 
   private def validator(nino: String, taxYear: String, calculationId: String) =
     validatorFactory.validator(nino, taxYear, calculationId)
 
-  "validator" should {
+  "running a validation" should {
     "return the parsed domain object" when {
       "a valid request is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId).validateAndWrapResult()
-        result shouldBe Right(RetrieveCalculationRequestData(parsedNino, parsedTaxYear, parsedCalculationId))
+        result shouldBe Right(SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear, parsedCalculationId))
       }
     }
 
@@ -51,6 +51,15 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
         val result = validator("A12344A", validTaxYear, validCalculationId).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, NinoFormatError)
+        )
+      }
+    }
+
+    "return CalculationIdFormatError error" when {
+      "an invalid calculationId is supplied" in {
+        val result = validator(validNino, validTaxYear, "bad id").validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, CalculationIdFormatError)
         )
       }
     }
@@ -64,29 +73,11 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
       }
     }
 
-    "return RuleTaxYearNotSupportedError error" when {
-      "an out of range tax year is supplied" in {
-        val result = validator(validNino, "2016-17", validCalculationId).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
-        )
-      }
-    }
-
     "return RuleTaxYearRangeInvalidError error" when {
-      "an invalid tax year range is supplied" in {
+      "an invalid tax year is supplied" in {
         val result = validator(validNino, "2017-19", validCalculationId).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
-        )
-      }
-    }
-
-    "return CalculationIdFormatError error" when {
-      "an invalid calculation id is supplied" in {
-        val result = validator(validNino, validTaxYear, "bad id").validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, CalculationIdFormatError)
         )
       }
     }
@@ -104,6 +95,7 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
         )
       }
     }
+
   }
 
 }

@@ -17,30 +17,26 @@
 package v4.controllers.validators
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
-import api.models.domain.TaxYear
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
 import api.models.errors.MtdError
 import cats.data.Validated
-import cats.implicits._
-import v4.models.request.RetrieveCalculationRequestData
+import cats.implicits.catsSyntaxTuple3Semigroupal
+import v4.models.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.Singleton
 
 @Singleton
-class RetrieveCalculationValidatorFactory {
+class SubmitFinalDeclarationValidatorFactory {
 
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+  def validator(nino: String, taxYear: String, calculationId: String): Validator[SubmitFinalDeclarationRequestData] =
+    new Validator[SubmitFinalDeclarationRequestData] {
 
-  def validator(nino: String, taxYear: String, calculationId: String): Validator[RetrieveCalculationRequestData] =
-    new Validator[RetrieveCalculationRequestData] {
-
-      def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
+      def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
         (
           ResolveNino(nino),
-          resolveTaxYear(taxYear),
+          ResolveTaxYear(taxYear),
           ResolveCalculationId(calculationId)
-        ).mapN(RetrieveCalculationRequestData)
+        ).mapN(SubmitFinalDeclarationRequestData)
 
     }
 

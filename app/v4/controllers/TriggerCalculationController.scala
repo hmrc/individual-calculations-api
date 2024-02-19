@@ -18,14 +18,13 @@ package v4.controllers
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.models.audit.GenericAuditDetailOld
+import api.models.audit.GenericAuditDetail
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.AppConfig
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version4
 import utils.{IdGenerator, Logging}
-import v4.controllers.requestParsers.TriggerCalculationParser
-import v4.models.request.TriggerCalculationRawData
+import v4.controllers.validators.TriggerCalculationValidatorFactory
 import v4.models.response.triggerCalculation.TriggerCalculationHateoasData
 import v4.services.TriggerCalculationService
 
@@ -34,12 +33,12 @@ import scala.concurrent.ExecutionContext
 
 class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                               val lookupService: MtdIdLookupService,
-                                              parser: TriggerCalculationParser,
+                                              validatorFactory: TriggerCalculationValidatorFactory,
                                               service: TriggerCalculationService,
                                               val idGenerator: IdGenerator,
                                               hateoasFactory: HateoasFactory,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: AppConfig)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -54,11 +53,11 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData = TriggerCalculationRawData(nino, taxYear, finalDeclaration)
+      val validator = validatorFactory.validator(nino, taxYear, finalDeclaration)
 
       val requestHandler =
-        RequestHandlerOld
-          .withParser(parser)
+        RequestHandler
+          .withValidator(validator)
           .withService(service.triggerCalculation)
           .withHateoasResultFrom(hateoasFactory)(
             { (parsedRequest, response) =>
@@ -71,17 +70,18 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             },
             successStatus = ACCEPTED
           )
-          .withAuditing(AuditHandlerOld.custom(
+          .withAuditing(AuditHandler.custom(
             auditService,
             auditType = "TriggerASelfAssessmentTaxCalculation",
             transactionName = "trigger-a-self-assessment-tax-calculation",
-            auditDetailCreator = GenericAuditDetailOld.auditDetailCreator(
-              params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${rawData.finalDeclaration.getOrElse(false)}")),
+            auditDetailCreator = GenericAuditDetail.auditDetailCreator(
+              apiVersion = Version4,
+              params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}")),
             requestBody = None,
             responseBodyMap = auditResponseBody
           ))
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
   private def auditResponseBody(maybeBody: Option[JsValue]) =

@@ -19,16 +19,16 @@ package v4.controllers
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetailOld}
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.libs.json._
 import play.api.mvc.Result
-import v4.mocks.requestParsers.MockTriggerCalculationParser
+import v4.controllers.validators.MockTriggerCalculationValidatorFactory
 import v4.mocks.services.MockTriggerCalculationService
-import v4.models.request.{TriggerCalculationRawData, TriggerCalculationRequestData}
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,20 +40,20 @@ class TriggerCalculationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockTriggerCalculationService
-    with MockTriggerCalculationParser
+    with MockTriggerCalculationValidatorFactory
     with MockHateoasFactory
     with MockAuditService
     with MockIdGenerator {
 
-  private val taxYear                                                 = TaxYear.fromMtd("2017-18")
-  private val rawTaxYear                                              = taxYear.asMtd
-  val rawDataWithFinalDeclaration: TriggerCalculationRawData          = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("true"))
-  val rawDataWithFinalDeclarationFalse: TriggerCalculationRawData     = TriggerCalculationRawData(nino, rawTaxYear, finalDeclaration = Some("false"))
-  val rawDataWithFinalDeclarationUndefined: TriggerCalculationRawData = TriggerCalculationRawData(nino, rawTaxYear, None)
-  val requestDataWithFinalDeclaration: TriggerCalculationRequestData      = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
-  val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
-  private val calculationId                                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val response: TriggerCalculationResponse                    = TriggerCalculationResponse(calculationId)
+  private val taxYear                                                = TaxYear.fromMtd("2017-18")
+  private val rawTaxYear                                             = taxYear.asMtd
+  val requestDataWithFinalDeclaration: TriggerCalculationRequestData = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
+
+  val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData =
+    TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
+
+  private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val response: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
 
   private val responseJsonNoHateoas: JsValue = Json
     .parse(
@@ -66,59 +66,25 @@ class TriggerCalculationControllerSpec
 
   private val mtdResponseJson: JsValue = responseJsonNoHateoas.as[JsObject] ++ hateoaslinksJson
 
-  trait Test extends ControllerTest with AuditEventChecking {
-
-    val finalDeclaration: Option[String] = None
-
-    val controller = new TriggerCalculationController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      parser = mockTriggerCalculationParser,
-      service = mockService,
-      cc = cc,
-      auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
-    )
-
-    protected def callController(): Future[Result] = controller.triggerCalculation(nino, rawTaxYear, finalDeclaration)(fakeRequest)
-
-    override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetailOld] =
-      AuditEvent(
-        "TriggerASelfAssessmentTaxCalculation",
-        "trigger-a-self-assessment-tax-calculation",
-        GenericAuditDetailOld(
-          userType = "Individual",
-          agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
-          requestBody = None,
-          `X-CorrelationId` = correlationId,
-          versionNumber = "3.0",
-          auditResponse = auditResponse
-        )
-      )
-
-  }
-
   "handleRequest" should {
     "return ACCEPTED with a calculationId" when {
 
-      def happyPath(rawData: TriggerCalculationRawData, requestData: TriggerCalculationRequestData): Unit = new Test {
-
-        override val finalDeclaration: Option[String] = rawData.finalDeclaration
-
-        MockTriggerCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+      "happy path with final declaration" in new Test {
+        willUseValidator(returningSuccess(requestDataWithFinalDeclaration))
 
         MockTriggerCalculationService
-          .triggerCalculation(requestData)
+          .triggerCalculation(requestDataWithFinalDeclaration)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
         MockHateoasFactory
           .wrap(
             response,
-            TriggerCalculationHateoasData(nino, TaxYear.fromMtd(rawTaxYear), finalDeclaration = requestData.finalDeclaration, calculationId))
+            TriggerCalculationHateoasData(
+              nino,
+              TaxYear.fromMtd(rawTaxYear),
+              finalDeclaration = requestDataWithFinalDeclaration.finalDeclaration,
+              calculationId)
+          )
           .returns(HateoasWrapper(response, hateoaslinks))
 
         runOkTestWithAudit(
@@ -128,32 +94,41 @@ class TriggerCalculationControllerSpec
         )
       }
 
-      "happy path with final declaration" in {
-        happyPath(rawDataWithFinalDeclaration, requestDataWithFinalDeclaration)
-      }
+      "happy path with final declaration undefined" in new Test {
+        willUseValidator(returningSuccess(requestDataWithFinalDeclarationFalse))
 
-      "happy path with final declaration as false" in {
-        happyPath(rawDataWithFinalDeclarationFalse, requestDataWithFinalDeclarationFalse)
-      }
+        MockTriggerCalculationService
+          .triggerCalculation(requestDataWithFinalDeclarationFalse)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-      "happy path with final declaration undefined" in {
-        happyPath(rawDataWithFinalDeclarationUndefined, requestDataWithFinalDeclarationFalse)
+        MockHateoasFactory
+          .wrap(
+            response,
+            TriggerCalculationHateoasData(
+              nino,
+              TaxYear.fromMtd(rawTaxYear),
+              finalDeclaration = requestDataWithFinalDeclarationFalse.finalDeclaration,
+              calculationId)
+          )
+          .returns(HateoasWrapper(response, hateoaslinks))
+
+        runOkTestWithAudit(
+          expectedStatus = ACCEPTED,
+          maybeExpectedResponseBody = Some(mtdResponseJson),
+          maybeAuditResponseBody = Some(responseJsonNoHateoas)
+        )
       }
     }
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockTriggerCalculationParser
-          .parseRequest(rawDataWithFinalDeclarationUndefined)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTestWithAudit(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockTriggerCalculationParser
-          .parseRequest(rawDataWithFinalDeclarationUndefined)
-          .returns(Right(requestDataWithFinalDeclarationFalse))
+        willUseValidator(returningSuccess(requestDataWithFinalDeclarationFalse))
 
         MockTriggerCalculationService
           .triggerCalculation(requestDataWithFinalDeclarationFalse)
@@ -162,6 +137,40 @@ class TriggerCalculationControllerSpec
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
       }
     }
+
+  }
+
+  private trait Test extends ControllerTest with AuditEventChecking {
+
+    val finalDeclaration: Option[String] = None
+
+    private lazy val controller = new TriggerCalculationController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      validatorFactory = mockTriggerCalculationValidatorFactory,
+      service = mockService,
+      cc = cc,
+      auditService = mockAuditService,
+      hateoasFactory = mockHateoasFactory,
+      idGenerator = mockIdGenerator
+    )
+
+    protected def callController(): Future[Result] = controller.triggerCalculation(nino, rawTaxYear, finalDeclaration)(fakeRequest)
+
+    override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        "TriggerASelfAssessmentTaxCalculation",
+        "trigger-a-self-assessment-tax-calculation",
+        GenericAuditDetail(
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
+          requestBody = None,
+          `X-CorrelationId` = correlationId,
+          versionNumber = "4.0",
+          auditResponse = auditResponse
+        )
+      )
 
   }
 

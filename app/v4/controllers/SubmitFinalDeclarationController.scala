@@ -19,13 +19,13 @@ package v4.controllers
 import api.controllers._
 import api.models.errors.InternalError
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
-import config.AppConfig
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version4
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
-import v4.controllers.requestParsers.SubmitFinalDeclarationParser
-import v4.models.request.{RetrieveCalculationRequestData, SubmitFinalDeclarationRawData, SubmitFinalDeclarationRequestData}
+import v4.controllers.validators.SubmitFinalDeclarationValidatorFactory
+import v4.models.request.{RetrieveCalculationRequestData, SubmitFinalDeclarationRequestData}
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v4.services._
 
@@ -35,13 +35,13 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAuthService,
                                                   val lookupService: MtdIdLookupService,
-                                                  parser: SubmitFinalDeclarationParser,
+                                                  validatorFactory: SubmitFinalDeclarationValidatorFactory,
                                                   service: SubmitFinalDeclarationService,
                                                   retrieveService: RetrieveCalculationService,
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with Logging {
 
@@ -55,29 +55,30 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData = SubmitFinalDeclarationRawData(nino = nino, taxYear = taxYear, calculationId = calculationId)
+      val validator = validatorFactory.validator(nino = nino, taxYear = taxYear, calculationId = calculationId)
 
       val requestHandler =
-        RequestHandlerOld
-          .withParser(parser)
+        RequestHandler
+          .withValidator(validator)
           .withService { parsedRequest =>
             updateNrs(nino, parsedRequest)
             service.submitFinalDeclaration(parsedRequest)
           }
           .withNoContentResult()
-          .withAuditing(AuditHandlerOld(
+          .withAuditing(AuditHandler(
             auditService,
             auditType = "SubmitAFinalDeclaration",
             transactionName = "submit-a-final-declaration",
+            apiVersion = Version4,
             params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
           ))
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
   private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequestData)(implicit
-                                                                                        ctx: RequestContext,
-                                                                                        ec: ExecutionContext): Future[Unit] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
     retrieveCalculationDetails(parsedRequest) map {
@@ -90,8 +91,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   }
 
   private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequestData, attempt: Int = 1)(implicit
-                                                                                                             ctx: RequestContext,
-                                                                                                             ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
 
     val retrieveRequest = RetrieveCalculationRequestData(nino, taxYear, calculationId)
