@@ -34,7 +34,7 @@ import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v5.mocks.connectors.MockRetrieveCalculationConnector
-import v5.models.request.RetrieveCalculationRequest
+import v5.models.request.RetrieveCalculationRequestData
 import v5.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationResponse}
 
 import scala.concurrent.Future
@@ -45,7 +45,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture
   private val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
   private val calculationId: CalculationId = CalculationId("someCalcId")
 
-  val request: RetrieveCalculationRequest   = RetrieveCalculationRequest(nino, taxYear, calculationId)
+  val request: RetrieveCalculationRequestData   = RetrieveCalculationRequestData(nino, taxYear, calculationId)
   val response: RetrieveCalculationResponse = minimalCalculationResponse
 
   trait Test extends MockRetrieveCalculationConnector {

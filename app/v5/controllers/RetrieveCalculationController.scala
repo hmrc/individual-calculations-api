@@ -23,8 +23,7 @@ import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v5.controllers.requestParsers.RetrieveCalculationParser
-import v5.models.request.RetrieveCalculationRawData
+import v5.controllers.validators.RetrieveCalculationValidatorFactory
 import v5.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v5.services.RetrieveCalculationService
 
@@ -33,13 +32,12 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               parser: RetrieveCalculationParser,
+                                               validatorFactory: RetrieveCalculationValidatorFactory,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
-    with BaseController
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -56,22 +54,21 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData =
-        RetrieveCalculationRawData(
-          nino = nino,
-          taxYear = taxYear,
-          calculationId = calculationId
-        )
+      val validator = validatorFactory.validator(
+        nino = nino,
+        taxYear = taxYear,
+        calculationId = calculationId
+      )
 
       val requestHandler =
-        RequestHandlerOld
-          .withParser(parser)
+        RequestHandler
+          .withValidator(validator)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
             val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
             val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
-            updateModelBasicRateDivergence(rawData, responseMaybeWithoutCl290)
+            updateModelBasicRateDivergence(taxYear, responseMaybeWithoutCl290)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
@@ -84,7 +81,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             }
           }
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
 
     }
 
@@ -97,9 +94,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
   private def updateModelCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
-  private def updateModelBasicRateDivergence(rawData: RetrieveCalculationRawData,
-                                             response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(rawData.taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
+  private def updateModelBasicRateDivergence(taxYear: String, response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
+    if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
   }
 
 }

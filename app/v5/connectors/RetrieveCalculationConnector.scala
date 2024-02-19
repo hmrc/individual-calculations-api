@@ -21,7 +21,7 @@ import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v5.models.request.RetrieveCalculationRequest
+import v5.models.request.RetrieveCalculationRequestData
 import v5.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import javax.inject.{Inject, Singleton}
@@ -30,10 +30,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
+  def retrieveCalculation(request: RetrieveCalculationRequestData)(implicit
+                                                                   hc: HeaderCarrier,
+                                                                   ec: ExecutionContext,
+                                                                   correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
 
     import request._
 
