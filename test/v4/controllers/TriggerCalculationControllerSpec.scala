@@ -167,7 +167,7 @@ class TriggerCalculationControllerSpec
           params = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
           requestBody = None,
           `X-CorrelationId` = correlationId,
-          versionNumber = "4.0",
+          versionNumber = apiVersion.name,
           auditResponse = auditResponse
         )
       )

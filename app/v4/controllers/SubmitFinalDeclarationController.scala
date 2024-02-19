@@ -21,7 +21,7 @@ import api.models.errors.InternalError
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version4
+import routing.Version
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
 import v4.controllers.validators.SubmitFinalDeclarationValidatorFactory
@@ -41,7 +41,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 
@@ -69,7 +69,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
             auditService,
             auditType = "SubmitAFinalDeclaration",
             transactionName = "submit-a-final-declaration",
-            apiVersion = Version4,
+            apiVersion = Version(request),
             params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
           ))
 

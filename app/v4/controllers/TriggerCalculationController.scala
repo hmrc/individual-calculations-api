@@ -22,7 +22,7 @@ import api.models.audit.GenericAuditDetail
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version4
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v4.controllers.validators.TriggerCalculationValidatorFactory
 import v4.models.response.triggerCalculation.TriggerCalculationHateoasData
@@ -38,7 +38,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               val idGenerator: IdGenerator,
                                               hateoasFactory: HateoasFactory,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -75,7 +75,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             auditType = "TriggerASelfAssessmentTaxCalculation",
             transactionName = "trigger-a-self-assessment-tax-calculation",
             auditDetailCreator = GenericAuditDetail.auditDetailCreator(
-              apiVersion = Version4,
+              apiVersion = Version(request),
               params = Map("nino" -> nino, "taxYear" -> taxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}")),
             requestBody = None,
             responseBodyMap = auditResponseBody

@@ -35,7 +35,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
                                             service: ListCalculationsService,
                                             hateoasFactory: HateoasFactory,
                                             cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext)
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 
