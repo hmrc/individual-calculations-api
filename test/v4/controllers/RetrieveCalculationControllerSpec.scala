@@ -26,9 +26,9 @@ import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLooku
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
-import v4.mocks.requestParsers.MockRetrieveCalculationParser
+import v4.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v4.mocks.services.MockRetrieveCalculationService
-import v4.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v4.models.request.RetrieveCalculationRequestData
 import v4.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,45 +39,29 @@ class RetrieveCalculationControllerSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockRetrieveCalculationParser
+    with MockRetrieveCalculationValidatorFactory
     with MockHateoasFactory
     with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator
     with CalculationFixture {
 
-  private val calculationId                           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val taxYear                                 = "2017-18"
-  private val responseWithR8b                         = minimalCalculationR8bResponse
-  private val responseWithAdditionalFields            = minimalCalculationAdditionalFieldsResponse
-  private val responseWithCl290Enabled                = minimalCalculationCl290EnabledResponse
-  private val mtdResponseWithR8BJson                  = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithAdditionalFieldsJson     = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithCl290EnabledJson         = minimumResponseCl290EnabledJson ++ hateoaslinksJson
-  private val rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-  private val requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val calculationId                       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val taxYear                             = "2017-18"
+  private val responseWithR8b                     = minimalCalculationR8bResponse
+  private val responseWithAdditionalFields        = minimalCalculationAdditionalFieldsResponse
+  private val responseWithCl290Enabled            = minimalCalculationCl290EnabledResponse
+  private val mtdResponseWithR8BJson              = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithAdditionalFieldsJson = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithCl290EnabledJson     = minimumResponseCl290EnabledJson ++ hateoaslinksJson
 
-  trait Test extends ControllerTest {
-
-    lazy val controller = new RetrieveCalculationController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveCalculationParser,
-      service = mockRetrieveCalculationService,
-      cc = cc,
-      hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
-    )
-
-    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
-  }
+  private val requestData: RetrieveCalculationRequestData =
+    RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   "handleRequest" should {
     "return OK with the calculation" when {
       "happy path with R8B feature switch enabled" in new Test {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -95,9 +79,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with Additional Fields feature switch enabled" in new Test {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -117,9 +99,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with cl290 feature switch enabled" in new Test {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -137,12 +117,9 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with R8B, additional fields, and cl290 feature switches disabled" in new Test {
-        val updatedRawData: RetrieveCalculationRawData   = rawData
         val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
         val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
-        MockRetrieveCalculationParser
-          .parseRequest(updatedRawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -163,9 +140,7 @@ class RetrieveCalculationControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        willUseValidator(returning(NinoFormatError))
 
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
@@ -175,9 +150,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "the service returns an error" in new Test {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
@@ -190,6 +163,21 @@ class RetrieveCalculationControllerSpec
         runErrorTest(RuleTaxYearNotSupportedError)
       }
     }
+  }
+
+  private trait Test extends ControllerTest {
+
+    private lazy val controller = new RetrieveCalculationController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      validatorFactory = mockRetrieveCalculationValidatorFactory,
+      service = mockRetrieveCalculationService,
+      cc = cc,
+      hateoasFactory = mockHateoasFactory,
+      idGenerator = mockIdGenerator
+    )
+
+    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
   }
 
 }

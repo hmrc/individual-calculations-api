@@ -18,7 +18,7 @@ package v4.controllers
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetailOld}
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
@@ -27,8 +27,8 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import v4.controllers.validators.MockSubmitFinalDeclarationValidatorFactory
 import v4.mocks.connectors.MockNrsProxyConnector
-import v4.mocks.requestParsers.MockSubmitFinalDeclarationParser
 import v4.mocks.services._
 import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
@@ -46,7 +46,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockSubmitFinalDeclarationService
-    with MockSubmitFinalDeclarationParser
+    with MockSubmitFinalDeclarationValidatorFactory
     with MockRetrieveCalculationService
     with MockAuditService
     with MockNrsProxyConnector
@@ -60,53 +60,16 @@ class SubmitFinalDeclarationControllerSpec
   implicit override val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
-  trait Test extends ControllerTest with AuditEventChecking {
-
-    val controller = new SubmitFinalDeclarationController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      parser = mockSubmitFinalDeclarationParser,
-      service = mockSubmitFinalDeclarationService,
-      retrieveService = mockRetrieveCalculationService,
-      cc = cc,
-      nrsProxyService = stubNrsProxyService,
-      auditService = mockAuditService,
-      idGenerator = mockIdGenerator
-    )
-
-    protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
-
-    override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetailOld] =
-      AuditEvent(
-        "SubmitAFinalDeclaration",
-        "submit-a-final-declaration",
-        GenericAuditDetailOld(
-          userType = "Individual",
-          agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
-          requestBody = None,
-          `X-CorrelationId` = correlationId,
-          versionNumber = "3.0",
-          auditResponse = auditResponse
-        )
-      )
-
-  }
-
   override protected def beforeEach(): Unit = resetNrsProxyService()
-
-  private val rawData                    = SubmitFinalDeclarationRawData(nino, taxYear, calculationId)
-  private val requestData                = SubmitFinalDeclarationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val requestData                   = SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData    = RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {
       "the request received is valid" in new Test {
-        MockSubmitFinalDeclarationParser
-          .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -124,9 +87,7 @@ class SubmitFinalDeclarationControllerSpec
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
-        MockSubmitFinalDeclarationParser
-          .parseRequest(SubmitFinalDeclarationRawData(nino, taxYear, calculationId))
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -153,17 +114,13 @@ class SubmitFinalDeclarationControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockSubmitFinalDeclarationParser
-          .parseRequest(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTestWithAudit(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockSubmitFinalDeclarationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockSubmitFinalDeclarationService
           .submitFinalDeclaration(requestData)
@@ -180,6 +137,39 @@ class SubmitFinalDeclarationControllerSpec
         }
       }
     }
+
+  }
+
+  private trait Test extends ControllerTest with AuditEventChecking {
+
+    private lazy val controller = new SubmitFinalDeclarationController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      validatorFactory = mockSubmitFinalDeclarationValidatorFactory,
+      service = mockSubmitFinalDeclarationService,
+      retrieveService = mockRetrieveCalculationService,
+      cc = cc,
+      nrsProxyService = stubNrsProxyService,
+      auditService = mockAuditService,
+      idGenerator = mockIdGenerator
+    )
+
+    protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
+
+    override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        "SubmitAFinalDeclaration",
+        "submit-a-final-declaration",
+        GenericAuditDetail(
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+          requestBody = None,
+          `X-CorrelationId` = correlationId,
+          versionNumber = apiVersion.name,
+          auditResponse = auditResponse
+        )
+      )
 
   }
 

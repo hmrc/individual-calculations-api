@@ -22,8 +22,7 @@ import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v4.controllers.requestParsers.RetrieveCalculationParser
-import v4.models.request.RetrieveCalculationRawData
+import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v4.services.RetrieveCalculationService
 
@@ -32,13 +31,12 @@ import scala.concurrent.ExecutionContext
 
 class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthService,
                                                val lookupService: MtdIdLookupService,
-                                               parser: RetrieveCalculationParser,
+                                               validatorFactory: RetrieveCalculationValidatorFactory,
                                                service: RetrieveCalculationService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
-    with BaseController
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
@@ -55,16 +53,15 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData =
-        RetrieveCalculationRawData(
-          nino = nino,
-          taxYear = taxYear,
-          calculationId = calculationId
-        )
+      val validator = validatorFactory.validator(
+        nino = nino,
+        taxYear = taxYear,
+        calculationId = calculationId
+      )
 
       val requestHandler =
-        RequestHandlerOld
-          .withParser(parser)
+        RequestHandler
+          .withValidator(validator)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
@@ -82,7 +79,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             }
           }
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
 
     }
 

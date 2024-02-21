@@ -23,7 +23,7 @@ import config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v4.models.request.TriggerCalculationRequest
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
 
 import javax.inject.{Inject, Singleton}
@@ -32,10 +32,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def triggerCalculation(request: TriggerCalculationRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
+  def triggerCalculation(request: TriggerCalculationRequestData)(implicit
+                                                                 hc: HeaderCarrier,
+                                                                 ec: ExecutionContext,
+                                                                 correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
 

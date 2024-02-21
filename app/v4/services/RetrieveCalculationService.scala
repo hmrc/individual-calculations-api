@@ -22,7 +22,7 @@ import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v4.connectors.RetrieveCalculationConnector
-import v4.models.request.RetrieveCalculationRequest
+import v4.models.request.RetrieveCalculationRequestData
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 
 import javax.inject.{Inject, Singleton}
@@ -31,9 +31,9 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnector) extends BaseService {
 
-  def retrieveCalculation(request: RetrieveCalculationRequest)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+  def retrieveCalculation(request: RetrieveCalculationRequestData)(implicit
+                                                                   ctx: RequestContext,
+                                                                   ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
     connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 

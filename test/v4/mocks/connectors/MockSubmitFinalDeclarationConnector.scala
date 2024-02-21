@@ -21,7 +21,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v4.connectors.SubmitFinalDeclarationConnector
-import v4.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,9 +31,9 @@ trait MockSubmitFinalDeclarationConnector extends MockFactory {
 
   object MockSubmitFinalDeclarationConnector {
 
-    def submitFinalDeclaration(request: SubmitFinalDeclarationRequest): CallHandler[Future[DownstreamOutcome[Unit]]] = {
+    def submitFinalDeclaration(request: SubmitFinalDeclarationRequestData): CallHandler[Future[DownstreamOutcome[Unit]]] = {
       (mockSubmitFinalDeclarationConnector
-        .submitFinalDeclaration(_: SubmitFinalDeclarationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .submitFinalDeclaration(_: SubmitFinalDeclarationRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
 

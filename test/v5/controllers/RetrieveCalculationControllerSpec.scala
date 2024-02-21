@@ -26,9 +26,9 @@ import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLooku
 import play.api.Configuration
 import play.api.libs.json.JsObject
 import play.api.mvc.Result
-import v5.mocks.requestParsers.MockRetrieveCalculationParser
+import v5.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v5.mocks.services.MockRetrieveCalculationService
-import v5.models.request.{RetrieveCalculationRawData, RetrieveCalculationRequest}
+import v5.models.request.RetrieveCalculationRequestData
 import v5.models.response.retrieveCalculation.{CalculationFixture, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,7 +39,7 @@ class RetrieveCalculationControllerSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockRetrieveCalculationParser
+    with MockRetrieveCalculationValidatorFactory
     with MockHateoasFactory
     with MockRetrieveCalculationService
     with MockAuditService
@@ -56,38 +56,10 @@ class RetrieveCalculationControllerSpec
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
 
-  trait Test extends ControllerTest {
-    def taxYear: String
-    def rawData: RetrieveCalculationRawData     = RetrieveCalculationRawData(nino, taxYear, calculationId)
-    def requestData: RetrieveCalculationRequest = RetrieveCalculationRequest(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-
-    lazy val controller = new RetrieveCalculationController(
-      authService = mockEnrolmentsAuthService,
-      lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveCalculationParser,
-      service = mockRetrieveCalculationService,
-      cc = cc,
-      hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
-    )
-
-    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
-  }
-
-  trait NonTysTest extends Test {
-    def taxYear: String = "2017-18"
-  }
-
-  trait TysTest extends Test {
-    def taxYear: String = "2024-25"
-  }
-
   "handleRequest" should {
     "return OK with the calculation" when {
       "happy path with R8B feature switch enabled" in new NonTysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -110,9 +82,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with Additional Fields feature switch enabled" in new NonTysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -137,9 +107,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with cl290 feature switch enabled" in new NonTysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -162,9 +130,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with BasicRateDivergence feature switch enabled and TYS (2025)" in new TysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -190,12 +156,9 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
-        val updatedRawData: RetrieveCalculationRawData   = rawData
         val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
         val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
-        MockRetrieveCalculationParser
-          .parseRequest(updatedRawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -221,9 +184,8 @@ class RetrieveCalculationControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new NonTysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        willUseValidator(returning(NinoFormatError))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
@@ -232,9 +194,8 @@ class RetrieveCalculationControllerSpec
       }
 
       "the service returns an error" in new NonTysTest {
-        MockRetrieveCalculationParser
-          .parseRequest(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
+
         MockAppConfig.featureSwitches
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
@@ -246,6 +207,33 @@ class RetrieveCalculationControllerSpec
         runErrorTest(RuleTaxYearNotSupportedError)
       }
     }
+  }
+
+  trait Test extends ControllerTest {
+    def taxYear: String
+
+    def requestData: RetrieveCalculationRequestData =
+      RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+
+    private lazy val controller = new RetrieveCalculationController(
+      authService = mockEnrolmentsAuthService,
+      lookupService = mockMtdIdLookupService,
+      validatorFactory = mockRetrieveCalculationValidatorFactory,
+      service = mockRetrieveCalculationService,
+      cc = cc,
+      hateoasFactory = mockHateoasFactory,
+      idGenerator = mockIdGenerator
+    )
+
+    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+  }
+
+  trait NonTysTest extends Test {
+    def taxYear: String = "2017-18"
+  }
+
+  trait TysTest extends Test {
+    def taxYear: String = "2024-25"
   }
 
 }

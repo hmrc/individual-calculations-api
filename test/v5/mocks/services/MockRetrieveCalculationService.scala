@@ -21,7 +21,7 @@ import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import v5.models.request.RetrieveCalculationRequest
+import v5.models.request.RetrieveCalculationRequestData
 import v5.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v5.services.RetrieveCalculationService
 
@@ -34,9 +34,9 @@ trait MockRetrieveCalculationService extends MockFactory {
   object MockRetrieveCalculationService {
 
     def retrieveCalculation(
-        request: RetrieveCalculationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]]] = {
+        request: RetrieveCalculationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[RetrieveCalculationResponse]]]] = {
       (mockRetrieveCalculationService
-        .retrieveCalculation(_: RetrieveCalculationRequest)(_: RequestContext, _: ExecutionContext))
+        .retrieveCalculation(_: RetrieveCalculationRequestData)(_: RequestContext, _: ExecutionContext))
         .expects(request, *, *)
     }
 

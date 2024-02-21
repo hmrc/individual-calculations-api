@@ -19,7 +19,7 @@ package v4.connectors
 import api.connectors.{ConnectorSpec, DownstreamOutcome}
 import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
-import v4.models.request.SubmitFinalDeclarationRequest
+import v4.models.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future
 
@@ -29,7 +29,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   val taxYear: TaxYear             = TaxYear.fromMtd("2020-21")
   val calculationId: CalculationId = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
 
-  val request: SubmitFinalDeclarationRequest = SubmitFinalDeclarationRequest(
+  val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
     nino,
     taxYear,
     calculationId

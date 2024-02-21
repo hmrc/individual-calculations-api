@@ -25,10 +25,10 @@ import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupported
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.mvc.Result
+import v4.controllers.validators.MockListCalculationsValidatorFactory
 import v4.fixtures.ListCalculationsFixture
-import v4.mocks.requestParsers.MockListCalculationsParser
 import v4.mocks.services.MockListCalculationsService
-import v4.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v4.models.request.ListCalculationsRequestData
 import v4.models.response.listCalculations.{ListCalculationsHateoasData, ListCalculationsResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -39,67 +39,50 @@ class ListCalculationsControllerSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockListCalculationsParser
+    with MockListCalculationsValidatorFactory
     with MockListCalculationsService
     with MockHateoasFactory
     with MockIdGenerator
     with ListCalculationsFixture {
-  val taxYear: Option[String]          = Some("2020-21")
-  val rawData: ListCalculationsRawData = ListCalculationsRawData(nino, taxYear)
 
-  class Test extends ControllerTest {
+  val taxYear: Option[String] = Some("2020-21")
 
-    lazy val request: ListCalculationsRequest = ListCalculationsRequest(
-      nino = Nino(nino),
-      taxYear = taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
-    )
-
-    val taxYear: Option[String] = rawData.taxYear
-
-    val controller: ListCalculationsController = new ListCalculationsController(
-      mockEnrolmentsAuthService,
-      mockMtdIdLookupService,
-      mockListCalculationsParser,
-      mockListCalculationsService,
-      mockHateoasFactory,
-      cc,
-      mockIdGenerator
-    )
-
-    override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
-  }
+  private val requestData: ListCalculationsRequestData = ListCalculationsRequestData(
+    nino = Nino(nino),
+    taxYear = taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
+  )
 
   "ListCalculationsController" when {
     "a valid request is supplied" should {
       "return the expected result for a successful service response" in new Test {
-        MockListCalculationsParser.parseRequest(rawData).returns(Right(request))
+        willUseValidator(returningSuccess(requestData))
 
         MockListCalculationsService
-          .list(request)
+          .list(requestData)
           .returns(
             Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
           )
 
         MockHateoasFactory
-          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, request.taxYear))
+          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, requestData.taxYear))
           .returns(
             HateoasWrapper(
               ListCalculationsResponse(Seq(HateoasWrapper(
                 calculationModel,
                 Seq(hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}/${calculationModel.calculationId}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
                   rel = RelType.SELF,
                   method = Method.GET
                 ))
               ))),
               Seq(
                 hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${this.taxYear.get}",
+                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
                   rel = RelType.TRIGGER,
                   method = Method.POST
                 ),
                 hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${this.taxYear.get}",
+                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${taxYear.get}",
                   rel = RelType.SELF,
                   method = Method.GET
                 )
@@ -107,31 +90,42 @@ class ListCalculationsControllerSpec
             )
           )
 
-        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, this.taxYear.get)))
+        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, taxYear.get)))
       }
     }
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockListCalculationsParser
-          .parseRequest(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError, None)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockListCalculationsParser
-          .parseRequest(rawData)
-          .returns(Right(request))
+        willUseValidator(returningSuccess(requestData))
 
         MockListCalculationsService
-          .list(request)
+          .list(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
 
         runErrorTest(RuleTaxYearNotSupportedError)
       }
     }
+  }
+
+  private trait Test extends ControllerTest {
+
+    val controller: ListCalculationsController = new ListCalculationsController(
+      mockEnrolmentsAuthService,
+      mockMtdIdLookupService,
+      mockListCalculationsFactory,
+      mockListCalculationsService,
+      mockHateoasFactory,
+      cc,
+      mockIdGenerator
+    )
+
+    override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
   }
 
 }

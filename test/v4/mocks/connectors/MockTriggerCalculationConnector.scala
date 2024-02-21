@@ -21,7 +21,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v4.connectors.TriggerCalculationConnector
-import v4.models.request.TriggerCalculationRequest
+import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,9 +32,9 @@ trait MockTriggerCalculationConnector extends MockFactory {
 
   object MockTriggerCalculationConnector {
 
-    def triggerCalculation(request: TriggerCalculationRequest): CallHandler[Future[DownstreamOutcome[TriggerCalculationResponse]]] = {
+    def triggerCalculation(request: TriggerCalculationRequestData): CallHandler[Future[DownstreamOutcome[TriggerCalculationResponse]]] = {
       (mockConnector
-        .triggerCalculation(_: TriggerCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .triggerCalculation(_: TriggerCalculationRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)
     }
 

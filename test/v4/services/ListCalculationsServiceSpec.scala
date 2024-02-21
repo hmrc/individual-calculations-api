@@ -33,7 +33,7 @@ import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import v4.fixtures.ListCalculationsFixture
 import v4.mocks.connectors.MockListCalculationsConnector
-import v4.models.request.ListCalculationsRequest
+import v4.models.request.ListCalculationsRequestData
 
 import scala.concurrent.Future
 
@@ -42,7 +42,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with ListCalculationsFixtu
   trait Test extends MockListCalculationsConnector {
     val nino: Nino                       = Nino("AA111111A")
     val taxYear: TaxYear                 = TaxYear.fromMtd("2018-19")
-    val request: ListCalculationsRequest = ListCalculationsRequest(nino, taxYear)
+    val request: ListCalculationsRequestData = ListCalculationsRequestData(nino, taxYear)
     val service: ListCalculationsService = new ListCalculationsService(mockListCalculationsConnector)
   }
 

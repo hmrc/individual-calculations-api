@@ -24,7 +24,7 @@ import play.api.Configuration
 import routing.Version
 
 trait MockAppConfig extends MockFactory {
-  val mockAppConfig: AppConfig = mock[AppConfig]
+  implicit val mockAppConfig: AppConfig = mock[AppConfig]
 
   object MockAppConfig {
     // MTD ID Lookup Config

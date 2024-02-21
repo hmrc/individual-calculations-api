@@ -21,7 +21,7 @@ import api.connectors.httpparsers.StandardDownstreamHttpParser.reads
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v4.models.request.ListCalculationsRequest
+import v4.models.request.ListCalculationsRequestData
 import v4.models.response.listCalculations.ListCalculationsResponse.ListCalculations
 
 import javax.inject.{Inject, Singleton}
@@ -30,10 +30,10 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
-  def list(request: ListCalculationsRequest)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String
+  def list(request: ListCalculationsRequestData)(implicit
+                                                 hc: HeaderCarrier,
+                                                 ec: ExecutionContext,
+                                                 correlationId: String
   ): Future[DownstreamOutcome[ListCalculations]] = {
     import request._
 

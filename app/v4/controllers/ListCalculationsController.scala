@@ -19,11 +19,9 @@ package v4.controllers
 import api.controllers._
 import api.hateoas.HateoasFactory
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
-import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v4.controllers.requestParsers.ListCalculationsParser
-import v4.models.request.ListCalculationsRawData
+import v4.controllers.validators.ListCalculationsValidatorFactory
 import v4.models.response.listCalculations.ListCalculationsHateoasData
 import v4.services.ListCalculationsService
 
@@ -33,13 +31,12 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class ListCalculationsController @Inject() (val authService: EnrolmentsAuthService,
                                             val lookupService: MtdIdLookupService,
-                                            parser: ListCalculationsParser,
+                                            validatorFactory: ListCalculationsValidatorFactory,
                                             service: ListCalculationsService,
                                             hateoasFactory: HateoasFactory,
                                             cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
-    with BaseController
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext = EndpointLogContext(
@@ -51,16 +48,16 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData = ListCalculationsRawData(nino, taxYear)
+      val validator = validatorFactory.validator(nino, taxYear)
 
       val requestHandler =
-        RequestHandlerOld
-          .withParser(parser)
+        RequestHandler
+          .withValidator(validator)
           .withService(service.list)
-          .withResultCreator(ResultCreatorOld.hateoasListWrapping(hateoasFactory)((parsedRequest, _) =>
+          .withResultCreator(ResultCreator.hateoasListWrapping(hateoasFactory)((parsedRequest, _) =>
             ListCalculationsHateoasData(nino, parsedRequest.taxYear)))
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
 }
