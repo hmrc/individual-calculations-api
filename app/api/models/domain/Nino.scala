@@ -27,10 +27,4 @@ case class Nino(nino: String) {
   def withoutSuffix: String = value.take(LengthWithoutSuffix)
 }
 
-object Nino extends (String => Nino) {
-  private val validNinoFormat = "[[A-Z]&&[^DFIQUV]][[A-Z]&&[^DFIQUVO]] ?\\d{2} ?\\d{2} ?\\d{2} ?[A-D]{1}"
-  private val invalidPrefixes = List("BG", "GB", "NK", "KN", "TN", "NT", "ZZ")
-
-  private def hasValidPrefix(nino: String) = !invalidPrefixes.exists(nino.startsWith)
-  def isValid(nino: String): Boolean       = nino != null && hasValidPrefix(nino) && nino.matches(validNinoFormat)
-}
+object Nino extends (String => Nino) {}
