@@ -78,7 +78,12 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
           .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithR8BJson))
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeAuditRequestBody = Some(mtdResponseWithR8BJson),
+          maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
+          maybeAuditResponseBody = None
+        )
       }
 
       "happy path with Additional Fields feature switch enabled" in new NonTysTest {
@@ -103,7 +108,12 @@ class RetrieveCalculationControllerSpec
             RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
           .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithAdditionalFieldsJson))
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeAuditRequestBody = Some(mtdResponseWithAdditionalFieldsJson),
+          maybeExpectedResponseBody = Some(mtdResponseWithAdditionalFieldsJson),
+          maybeAuditResponseBody = None
+        )
       }
 
       "happy path with cl290 feature switch enabled" in new NonTysTest {
@@ -126,7 +136,12 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
           .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithCl290EnabledJson))
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeAuditRequestBody = Some(mtdResponseWithCl290EnabledJson),
+          maybeExpectedResponseBody = Some(mtdResponseWithCl290EnabledJson),
+          maybeAuditResponseBody = None
+        )
       }
 
       "happy path with BasicRateDivergence feature switch enabled and TYS (2025)" in new TysTest {
@@ -152,7 +167,12 @@ class RetrieveCalculationControllerSpec
           )
           .returns(HateoasWrapper(responseWithBasicRateDivergenceEnabled, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithBasicRateDivergenceEnabledJson))
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeAuditRequestBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
+          maybeExpectedResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
+          maybeAuditResponseBody = None
+        )
       }
 
       "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
@@ -177,7 +197,12 @@ class RetrieveCalculationControllerSpec
           .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
           .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
-        runOkTest(OK, Some(updatedMtdResponse))
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeAuditRequestBody = Some(updatedMtdResponse),
+          maybeExpectedResponseBody = Some(updatedMtdResponse),
+          maybeAuditResponseBody = None
+        )
       }
 
     }

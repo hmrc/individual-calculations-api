@@ -18,10 +18,12 @@ package v4.controllers
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import api.services.{AuditService,EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.JsValue
+import play.api.mvc.{Action, ControllerComponents}
 import utils.{IdGenerator, Logging}
+import routing.{Version, Version4}
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v4.services.RetrieveCalculationService
@@ -33,6 +35,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                val lookupService: MtdIdLookupService,
                                                validatorFactory: RetrieveCalculationValidatorFactory,
                                                service: RetrieveCalculationService,
+                                               auditService: AuditService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
@@ -49,8 +52,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   import featureSwitches.{isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
 
-  def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
+  def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[JsValue] =
+    authorisedAction(nino).async(parse.json) { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val validator = validatorFactory.validator(
@@ -63,6 +66,14 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
         RequestHandler
           .withValidator(validator)
           .withService(service.retrieveCalculation)
+          .withAuditing(AuditHandler(
+            auditService,
+            auditType = "RetrieveATaxCalculation",
+            transactionName = "retrieve-a-tax-calculation",
+            apiVersion = Version.from(request, orElse = Version4),
+            params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+            Some(request.body)
+          ))
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
             val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
