@@ -18,12 +18,12 @@ package v4.controllers
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.services.{AuditService,EnrolmentsAuthService, MtdIdLookupService}
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
-import utils.{IdGenerator, Logging}
 import routing.{Version, Version4}
+import utils.{IdGenerator, Logging}
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v4.services.RetrieveCalculationService

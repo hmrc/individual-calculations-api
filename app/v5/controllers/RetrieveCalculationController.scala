@@ -19,7 +19,7 @@ package v5.controllers
 import api.controllers._
 import api.hateoas.HateoasFactory
 import api.models.domain.TaxYear
-import api.services.{AuditService,EnrolmentsAuthService, MtdIdLookupService}
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, ControllerComponents}
