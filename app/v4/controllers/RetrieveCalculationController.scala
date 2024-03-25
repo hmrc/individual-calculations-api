@@ -56,6 +56,12 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     authorisedAction(nino).async(parse.json) { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
+      println(Version.from(request, orElse = Version4))
+      println(Version.from(request, orElse = Version4))
+      println(Version.from(request, orElse = Version4))
+      println(Version.from(request, orElse = Version4))
+      println(Version.from(request, orElse = Version4))
+
       val validator = validatorFactory.validator(
         nino = nino,
         taxYear = taxYear,

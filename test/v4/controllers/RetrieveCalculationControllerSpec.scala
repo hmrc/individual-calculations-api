@@ -48,6 +48,7 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
+  setApiVersion(Version4)
   private val calculationId                       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val taxYear                             = "2017-18"
   private val responseWithR8b                     = minimalCalculationR8bResponse
@@ -205,8 +206,6 @@ class RetrieveCalculationControllerSpec
   }
 
   private trait Test extends ControllerTest with AuditEventChecking {
-
-    setApiVersion(Version4)
 
     lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
