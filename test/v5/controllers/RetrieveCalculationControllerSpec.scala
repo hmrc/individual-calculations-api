@@ -19,12 +19,13 @@ package v5.controllers
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.Configuration
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import v5.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v5.mocks.services.MockRetrieveCalculationService
@@ -78,6 +79,9 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
           .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithR8BJson))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(mtdResponseWithR8BJson),
@@ -108,6 +112,9 @@ class RetrieveCalculationControllerSpec
             RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
           .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithAdditionalFieldsJson))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(mtdResponseWithAdditionalFieldsJson),
@@ -135,6 +142,9 @@ class RetrieveCalculationControllerSpec
         MockHateoasFactory
           .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
           .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
+
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithCl290EnabledJson))
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -167,6 +177,9 @@ class RetrieveCalculationControllerSpec
           )
           .returns(HateoasWrapper(responseWithBasicRateDivergenceEnabled, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithBasicRateDivergenceEnabledJson))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
@@ -197,6 +210,9 @@ class RetrieveCalculationControllerSpec
           .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
           .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(updatedMtdResponse))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(updatedMtdResponse),
@@ -209,6 +225,9 @@ class RetrieveCalculationControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new NonTysTest {
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("{}")))
+
         willUseValidator(returning(NinoFormatError))
 
         MockAppConfig.featureSwitches
@@ -219,6 +238,9 @@ class RetrieveCalculationControllerSpec
       }
 
       "the service returns an error" in new NonTysTest {
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("{}")))
+
         willUseValidator(returningSuccess(requestData))
 
         MockAppConfig.featureSwitches
@@ -234,23 +256,38 @@ class RetrieveCalculationControllerSpec
     }
   }
 
-  trait Test extends ControllerTest {
+  trait Test extends ControllerTest with AuditEventChecking {
     def taxYear: String
 
     def requestData: RetrieveCalculationRequestData =
       RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
-    private lazy val controller = new RetrieveCalculationController(
+    lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveCalculationValidatorFactory,
       service = mockRetrieveCalculationService,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
+      idGenerator = mockIdGenerator,
+      auditService = mockAuditService
     )
 
-    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+    protected def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        auditType = "RetrieveATaxCalculation",
+        transactionName = "retrieve-a-tax-calculation",
+        detail = GenericAuditDetail(
+          versionNumber = "5.0",
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+          requestBody = requestBody,
+          `X-CorrelationId` = correlationId,
+          auditResponse = auditResponse
+        )
+      )
+
   }
 
   trait NonTysTest extends Test {

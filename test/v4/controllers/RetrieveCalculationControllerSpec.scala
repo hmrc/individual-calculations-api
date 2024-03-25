@@ -19,12 +19,13 @@ package v4.controllers
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.Configuration
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
 import v4.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v4.mocks.services.MockRetrieveCalculationService
@@ -185,7 +186,7 @@ class RetrieveCalculationControllerSpec
     }
   }
 
-  private trait Test extends ControllerTest {
+  private trait Test extends ControllerTest with AuditEventChecking {
 
     private lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
@@ -194,10 +195,28 @@ class RetrieveCalculationControllerSpec
       service = mockRetrieveCalculationService,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
+      idGenerator = mockIdGenerator,
+      auditService = mockAuditService
     )
 
-    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+    protected def callController(): Future[Result] =
+      controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("")))
+
+    protected def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        auditType = "RetrieveATaxCalculation",
+        transactionName = "retrieve-a-tax-calculation",
+        detail = GenericAuditDetail(
+          versionNumber = "4.0",
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+          requestBody = requestBody,
+          `X-CorrelationId` = correlationId,
+          auditResponse = auditResponse
+        )
+      )
+
   }
 
 }
