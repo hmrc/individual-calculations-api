@@ -46,8 +46,9 @@ class ControllerBaseSpec
     with MockAuditService
     with ControllerSpecHateoasSupport
     with MockAppConfig {
+  protected def setApiVersion(version: Version) = apiVersion = version
 
-  implicit val apiVersion: Version = Version5
+  var apiVersion: Version = Version5
 
   implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withHeaders(HeaderNames.ACCEPT -> s"application/vnd.hmrc.${apiVersion.name}+json")

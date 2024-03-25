@@ -27,6 +27,7 @@ import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLooku
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
+import routing.Version4
 import v4.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v4.mocks.services.MockRetrieveCalculationService
 import v4.models.request.RetrieveCalculationRequestData
@@ -76,6 +77,9 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
           .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithR8BJson))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(mtdResponseWithR8BJson),
@@ -101,6 +105,9 @@ class RetrieveCalculationControllerSpec
             RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
           .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithAdditionalFieldsJson))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(mtdResponseWithAdditionalFieldsJson),
@@ -123,6 +130,9 @@ class RetrieveCalculationControllerSpec
         MockHateoasFactory
           .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
           .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
+
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(mtdResponseWithCl290EnabledJson))
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -149,6 +159,9 @@ class RetrieveCalculationControllerSpec
           .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
           .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(updatedMtdResponse))
+
         runOkTestWithAudit(
           expectedStatus = OK,
           maybeAuditRequestBody = Some(updatedMtdResponse),
@@ -161,6 +174,9 @@ class RetrieveCalculationControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("{}")))
+
         willUseValidator(returning(NinoFormatError))
 
         MockAppConfig.featureSwitches
@@ -171,6 +187,8 @@ class RetrieveCalculationControllerSpec
       }
 
       "the service returns an error" in new Test {
+        protected def callController(): Future[Result] =
+          controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("{}")))
         willUseValidator(returningSuccess(requestData))
 
         MockAppConfig.featureSwitches
@@ -188,7 +206,9 @@ class RetrieveCalculationControllerSpec
 
   private trait Test extends ControllerTest with AuditEventChecking {
 
-    private lazy val controller = new RetrieveCalculationController(
+    setApiVersion(Version4)
+
+    lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveCalculationValidatorFactory,
@@ -198,9 +218,6 @@ class RetrieveCalculationControllerSpec
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
-
-    protected def callController(): Future[Result] =
-      controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest.withBody(Json.parse("")))
 
     protected def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
