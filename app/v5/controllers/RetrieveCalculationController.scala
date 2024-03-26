@@ -21,10 +21,9 @@ import api.hateoas.HateoasFactory
 import api.models.domain.TaxYear
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
-import play.api.libs.json.JsValue
-import play.api.mvc.{Action, ControllerComponents}
-import utils.{IdGenerator, Logging}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.{Version, Version5}
+import utils.{IdGenerator, Logging}
 import v5.controllers.validators.RetrieveCalculationValidatorFactory
 import v5.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 import v5.services.RetrieveCalculationService
@@ -53,8 +52,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
   import featureSwitches.{isBasicRateDivergenceEnabled, isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
 
-  def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[JsValue] =
-    authorisedAction(nino).async(parse.json) { implicit request =>
+  def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
+    authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val validator = validatorFactory.validator(
@@ -73,7 +72,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             transactionName = "retrieve-a-tax-calculation",
             apiVersion = Version.from(request, orElse = Version5),
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
-            Some(request.body)
+            None
           ))
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
