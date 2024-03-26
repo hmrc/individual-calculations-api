@@ -82,9 +82,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(mtdResponseWithR8BJson),
           maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(mtdResponseWithR8BJson)
         )
       }
 
@@ -113,9 +112,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(mtdResponseWithAdditionalFieldsJson),
           maybeExpectedResponseBody = Some(mtdResponseWithAdditionalFieldsJson),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(mtdResponseWithAdditionalFieldsJson)
         )
       }
 
@@ -142,9 +140,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(mtdResponseWithCl290EnabledJson),
           maybeExpectedResponseBody = Some(mtdResponseWithCl290EnabledJson),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(mtdResponseWithCl290EnabledJson)
         )
       }
 
@@ -174,9 +171,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
           maybeExpectedResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson)
         )
       }
 
@@ -205,9 +201,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(updatedMtdResponse),
           maybeExpectedResponseBody = Some(updatedMtdResponse),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(updatedMtdResponse)
         )
       }
 

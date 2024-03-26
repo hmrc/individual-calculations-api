@@ -72,7 +72,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             transactionName = "retrieve-a-tax-calculation",
             apiVersion = Version.from(request, orElse = Version5),
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
-            None
+            includeResponse = true
           ))
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)

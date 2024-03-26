@@ -21,7 +21,7 @@ import api.hateoas.HateoasFactory
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.{Version, Version4}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
