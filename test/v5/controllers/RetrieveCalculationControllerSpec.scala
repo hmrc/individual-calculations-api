@@ -271,7 +271,7 @@ class RetrieveCalculationControllerSpec
           userType = "Individual",
           agentReferenceNumber = None,
           params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
-          requestBody = None,
+          requestBody = requestBody,
           `X-CorrelationId` = correlationId,
           auditResponse = auditResponse
         )
