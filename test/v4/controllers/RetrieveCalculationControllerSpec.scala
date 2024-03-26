@@ -209,7 +209,7 @@ class RetrieveCalculationControllerSpec
         auditType = "RetrieveATaxCalculation",
         transactionName = "retrieve-a-tax-calculation",
         detail = GenericAuditDetail(
-          versionNumber = "4.0",
+          versionNumber = apiVersion.name,
           userType = "Individual",
           agentReferenceNumber = None,
           params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
