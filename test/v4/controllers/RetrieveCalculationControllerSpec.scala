@@ -80,9 +80,8 @@ class RetrieveCalculationControllerSpec
 
         runOkTestWithAudit(
           expectedStatus = OK,
-          maybeAuditRequestBody = Some(mtdResponseWithR8BJson),
           maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
-          maybeAuditResponseBody = None
+          maybeAuditResponseBody = Some(mtdResponseWithR8BJson)
         )
       }
 
