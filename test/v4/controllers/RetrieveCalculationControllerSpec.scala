@@ -27,7 +27,6 @@ import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLooku
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
-import routing.Version4
 import v4.controllers.validators.MockRetrieveCalculationValidatorFactory
 import v4.mocks.services.MockRetrieveCalculationService
 import v4.models.request.RetrieveCalculationRequestData
@@ -48,7 +47,6 @@ class RetrieveCalculationControllerSpec
     with MockIdGenerator
     with CalculationFixture {
 
-  setApiVersion(Version4)
   private val calculationId                       = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val taxYear                             = "2017-18"
   private val responseWithR8b                     = minimalCalculationR8bResponse
