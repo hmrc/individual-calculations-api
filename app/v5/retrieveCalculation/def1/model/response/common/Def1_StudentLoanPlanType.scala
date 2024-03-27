@@ -1,0 +1,40 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v5.retrieveCalculation.def1.model.response.common
+
+import play.api.libs.json.{Reads, Writes}
+import utils.enums.Enums
+
+sealed trait Def1_StudentLoanPlanType
+
+object Def1_StudentLoanPlanType {
+
+  case object `plan1`        extends Def1_StudentLoanPlanType
+  case object `plan2`        extends Def1_StudentLoanPlanType
+  case object `postgraduate` extends Def1_StudentLoanPlanType
+  case object `plan4`        extends Def1_StudentLoanPlanType
+
+  implicit val writes: Writes[Def1_StudentLoanPlanType] = Enums.writes[Def1_StudentLoanPlanType]
+
+  implicit val reads: Reads[Def1_StudentLoanPlanType] = Enums.readsUsing {
+    case "01" => `plan1`
+    case "02" => `plan2`
+    case "03" => `postgraduate`
+    case "04" => `plan4`
+  }
+
+}

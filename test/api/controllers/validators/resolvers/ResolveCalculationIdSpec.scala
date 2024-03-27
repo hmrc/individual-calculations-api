@@ -25,7 +25,7 @@ class ResolveCalculationIdSpec extends UnitSpec {
 
   "ResolveCalculationId" should {
     "return no errors" when {
-      "given a valid Calculation ID" in {
+      "given a valid Def1_Calculation ID" in {
         val value  = "a54ba782-5ef4-47f4-ab72-495406665ca9"
         val result = ResolveCalculationId(value)
         result shouldBe Valid(CalculationId(value))

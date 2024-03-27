@@ -79,5 +79,5 @@ class ResolveJsonObject[T](implicit val reads: Reads[T]) extends ResolverSupport
 
   private case class MissingMandatoryField(path: JsPath) extends JsonFormatValidationFailure(path, "Missing mandatory field")
   private case class WrongFieldType(path: JsPath)        extends JsonFormatValidationFailure(path, "Wrong field type")
-  private case class OtherFailure(path: JsPath)          extends JsonFormatValidationFailure(path, "Other failure")
+  private case class OtherFailure(path: JsPath)          extends JsonFormatValidationFailure(path, "Def1_Other failure")
 }

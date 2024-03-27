@@ -123,7 +123,7 @@ class ResolveTaxYearSpec extends UnitSpec with ResolverSupport {
   }
 
   "ResolveIncompleteTaxYear" should {
-    val error = MtdError("SOME_ERROR", "Message", 400)
+    val error = MtdError("SOME_ERROR", "Def1_Message", 400)
 
     def resolver(localDate: LocalDate): Resolver[String, TaxYear] = {
       implicit val clock: Clock = Clock.fixed(localDate.atStartOfDay(ZoneOffset.UTC).toInstant, ZoneOffset.UTC)
