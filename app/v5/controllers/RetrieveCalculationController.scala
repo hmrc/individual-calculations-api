@@ -22,7 +22,7 @@ import api.models.domain.TaxYear
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.{Version, Version5}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v5.controllers.validators.RetrieveCalculationValidatorFactory
 import v5.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
