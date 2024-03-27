@@ -70,7 +70,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             auditService,
             auditType = "RetrieveATaxCalculation",
             transactionName = "retrieve-a-tax-calculation",
-            apiVersion = Version.from(request, orElse = Version5),
+            apiVersion = Version.from(request),
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
