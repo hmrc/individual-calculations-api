@@ -18,7 +18,6 @@ package v5.retrieveCalculation
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.models.domain.TaxYear
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
@@ -44,10 +43,6 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       endpointName = "retrieveCalculation"
     )
 
-  private val featureSwitches = FeatureSwitches()(appConfig)
-
-  import featureSwitches.{isBasicRateDivergenceEnabled, isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
-
   def retrieveCalculation(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
@@ -63,14 +58,11 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withValidator(validator)
           .withService(service.retrieveCalculation)
           .withModelHandling { response: RetrieveCalculationResponse =>
-            val responseMaybeWithoutR8b              = updateModelR8b(response)
-            val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
-            val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
-            updateModelBasicRateDivergence(taxYear, responseMaybeWithoutCl290)
+            response.adjustFields(FeatureSwitches()(appConfig), taxYear)
           }
           .withHateoasResultFrom(hateoasFactory) { (request, response) =>
             {
-              models.response.RetrieveCalculationHateoasData(
+              RetrieveCalculationHateoasData(
                 nino = nino,
                 taxYear = request.taxYear,
                 calculationId = calculationId,
@@ -82,18 +74,5 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       requestHandler.handleRequest()
 
     }
-
-  private def updateModelR8b(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isR8bSpecificApiEnabled) response else response.withoutR8bSpecificUpdates
-
-  private def updateModelAdditionalFields(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isRetrieveSAAdditionalFieldsEnabled) response else response.withoutAdditionalFieldsUpdates
-
-  private def updateModelCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
-    if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
-
-  private def updateModelBasicRateDivergence(taxYear: String, response: RetrieveCalculationResponse): RetrieveCalculationResponse = {
-    if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
-  }
 
 }

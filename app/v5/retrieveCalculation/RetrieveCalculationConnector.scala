@@ -21,8 +21,8 @@ import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
-import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,15 +35,25 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfi
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
 
-    import request._
+    request match {
+      case tysDef1: Def1_RetrieveCalculationRequestData if tysDef1.taxYear.useTaxYearSpecificApi =>
+        import tysDef1._
 
-    val downstreamUri = if (taxYear.useTaxYearSpecificApi) {
-      TaxYearSpecificIfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
-    } else {
-      IfsUri[RetrieveCalculationResponse](s"income-tax/view/calculations/liability/$nino/$calculationId")
+        val downstreamUri = TaxYearSpecificIfsUri[Def1_RetrieveCalculationResponse](
+          s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId"
+        )
+        val result = get(downstreamUri)
+        result
+
+      case nonTysDef1: Def1_RetrieveCalculationRequestData =>
+        import nonTysDef1._
+
+        val downstreamUri = IfsUri[Def1_RetrieveCalculationResponse](
+          s"income-tax/view/calculations/liability/$nino/$calculationId"
+        )
+        val result = get(downstreamUri)
+        result
     }
-
-    get(uri = downstreamUri)
   }
 
 }
