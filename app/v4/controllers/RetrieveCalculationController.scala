@@ -18,9 +18,10 @@ package v4.controllers
 
 import api.controllers._
 import api.hateoas.HateoasFactory
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import routing.Version
 import utils.{IdGenerator, Logging}
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
@@ -33,6 +34,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                val lookupService: MtdIdLookupService,
                                                validatorFactory: RetrieveCalculationValidatorFactory,
                                                service: RetrieveCalculationService,
+                                               auditService: AuditService,
                                                hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
@@ -63,6 +65,14 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
         RequestHandler
           .withValidator(validator)
           .withService(service.retrieveCalculation)
+          .withAuditing(AuditHandler(
+            auditService,
+            auditType = "RetrieveATaxCalculation",
+            transactionName = "retrieve-a-tax-calculation",
+            apiVersion = Version(request),
+            params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+            includeResponse = true
+          ))
           .withModelHandling { response: RetrieveCalculationResponse =>
             val responseMaybeWithoutR8b              = updateModelR8b(response)
             val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
