@@ -17,31 +17,16 @@
 package v5.retrieveCalculation
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
-import api.models.domain.TaxYear
-import api.models.errors.MtdError
-import cats.data.Validated
-import cats.implicits._
-import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
+import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 
 import javax.inject.Singleton
 
 @Singleton
 class RetrieveCalculationValidatorFactory {
 
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
-
-  def validator(nino: String, taxYear: String, calculationId: String): Validator[RetrieveCalculationRequestData] =
-    new Validator[RetrieveCalculationRequestData] {
-
-      def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
-        (
-          ResolveNino(nino),
-          resolveTaxYear(taxYear),
-          ResolveCalculationId(calculationId)
-        ).mapN(Def1_RetrieveCalculationRequestData)
-
-    }
+  def validator(nino: String, taxYear: String, calculationId: String): Validator[RetrieveCalculationRequestData] = {
+    new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
+  }
 
 }
