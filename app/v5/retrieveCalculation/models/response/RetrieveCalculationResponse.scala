@@ -24,7 +24,6 @@ import v5.retrieveCalculation.def1.model.response.calculation.Def1_Calculation
 import v5.retrieveCalculation.def1.model.response.inputs.Def1_Inputs
 import v5.retrieveCalculation.def1.model.response.messages.Def1_Messages
 import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
-import v5.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse.Def1_RetrieveAnnualSubmissionLinksFactory
 
 sealed trait RetrieveCalculationResponse {
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
@@ -39,9 +38,9 @@ object RetrieveCalculationResponse extends HateoasLinks {
   implicit object RetrieveAnnualSubmissionLinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
-      data match {
-        case def1: Def1_RetrieveCalculationHateoasData =>
-          Def1_RetrieveAnnualSubmissionLinksFactory.links(appConfig, def1)
+      data.response match {
+        case def1Response: Def1_RetrieveCalculationResponse =>
+          Def1_RetrieveCalculationResponse.def1Links(appConfig, def1Response, data)
       }
     }
 
@@ -79,50 +78,51 @@ case class Def1_RetrieveCalculationResponse(
 
   }
 
-  private def withoutR8bSpecificUpdates: Def1_RetrieveCalculationResponse =
+  def withoutR8bSpecificUpdates: Def1_RetrieveCalculationResponse =
     this.withoutBasicExtension.withoutOffPayrollWorker.withoutTotalAllowanceAndDeductions
 
-  private def withoutBasicExtension: Def1_RetrieveCalculationResponse =
+  def withoutBasicExtension: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
 
-  private def withoutOffPayrollWorker: Def1_RetrieveCalculationResponse =
+  def withoutOffPayrollWorker: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
 
-  private def withoutTotalAllowanceAndDeductions: Def1_RetrieveCalculationResponse =
+  def withoutTotalAllowanceAndDeductions: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
 
-  private def withoutUnderLowerProfitThreshold: Def1_RetrieveCalculationResponse =
+  // find where its used
+  def withoutUnderLowerProfitThreshold: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
 
-  private def withoutTaxTakenOffTradingIncome: Def1_RetrieveCalculationResponse = {
+  def withoutTaxTakenOffTradingIncome: Def1_RetrieveCalculationResponse = {
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
   }
 
-  private def withoutBasicRateDivergenceUpdates: Def1_RetrieveCalculationResponse =
+  def withoutBasicRateDivergenceUpdates: Def1_RetrieveCalculationResponse =
     this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
 
-  private def withoutGiftAidTaxReductionWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
+  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
 
-  private def withoutGiftAidTaxChargeWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
+  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
 
-  private def withoutAdditionalFieldsUpdates: Def1_RetrieveCalculationResponse =
+  def withoutAdditionalFieldsUpdates: Def1_RetrieveCalculationResponse =
     this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
 
-  private def withoutCessationDate: Def1_RetrieveCalculationResponse = {
+  def withoutCessationDate: Def1_RetrieveCalculationResponse = {
     Def1_RetrieveCalculationResponse(metadata, inputs.withoutCessationDate, calculation, messages)
   }
 
-  private def withoutCommencementDate: Def1_RetrieveCalculationResponse = {
+  def withoutCommencementDate: Def1_RetrieveCalculationResponse = {
     Def1_RetrieveCalculationResponse(metadata, inputs.withoutCommencementDate, calculation, messages)
   }
 
-  private def withoutOtherIncome: Def1_RetrieveCalculationResponse = {
+  def withoutOtherIncome: Def1_RetrieveCalculationResponse = {
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOtherIncome).filter(_.isDefined), messages)
   }
 
-  private def withoutItsaStatus: Def1_RetrieveCalculationResponse = {
+  def withoutItsaStatus: Def1_RetrieveCalculationResponse = {
     Def1_RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
   }
 
@@ -146,53 +146,44 @@ object Def1_RetrieveCalculationResponse extends HateoasLinks {
 
   implicit val writes: OWrites[Def1_RetrieveCalculationResponse] = Json.writes[Def1_RetrieveCalculationResponse]
 
-  implicit object Def1_RetrieveAnnualSubmissionLinksFactory
-      extends HateoasLinksFactory[Def1_RetrieveCalculationResponse, Def1_RetrieveCalculationHateoasData] {
+  private[response] def def1Links(appConfig: AppConfig,
+                                  response: Def1_RetrieveCalculationResponse,
+                                  data: RetrieveCalculationHateoasData): Seq[Link] = {
 
-    override def links(appConfig: AppConfig, data: Def1_RetrieveCalculationHateoasData): Seq[Link] = {
-      import data._
-      val intentToSubmitFinalDeclaration: Boolean = response.metadata.intentToSubmitFinalDeclaration
+    val intentToSubmitFinalDeclaration: Boolean = response.metadata.intentToSubmitFinalDeclaration
 
-      val finalDeclaration: Boolean = response.metadata.finalDeclaration
+    val finalDeclaration: Boolean = response.metadata.finalDeclaration
 
-      val responseHasErrors: Boolean = {
-        for {
-          messages <- response.messages
-          errors   <- messages.errors
-        } yield {
-          errors.nonEmpty
-        }
-      }.getOrElse(false)
-
-      if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId),
-          submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
-        )
-      } else {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId)
-        )
+    val responseHasErrors: Boolean = {
+      for {
+        messages <- response.messages
+        errors   <- messages.errors
+      } yield {
+        errors.nonEmpty
       }
-    }
+    }.getOrElse(false)
 
+    import data._
+
+    if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
+      Seq(
+        trigger(appConfig, nino, taxYear),
+        retrieve(appConfig, nino, taxYear, calculationId),
+        submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
+      )
+    } else {
+      Seq(
+        trigger(appConfig, nino, taxYear),
+        retrieve(appConfig, nino, taxYear, calculationId)
+      )
+    }
   }
 
 }
 
-sealed trait RetrieveCalculationHateoasData {
-  val nino: String
-  val taxYear: TaxYear
-  val calculationId: String
-  val response: RetrieveCalculationResponse
-}
-
-case class Def1_RetrieveCalculationHateoasData(
+case class RetrieveCalculationHateoasData(
     nino: String,
     taxYear: TaxYear,
     calculationId: String,
-    response: Def1_RetrieveCalculationResponse
-) extends RetrieveCalculationHateoasData
-    with HateoasData
+    response: RetrieveCalculationResponse
+) extends HateoasData

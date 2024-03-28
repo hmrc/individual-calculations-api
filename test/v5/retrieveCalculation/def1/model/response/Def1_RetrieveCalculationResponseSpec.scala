@@ -30,20 +30,20 @@ import v5.retrieveCalculation.def1.model.response.inputs.{Def1_IncomeSources, De
 import v5.retrieveCalculation.def1.model.response.messages.{Def1_Message, Def1_Messages}
 import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse._
-import v5.retrieveCalculation.models.response.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
+import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_CalculationFixture with JsonErrorValidators {
 
   "RetrieveCalculationResponse" must {
     "allow conversion from downstream JSON to MTD JSON" when {
       "JSON contains every field" in {
-        val model = calculationDownstreamJson.as[RetrieveCalculationResponse]
+        val model = calculationDownstreamJson.as[Def1_RetrieveCalculationResponse]
         Json.toJson(model) shouldBe calculationMtdJson
       }
     }
 
     "have the correct fields optional" when {
-      testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
+      testJsonAllPropertiesOptionalExcept[Def1_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
     "return the correct Def1_TaxDeductedAtSource" in {
@@ -65,7 +65,7 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
     def retrieveCalculationResponse(intentToSubmitFinalDeclaration: Boolean,
                                     finalDeclaration: Boolean,
                                     messages: Option[Def1_Messages]): RetrieveCalculationResponse =
-      RetrieveCalculationResponse(
+      Def1_RetrieveCalculationResponse(
         metadata = Def1_Metadata(
           "",
           taxYear = TaxYear.fromDownstream("2021"),

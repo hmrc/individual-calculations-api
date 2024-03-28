@@ -22,7 +22,7 @@ import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
-import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v5.retrieveCalculation.models.response.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext

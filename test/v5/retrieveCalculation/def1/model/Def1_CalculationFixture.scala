@@ -29,6 +29,7 @@ import v5.retrieveCalculation.def1.model.response.common.Def1_CalculationType.`i
 import v5.retrieveCalculation.def1.model.response.common.Def1_IncomeSourceType
 import v5.retrieveCalculation.def1.model.response.inputs._
 import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
+import v5.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 trait Def1_CalculationFixture {
 
