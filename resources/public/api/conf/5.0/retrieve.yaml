@@ -1,7 +1,7 @@
 get:
   tags:
     - Tax Calculations
-  summary: Retrieve a Self Assessment Tax Def1_Calculation
+  summary: Retrieve a Self Assessment Tax Calculation
   description: |
     This endpoint allows the developer to retrieve all the tax calculation data 
     for a given National Insurance number and Calculation ID.
