@@ -26,10 +26,8 @@ import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.libs.json._
 import play.api.mvc.Result
-import v4.controllers.validators.MockTriggerCalculationValidatorFactory
-import v4.mocks.services.MockTriggerCalculationService
-import v4.models.request.TriggerCalculationRequestData
-import v4.models.response.triggerCalculation.{TriggerCalculationHateoasData, TriggerCalculationResponse}
+import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationHateoasData, TriggerCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,15 +43,17 @@ class TriggerCalculationControllerSpec
     with MockAuditService
     with MockIdGenerator {
 
-  private val taxYear                                                = TaxYear.fromMtd("2017-18")
-  private val rawTaxYear                                             = taxYear.asMtd
-  val requestDataWithFinalDeclaration: TriggerCalculationRequestData = TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
+  private val taxYear    = TaxYear.fromMtd("2017-18")
+  private val rawTaxYear = taxYear.asMtd
+
+  val requestDataWithFinalDeclaration: TriggerCalculationRequestData =
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
 
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData =
-    TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
 
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val response: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
+  private val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
 
   private val responseJsonNoHateoas: JsValue = Json
     .parse(

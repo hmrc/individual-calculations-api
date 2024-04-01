@@ -24,21 +24,19 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import utils.{IdGenerator, Logging}
-import v4.controllers.validators.TriggerCalculationValidatorFactory
-import v4.models.response.triggerCalculation.TriggerCalculationHateoasData
-import v4.services.TriggerCalculationService
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationHateoasData}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class TriggerCalculationController @Inject()(val authService: EnrolmentsAuthService,
-                                             val lookupService: MtdIdLookupService,
-                                             validatorFactory: TriggerCalculationValidatorFactory,
-                                             service: TriggerCalculationService,
-                                             val idGenerator: IdGenerator,
-                                             hateoasFactory: HateoasFactory,
-                                             auditService: AuditService,
-                                             cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthService,
+                                              val lookupService: MtdIdLookupService,
+                                              validatorFactory: TriggerCalculationValidatorFactory,
+                                              service: TriggerCalculationService,
+                                              val idGenerator: IdGenerator,
+                                              hateoasFactory: HateoasFactory,
+                                              auditService: AuditService,
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -61,12 +59,15 @@ class TriggerCalculationController @Inject()(val authService: EnrolmentsAuthServ
           .withService(service.triggerCalculation)
           .withHateoasResultFrom(hateoasFactory)(
             { (parsedRequest, response) =>
-              TriggerCalculationHateoasData(
-                nino = nino,
-                taxYear = parsedRequest.taxYear,
-                finalDeclaration = parsedRequest.finalDeclaration,
-                calculationId = response.calculationId
-              )
+              response match {
+                case def1: Def1_TriggerCalculationResponse =>
+                  TriggerCalculationHateoasData(
+                    nino = nino,
+                    taxYear = parsedRequest.taxYear,
+                    finalDeclaration = parsedRequest.finalDeclaration,
+                    calculationId = def1.calculationId
+                  )
+              }
             },
             successStatus = ACCEPTED
           )

@@ -18,4 +18,10 @@ package v5.triggerCalculation.model.request
 
 import api.models.domain.{Nino, TaxYear}
 
-case class TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)
+sealed trait TriggerCalculationRequestData {
+  val nino: Nino
+  val taxYear: TaxYear
+  val finalDeclaration: Boolean
+}
+
+case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean) extends TriggerCalculationRequestData

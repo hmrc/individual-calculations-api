@@ -17,37 +17,17 @@
 package v5.triggerCalculation
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveBoolean, ResolveNino, ResolveTaxYearMinimum}
-import api.models.domain.TaxYear
-import api.models.errors.{FinalDeclarationFormatError, MtdError}
-import cats.data.Validated
-import cats.data.Validated.Valid
-import cats.implicits._
-import v4.models.request.TriggerCalculationRequestData
+import v5.triggerCalculation.def1.Def1_TriggerCalculationValidator
+import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 
 import javax.inject.Singleton
 
 @Singleton
 class TriggerCalculationValidatorFactory {
 
-  private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
+  def validator(nino: String, taxYear: String, finalDeclaration: Option[String]): Validator[TriggerCalculationRequestData] = {
+    new Def1_TriggerCalculationValidator(nino, taxYear, finalDeclaration)
 
-  private val resolveFinalDeclaration = ResolveBoolean(FinalDeclarationFormatError)
-
-  def validator(nino: String, taxYear: String, finalDeclaration: Option[String]): Validator[TriggerCalculationRequestData] =
-    new Validator[TriggerCalculationRequestData] {
-
-      def validate: Validated[Seq[MtdError], TriggerCalculationRequestData] =
-        (
-          ResolveNino(nino),
-          resolveTaxYear(taxYear),
-          finalDeclaration match {
-            case Some(finalDeclaration) => resolveFinalDeclaration(finalDeclaration)
-            case None                   => Valid(false)
-          }
-        ).mapN(TriggerCalculationRequestData)
-
-    }
+  }
 
 }

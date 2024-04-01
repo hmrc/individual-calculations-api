@@ -20,8 +20,8 @@ import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.Json
-import v4.models.request.TriggerCalculationRequestData
-import v4.models.response.triggerCalculation.TriggerCalculationResponse
+import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import scala.concurrent.Future
 
@@ -29,7 +29,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   val ninoString: String                   = "AA123456A"
   val nino: Nino                           = Nino(ninoString)
-  val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
+  val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
   trait Test { _: ConnectorTest =>
 
@@ -51,7 +51,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
     def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
-        val request: TriggerCalculationRequestData = TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
+        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -63,7 +63,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new TysIfsTest with Test {
-      val request: TriggerCalculationRequestData = TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
+      val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
       val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
       willPost(

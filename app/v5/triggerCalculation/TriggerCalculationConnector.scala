@@ -23,36 +23,41 @@ import config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v4.models.request.TriggerCalculationRequestData
-import v4.models.response.triggerCalculation.TriggerCalculationResponse
+import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject()(val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
-                                                                 hc: HeaderCarrier,
-                                                                 ec: ExecutionContext,
-                                                                 correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
-    import request._
+    request match {
+      case tysDef1: Def1_TriggerCalculationRequestData if tysDef1.taxYear.useTaxYearSpecificApi =>
+        import tysDef1._
+        implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
 
-    if (taxYear.useTaxYearSpecificApi) {
-      implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
-      post(
-        body = JsObject.empty,
-        uri =
-          TaxYearSpecificIfsUri[TriggerCalculationResponse](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
-      )
-    } else {
-      post(
-        body = JsObject.empty,
-        uri =
-          DesUri[TriggerCalculationResponse](s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration")
-      )
+        val downstreamUri = TaxYearSpecificIfsUri[Def1_TriggerCalculationResponse](
+          s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration"
+        )
+        val result = post(JsObject.empty, downstreamUri)
+        result
+
+      case nonTysDef1: Def1_TriggerCalculationRequestData =>
+        import nonTysDef1._
+
+        val downstreamUri = DesUri[Def1_TriggerCalculationResponse](
+          s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration"
+        )
+        val result = post(JsObject.empty, downstreamUri)
+        result
     }
+
   }
 
 }

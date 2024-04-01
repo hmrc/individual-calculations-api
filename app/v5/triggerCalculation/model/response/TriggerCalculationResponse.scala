@@ -19,16 +19,35 @@ package v5.triggerCalculation.model.response
 import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
 import config.AppConfig
+import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json._
+import v5.triggerCalculation.model.response.Def1_TriggerCalculationResponse.Def1_TriggerCalculationLinksFactory
 
-case class TriggerCalculationResponse(calculationId: String)
+sealed trait TriggerCalculationResponse
 
 object TriggerCalculationResponse extends HateoasLinks {
 
-  implicit val downstreamReads: Reads[TriggerCalculationResponse] = (JsPath \ "id").read[String].map(TriggerCalculationResponse.apply)
-  implicit val vendorWrites: OWrites[TriggerCalculationResponse]  = Json.writes[TriggerCalculationResponse]
+  implicit val vendorWrites: OWrites[TriggerCalculationResponse] = { case def1: Def1_TriggerCalculationResponse =>
+    Json.toJsObject(def1)
+  }
 
-  implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
+  implicit object TriggerCalculationLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
+
+    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
+      Def1_TriggerCalculationLinksFactory.links(appConfig, data)
+
+  }
+
+}
+
+case class Def1_TriggerCalculationResponse(calculationId: String) extends TriggerCalculationResponse
+
+object Def1_TriggerCalculationResponse extends HateoasLinks {
+
+  implicit val downstreamReads: Reads[Def1_TriggerCalculationResponse] = (JsPath \ "id").read[String].map(Def1_TriggerCalculationResponse.apply)
+  implicit val vendorWrites: OWrites[Def1_TriggerCalculationResponse]  = Json.writes[Def1_TriggerCalculationResponse]
+
+  implicit object Def1_TriggerCalculationLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
       Seq(

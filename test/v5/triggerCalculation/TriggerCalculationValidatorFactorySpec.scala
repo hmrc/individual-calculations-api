@@ -16,100 +16,30 @@
 
 package v5.triggerCalculation
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
+import api.controllers.validators.Validator
 import support.UnitSpec
-import v4.models.request.TriggerCalculationRequestData
+import v5.triggerCalculation.def1.Def1_TriggerCalculationValidator
+import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 
 class TriggerCalculationValidatorFactorySpec extends UnitSpec {
-
-  private implicit val correlationId: String = "1234"
 
   private val validNino             = "AA123456A"
   private val validTaxYear          = "2017-18"
   private val validFinalDeclaration = "true"
 
-  private val parsedNino             = Nino(validNino)
-  private val parsedTaxYear          = TaxYear.fromMtd(validTaxYear)
-  private val parsedFinalDeclaration = true
-
   val validatorFactory = new TriggerCalculationValidatorFactory
 
-  private def validator(nino: String, taxYear: String, finalDeclaration: Option[String]) =
-    validatorFactory.validator(nino, taxYear, finalDeclaration)
+  "validator()" when {
 
-  "validator" should {
-    "return the parsed domain object" when {
-      "a valid request is supplied with some finalDeclaration value" in {
-        val result = validator(validNino, validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Right(TriggerCalculationRequestData(parsedNino, parsedTaxYear, parsedFinalDeclaration))
-      }
+    "given any request regardless of tax year" should {
+      "return the Validator for schema definition 1" in {
+        val result: Validator[TriggerCalculationRequestData] =
+          validatorFactory.validator(validNino, validTaxYear, Some(validFinalDeclaration))
 
-      "a valid request is supplied without a finalDeclaration value" in {
-        val result = validator(validNino, validTaxYear, None).validateAndWrapResult()
-        result shouldBe Right(TriggerCalculationRequestData(parsedNino, parsedTaxYear, false))
-      }
-
-    }
-
-    "return NinoFormatError error" when {
-      "an invalid nino is supplied" in {
-        val result = validator("A12344A", validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, NinoFormatError)
-        )
+        result shouldBe a[Def1_TriggerCalculationValidator]
       }
     }
 
-    "return TaxYearFormatError error" when {
-      "an invalid tax year is supplied" in {
-        val result = validator(validNino, "20178", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, TaxYearFormatError)
-        )
-      }
-    }
-
-    "return RuleTaxYearRangeInvalid error" when {
-      "a tax year with a range higher than 1 is supplied" in {
-        val result = validator(validNino, "2019-21", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
-        )
-      }
-    }
-
-    "return RuleTaxYearNotSupportedError error" when {
-      "an out of range tax year is supplied" in {
-        val result = validator(validNino, "2016-17", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
-        )
-      }
-    }
-
-    "return FinalDeclarationFormatError error" when {
-      "an invalid final declaration is supplied" in {
-        val result = validator(validNino, validTaxYear, Some("error")).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, FinalDeclarationFormatError)
-        )
-      }
-    }
-
-    "return multiple errors" when {
-      "multiple invalid parameters are provided" in {
-        val result = validator("not-a-nino", validTaxYear, Some("error")).validateAndWrapResult()
-
-        result shouldBe Left(
-          ErrorWrapper(
-            correlationId,
-            BadRequestError,
-            Some(List(FinalDeclarationFormatError, NinoFormatError))
-          )
-        )
-      }
-    }
   }
 
 }

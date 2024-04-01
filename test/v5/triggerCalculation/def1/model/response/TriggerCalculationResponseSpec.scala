@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v5.triggerCalculation.def1.model
+package v5.triggerCalculation.def1.model.response
 
 import api.hateoas
 import api.hateoas.Method.GET
@@ -23,11 +23,11 @@ import api.models.domain.TaxYear
 import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
-import v5.triggerCalculation.model.response.{TriggerCalculationHateoasData, TriggerCalculationResponse}
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationHateoasData, TriggerCalculationResponse}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
   private val calculationId                                       = "testId"
-  val triggerCalculationResponseModel: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
+  val triggerCalculationResponseModel: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
 
   val downstreamResponseJson: JsValue = Json.parse(
     s"""
@@ -48,7 +48,7 @@ class TriggerCalculationResponseSpec extends UnitSpec {
   "TriggerCalculationResponse" when {
     "read from valid JSON from the downstream response" should {
       "produce the expected TriggerCalculationResponse object" in {
-        downstreamResponseJson.as[TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
+        downstreamResponseJson.as[Def1_TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
       }
     }
 

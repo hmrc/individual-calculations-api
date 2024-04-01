@@ -18,7 +18,7 @@ package v5.triggerCalculation
 
 import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
-import v4.models.request.TriggerCalculationRequestData
+import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 
 trait MockTriggerCalculationValidatorFactory extends MockValidatorFactory[TriggerCalculationRequestData] {
 
