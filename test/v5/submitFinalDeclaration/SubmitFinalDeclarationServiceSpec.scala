@@ -17,11 +17,10 @@
 package v5.submitFinalDeclaration
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{CalculationIdFormatError, DownstreamErrorCode, DownstreamErrors, ErrorWrapper, InternalError, MtdError, NinoFormatError, NotFoundError, RuleFinalDeclarationInProgressError, RuleFinalDeclarationReceivedError, RuleFinalDeclarationTaxYearError, RuleIncomeSourcesChangedError, RuleIncomeSourcesInvalidError, RuleIncorrectGovTestScenarioError, RuleNoIncomeSubmissionsExistError, RuleRecentSubmissionsExistError, RuleResidencyChangedError, RuleSubmissionFailedError, RuleTaxYearNotSupportedError, TaxYearFormatError}
+import api.models.errors._
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v4.mocks.connectors.MockSubmitFinalDeclarationConnector
-import v4.models.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import scala.concurrent.Future
 
@@ -40,7 +39,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
     val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
     val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
 
-    val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
+    val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
       nino,
       taxYear,
       calculationId

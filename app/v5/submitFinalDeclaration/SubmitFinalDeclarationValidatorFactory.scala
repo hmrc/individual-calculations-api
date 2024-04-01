@@ -17,27 +17,17 @@
 package v5.submitFinalDeclaration
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
-import api.models.errors.MtdError
-import cats.data.Validated
-import cats.implicits.catsSyntaxTuple3Semigroupal
-import v4.models.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
+import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.Singleton
 
 @Singleton
 class SubmitFinalDeclarationValidatorFactory {
 
-  def validator(nino: String, taxYear: String, calculationId: String): Validator[SubmitFinalDeclarationRequestData] =
-    new Validator[SubmitFinalDeclarationRequestData] {
+  def validator(nino: String, taxYear: String, calculationId: String): Validator[SubmitFinalDeclarationRequestData] = {
+    new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId)
 
-      def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
-        (
-          ResolveNino(nino),
-          ResolveTaxYear(taxYear),
-          ResolveCalculationId(calculationId)
-        ).mapN(SubmitFinalDeclarationRequestData)
-
-    }
+  }
 
 }

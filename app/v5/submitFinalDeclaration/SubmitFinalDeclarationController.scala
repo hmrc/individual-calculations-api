@@ -24,24 +24,24 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
-import v4.controllers.validators.SubmitFinalDeclarationValidatorFactory
-import v4.models.request.{RetrieveCalculationRequestData, SubmitFinalDeclarationRequestData}
-import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
-import v4.services._
+import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
+import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v5.retrieveCalculation.{NrsProxyService, RetrieveCalculationService}
+import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuthService,
-                                                 val lookupService: MtdIdLookupService,
-                                                 validatorFactory: SubmitFinalDeclarationValidatorFactory,
-                                                 service: SubmitFinalDeclarationService,
-                                                 retrieveService: RetrieveCalculationService,
-                                                 cc: ControllerComponents,
-                                                 nrsProxyService: NrsProxyService,
-                                                 auditService: AuditService,
-                                                 idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAuthService,
+                                                  val lookupService: MtdIdLookupService,
+                                                  validatorFactory: SubmitFinalDeclarationValidatorFactory,
+                                                  service: SubmitFinalDeclarationService,
+                                                  retrieveService: RetrieveCalculationService,
+                                                  cc: ControllerComponents,
+                                                  nrsProxyService: NrsProxyService,
+                                                  auditService: AuditService,
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 
@@ -95,7 +95,7 @@ class SubmitFinalDeclarationController @Inject()(val authService: EnrolmentsAuth
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
     import parsedRequest._
 
-    val retrieveRequest = RetrieveCalculationRequestData(nino, taxYear, calculationId)
+    val retrieveRequest = Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))

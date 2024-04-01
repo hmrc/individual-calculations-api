@@ -22,27 +22,29 @@ import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.models.domain.EmptyJsonBody
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v4.models.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationConnector @Inject()(val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def submitFinalDeclaration(request: SubmitFinalDeclarationRequestData)(implicit
-                                                                         hc: HeaderCarrier,
-                                                                         ec: ExecutionContext,
-                                                                         correlationId: String): Future[DownstreamOutcome[Unit]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import request._
+    request match {
+      case def1: Def1_SubmitFinalDeclarationRequestData =>
+        import def1._
 
-    val downstreamUri = IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+        post(
+          EmptyJsonBody,
+          IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+        )
+    }
 
-    post(
-      body = EmptyJsonBody,
-      uri = downstreamUri
-    )
   }
 
 }

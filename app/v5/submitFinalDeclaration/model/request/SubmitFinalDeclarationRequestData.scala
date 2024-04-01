@@ -19,6 +19,14 @@ package v5.submitFinalDeclaration.model.request
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
 
-case class SubmitFinalDeclarationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) {
+sealed trait SubmitFinalDeclarationRequestData {
+  val nino: Nino
+  val taxYear: TaxYear
+  val calculationId: CalculationId
+  def toNrsJson: JsValue
+}
+
+case class Def1_SubmitFinalDeclarationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId)
+    extends SubmitFinalDeclarationRequestData {
   def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 }

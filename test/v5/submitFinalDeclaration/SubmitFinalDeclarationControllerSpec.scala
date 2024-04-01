@@ -27,12 +27,10 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v4.controllers.validators.MockSubmitFinalDeclarationValidatorFactory
-import v4.mocks.connectors.MockNrsProxyConnector
-import v4.mocks.services._
-import v4.models.request._
-import v4.models.response.retrieveCalculation.CalculationFixture
-import v4.services.StubNrsProxyService
+import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
+import v5.retrieveCalculation.{MockNrsProxyConnector, MockRetrieveCalculationService, StubNrsProxyService}
+import v5.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -52,7 +50,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockNrsProxyConnector
     with StubNrsProxyService
     with MockIdGenerator
-    with CalculationFixture {
+    with Def1_CalculationFixture {
 
   private val taxYear       = "2020-21"
   private val calculationId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
@@ -61,8 +59,8 @@ class SubmitFinalDeclarationControllerSpec
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
   override protected def beforeEach(): Unit = resetNrsProxyService()
-  private val requestData                   = SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
-  private val retrieveDetailsRequestData    = RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val requestData                = Def1_SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
+  private val retrieveDetailsRequestData = Def1_RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 

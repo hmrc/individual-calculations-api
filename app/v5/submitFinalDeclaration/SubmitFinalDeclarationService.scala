@@ -20,14 +20,13 @@ import api.controllers.RequestContext
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
-import v4.connectors.SubmitFinalDeclarationConnector
-import v4.models.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject()(connector: SubmitFinalDeclarationConnector) extends BaseService {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
 
   def submitFinalDeclaration(
       request: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
