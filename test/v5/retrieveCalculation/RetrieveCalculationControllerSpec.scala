@@ -19,12 +19,13 @@ package v5.retrieveCalculation
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.Configuration
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
@@ -77,7 +78,12 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
           .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithR8BJson))
+
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
+          maybeAuditResponseBody = Some(mtdResponseWithR8BJson)
+        )
       }
 
       "happy path with Additional Fields feature switch enabled" in new NonTysTest {
@@ -102,7 +108,12 @@ class RetrieveCalculationControllerSpec
             RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
           .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithAdditionalFieldsJson))
+
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeExpectedResponseBody = Some(mtdResponseWithAdditionalFieldsJson),
+          maybeAuditResponseBody = Some(mtdResponseWithAdditionalFieldsJson)
+        )
       }
 
       "happy path with cl290 feature switch enabled" in new NonTysTest {
@@ -125,7 +136,12 @@ class RetrieveCalculationControllerSpec
           .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
           .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithCl290EnabledJson))
+
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeExpectedResponseBody = Some(mtdResponseWithCl290EnabledJson),
+          maybeAuditResponseBody = Some(mtdResponseWithCl290EnabledJson)
+        )
       }
 
       "happy path with BasicRateDivergence feature switch enabled and TYS (2025)" in new TysTest {
@@ -151,7 +167,12 @@ class RetrieveCalculationControllerSpec
           )
           .returns(HateoasWrapper(responseWithBasicRateDivergenceEnabled, hateoaslinks))
 
-        runOkTest(OK, Some(mtdResponseWithBasicRateDivergenceEnabledJson))
+
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeExpectedResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
+          maybeAuditResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson)
+        )
       }
 
       "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
@@ -176,13 +197,19 @@ class RetrieveCalculationControllerSpec
           .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
           .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
-        runOkTest(OK, Some(updatedMtdResponse))
+
+        runOkTestWithAudit(
+          expectedStatus = OK,
+          maybeExpectedResponseBody = Some(updatedMtdResponse),
+          maybeAuditResponseBody = Some(updatedMtdResponse)
+        )
       }
 
     }
 
     "return the error as per spec" when {
       "the parser validation fails" in new NonTysTest {
+
         willUseValidator(returning(NinoFormatError))
 
         MockAppConfig.featureSwitches
@@ -193,6 +220,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "the service returns an error" in new NonTysTest {
+
         willUseValidator(returningSuccess(requestData))
 
         MockAppConfig.featureSwitches
@@ -208,23 +236,41 @@ class RetrieveCalculationControllerSpec
     }
   }
 
-  trait Test extends ControllerTest {
+  trait Test extends ControllerTest with AuditEventChecking {
     def taxYear: String
 
     def requestData: RetrieveCalculationRequestData =
       Def1_RetrieveCalculationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
-    private lazy val controller = new RetrieveCalculationController(
+    lazy val controller = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveCalculationValidatorFactory,
       service = mockRetrieveCalculationService,
       cc = cc,
       hateoasFactory = mockHateoasFactory,
-      idGenerator = mockIdGenerator
+      idGenerator = mockIdGenerator,
+      auditService = mockAuditService
     )
 
-    protected def callController(): Future[Result] = controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+    protected def callController(): Future[Result] =
+      controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+
+    protected def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
+      AuditEvent(
+        auditType = "RetrieveATaxCalculation",
+        transactionName = "retrieve-a-tax-calculation",
+        detail = GenericAuditDetail(
+          versionNumber = apiVersion.name,
+          userType = "Individual",
+          agentReferenceNumber = None,
+          params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+          requestBody = requestBody,
+          `X-CorrelationId` = correlationId,
+          auditResponse = auditResponse
+        )
+      )
+
   }
 
   trait NonTysTest extends Test {
