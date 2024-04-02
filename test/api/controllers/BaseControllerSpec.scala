@@ -35,12 +35,12 @@ class BaseControllerSpec extends UnitSpec {
 
     "add headers to response" in new TestController {
       val correlationId   = "testCorrelationId"
-      val responseHeaders = Seq("X-Other-Header" -> "testHeaderValue")
+      val responseHeaders = Seq("X-Def1_Other-Header" -> "testHeaderValue")
 
       val result = Response(Results.Ok).withApiHeaders(correlationId, responseHeaders: _*)
 
       result.header.headers.get("X-CorrelationId") shouldBe Some("testCorrelationId")
-      result.header.headers.get("X-Other-Header") shouldBe Some("testHeaderValue")
+      result.header.headers.get("X-Def1_Other-Header") shouldBe Some("testHeaderValue")
       result.header.headers.get("X-Content-Type-Options") shouldBe Some("nosniff")
     }
 
