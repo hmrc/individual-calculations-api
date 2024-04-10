@@ -75,9 +75,12 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with ListCalcu
   }
 
   private trait TysIfsTest extends Test {
-    def taxYear: Option[String] = Some("2023-24")
 
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/23-24/$nino"
+    val mtdTaxYear:String =  TaxYear.now().asMtd
+    val downstreamTaxYear:String = TaxYear.now().asTysDownstream
+    def taxYear: Option[String] = Some(mtdTaxYear)
+
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
 
   }
 

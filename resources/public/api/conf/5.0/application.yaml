@@ -19,8 +19,11 @@ info:
     [Check the data you need to send](/guides/fraud-prevention/). You can also use the [Test API](/api-documentation/docs/api/service/txm-fph-validator-api/1.0) 
     during initial development and as part of your quality assurance checks.
     
+    # Mapping APIs to Self Assessment tax return forms
+    Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping](https://github.com/hmrc/income-tax-mtd-changelog?tab=readme-ov-file#mapping-apis-to-self-assessment-tax-return-forms) on GitHub.
+
     # Changelog
-    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) GitHub wiki.
+    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) on GitHub.
     
     # Support
     
