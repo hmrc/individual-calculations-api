@@ -24,7 +24,8 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import utils.{IdGenerator, Logging}
-import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationHateoasData}
+import v5.triggerCalculation.model.response.TriggerCalculationHateoasData
+import v5.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -51,24 +52,20 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino, taxYear, finalDeclaration)
+      val validator = validatorFactory.validator(nino, taxYear, finalDeclaration, TriggerCalculationSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler
           .withValidator(validator)
           .withService(service.triggerCalculation)
           .withHateoasResultFrom(hateoasFactory)(
-            { (parsedRequest, response) =>
-              response match {
-                case def1: Def1_TriggerCalculationResponse =>
-                  TriggerCalculationHateoasData(
-                    nino = nino,
-                    taxYear = parsedRequest.taxYear,
-                    finalDeclaration = parsedRequest.finalDeclaration,
-                    calculationId = def1.calculationId
-                  )
-              }
-            },
+            (parsedRequest, response) =>
+              TriggerCalculationHateoasData(
+                nino = nino,
+                taxYear = parsedRequest.taxYear,
+                finalDeclaration = parsedRequest.finalDeclaration,
+                calculationId = response.calculationId
+              ),
             successStatus = ACCEPTED
           )
           .withAuditing(AuditHandler.custom(

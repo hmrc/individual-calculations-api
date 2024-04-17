@@ -25,13 +25,19 @@ import cats.data.Validated.Valid
 import cats.implicits._
 import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 
-class Def1_TriggerCalculationValidator(nino: String, taxYear: String, finalDeclaration: Option[String])
-    extends Validator[TriggerCalculationRequestData] {
+object Def1_TriggerCalculationValidator {
 
   private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
   private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
 
   private val resolveFinalDeclaration = ResolveBoolean(FinalDeclarationFormatError)
+
+}
+
+class Def1_TriggerCalculationValidator(nino: String, taxYear: String, finalDeclaration: Option[String])
+    extends Validator[TriggerCalculationRequestData] {
+
+  import Def1_TriggerCalculationValidator._
 
   def validate: Validated[Seq[MtdError], TriggerCalculationRequestData] =
     (

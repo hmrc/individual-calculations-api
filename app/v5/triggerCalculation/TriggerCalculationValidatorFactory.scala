@@ -19,15 +19,19 @@ package v5.triggerCalculation
 import api.controllers.validators.Validator
 import v5.triggerCalculation.def1.Def1_TriggerCalculationValidator
 import v5.triggerCalculation.model.request.TriggerCalculationRequestData
+import v5.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Singleton
 
 @Singleton
 class TriggerCalculationValidatorFactory {
 
-  def validator(nino: String, taxYear: String, finalDeclaration: Option[String]): Validator[TriggerCalculationRequestData] = {
-    new Def1_TriggerCalculationValidator(nino, taxYear, finalDeclaration)
-
-  }
+  def validator(nino: String,
+                taxYear: String,
+                finalDeclaration: Option[String],
+                schema: TriggerCalculationSchema): Validator[TriggerCalculationRequestData] =
+    schema match {
+      case TriggerCalculationSchema.Def1 => new Def1_TriggerCalculationValidator(nino, taxYear, finalDeclaration)
+    }
 
 }

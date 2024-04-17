@@ -19,12 +19,13 @@ package v5.listCalculations
 import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.listCalculations.model.request.ListCalculationsRequestData
+import v5.listCalculations.schema.ListCalculationsSchema
 
 trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {
 
   val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
 
   def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
-    (mockListCalculationsFactory.validator(_: String, _: Option[String])).expects(*, *)
+    (mockListCalculationsFactory.validator(_: String, _: Option[String], _: ListCalculationsSchema)).expects(*, *, *)
 
 }

@@ -25,12 +25,16 @@ import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
-class Def1_ListCalculationsValidator(nino: String, taxYear: Option[String]) extends Validator[ListCalculationsRequestData] {
-
+object Def1_ListCalculationsValidator {
   private val listCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
 
   private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
     satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError)
+
+}
+
+class Def1_ListCalculationsValidator(nino: String, taxYear: Option[String]) extends Validator[ListCalculationsRequestData] {
+  import Def1_ListCalculationsValidator._
 
   def validate: Validated[Seq[MtdError], ListCalculationsRequestData] =
     (

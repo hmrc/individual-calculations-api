@@ -23,7 +23,7 @@ import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v5.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsHateoasData}
+import v5.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsHateoasData, ListCalculationsResponse}
 
 class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculationsFixture {
 
@@ -80,8 +80,8 @@ class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculati
     }
 
     "omit retrieve item link when calculation does not contain tax year" in new Test {
-      val calculationWithoutTaxYear = calculationModel.copy(taxYear = None)
-      val responseWithoutTaxYear    = Def1_ListCalculationsResponse(Seq(calculationWithoutTaxYear))
+      val calculationWithoutTaxYear                                     = calculationModel.copy(taxYear = None)
+      val responseWithoutTaxYear: ListCalculationsResponse[Calculation] = Def1_ListCalculationsResponse(Seq(calculationWithoutTaxYear))
 
       hateoasFactory.wrapList(responseWithoutTaxYear, ListCalculationsHateoasData(nino, taxYear)) shouldBe
         HateoasWrapper(

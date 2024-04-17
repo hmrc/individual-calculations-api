@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v5.ListCalculations.def1
+package v5.listCalculations.def1
 
 import api.models.domain.TaxYear
 import api.models.errors._

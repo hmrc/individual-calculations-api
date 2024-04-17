@@ -28,6 +28,7 @@ import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.retrieveCalculation.{NrsProxyService, RetrieveCalculationService}
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -55,7 +56,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino = nino, taxYear = taxYear, calculationId = calculationId)
+      val validator =
+        validatorFactory.validator(nino = nino, taxYear = taxYear, calculationId = calculationId, SubmitFinalDeclarationSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler

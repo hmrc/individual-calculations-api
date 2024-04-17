@@ -17,39 +17,37 @@
 package v5.listCalculations
 
 import api.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
-import api.connectors.httpparsers.StandardDownstreamHttpParser.reads
-import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import api.connectors.httpparsers.StandardDownstreamHttpParser._
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.ListCalculations
+import v5.listCalculations.def1.model.response.Calculation
+import v5.listCalculations.model.request.ListCalculationsRequestData
+import v5.listCalculations.model.response.ListCalculationsResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListCalculationsConnector @Inject()(val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def list(request: ListCalculationsRequestData)(implicit
-                                                 hc: HeaderCarrier,
-                                                 ec: ExecutionContext,
-                                                 correlationId: String
-  ): Future[DownstreamOutcome[ListCalculations]] = {
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String
+  ): Future[DownstreamOutcome[ListCalculationsResponse[Calculation]]] = {
 
-    request match {
-      case tysDef1: Def1_ListCalculationsRequestData if tysDef1.taxYear.useTaxYearSpecificApi =>
-        import tysDef1._
+    import request._
+    import schema._
 
-        val downstreamUri = TaxYearSpecificIfsUri[ListCalculations](s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
-        val result = get(downstreamUri)
-        result
+    val downstreamUri: DownstreamUri[DownstreamResp] =
+      if (taxYear.useTaxYearSpecificApi) {
+        TaxYearSpecificIfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
+      } else {
+        DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
+      }
 
-      case nonTysDef1: Def1_ListCalculationsRequestData =>
-        import nonTysDef1._
-
-        val downstreamUri = DesUri[ListCalculations](s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
-        val result = get(downstreamUri)
-        result
-    }
+    get(downstreamUri)
   }
+
 }

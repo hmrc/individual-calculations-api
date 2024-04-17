@@ -19,8 +19,8 @@ package v5.listCalculations.def1.model
 import api.models.domain.TaxYear
 import play.api.libs.json.{JsValue, Json}
 import v4.models.response.common.CalculationType
-import v5.listCalculations.def1.model.response.Def1_Calculation
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse
+import v5.listCalculations.def1.model.response.{Calculation, Def1_Calculation}
+import v5.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
 
 trait Def1_ListCalculationsFixture {
 
@@ -72,7 +72,7 @@ trait Def1_ListCalculationsFixture {
     finalDeclarationTimestamp = Some("2021-07-13T07:51:43.112Z")
   )
 
-  val listCalculationsResponseModel: Def1_ListCalculationsResponse[Def1_Calculation] = Def1_ListCalculationsResponse(Seq(calculationModel))
+  val listCalculationsResponseModel: ListCalculationsResponse[Calculation] = Def1_ListCalculationsResponse(Seq(calculationModel))
 
   def listCalculationsMtdJsonWithHateoas(nino: String, taxYear: String): JsValue = Json.parse(s"""
                                                                                                  |{

@@ -21,8 +21,9 @@ import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.ListCalculationsRequestData
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.ListCalculations
+import v5.listCalculations.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,7 +32,7 @@ trait MockListCalculationsService extends MockFactory {
 
   object MockListCalculationsService {
 
-    def list[I](requestData: ListCalculationsRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculations]]]] = {
+    def list[I](requestData: ListCalculationsRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[Calculation]]]]] = {
       (mockListCalculationsService
         .list(_: ListCalculationsRequestData)(_: RequestContext, _: ExecutionContext))
         .expects(requestData, *, *)

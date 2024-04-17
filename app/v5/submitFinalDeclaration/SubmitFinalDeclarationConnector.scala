@@ -22,7 +22,7 @@ import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.models.domain.EmptyJsonBody
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
+import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,16 +35,12 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClient, val appCo
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    request match {
-      case def1: Def1_SubmitFinalDeclarationRequestData =>
-        import def1._
+    import request._
 
-        post(
-          EmptyJsonBody,
-          IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
-        )
-    }
-
+    post(
+      EmptyJsonBody,
+      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+    )
   }
 
 }

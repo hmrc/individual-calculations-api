@@ -19,14 +19,16 @@ package v5.retrieveCalculation
 import api.controllers.validators.Validator
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Singleton
 
 @Singleton
 class RetrieveCalculationValidatorFactory {
 
-  def validator(nino: String, taxYear: String, calculationId: String): Validator[RetrieveCalculationRequestData] = {
-    new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
-  }
+  def validator(nino: String, taxYear: String, calculationId: String, schema: RetrieveCalculationSchema): Validator[RetrieveCalculationRequestData] =
+    schema match {
+      case RetrieveCalculationSchema.Def1 => new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
+    }
 
 }

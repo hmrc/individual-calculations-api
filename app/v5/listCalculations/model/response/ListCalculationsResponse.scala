@@ -21,10 +21,11 @@ import api.models.domain.TaxYear
 import cats.Functor
 import config.AppConfig
 import play.api.libs.json._
-import v5.listCalculations.def1.model.response.Def1_Calculation
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.Def1_ListLinksFactory
+import v5.listCalculations.def1.model.response.Calculation
 
-sealed trait ListCalculationsResponse[I]
+sealed trait ListCalculationsResponse[+I] {
+  def mapItems[B](f: I => B): ListCalculationsResponse[B]
+}
 
 object ListCalculationsResponse extends HateoasLinks {
 
@@ -32,30 +33,9 @@ object ListCalculationsResponse extends HateoasLinks {
     Json.toJsObject(def1)
   }
 
-  implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Def1_Calculation, ListCalculationsHateoasData] {
+  implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
 
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Def1_Calculation): Seq[Link] =
-      Def1_ListLinksFactory.itemLinks(appConfig, data, item)
-
-    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] =
-      Def1_ListLinksFactory.links(appConfig, data)
-
-  }
-
-}
-
-case class Def1_ListCalculationsResponse[I](calculations: Seq[I]) extends ListCalculationsResponse[I]
-
-object Def1_ListCalculationsResponse extends HateoasLinks {
-  type ListCalculations = Def1_ListCalculationsResponse[Def1_Calculation]
-
-  implicit def writes[I: Writes]: OWrites[Def1_ListCalculationsResponse[I]] = Json.writes[Def1_ListCalculationsResponse[I]]
-  implicit def reads[I: Reads]: Reads[Def1_ListCalculationsResponse[I]]     = JsPath.read[Seq[I]].map(Def1_ListCalculationsResponse(_))
-
-  implicit object Def1_ListLinksFactory
-      extends HateoasListLinksFactory[Def1_ListCalculationsResponse, Def1_Calculation, ListCalculationsHateoasData] {
-
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Def1_Calculation): Seq[Link] =
+    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[Link] =
       Seq(item.taxYear.map(retrieve(appConfig, data.nino, _, item.calculationId))).flatten
 
     override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] = {
@@ -68,12 +48,26 @@ object Def1_ListCalculationsResponse extends HateoasLinks {
 
   }
 
-  implicit object ResponseFunctor extends Functor[Def1_ListCalculationsResponse] {
+  implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
 
-    override def map[A, B](fa: Def1_ListCalculationsResponse[A])(f: A => B): Def1_ListCalculationsResponse[B] =
-      Def1_ListCalculationsResponse(fa.calculations.map(f))
+    override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
+      fa.mapItems(f)
 
   }
+
+}
+
+case class Def1_ListCalculationsResponse[I](calculations: Seq[I]) extends ListCalculationsResponse[I] {
+
+  override def mapItems[B](f: I => B): ListCalculationsResponse[B] =
+    Def1_ListCalculationsResponse(calculations.map(f))
+
+}
+
+object Def1_ListCalculationsResponse {
+
+  implicit def writes[I: Writes]: OWrites[Def1_ListCalculationsResponse[I]] = Json.writes[Def1_ListCalculationsResponse[I]]
+  implicit def reads[I: Reads]: Reads[Def1_ListCalculationsResponse[I]]     = JsPath.read[Seq[I]].map(Def1_ListCalculationsResponse(_))
 
 }
 

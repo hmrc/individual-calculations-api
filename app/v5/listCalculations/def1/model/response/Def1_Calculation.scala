@@ -21,7 +21,18 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v4.models.response.common.CalculationType
 
-trait Calculation
+sealed trait Calculation {
+  def calculationId: String
+  def taxYear: Option[TaxYear]
+}
+
+object Calculation {
+
+  implicit val writes: OWrites[Calculation] = OWrites.apply[Calculation] { case a: Def1_Calculation =>
+    Json.toJsObject(a)
+  }
+
+}
 
 case class Def1_Calculation(calculationId: String,
                             calculationTimestamp: String,
@@ -31,7 +42,8 @@ case class Def1_Calculation(calculationId: String,
                             totalIncomeTaxAndNicsDue: Option[BigDecimal],
                             intentToSubmitFinalDeclaration: Option[Boolean],
                             finalDeclaration: Option[Boolean],
-                            finalDeclarationTimestamp: Option[String]) extends Calculation
+                            finalDeclarationTimestamp: Option[String])
+    extends Calculation
 
 object Def1_Calculation {
   implicit val writes: OWrites[Def1_Calculation] = Json.writes[Def1_Calculation]

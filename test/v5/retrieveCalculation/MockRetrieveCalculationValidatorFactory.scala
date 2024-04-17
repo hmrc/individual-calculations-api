@@ -19,12 +19,13 @@ package v5.retrieveCalculation
 import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 trait MockRetrieveCalculationValidatorFactory extends MockValidatorFactory[RetrieveCalculationRequestData] {
 
   val mockRetrieveCalculationValidatorFactory: RetrieveCalculationValidatorFactory = mock[RetrieveCalculationValidatorFactory]
 
   def validator(): CallHandler[Validator[RetrieveCalculationRequestData]] =
-    (mockRetrieveCalculationValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
+    (mockRetrieveCalculationValidatorFactory.validator(_: String, _: String, _: String, _: RetrieveCalculationSchema)).expects(*, *, *, *)
 
 }

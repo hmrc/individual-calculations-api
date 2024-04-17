@@ -21,8 +21,9 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.Def1_ListCalculationsRequestData
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.ListCalculations
+import v5.listCalculations.model.response.ListCalculationsResponse
 
 import scala.concurrent.Future
 
@@ -78,7 +79,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        private val result: DownstreamOutcome[ListCalculations] = await(connector.list(request))
+        private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request))
         result shouldBe outcome
       }
     }
