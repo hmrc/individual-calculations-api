@@ -18,6 +18,7 @@ package v5.retrieveCalculation
 
 import api.controllers.validators.Validator
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
+import v5.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
@@ -29,6 +30,7 @@ class RetrieveCalculationValidatorFactory {
   def validator(nino: String, taxYear: String, calculationId: String, schema: RetrieveCalculationSchema): Validator[RetrieveCalculationRequestData] =
     schema match {
       case RetrieveCalculationSchema.Def1 => new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def2 => new Def2_RetrieveCalculationValidator(nino, taxYear, calculationId)
     }
 
 }

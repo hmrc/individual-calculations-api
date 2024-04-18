@@ -33,6 +33,11 @@ object RetrieveCalculationSchema {
     val connectorReads: Reads[DownstreamResp] = Def1_RetrieveCalculationResponse.reads
   }
 
+  case object Def2 extends RetrieveCalculationSchema {
+    type DownstreamResp = Def1_RetrieveCalculationResponse
+    val connectorReads: Reads[DownstreamResp] = Def1_RetrieveCalculationResponse.reads
+  }
+
   private val defaultSchema = Def1
 
   def schemaFor(taxYear: String): RetrieveCalculationSchema =
@@ -41,8 +46,10 @@ object RetrieveCalculationSchema {
       .getOrElse(defaultSchema)
 
   def schemaFor(taxYear: TaxYear): RetrieveCalculationSchema =
-    if (TaxYear.starting(2023) <= taxYear) {
+    if (taxYear <= TaxYear.starting(2023)) {
       Def1
+    } else if (taxYear >= TaxYear.starting(2024)) {
+      Def2
     } else {
       defaultSchema
     }
