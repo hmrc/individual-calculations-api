@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation.def1
+package v5.retrieveCalculation.def2
 
 import api.models.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -26,7 +26,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
 
-class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
+class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
     val nino: String          = "AA123456A"
@@ -153,24 +153,19 @@ class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
 
   }
 
-  private trait NonTysTest extends Test {
-    def taxYear: String                = "2018-19"
-    def downstreamTaxYear: String      = "2018-19"
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
-  }
 
   private trait TysIfsTest extends Test {
-    def taxYear: String = "2023-24"
+    def taxYear: String = "2024-25"
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
-    def downstreamTaxYear: String = "23-24"
+    def downstreamTaxYear: String = "24-25"
   }
 
   "Calling the retrieveCalculation endpoint" when {
     "the response can be finalised" should {
       "return a 200 status code" when {
-        "a valid request is made" in new NonTysTest {
+        "a valid request is made" in new TysIfsTest {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()
@@ -198,7 +193,7 @@ class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
           response.json shouldBe responseBody(canBeFinalised = false)
         }
 
-        "a valid request is made and the response can be finalised" in new NonTysTest {
+        "a valid request is made and the response can be finalised" in new TysIfsTest {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()
@@ -233,7 +228,7 @@ class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
                                 requestCalculationId: String,
                                 expectedStatus: Int,
                                 expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new NonTysTest {
+          s"validation fails with ${expectedBody.code} error" in new TysIfsTest {
             override val nino: String          = requestNino
             override val taxYear: String       = requestTaxYear
             override val calculationId: String = requestCalculationId
@@ -258,7 +253,7 @@ class RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
         input.foreach(args => (validationErrorTest _).tupled(args))
         "downstream returns a service error" when {
           def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-            s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
+            s"backend returns an $downstreamCode error and status $downstreamStatus" in new TysIfsTest {
               override def setupStubs(): StubMapping = {
                 AuditStub.audit()
                 AuthStub.authorised()

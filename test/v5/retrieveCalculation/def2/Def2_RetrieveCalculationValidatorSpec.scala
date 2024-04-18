@@ -19,7 +19,7 @@ package v5.retrieveCalculation.def2
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors._
 import support.UnitSpec
-import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
+import v5.retrieveCalculation.models.request.Def2_RetrieveCalculationRequestData
 
 class Def2_RetrieveCalculationValidatorSpec extends UnitSpec {
 
@@ -40,7 +40,7 @@ class Def2_RetrieveCalculationValidatorSpec extends UnitSpec {
     "return the parsed domain object" when {
       "a valid request is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId).validateAndWrapResult()
-        result shouldBe Right(Def1_RetrieveCalculationRequestData(parsedNino, parsedTaxYear, parsedCalculationId))
+        result shouldBe Right(Def2_RetrieveCalculationRequestData(parsedNino, parsedTaxYear, parsedCalculationId))
       }
     }
 

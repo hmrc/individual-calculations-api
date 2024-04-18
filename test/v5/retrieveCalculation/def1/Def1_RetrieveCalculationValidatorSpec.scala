@@ -21,7 +21,7 @@ import api.models.errors._
 import support.UnitSpec
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 
-class Def1RetrieveCalculationValidatorSpec extends UnitSpec {
+class Def1_RetrieveCalculationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
