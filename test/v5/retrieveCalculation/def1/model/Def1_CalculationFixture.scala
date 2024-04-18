@@ -38,10 +38,10 @@ trait Def1_CalculationFixture {
   val incomeTaxValue = 50
 
   val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation_mtd.json"))
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
   val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation_downstream.json"))
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_downstream.json"))
 
   val reliefs: Reliefs = Reliefs(
     basicRateExtension =
