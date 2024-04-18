@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v4.services
+package api.services
 
+import api.connectors.MockNrsProxyConnector
 import play.api.libs.json.JsValue
 import support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v4.mocks.connectors.MockNrsProxyConnector
 
 import java.util.concurrent.ConcurrentLinkedQueue
 

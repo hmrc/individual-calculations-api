@@ -14,26 +14,13 @@
  * limitations under the License.
  */
 
-package v4.services
+package api.services
 
-import api.services.ServiceSpec
-import v4.fixtures.nrs.NrsFixture
-import v4.mocks.connectors.MockNrsProxyConnector
+import play.api.libs.json.{JsValue, Json}
 
-import scala.concurrent.Future
+trait NrsFixture {
+  val nino: String = "AA111111A"
+  val event        = "some-event"
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
-
+  val body: JsValue = Json.parse("""{"a": "A", "b": 1 }""")
 }

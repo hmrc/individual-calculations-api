@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package api.connectors
 
-import api.connectors.ConnectorSpec
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.UpstreamErrorResponse

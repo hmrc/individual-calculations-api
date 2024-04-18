@@ -18,7 +18,7 @@ package v5.submitFinalDeclaration
 
 import api.controllers._
 import api.models.errors.InternalError
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService, ServiceOutcome}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
@@ -26,7 +26,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
-import v5.retrieveCalculation.{NrsProxyService, RetrieveCalculationService}
+import v5.retrieveCalculation.RetrieveCalculationService
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 

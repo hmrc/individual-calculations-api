@@ -14,26 +14,24 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package api.services
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
+import api.connectors.MockNrsProxyConnector
 
 import scala.concurrent.Future
 
-trait MockNrsProxyConnector extends MockFactory {
+class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
 
-  val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
+  val service = new NrsProxyService(mockNrsProxyConnector)
 
-  object MockNrsProxyConnector {
+  "NrsProxyService" when {
+    "submitting asynchronously" should {
+      "forward to the connector" in {
+        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
 
-    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
-      (mockNrsProxyConnector
-        .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, notableEvent, body, *)
-
+        service.submit(nino, event, body)
+      }
+    }
   }
 
 }

@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package api.connectors
 
+import config.AppConfig
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, UpstreamErrorResponse}
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+class NrsProxyConnector @Inject()(http: HttpClient, appConfig: AppConfig)(implicit ec: ExecutionContext) {
 
-  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
-    connector.submitAsync(nino, notableEvent, body)
-  }
+  def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpstreamErrorResponse, Unit]] =
+    http.POST[JsValue, Either[UpstreamErrorResponse, Unit]](s"${appConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent", body)
 
 }

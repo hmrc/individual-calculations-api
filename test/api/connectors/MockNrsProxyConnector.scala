@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package v4.services
+package api.connectors
 
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.HeaderCarrier
-import v4.connectors.NrsProxyConnector
+import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 
-import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
 
-@Singleton
-class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
+trait MockNrsProxyConnector extends MockFactory {
 
-  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
-    connector.submitAsync(nino, notableEvent, body)
+  val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
+
+  object MockNrsProxyConnector {
+
+    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
+      (mockNrsProxyConnector
+        .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
+        .expects(nino, notableEvent, body, *)
+
   }
 
 }

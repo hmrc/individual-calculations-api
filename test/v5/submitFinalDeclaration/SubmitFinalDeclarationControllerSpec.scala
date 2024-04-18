@@ -16,20 +16,21 @@
 
 package v5.submitFinalDeclaration
 
+import api.connectors.MockNrsProxyConnector
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, StubNrsProxyService}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
-import v5.retrieveCalculation.{MockNrsProxyConnector, MockRetrieveCalculationService, StubNrsProxyService}
+import v5.retrieveCalculation.MockRetrieveCalculationService
 import v5.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
