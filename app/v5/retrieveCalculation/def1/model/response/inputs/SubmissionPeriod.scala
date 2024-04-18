@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.inputs
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Json, OFormat}
 
-import scala.concurrent.Future
+case class SubmissionPeriod(periodId: Option[String], startDate: String, endDate: String, receivedDateTime: String)
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
-
+object SubmissionPeriod {
+  implicit val format: OFormat[SubmissionPeriod] = Json.format[SubmissionPeriod]
 }

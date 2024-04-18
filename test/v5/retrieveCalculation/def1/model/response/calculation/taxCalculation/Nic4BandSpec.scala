@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import api.models.utils.JsonErrorValidators
+import play.api.libs.json.JsObject
+import support.UnitSpec
 
-import scala.concurrent.Future
+class Nic4BandSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+  "have the correct fields optional" when {
+    val json = (taxCalculationDownstreamJson \ "nics" \ "class4Nics" \ "nic4Bands").head.as[JsObject]
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
+    testJsonAllPropertiesMandatoryExcept[Nic4Band](json)("threshold", "apportionedThreshold")
   }
 
 }

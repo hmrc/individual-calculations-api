@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Format, Json}
 
-import scala.concurrent.Future
+case class Class4Nics(
+    totalIncomeLiableToClass4Charge: Option[BigInt],
+    totalClass4LossesAvailable: Option[BigInt],
+    totalClass4LossesUsed: Option[BigInt],
+    totalClass4LossesCarriedForward: Option[BigInt],
+    totalIncomeChargeableToClass4: Option[BigInt],
+    totalAmount: BigDecimal,
+    nic4Bands: Seq[Nic4Band]
+)
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
-
+object Class4Nics {
+  implicit val format: Format[Class4Nics] = Json.format
 }

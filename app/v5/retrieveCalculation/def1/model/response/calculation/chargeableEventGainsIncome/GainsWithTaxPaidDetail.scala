@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.chargeableEventGainsIncome
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Format, Json}
 
-import scala.concurrent.Future
+case class GainsWithTaxPaidDetail(`type`: String,
+                                       customerReference: Option[String],
+                                       gainAmount: Option[BigDecimal],
+                                       yearsHeld: Option[BigInt],
+                                       yearsHeldSinceLastGain: Option[BigInt])
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
-
+object GainsWithTaxPaidDetail {
+  implicit val format: Format[GainsWithTaxPaidDetail] = Json.format[GainsWithTaxPaidDetail]
 }

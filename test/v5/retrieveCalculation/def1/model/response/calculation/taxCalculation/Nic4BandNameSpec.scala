@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v5.retrieveCalculation.def1.model.response.calculation.taxCalculation.Nic4BandName._
 
-import scala.concurrent.Future
+class Nic4BandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+  testReads[Nic4BandName](
+    "ZRT" -> `zero-rate`,
+    "BRT" -> `basic-rate`,
+    "HRT" -> `higher-rate`
+  )
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
+  testWrites[Nic4BandName](
+    `zero-rate`   -> "zero-rate",
+    `basic-rate`  -> "basic-rate",
+    `higher-rate` -> "higher-rate"
+  )
 
 }

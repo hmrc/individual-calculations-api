@@ -20,10 +20,10 @@ import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
 import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.{Json, OWrites, Reads}
-import v5.retrieveCalculation.def1.model.response.calculation.Def1_Calculation
-import v5.retrieveCalculation.def1.model.response.inputs.Def1_Inputs
-import v5.retrieveCalculation.def1.model.response.messages.Def1_Messages
-import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
+import v5.retrieveCalculation.def1.model.response.calculation.Calculation
+import v5.retrieveCalculation.def1.model.response.inputs.Inputs
+import v5.retrieveCalculation.def1.model.response.messages.Messages
+import v5.retrieveCalculation.def1.model.response.metadata.Metadata
 
 sealed trait RetrieveCalculationResponse {
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
@@ -66,10 +66,10 @@ object RetrieveCalculationResponse extends HateoasLinks {
 }
 
 case class Def1_RetrieveCalculationResponse(
-    metadata: Def1_Metadata,
-    inputs: Def1_Inputs,
-    calculation: Option[Def1_Calculation],
-    messages: Option[Def1_Messages]
+    metadata: Metadata,
+    inputs: Inputs,
+    calculation: Option[Calculation],
+    messages: Option[Messages]
 ) extends RetrieveCalculationResponse {
 
   override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
@@ -158,10 +158,10 @@ case class Def1_RetrieveCalculationResponse(
 
 object Def1_RetrieveCalculationResponse {
 
-  def apply(metadata: Def1_Metadata,
-            inputs: Def1_Inputs,
-            calculation: Option[Def1_Calculation],
-            messages: Option[Def1_Messages]): Def1_RetrieveCalculationResponse = {
+  def apply(metadata: Metadata,
+            inputs: Inputs,
+            calculation: Option[Calculation],
+            messages: Option[Messages]): Def1_RetrieveCalculationResponse = {
     new Def1_RetrieveCalculationResponse(
       metadata,
       inputs,

@@ -14,25 +14,16 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{JsValue, Json}
 
-import scala.concurrent.Future
+trait TaxCalculationFixture {
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+  val taxCalculationMtdJson: JsValue =
+    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation/taxCalculation/taxCalculation_mtd.json"))
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
+  val taxCalculationDownstreamJson: JsValue =
+    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation/taxCalculation/taxCalculation_downstream.json"))
 
 }

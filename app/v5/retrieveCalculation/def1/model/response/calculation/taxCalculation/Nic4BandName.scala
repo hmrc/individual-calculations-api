@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Reads, Writes}
+import utils.enums.Enums
 
-import scala.concurrent.Future
+sealed trait Nic4BandName
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+object Nic4BandName {
+  case object `zero-rate` extends Nic4BandName
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
+  case object `basic-rate` extends Nic4BandName
 
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+  case object `higher-rate` extends Nic4BandName
 
-        service.submit(nino, event, body)
-      }
-    }
+  implicit val writes: Writes[Nic4BandName] = Enums.writes[Nic4BandName]
+
+  implicit val reads: Reads[Nic4BandName] = Enums.readsUsing {
+    case "ZRT" => `zero-rate`
+    case "BRT" => `basic-rate`
+    case "HRT" => `higher-rate`
   }
 
 }

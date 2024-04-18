@@ -25,10 +25,10 @@ import mocks.MockAppConfig
 import play.api.libs.json.Json
 import support.UnitSpec
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v5.retrieveCalculation.def1.model.response.common.Def1_CalculationType
-import v5.retrieveCalculation.def1.model.response.inputs.{Def1_IncomeSources, Def1_Inputs, Def1_PersonalInformation}
-import v5.retrieveCalculation.def1.model.response.messages.{Def1_Message, Def1_Messages}
-import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
+import v5.retrieveCalculation.def1.model.response.common.CalculationType
+import v5.retrieveCalculation.def1.model.response.inputs.{IncomeSources, Inputs, PersonalInformation}
+import v5.retrieveCalculation.def1.model.response.messages.{Message, Messages}
+import v5.retrieveCalculation.def1.model.response.metadata.Metadata
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse._
 import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
@@ -46,7 +46,7 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
       testJsonAllPropertiesOptionalExcept[Def1_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
-    "return the correct Def1_TaxDeductedAtSource" in {
+    "return the correct TaxDeductedAtSource" in {
       taxDeductedAtSource.withoutTaxTakenOffTradingIncome shouldBe taxDeductedAtSource.copy(taxTakenOffTradingIncome = None)
     }
 
@@ -64,25 +64,25 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
 
     def retrieveCalculationResponse(intentToSubmitFinalDeclaration: Boolean,
                                     finalDeclaration: Boolean,
-                                    messages: Option[Def1_Messages]): RetrieveCalculationResponse =
+                                    messages: Option[Messages]): RetrieveCalculationResponse =
       Def1_RetrieveCalculationResponse(
-        metadata = Def1_Metadata(
+        metadata = Metadata(
           "",
           taxYear = TaxYear.fromDownstream("2021"),
           "",
           None,
           "",
           None,
-          Def1_CalculationType.`inYear`,
+          CalculationType.`inYear`,
           intentToSubmitFinalDeclaration = intentToSubmitFinalDeclaration,
           finalDeclaration = finalDeclaration,
           None,
           "",
           ""
         ),
-        inputs = Def1_Inputs(
-          Def1_PersonalInformation("", None, "", None, None, None, None, None, Some("status")),
-          Def1_IncomeSources(None, None),
+        inputs = Inputs(
+          PersonalInformation("", None, "", None, None, None, None, None, Some("status")),
+          IncomeSources(None, None),
           None,
           None,
           None,
@@ -122,7 +122,7 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
         private val model = retrieveCalculationResponse(
           intentToSubmitFinalDeclaration = true,
           finalDeclaration = false,
-          messages = Some(Def1_Messages(None, None, None))
+          messages = Some(Messages(None, None, None))
         )
 
         hateoasFactory.wrap(
@@ -145,7 +145,7 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
         private val model = retrieveCalculationResponse(
           intentToSubmitFinalDeclaration = true,
           finalDeclaration = false,
-          messages = Some(Def1_Messages(None, None, Some(Seq())))
+          messages = Some(Messages(None, None, Some(Seq())))
         )
 
         hateoasFactory.wrap(
@@ -215,7 +215,7 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
         private val model = retrieveCalculationResponse(
           intentToSubmitFinalDeclaration = true,
           finalDeclaration = false,
-          messages = Some(Def1_Messages(None, None, Some(Seq(Def1_Message("", "")))))
+          messages = Some(Messages(None, None, Some(Seq(Message("", "")))))
         )
 
         hateoasFactory.wrap(

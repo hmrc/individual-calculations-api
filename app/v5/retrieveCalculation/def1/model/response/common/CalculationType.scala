@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.common
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Reads, Writes}
+import utils.enums.Enums
 
-import scala.concurrent.Future
+sealed trait CalculationType
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+object CalculationType {
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
+  case object `inYear`           extends CalculationType
+  case object `finalDeclaration` extends CalculationType
 
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+  implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
 
-        service.submit(nino, event, body)
-      }
-    }
+  implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
+    case "inYear"          => `inYear`
+    case "crystallisation" => `finalDeclaration`
   }
 
 }

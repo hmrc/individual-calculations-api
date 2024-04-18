@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation
+package v5.retrieveCalculation.def1.model.response.calculation.stateBenefitsIncome
 
-import api.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.NrsFixture
+import play.api.libs.json.{Json, OFormat}
 
-import scala.concurrent.Future
+case class StatePensionLumpSum(incomeSourceId: String, amount: BigDecimal, taxPaid: Option[BigDecimal], rate: BigDecimal, source: Option[String])
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
-  }
-
+object StatePensionLumpSum {
+  implicit val format: OFormat[StatePensionLumpSum] = Json.format[StatePensionLumpSum]
 }
