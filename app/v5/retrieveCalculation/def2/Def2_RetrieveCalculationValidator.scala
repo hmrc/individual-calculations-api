@@ -22,17 +22,21 @@ import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits._
-import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v5.retrieveCalculation.models.request.{Def2_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+
+object Def2_RetrieveCalculationValidator {
+  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+}
 
 class Def2_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {
-
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+  import Def2_RetrieveCalculationValidator._
 
   def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
-    ).mapN(Def1_RetrieveCalculationRequestData)
+    ).mapN(Def2_RetrieveCalculationRequestData)
+
 }

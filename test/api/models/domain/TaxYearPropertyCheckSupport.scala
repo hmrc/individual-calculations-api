@@ -25,7 +25,7 @@ trait TaxYearPropertyCheckSupport extends ShrinkLowPriority {
   self: ScalaCheckDrivenPropertyChecks =>
 
   // Based on the limitations of the various tax year formats:
-  private val minAllowed: TaxYear = TaxYear.starting(2000)
+  private val minAllowed: TaxYear = TaxYear.starting(2011)
   private val maxAllowed: TaxYear = TaxYear.starting(2098)
 
   private def arbTaxYear(minStartYear: Int, maxStartYear: Int): Arbitrary[TaxYear] =

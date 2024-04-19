@@ -38,20 +38,16 @@ object RetrieveCalculationSchema {
     val connectorReads: Reads[DownstreamResp] = Def1_RetrieveCalculationResponse.reads
   }
 
-  private val defaultSchema = Def1
+  private val latestSchema = Def2
 
   def schemaFor(taxYear: String): RetrieveCalculationSchema =
     ResolveTaxYear(taxYear).toOption
       .map(schemaFor)
-      .getOrElse(defaultSchema)
+      .getOrElse(latestSchema)
 
   def schemaFor(taxYear: TaxYear): RetrieveCalculationSchema =
-    if (taxYear <= TaxYear.starting(2023)) {
-      Def1
-    } else if (taxYear >= TaxYear.starting(2024)) {
-      Def2
-    } else {
-      defaultSchema
-    }
+    if (taxYear <= TaxYear.starting(2023)) Def1
+    else if (taxYear == TaxYear.starting(2024)) Def2
+    else latestSchema
 
 }
