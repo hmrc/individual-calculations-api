@@ -16,14 +16,14 @@
 
 package v5.retrieveCalculation.def2.model
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, Json}
 
 trait Def2_CalculationFixture {
 
-  val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_mtd.json"))
+  val calculationMtdJson: JsObject =
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_mtd.json")).as[JsObject]
 
-  val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_downstream.json"))
+  val calculationDownstreamJson: JsObject =
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_downstream.json")).as[JsObject]
 
 }

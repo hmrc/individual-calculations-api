@@ -20,7 +20,7 @@ import api.controllers.validators.resolvers.ResolveTaxYear
 import api.models.domain.TaxYear
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationResponse}
+import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, Def2_RetrieveCalculationResponse, RetrieveCalculationResponse}
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -34,8 +34,8 @@ object RetrieveCalculationSchema {
   }
 
   case object Def2 extends RetrieveCalculationSchema {
-    type DownstreamResp = Def1_RetrieveCalculationResponse
-    val connectorReads: Reads[DownstreamResp] = Def1_RetrieveCalculationResponse.reads
+    type DownstreamResp = Def2_RetrieveCalculationResponse
+    val connectorReads: Reads[DownstreamResp] = Def2_RetrieveCalculationResponse.reads
   }
 
   private val latestSchema = Def2
