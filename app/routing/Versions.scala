@@ -23,9 +23,6 @@ import play.api.mvc.RequestHeader
 
 object Version {
 
-  def from(request: RequestHeader, orElse: Version): Version =
-    Versions.getFromRequest(request).getOrElse(orElse)
-
   def apply(request: RequestHeader): Version =
     Versions.getFromRequest(request).getOrElse(throw new Exception("Missing or unsupported version found in request accept header"))
 
@@ -67,11 +64,16 @@ case object Version5 extends Version {
   val name = "5.0"
 }
 
+case object Version6 extends Version {
+  val name = "6.0"
+}
+
 object Versions {
 
   private val versionsByName: Map[String, Version] = Map(
     Version4.name -> Version4,
-    Version5.name -> Version5
+    Version5.name -> Version5,
+    Version6.name -> Version6
   )
 
   private val versionRegex = """application/vnd.hmrc.(\d.\d)\+json""".r

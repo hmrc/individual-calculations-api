@@ -22,7 +22,7 @@ import config.Deprecation.NotDeprecated
 import definition.APIStatus.{ALPHA, BETA}
 import mocks.{MockAppConfig, MockHttpClient}
 import play.api.Configuration
-import routing.{Version4, Version5}
+import routing.{Version4, Version5, Version6}
 import support.UnitSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -38,7 +38,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        Seq(Version4, Version5)
+        Seq(Version4, Version5, Version6)
           .foreach { version =>
             MockAppConfig.apiStatus(version).returns("BETA")
             MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
@@ -79,6 +79,11 @@ class ApiDefinitionFactorySpec extends UnitSpec {
                 version = Version5,
                 status = APIStatus.BETA,
                 endpointsEnabled = true
+              ),
+              APIVersion(
+                version = Version6,
+                status = APIStatus.BETA,
+                endpointsEnabled = true
               )
             ),
             requiresTrust = None
@@ -109,36 +114,36 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockAppConfig.apiStatus(Version5) returns "BETA"
+        MockAppConfig.apiStatus(Version6) returns "BETA"
         MockAppConfig
-          .deprecationFor(Version5)
+          .deprecationFor(Version6)
           .returns(NotDeprecated.valid)
           .anyNumberOfTimes()
-        apiDefinitionFactory.buildAPIStatus(Version5) shouldBe BETA
+        apiDefinitionFactory.buildAPIStatus(Version6) shouldBe BETA
       }
     }
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.apiStatus(Version5) returns "ALPHO"
+        MockAppConfig.apiStatus(Version6) returns "ALPHO"
         MockAppConfig
-          .deprecationFor(Version5)
+          .deprecationFor(Version6)
           .returns(NotDeprecated.valid)
           .anyNumberOfTimes()
-        apiDefinitionFactory.buildAPIStatus(Version5) shouldBe ALPHA
+        apiDefinitionFactory.buildAPIStatus(Version6) shouldBe ALPHA
       }
     }
 
     "the 'deprecatedOn' parameter is missing for a deprecated version" should {
       "throw exception" in new Test {
-        MockAppConfig.apiStatus(Version4) returns "DEPRECATED"
+        MockAppConfig.apiStatus(Version5) returns "DEPRECATED"
         MockAppConfig
-          .deprecationFor(Version4)
+          .deprecationFor(Version5)
           .returns("deprecatedOn date is required for a deprecated version".invalid)
           .anyNumberOfTimes()
 
         val exception: Exception = intercept[Exception] {
-          apiDefinitionFactory.buildAPIStatus(Version4)
+          apiDefinitionFactory.buildAPIStatus(Version5)
         }
 
         val exceptionMessage: String = exception.getMessage
