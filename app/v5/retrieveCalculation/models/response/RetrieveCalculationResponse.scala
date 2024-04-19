@@ -22,6 +22,8 @@ import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.retrieveCalculation._
 
+import scala.math.Ordered.orderingToOrdered
+
 sealed trait RetrieveCalculationResponse {
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
 
@@ -94,7 +96,8 @@ case class Def1_RetrieveCalculationResponse(
       if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
     def updateModelBasicRateDivergence(taxYear: String, response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse = {
-      if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
+      if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear) >= TaxYear.fromMtd("2024-25")) response
+      else response.withoutBasicRateDivergenceUpdates
     }
 
     val responseMaybeWithoutR8b              = updateModelR8b(this)
@@ -192,92 +195,10 @@ case class Def2_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
-    import featureSwitches._
-
-    def updateModelR8b(response: Def2_RetrieveCalculationResponse): Def2_RetrieveCalculationResponse =
-      if (isR8bSpecificApiEnabled) response else response.withoutR8bSpecificUpdates
-
-    def updateModelAdditionalFields(response: Def2_RetrieveCalculationResponse): Def2_RetrieveCalculationResponse =
-      if (isRetrieveSAAdditionalFieldsEnabled) response else response.withoutAdditionalFieldsUpdates
-
-    def updateModelCl290(response: Def2_RetrieveCalculationResponse): Def2_RetrieveCalculationResponse =
-      if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
-
-    def updateModelBasicRateDivergence(taxYear: String, response: Def2_RetrieveCalculationResponse): Def2_RetrieveCalculationResponse = {
-      if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
-    }
-
-    val responseMaybeWithoutR8b              = updateModelR8b(this)
-    val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
-    val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
-    updateModelBasicRateDivergence(taxYear, responseMaybeWithoutCl290)
-
-  }
-
-  def withoutR8bSpecificUpdates: Def2_RetrieveCalculationResponse =
-    this.withoutBasicExtension.withoutOffPayrollWorker.withoutTotalAllowanceAndDeductions
-
-  def withoutBasicExtension: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
-
-  def withoutOffPayrollWorker: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
-
-  def withoutTotalAllowanceAndDeductions: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
-
-  // find where its used
-  def withoutUnderLowerProfitThreshold: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
-
-  def withoutTaxTakenOffTradingIncome: Def2_RetrieveCalculationResponse = {
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
-  }
-
-  def withoutBasicRateDivergenceUpdates: Def2_RetrieveCalculationResponse =
-    this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
-
-  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
-
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Def2_RetrieveCalculationResponse =
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
-
-  def withoutAdditionalFieldsUpdates: Def2_RetrieveCalculationResponse =
-    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
-
-  def withoutCessationDate: Def2_RetrieveCalculationResponse = {
-    Def2_RetrieveCalculationResponse(metadata, inputs.withoutCessationDate, calculation, messages)
-  }
-
-  def withoutCommencementDate: Def2_RetrieveCalculationResponse = {
-    Def2_RetrieveCalculationResponse(metadata, inputs.withoutCommencementDate, calculation, messages)
-  }
-
-  def withoutOtherIncome: Def2_RetrieveCalculationResponse = {
-    Def2_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOtherIncome).filter(_.isDefined), messages)
-  }
-
-  def withoutItsaStatus: Def2_RetrieveCalculationResponse = {
-    Def2_RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
-  }
-
+  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = this
 }
 
 object Def2_RetrieveCalculationResponse {
-
-  def apply(metadata: def2.model.response.metadata.Metadata,
-            inputs: def2.model.response.inputs.Inputs,
-            calculation: Option[def2.model.response.calculation.Calculation],
-            messages: Option[def2.model.response.messages.Messages]): Def2_RetrieveCalculationResponse = {
-    new Def2_RetrieveCalculationResponse(
-      metadata,
-      inputs,
-      calculation = if (calculation.exists(_.isDefined)) calculation else None,
-      messages
-    )
-  }
 
   implicit val reads: Reads[Def2_RetrieveCalculationResponse] = Json.reads[Def2_RetrieveCalculationResponse]
 

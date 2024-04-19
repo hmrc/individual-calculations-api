@@ -20,41 +20,20 @@ import play.api.libs.json.{Format, Json}
 import v5.retrieveCalculation.def2.model.response.common.Source
 
 case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
-                                                  source: Option[Source],
-                                                  occupationalPension: Option[Boolean],
-                                                  employerRef: Option[String],
-                                                  employerName: Option[String],
-                                                  offPayrollWorker: Option[Boolean],
-                                                  payrollId: Option[String],
-                                                  startDate: Option[String],
-                                                  dateEmploymentEnded: Option[String],
-                                                  taxablePayToDate: Option[BigDecimal],
-                                                  totalTaxToDate: Option[BigDecimal],
-                                                  disguisedRemuneration: Option[Boolean],
-                                                  lumpSums: Option[LumpSums],
-                                                  studentLoans: Option[StudentLoans],
-                                                  benefitsInKind: Option[BenefitsInKind]) {
-
-  val isDefined: Boolean =
-    !(incomeSourceId.isEmpty &&
-      source.isEmpty &&
-      occupationalPension.isEmpty &&
-      employerRef.isEmpty &&
-      employerName.isEmpty &&
-      offPayrollWorker.isEmpty &&
-      payrollId.isEmpty &&
-      startDate.isEmpty &&
-      dateEmploymentEnded.isEmpty &&
-      taxablePayToDate.isEmpty &&
-      totalTaxToDate.isEmpty &&
-      disguisedRemuneration.isEmpty &&
-      lumpSums.isEmpty &&
-      studentLoans.isEmpty &&
-      benefitsInKind.isEmpty)
-
-  def withoutOffPayrollWorker: EmploymentAndPensionsIncomeDetail = copy(offPayrollWorker = None)
-
-}
+                                             source: Option[Source],
+                                             occupationalPension: Option[Boolean],
+                                             employerRef: Option[String],
+                                             employerName: Option[String],
+                                             offPayrollWorker: Option[Boolean],
+                                             payrollId: Option[String],
+                                             startDate: Option[String],
+                                             dateEmploymentEnded: Option[String],
+                                             taxablePayToDate: Option[BigDecimal],
+                                             totalTaxToDate: Option[BigDecimal],
+                                             disguisedRemuneration: Option[Boolean],
+                                             lumpSums: Option[LumpSums],
+                                             studentLoans: Option[StudentLoans],
+                                             benefitsInKind: Option[BenefitsInKind])
 
 object EmploymentAndPensionsIncomeDetail {
 

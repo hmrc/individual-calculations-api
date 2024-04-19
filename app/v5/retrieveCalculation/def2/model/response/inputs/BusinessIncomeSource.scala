@@ -21,32 +21,18 @@ import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType
 import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType._
 
 case class BusinessIncomeSource(incomeSourceId: String,
-                                     incomeSourceType: IncomeSourceType,
-                                     incomeSourceName: Option[String],
-                                     accountingPeriodStartDate: String,
-                                     accountingPeriodEndDate: String,
-                                     source: String,
-                                     commencementDate: Option[String],
-                                     cessationDate: Option[String],
-                                     latestPeriodEndDate: String,
-                                     latestReceivedDateTime: String,
-                                     finalised: Option[Boolean],
-                                     finalisationTimestamp: Option[String],
-                                     submissionPeriods: Option[Seq[SubmissionPeriod]]) {
-
-  val isDefined: Boolean =
-    !(incomeSourceName.isEmpty &&
-      commencementDate.isEmpty &&
-      cessationDate.isEmpty &&
-      finalised.isEmpty &&
-      finalisationTimestamp.isEmpty &&
-      finalisationTimestamp.isEmpty &&
-      submissionPeriods.isEmpty)
-
-  def withoutCessationDate: BusinessIncomeSource = copy(cessationDate = None)
-
-  def withoutCommencementDate: BusinessIncomeSource = copy(commencementDate = None)
-}
+                                incomeSourceType: IncomeSourceType,
+                                incomeSourceName: Option[String],
+                                accountingPeriodStartDate: String,
+                                accountingPeriodEndDate: String,
+                                source: String,
+                                commencementDate: Option[String],
+                                cessationDate: Option[String],
+                                latestPeriodEndDate: String,
+                                latestReceivedDateTime: String,
+                                finalised: Option[Boolean],
+                                finalisationTimestamp: Option[String],
+                                submissionPeriods: Option[Seq[SubmissionPeriod]])
 
 case object BusinessIncomeSource {
 

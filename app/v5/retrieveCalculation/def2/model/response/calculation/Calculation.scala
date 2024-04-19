@@ -77,62 +77,7 @@ case class Calculation(
     previousCalculation: Option[PreviousCalculation],
     endOfYearEstimate: Option[EndOfYearEstimate],
     lossesAndClaims: Option[LossesAndClaims]
-) {
-
-  def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
-
-  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Calculation =
-    copy(reliefs = reliefs.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers).filter(_.isDefined))
-
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Calculation =
-    copy(taxCalculation = taxCalculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers))
-
-  def withoutUnderLowerProfitThreshold: Calculation =
-    copy(taxCalculation = taxCalculation.map(_.withoutUnderLowerProfitThreshold))
-
-  def withoutOffPayrollWorker: Calculation =
-    copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker).filter(_.isDefined))
-
-  def withoutTotalAllowanceAndDeductions: Calculation =
-    copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
-
-  def withoutTaxTakenOffTradingIncome: Calculation =
-    copy(taxDeductedAtSource = taxDeductedAtSource.map(_.withoutTaxTakenOffTradingIncome))
-
-  def withoutOtherIncome: Calculation =
-    copy(otherIncome = None)
-
-  val isDefined: Boolean =
-    !(allowancesAndDeductions.isEmpty &&
-      reliefs.isEmpty && taxDeductedAtSource.isEmpty &&
-      giftAid.isEmpty &&
-      royaltyPayments.isEmpty &&
-      notionalTax.isEmpty &&
-      marriageAllowanceTransferredIn.isEmpty &&
-      pensionContributionReliefs.isEmpty &&
-      pensionSavingsTaxCharges.isEmpty &&
-      studentLoans.isEmpty &&
-      codedOutUnderpayments.isEmpty &&
-      foreignPropertyIncome.isEmpty &&
-      businessProfitAndLoss.isEmpty &&
-      employmentAndPensionsIncome.isEmpty &&
-      employmentExpenses.isEmpty &&
-      seafarersDeductions.isEmpty &&
-      foreignTaxForFtcrNotClaimed.isEmpty &&
-      stateBenefitsIncome.isEmpty &&
-      shareSchemesIncome.isEmpty &&
-      foreignIncome.isEmpty &&
-      chargeableEventGainsIncome.isEmpty &&
-      savingsAndGainsIncome.isEmpty &&
-      otherIncome.isEmpty &&
-      dividendsIncome.isEmpty &&
-      incomeSummaryTotals.isEmpty &&
-      taxCalculation.isEmpty &&
-      previousCalculation.isEmpty &&
-      endOfYearEstimate.isEmpty &&
-      lossesAndClaims.isEmpty)
-
-}
+)
 
 object Calculation {
 

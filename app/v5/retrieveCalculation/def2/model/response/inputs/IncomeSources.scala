@@ -18,33 +18,7 @@ package v5.retrieveCalculation.def2.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]],
-                              nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]]) {
-
-  val isDefined: Boolean =
-    !(businessIncomeSources.isEmpty && nonBusinessIncomeSources.isEmpty)
-
-  def withoutCessationDate: IncomeSources =
-    businessIncomeSources match {
-      case Some(det) =>
-        val details = (for (d <- det) yield d.withoutCessationDate).filter(_.isDefined)
-        if (details.nonEmpty) { copy(businessIncomeSources = Some(details)) }
-        else { copy(businessIncomeSources = None) }
-      case None => copy(businessIncomeSources = None)
-    }
-
-  def withoutCommencementDate: IncomeSources = businessIncomeSources match {
-    case Some(det) =>
-      val details = (for (d <- det) yield d.withoutCommencementDate).filter(_.isDefined)
-      if (details.nonEmpty) {
-        copy(businessIncomeSources = Some(details))
-      } else {
-        copy(businessIncomeSources = None)
-      }
-    case None => copy(businessIncomeSources = None)
-  }
-
-}
+case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]], nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]])
 
 object IncomeSources {
   implicit val format: OFormat[IncomeSources] = Json.format[IncomeSources]

@@ -45,11 +45,6 @@ class Def2_RetrieveCalculationResponseSpec extends UnitSpec with Def2_Calculatio
     "have the correct fields optional" when {
       testJsonAllPropertiesOptionalExcept[Def2_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
-
-    "return the correct TaxDeductedAtSource" in {
-      taxDeductedAtSource.withoutTaxTakenOffTradingIncome shouldBe taxDeductedAtSource.copy(taxTakenOffTradingIncome = None)
-    }
-
   }
 
   "LinksFactory" should {

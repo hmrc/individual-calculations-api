@@ -19,29 +19,27 @@ package v5.retrieveCalculation.def2.model.response.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class IncomeTax(
-                           totalIncomeReceivedFromAllSources: BigInt,
-                           totalAllowancesAndDeductions: BigInt,
-                           totalTaxableIncome: BigInt,
-                           payPensionsProfit: Option[IncomeTaxItem],
-                           savingsAndGains: Option[IncomeTaxItem],
-                           dividends: Option[IncomeTaxItem],
-                           lumpSums: Option[IncomeTaxItem],
-                           gainsOnLifePolicies: Option[IncomeTaxItem],
-                           incomeTaxCharged: BigDecimal,
-                           totalReliefs: Option[BigDecimal],
-                           incomeTaxDueAfterReliefs: Option[BigDecimal],
-                           totalNotionalTax: Option[BigDecimal],
-                           marriageAllowanceRelief: Option[BigDecimal],
-                           incomeTaxDueAfterTaxReductions: Option[BigDecimal],
-                           incomeTaxDueAfterGiftAid: Option[BigDecimal],
-                           totalPensionSavingsTaxCharges: Option[BigDecimal],
-                           statePensionLumpSumCharges: Option[BigDecimal],
-                           payeUnderpaymentsCodedOut: Option[BigDecimal],
-                           totalIncomeTaxDue: Option[BigDecimal],
-                           giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal]
-) {
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: IncomeTax = copy(giftAidTaxChargeWhereBasicRateDiffers = None)
-}
+    totalIncomeReceivedFromAllSources: BigInt,
+    totalAllowancesAndDeductions: BigInt,
+    totalTaxableIncome: BigInt,
+    payPensionsProfit: Option[IncomeTaxItem],
+    savingsAndGains: Option[IncomeTaxItem],
+    dividends: Option[IncomeTaxItem],
+    lumpSums: Option[IncomeTaxItem],
+    gainsOnLifePolicies: Option[IncomeTaxItem],
+    incomeTaxCharged: BigDecimal,
+    totalReliefs: Option[BigDecimal],
+    incomeTaxDueAfterReliefs: Option[BigDecimal],
+    totalNotionalTax: Option[BigDecimal],
+    marriageAllowanceRelief: Option[BigDecimal],
+    incomeTaxDueAfterTaxReductions: Option[BigDecimal],
+    incomeTaxDueAfterGiftAid: Option[BigDecimal],
+    totalPensionSavingsTaxCharges: Option[BigDecimal],
+    statePensionLumpSumCharges: Option[BigDecimal],
+    payeUnderpaymentsCodedOut: Option[BigDecimal],
+    totalIncomeTaxDue: Option[BigDecimal],
+    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal]
+)
 
 object IncomeTax {
   implicit val format: Format[IncomeTax] = Json.format

@@ -19,21 +19,16 @@ package v5.retrieveCalculation.def2.model.response.calculation.taxDeductedAtSour
 import play.api.libs.json.{Json, OFormat}
 
 case class TaxDeductedAtSource(bbsi: Option[BigDecimal],
-                                    ukLandAndProperty: Option[BigDecimal],
-                                    cis: Option[BigDecimal],
-                                    securities: Option[BigDecimal],
-                                    voidedIsa: Option[BigDecimal],
-                                    payeEmployments: Option[BigDecimal],
-                                    occupationalPensions: Option[BigDecimal],
-                                    stateBenefits: Option[BigDecimal],
-                                    specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal],
-                                    inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal],
-                                    taxTakenOffTradingIncome: Option[BigDecimal]) {
-
-  def withoutTaxTakenOffTradingIncome: TaxDeductedAtSource =
-    copy(taxTakenOffTradingIncome = None)
-
-}
+                               ukLandAndProperty: Option[BigDecimal],
+                               cis: Option[BigDecimal],
+                               securities: Option[BigDecimal],
+                               voidedIsa: Option[BigDecimal],
+                               payeEmployments: Option[BigDecimal],
+                               occupationalPensions: Option[BigDecimal],
+                               stateBenefits: Option[BigDecimal],
+                               specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal],
+                               inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal],
+                               taxTakenOffTradingIncome: Option[BigDecimal])
 
 object TaxDeductedAtSource {
   implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]
