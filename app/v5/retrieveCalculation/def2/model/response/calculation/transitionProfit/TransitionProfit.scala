@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package v5.retrieveCalculation.def2.model
+package v5.retrieveCalculation.def2.model.response.calculation.transitionProfit
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Format, Json}
 
-trait Def2_CalculationFixture {
+case class TransitionProfit(
+    totalTaxableTransitionProfit: Option[BigDecimal],
+    transitionProfitDetail: Option[Seq[TransitionProfitDetail]]
+)
 
-  val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_mtd.json"))
-
-  val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_downstream.json"))
-
+object TransitionProfit {
+  implicit val format: Format[TransitionProfit] = Json.format
 }

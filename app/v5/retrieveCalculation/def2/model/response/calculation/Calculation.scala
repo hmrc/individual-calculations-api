@@ -46,6 +46,7 @@ import v5.retrieveCalculation.def2.model.response.calculation.stateBenefitsIncom
 import v5.retrieveCalculation.def2.model.response.calculation.studentLoans.StudentLoans
 import v5.retrieveCalculation.def2.model.response.calculation.taxCalculation.TaxCalculation
 import v5.retrieveCalculation.def2.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
+import v5.retrieveCalculation.def2.model.response.calculation.transitionProfit.TransitionProfit
 
 case class Calculation(
     allowancesAndDeductions: Option[AllowancesAndDeductions],
@@ -76,7 +77,8 @@ case class Calculation(
     taxCalculation: Option[TaxCalculation],
     previousCalculation: Option[PreviousCalculation],
     endOfYearEstimate: Option[EndOfYearEstimate],
-    lossesAndClaims: Option[LossesAndClaims]
+    lossesAndClaims: Option[LossesAndClaims],
+    transitionProfit: Option[TransitionProfit]
 )
 
 object Calculation {
@@ -111,6 +113,7 @@ object Calculation {
     previousCalculation            <- (JsPath \ "previousCalculation").readNullable[PreviousCalculation]
     endOfYearEstimate              <- (JsPath \ "endOfYearEstimate").readNullable[EndOfYearEstimate]
     lossesAndClaims                <- (JsPath \ "lossesAndClaims").readNullable[LossesAndClaims]
+    transitionProfit               <- (JsPath \ "transitionProfit").readNullable[TransitionProfit]
   } yield {
     Calculation(
       allowancesAndDeductions = allowancesAndDeductions,
@@ -141,7 +144,8 @@ object Calculation {
       taxCalculation = taxCalculation,
       previousCalculation = previousCalculation,
       endOfYearEstimate = endOfYearEstimate,
-      lossesAndClaims = lossesAndClaims
+      lossesAndClaims = lossesAndClaims,
+      transitionProfit = transitionProfit
     )
   }
 
@@ -176,7 +180,8 @@ object Calculation {
         "taxCalculation"                 -> Json.toJson(o.taxCalculation),
         "previousCalculation"            -> Json.toJson(o.previousCalculation),
         "endOfYearEstimate"              -> Json.toJson(o.endOfYearEstimate),
-        "lossesAndClaims"                -> Json.toJson(o.lossesAndClaims)
+        "lossesAndClaims"                -> Json.toJson(o.lossesAndClaims),
+        "transitionProfit"               -> Json.toJson(o.transitionProfit)
       ).filterNot { case (_, value) =>
         value == JsNull
       }
