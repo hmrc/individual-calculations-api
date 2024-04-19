@@ -17,7 +17,6 @@
 package v5.retrieveCalculation.def2.model.response.common
 
 import play.api.libs.json._
-import utils.enums.Values.MkValues
 import utils.enums._
 
 sealed trait IncomeSourceType
@@ -45,35 +44,6 @@ object IncomeSourceType {
   case object `non-paye-income`           extends IncomeSourceType
   case object `capital-gains-tax`         extends IncomeSourceType
   case object `charitable-giving`         extends IncomeSourceType
-
-  implicit val incomeSourceTypeValues: MkValues[IncomeSourceType] = new MkValues[IncomeSourceType] {
-
-    override def values: List[IncomeSourceType] =
-      List(
-        `self-employment`,
-        `uk-property-non-fhl`,
-        `foreign-property-fhl-eea`,
-        `uk-property-fhl`,
-        `employments`,
-        `foreign-income`,
-        `foreign-dividends`,
-        `uk-savings-and-gains`,
-        `uk-dividends`,
-        `state-benefits`,
-        `gains-on-life-policies`,
-        `share-schemes`,
-        `foreign-property`,
-        `foreign-savings-and-gains`,
-        `other-dividends`,
-        `uk-securities`,
-        `other-income`,
-        `foreign-pension`,
-        `non-paye-income`,
-        `capital-gains-tax`,
-        `charitable-giving`
-      )
-
-  }
 
   implicit val incomeSourceTypeWrites: Writes[IncomeSourceType] = Enums.writes[IncomeSourceType]
 
