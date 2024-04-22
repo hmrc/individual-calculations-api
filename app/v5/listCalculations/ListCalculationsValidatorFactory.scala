@@ -19,14 +19,16 @@ package v5.listCalculations
 import api.controllers.validators.Validator
 import v5.listCalculations.def1.Def1_ListCalculationsValidator
 import v5.listCalculations.model.request.ListCalculationsRequestData
+import v5.listCalculations.schema.ListCalculationsSchema
 
 import javax.inject.Singleton
 
 @Singleton
 class ListCalculationsValidatorFactory {
 
-  def validator(nino: String, taxYear: Option[String]): Validator[ListCalculationsRequestData] = {
-    new Def1_ListCalculationsValidator(nino, taxYear)
-  }
+  def validator(nino: String, taxYear: Option[String], schema: ListCalculationsSchema): Validator[ListCalculationsRequestData] =
+    schema match {
+      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear)
+    }
 
 }

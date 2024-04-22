@@ -17,11 +17,15 @@
 package v5.retrieveCalculation.models.request
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
+import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 sealed trait RetrieveCalculationRequestData {
   val nino: Nino
   val taxYear: TaxYear
   val calculationId: CalculationId
+  val schema: RetrieveCalculationSchema
 }
 
-case class Def1_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData
+case class Def1_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData{
+  override val schema: RetrieveCalculationSchema = RetrieveCalculationSchema.Def1
+}

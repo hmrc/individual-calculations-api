@@ -22,6 +22,7 @@ import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.{IdGenerator, Logging}
 import v5.listCalculations.model.response.ListCalculationsHateoasData
+import v5.listCalculations.schema.ListCalculationsSchema
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -46,7 +47,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino, taxYear)
+      val validator = validatorFactory.validator(nino, taxYear, ListCalculationsSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler

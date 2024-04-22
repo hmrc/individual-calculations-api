@@ -20,6 +20,7 @@ import api.controllers.validators.Validator
 import support.UnitSpec
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
 
@@ -34,7 +35,7 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
     "given any request regardless of tax year" should {
       "return the Validator for schema definition 1" in {
         val result: Validator[RetrieveCalculationRequestData] =
-          validatorFactory.validator(validNino, validTaxYear, validCalculationId)
+          validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def1)
 
         result shouldBe a[Def1_RetrieveCalculationValidator]
       }

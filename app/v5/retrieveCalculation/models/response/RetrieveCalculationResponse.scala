@@ -27,6 +27,12 @@ import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
 
 sealed trait RetrieveCalculationResponse {
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
+
+  def intentToSubmitFinalDeclaration: Boolean
+
+  def finalDeclaration: Boolean
+
+  def hasErrors: Boolean
 }
 
 object RetrieveCalculationResponse extends HateoasLinks {
@@ -38,9 +44,20 @@ object RetrieveCalculationResponse extends HateoasLinks {
   implicit object RetrieveAnnualSubmissionLinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
-      data.response match {
-        case def1Response: Def1_RetrieveCalculationResponse =>
-          Def1_RetrieveCalculationResponse.def1Links(appConfig, def1Response, data)
+
+      import data._
+
+      if (response.intentToSubmitFinalDeclaration && !response.finalDeclaration && !response.hasErrors) {
+        Seq(
+          trigger(appConfig, nino, taxYear),
+          retrieve(appConfig, nino, taxYear, calculationId),
+          submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
+        )
+      } else {
+        Seq(
+          trigger(appConfig, nino, taxYear),
+          retrieve(appConfig, nino, taxYear, calculationId)
+        )
       }
     }
 
@@ -54,6 +71,17 @@ case class Def1_RetrieveCalculationResponse(
     calculation: Option[Def1_Calculation],
     messages: Option[Def1_Messages]
 ) extends RetrieveCalculationResponse {
+
+  override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
+
+  override def finalDeclaration: Boolean = metadata.finalDeclaration
+
+  override def hasErrors: Boolean = {
+    for {
+      messages <- messages
+      errors   <- messages.errors
+    } yield errors.nonEmpty
+  }.getOrElse(false)
 
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def1_RetrieveCalculationResponse = {
     import featureSwitches._
@@ -128,7 +156,7 @@ case class Def1_RetrieveCalculationResponse(
 
 }
 
-object Def1_RetrieveCalculationResponse extends HateoasLinks {
+object Def1_RetrieveCalculationResponse {
 
   def apply(metadata: Def1_Metadata,
             inputs: Def1_Inputs,
@@ -145,39 +173,6 @@ object Def1_RetrieveCalculationResponse extends HateoasLinks {
   implicit val reads: Reads[Def1_RetrieveCalculationResponse] = Json.reads[Def1_RetrieveCalculationResponse]
 
   implicit val writes: OWrites[Def1_RetrieveCalculationResponse] = Json.writes[Def1_RetrieveCalculationResponse]
-
-  private[response] def def1Links(appConfig: AppConfig,
-                                  response: Def1_RetrieveCalculationResponse,
-                                  data: RetrieveCalculationHateoasData): Seq[Link] = {
-
-    val intentToSubmitFinalDeclaration: Boolean = response.metadata.intentToSubmitFinalDeclaration
-
-    val finalDeclaration: Boolean = response.metadata.finalDeclaration
-
-    val responseHasErrors: Boolean = {
-      for {
-        messages <- response.messages
-        errors   <- messages.errors
-      } yield {
-        errors.nonEmpty
-      }
-    }.getOrElse(false)
-
-    import data._
-
-    if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
-      Seq(
-        trigger(appConfig, nino, taxYear),
-        retrieve(appConfig, nino, taxYear, calculationId),
-        submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
-      )
-    } else {
-      Seq(
-        trigger(appConfig, nino, taxYear),
-        retrieve(appConfig, nino, taxYear, calculationId)
-      )
-    }
-  }
 
 }
 

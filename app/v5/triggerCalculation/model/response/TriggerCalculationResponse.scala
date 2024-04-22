@@ -21,9 +21,10 @@ import api.models.domain.TaxYear
 import config.AppConfig
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json._
-import v5.triggerCalculation.model.response.Def1_TriggerCalculationResponse.Def1_TriggerCalculationLinksFactory
 
-sealed trait TriggerCalculationResponse
+sealed trait TriggerCalculationResponse {
+  val calculationId: String
+}
 
 object TriggerCalculationResponse extends HateoasLinks {
 
@@ -34,7 +35,10 @@ object TriggerCalculationResponse extends HateoasLinks {
   implicit object TriggerCalculationLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
 
     override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
-      Def1_TriggerCalculationLinksFactory.links(appConfig, data)
+      Seq(
+        list(appConfig, data.nino, data.taxYear, isSelf = false),
+        retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
+      )
 
   }
 
@@ -42,20 +46,10 @@ object TriggerCalculationResponse extends HateoasLinks {
 
 case class Def1_TriggerCalculationResponse(calculationId: String) extends TriggerCalculationResponse
 
-object Def1_TriggerCalculationResponse extends HateoasLinks {
+object Def1_TriggerCalculationResponse {
 
-  implicit val downstreamReads: Reads[Def1_TriggerCalculationResponse] = (JsPath \ "id").read[String].map(Def1_TriggerCalculationResponse.apply)
-  implicit val vendorWrites: OWrites[Def1_TriggerCalculationResponse]  = Json.writes[Def1_TriggerCalculationResponse]
-
-  implicit object Def1_TriggerCalculationLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
-
-    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
-      Seq(
-        list(appConfig, data.nino, data.taxYear, isSelf = false),
-        retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
-      )
-
-  }
+  implicit val reads: Reads[Def1_TriggerCalculationResponse]    = (JsPath \ "id").read[String].map(Def1_TriggerCalculationResponse.apply)
+  implicit val writes: OWrites[Def1_TriggerCalculationResponse] = Json.writes[Def1_TriggerCalculationResponse]
 
 }
 

@@ -20,8 +20,9 @@ import api.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
+import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.ListCalculationsRequestData
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.ListCalculations
+import v5.listCalculations.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,7 +31,7 @@ trait MockListCalculationsConnector extends MockFactory {
 
   object MockListCalculationsConnector {
 
-    def list[I](request: ListCalculationsRequestData): CallHandler[Future[DownstreamOutcome[ListCalculations]]] = {
+    def list[I](request: ListCalculationsRequestData): CallHandler[Future[DownstreamOutcome[ListCalculationsResponse[Calculation]]]] = {
       (mockListCalculationsConnector
         .list(_: ListCalculationsRequestData)(_: HeaderCarrier, _: ExecutionContext, _: String))
         .expects(request, *, *, *)

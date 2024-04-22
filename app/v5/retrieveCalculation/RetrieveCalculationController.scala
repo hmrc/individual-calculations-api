@@ -24,6 +24,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import utils.{IdGenerator, Logging}
 import v5.retrieveCalculation.models.response.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
+import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -52,7 +53,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       val validator = validatorFactory.validator(
         nino = nino,
         taxYear = taxYear,
-        calculationId = calculationId
+        calculationId = calculationId,
+        RetrieveCalculationSchema.schemaFor(taxYear)
       )
 
       val requestHandler =

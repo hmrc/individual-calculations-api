@@ -20,6 +20,7 @@ import api.controllers.validators.Validator
 import support.UnitSpec
 import v5.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 
@@ -34,7 +35,7 @@ class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
     "given any request regardless of tax year" should {
       "return the Validator for schema definition 1" in {
         val result: Validator[SubmitFinalDeclarationRequestData] =
-          validatorFactory.validator(validNino, validTaxYear, validCalculationId)
+          validatorFactory.validator(validNino, validTaxYear, validCalculationId, SubmitFinalDeclarationSchema.Def1)
 
         result shouldBe a[Def1_SubmitFinalDeclarationValidator]
       }

@@ -21,16 +21,19 @@ import api.models
 import api.models.errors._
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits._
+import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.ListCalculationsRequestData
-import v5.listCalculations.model.response.Def1_ListCalculationsResponse.ListCalculations
+import v5.listCalculations.model.response.ListCalculationsResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListCalculationsService @Inject()(connector: ListCalculationsConnector) extends BaseService {
+class ListCalculationsService @Inject() (connector: ListCalculationsConnector) extends BaseService {
 
-  def list(request: ListCalculationsRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[ListCalculations]] = {
+  def list(request: ListCalculationsRequestData)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[ListCalculationsResponse[Calculation]]] = {
 
     connector.list(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 

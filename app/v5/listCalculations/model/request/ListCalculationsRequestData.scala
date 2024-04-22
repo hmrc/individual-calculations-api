@@ -17,10 +17,15 @@
 package v5.listCalculations.model.request
 
 import api.models.domain.{Nino, TaxYear}
+import v5.listCalculations.schema.ListCalculationsSchema
 
 sealed trait ListCalculationsRequestData {
   val nino: Nino
   val taxYear: TaxYear
+
+  val schema: ListCalculationsSchema
 }
 
-case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear) extends ListCalculationsRequestData
+case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear) extends ListCalculationsRequestData{
+  override val schema: ListCalculationsSchema = ListCalculationsSchema.Def1
+}

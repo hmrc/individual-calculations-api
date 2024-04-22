@@ -18,7 +18,7 @@ package api.hateoas
 
 import play.api.libs.json.{JsObject, Json, OWrites, Writes}
 
-case class HateoasWrapper[A](payload: A, links: Seq[Link])
+case class HateoasWrapper[+A](payload: A, links: Seq[Link])
 
 object HateoasWrapper {
 

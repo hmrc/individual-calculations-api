@@ -19,15 +19,20 @@ package v5.submitFinalDeclaration
 import api.controllers.validators.Validator
 import v5.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 import javax.inject.Singleton
 
 @Singleton
 class SubmitFinalDeclarationValidatorFactory {
 
-  def validator(nino: String, taxYear: String, calculationId: String): Validator[SubmitFinalDeclarationRequestData] = {
-    new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId)
+  def validator(nino: String,
+                taxYear: String,
+                calculationId: String,
+                schema: SubmitFinalDeclarationSchema): Validator[SubmitFinalDeclarationRequestData] =
+    schema match {
+      case SubmitFinalDeclarationSchema.Def1 => new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId)
 
-  }
+    }
 
 }

@@ -18,11 +18,11 @@ package v5.retrieveCalculation
 
 import api.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
 import api.connectors.httpparsers.StandardDownstreamHttpParser._
-import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
-import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationResponse}
+import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,25 +35,16 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfi
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
 
-    request match {
-      case tysDef1: Def1_RetrieveCalculationRequestData if tysDef1.taxYear.useTaxYearSpecificApi =>
-        import tysDef1._
+    import request._
+    import schema._
 
-        val downstreamUri = TaxYearSpecificIfsUri[Def1_RetrieveCalculationResponse](
-          s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId"
-        )
-        val result = get(downstreamUri)
-        result
-
-      case nonTysDef1: Def1_RetrieveCalculationRequestData =>
-        import nonTysDef1._
-
-        val downstreamUri = IfsUri[Def1_RetrieveCalculationResponse](
-          s"income-tax/view/calculations/liability/$nino/$calculationId"
-        )
-        val result = get(downstreamUri)
-        result
+    val downstreamUri: DownstreamUri[DownstreamResp] = if (taxYear.useTaxYearSpecificApi) {
+      TaxYearSpecificIfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
+    } else {
+      IfsUri(s"income-tax/view/calculations/liability/$nino/$calculationId")
     }
+
+    get(downstreamUri)
   }
 
 }

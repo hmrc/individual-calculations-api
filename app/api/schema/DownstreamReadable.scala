@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package v5.triggerCalculation.model.request
+package api.schema
 
-import api.models.domain.{Nino, TaxYear}
-import v5.triggerCalculation.schema.TriggerCalculationSchema
+import play.api.libs.json.Reads
 
-sealed trait TriggerCalculationRequestData {
-  val nino: Nino
-  val taxYear: TaxYear
-  val finalDeclaration: Boolean
+trait DownstreamReadable[Base] {
 
-  val schema: TriggerCalculationSchema
-}
+  /** This is the type of response returned by the connector.
+   *
+   * It is not necessarily the same as the response type returned by the service to the controller.
+   */
+  type DownstreamResp <: Base
 
-case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean) extends TriggerCalculationRequestData {
-  override val schema: TriggerCalculationSchema = TriggerCalculationSchema.Def1
+  implicit def connectorReads: Reads[DownstreamResp]
 }

@@ -19,12 +19,13 @@ package v5.submitFinalDeclaration
 import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 trait MockSubmitFinalDeclarationValidatorFactory extends MockValidatorFactory[SubmitFinalDeclarationRequestData] {
 
   val mockSubmitFinalDeclarationValidatorFactory: SubmitFinalDeclarationValidatorFactory = mock[SubmitFinalDeclarationValidatorFactory]
 
   def validator(): CallHandler[Validator[SubmitFinalDeclarationRequestData]] =
-    (mockSubmitFinalDeclarationValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
+    (mockSubmitFinalDeclarationValidatorFactory.validator(_: String, _: String, _: String, _: SubmitFinalDeclarationSchema)).expects(*, *, *, *)
 
 }

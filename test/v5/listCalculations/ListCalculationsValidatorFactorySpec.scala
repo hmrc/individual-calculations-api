@@ -20,6 +20,7 @@ import api.controllers.validators.Validator
 import support.UnitSpec
 import v5.listCalculations.def1.Def1_ListCalculationsValidator
 import v5.listCalculations.model.request.ListCalculationsRequestData
+import v5.listCalculations.schema.ListCalculationsSchema
 
 import javax.inject.Singleton
 
@@ -33,10 +34,10 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
 
   "validator()" when {
 
-    "given any request regardless of tax year" should {
+    "given any request for schema definition 1" should {
       "return the Validator for schema definition 1" in {
         val result: Validator[ListCalculationsRequestData] =
-          validatorFactory.validator(validNino, taxYear = Some(validTaxYear))
+          validatorFactory.validator(validNino, taxYear = Some(validTaxYear), ListCalculationsSchema.Def1)
 
         result shouldBe a[Def1_ListCalculationsValidator]
       }
