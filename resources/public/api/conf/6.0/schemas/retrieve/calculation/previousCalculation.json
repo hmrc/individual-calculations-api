@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about the previous calculation to the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "calculationTimestamp": {
+      "description": "The timestamp of the previous calculation, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+      "type": "string",
+      "example": "2019-06-17T09:22:59.094Z"
+    },
+    "calculationId": {
+      "description": "The unique identifier of the calculation.",
+      "type": "string",
+      "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "example": "717f3a7a-db8e-11e9-8a34-2a2ae2dbcce4"
+    },
+    "totalIncomeTaxAndNicsDue": {
+      "description": "Total Income Tax and National Insurance Contributions (NICs) due in the previous calculation. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    },
+    "cgtTaxDue": {
+      "description": "The Capital Gains Tax (CGT) due in the previous calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0.00,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    },
+    "totalIncomeTaxAndNicsAndCgtDue": {
+      "description": "Total Income Tax, NICs and CGT due in the previous calculation. This is the sum of cgtTaxDue and totalIncomeTaxAndNicsDue. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    },
+    "incomeTaxNicDueThisPeriod": {
+      "description": "The Income Tax and NICs due. The difference between this calculation and the previous calculation. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    },
+    "cgtDueThisPeriod": {
+      "description": "The Capital Gains Tax due. The difference between this calculation and the previous calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0.00,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    },
+    "totalIncomeTaxAndNicsAndCgtDueThisPeriod": {
+      "description": "Total Income Tax, NICS, and CGT due this period. This is the sum of cgtDueThisPeriod and incomeTaxNicDueThisPeriod. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "2000.58"
+    }
+  },
+  "additionalProperties": false
+}
