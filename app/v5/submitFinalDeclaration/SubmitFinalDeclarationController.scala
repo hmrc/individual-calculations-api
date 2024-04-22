@@ -18,15 +18,15 @@ package v5.submitFinalDeclaration
 
 import api.controllers._
 import api.models.errors.InternalError
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService, ServiceOutcome}
+import api.services._
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.{IdGenerator, Logging}
-import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
-import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.retrieveCalculation.RetrieveCalculationService
+import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
@@ -78,26 +78,21 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       requestHandler.handleRequest()
     }
 
-  private def updateNrs(nino: String, parsedRequest: SubmitFinalDeclarationRequestData)(implicit
+  private def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
-    retrieveCalculationDetails(parsedRequest) map {
-      case Left(_) =>
-        nrsProxyService.submit(nino, "itsa-crystallisation", parsedRequest.toNrsJson)
-
-      case Right(responseWrapper) =>
-        nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(responseWrapper.responseData))
+    retrieveCalculationDetails(submitRequest.toRetrieveRequestData) map {
+      case Left(_)                => nrsProxyService.submit(nino, "itsa-crystallisation", submitRequest.toNrsJson)
+      case Right(responseWrapper) => nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(responseWrapper.responseData))
     }
   }
 
-  private def retrieveCalculationDetails(parsedRequest: SubmitFinalDeclarationRequestData, attempt: Int = 1)(implicit
+  private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
-    import parsedRequest._
 
-    val retrieveRequest = Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
         Future.successful(Right(result))
@@ -105,7 +100,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       case Left(error) =>
         if (attempt <= maxNrsAttempts) {
           Thread.sleep(interval)
-          retrieveCalculationDetails(parsedRequest, attempt + 1)
+          retrieveCalculationDetails(retrieveRequest, attempt + 1)
         } else {
           logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
           Future.successful(Left(error.copy(error = InternalError, errors = None)))
