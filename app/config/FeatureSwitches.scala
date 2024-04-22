@@ -20,15 +20,15 @@ import play.api.Configuration
 
 case class FeatureSwitches(featureSwitchConfig: Configuration) {
 
-  val isR8bSpecificApiEnabled: Boolean             = isConfigTrue("r8b-api.enabled")
-  val isRetrieveSAAdditionalFieldsEnabled: Boolean = isConfigTrue("retrieveSAAdditionalFields.enabled")
-  val isCl290Enabled: Boolean                      = isConfigTrue("cl290.enabled")
-  val isBasicRateDivergenceEnabled: Boolean        = isConfigTrue("basicRateDivergence.enabled")
+  val isR8bSpecificApiEnabled: Boolean             = isEnabled("r8b-api")
+  val isRetrieveSAAdditionalFieldsEnabled: Boolean = isEnabled("retrieveSAAdditionalFields")
+  val isCl290Enabled: Boolean                      = isEnabled("cl290")
+  val isBasicRateDivergenceEnabled: Boolean        = isEnabled("basicRateDivergence")
 
   def isReleasedInProduction(feature: String): Boolean = isConfigTrue(feature + ".released-in-production")
+  def isEnabled(feature: String): Boolean              = isConfigTrue(feature + ".enabled")
 
-  def isEnabled(key: String): Boolean            = isConfigTrue(key + ".enabled")
-  private def isConfigTrue(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
+  private def isConfigTrue(feature: String): Boolean = featureSwitchConfig.getOptional[Boolean](feature).getOrElse(true)
 }
 
 object FeatureSwitches {
