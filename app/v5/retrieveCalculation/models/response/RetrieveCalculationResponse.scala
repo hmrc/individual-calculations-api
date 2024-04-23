@@ -21,6 +21,7 @@ import api.models.domain.TaxYear
 import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.retrieveCalculation._
+import v5.retrieveCalculation.def2.model.response.calculation.Calculation
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -195,7 +196,14 @@ case class Def2_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = this
+  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
+    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
+      this
+    } else {
+      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
+    }
+  }
+
 }
 
 object Def2_RetrieveCalculationResponse {

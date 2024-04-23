@@ -187,5 +187,19 @@ object Calculation {
       }
     )
   }
+  
+  // format: off
+  val empty: Calculation = Calculation(
+    None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,
+    None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+  )
+  // format: on
+
+  def withoutTransitionProfit(maybeCalculation: Option[Calculation]): Option[Calculation] = {
+    maybeCalculation.flatMap { calc =>
+      val updated = calc.copy(transitionProfit = None)
+      if (updated == empty) None else Some(updated)
+    }
+  }
 
 }
