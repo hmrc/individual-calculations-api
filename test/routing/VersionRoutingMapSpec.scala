@@ -30,41 +30,21 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
   "map" when {
     "routing to v4, v5 or v6" should {
 
-      s"route to ${v4Routes.toString}" in {
+      val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
+        defaultRouter = defaultRouter,
+        v4Router = v4Routes,
+        v5Router = v5Routes,
+        v6Router = v6Routes
+      )
 
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v4Router = v4Routes,
-          v5Router = v5Routes,
-          v6Router = v6Routes
-        )
+        s"route to each version" in {
+          versionRoutingMap.map(Version4) shouldBe v4Routes
+          versionRoutingMap.map(Version5) shouldBe v5Routes
+          versionRoutingMap.map(Version6) shouldBe v6Routes
 
-        versionRoutingMap.map(Version4) shouldBe v4Routes
+        }
       }
 
-      s"route to ${v5Routes.toString}" in {
-
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v4Router = v4Routes,
-          v5Router = v5Routes,
-          v6Router = v6Routes
-        )
-
-        versionRoutingMap.map(Version5) shouldBe v5Routes
-      }
-
-      s"route to ${v6Routes.toString}" in {
-
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v4Router = v4Routes,
-          v5Router = v5Routes,
-          v6Router = v6Routes
-        )
-
-        versionRoutingMap.map(Version5) shouldBe v5Routes
-      }
     }
   }
 
