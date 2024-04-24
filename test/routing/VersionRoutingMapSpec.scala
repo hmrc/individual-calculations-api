@@ -37,15 +37,14 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
         v6Router = v6Routes
       )
 
-        s"route to each version" in {
-          versionRoutingMap.map(Version4) shouldBe v4Routes
-          versionRoutingMap.map(Version5) shouldBe v5Routes
-          versionRoutingMap.map(Version6) shouldBe v6Routes
+      s"route to each version" in {
+        versionRoutingMap.map(Version4) shouldBe v4Routes
+        versionRoutingMap.map(Version5) shouldBe v5Routes
+        versionRoutingMap.map(Version6) shouldBe v6Routes
 
-        }
       }
-
     }
+
   }
 
 }
