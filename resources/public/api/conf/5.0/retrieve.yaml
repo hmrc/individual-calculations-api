@@ -53,12 +53,18 @@ get:
       content:
         application/json:
           schema:
-            $ref: ./schemas/retrieve_response.json
+            oneOf:
+              - $ref: ./schemas/retrieve/def1/retrieve_response.json
+              - $ref: ./schemas/retrieve/def2/retrieve_response.json
           examples:
-            example-response:
+            example-response-TY-2023-24-or-before:
               description: Example Response
               value:
-                $ref: ./examples/retrieve/retrieve_response.json
+                $ref: ./examples/retrieve/def1/retrieve_response.json
+            example-response-TY-2024-25-or-later:
+              description: Example Response
+              value:
+                $ref: ./examples/retrieve/def2/retrieve_response.json
 
     400:
       description: Bad request

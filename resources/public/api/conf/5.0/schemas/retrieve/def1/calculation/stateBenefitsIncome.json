@@ -40,7 +40,7 @@
                 "example": "5003.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [
@@ -68,7 +68,7 @@
                 "example": "5004.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "additionalProperties": false,
@@ -106,7 +106,7 @@
                 "example": "4.85"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [
@@ -140,7 +140,7 @@
                 "example": "5009.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [
@@ -173,7 +173,7 @@
                 "example": "5011.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [
@@ -201,7 +201,7 @@
                 "example": "5012.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [
@@ -229,7 +229,7 @@
                 "example": "5013.99"
               },
               "source": {
-                "$ref": "../common_defs.json#/definitions/dataSource"
+                "$ref": "../def1/common_defs.json#/definitions/dataSource"
               }
             },
             "required": [

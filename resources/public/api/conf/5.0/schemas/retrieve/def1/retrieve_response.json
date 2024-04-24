@@ -1,19 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TY 2023-24 or before",
   "description": "Retrieve a Self Assessment Tax Calculation",
   "type": "object",
   "properties": {
     "metadata": {
-      "$ref": "retrieve/metadata.json"
+      "$ref": "metadata.json"
     },
     "inputs": {
-      "$ref": "retrieve/inputs.json"
+      "$ref": "inputs.json"
     },
     "calculation": {
-      "$ref": "retrieve/calculation.json"
+      "$ref": "calculation.json"
     },
     "messages": {
-      "$ref": "retrieve/messages.json"
+      "$ref": "messages.json"
     },
     "links": {
       "type": "array",
