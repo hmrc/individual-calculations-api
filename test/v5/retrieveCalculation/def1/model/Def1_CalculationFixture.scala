@@ -18,17 +18,17 @@ package v5.retrieveCalculation.def1.model
 
 import api.models.domain.TaxYear
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v5.retrieveCalculation.def1.model.response.calculation.Def1_Calculation
-import v5.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{Def1_EmploymentAndPensionsIncome, Def1_EmploymentAndPensionsIncomeDetail}
-import v5.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.Def1_EndOfYearEstimate
-import v5.retrieveCalculation.def1.model.response.calculation.otherIncome.{Def1_OtherIncome, Def1_PostCessationIncome, Def1_PostCessationReceipt}
-import v5.retrieveCalculation.def1.model.response.calculation.reliefs.{Def1_BasicRateExtension, Def1_GiftAidTaxReductionWhereBasicRateDiffers, Def1_Reliefs}
-import v5.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Def1_Class2Nics, Def1_IncomeTax, Def1_Nics, Def1_TaxCalculation}
-import v5.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.Def1_TaxDeductedAtSource
-import v5.retrieveCalculation.def1.model.response.common.Def1_CalculationType.`inYear`
-import v5.retrieveCalculation.def1.model.response.common.Def1_IncomeSourceType
+import v5.retrieveCalculation.def1.model.response.calculation.Calculation
+import v5.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
+import v5.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
+import v5.retrieveCalculation.def1.model.response.calculation.otherIncome.{OtherIncome, PostCessationIncome, PostCessationReceipt}
+import v5.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
+import v5.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
+import v5.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
+import v5.retrieveCalculation.def1.model.response.common.CalculationType.`inYear`
+import v5.retrieveCalculation.def1.model.response.common.IncomeSourceType
 import v5.retrieveCalculation.def1.model.response.inputs._
-import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
+import v5.retrieveCalculation.def1.model.response.metadata.Metadata
 import v5.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 trait Def1_CalculationFixture {
@@ -38,14 +38,14 @@ trait Def1_CalculationFixture {
   val incomeTaxValue = 50
 
   val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation_mtd.json"))
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
   val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/models/response/retrieveCalculation/calculation_downstream.json"))
+    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_downstream.json"))
 
-  val reliefs: Def1_Reliefs = Def1_Reliefs(
+  val reliefs: Reliefs = Reliefs(
     basicRateExtension =
-      Some(Def1_BasicRateExtension(totalBasicRateExtension = Some(totalBasicRateExtension), giftAidRelief = None, pensionContributionReliefs = None)),
+      Some(BasicRateExtension(totalBasicRateExtension = Some(totalBasicRateExtension), giftAidRelief = None, pensionContributionReliefs = None)),
     residentialFinanceCosts = None,
     foreignTaxCreditRelief = None,
     topSlicingRelief = None,
@@ -53,10 +53,10 @@ trait Def1_CalculationFixture {
     giftAidTaxReductionWhereBasicRateDiffers = None
   )
 
-  val reliefsWithBasicRateDivergenceData: Def1_Reliefs =
-    reliefs.copy(basicRateExtension = None, giftAidTaxReductionWhereBasicRateDiffers = Some(Def1_GiftAidTaxReductionWhereBasicRateDiffers(Some(2000.25))))
+  val reliefsWithBasicRateDivergenceData: Reliefs =
+    reliefs.copy(basicRateExtension = None, giftAidTaxReductionWhereBasicRateDiffers = Some(GiftAidTaxReductionWhereBasicRateDiffers(Some(2000.25))))
 
-  val class2Nics: Def1_Class2Nics = Def1_Class2Nics(
+  val class2Nics: Class2Nics = Class2Nics(
     amount = None,
     weeklyRate = None,
     weeks = None,
@@ -67,12 +67,12 @@ trait Def1_CalculationFixture {
     actualClass2Nic = None
   )
 
-  val class2NicsWithoutUnderLowerProfitThreshold: Def1_Class2Nics = class2Nics.copy(underLowerProfitThreshold = None)
+  val class2NicsWithoutUnderLowerProfitThreshold: Class2Nics = class2Nics.copy(underLowerProfitThreshold = None)
 
-  val nics: Def1_Nics = Def1_Nics(class2Nics = Some(class2Nics), class4Nics = None, nic2NetOfDeductions = None, nic4NetOfDeductions = None, totalNic = None)
-  val nicsWithoutUnderLowerProfitThreshold: Def1_Nics = nics.copy(class2Nics = Some(class2NicsWithoutUnderLowerProfitThreshold))
+  val nics: Nics = Nics(class2Nics = Some(class2Nics), class4Nics = None, nic2NetOfDeductions = None, nic4NetOfDeductions = None, totalNic = None)
+  val nicsWithoutUnderLowerProfitThreshold: Nics = nics.copy(class2Nics = Some(class2NicsWithoutUnderLowerProfitThreshold))
 
-  val incomeTax: Def1_IncomeTax = Def1_IncomeTax(
+  val incomeTax: IncomeTax = IncomeTax(
     totalIncomeReceivedFromAllSources = incomeTaxValue,
     totalAllowancesAndDeductions = incomeTaxValue,
     totalTaxableIncome = incomeTaxValue,
@@ -95,9 +95,9 @@ trait Def1_CalculationFixture {
     giftAidTaxChargeWhereBasicRateDiffers = None
   )
 
-  val incomeTaxWithBasicRateDivergenceData: Def1_IncomeTax = incomeTax.copy(giftAidTaxChargeWhereBasicRateDiffers = Some(2000.25))
+  val incomeTaxWithBasicRateDivergenceData: IncomeTax = incomeTax.copy(giftAidTaxChargeWhereBasicRateDiffers = Some(2000.25))
 
-  val taxCalculation: Def1_TaxCalculation = Def1_TaxCalculation(
+  val taxCalculation: TaxCalculation = TaxCalculation(
     incomeTax = Some(incomeTax),
     nics = Some(nics),
     totalTaxDeductedBeforeCodingOut = None,
@@ -112,11 +112,11 @@ trait Def1_CalculationFixture {
     totalIncomeTaxAndNicsAndCgt = None
   )
 
-  val taxCalculationWithBasicRateDivergenceData: Def1_TaxCalculation = taxCalculation.copy(incomeTax = Some(incomeTaxWithBasicRateDivergenceData))
+  val taxCalculationWithBasicRateDivergenceData: TaxCalculation = taxCalculation.copy(incomeTax = Some(incomeTaxWithBasicRateDivergenceData))
 
-  val taxCalculationWithoutUnderLowerProfitThreshold: Def1_TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
+  val taxCalculationWithoutUnderLowerProfitThreshold: TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
 
-  val employmentAndPensionsIncomeDetails: Def1_EmploymentAndPensionsIncomeDetail = Def1_EmploymentAndPensionsIncomeDetail(
+  val employmentAndPensionsIncomeDetails: EmploymentAndPensionsIncomeDetail = EmploymentAndPensionsIncomeDetail(
     incomeSourceId = None,
     source = None,
     occupationalPension = None,
@@ -134,7 +134,7 @@ trait Def1_CalculationFixture {
     benefitsInKind = None
   )
 
-  val employmentAndPensionsIncome: Def1_EmploymentAndPensionsIncome = Def1_EmploymentAndPensionsIncome(
+  val employmentAndPensionsIncome: EmploymentAndPensionsIncome = EmploymentAndPensionsIncome(
     totalPayeEmploymentAndLumpSumIncome = None,
     totalOccupationalPensionIncome = None,
     totalBenefitsInKind = None,
@@ -142,7 +142,7 @@ trait Def1_CalculationFixture {
     employmentAndPensionsIncomeDetail = Some(Seq(employmentAndPensionsIncomeDetails))
   )
 
-  val eoyEstimates: Def1_EndOfYearEstimate = Def1_EndOfYearEstimate(
+  val eoyEstimates: EndOfYearEstimate = EndOfYearEstimate(
     incomeSource = None,
     totalEstimatedIncome = None,
     totalAllowancesAndDeductions = Some(totalAllowancesAndDeductions),
@@ -163,7 +163,7 @@ trait Def1_CalculationFixture {
   )
   // @formatter:on
 
-  val calculationWithR8BData: Def1_Calculation = Def1_Calculation(
+  val calculationWithR8BData: Calculation = Calculation(
     reliefs = Some(reliefs),
     allowancesAndDeductions = None,
     taxDeductedAtSource = None,
@@ -195,19 +195,19 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val taxDeductedAtSource: Def1_TaxDeductedAtSource =
-    Def1_TaxDeductedAtSource(None, None, None, None, None, None, None, None, None, None, taxTakenOffTradingIncome = Some(2000.00))
+  val taxDeductedAtSource: TaxDeductedAtSource =
+    TaxDeductedAtSource(None, None, None, None, None, None, None, None, None, None, taxTakenOffTradingIncome = Some(2000.00))
 
-  val otherIncome: Def1_OtherIncome =
-    Def1_OtherIncome(
+  val otherIncome: OtherIncome =
+    OtherIncome(
       totalOtherIncome = 2000.00,
       postCessationIncome = Some(
-        Def1_PostCessationIncome(
+        PostCessationIncome(
           totalPostCessationReceipts = 2000.00,
-          postCessationReceipts = Seq(Def1_PostCessationReceipt(amount = 100.00, taxYearIncomeToBeTaxed = "2019-20"))))
+          postCessationReceipts = Seq(PostCessationReceipt(amount = 100.00, taxYearIncomeToBeTaxed = "2019-20"))))
     )
 
-  val calculationWithAdditionalFields: Def1_Calculation = Def1_Calculation(
+  val calculationWithAdditionalFields: Calculation = Calculation(
     reliefs = None,
     allowancesAndDeductions = None,
     taxDeductedAtSource = None,
@@ -239,7 +239,7 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithCl290Enabled: Def1_Calculation = Def1_Calculation(
+  val calculationWithCl290Enabled: Calculation = Calculation(
     reliefs = None,
     allowancesAndDeductions = None,
     taxDeductedAtSource = Some(taxDeductedAtSource),
@@ -271,7 +271,7 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithBasicRateDivergenceEnabled: Def1_Calculation = Def1_Calculation(
+  val calculationWithBasicRateDivergenceEnabled: Calculation = Calculation(
     reliefs = Some(reliefsWithBasicRateDivergenceData),
     allowancesAndDeductions = None,
     taxDeductedAtSource = None,
@@ -303,10 +303,10 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithR8BDisabled: Def1_Calculation =
+  val calculationWithR8BDisabled: Calculation =
     calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
 
-  val metadata: Def1_Metadata = Def1_Metadata(
+  val metadata: Metadata = Metadata(
     calculationId = "",
     taxYear = TaxYear.fromDownstream("2018"),
     requestedBy = "",
@@ -320,20 +320,20 @@ trait Def1_CalculationFixture {
     periodFrom = "",
     periodTo = ""
   )
-  val metadataWithBasicRateDivergenceData: Def1_Metadata = metadata.copy(taxYear = TaxYear.fromDownstream("2025"))
+  val metadataWithBasicRateDivergenceData: Metadata = metadata.copy(taxYear = TaxYear.fromDownstream("2025"))
 
-  val inputs: Def1_Inputs = Def1_Inputs(
-    Def1_PersonalInformation("", None, "UK", None, None, None, None, None, None),
-    Def1_IncomeSources(None, None),
+  val inputs: Inputs = Inputs(
+    PersonalInformation("", None, "UK", None, None, None, None, None, None),
+    IncomeSources(None, None),
     // @formatter:off
     None, None, None, None,
     None, None, None
   )
   // @formatter:on
 
-  val businessIncomeSourceWithAdditionalField: Def1_BusinessIncomeSource = Def1_BusinessIncomeSource(
+  val businessIncomeSourceWithAdditionalField: BusinessIncomeSource = BusinessIncomeSource(
     incomeSourceId = "000000000000210",
-    incomeSourceType = Def1_IncomeSourceType.`self-employment`,
+    incomeSourceType = IncomeSourceType.`self-employment`,
     incomeSourceName = Some("string"),
     accountingPeriodStartDate = "2018-04-06",
     accountingPeriodEndDate = "2019-04-05",
@@ -346,7 +346,7 @@ trait Def1_CalculationFixture {
     finalisationTimestamp = Some("2019-02-15T09:35:15.094Z"),
     submissionPeriods = Some(
       Seq(
-        Def1_SubmissionPeriod(
+        SubmissionPeriod(
           periodId = Some("001"),
           startDate = "2018-04-06",
           endDate = "2019-04-05",
@@ -354,9 +354,9 @@ trait Def1_CalculationFixture {
         )))
   )
 
-  val inputsWithAdditionalFields: Def1_Inputs = Def1_Inputs(
-    Def1_PersonalInformation("", None, "UK", None, None, None, None, None, Some("No status")),
-    Def1_IncomeSources(Some(Seq(businessIncomeSourceWithAdditionalField)), None),
+  val inputsWithAdditionalFields: Inputs = Inputs(
+    PersonalInformation("", None, "UK", None, None, None, None, None, Some("No status")),
+    IncomeSources(Some(Seq(businessIncomeSourceWithAdditionalField)), None),
     // @formatter:off
     None, None, None, None,
     None, None, None
@@ -392,20 +392,20 @@ trait Def1_CalculationFixture {
   )
 
   // @formatter:off
-  val emptyCalculation: Def1_Calculation = Def1_Calculation(
+  val emptyCalculation: Calculation = Calculation(
     None, None, None, None, None, None,
     None, None, None, None, None, None,
     None, None, None, None, None, None,
     None, None, None, None, None, None,
     None, None, None, None, None)
 
-  val calcWithoutEndOfYearEstimate: Def1_Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
+  val calcWithoutEndOfYearEstimate: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
 
 
-  val calcWithoutBasicExtension: Def1_Calculation = emptyCalculation.copy(endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
+  val calcWithoutBasicExtension: Calculation = emptyCalculation.copy(endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
 
- val calcWithoutOffPayrollWorker: Def1_Calculation = emptyCalculation.copy(reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), taxCalculation = Some(taxCalculation))
-  val calcWithoutUnderLowerProfitThreshold: Def1_Calculation = emptyCalculation.copy(taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
+ val calcWithoutOffPayrollWorker: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), taxCalculation = Some(taxCalculation))
+  val calcWithoutUnderLowerProfitThreshold: Calculation = emptyCalculation.copy(taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
   // @formatter:on
 
   val minimalCalculationResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(

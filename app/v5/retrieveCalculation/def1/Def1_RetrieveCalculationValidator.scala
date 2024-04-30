@@ -24,10 +24,14 @@ import cats.data.Validated
 import cats.implicits._
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
+object Def1_RetrieveCalculationValidator {
+  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+}
+
 class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {
 
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+  import Def1_RetrieveCalculationValidator._
 
   def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
     (
@@ -35,4 +39,5 @@ class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculati
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
     ).mapN(Def1_RetrieveCalculationRequestData)
+
 }

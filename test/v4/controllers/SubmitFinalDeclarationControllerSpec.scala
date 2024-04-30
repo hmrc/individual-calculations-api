@@ -16,23 +16,22 @@
 
 package v4.controllers
 
+import api.connectors.MockNrsProxyConnector
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.mocks.MockIdGenerator
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import api.models.outcomes.ResponseWrapper
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, StubNrsProxyService}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import v4.controllers.validators.MockSubmitFinalDeclarationValidatorFactory
-import v4.mocks.connectors.MockNrsProxyConnector
 import v4.mocks.services._
 import v4.models.request._
 import v4.models.response.retrieveCalculation.CalculationFixture
-import v4.services.StubNrsProxyService
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

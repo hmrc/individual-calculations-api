@@ -20,10 +20,10 @@ import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
 import config.{AppConfig, FeatureSwitches}
 import play.api.libs.json.{Json, OWrites, Reads}
-import v5.retrieveCalculation.def1.model.response.calculation.Def1_Calculation
-import v5.retrieveCalculation.def1.model.response.inputs.Def1_Inputs
-import v5.retrieveCalculation.def1.model.response.messages.Def1_Messages
-import v5.retrieveCalculation.def1.model.response.metadata.Def1_Metadata
+import v5.retrieveCalculation._
+import v5.retrieveCalculation.def2.model.response.calculation.Calculation
+
+import scala.math.Ordered.orderingToOrdered
 
 sealed trait RetrieveCalculationResponse {
   def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
@@ -37,8 +37,9 @@ sealed trait RetrieveCalculationResponse {
 
 object RetrieveCalculationResponse extends HateoasLinks {
 
-  implicit val writes: OWrites[RetrieveCalculationResponse] = { case def1: Def1_RetrieveCalculationResponse =>
-    Json.toJsObject(def1)
+  implicit val writes: OWrites[RetrieveCalculationResponse] = {
+    case def1: Def1_RetrieveCalculationResponse => Json.toJsObject(def1)
+    case def2: Def2_RetrieveCalculationResponse => Json.toJsObject(def2)
   }
 
   implicit object RetrieveAnnualSubmissionLinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
@@ -66,10 +67,10 @@ object RetrieveCalculationResponse extends HateoasLinks {
 }
 
 case class Def1_RetrieveCalculationResponse(
-    metadata: Def1_Metadata,
-    inputs: Def1_Inputs,
-    calculation: Option[Def1_Calculation],
-    messages: Option[Def1_Messages]
+    metadata: def1.model.response.metadata.Metadata,
+    inputs: def1.model.response.inputs.Inputs,
+    calculation: Option[def1.model.response.calculation.Calculation],
+    messages: Option[def1.model.response.messages.Messages]
 ) extends RetrieveCalculationResponse {
 
   override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
@@ -96,7 +97,8 @@ case class Def1_RetrieveCalculationResponse(
       if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
     def updateModelBasicRateDivergence(taxYear: String, response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse = {
-      if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear).is2025) response else response.withoutBasicRateDivergenceUpdates
+      if (isBasicRateDivergenceEnabled && TaxYear.fromMtd(taxYear) >= TaxYear.fromMtd("2024-25")) response
+      else response.withoutBasicRateDivergenceUpdates
     }
 
     val responseMaybeWithoutR8b              = updateModelR8b(this)
@@ -158,10 +160,10 @@ case class Def1_RetrieveCalculationResponse(
 
 object Def1_RetrieveCalculationResponse {
 
-  def apply(metadata: Def1_Metadata,
-            inputs: Def1_Inputs,
-            calculation: Option[Def1_Calculation],
-            messages: Option[Def1_Messages]): Def1_RetrieveCalculationResponse = {
+  def apply(metadata: def1.model.response.metadata.Metadata,
+            inputs: def1.model.response.inputs.Inputs,
+            calculation: Option[def1.model.response.calculation.Calculation],
+            messages: Option[def1.model.response.messages.Messages]): Def1_RetrieveCalculationResponse = {
     new Def1_RetrieveCalculationResponse(
       metadata,
       inputs,
@@ -173,6 +175,42 @@ object Def1_RetrieveCalculationResponse {
   implicit val reads: Reads[Def1_RetrieveCalculationResponse] = Json.reads[Def1_RetrieveCalculationResponse]
 
   implicit val writes: OWrites[Def1_RetrieveCalculationResponse] = Json.writes[Def1_RetrieveCalculationResponse]
+
+}
+
+case class Def2_RetrieveCalculationResponse(
+    metadata: def2.model.response.metadata.Metadata,
+    inputs: def2.model.response.inputs.Inputs,
+    calculation: Option[def2.model.response.calculation.Calculation],
+    messages: Option[def2.model.response.messages.Messages]
+) extends RetrieveCalculationResponse {
+
+  override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
+
+  override def finalDeclaration: Boolean = metadata.finalDeclaration
+
+  override def hasErrors: Boolean = {
+    for {
+      messages <- messages
+      errors   <- messages.errors
+    } yield errors.nonEmpty
+  }.getOrElse(false)
+
+  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
+    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
+      this
+    } else {
+      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
+    }
+  }
+
+}
+
+object Def2_RetrieveCalculationResponse {
+
+  implicit val reads: Reads[Def2_RetrieveCalculationResponse] = Json.reads[Def2_RetrieveCalculationResponse]
+
+  implicit val writes: OWrites[Def2_RetrieveCalculationResponse] = Json.writes[Def2_RetrieveCalculationResponse]
 
 }
 

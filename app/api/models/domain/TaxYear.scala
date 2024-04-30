@@ -64,8 +64,6 @@ final case class TaxYear private (private val value: String) {
     */
   def useTaxYearSpecificApi: Boolean = year >= 2024
 
-  def is2025: Boolean = year >= 2025
-
   override def toString: String = s"TaxYear($value)"
 }
 

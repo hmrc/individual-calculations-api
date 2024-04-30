@@ -16,10 +16,9 @@
 
 package v5.retrieveCalculation
 
-import api.controllers.validators.Validator
 import support.UnitSpec
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
-import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v5.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
@@ -30,14 +29,19 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
 
   private val validatorFactory = new RetrieveCalculationValidatorFactory
 
-  "validator()" when {
+  "validator factory" when {
 
-    "given any request regardless of tax year" should {
+    "given any request for schema 1" should {
       "return the Validator for schema definition 1" in {
-        val result: Validator[RetrieveCalculationRequestData] =
-          validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def1)
+        validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def1) shouldBe
+          a[Def1_RetrieveCalculationValidator]
+      }
+    }
 
-        result shouldBe a[Def1_RetrieveCalculationValidator]
+    "given any request for schema 2" should {
+      "return the Validator for schema definition 2" in {
+        validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def2) shouldBe
+          a[Def2_RetrieveCalculationValidator]
       }
     }
 

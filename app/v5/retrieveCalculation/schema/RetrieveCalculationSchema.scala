@@ -20,7 +20,7 @@ import api.controllers.validators.resolvers.ResolveTaxYear
 import api.models.domain.TaxYear
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, RetrieveCalculationResponse}
+import v5.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, Def2_RetrieveCalculationResponse, RetrieveCalculationResponse}
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -33,18 +33,21 @@ object RetrieveCalculationSchema {
     val connectorReads: Reads[DownstreamResp] = Def1_RetrieveCalculationResponse.reads
   }
 
-  private val defaultSchema = Def1
+  case object Def2 extends RetrieveCalculationSchema {
+    type DownstreamResp = Def2_RetrieveCalculationResponse
+    val connectorReads: Reads[DownstreamResp] = Def2_RetrieveCalculationResponse.reads
+  }
+
+  private val latestSchema = Def2
 
   def schemaFor(taxYear: String): RetrieveCalculationSchema =
     ResolveTaxYear(taxYear).toOption
       .map(schemaFor)
-      .getOrElse(defaultSchema)
+      .getOrElse(latestSchema)
 
   def schemaFor(taxYear: TaxYear): RetrieveCalculationSchema =
-    if (TaxYear.starting(2023) <= taxYear) {
-      Def1
-    } else {
-      defaultSchema
-    }
+    if (taxYear <= TaxYear.starting(2023)) Def1
+    else if (taxYear == TaxYear.starting(2024)) Def2
+    else latestSchema
 
 }

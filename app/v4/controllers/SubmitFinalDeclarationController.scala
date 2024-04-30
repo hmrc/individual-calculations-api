@@ -18,7 +18,7 @@ package v4.controllers
 
 import api.controllers._
 import api.models.errors.InternalError
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService, ServiceOutcome}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
