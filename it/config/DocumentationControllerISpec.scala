@@ -21,7 +21,7 @@ import play.api.http.Status
 import play.api.http.Status.OK
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.WSResponse
-import routing.{Version4, Version5}
+import routing.{Version4, Version5, Version6}
 import support.IntegrationBaseSpec
 import uk.gov.hmrc.auth.core.ConfidenceLevel
 
@@ -65,6 +65,11 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
       |        "version":"5.0",
       |        "status":"BETA",
       |        "endpointsEnabled":true
+      |      },
+      |      {
+      |        "version":"6.0",
+      |        "status":"BETA",
+      |        "endpointsEnabled":true
       |      }
       |    ]
       |  }
@@ -80,7 +85,7 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
   }
 
   "an OAS documentation request" must {
-    Seq(Version4, Version5).foreach { version =>
+    Seq(Version4, Version5, Version6).foreach { version =>
       s"return the documentation for $version" in {
         val response = get(s"/api/conf/$version/application.yaml")
         response.status shouldBe Status.OK

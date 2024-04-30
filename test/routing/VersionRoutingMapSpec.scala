@@ -25,32 +25,31 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
   val defaultRouter: Router = mock[Router]
   val v4Routes: v4.Routes   = app.injector.instanceOf[v4.Routes]
   val v5Routes: v5.Routes   = app.injector.instanceOf[v5.Routes]
+  val v6Routes: v6.Routes   = app.injector.instanceOf[v6.Routes]
 
   "map" when {
-    "routing to v4 or v5" should {
+    "routing to v4, v5 or v6" should {
+
+      val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
+        defaultRouter = defaultRouter,
+        v4Router = v4Routes,
+        v5Router = v5Routes,
+        v6Router = v6Routes
+      )
 
       s"route to ${v4Routes.toString}" in {
-
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v4Router = v4Routes,
-          v5Router = v5Routes
-        )
-
         versionRoutingMap.map(Version4) shouldBe v4Routes
       }
 
       s"route to ${v5Routes.toString}" in {
-
-        val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
-          defaultRouter = defaultRouter,
-          v4Router = v4Routes,
-          v5Router = v5Routes
-        )
-
         versionRoutingMap.map(Version5) shouldBe v5Routes
       }
+
+      s"route to ${v6Routes.toString}" in {
+        versionRoutingMap.map(Version6) shouldBe v6Routes
+      }
     }
+
   }
 
 }
