@@ -48,7 +48,7 @@
             "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
           },
           "source": {
-            "$ref": "../def1/common_defs.json#/definitions/dataSource"
+            "$ref": "../common_defs.json#/definitions/dataSource"
           },
           "occupationalPension": {
             "description": "A boolean to identify whether the occupational pension is true or false.",
