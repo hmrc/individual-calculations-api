@@ -9,7 +9,7 @@
         "description": "The repayment plan type.",
         "allOf": [
           {
-            "$ref": "../def1/common_defs.json#/definitions/studentLoanPlanType"
+            "$ref": "../common_defs.json#/definitions/studentLoanPlanType"
           }
         ]
       },

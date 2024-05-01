@@ -31,7 +31,7 @@
             "description": "The income source type for the claim.",
             "allOf": [
               {
-                "$ref": "../def1/common_defs.json#/definitions/businessIncomeSourceType"
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
               }
             ]
           },
@@ -44,7 +44,7 @@
             ]
           },
           "claimType": {
-            "$ref": "../def1/common_defs.json#/definitions/claimType"
+            "$ref": "../common_defs.json#/definitions/claimType"
           },
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
@@ -76,7 +76,7 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../def1/common_defs.json#/definitions/lossType"
+            "$ref": "../common_defs.json#/definitions/lossType"
           }
         },
         "additionalProperties": false,
@@ -107,7 +107,7 @@
             "description": "The income source type for the unclaimed loss.",
             "allOf": [
               {
-                "$ref": "../def1/common_defs.json#/definitions/businessIncomeSourceType"
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
               }
             ]
           },
@@ -128,7 +128,7 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../def1/common_defs.json#/definitions/lossType"
+            "$ref": "../common_defs.json#/definitions/lossType"
           }
         },
         "additionalProperties": false,
@@ -167,12 +167,12 @@
             "description": "The income source type for the carried forward loss.",
             "allOf": [
               {
-                "$ref": "../def1/common_defs.json#/definitions/businessIncomeSourceType"
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
               }
             ]
           },
           "claimType": {
-            "$ref": "../def1/common_defs.json#/definitions/claimType"
+            "$ref": "../common_defs.json#/definitions/claimType"
           },
           "taxYearClaimMade": {
             "description": "The tax year in which the claim was made.",
@@ -199,7 +199,7 @@
             "example": "160"
           },
           "lossType": {
-            "$ref": "../def1/common_defs.json#/definitions/lossType"
+            "$ref": "../common_defs.json#/definitions/lossType"
           }
         },
         "additionalProperties": false,
@@ -228,7 +228,7 @@
             "description": "The income source type for the default carried forward loss.",
             "allOf": [
               {
-                "$ref": "../def1/common_defs.json#/definitions/businessIncomeSourceType"
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
               }
             ]
           },
@@ -280,7 +280,7 @@
             "description": "The income source type for the claim not applied.",
             "allOf": [
               {
-                "$ref": "../def1/common_defs.json#/definitions/businessIncomeSourceType"
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
               }
             ]
           },
@@ -293,7 +293,7 @@
             ]
           },
           "claimType": {
-            "$ref": "../def1/common_defs.json#/definitions/claimType"
+            "$ref": "../common_defs.json#/definitions/claimType"
           }
         },
         "additionalProperties": false,
