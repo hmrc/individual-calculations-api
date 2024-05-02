@@ -20,7 +20,7 @@ The Individual Calculations API allows a developer to:
 
 Run the microservice from the console using: `sbt run` (starts on port 9767 by default)
 
-Start the service manager profile: `sm --start MTDFB_CALC`
+Start the service manager profile: `sm2 --start MTDFB_CALC`
 
 ## Run Tests
 
