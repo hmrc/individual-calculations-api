@@ -1056,17 +1056,17 @@
       ]
     },
     "transitionProfit": {
-      "totalTaxableTransitionProfit": 5000.99,
+      "totalTaxableTransitionProfit": 5000,
       "transitionProfitDetail": [
         {
           "incomeSourceId": "000000000000210",
           "incomeSourceName": "string",
           "transitionProfitAmount": 5000.99,
           "transitionProfitAccelerationAmount": 5000.99,
-          "totalTransitionProfit": 5000.99,
-          "remainingBroughtForwardIncomeTaxLosses": 5000.99,
-          "broughtForwardIncomeTaxLossesUsed": 5000.99,
-          "transitionProfitsAfterIncomeTaxLossDeductions": 5000.99
+          "totalTransitionProfit": 5000,
+          "remainingBroughtForwardIncomeTaxLosses": 5000,
+          "broughtForwardIncomeTaxLossesUsed": 5000,
+          "transitionProfitsAfterIncomeTaxLossDeductions": 5000
         }
       ]
     }

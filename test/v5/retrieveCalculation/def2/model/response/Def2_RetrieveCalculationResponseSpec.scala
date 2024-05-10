@@ -76,7 +76,7 @@ class Def2_RetrieveCalculationResponseSpec extends UnitSpec with Def2_Calculatio
         val onlyTransitionProfitCalculation = Calculation(
           None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
           None, None, None, None, None, None, None, None, None, None, None, None, None, None,
-          transitionProfit = Some(TransitionProfit(totalTaxableTransitionProfit = Some(123.4), transitionProfitDetail = None))
+          transitionProfit = Some(TransitionProfit(totalTaxableTransitionProfit = Some(123), transitionProfitDetail = None))
         )
         // format: on
 
