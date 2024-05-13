@@ -414,7 +414,7 @@
         "incomeSourceType": "foreign-property",
         "countryCode": "USA",
         "totalIncome": 5000.99,
-        "totalExpenses": 5000.99,
+        "totalExpenses": -99999999999.99,
         "netProfit": 5000.99,
         "netLoss": 5000.99,
         "totalAdditions": 5000.99,
