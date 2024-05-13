@@ -23,10 +23,10 @@ case class TransitionProfitDetail(
     incomeSourceName: Option[String],
     transitionProfitAmount: BigDecimal,
     transitionProfitAccelerationAmount: Option[BigDecimal],
-    totalTransitionProfit: Option[Long],
-    remainingBroughtForwardIncomeTaxLosses: Option[Long],
-    broughtForwardIncomeTaxLossesUsed: Option[Long],
-    transitionProfitsAfterIncomeTaxLossDeductions: Option[Long]
+    totalTransitionProfit: Option[BigInt],
+    remainingBroughtForwardIncomeTaxLosses: Option[BigInt],
+    broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+    transitionProfitsAfterIncomeTaxLossDeductions: Option[BigInt]
 )
 
 object TransitionProfitDetail {
