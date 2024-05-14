@@ -19,7 +19,7 @@ package v5.retrieveCalculation.def2.model.response.calculation.transitionProfit
 import play.api.libs.json.{Format, Json}
 
 case class TransitionProfit(
-    totalTaxableTransitionProfit: Option[BigDecimal],
+    totalTaxableTransitionProfit: Option[BigInt],
     transitionProfitDetail: Option[Seq[TransitionProfitDetail]]
 )
 
