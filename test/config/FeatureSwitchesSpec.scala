@@ -32,6 +32,7 @@ class FeatureSwitchesSpec extends UnitSpec {
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
         featureSwitches.isBasicRateDivergenceEnabled shouldBe true
+        featureSwitches.isDesIf_MigrationEnabled shouldBe true
 
       }
 
@@ -40,14 +41,15 @@ class FeatureSwitchesSpec extends UnitSpec {
           "r8b-api.enabled"                    -> true,
           "retrieveSAAdditionalFields.enabled" -> true,
           "cl290.enabled"                      -> true,
-          "basicRateDivergence.enabled"        -> true)
+          "basicRateDivergence.enabled"        -> true,
+          "desIf_Migration.enabled"            -> true)
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
         featureSwitches.isCl290Enabled shouldBe true
         featureSwitches.isBasicRateDivergenceEnabled shouldBe true
-
+        featureSwitches.isDesIf_MigrationEnabled shouldBe true
       }
     }
 
@@ -57,13 +59,16 @@ class FeatureSwitchesSpec extends UnitSpec {
           "r8b-api.enabled"                    -> false,
           "retrieveSAAdditionalFields.enabled" -> false,
           "cl290.enabled"                      -> false,
-          "basicRateDivergence.enabled"        -> false)
+          "basicRateDivergence.enabled"        -> false,
+          "desIf_Migration.enabled"            -> false)
+
         val featureSwitches = FeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe false
         featureSwitches.isCl290Enabled shouldBe false
         featureSwitches.isBasicRateDivergenceEnabled shouldBe false
+        featureSwitches.isDesIf_MigrationEnabled shouldBe false
       }
     }
   }

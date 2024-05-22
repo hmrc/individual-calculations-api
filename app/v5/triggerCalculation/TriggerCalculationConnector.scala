@@ -16,7 +16,7 @@
 
 package v5.triggerCalculation
 
-import api.connectors.DownstreamUri.{DesUri, TaxYearSpecificIfsUri}
+import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
 import api.connectors.httpparsers.StandardDownstreamHttpParser._
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.AppConfig
@@ -25,7 +25,6 @@ import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 import v5.triggerCalculation.model.response.TriggerCalculationResponse
-
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,22 +40,21 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
     import request._
     import schema._
 
-    if (taxYear.useTaxYearSpecificApi) {
-      implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+    implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
 
-      val downstreamUri = TaxYearSpecificIfsUri[DownstreamResp](
-        s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration"
-      )
+    val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration"
 
-      post(JsObject.empty, downstreamUri)
-    } else {
-      val downstreamUri = DesUri[DownstreamResp](
-        s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration"
-      )
-
-      post(JsObject.empty, downstreamUri)
+    val downstreamUri = {
+      if (taxYear.useTaxYearSpecificApi) {
+        TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
+      } else if (featureSwitches.isDesIf_MigrationEnabled) {
+        IfsUri[DownstreamResp](path)
+      } else {
+        DesUri[DownstreamResp](path)
+      }
     }
 
+    post(JsObject.empty, downstreamUri)
   }
 
 }

@@ -19,6 +19,7 @@ package v5.triggerCalculation
 import api.connectors.ConnectorSpec
 import api.models.domain.{Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
+import play.api.Configuration
 import play.api.libs.json.Json
 import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
@@ -42,15 +43,38 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   "connector" when {
     "triggering an in year calculation" must {
-      makeRequestWith(finalDeclaration = false, "false")
+      makeRequestWith(finalDeclaration = false, "false", "false")
+    }
+
+    "triggering an in year calculation with ifs feature enabled" must {
+      makeRequestWithIfsEnabled(finalDeclaration = false, "false")
     }
 
     "triggering for a final declaration" must {
-      makeRequestWith(finalDeclaration = true, "true")
+      makeRequestWith(finalDeclaration = true, "true", "false")
     }
 
-    def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
+    def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String, featureSwitch: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
+
+        MockAppConfig.featureSwitches returns Configuration("desIf_Migration.enabled" -> featureSwitch)
+
+        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
+        val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
+
+        willPost(
+          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          body = Json.parse("{}")
+        ).returns(Future.successful(outcome))
+
+        await(connector.triggerCalculation(request)) shouldBe outcome
+      }
+
+    def makeRequestWithIfsEnabled(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
+      s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new IfsTest with Test {
+
+        MockAppConfig.featureSwitches returns Configuration("desIf_Migration.enabled" -> true)
+
         val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 

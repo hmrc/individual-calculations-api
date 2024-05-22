@@ -45,6 +45,8 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
     case "ERR1" => Error1
     case "ERR2" => Error2
     case "DS"   => errors.InternalError
+    case "INVALID_CORRELATION_ID" => errors.InternalError
+    case "INVALID_CORRELATIONID" => errors.InternalError
   }
 
   lazy val date: LocalDate = LocalDate.now()
@@ -62,6 +64,21 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
         "default to DownstreamError and wrap" in {
           mapping.mapDownstreamErrors(errorCodeMap)(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("UNKNOWN")))) shouldBe
             errors.ErrorWrapper(correlationId, errors.InternalError)
+        }
+      }
+
+      "downstream returns INVALID_CORRELATIONID" must {
+        "return an InternalError error" in {
+          mapping.mapDownstreamErrors(errorCodeMap)(
+            ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("downstream returns INVALID_CORRELATIONID")))) shouldBe
+            ErrorWrapper(correlationId, InternalError)
+        }
+      }
+      "downstream returns INVALID_CORRELATION_ID" must {
+        "return an InternalError error" in {
+          mapping.mapDownstreamErrors(errorCodeMap)(
+            ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("downstream returns INVALID_CORRELATION_ID")))) shouldBe
+            ErrorWrapper(correlationId, InternalError)
         }
       }
     }
