@@ -40,21 +40,19 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
     import request._
     import schema._
 
-    implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
-
     val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration"
 
-    val downstreamUri = {
       if (taxYear.useTaxYearSpecificApi) {
-        TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
-      } else if (featureSwitches.isDesIf_MigrationEnabled) {
-        IfsUri[DownstreamResp](path)
-      } else {
-        DesUri[DownstreamResp](path)
-      }
+        implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+        val downstreamUri = TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
+        post(JsObject.empty, downstreamUri)
+    } else if (featureSwitches.isDesIf_MigrationEnabled) {
+        val downstreamUri = IfsUri[DownstreamResp](path)
+        post(JsObject.empty, downstreamUri)
+    } else {
+        val downstreamUri = DesUri[DownstreamResp](path)
+        post(JsObject.empty, downstreamUri)
     }
 
-    post(JsObject.empty, downstreamUri)
   }
-
 }
