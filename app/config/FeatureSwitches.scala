@@ -24,6 +24,7 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) {
   val isRetrieveSAAdditionalFieldsEnabled: Boolean = isEnabled("retrieveSAAdditionalFields")
   val isCl290Enabled: Boolean                      = isEnabled("cl290")
   val isBasicRateDivergenceEnabled: Boolean        = isEnabled("basicRateDivergence")
+  val isDesIf_MigrationEnabled: Boolean            = isEnabled("desIf_Migration")
 
   def isReleasedInProduction(feature: String): Boolean = isConfigTrue(feature + ".released-in-production")
   def isEnabled(feature: String): Boolean              = isConfigTrue(feature + ".enabled")

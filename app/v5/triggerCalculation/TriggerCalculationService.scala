@@ -52,8 +52,6 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
     val extraTysErrors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
-      "INVALID_CORRELATIONID"     -> InternalError,
-      "INVALID_CALCULATION_ID"    -> InternalError,
       "NO_VALID_INCOME_SOURCES"   -> InternalError,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
       "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,

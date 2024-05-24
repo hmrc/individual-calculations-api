@@ -27,9 +27,15 @@ trait DownstreamResponseMappingSupport {
   final def mapDownstreamErrors[D](errorCodeMap: PartialFunction[String, MtdError])(responseWrapper: ResponseWrapper[DownstreamError])(implicit
       logContext: EndpointLogContext): ErrorWrapper = {
 
-    lazy val defaultErrorCodeMapping: String => MtdError = { code =>
-      logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
-      InternalError
+    lazy val defaultErrorCodeMapping: String => MtdError = {
+
+      case "INVALID_CORRELATION_ID" | "INVALID_CORRELATIONID" =>
+        logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - An internal server error occurred")
+        InternalError
+
+      case code =>
+        logger.warn(s"[${logContext.controllerName}] [${logContext.endpointName}] - No mapping found for error code $code")
+        InternalError
     }
 
     responseWrapper match {
