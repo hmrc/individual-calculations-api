@@ -43,7 +43,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   "connector" when {
     "triggering an in year calculation" must {
-      makeRequestWith(finalDeclaration = false, "false", "false")
+      makeRequestWith(finalDeclaration = false, "false")
     }
 
     "triggering an in year calculation with ifs feature enabled" must {
@@ -51,13 +51,13 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     }
 
     "triggering for a final declaration" must {
-      makeRequestWith(finalDeclaration = true, "true", "false")
+      makeRequestWith(finalDeclaration = true, "true")
     }
 
-    def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String, featureSwitch: String): Unit =
+    def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new DesTest with Test {
 
-        MockAppConfig.featureSwitches returns Configuration("desIf_Migration.enabled" -> featureSwitch)
+        MockAppConfig.featureSwitches returns Configuration("desIf_Migration.enabled" -> false)
 
         val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
