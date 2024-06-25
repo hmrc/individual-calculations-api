@@ -63,40 +63,6 @@
             "description": "The timestamp of when the final calculation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
             "type": "string",
             "example": "2019-07-13T07:51:43.112Z"
-          },
-          "links": {
-            "type": "array",
-            "description": "A list of endpoint links that indicate possible actions related to the current resource.",
-            "items": {
-              "type": "object",
-              "properties": {
-                "href": {
-                  "description": "The relative url of the endpoint.",
-                  "type": "string",
-                  "example": "/individuals/calculations/TC663795B/self-assessment/2020-21/c432a56d-e811-474c-a26a-76fc3bcaefe5"
-                },
-                "rel": {
-                  "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
-                  "type": "string",
-                  "enum": [
-                    "self"
-                  ]
-                },
-                "method": {
-                  "description": "The HTTP method type for the endpoint.",
-                  "type": "string",
-                  "enum": [
-                    "GET"
-                  ]
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "href",
-                "rel",
-                "method"
-              ]
-            }
           }
         },
         "additionalProperties": false,
@@ -104,42 +70,6 @@
           "calculationId",
           "calculationTimestamp",
           "calculationType"
-        ]
-      }
-    },
-    "links": {
-      "type": "array",
-      "description": "A list of endpoint links that indicate possible actions related to the current resource.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "description": "The relative url of the endpoint.",
-            "type": "string",
-            "example": "/individuals/calculations/TC663795B/self-assessment"
-          },
-          "rel": {
-            "description": "A label for the endpoint, which describes how it is related to the current resource. The rel will be self where the action is retrieval of the same resource.",
-            "type": "string",
-            "enum": [
-              "self",
-              "trigger"
-            ]
-          },
-          "method": {
-            "description": "The HTTP method type for the endpoint.",
-            "type": "string",
-            "enum": [
-              "GET",
-              "POST"
-            ]
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "href",
-          "rel",
-          "method"
         ]
       }
     }

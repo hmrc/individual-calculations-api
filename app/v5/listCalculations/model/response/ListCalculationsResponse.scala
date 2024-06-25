@@ -16,37 +16,19 @@
 
 package v5.listCalculations.model.response
 
-import api.hateoas.{HateoasData, HateoasLinks, HateoasListLinksFactory, Link}
-import api.models.domain.TaxYear
 import cats.Functor
-import config.AppConfig
 import play.api.libs.json._
-import v5.listCalculations.def1.model.response.Calculation
 
 sealed trait ListCalculationsResponse[+I] {
   def mapItems[B](f: I => B): ListCalculationsResponse[B]
 }
 
-object ListCalculationsResponse extends HateoasLinks {
+object ListCalculationsResponse {
 
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = { case def1: Def1_ListCalculationsResponse[I] =>
     Json.toJsObject(def1)
   }
 
-  implicit object ListLinksFactory extends HateoasListLinksFactory[ListCalculationsResponse, Calculation, ListCalculationsHateoasData] {
-
-    override def itemLinks(appConfig: AppConfig, data: ListCalculationsHateoasData, item: Calculation): Seq[Link] =
-      Seq(item.taxYear.map(retrieve(appConfig, data.nino, _, item.calculationId))).flatten
-
-    override def links(appConfig: AppConfig, data: ListCalculationsHateoasData): Seq[Link] = {
-      import data._
-      Seq(
-        trigger(appConfig, nino, taxYear),
-        list(appConfig, nino, taxYear, isSelf = true)
-      )
-    }
-
-  }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
 
@@ -70,5 +52,3 @@ object Def1_ListCalculationsResponse {
   implicit def reads[I: Reads]: Reads[Def1_ListCalculationsResponse[I]]     = JsPath.read[Seq[I]].map(Def1_ListCalculationsResponse(_))
 
 }
-
-case class ListCalculationsHateoasData(nino: String, taxYear: TaxYear) extends HateoasData

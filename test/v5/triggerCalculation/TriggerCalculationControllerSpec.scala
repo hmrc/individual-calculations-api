@@ -17,7 +17,6 @@
 package v5.triggerCalculation
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{Nino, TaxYear}
@@ -27,7 +26,7 @@ import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLooku
 import play.api.libs.json._
 import play.api.mvc.Result
 import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationHateoasData, TriggerCalculationResponse}
+import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,7 +38,6 @@ class TriggerCalculationControllerSpec
     with MockMtdIdLookupService
     with MockTriggerCalculationService
     with MockTriggerCalculationValidatorFactory
-    with MockHateoasFactory
     with MockAuditService
     with MockIdGenerator {
 
@@ -55,7 +53,7 @@ class TriggerCalculationControllerSpec
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
 
-  private val responseJsonNoHateoas: JsValue = Json
+  private val responseJson: JsValue = Json
     .parse(
       s"""
          |{
@@ -64,7 +62,7 @@ class TriggerCalculationControllerSpec
     """.stripMargin
     )
 
-  private val mtdResponseJson: JsValue = responseJsonNoHateoas.as[JsObject] ++ hateoaslinksJson
+  private val mtdResponseJson: JsValue = responseJson.as[JsObject]
 
   "handleRequest" should {
     "return ACCEPTED with a calculationId" when {
@@ -76,21 +74,10 @@ class TriggerCalculationControllerSpec
           .triggerCalculation(requestDataWithFinalDeclaration)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        MockHateoasFactory
-          .wrap(
-            response,
-            TriggerCalculationHateoasData(
-              nino,
-              TaxYear.fromMtd(rawTaxYear),
-              finalDeclaration = requestDataWithFinalDeclaration.finalDeclaration,
-              calculationId)
-          )
-          .returns(HateoasWrapper(response, hateoaslinks))
-
         runOkTestWithAudit(
           expectedStatus = ACCEPTED,
           maybeExpectedResponseBody = Some(mtdResponseJson),
-          maybeAuditResponseBody = Some(responseJsonNoHateoas)
+          maybeAuditResponseBody = Some(responseJson)
         )
       }
 
@@ -101,21 +88,11 @@ class TriggerCalculationControllerSpec
           .triggerCalculation(requestDataWithFinalDeclarationFalse)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        MockHateoasFactory
-          .wrap(
-            response,
-            TriggerCalculationHateoasData(
-              nino,
-              TaxYear.fromMtd(rawTaxYear),
-              finalDeclaration = requestDataWithFinalDeclarationFalse.finalDeclaration,
-              calculationId)
-          )
-          .returns(HateoasWrapper(response, hateoaslinks))
 
         runOkTestWithAudit(
           expectedStatus = ACCEPTED,
           maybeExpectedResponseBody = Some(mtdResponseJson),
-          maybeAuditResponseBody = Some(responseJsonNoHateoas)
+          maybeAuditResponseBody = Some(responseJson)
         )
       }
     }
@@ -151,7 +128,6 @@ class TriggerCalculationControllerSpec
       service = mockService,
       cc = cc,
       auditService = mockAuditService,
-      hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator
     )
 

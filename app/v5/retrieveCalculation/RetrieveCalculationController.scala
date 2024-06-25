@@ -17,13 +17,12 @@
 package v5.retrieveCalculation
 
 import api.controllers._
-import api.hateoas.HateoasFactory
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.{AppConfig, FeatureSwitches}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import utils.{IdGenerator, Logging}
-import v5.retrieveCalculation.models.response.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
+import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Inject
@@ -34,7 +33,6 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                validatorFactory: RetrieveCalculationValidatorFactory,
                                                service: RetrieveCalculationService,
                                                auditService: AuditService,
-                                               hateoasFactory: HateoasFactory,
                                                cc: ControllerComponents,
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
@@ -72,16 +70,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
           .withModelHandling { response: RetrieveCalculationResponse =>
             response.adjustFields(FeatureSwitches()(appConfig), taxYear)
           }
-          .withHateoasResultFrom(hateoasFactory) { (request, response) =>
-            {
-              RetrieveCalculationHateoasData(
-                nino = nino,
-                taxYear = request.taxYear,
-                calculationId = calculationId,
-                response = response
-              )
-            }
-          }
+          .withPlainJsonResult()
 
       requestHandler.handleRequest()
 

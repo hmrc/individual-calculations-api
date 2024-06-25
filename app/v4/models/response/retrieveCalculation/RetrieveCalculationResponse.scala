@@ -16,9 +16,6 @@
 
 package v4.models.response.retrieveCalculation
 
-import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
-import api.models.domain.TaxYear
-import config.AppConfig
 import play.api.libs.json.{Json, OWrites, Reads}
 import v4.models.response.retrieveCalculation.calculation._
 import v4.models.response.retrieveCalculation.inputs.Inputs
@@ -72,7 +69,7 @@ case class RetrieveCalculationResponse(
 
 }
 
-object RetrieveCalculationResponse extends HateoasLinks {
+object RetrieveCalculationResponse {
 
   def apply(metadata: Metadata, inputs: Inputs, calculation: Option[Calculation], messages: Option[Messages]): RetrieveCalculationResponse = {
     new RetrieveCalculationResponse(
@@ -87,44 +84,5 @@ object RetrieveCalculationResponse extends HateoasLinks {
 
   implicit val writes: OWrites[RetrieveCalculationResponse] = Json.writes[RetrieveCalculationResponse]
 
-  implicit object LinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
-
-    override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
-      import data._
-      val intentToSubmitFinalDeclaration: Boolean = response.metadata.intentToSubmitFinalDeclaration
-
-      val finalDeclaration: Boolean = response.metadata.finalDeclaration
-
-      val responseHasErrors: Boolean = {
-        for {
-          messages <- response.messages
-          errors   <- messages.errors
-        } yield {
-          errors.nonEmpty
-        }
-      }.getOrElse(false)
-
-      if (intentToSubmitFinalDeclaration && !finalDeclaration && !responseHasErrors) {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId),
-          submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
-        )
-      } else {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId)
-        )
-      }
-    }
-
-  }
 
 }
-
-case class RetrieveCalculationHateoasData(
-    nino: String,
-    taxYear: TaxYear,
-    calculationId: String,
-    response: RetrieveCalculationResponse
-) extends HateoasData

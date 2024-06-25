@@ -98,7 +98,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with ListCalcu
         val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
+        response.json shouldBe listCalculationsMtdJson
       }
 
       "valid request is made without a tax year" in new TysIfsTest {
@@ -114,7 +114,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with ListCalcu
         val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, TaxYear.now().asMtd)
+        response.json shouldBe listCalculationsMtdJson
       }
 
       "valid TYS request is made with a tax year" in new TysIfsTest {
@@ -128,7 +128,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with ListCalcu
         val response: WSResponse = await(request.get())
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJsonWithHateoas(nino, taxYear.get)
+        response.json shouldBe listCalculationsMtdJson
       }
     }
 

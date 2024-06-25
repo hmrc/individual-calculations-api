@@ -16,9 +16,6 @@
 
 package v5.triggerCalculation.model.response
 
-import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
-import api.models.domain.TaxYear
-import config.AppConfig
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json._
 
@@ -26,20 +23,10 @@ sealed trait TriggerCalculationResponse {
   val calculationId: String
 }
 
-object TriggerCalculationResponse extends HateoasLinks {
+object TriggerCalculationResponse{
 
   implicit val vendorWrites: OWrites[TriggerCalculationResponse] = { case def1: Def1_TriggerCalculationResponse =>
     Json.toJsObject(def1)
-  }
-
-  implicit object TriggerCalculationLinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
-
-    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
-      Seq(
-        list(appConfig, data.nino, data.taxYear, isSelf = false),
-        retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
-      )
-
   }
 
 }
@@ -52,5 +39,3 @@ object Def1_TriggerCalculationResponse {
   implicit val writes: OWrites[Def1_TriggerCalculationResponse] = Json.writes[Def1_TriggerCalculationResponse]
 
 }
-
-case class TriggerCalculationHateoasData(nino: String, taxYear: TaxYear, finalDeclaration: Boolean, calculationId: String) extends HateoasData

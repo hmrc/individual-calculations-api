@@ -74,41 +74,4 @@ trait Def1_ListCalculationsFixture {
 
   val listCalculationsResponseModel: ListCalculationsResponse[Calculation] = Def1_ListCalculationsResponse(Seq(calculationModel))
 
-  def listCalculationsMtdJsonWithHateoas(nino: String, taxYear: String): JsValue = Json.parse(s"""
-                                                                                                 |{
-                                                                                                 |   "calculations":[
-                                                                                                 |      {
-                                                                                                 |         "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
-                                                                                                 |         "calculationTimestamp":"2021-07-12T07:51:43.112Z",
-                                                                                                 |         "calculationType":"finalDeclaration",
-                                                                                                 |         "requestedBy":"customer",
-                                                                                                 |         "taxYear":"2020-21",
-                                                                                                 |         "totalIncomeTaxAndNicsDue":10000.12,
-                                                                                                 |         "intentToSubmitFinalDeclaration":true,
-                                                                                                 |         "finalDeclaration":true,
-                                                                                                 |         "finalDeclarationTimestamp":"2021-07-13T07:51:43.112Z",
-                                                                                                 |         "links":[
-                                                                                                 |            {
-                                                                                                 |               "href":"/individuals/calculations/$nino/self-assessment/2020-21/c432a56d-e811-474c-a26a-76fc3bcaefe5",
-                                                                                                 |               "rel":"self",
-                                                                                                 |               "method":"GET"
-                                                                                                 |            }
-                                                                                                 |         ]
-                                                                                                 |      }
-                                                                                                 |   ],
-                                                                                                 |   "links":[
-                                                                                                 |      {
-                                                                                                 |         "href":"/individuals/calculations/$nino/self-assessment/$taxYear",
-                                                                                                 |         "rel":"trigger",
-                                                                                                 |         "method":"POST"
-                                                                                                 |      },
-                                                                                                 |      {
-                                                                                                 |         "href":"/individuals/calculations/$nino/self-assessment?taxYear=$taxYear",
-                                                                                                 |         "rel":"self",
-                                                                                                 |         "method":"GET"
-                                                                                                 |      }
-                                                                                                 |   ]
-                                                                                                 |}
-  """.stripMargin)
-
 }

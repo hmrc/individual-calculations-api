@@ -16,28 +16,13 @@
 
 package v4.models.response.triggerCalculation
 
-import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
-import api.models.domain.TaxYear
-import config.AppConfig
 import play.api.libs.json._
 
 case class TriggerCalculationResponse(calculationId: String)
 
-object TriggerCalculationResponse extends HateoasLinks {
+object TriggerCalculationResponse {
 
   implicit val downstreamReads: Reads[TriggerCalculationResponse] = (JsPath \ "id").read[String].map(TriggerCalculationResponse.apply)
   implicit val vendorWrites: OWrites[TriggerCalculationResponse]  = Json.writes[TriggerCalculationResponse]
 
-  implicit object LinksFactory extends HateoasLinksFactory[TriggerCalculationResponse, TriggerCalculationHateoasData] {
-
-    override def links(appConfig: AppConfig, data: TriggerCalculationHateoasData): Seq[Link] =
-      Seq(
-        list(appConfig, data.nino, data.taxYear, isSelf = false),
-        retrieve(appConfig, data.nino, data.taxYear, data.calculationId)
-      )
-
-  }
-
 }
-
-case class TriggerCalculationHateoasData(nino: String, taxYear: TaxYear, finalDeclaration: Boolean, calculationId: String) extends HateoasData

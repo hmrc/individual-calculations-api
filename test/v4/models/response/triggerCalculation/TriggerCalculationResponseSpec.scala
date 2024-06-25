@@ -16,11 +16,6 @@
 
 package v4.models.response.triggerCalculation
 
-import api.hateoas
-import api.hateoas.Method.GET
-import api.hateoas.{HateoasFactory, HateoasWrapper}
-import api.models.domain.TaxYear
-import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
@@ -54,30 +49,6 @@ class TriggerCalculationResponseSpec extends UnitSpec {
     "written to JSON" should {
       "produce the expected JsObject" in {
         Json.toJson(triggerCalculationResponseModel) shouldBe vendorResponseJson
-      }
-    }
-  }
-
-  "LinksFactory" when {
-    class Test extends MockAppConfig {
-      val hateoasFactory = new HateoasFactory(mockAppConfig)
-      val nino           = "someNino"
-      val taxYear        = TaxYear.fromMtd("2020-21")
-      MockAppConfig.apiGatewayContext.returns("individuals/calculations").anyNumberOfTimes()
-    }
-
-    "wrapping a TriggerCalculationResponse object" should {
-      "expose the correct hateoas links" in new Test {
-        hateoasFactory.wrap(
-          triggerCalculationResponseModel,
-          TriggerCalculationHateoasData(nino, taxYear, finalDeclaration = true, calculationId)) shouldBe
-          HateoasWrapper(
-            triggerCalculationResponseModel,
-            Seq(
-              hateoas.Link(s"/individuals/calculations/$nino/self-assessment?taxYear=2020-21", GET, "list"),
-              hateoas.Link(s"/individuals/calculations/$nino/self-assessment/2020-21/$calculationId", GET, "self")
-            )
-          )
       }
     }
   }

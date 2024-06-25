@@ -17,7 +17,6 @@
 package v5.retrieveCalculation
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.hateoas.{HateoasWrapper, MockHateoasFactory}
 import api.mocks.MockIdGenerator
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.{CalculationId, Nino, TaxYear}
@@ -29,7 +28,6 @@ import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
-import v5.retrieveCalculation.models.response.{RetrieveCalculationHateoasData, RetrieveCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,7 +38,6 @@ class RetrieveCalculationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockRetrieveCalculationValidatorFactory
-    with MockHateoasFactory
     with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator
@@ -51,10 +48,10 @@ class RetrieveCalculationControllerSpec
   private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
   private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
   private val responseWithBasicRateDivergenceEnabled        = minimalCalculationBasicRateDivergenceEnabledResponse
-  private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson ++ hateoaslinksJson
-  private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson ++ hateoaslinksJson
+  private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson
+  private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson
+  private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson
+  private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson
 
   "handleRequest" should {
     "return OK with the calculation" when {
@@ -74,9 +71,6 @@ class RetrieveCalculationControllerSpec
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
-        MockHateoasFactory
-          .wrap(responseWithR8b, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithR8b))
-          .returns(HateoasWrapper(responseWithR8b, hateoaslinks))
 
 
         runOkTestWithAudit(
@@ -102,11 +96,6 @@ class RetrieveCalculationControllerSpec
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
-        MockHateoasFactory
-          .wrap(
-            responseWithAdditionalFields,
-            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithAdditionalFields))
-          .returns(HateoasWrapper(responseWithAdditionalFields, hateoaslinks))
 
 
         runOkTestWithAudit(
@@ -132,10 +121,6 @@ class RetrieveCalculationControllerSpec
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
 
-        MockHateoasFactory
-          .wrap(responseWithCl290Enabled, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithCl290Enabled))
-          .returns(HateoasWrapper(responseWithCl290Enabled, hateoaslinks))
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -160,13 +145,6 @@ class RetrieveCalculationControllerSpec
               "basicRateDivergence.enabled"        -> true))
           .anyNumberOfTimes()
 
-        MockHateoasFactory
-          .wrap(
-            responseWithBasicRateDivergenceEnabled,
-            RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, responseWithBasicRateDivergenceEnabled)
-          )
-          .returns(HateoasWrapper(responseWithBasicRateDivergenceEnabled, hateoaslinks))
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -176,8 +154,7 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
-        val updatedResponse: RetrieveCalculationResponse = responseWithR8b.copy(calculation = Some(calculationWithR8BDisabled))
-        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson ++ hateoaslinksJson
+        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson
         willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
@@ -192,10 +169,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> false,
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
-
-        MockHateoasFactory
-          .wrap(updatedResponse, RetrieveCalculationHateoasData(nino, TaxYear.fromMtd(taxYear), calculationId, updatedResponse))
-          .returns(HateoasWrapper(updatedResponse, hateoaslinks))
 
 
         runOkTestWithAudit(
@@ -248,7 +221,6 @@ class RetrieveCalculationControllerSpec
       validatorFactory = mockRetrieveCalculationValidatorFactory,
       service = mockRetrieveCalculationService,
       cc = cc,
-      hateoasFactory = mockHateoasFactory,
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )

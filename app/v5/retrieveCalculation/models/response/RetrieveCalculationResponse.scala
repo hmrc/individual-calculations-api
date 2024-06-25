@@ -16,9 +16,8 @@
 
 package v5.retrieveCalculation.models.response
 
-import api.hateoas.{HateoasData, HateoasLinks, HateoasLinksFactory, Link}
 import api.models.domain.TaxYear
-import config.{AppConfig, FeatureSwitches}
+import config.FeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.retrieveCalculation._
 import v5.retrieveCalculation.def2.model.response.calculation.Calculation
@@ -35,33 +34,11 @@ sealed trait RetrieveCalculationResponse {
   def hasErrors: Boolean
 }
 
-object RetrieveCalculationResponse extends HateoasLinks {
+object RetrieveCalculationResponse {
 
   implicit val writes: OWrites[RetrieveCalculationResponse] = {
     case def1: Def1_RetrieveCalculationResponse => Json.toJsObject(def1)
     case def2: Def2_RetrieveCalculationResponse => Json.toJsObject(def2)
-  }
-
-  implicit object RetrieveAnnualSubmissionLinksFactory extends HateoasLinksFactory[RetrieveCalculationResponse, RetrieveCalculationHateoasData] {
-
-    override def links(appConfig: AppConfig, data: RetrieveCalculationHateoasData): Seq[Link] = {
-
-      import data._
-
-      if (response.intentToSubmitFinalDeclaration && !response.finalDeclaration && !response.hasErrors) {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId),
-          submitFinalDeclaration(appConfig, nino, taxYear, calculationId)
-        )
-      } else {
-        Seq(
-          trigger(appConfig, nino, taxYear),
-          retrieve(appConfig, nino, taxYear, calculationId)
-        )
-      }
-    }
-
   }
 
 }
@@ -213,10 +190,3 @@ object Def2_RetrieveCalculationResponse {
   implicit val writes: OWrites[Def2_RetrieveCalculationResponse] = Json.writes[Def2_RetrieveCalculationResponse]
 
 }
-
-case class RetrieveCalculationHateoasData(
-    nino: String,
-    taxYear: TaxYear,
-    calculationId: String,
-    response: RetrieveCalculationResponse
-) extends HateoasData

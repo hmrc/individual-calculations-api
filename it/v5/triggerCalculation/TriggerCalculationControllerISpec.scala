@@ -187,19 +187,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     val successBody: JsValue = Json.parse(
       s"""
         |{
-        | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        | "links":[
-        |   {
-        |     "href":"/individuals/calculations/AA123456A/self-assessment?taxYear=$mtdTaxYear",
-        |     "method":"GET",
-        |     "rel":"list"
-        |   },
-        |   {
-        |     "href":"/individuals/calculations/AA123456A/self-assessment/$mtdTaxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |     "method":"GET",
-        |     "rel":"self"
-        |   }
-        | ]
+        | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
         |}
       """.stripMargin
     )
