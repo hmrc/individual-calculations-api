@@ -115,30 +115,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |       }
          |    }
          |  },
-         |  "messages" : {},
-         |  "links": [
-         |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear",
-         |      "rel": "trigger",
-         |      "method": "POST"
-         |    },
-         |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-         |      "rel": "self",
-         |      "method": "GET"
-         |    }${if (canBeFinalised) {
-          s"""
-           |,
-           |{
-           |  "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c/final-declaration",
-           |  "rel": "submit-final-declaration",
-           |  "method": "POST"
-           |}
-           |""".stripMargin
-        } else {
-          ""
-        }}
-         |  ]
+         |  "messages" : {}
          |}
         """.stripMargin
     )

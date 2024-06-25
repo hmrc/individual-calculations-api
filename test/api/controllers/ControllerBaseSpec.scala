@@ -41,8 +41,7 @@ class ControllerBaseSpec
     with MimeTypes
     with HeaderNames
     with ResultExtractors
-    with MockAuditService
-    with ControllerSpecHateoasSupport {
+    with MockAuditService {
 
   val apiVersion: Version = Version5
 

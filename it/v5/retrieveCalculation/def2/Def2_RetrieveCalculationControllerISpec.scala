@@ -50,26 +50,7 @@ class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with D
 
     val downstreamResponseBody: JsValue = calculationDownstreamJson
 
-    val responseBody: JsValue = calculationMtdJson ++ Json
-      .parse(
-        s"""
-         |{
-         |  "links": [
-         |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear",
-         |      "rel": "trigger",
-         |      "method": "POST"
-         |    },
-         |    {
-         |      "href": "/individuals/calculations/AA123456A/self-assessment/$taxYear/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-         |      "rel": "self",
-         |      "method": "GET"
-         |    }
-         |  ]
-         |}
-        """.stripMargin
-      )
-      .as[JsObject]
+    val responseBody: JsValue = calculationMtdJson.as[JsObject]
 
     def errorBody(code: String): String =
       s"""

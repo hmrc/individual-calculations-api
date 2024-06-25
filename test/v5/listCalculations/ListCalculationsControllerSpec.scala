@@ -17,8 +17,6 @@
 package v5.listCalculations
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.hateoas
-import api.hateoas.{HateoasWrapper, Method, MockHateoasFactory, RelType}
 import api.mocks.MockIdGenerator
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
@@ -27,7 +25,6 @@ import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.mvc.Result
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
-import v5.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsHateoasData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,7 +36,6 @@ class ListCalculationsControllerSpec
     with MockMtdIdLookupService
     with MockListCalculationsValidatorFactory
     with MockListCalculationsService
-    with MockHateoasFactory
     with MockIdGenerator
     with Def1_ListCalculationsFixture {
 
@@ -61,34 +57,8 @@ class ListCalculationsControllerSpec
             Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
           )
 
-        MockHateoasFactory
-          .wrapList(listCalculationsResponseModel, ListCalculationsHateoasData(nino, requestData.taxYear))
-          .returns(
-            HateoasWrapper(
-              Def1_ListCalculationsResponse(Seq(HateoasWrapper(
-                calculationModel,
-                Seq(hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}/${calculationModel.calculationId}",
-                  rel = RelType.SELF,
-                  method = Method.GET
-                ))
-              ))),
-              Seq(
-                hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment/${taxYear.get}",
-                  rel = RelType.TRIGGER,
-                  method = Method.POST
-                ),
-                hateoas.Link(
-                  href = s"/individuals/calculations/$nino/self-assessment?taxYear=${taxYear.get}",
-                  rel = RelType.SELF,
-                  method = Method.GET
-                )
-              )
-            )
-          )
 
-        runOkTest(OK, Some(listCalculationsMtdJsonWithHateoas(nino, taxYear.get)))
+        runOkTest(OK, Some(listCalculationsMtdJson))
       }
     }
 
@@ -118,7 +88,6 @@ class ListCalculationsControllerSpec
       mockMtdIdLookupService,
       mockListCalculationsFactory,
       mockListCalculationsService,
-      mockHateoasFactory,
       cc,
       mockIdGenerator
     )

@@ -17,14 +17,12 @@
 package v5.triggerCalculation
 
 import api.controllers._
-import api.hateoas.HateoasFactory
 import api.models.audit.GenericAuditDetail
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import routing.Version
 import utils.{IdGenerator, Logging}
-import v5.triggerCalculation.model.response.TriggerCalculationHateoasData
 import v5.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Inject
@@ -35,7 +33,6 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               validatorFactory: TriggerCalculationValidatorFactory,
                                               service: TriggerCalculationService,
                                               val idGenerator: IdGenerator,
-                                              hateoasFactory: HateoasFactory,
                                               auditService: AuditService,
                                               cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
     extends AuthorisedController(cc)
@@ -58,16 +55,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
         RequestHandler
           .withValidator(validator)
           .withService(service.triggerCalculation)
-          .withHateoasResultFrom(hateoasFactory)(
-            (parsedRequest, response) =>
-              TriggerCalculationHateoasData(
-                nino = nino,
-                taxYear = parsedRequest.taxYear,
-                finalDeclaration = parsedRequest.finalDeclaration,
-                calculationId = response.calculationId
-              ),
-            successStatus = ACCEPTED
-          )
+          .withPlainJsonResult(ACCEPTED)
           .withAuditing(AuditHandler.custom(
             auditService,
             auditType = "TriggerASelfAssessmentTaxCalculation",
