@@ -16,8 +16,8 @@
 
 package v5.retrieveCalculation.def1.model.response.common
 
+import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
-import utils.enums.Enums
 
 sealed trait ClaimType
 

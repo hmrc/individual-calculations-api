@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation.models.response
 
-import api.models.domain.TaxYear
+import shared.models.domain.TaxYear
 import config.FeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.retrieveCalculation._

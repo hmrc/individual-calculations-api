@@ -17,7 +17,7 @@
 package config
 
 import play.api.Configuration
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class FeatureSwitchesSpec extends UnitSpec {
 

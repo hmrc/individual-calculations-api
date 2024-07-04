@@ -16,12 +16,13 @@
 
 package v4.controllers
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.{AppConfig, FeatureSwitches}
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.config.AppConfig
+import config.FeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
-import utils.{IdGenerator, Logging}
+import shared.routing.Version
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v4.services.RetrieveCalculationService

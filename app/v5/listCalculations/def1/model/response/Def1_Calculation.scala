@@ -16,14 +16,13 @@
 
 package v5.listCalculations.def1.model.response
 
-import api.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v4.models.response.common.CalculationType
 
 sealed trait Calculation {
   def calculationId: String
-  def taxYear: Option[TaxYear]
+  def taxYear: Option[String]
 }
 
 object Calculation {
@@ -38,7 +37,7 @@ case class Def1_Calculation(calculationId: String,
                             calculationTimestamp: String,
                             calculationType: CalculationType,
                             requestedBy: Option[String],
-                            taxYear: Option[TaxYear],
+                            taxYear: Option[String],
                             totalIncomeTaxAndNicsDue: Option[BigDecimal],
                             intentToSubmitFinalDeclaration: Option[Boolean],
                             finalDeclaration: Option[Boolean],
@@ -53,7 +52,7 @@ object Def1_Calculation {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
-      (JsPath \ "year").readNullable[TaxYear] and
+      (JsPath \ "year").readNullable[String] and
       (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and

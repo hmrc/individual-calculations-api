@@ -16,5 +16,5 @@
 
 package v4.models.request
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
 case class RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId)

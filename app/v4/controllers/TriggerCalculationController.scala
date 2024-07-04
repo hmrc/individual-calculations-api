@@ -16,13 +16,13 @@
 
 package v4.controllers
 
-import api.controllers._
-import api.models.audit.GenericAuditDetail
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.models.audit.GenericAuditDetail
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
-import utils.{IdGenerator, Logging}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import shared.routing.Version
 import v4.controllers.validators.TriggerCalculationValidatorFactory
 import v4.services.TriggerCalculationService
 
@@ -35,7 +35,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               service: TriggerCalculationService,
                                               val idGenerator: IdGenerator,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

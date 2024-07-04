@@ -17,11 +17,12 @@
 package config
 
 import com.google.inject.AbstractModule
+//import shared.config.AppConfig
 
 class DIModule extends AbstractModule {
 
   override def configure(): Unit = {
-    bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
+    //bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
   }
 
 }

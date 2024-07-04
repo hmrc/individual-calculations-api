@@ -16,13 +16,14 @@
 
 package v4.endpoints
 
-import api.models.errors._
+import shared.models.errors._
+import api.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import stubs._
+import shared.stubs._
 import support.IntegrationBaseSpec
 
 class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {

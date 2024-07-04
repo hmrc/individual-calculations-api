@@ -16,6 +16,6 @@
 
 package v4.models.request
 
-import api.models.domain.{Nino, TaxYear}
+import shared.models.domain.{Nino, TaxYear}
 
 case class TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, finalDeclaration: Boolean)

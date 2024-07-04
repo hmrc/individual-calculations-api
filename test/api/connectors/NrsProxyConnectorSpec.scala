@@ -16,8 +16,10 @@
 
 package api.connectors
 
-import mocks.{MockAppConfig, MockHttpClient}
+import shared.mocks.MockHttpClient
 import play.api.libs.json.{JsValue, Json}
+import mocks.MockCaculationsConfig
+import shared.connectors.ConnectorSpec
 import uk.gov.hmrc.http.UpstreamErrorResponse
 
 import scala.concurrent.Future
@@ -28,21 +30,21 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
   val notableEvent: String = "test-event"
   val body: JsValue        = Json.obj("field" -> "value")
 
-  class Test extends MockHttpClient with MockAppConfig {
+  class Test extends MockHttpClient with MockCaculationsConfig {
 
     val connector: NrsProxyConnector = new NrsProxyConnector(
       http = mockHttpClient,
-      appConfig = mockAppConfig
+      appConfig = mockCalculationsConfig
     )
 
-    MockAppConfig.mtdNrsProxyBaseUrl returns baseUrl
+    MockCaculationsConfig.mtdNrsProxyBaseUrl returns baseUrl
   }
 
   "submit" should {
     "return a success response" in new Test {
       val outcome: Either[UpstreamErrorResponse, Unit] = Right(())
 
-      MockHttpClient
+      MockedHttpClient
         .post(
           url = s"$baseUrl/mtd-api-nrs-proxy/$nino/$notableEvent",
           config = dummyHeaderCarrierConfig,

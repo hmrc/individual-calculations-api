@@ -16,8 +16,8 @@
 
 package v5.retrieveCalculation.def2.model.response.common
 
+import common.utils.enums.Enums
 import play.api.libs.json._
-import utils.enums._
 
 sealed trait IncomeSourceType
 

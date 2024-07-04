@@ -16,14 +16,15 @@
 
 package v5.submitFinalDeclaration
 
-import api.controllers._
-import api.models.errors.InternalError
-import api.services._
+import api.services.NrsProxyService
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.models.errors.InternalError
+import shared.services._
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
+import shared.routing.Version
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.{IdGenerator, Logging}
 import v5.retrieveCalculation.RetrieveCalculationService
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
@@ -42,7 +43,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

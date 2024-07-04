@@ -17,16 +17,17 @@
 package mocks
 
 import cats.data.Validated
-import config.{AppConfig, ConfidenceLevelConfig, Deprecation}
+import config.CalculationsConfig
+import shared.config.{ConfidenceLevelConfig, Deprecation, MockAppConfig}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import play.api.Configuration
-import routing.Version
+import shared.routing.Version
 
-trait MockAppConfig extends MockFactory {
-  implicit val mockAppConfig: AppConfig = mock[AppConfig]
+trait MockCaculationsConfig extends MockFactory {
+  implicit val mockCalculationsConfig:CalculationsConfig = mock[CalculationsConfig]
 
-  object MockAppConfig {
+  object MockCaculationsConfig extends MockAppConfig{
     // MTD ID Lookup Config
     def mtdIdBaseUrl: CallHandler[String] = (() => mockAppConfig.mtdIdBaseUrl: String).expects()
 

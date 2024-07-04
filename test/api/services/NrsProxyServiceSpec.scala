@@ -17,6 +17,7 @@
 package api.services
 
 import api.connectors.MockNrsProxyConnector
+import shared.services.ServiceSpec
 
 import scala.concurrent.Future
 

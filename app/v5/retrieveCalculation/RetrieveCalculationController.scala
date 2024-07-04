@@ -16,12 +16,13 @@
 
 package v5.retrieveCalculation
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.{AppConfig, FeatureSwitches}
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.config.AppConfig
+import config.FeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
-import utils.{IdGenerator, Logging}
+import shared.routing.Version
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 

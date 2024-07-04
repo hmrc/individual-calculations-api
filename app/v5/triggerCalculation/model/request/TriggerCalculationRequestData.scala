@@ -16,7 +16,7 @@
 
 package v5.triggerCalculation.model.request
 
-import api.models.domain.{Nino, TaxYear}
+import shared.models.domain.{Nino, TaxYear}
 import v5.triggerCalculation.schema.TriggerCalculationSchema
 
 sealed trait TriggerCalculationRequestData {

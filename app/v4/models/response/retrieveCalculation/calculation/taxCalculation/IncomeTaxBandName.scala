@@ -16,8 +16,8 @@
 
 package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
+import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
-import utils.enums.Enums
 
 sealed trait IncomeTaxBandName
 

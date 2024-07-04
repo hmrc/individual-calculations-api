@@ -16,7 +16,7 @@
 
 package v4.models.response.retrieveCalculation.metadata
 
-import api.models.domain.TaxYear
+import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v4.models.response.common.CalculationType

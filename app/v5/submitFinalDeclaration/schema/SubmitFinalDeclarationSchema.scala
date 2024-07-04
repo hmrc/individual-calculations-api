@@ -16,8 +16,8 @@
 
 package v5.submitFinalDeclaration.schema
 
-import api.controllers.validators.resolvers.ResolveTaxYear
-import api.models.domain.TaxYear
+import shared.controllers.validators.resolvers.ResolveTaxYear
+import shared.models.domain.TaxYear
 
 import scala.math.Ordered.orderingToOrdered
 

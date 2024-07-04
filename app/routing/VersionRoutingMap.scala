@@ -18,6 +18,7 @@ package routing
 
 import com.google.inject.ImplementedBy
 import play.api.routing.Router
+import shared.routing.{Version, Version4, Version5, Version6}
 
 import javax.inject.Inject
 

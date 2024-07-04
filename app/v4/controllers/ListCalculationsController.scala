@@ -16,10 +16,10 @@
 
 package v4.controllers
 
-import api.controllers._
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.{IdGenerator, Logging}
 import v4.controllers.validators.ListCalculationsValidatorFactory
 import v4.services.ListCalculationsService
 
@@ -32,7 +32,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
                                             validatorFactory: ListCalculationsValidatorFactory,
                                             service: ListCalculationsService,
                                             cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: config.AppConfig)
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: shared.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

@@ -17,21 +17,17 @@
 package config
 
 import play.api.Configuration
+import shared.config.AppConfig
 
-case class FeatureSwitches(featureSwitchConfig: Configuration) {
+case class FeatureSwitches(featureSwitchConfig: Configuration) extends shared.config.FeatureSwitches {
 
   val isR8bSpecificApiEnabled: Boolean             = isEnabled("r8b-api")
   val isRetrieveSAAdditionalFieldsEnabled: Boolean = isEnabled("retrieveSAAdditionalFields")
   val isCl290Enabled: Boolean                      = isEnabled("cl290")
   val isBasicRateDivergenceEnabled: Boolean        = isEnabled("basicRateDivergence")
   val isDesIf_MigrationEnabled: Boolean            = isEnabled("desIf_Migration")
-
-  def isReleasedInProduction(feature: String): Boolean = isConfigTrue(feature + ".released-in-production")
-  def isEnabled(feature: String): Boolean              = isConfigTrue(feature + ".enabled")
-
-  private def isConfigTrue(feature: String): Boolean = featureSwitchConfig.getOptional[Boolean](feature).getOrElse(true)
 }
 
 object FeatureSwitches {
-  def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitches)
+  def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitchConfig)
 }

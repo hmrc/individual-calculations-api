@@ -16,7 +16,7 @@
 
 package v5.listCalculations.model.request
 
-import api.models.domain.{Nino, TaxYear}
+import shared.models.domain.{Nino, TaxYear}
 import v5.listCalculations.schema.ListCalculationsSchema
 
 sealed trait ListCalculationsRequestData {

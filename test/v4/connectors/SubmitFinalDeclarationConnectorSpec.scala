@@ -16,9 +16,9 @@
 
 package v4.connectors
 
-import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import shared.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
 import v4.models.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future

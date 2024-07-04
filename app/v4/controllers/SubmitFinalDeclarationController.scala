@@ -16,14 +16,15 @@
 
 package v4.controllers
 
-import api.controllers._
-import api.models.errors.InternalError
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, NrsProxyService, ServiceOutcome}
+import api.services.NrsProxyService
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.models.errors.InternalError
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService, ServiceOutcome}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
+import shared.routing.Version
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.{IdGenerator, Logging}
 import v4.controllers.validators.SubmitFinalDeclarationValidatorFactory
 import v4.models.request.{RetrieveCalculationRequestData, SubmitFinalDeclarationRequestData}
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
@@ -38,10 +39,10 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   validatorFactory: SubmitFinalDeclarationValidatorFactory,
                                                   service: SubmitFinalDeclarationService,
                                                   retrieveService: RetrieveCalculationService,
-                                                  cc: ControllerComponents,
                                                   nrsProxyService: NrsProxyService,
+                                                  cc: ControllerComponents,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

@@ -18,7 +18,7 @@ package api.services
 
 import api.connectors.MockNrsProxyConnector
 import play.api.libs.json.JsValue
-import support.UnitSpec
+import shared.utils.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.util.concurrent.ConcurrentLinkedQueue
