@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package stubs
+package shared.routing
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status._
-import support.WireMockMethods
+import play.api.routing.Router
 
-object AuditStub extends WireMockMethods {
+/** So that we can have API-independent implementations of VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec implement this for the
+  * specific API...
+  */
+trait VersionRoutingMap {
+  val defaultRouter: Router
 
-  private val auditUri: String = s"/write/audit.*"
+  val map: Map[Version, Router]
 
-  def audit(): StubMapping = {
-    when(method = POST, uri = auditUri)
-      .thenReturn(status = NO_CONTENT)
-  }
-
+  final def versionRouter(version: Version): Option[Router] = map.get(version)
 }
