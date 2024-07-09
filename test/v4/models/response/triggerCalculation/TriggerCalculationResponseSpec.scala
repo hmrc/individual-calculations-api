@@ -17,7 +17,7 @@
 package v4.models.response.triggerCalculation
 
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class TriggerCalculationResponseSpec extends UnitSpec {
   private val calculationId                                       = "testId"

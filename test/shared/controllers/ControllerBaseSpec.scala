@@ -62,7 +62,7 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
   _: ControllerBaseSpec =>
 
   protected val correlationId    = "X-123"
-  protected val validNino        = "AA123456A"
+  protected val validNino        = "ZG903729C"
   protected val parsedNino: Nino = Nino(validNino)
 
   trait ControllerTest {

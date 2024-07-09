@@ -26,7 +26,7 @@ class FeatureSwitchesSpec extends UnitSpec {
 
       "absent from the config" in {
         val configuration   = Configuration.empty
-        val featureSwitches = FeatureSwitches(configuration)
+        val featureSwitches = CalculationsFeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
@@ -43,7 +43,7 @@ class FeatureSwitchesSpec extends UnitSpec {
           "cl290.enabled"                      -> true,
           "basicRateDivergence.enabled"        -> true,
           "desIf_Migration.enabled"            -> true)
-        val featureSwitches = FeatureSwitches(configuration)
+        val featureSwitches = CalculationsFeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe true
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe true
@@ -62,7 +62,7 @@ class FeatureSwitchesSpec extends UnitSpec {
           "basicRateDivergence.enabled"        -> false,
           "desIf_Migration.enabled"            -> false)
 
-        val featureSwitches = FeatureSwitches(configuration)
+        val featureSwitches = CalculationsFeatureSwitches(configuration)
 
         featureSwitches.isR8bSpecificApiEnabled shouldBe false
         featureSwitches.isRetrieveSAAdditionalFieldsEnabled shouldBe false

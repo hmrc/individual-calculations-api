@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package api.services
+package config
 
-import api.connectors.MockNrsProxyConnector
-import shared.services.ServiceSpec
+import com.google.inject.AbstractModule
+import common.definition.CalculationsDefinitionFactory
+import routing.CalculationsVersionRoutingMapImpl
+import shared.definition.ApiDefinitionFactory
+import shared.routing.VersionRoutingMap
 
-import scala.concurrent.Future
+class CalculationsPlayModule extends AbstractModule {
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
-
-  val service = new NrsProxyService(mockNrsProxyConnector)
-
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
-
-        service.submit(nino, event, body)
-      }
-    }
+  override def configure(): Unit = {
+    bind(classOf[ApiDefinitionFactory]).to(classOf[CalculationsDefinitionFactory]).asEagerSingleton()
+    bind(classOf[VersionRoutingMap]).to(classOf[CalculationsVersionRoutingMapImpl]).asEagerSingleton()
   }
 
 }

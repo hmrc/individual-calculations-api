@@ -31,7 +31,7 @@ import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
   private trait Test {
-    val nino: String = "AA123456A"
+    val nino: String = "ZG903729C"
 
     def taxYear: Option[String]
 
@@ -154,9 +154,9 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
         val input = Seq(
           ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+          ("ZG903729C", "20177", BAD_REQUEST, TaxYearFormatError),
+          ("ZG903729C", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

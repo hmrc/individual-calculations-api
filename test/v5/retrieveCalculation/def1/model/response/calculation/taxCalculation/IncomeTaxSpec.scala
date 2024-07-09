@@ -16,16 +16,16 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.JsValue
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class IncomeTaxSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
   "have the correct fields optional" when {
     val json = (taxCalculationDownstreamJson \ "incomeTax").as[JsValue]
 
-    testJsonAllPropertiesOptionalExcept[IncomeTax](json)(
+    testAllOptionalJsonFieldsExcept[IncomeTax](json)(
       "totalIncomeReceivedFromAllSources",
       "totalAllowancesAndDeductions",
       "totalTaxableIncome",

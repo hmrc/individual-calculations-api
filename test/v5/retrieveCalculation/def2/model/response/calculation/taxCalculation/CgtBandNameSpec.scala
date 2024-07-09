@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation.def2.model.response.calculation.taxCalculation
 
-import support.UnitSpec
+import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v5.retrieveCalculation.def2.model.response.calculation.taxCalculation.CgtBandName._
 

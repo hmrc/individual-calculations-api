@@ -18,13 +18,14 @@ package v4.models.response.listCalculations
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import shared.models.domain.TaxYear
 import v4.models.response.common.CalculationType
 
 case class Calculation(calculationId: String,
                        calculationTimestamp: String,
                        calculationType: CalculationType,
                        requestedBy: Option[String],
-                       taxYear: Option[String],
+                       taxYear: Option[TaxYear],
                        totalIncomeTaxAndNicsDue: Option[BigDecimal],
                        intentToSubmitFinalDeclaration: Option[Boolean],
                        finalDeclaration: Option[Boolean],
@@ -38,7 +39,7 @@ object Calculation {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
-      (JsPath \ "year").readNullable[String] and
+      (JsPath \ "year").readNullable[TaxYear] and
       (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and

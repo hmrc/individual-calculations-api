@@ -23,6 +23,7 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.mvc.Result
+import shared.models.audit.GenericAuditDetailFixture.nino
 import v4.controllers.validators.MockListCalculationsValidatorFactory
 import v4.fixtures.ListCalculationsFixture
 import v4.mocks.services.MockListCalculationsService

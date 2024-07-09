@@ -17,9 +17,11 @@
 package config
 
 import play.api.Configuration
-import shared.config.AppConfig
+import shared.config.{AppConfig, FeatureSwitches}
 
-case class FeatureSwitches(featureSwitchConfig: Configuration) extends shared.config.FeatureSwitches {
+import javax.inject.Inject
+
+case class CalculationsFeatureSwitches @Inject() (protected val featureSwitchConfig: Configuration) extends FeatureSwitches {
 
   val isR8bSpecificApiEnabled: Boolean             = isEnabled("r8b-api")
   val isRetrieveSAAdditionalFieldsEnabled: Boolean = isEnabled("retrieveSAAdditionalFields")
@@ -28,6 +30,6 @@ case class FeatureSwitches(featureSwitchConfig: Configuration) extends shared.co
   val isDesIf_MigrationEnabled: Boolean            = isEnabled("desIf_Migration")
 }
 
-object FeatureSwitches {
-  def apply()(implicit appConfig: AppConfig): FeatureSwitches = FeatureSwitches(appConfig.featureSwitchConfig)
+object CalculationsFeatureSwitches {
+  def apply()(implicit appConfig: AppConfig): CalculationsFeatureSwitches = CalculationsFeatureSwitches(appConfig.featureSwitchConfig)
 }

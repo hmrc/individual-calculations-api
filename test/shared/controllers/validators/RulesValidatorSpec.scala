@@ -25,7 +25,7 @@ import shared.utils.UnitSpec
 
 class RulesValidatorSpec extends UnitSpec {
 
-  private val validNino    = Nino("AA123456A")
+  private val validNino    = Nino("ZG903729C")
   private val validTaxYear = TaxYear.currentTaxYear()
 
   private case class TestParsedRequest(nino: Nino, taxYear: TaxYear, valid1: Boolean, valid2: Boolean)

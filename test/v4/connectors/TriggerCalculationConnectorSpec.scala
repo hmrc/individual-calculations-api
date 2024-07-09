@@ -27,7 +27,7 @@ import scala.concurrent.Future
 
 class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
-  val ninoString: String                   = "AA123456A"
+  val ninoString: String                   = "ZG903729C"
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 

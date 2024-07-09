@@ -70,7 +70,7 @@ object RequestHandler {
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[Input, Output] =
       copy(auditHandler = Some(auditHandler))
 
-    def withModelHandling(modelHandler: Output => Output): RequestHandlerBuilder[Input, Output] =
+    def withResponseModifier(modelHandler: Output => Output): RequestHandlerBuilder[Input, Output] =
       copy(modelHandler = Option(modelHandler))
     /** Shorthand for
       * {{{

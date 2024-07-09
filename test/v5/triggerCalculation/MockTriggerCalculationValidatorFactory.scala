@@ -16,7 +16,7 @@
 
 package v5.triggerCalculation
 
-import api.controllers.validators.{MockValidatorFactory, Validator}
+import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 import v5.triggerCalculation.schema.TriggerCalculationSchema

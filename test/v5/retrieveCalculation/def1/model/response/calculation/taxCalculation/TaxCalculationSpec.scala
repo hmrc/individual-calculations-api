@@ -16,9 +16,9 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class TaxCalculationSpec extends UnitSpec with TaxCalculationFixture with JsonErrorValidators {
 
@@ -31,7 +31,7 @@ class TaxCalculationSpec extends UnitSpec with TaxCalculationFixture with JsonEr
     }
 
     "have the correct fields optional" when {
-      testJsonAllPropertiesOptional[TaxCalculation](taxCalculationDownstreamJson)
+      testOptionalJsonFields[TaxCalculation](taxCalculationDownstreamJson)
     }
   }
 

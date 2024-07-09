@@ -16,16 +16,16 @@
 
 package v5.listCalculations.def1
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import support.UnitSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.utils.UnitSpec
 import v5.listCalculations.model.request.Def1_ListCalculationsRequestData
 
 class Def1_ListCalculationsValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = "AA123456A"
+  private val validNino    = "ZG903729C"
   private val validTaxYear = "2017-18"
 
   private val parsedNino    = Nino(validNino)

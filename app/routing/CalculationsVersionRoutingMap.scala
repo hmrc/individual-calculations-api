@@ -16,17 +16,15 @@
 
 package routing
 
-import com.google.inject.ImplementedBy
 import play.api.routing.Router
-import shared.routing.{Version, Version4, Version5, Version6}
+import shared.routing.{Version, Version4, Version5, Version6, VersionRoutingMap}
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 
 // So that we can have API-independent implementations of
 // VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec
 // implement this for the specific API...
-@ImplementedBy(classOf[VersionRoutingMapImpl])
-trait VersionRoutingMap {
+trait CalculationsVersionRoutingMap {
   val defaultRouter: Router
 
   val map: Map[Version, Router]
@@ -35,7 +33,9 @@ trait VersionRoutingMap {
 }
 
 // Add routes corresponding to available versions...
-case class VersionRoutingMapImpl @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes, v6Router: v6.Routes) extends VersionRoutingMap {
+@Singleton
+case class CalculationsVersionRoutingMapImpl @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes, v6Router: v6.Routes)
+    extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
     Version4 -> v4Router,

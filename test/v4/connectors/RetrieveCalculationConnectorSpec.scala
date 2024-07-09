@@ -28,7 +28,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationConnectorSpec extends ConnectorSpec with CalculationFixture {
 
-  val nino: Nino                   = Nino("AA123456A")
+  val nino: Nino                   = Nino("ZG903729C")
   val calculationId: CalculationId = CalculationId("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
   private val preTysTaxYear = TaxYear.fromMtd("2018-19")

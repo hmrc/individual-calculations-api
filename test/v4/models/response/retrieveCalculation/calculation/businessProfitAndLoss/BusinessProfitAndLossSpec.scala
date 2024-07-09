@@ -17,7 +17,7 @@
 package v4.models.response.retrieveCalculation.calculation.businessProfitAndLoss
 
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v4.models.response.common.IncomeSourceType
 
 class BusinessProfitAndLossSpec extends UnitSpec {

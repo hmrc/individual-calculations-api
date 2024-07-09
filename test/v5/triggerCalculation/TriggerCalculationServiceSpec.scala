@@ -16,10 +16,11 @@
 
 package v5.triggerCalculation
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import api.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -27,7 +28,7 @@ import scala.concurrent.Future
 
 class TriggerCalculationServiceSpec extends ServiceSpec {
 
-  val nino: Nino = Nino("AA123456A")
+  val nino: Nino = Nino("ZG903729C")
 
   val taxYear: TaxYear = TaxYear.fromDownstream("2020")
 

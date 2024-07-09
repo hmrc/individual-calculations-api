@@ -16,7 +16,7 @@
 
 package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
-import support.UnitSpec
+import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v4.models.response.retrieveCalculation.calculation.taxCalculation.IncomeTaxBandName._
 

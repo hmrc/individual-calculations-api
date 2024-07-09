@@ -23,7 +23,7 @@ import scala.concurrent.Future
 
 class MtdIdLookupServiceSpec extends ServiceSpec {
 
-  val nino        = "AA123456A"
+  val nino        = "ZG903729C"
 
   trait Test extends MockMtdIdLookupConnector {
     lazy val target = new MtdIdLookupService(mockMtdIdLookupConnector)

@@ -16,8 +16,8 @@
 
 package v5.listCalculations
 
-import api.controllers.validators.Validator
-import support.UnitSpec
+import shared.controllers.validators.Validator
+import shared.utils.UnitSpec
 import v5.listCalculations.def1.Def1_ListCalculationsValidator
 import v5.listCalculations.model.request.ListCalculationsRequestData
 import v5.listCalculations.schema.ListCalculationsSchema
@@ -27,7 +27,7 @@ import javax.inject.Singleton
 @Singleton
 class ListCalculationsValidatorFactorySpec extends UnitSpec {
 
-  private val validNino    = "AA123456A"
+  private val validNino    = "ZG903729C"
   private val validTaxYear = "2017-18"
 
   private val validatorFactory = new ListCalculationsValidatorFactory

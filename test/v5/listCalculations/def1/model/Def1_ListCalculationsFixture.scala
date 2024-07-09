@@ -16,7 +16,6 @@
 
 package v5.listCalculations.def1.model
 
-import api.models.domain.TaxYear
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import v4.models.response.common.CalculationType
@@ -66,7 +65,7 @@ trait Def1_ListCalculationsFixture {
     calculationTimestamp = "2021-07-12T07:51:43.112Z",
     calculationType = CalculationType.`finalDeclaration`,
     requestedBy = Some("customer"),
-    taxYear = Some(TaxYear.fromDownstreamInt(2021).toString),
+    taxYear = Some(TaxYear.fromDownstreamInt(2021)),
     totalIncomeTaxAndNicsDue = Some(10000.12),
     intentToSubmitFinalDeclaration = Some(true),
     finalDeclaration = Some(true),

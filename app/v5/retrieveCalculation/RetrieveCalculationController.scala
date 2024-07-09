@@ -20,7 +20,7 @@ import shared.utils.{IdGenerator, Logging}
 import shared.controllers._
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.config.AppConfig
-import config.FeatureSwitches
+import config.CalculationsFeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.routing.Version
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
@@ -68,8 +68,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
-          .withModelHandling { response: RetrieveCalculationResponse =>
-            response.adjustFields(FeatureSwitches()(appConfig), taxYear)
+          .withResponseModifier { response: RetrieveCalculationResponse =>
+            response.adjustFields(CalculationsFeatureSwitches()(appConfig), taxYear)
           }
           .withPlainJsonResult()
 

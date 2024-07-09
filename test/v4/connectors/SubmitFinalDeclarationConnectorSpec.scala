@@ -47,7 +47,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
   "Submit Final Declaration" should {
 
-    "return a success response when request is made to IFS downstream API" in new IfsTestSubmitFinalDeclaration with Test {
+    "return a success response when request is made to IFS downstream API" in new IfsTest with Test {
       val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
 
       willPost(

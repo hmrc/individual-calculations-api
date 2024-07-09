@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.models.response
 
 import shared.models.domain.TaxYear
-import config.FeatureSwitches
+import config.CalculationsFeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
 import v5.retrieveCalculation._
 import v5.retrieveCalculation.def2.model.response.calculation.Calculation
@@ -25,7 +25,7 @@ import v5.retrieveCalculation.def2.model.response.calculation.Calculation
 import scala.math.Ordered.orderingToOrdered
 
 sealed trait RetrieveCalculationResponse {
-  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): RetrieveCalculationResponse
+  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): RetrieveCalculationResponse
 
   def intentToSubmitFinalDeclaration: Boolean
 
@@ -61,7 +61,7 @@ case class Def1_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def1_RetrieveCalculationResponse = {
+  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def1_RetrieveCalculationResponse = {
     import featureSwitches._
 
     def updateModelR8b(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
@@ -173,7 +173,7 @@ case class Def2_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-  def adjustFields(featureSwitches: FeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
+  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
     if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
       this
     } else {

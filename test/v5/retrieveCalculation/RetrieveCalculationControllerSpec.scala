@@ -16,16 +16,17 @@
 
 package v5.retrieveCalculation
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import api.models.outcomes.ResponseWrapper
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.utils.MockIdGenerator
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
+import shared.models.audit.GenericAuditDetailFixture.nino
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
@@ -62,7 +63,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> true,
@@ -87,7 +88,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -112,7 +113,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -136,7 +137,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithBasicRateDivergenceEnabled))))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -161,7 +162,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -185,7 +186,7 @@ class RetrieveCalculationControllerSpec
 
         willUseValidator(returning(NinoFormatError))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
@@ -196,7 +197,7 @@ class RetrieveCalculationControllerSpec
 
         willUseValidator(returningSuccess(requestData))
 
-        MockAppConfig.featureSwitches
+        MockAppConfig.featureSwitchConfig
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 

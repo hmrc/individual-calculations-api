@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation
 
-import api.controllers.validators.{MockValidatorFactory, Validator}
+import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema

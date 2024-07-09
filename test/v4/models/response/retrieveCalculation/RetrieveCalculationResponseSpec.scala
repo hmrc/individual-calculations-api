@@ -16,9 +16,9 @@
 
 package v4.models.response.retrieveCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse._
 
 class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture with JsonErrorValidators {
@@ -32,7 +32,7 @@ class RetrieveCalculationResponseSpec extends UnitSpec with CalculationFixture w
     }
 
     "have the correct fields optional" when {
-      testJsonAllPropertiesOptionalExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
+      testAllOptionalJsonFieldsExcept[RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
     "return the correct TaxDeductedAtSource" in {

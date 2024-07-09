@@ -16,31 +16,11 @@
 
 package v4.services
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{
-  CalculationIdFormatError,
-  DownstreamErrorCode,
-  DownstreamErrors,
-  ErrorWrapper,
-  InternalError,
-  MtdError,
-  NinoFormatError,
-  NotFoundError,
-  RuleFinalDeclarationInProgressError,
-  RuleFinalDeclarationReceivedError,
-  RuleFinalDeclarationTaxYearError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleIncorrectGovTestScenarioError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError,
-  RuleSubmissionFailedError,
-  RuleTaxYearNotSupportedError,
-  TaxYearFormatError
-}
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors._
+import api.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v4.mocks.connectors.MockSubmitFinalDeclarationConnector
 import v4.models.request.SubmitFinalDeclarationRequestData
 
@@ -57,7 +37,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
   }
 
   "SubmitFinalDeclarationService" when {
-    val nino: Nino                   = Nino("AA123456A")
+    val nino: Nino                   = Nino("ZG903729C")
     val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
     val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
 

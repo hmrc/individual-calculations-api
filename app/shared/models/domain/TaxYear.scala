@@ -123,7 +123,8 @@ object TaxYear {
 
   implicit val ordering: Ordering[TaxYear] = Ordering.by(_.year)
 
-  private val toMtdWrites: Writes[TaxYear]                       = implicitly[Writes[String]].contramap(_.asMtd)
+  private val writes: Writes[TaxYear]                       = implicitly[Writes[String]].contramap(_.asMtd)
   private val fromDownstreamIntReads: Reads[TaxYear]             = implicitly[Reads[Int]].map(fromDownstreamInt)
-  implicit val downstreamIntToMtdFormat: Format[TaxYear] = Format(fromDownstreamIntReads, toMtdWrites)
+  implicit val downstreamIntToMtdFormat: Format[TaxYear] = Format(fromDownstreamIntReads, writes)
+  //TODO create story for case match in shared code
 }

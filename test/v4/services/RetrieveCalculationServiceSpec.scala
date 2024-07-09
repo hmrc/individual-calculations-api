@@ -16,22 +16,10 @@
 
 package v4.services
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{
-  CalculationIdFormatError,
-  DownstreamErrorCode,
-  DownstreamErrors,
-  ErrorWrapper,
-  InternalError,
-  MtdError,
-  NinoFormatError,
-  NotFoundError,
-  RuleIncorrectGovTestScenarioError,
-  RuleTaxYearNotSupportedError,
-  TaxYearFormatError
-}
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v4.mocks.connectors.MockRetrieveCalculationConnector
 import v4.models.request.RetrieveCalculationRequestData
@@ -41,7 +29,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationServiceSpec extends ServiceSpec with CalculationFixture {
 
-  private val nino: Nino                   = Nino("AA123456A")
+  private val nino: Nino                   = Nino("ZG903729C")
   private val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
   private val calculationId: CalculationId = CalculationId("someCalcId")
 

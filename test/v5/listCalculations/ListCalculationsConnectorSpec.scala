@@ -16,10 +16,10 @@
 
 package v5.listCalculations
 
-import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import api.models.outcomes.ResponseWrapper
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
+import shared.models.outcomes.ResponseWrapper
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.Def1_ListCalculationsRequestData

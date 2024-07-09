@@ -14,26 +14,19 @@
  * limitations under the License.
  */
 
-package api.connectors
+package mocks
 
+import config.CalculationsConfig
+import shared.config.{ConfidenceLevelConfig, MockAppConfig}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 
-import scala.concurrent.Future
+trait MockCalculationsConfig extends MockFactory {
+  implicit val mockCalculationsConfig: CalculationsConfig = mock[CalculationsConfig]
 
-trait MockNrsProxyConnector extends MockFactory {
-
-  val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
-
-  object MockNrsProxyConnector {
-
-    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
-      (mockNrsProxyConnector
-        .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, notableEvent, body, *)
-
+  object MockCalculationsConfig extends MockAppConfig{
+    def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] =
+      (() => mockAppConfig.confidenceLevelConfig: ConfidenceLevelConfig).expects()
   }
 
 }

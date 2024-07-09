@@ -16,10 +16,11 @@
 
 package v4.services
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import api.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v4.mocks.connectors.MockTriggerCalculationConnector
 import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
@@ -28,7 +29,7 @@ import scala.concurrent.Future
 
 class TriggerCalculationServiceSpec extends ServiceSpec {
 
-  val nino: Nino = Nino("AA123456A")
+  val nino: Nino = Nino("ZG903729C")
 
   val taxYear: TaxYear = TaxYear.fromDownstream("2020")
 

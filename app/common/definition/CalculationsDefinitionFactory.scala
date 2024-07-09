@@ -24,7 +24,7 @@ import shared.routing.{Version4, Version5, Version6}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class CaculationsDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
+class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
 
   lazy val definition: Definition =
     Definition(

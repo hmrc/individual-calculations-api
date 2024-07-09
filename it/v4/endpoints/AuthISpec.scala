@@ -29,7 +29,7 @@ import v4.models.response.retrieveCalculation.CalculationFixture
 class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
-    val nino: String  = "AA123456A"
+    val nino: String  = "ZG903729C"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
@@ -54,7 +54,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
     "the NINO cannot be converted to a MTD ID" should {
 
       "return 500" in new Test {
-        override val nino: String = "AA123456A"
+        override val nino: String = "ZG903729C"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -84,7 +84,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
     "an MTD ID is successfully retrieve from the NINO and the user is NOT logged in" should {
 
       "return 403" in new Test {
-        override val nino: String = "AA123456A"
+        override val nino: String = "ZG903729C"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -100,7 +100,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
     "an MTD ID is successfully retrieve from the NINO and the user is NOT authorised" should {
 
       "return 403" in new Test {
-        override val nino: String = "AA123456A"
+        override val nino: String = "ZG903729C"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()

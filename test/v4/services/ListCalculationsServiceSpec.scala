@@ -16,21 +16,10 @@
 
 package v4.services
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors.{
-  DownstreamErrorCode,
-  DownstreamErrors,
-  ErrorWrapper,
-  InternalError,
-  MtdError,
-  NinoFormatError,
-  NotFoundError,
-  RuleIncorrectGovTestScenarioError,
-  RuleTaxYearNotSupportedError,
-  TaxYearFormatError
-}
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v4.fixtures.ListCalculationsFixture
 import v4.mocks.connectors.MockListCalculationsConnector
 import v4.models.request.ListCalculationsRequestData

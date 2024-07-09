@@ -16,7 +16,7 @@
 
 package v5.listCalculations
 
-import api.connectors.DownstreamOutcome
+import shared.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier

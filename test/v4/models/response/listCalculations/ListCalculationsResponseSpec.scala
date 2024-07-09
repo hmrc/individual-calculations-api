@@ -17,7 +17,7 @@
 package v4.models.response.listCalculations
 
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v4.fixtures.ListCalculationsFixture
 
 class ListCalculationsResponseSpec extends UnitSpec with ListCalculationsFixture {
