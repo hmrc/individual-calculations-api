@@ -16,9 +16,9 @@
 
 package v5.submitFinalDeclaration
 
-import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import shared.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
 import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import scala.concurrent.Future
@@ -47,7 +47,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
   "Submit Final Declaration" should {
 
-    "return a success response when request is made to IFS downstream API" in new IfsTestSubmitFinalDeclaration with Test {
+    "return a success response when request is made to IFS downstream API" in new IfsTest with Test {
       val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
 
       willPost(

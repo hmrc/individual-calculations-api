@@ -16,16 +16,16 @@
 
 package v5.retrieveCalculation.def1
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors._
-import support.UnitSpec
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors._
+import shared.utils.UnitSpec
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 
 class Def1_RetrieveCalculationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino          = "AA123456A"
+  private val validNino          = "ZG903729C"
   private val validTaxYear       = "2017-18"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 

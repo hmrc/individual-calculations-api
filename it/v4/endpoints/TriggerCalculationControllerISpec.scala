@@ -16,14 +16,15 @@
 
 package v4.endpoints
 
-import api.models.errors._
+import api.errors._
+import shared.models.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{EmptyBody, WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
 
 class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
@@ -99,9 +100,9 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
       val input = Seq(
         ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
-        ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
-        ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
-        ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+        ("ZG903729C", "20177", BAD_REQUEST, TaxYearFormatError),
+        ("ZG903729C", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+        ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
       input.foreach(args => (validationErrorTest _).tupled(args))
@@ -174,7 +175,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino             = "AA123456A"
+    val nino             = "ZG903729C"
     val finalDeclaration = true
 
     val downstreamSuccessBody: JsValue = Json.parse("""

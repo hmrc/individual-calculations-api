@@ -16,15 +16,15 @@
 
 package v5.submitFinalDeclaration
 
-import api.controllers.validators.Validator
-import support.UnitSpec
+import shared.controllers.validators.Validator
+import shared.utils.UnitSpec
 import v5.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 
-  private val validNino          = "AA123456A"
+  private val validNino          = "ZG903729C"
   private val validTaxYear       = "2017-18"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 

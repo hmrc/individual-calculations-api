@@ -16,15 +16,15 @@
 
 package v5.triggerCalculation
 
-import api.controllers.validators.Validator
-import support.UnitSpec
+import shared.controllers.validators.Validator
+import shared.utils.UnitSpec
 import v5.triggerCalculation.def1.Def1_TriggerCalculationValidator
 import v5.triggerCalculation.model.request.TriggerCalculationRequestData
 import v5.triggerCalculation.schema.TriggerCalculationSchema
 
 class TriggerCalculationValidatorFactorySpec extends UnitSpec {
 
-  private val validNino             = "AA123456A"
+  private val validNino             = "ZG903729C"
   private val validTaxYear          = "2017-18"
   private val validFinalDeclaration = "true"
 

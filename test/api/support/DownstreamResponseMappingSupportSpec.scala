@@ -16,13 +16,14 @@
 
 package api.support
 
-import api.controllers.EndpointLogContext
-import api.models.errors
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
+import shared.controllers.EndpointLogContext
+import shared.models.errors
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.utils.Logging
 import play.api.http.Status.BAD_REQUEST
-import support.UnitSpec
-import utils.Logging
+import shared.services.DownstreamResponseMappingSupport
+import shared.utils.UnitSpec
 
 import java.time.LocalDate
 

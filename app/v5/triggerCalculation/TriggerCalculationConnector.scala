@@ -16,10 +16,11 @@
 
 package v5.triggerCalculation
 
-import api.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
-import api.connectors.httpparsers.StandardDownstreamHttpParser._
-import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import config.AppConfig
+import config.CalculationsFeatureSwitches
+import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.httpparsers.StandardDownstreamHttpParser._
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import shared.config.AppConfig
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
@@ -30,7 +31,8 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
+    extends BaseDownstreamConnector {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
       hc: HeaderCarrier,
@@ -42,17 +44,19 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
 
     val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$finalDeclaration"
 
-      if (taxYear.useTaxYearSpecificApi) {
-        implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
-        val downstreamUri = TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
-        post(JsObject.empty, downstreamUri)
+    if (taxYear.useTaxYearSpecificApi) {
+      implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+      val downstreamUri =
+        TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
+      post(JsObject.empty, downstreamUri)
     } else if (featureSwitches.isDesIf_MigrationEnabled) {
-        val downstreamUri = IfsUri[DownstreamResp](path)
-        post(JsObject.empty, downstreamUri)
+      val downstreamUri = IfsUri[DownstreamResp](path)
+      post(JsObject.empty, downstreamUri)
     } else {
-        val downstreamUri = DesUri[DownstreamResp](path)
-        post(JsObject.empty, downstreamUri)
+      val downstreamUri = DesUri[DownstreamResp](path)
+      post(JsObject.empty, downstreamUri)
     }
 
   }
+
 }

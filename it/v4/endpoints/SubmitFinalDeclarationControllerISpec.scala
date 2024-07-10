@@ -16,13 +16,14 @@
 
 package v4.endpoints
 
-import api.models.errors._
+import shared.models.errors._
+import api.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import stubs._
+import shared.stubs._
 import support.IntegrationBaseSpec
 
 class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
@@ -70,9 +71,9 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
 
       val input = List(
         ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
-        ("AA123456A", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
-        ("AA123456A", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-        ("AA123456A", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
+        ("ZG903729C", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
+        ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
+        ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
       )
 
       input.foreach(args => (validationErrorTest _).tupled(args))
@@ -138,7 +139,7 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino: String              = "AA123456A"
+    val nino: String              = "ZG903729C"
     val taxYear: String           = "2018-19"
     val downstreamTaxYear: String = "18-19"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"

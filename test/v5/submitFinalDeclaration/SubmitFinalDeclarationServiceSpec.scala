@@ -16,10 +16,11 @@
 
 package v5.submitFinalDeclaration
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors._
+import api.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import scala.concurrent.Future
@@ -35,7 +36,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
   }
 
   "SubmitFinalDeclarationService" when {
-    val nino: Nino                   = Nino("AA123456A")
+    val nino: Nino                   = Nino("ZG903729C")
     val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
     val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
 

@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation
 
-import api.controllers.validators.Validator
+import shared.controllers.validators.Validator
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v5.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData

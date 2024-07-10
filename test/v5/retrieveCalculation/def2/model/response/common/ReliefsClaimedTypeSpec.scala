@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation.def2.model.response.common
 
-import support.UnitSpec
+import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import ReliefsClaimedType._
 

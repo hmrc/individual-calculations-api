@@ -17,8 +17,8 @@
 package v4.models.response.common
 
 import play.api.libs.json._
-import utils.enums.Values.MkValues
-import utils.enums._
+import common.utils.enums.Enums
+import shared.utils.enums.Values.MkValues
 
 sealed trait IncomeSourceType
 

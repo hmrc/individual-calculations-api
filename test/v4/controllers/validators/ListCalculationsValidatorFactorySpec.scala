@@ -16,16 +16,16 @@
 
 package v4.controllers.validators
 
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import support.UnitSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.utils.UnitSpec
 import v4.models.request.ListCalculationsRequestData
 
 class ListCalculationsValidatorFactorySpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = "AA123456A"
+  private val validNino    = "ZG903729C"
   private val validTaxYear = "2017-18"
 
   private val parsedNino    = Nino(validNino)

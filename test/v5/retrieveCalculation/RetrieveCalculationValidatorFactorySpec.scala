@@ -16,14 +16,14 @@
 
 package v5.retrieveCalculation
 
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v5.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v5.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v5.retrieveCalculation.schema.RetrieveCalculationSchema
 
 class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
 
-  private val validNino          = "AA123456A"
+  private val validNino          = "ZG903729C"
   private val validTaxYear       = "2017-18"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 

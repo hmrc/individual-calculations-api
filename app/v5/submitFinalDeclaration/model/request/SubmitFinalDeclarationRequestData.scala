@@ -16,7 +16,7 @@
 
 package v5.submitFinalDeclaration.model.request
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
 import v5.retrieveCalculation.models.request.{
   Def1_RetrieveCalculationRequestData,

@@ -16,7 +16,7 @@
 
 package v4.controllers.validators
 
-import api.controllers.validators.{MockValidatorFactory, Validator}
+import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v4.models.request.TriggerCalculationRequestData
 

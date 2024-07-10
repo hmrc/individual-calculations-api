@@ -16,8 +16,8 @@
 
 package v5.listCalculations.def1.model
 
-import api.models.domain.TaxYear
 import play.api.libs.json.{JsValue, Json}
+import shared.models.domain.TaxYear
 import v4.models.response.common.CalculationType
 import v5.listCalculations.def1.model.response.{Calculation, Def1_Calculation}
 import v5.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}

@@ -16,9 +16,9 @@
 
 package v4.models.response.listCalculations
 
-import api.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import shared.models.domain.TaxYear
 import v4.models.response.common.CalculationType
 
 case class Calculation(calculationId: String,

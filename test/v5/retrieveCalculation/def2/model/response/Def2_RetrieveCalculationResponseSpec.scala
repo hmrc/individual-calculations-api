@@ -16,12 +16,12 @@
 
 package v5.retrieveCalculation.def2.model.response
 
-import api.models.utils.JsonErrorValidators
-import config.FeatureSwitches
+import shared.models.utils.JsonErrorValidators
+import config.CalculationsFeatureSwitches
 import org.scalatest.Inside
 import play.api.Configuration
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
 import v5.retrieveCalculation.def2.model.response.calculation.Calculation
 import v5.retrieveCalculation.def2.model.response.calculation.transitionProfit.TransitionProfit
@@ -38,7 +38,7 @@ class Def2_RetrieveCalculationResponseSpec extends UnitSpec with Def2_Calculatio
     }
 
     "have the correct fields optional" when {
-      testJsonAllPropertiesOptionalExcept[Def2_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
+      testAllOptionalJsonFieldsExcept[Def2_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
   }
 
@@ -48,7 +48,7 @@ class Def2_RetrieveCalculationResponseSpec extends UnitSpec with Def2_Calculatio
     val ignoredTaxYear = "ignoredTaxYear"
 
     def featureSwitchesWith(enabled: Boolean) =
-      FeatureSwitches(Configuration("retrieveTransitionProfit.enabled" -> enabled))
+      CalculationsFeatureSwitches(Configuration("retrieveTransitionProfit.enabled" -> enabled))
 
     "the retrieveTransitionProfit featureSwitchWith is on" must {
       val featureSwitches = featureSwitchesWith(enabled = true)

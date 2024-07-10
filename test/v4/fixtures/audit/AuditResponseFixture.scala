@@ -16,7 +16,7 @@
 
 package v4.fixtures.audit
 
-import api.models.audit.{AuditError, AuditResponse}
+import shared.models.audit.{AuditError, AuditResponse}
 import play.api.http.Status.{BAD_REQUEST, OK}
 import play.api.libs.json.{JsValue, Json}
 

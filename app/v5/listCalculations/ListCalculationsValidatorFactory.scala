@@ -16,7 +16,7 @@
 
 package v5.listCalculations
 
-import api.controllers.validators.Validator
+import shared.controllers.validators.Validator
 import v5.listCalculations.def1.Def1_ListCalculationsValidator
 import v5.listCalculations.model.request.ListCalculationsRequestData
 import v5.listCalculations.schema.ListCalculationsSchema

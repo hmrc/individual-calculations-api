@@ -16,10 +16,10 @@
 
 package v4.services
 
-import api.controllers.RequestContext
-import api.models
-import api.models.errors._
-import api.services.{BaseService, ServiceOutcome}
+import shared.controllers.RequestContext
+import shared.models
+import shared.models.errors._
+import shared.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v4.connectors.RetrieveCalculationConnector
 import v4.models.request.RetrieveCalculationRequestData

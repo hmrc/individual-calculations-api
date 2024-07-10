@@ -16,14 +16,15 @@
 
 package v5.submitFinalDeclaration
 
-import api.controllers._
-import api.models.errors.InternalError
-import api.services._
+import api.nrs.NrsProxyService
 import play.api.libs.json.Json
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.services._
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
+import shared.routing.Version
+import shared.models.errors.InternalError
 import uk.gov.hmrc.http.HeaderCarrier
-import utils.{IdGenerator, Logging}
 import v5.retrieveCalculation.RetrieveCalculationService
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
@@ -38,16 +39,17 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   val lookupService: MtdIdLookupService,
                                                   validatorFactory: SubmitFinalDeclarationValidatorFactory,
                                                   service: SubmitFinalDeclarationService,
+                                                  nrsProxyService: NrsProxyService,
                                                   retrieveService: RetrieveCalculationService,
                                                   cc: ControllerComponents,
-                                                  nrsProxyService: NrsProxyService,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: config.AppConfig)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
+
 
   private val maxNrsAttempts = 3
   private val interval       = 100
@@ -77,10 +79,9 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
 
       requestHandler.handleRequest()
     }
-
   private def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[Unit] = {
+                                                                                        ctx: RequestContext,
+                                                                                        ec: ExecutionContext): Future[Unit] = {
     implicit val hc: HeaderCarrier = ctx.hc
 
     retrieveCalculationDetails(submitRequest.toRetrieveRequestData) map {
@@ -90,8 +91,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
   }
 
   private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
+                                                                                                            ctx: RequestContext,
+                                                                                                            ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
     retrieveService.retrieveCalculation(retrieveRequest).flatMap {
       case Right(result) =>
@@ -107,5 +108,4 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
         }
     }
   }
-
 }

@@ -16,9 +16,9 @@
 
 package v4.connectors
 
-import api.connectors.ConnectorSpec
-import api.models.domain.{Nino, TaxYear}
-import api.models.outcomes.ResponseWrapper
+import shared.connectors.ConnectorSpec
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.outcomes.ResponseWrapper
 import play.api.libs.json.Json
 import v4.models.request.TriggerCalculationRequestData
 import v4.models.response.triggerCalculation.TriggerCalculationResponse
@@ -27,7 +27,7 @@ import scala.concurrent.Future
 
 class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
-  val ninoString: String                   = "AA123456A"
+  val ninoString: String                   = "ZG903729C"
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 

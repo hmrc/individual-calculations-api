@@ -16,15 +16,15 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
-import support.UnitSpec
+import shared.models.utils.JsonErrorValidators
+import shared.utils.UnitSpec
 
 class Class4NicsSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
   "have the correct fields optional" when {
     val json = (taxCalculationDownstreamJson \ "nics" \ "class4Nics").get
 
-    testJsonAllPropertiesOptionalExcept[Class4Nics](json)("totalAmount", "nic4Bands")
+    testAllOptionalJsonFieldsExcept[Class4Nics](json)("totalAmount", "nic4Bands")
   }
 
 }

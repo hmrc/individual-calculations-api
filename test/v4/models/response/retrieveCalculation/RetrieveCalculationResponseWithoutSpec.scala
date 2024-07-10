@@ -16,7 +16,7 @@
 
 package v4.models.response.retrieveCalculation
 
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class RetrieveCalculationResponseWithoutSpec extends UnitSpec with CalculationFixture {
 

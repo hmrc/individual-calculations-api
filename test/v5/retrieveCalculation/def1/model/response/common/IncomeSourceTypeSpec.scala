@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def1.model.response.common
 
 import play.api.libs.json.{JsResultException, JsString, Json}
-import support.UnitSpec
+import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import IncomeSourceType._
 

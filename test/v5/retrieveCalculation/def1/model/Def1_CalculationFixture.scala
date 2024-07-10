@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation.def1.model
 
-import api.models.domain.TaxYear
+import shared.models.domain.TaxYear
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v5.retrieveCalculation.def1.model.response.calculation.Calculation
 import v5.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}

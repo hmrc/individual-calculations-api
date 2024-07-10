@@ -16,16 +16,16 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.JsValue
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class Class2NicsSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
   "have the correct fields optional" when {
     val json = (taxCalculationDownstreamJson \ "nics" \ "class2Nics").as[JsValue]
 
-    testJsonAllPropertiesOptionalExcept[Class2Nics](json)("underSmallProfitThreshold")
+    testAllOptionalJsonFieldsExcept[Class2Nics](json)("underSmallProfitThreshold")
   }
 
 }

@@ -17,10 +17,11 @@
 package utils.enums
 
 import cats.Show
+import common.utils.enums.Enums
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
 import play.api.libs.json._
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 sealed trait Enum
 

@@ -16,10 +16,11 @@
 
 package v4.controllers.validators
 
-import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveBoolean, ResolveNino, ResolveTaxYearMinimum}
-import api.models.domain.TaxYear
-import api.models.errors.{FinalDeclarationFormatError, MtdError}
+import api.errors.FinalDeclarationFormatError
+import shared.controllers.validators.Validator
+import shared.controllers.validators.resolvers.{ResolveBoolean, ResolveNino, ResolveTaxYearMinimum}
+import shared.models.domain.TaxYear
+import shared.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Valid
 import cats.implicits._

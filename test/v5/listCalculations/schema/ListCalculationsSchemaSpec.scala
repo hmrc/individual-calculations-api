@@ -16,10 +16,10 @@
 
 package v5.listCalculations.schema
 
-import api.models.domain.{TaxYear, TaxYearPropertyCheckSupport}
+import shared.models.domain.{TaxYear, TaxYearPropertyCheckSupport}
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 import java.time.{Clock, LocalDate, ZoneOffset}
 

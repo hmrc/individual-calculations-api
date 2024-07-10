@@ -16,12 +16,13 @@
 
 package v4.controllers
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import config.{AppConfig, FeatureSwitches}
+import shared.utils.{IdGenerator, Logging}
+import shared.controllers._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.config.AppConfig
+import config.CalculationsFeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import routing.Version
-import utils.{IdGenerator, Logging}
+import shared.routing.Version
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v4.services.RetrieveCalculationService
@@ -45,7 +46,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
       endpointName = "retrieveCalculation"
     )
 
-  private val featureSwitches = FeatureSwitches()(appConfig)
+  private val featureSwitches = CalculationsFeatureSwitches()(appConfig)
 
   import featureSwitches.{isCl290Enabled, isR8bSpecificApiEnabled, isRetrieveSAAdditionalFieldsEnabled}
 
@@ -71,10 +72,10 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
-          .withModelHandling { response: RetrieveCalculationResponse =>
-            val responseMaybeWithoutR8b              = updateModelR8b(response)
-            val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
-            updateModelCl290(responseMaybeWithoutAdditionalFields)
+          .withResponseModifier { response: RetrieveCalculationResponse => //modifyResponseBody
+            val responseMaybeWithoutR8b              = updateResponseExceptR8b(response)
+            val responseMaybeWithoutAdditionalFields = updateResponseExceptAdditionalFields(responseMaybeWithoutR8b)
+            updateResponseExceptCl290(responseMaybeWithoutAdditionalFields)
           }
           .withPlainJsonResult()
 
@@ -82,13 +83,13 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
 
     }
 
-  private def updateModelR8b(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+  private def updateResponseExceptR8b(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isR8bSpecificApiEnabled) response else response.withoutR8bSpecificUpdates
 
-  private def updateModelAdditionalFields(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+  private def updateResponseExceptAdditionalFields(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isRetrieveSAAdditionalFieldsEnabled) response else response.withoutAdditionalFieldsUpdates
 
-  private def updateModelCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
+  private def updateResponseExceptCl290(response: RetrieveCalculationResponse): RetrieveCalculationResponse =
     if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
 }

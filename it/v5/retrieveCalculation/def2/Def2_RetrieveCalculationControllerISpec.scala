@@ -16,21 +16,21 @@
 
 package v5.retrieveCalculation.def2
 
-import api.models.errors._
+import shared.models.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
 import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
 
 class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
 
   private trait Test {
-    val nino: String              = "AA123456A"
+    val nino: String              = "ZG903729C"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     def taxYear: String           = "2024-25"
     def downstreamTaxYear: String = "24-25"
@@ -104,10 +104,10 @@ class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with D
         }
         val input = Seq(
           ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2016-17", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("AA123456A", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
+          ("ZG903729C", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
+          ("ZG903729C", "2016-17", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
         input.foreach(args => (validationErrorTest _).tupled(args))
         "downstream returns a service error" when {

@@ -16,10 +16,10 @@
 
 package v5.retrieveCalculation
 
-import api.connectors.{ConnectorSpec, DownstreamOutcome}
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import api.models.outcomes.ResponseWrapper
+import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
+import shared.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
@@ -29,7 +29,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_CalculationFixture {
 
-  val nino: Nino                   = Nino("AA123456A")
+  val nino: Nino                   = Nino("ZG903729C")
   val calculationId: CalculationId = CalculationId("f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c")
 
   private val preTysTaxYear = TaxYear.fromMtd("2018-19")

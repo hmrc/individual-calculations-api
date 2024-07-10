@@ -16,7 +16,7 @@
 
 package v5.submitFinalDeclaration
 
-import api.controllers.validators.{MockValidatorFactory, Validator}
+import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema

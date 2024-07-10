@@ -16,7 +16,7 @@
 
 package v5.listCalculations
 
-import api.controllers.validators.{MockValidatorFactory, Validator}
+import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v5.listCalculations.model.request.ListCalculationsRequestData
 import v5.listCalculations.schema.ListCalculationsSchema

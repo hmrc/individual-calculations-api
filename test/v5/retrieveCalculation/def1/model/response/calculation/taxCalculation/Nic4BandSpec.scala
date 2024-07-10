@@ -16,16 +16,16 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.JsObject
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class Nic4BandSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
   "have the correct fields optional" when {
     val json = (taxCalculationDownstreamJson \ "nics" \ "class4Nics" \ "nic4Bands").head.as[JsObject]
 
-    testJsonAllPropertiesMandatoryExcept[Nic4Band](json)("threshold", "apportionedThreshold")
+    testAllMandatoryJsonFieldsExcept[Nic4Band](json)("threshold", "apportionedThreshold")
   }
 
 }

@@ -16,18 +16,19 @@
 
 package v5.submitFinalDeclaration
 
-import api.connectors.MockNrsProxyConnector
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
-import api.models.outcomes.ResponseWrapper
-import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, StubNrsProxyService}
+import api.nrs.{MockNrsProxyConnector, StubNrsProxyService}
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.utils.MockIdGenerator
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import shared.models.audit.GenericAuditDetailFixture.nino
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 import v5.retrieveCalculation.MockRetrieveCalculationService
@@ -46,11 +47,11 @@ class SubmitFinalDeclarationControllerSpec
     with MockMtdIdLookupService
     with MockSubmitFinalDeclarationService
     with MockSubmitFinalDeclarationValidatorFactory
-    with MockRetrieveCalculationService
     with MockAuditService
-    with MockNrsProxyConnector
-    with StubNrsProxyService
     with MockIdGenerator
+    with MockNrsProxyConnector
+    with MockRetrieveCalculationService
+    with StubNrsProxyService
     with Def1_CalculationFixture {
 
   private val taxYear       = "2020-21"
@@ -100,10 +101,10 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
 
         private val fallbackNrsPayload = Json.parse(s"""
-            |{
-            |  "calculationId": "$calculationId"
-            |}
-            |""".stripMargin)
+                                                       |{
+                                                       |  "calculationId": "$calculationId"
+                                                       |}
+                                                       |""".stripMargin)
 
         eventually {
           verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", fallbackNrsPayload))

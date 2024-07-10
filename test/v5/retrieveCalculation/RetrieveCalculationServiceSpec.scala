@@ -16,10 +16,10 @@
 
 package v5.retrieveCalculation
 
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
@@ -29,7 +29,7 @@ import scala.concurrent.Future
 
 class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFixture {
 
-  private val nino: Nino                   = Nino("AA123456A")
+  private val nino: Nino                   = Nino("ZG903729C")
   private val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
   private val calculationId: CalculationId = CalculationId("someCalcId")
 

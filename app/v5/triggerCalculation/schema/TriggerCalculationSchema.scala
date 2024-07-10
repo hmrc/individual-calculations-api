@@ -16,9 +16,9 @@
 
 package v5.triggerCalculation.schema
 
-import api.controllers.validators.resolvers.ResolveTaxYear
-import api.models.domain.TaxYear
-import api.schema.DownstreamReadable
+import shared.controllers.validators.resolvers.ResolveTaxYear
+import shared.models.domain.TaxYear
+import shared.schema.DownstreamReadable
 import play.api.libs.json.Reads
 import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 

@@ -17,7 +17,7 @@
 package v5.triggerCalculation.def1.model.response
 
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 class Def1_TriggerCalculationResponseSpec extends UnitSpec {

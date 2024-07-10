@@ -16,9 +16,9 @@
 
 package v5.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.{JsValue, Json}
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class BenefitsInKindDetailSpec extends UnitSpec with JsonErrorValidators {
 

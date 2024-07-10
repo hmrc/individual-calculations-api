@@ -16,7 +16,7 @@
 
 package v5.submitFinalDeclaration
 
-import api.controllers.validators.Validator
+import shared.controllers.validators.Validator
 import v5.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema

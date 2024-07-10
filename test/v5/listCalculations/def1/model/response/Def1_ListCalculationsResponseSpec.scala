@@ -17,7 +17,7 @@
 package v5.listCalculations.def1.model.response
 
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.utils.UnitSpec
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v5.listCalculations.model.response.Def1_ListCalculationsResponse
 

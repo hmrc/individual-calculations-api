@@ -16,16 +16,16 @@
 
 package v4.models.response.retrieveCalculation.calculation.taxCalculation
 
-import api.models.utils.JsonErrorValidators
+import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.JsValue
-import support.UnitSpec
+import shared.utils.UnitSpec
 
 class BusinessAssetsDisposalsAndInvestorsRelSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
   "have the correct fields optional" when {
     val json = (taxCalculationDownstreamJson \ "capitalGainsTax" \ "businessAssetsDisposalsAndInvestorsRel").as[JsValue]
 
-    testJsonAllPropertiesOptional[BusinessAssetsDisposalsAndInvestorsRel](json)
+    testOptionalJsonFields[BusinessAssetsDisposalsAndInvestorsRel](json)
   }
 
 }
