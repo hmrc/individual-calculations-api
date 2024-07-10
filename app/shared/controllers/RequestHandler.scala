@@ -171,8 +171,8 @@ object RequestHandler {
               serviceResponse <- EitherT(service(parsedRequest))
             } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
               responseModifier match {
-                case Some(responseHandler) =>
-                  handleSuccess(parsedRequest, serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData)))
+                case Some(modifier) =>
+                  handleSuccess(parsedRequest, serviceResponse.copy(responseData = modifier(serviceResponse.responseData)))
                 case None =>
                   handleSuccess(parsedRequest, serviceResponse)
               }
