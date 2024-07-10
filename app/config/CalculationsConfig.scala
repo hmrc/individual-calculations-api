@@ -29,6 +29,6 @@ class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Confi
   def featureSwitches: FeatureSwitches = CalculationsFeatureSwitches(featureSwitchConfig)
 
   // NRS Config
-  val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
+  def mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
 }
 
