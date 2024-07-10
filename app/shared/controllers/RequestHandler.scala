@@ -58,7 +58,7 @@ object RequestHandler {
       errorHandling: ErrorHandling = ErrorHandling.Default,
       resultCreator: ResultCreator[Input, Output] = ResultCreator.noContent[Input, Output](),
       auditHandler: Option[AuditHandler] = None,
-      modelHandler: Option[Output => Output] = None
+      responseModifier: Option[Output => Output] = None
   ) extends RequestHandler {
 
     def handleRequest()(implicit ctx: RequestContext, request: UserRequest[_], ec: ExecutionContext, appConfig: AppConfig): Future[Result] =
@@ -70,8 +70,9 @@ object RequestHandler {
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[Input, Output] =
       copy(auditHandler = Some(auditHandler))
 
-    def withResponseModifier(modelHandler: Output => Output): RequestHandlerBuilder[Input, Output] =
-      copy(modelHandler = Option(modelHandler))
+    def withResponseModifier(responseModifier: Output => Output): RequestHandlerBuilder[Input, Output] =
+      copy(responseModifier = Option(responseModifier))
+
     /** Shorthand for
       * {{{
       * withResultCreator(ResultCreator.plainJson(successStatus))
@@ -162,15 +163,21 @@ object RequestHandler {
             s"with correlationId : ${ctx.correlationId}")
 
         val result =
-          if (simulateRequestCannotBeFulfilled)
+          if (simulateRequestCannotBeFulfilled) {
             EitherT[Future, ErrorWrapper, Result](Future.successful(Left(ErrorWrapper(ctx.correlationId, RuleRequestCannotBeFulfilledError))))
-          else
+          } else {
             for {
               parsedRequest   <- EitherT.fromEither[Future](validator.validateAndWrapResult())
               serviceResponse <- EitherT(service(parsedRequest))
             } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-              handleSuccess(parsedRequest, serviceResponse)
+              responseModifier match {
+                case Some(responseHandler) =>
+                  handleSuccess(parsedRequest, serviceResponse.copy(responseData = responseHandler(serviceResponse.responseData)))
+                case None =>
+                  handleSuccess(parsedRequest, serviceResponse)
+              }
             }
+          }
 
         result.leftMap { errorWrapper =>
           doWithContext(ctx.withCorrelationId(errorWrapper.correlationId)) { implicit ctx: RequestContext =>

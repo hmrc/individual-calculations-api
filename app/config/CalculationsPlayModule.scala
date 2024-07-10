@@ -18,7 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import common.definition.CalculationsDefinitionFactory
-import routing.CalculationsVersionRoutingMapImpl
+import routing.CalculationsVersionRoutingMap
 import shared.definition.ApiDefinitionFactory
 import shared.routing.VersionRoutingMap
 
@@ -26,7 +26,7 @@ class CalculationsPlayModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[ApiDefinitionFactory]).to(classOf[CalculationsDefinitionFactory]).asEagerSingleton()
-    bind(classOf[VersionRoutingMap]).to(classOf[CalculationsVersionRoutingMapImpl]).asEagerSingleton()
+    bind(classOf[VersionRoutingMap]).to(classOf[CalculationsVersionRoutingMap]).asEagerSingleton()
   }
 
 }

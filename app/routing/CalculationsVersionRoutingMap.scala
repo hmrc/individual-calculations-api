@@ -21,20 +21,9 @@ import shared.routing.{Version, Version4, Version5, Version6, VersionRoutingMap}
 
 import javax.inject.{Inject, Singleton}
 
-// So that we can have API-independent implementations of
-// VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec
-// implement this for the specific API...
-trait CalculationsVersionRoutingMap {
-  val defaultRouter: Router
-
-  val map: Map[Version, Router]
-
-  final def versionRouter(version: Version): Option[Router] = map.get(version)
-}
-
 // Add routes corresponding to available versions...
 @Singleton
-case class CalculationsVersionRoutingMapImpl @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes, v6Router: v6.Routes)
+case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes, v6Router: v6.Routes)
     extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
