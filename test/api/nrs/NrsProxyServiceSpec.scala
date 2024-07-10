@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package config
+package api.nrs
 
-import play.api.Configuration
-import shared.config.FeatureSwitches
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import shared.services.ServiceSpec
 
-import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
 
-@Singleton
-class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
-  def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
+class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
 
-  def featureSwitches: FeatureSwitches = CalculationsFeatureSwitches(featureSwitchConfig)
+  val service = new NrsProxyService(mockNrsProxyConnector)
 
-  // NRS Config
-  val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
+  "NrsProxyService" when {
+    "submitting asynchronously" should {
+      "forward to the connector" in {
+        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+
+        service.submit(nino, event, body)
+      }
+    }
+  }
+
 }
-

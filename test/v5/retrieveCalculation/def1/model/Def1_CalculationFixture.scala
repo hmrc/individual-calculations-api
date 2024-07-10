@@ -728,20 +728,6 @@ trait Def1_CalculationFixture {
         |          }
         |        },
         |    "totalIncomeTaxAndNicsDue":50
-        |   },
-        |   "employmentAndPensionsIncome":{
-        |       "employmentAndPensionsIncomeDetail":
-        |           [{
-        |               "offPayrollWorker":true
-        |           }]
-        |   },
-        |   "reliefs":{
-        |       "basicRateExtension":{
-        |            "totalBasicRateExtension":2000
-        |       }
-        |   },
-        |   "endOfYearEstimate":{
-        |       "totalAllowancesAndDeductions":100
         |   }
         |  }
         |}

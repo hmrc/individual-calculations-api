@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package config
+package api.nrs
 
-import play.api.Configuration
-import shared.config.FeatureSwitches
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.http.HeaderCarrier
+
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
-  def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
+class NrsProxyService @Inject()(val connector: NrsProxyConnector) {
 
-  def featureSwitches: FeatureSwitches = CalculationsFeatureSwitches(featureSwitchConfig)
+  def submit(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Unit = {
+    connector.submitAsync(nino, notableEvent, body)
+  }
 
-  // NRS Config
-  val mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
 }
-
