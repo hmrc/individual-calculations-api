@@ -30,7 +30,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
 
   private trait Test {
     val nino: String  = "ZG903729C"
-    val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
 
@@ -45,20 +45,20 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
         )
     }
 
-    def uri: String = s"/$nino/self-assessment/2017-18/$calculationId"
+    private def uri: String = s"/$nino/self-assessment/2017-18/$calculationId"
 
   }
 
   "Calling the sample endpoint" when {
 
-    "the NINO cannot be converted to a MTD ID" should {
+    "MTD ID lookup fails with a 500" should {
 
       "return 500" in new Test {
         override val nino: String = "ZG903729C"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
-          MtdIdLookupStub.error(nino, 500)
+          MtdIdLookupStub.error(nino, Status.INTERNAL_SERVER_ERROR)
         }
 
         val response: WSResponse = await(request().get())
@@ -66,9 +66,24 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
+    "MTD ID lookup fails with a 403" should {
 
-      "return 200" in new Test {
+      "return 403" in new Test {
+        override val nino: String = "ZG903729C"
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          MtdIdLookupStub.error(nino, Status.FORBIDDEN)
+        }
+
+        val response: WSResponse = await(request().get())
+        response.status shouldBe Status.FORBIDDEN
+      }
+    }
+
+    "MTD ID lookup succeeds and the user is authorised" should {
+
+      "return success" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -81,7 +96,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is NOT logged in" should {
+    "MTD ID lookup succeeds but the user is NOT logged in" should {
 
       "return 403" in new Test {
         override val nino: String = "ZG903729C"
@@ -97,7 +112,7 @@ class AuthISpec extends IntegrationBaseSpec with CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is NOT authorised" should {
+    "MTD ID lookup succeeds but the user is NOT authorised" should {
 
       "return 403" in new Test {
         override val nino: String = "ZG903729C"
