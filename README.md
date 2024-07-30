@@ -39,7 +39,7 @@ To view documentation locally ensure the Individual Calculations API is running,
 Then go to http://localhost:9680/api-documentation/docs/openapi/preview and use the appropriate port and version:
 
 ```
-http://localhost:9767/api/conf/2.0/application.yaml
+http://localhost:9767/api/conf/5.0/application.yaml
 ```
 
 ## Changelog
