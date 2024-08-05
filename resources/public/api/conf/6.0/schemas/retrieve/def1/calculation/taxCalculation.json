@@ -999,7 +999,8 @@
               "basic-rate",
               "intermediate-rate",
               "higher-rate",
-              "additional-rate"
+              "additional-rate",
+              "advanced-rate"
             ]
           },
           "rate": {
