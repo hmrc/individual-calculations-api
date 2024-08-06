@@ -63,8 +63,7 @@ tags:
       
       This resource allows software packages to make a final declaration regarding a customer’s end of year position for a tax year.
     
-      Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:  
-        - has finalised EOPS for all their businesses (self-employment, uk-property and foreign property)
+      Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:
         - has already provided their entire income e.g. interest, dividends, other SA schedules
         - does not have any additional information to provide
       
