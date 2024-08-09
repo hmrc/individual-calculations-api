@@ -18,6 +18,8 @@ package v6.retrieveCalculation.def1.model
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.models.domain.TaxYear
+import v6.common.model.response.CalculationType.`inYear`
+import v6.common.model.response.IncomeSourceType
 import v6.retrieveCalculation.def1.model.response.calculation.Calculation
 import v6.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v6.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
@@ -25,8 +27,6 @@ import v6.retrieveCalculation.def1.model.response.calculation.otherIncome.{Other
 import v6.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
 import v6.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v6.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
-import v6.common.model.response.CalculationType.`inYear`
-import v6.common.model.response.IncomeSourceType
 import v6.retrieveCalculation.def1.model.response.inputs._
 import v6.retrieveCalculation.def1.model.response.metadata.Metadata
 import v6.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
@@ -38,10 +38,10 @@ trait Def1_CalculationFixture {
   val incomeTaxValue = 50
 
   val calculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_mtd.json"))
+    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
   val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def1/model/response/calculation_downstream.json"))
+    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def1/model/response/calculation_downstream.json"))
 
   val reliefs: Reliefs = Reliefs(
     basicRateExtension =

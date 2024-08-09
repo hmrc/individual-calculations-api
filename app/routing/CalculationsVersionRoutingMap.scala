@@ -17,17 +17,15 @@
 package routing
 
 import play.api.routing.Router
-import shared.routing.{Version, Version4, Version5, Version6, VersionRoutingMap}
+import shared.routing.{Version, Version5, Version6, VersionRoutingMap}
 
 import javax.inject.{Inject, Singleton}
 
 // Add routes corresponding to available versions...
 @Singleton
-case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v4Router: v4.Routes, v5Router: v5.Routes, v6Router: v6.Routes)
-    extends VersionRoutingMap {
+case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v5Router: v5.Routes, v6Router: v6.Routes) extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
-    Version4 -> v4Router,
     Version5 -> v5Router,
     Version6 -> v6Router
   )
