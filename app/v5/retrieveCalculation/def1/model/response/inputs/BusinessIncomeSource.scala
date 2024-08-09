@@ -17,8 +17,8 @@
 package v5.retrieveCalculation.def1.model.response.inputs
 
 import play.api.libs.json.{Format, Json, OFormat}
-import v5.retrieveCalculation.def1.model.response.common.IncomeSourceType
-import v5.retrieveCalculation.def1.model.response.common.IncomeSourceType._
+import v5.common.model.response.IncomeSourceType
+import IncomeSourceType._
 
 case class BusinessIncomeSource(incomeSourceId: String,
                                      incomeSourceType: IncomeSourceType,

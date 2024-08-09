@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def2.model.response.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
-import v5.retrieveCalculation.def2.model.response.common.ReliefsClaimedType
+import v5.common.model.response.ReliefsClaimedType
 
 case class ReliefsClaimed(`type`: ReliefsClaimedType,
                                amountClaimed: Option[BigDecimal],
