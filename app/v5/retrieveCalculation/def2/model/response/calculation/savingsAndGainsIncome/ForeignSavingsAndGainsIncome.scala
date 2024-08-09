@@ -17,8 +17,8 @@
 package v5.retrieveCalculation.def2.model.response.calculation.savingsAndGainsIncome
 
 import play.api.libs.json.{Format, Json}
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType.`foreign-savings-and-gains`
+import v5.common.model.response.IncomeSourceType
+import IncomeSourceType.`foreign-savings-and-gains`
 
 case class ForeignSavingsAndGainsIncome(incomeSourceType: IncomeSourceType,
                                              countryCode: Option[String],

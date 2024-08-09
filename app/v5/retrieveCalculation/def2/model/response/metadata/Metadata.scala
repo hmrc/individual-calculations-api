@@ -19,7 +19,7 @@ package v5.retrieveCalculation.def2.model.response.metadata
 import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v5.retrieveCalculation.def2.model.response.common.CalculationType
+import v5.common.model.response.CalculationType
 
 case class Metadata(calculationId: String,
                          taxYear: TaxYear,

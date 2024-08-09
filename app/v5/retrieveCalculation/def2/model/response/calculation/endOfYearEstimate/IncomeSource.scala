@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def2.model.response.calculation.endOfYearEstimate
 
 import play.api.libs.json.{Format, Json, OFormat}
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType
+import v5.common.model.response.IncomeSourceType
 
 case class IncomeSource(
     incomeSourceId: Option[String],

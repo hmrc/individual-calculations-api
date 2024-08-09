@@ -19,7 +19,7 @@ package v6.retrieveCalculation.def1.model.response.metadata
 import play.api.libs.json.Json
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v6.retrieveCalculation.def1.model.response.common.CalculationType
+import v6.common.model.response.CalculationType
 
 class MetadataSpec extends UnitSpec {
 

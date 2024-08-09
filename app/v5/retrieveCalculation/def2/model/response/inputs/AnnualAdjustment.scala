@@ -18,8 +18,8 @@ package v5.retrieveCalculation.def2.model.response.inputs
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType._
+import v5.common.model.response.IncomeSourceType
+import IncomeSourceType._
 
 case class AnnualAdjustment(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,

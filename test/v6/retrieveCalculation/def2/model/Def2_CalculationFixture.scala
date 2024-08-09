@@ -21,9 +21,9 @@ import play.api.libs.json.{JsObject, Json}
 trait Def2_CalculationFixture {
 
   val calculationMtdJson: JsObject =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_mtd.json")).as[JsObject]
+    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def2/model/response/calculation_mtd.json")).as[JsObject]
 
   val calculationDownstreamJson: JsObject =
-    Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation_downstream.json")).as[JsObject]
+    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def2/model/response/calculation_downstream.json")).as[JsObject]
 
 }
