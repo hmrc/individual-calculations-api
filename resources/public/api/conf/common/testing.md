@@ -10,5 +10,5 @@ Some APIs may be marked \[test only\]. This means that they are not available fo
 
 ### Dynamic
 Some endpoints support DYNAMIC gov test scenarios. The response is dynamic based on the request parameters:
-- List Self Assessment Tax Calculations V3.0 and later
-- Retrieve a Self Assessment Tax Calculation V4.0 and later
+- List Self Assessment Tax Calculations V5.0 and later
+- Retrieve a Self Assessment Tax Calculation V5.0 and later
