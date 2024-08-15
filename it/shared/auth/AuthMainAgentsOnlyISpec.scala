@@ -41,7 +41,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
       s"api.supporting-agent-endpoints.$supportingAgentsNotAllowedEndpoint" -> "false"
     ) ++ super.servicesConfig
 
-  protected val nino = "AA123456A"
+  protected val nino = "ZG903729C"
 
   "Calling an endpoint that only allows primary agents" when {
     "the client is the primary agent" should {
