@@ -18,8 +18,8 @@ package v6.retrieveCalculation.def1.model.response.inputs
 
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType._
-import v6.retrieveCalculation.def1.model.response.common.{ClaimType, IncomeSourceType}
+import v6.common.model.response.{ClaimType, IncomeSourceType}
+import v6.common.model.response.IncomeSourceType._
 
 case class Claim(claimId: Option[String],
                       originatingClaimId: Option[String],

@@ -19,7 +19,7 @@ package v5.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 import shared.models.utils.JsonErrorValidators
 import play.api.libs.json.{JsValue, Json}
 import shared.utils.UnitSpec
-import v5.retrieveCalculation.def2.model.response.common.IncomeSourceType
+import v5.common.model.response.IncomeSourceType
 
 class CommonForeignDividendSpec extends UnitSpec with JsonErrorValidators {
 

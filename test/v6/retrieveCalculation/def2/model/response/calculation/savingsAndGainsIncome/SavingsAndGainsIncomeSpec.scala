@@ -19,7 +19,7 @@ package v6.retrieveCalculation.def2.model.response.calculation.savingsAndGainsIn
 import play.api.libs.json.{JsValue, Json}
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v6.retrieveCalculation.def2.model.response.common.IncomeSourceType
+import v6.common.model.response.IncomeSourceType
 
 class SavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {
 

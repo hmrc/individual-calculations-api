@@ -25,8 +25,8 @@ import v5.retrieveCalculation.def1.model.response.calculation.otherIncome.{Other
 import v5.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
 import v5.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v5.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
-import v5.retrieveCalculation.def1.model.response.common.CalculationType.`inYear`
-import v5.retrieveCalculation.def1.model.response.common.IncomeSourceType
+import v5.common.model.response.CalculationType.`inYear`
+import v5.common.model.response.IncomeSourceType
 import v5.retrieveCalculation.def1.model.response.inputs._
 import v5.retrieveCalculation.def1.model.response.metadata.Metadata
 import v5.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse

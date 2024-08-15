@@ -18,11 +18,11 @@ package definition
 
 import cats.implicits.catsSyntaxValidatedId
 import common.definition.CalculationsDefinitionFactory
-import shared.config.MockAppConfig
-import shared.config.Deprecation.NotDeprecated
 import mocks.MockCalculationsConfig
+import shared.config.Deprecation.NotDeprecated
+import shared.config.MockAppConfig
 import shared.mocks.MockHttpClient
-import shared.routing.{Version4, Version5, Version6}
+import shared.routing.{Version5, Version6}
 import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec {
@@ -35,7 +35,7 @@ class CalculationsDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        List(Version4, Version5, Version6).foreach { version =>
+        List(Version5, Version6).foreach { version =>
           MockAppConfig.apiStatus(version) returns "BETA"
           MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
           MockAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()

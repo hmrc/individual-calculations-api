@@ -17,8 +17,8 @@
 package v6.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
-import v6.retrieveCalculation.def2.model.response.common.IncomeSourceType
-import v6.retrieveCalculation.def2.model.response.common.IncomeSourceType.`uk-dividends`
+import v6.common.model.response.IncomeSourceType
+import IncomeSourceType.`uk-dividends`
 
 case class UkDividends(incomeSourceId: Option[String],
                             incomeSourceType: Option[IncomeSourceType],
