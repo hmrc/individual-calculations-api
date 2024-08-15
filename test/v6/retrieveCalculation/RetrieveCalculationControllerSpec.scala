@@ -221,9 +221,9 @@ class RetrieveCalculationControllerSpec
       auditService = mockAuditService
     )
 
-    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
-      "supporting-agents-access-control.enabled" -> true
-    )
+    // MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    //   "supporting-agents-access-control.enabled" -> true
+    // )
 
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 

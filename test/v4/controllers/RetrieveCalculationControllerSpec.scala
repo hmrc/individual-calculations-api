@@ -67,9 +67,20 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> true, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
-          .anyNumberOfTimes()
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+            "r8b-api.enabled" -> true,
+            "retrieveSAAdditionalFields.enabled" -> false,
+            "cl290.enabled" -> false,
+      "supporting-agents-access-control.enabled" -> true
+    )
+      //   MockedAppConfig.featureSwitchConfig
+      //     .returns(Configuration(
+      //       "r8b-api.enabled" -> true,
+      //       "retrieveSAAdditionalFields.enabled" -> false,
+      //       "cl290.enabled" -> false,
+      // "supporting-agents-access-control.enabled" -> true
+      //     ))
+      //     .anyNumberOfTimes()
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -85,9 +96,13 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> true, "cl290.enabled" -> false))
-          .anyNumberOfTimes()
+
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "r8b-api.enabled" -> false,
+      "retrieveSAAdditionalFields.enabled" -> true,
+      "cl290.enabled" -> false,
+      "supporting-agents-access-control.enabled" -> true
+    )
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -103,9 +118,11 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> true))
-          .anyNumberOfTimes()
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+            "retrieveSAAdditionalFields.enabled" -> false,
+            "cl290.enabled" -> true,
+      "supporting-agents-access-control.enabled" -> true
+    )
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -122,9 +139,13 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "retrieveSAAdditionalFields.enabled" -> false, "cl290.enabled" -> false))
-          .anyNumberOfTimes()
+            MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+            "r8b-api.enabled" -> false,
+            "retrieveSAAdditionalFields.enabled" -> false,
+            "cl290.enabled" -> false,
+            "supporting-agents-access-control.enabled" -> false
+    )
+
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -140,9 +161,12 @@ class RetrieveCalculationControllerSpec
 
         willUseValidator(returning(NinoFormatError))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> true))
-          .anyNumberOfTimes()
+            MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+
+          "r8b-api.enabled" -> true,
+      "supporting-agents-access-control.enabled" -> false
+    )
+
 
         runErrorTest(NinoFormatError)
       }
@@ -150,9 +174,11 @@ class RetrieveCalculationControllerSpec
       "the service returns an error" in new Test {
         willUseValidator(returningSuccess(requestData))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> true))
-          .anyNumberOfTimes()
+            MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "r8b-api.enabled" -> false,
+      "supporting-agents-access-control.enabled" -> true
+    )
+
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
