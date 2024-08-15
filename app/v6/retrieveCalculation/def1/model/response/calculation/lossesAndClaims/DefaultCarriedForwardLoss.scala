@@ -16,6 +16,7 @@
 
 package v6.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 
+import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
 import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType
@@ -37,7 +38,7 @@ object DefaultCarriedForwardLoss {
     IncomeSourceType.`foreign-property`
   )
 
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 
   implicit val format: OFormat[DefaultCarriedForwardLoss] = Json.format[DefaultCarriedForwardLoss]
 

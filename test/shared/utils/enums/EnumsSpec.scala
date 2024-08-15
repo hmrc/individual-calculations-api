@@ -52,8 +52,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
       `enum-two`.toString shouldBe "enum-two"
     }
 
-    def json(value: Enum): JsValue = Json.parse(
-      s"""
+    def json(value: Enum): JsValue = Json.parse(s"""
          |{
          | "someField": "$value"
          |}
@@ -102,12 +101,11 @@ class EnumsSpec extends UnitSpec with Inspectors {
           override def altName: String = "three"
         }
 
-        implicit val show: Show[Enum2] = Show.show[Enum2](_.altName)
+        implicit val show: Show[Enum2]     = Show.show[Enum2](_.altName)
         implicit val format: Format[Enum2] = Enums.format[Enum2]
       }
 
-      val json = Json.parse(
-        """
+      val json = Json.parse("""
           |{
           | "someField": "one"
           |}""".stripMargin)
@@ -117,8 +115,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
     }
 
     "detects badly formatted values" in {
-      val badJson = Json.parse(
-        s"""
+      val badJson = Json.parse(s"""
            |{
            | "someField": "unknown"
            |}
@@ -128,8 +125,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
     }
 
     "detects type errors" in {
-      val badJson = Json.parse(
-        s"""
+      val badJson = Json.parse(s"""
            |{
            | "someField": 123
            |}
@@ -139,8 +135,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
     }
 
     "only work for sealed trait singletons (objects)" in {
-      assertTypeError(
-        """
+      assertTypeError("""
           |      sealed trait NotEnum
           |
           |      case object ObjectOne                  extends NotEnum
@@ -150,4 +145,5 @@ class EnumsSpec extends UnitSpec with Inspectors {
         """.stripMargin)
     }
   }
+
 }

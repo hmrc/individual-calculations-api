@@ -21,13 +21,15 @@ import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.utils.MockIdGenerator
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError, InternalError}
+import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
+import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import shared.config.MockAppConfig
 import shared.models.audit.GenericAuditDetailFixture.nino
 import v4.controllers.validators.MockSubmitFinalDeclarationValidatorFactory
 import v4.mocks.services._
@@ -52,6 +54,7 @@ class SubmitFinalDeclarationControllerSpec
     with MockNrsProxyConnector
     with MockRetrieveCalculationService
     with StubNrsProxyService
+    with MockAppConfig
     with CalculationFixture {
 
   private val taxYear       = "2020-21"
@@ -140,9 +143,9 @@ class SubmitFinalDeclarationControllerSpec
 
   }
 
-  private trait Test extends ControllerTest with AuditEventChecking {
+  private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    private lazy val controller = new SubmitFinalDeclarationController(
+    lazy val controller = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockSubmitFinalDeclarationValidatorFactory,
@@ -154,7 +157,13 @@ class SubmitFinalDeclarationControllerSpec
       idGenerator = mockIdGenerator
     )
 
-    protected def callController(): Future[Result] = controller.submitFinalDeclaration(nino, taxYear, calculationId)(fakeRequest)
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
+    protected def callController(): Future[Result] = controller.submitFinalDeclaration(validNino, taxYear, calculationId)(fakeRequest)
 
     override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -163,7 +172,7 @@ class SubmitFinalDeclarationControllerSpec
         GenericAuditDetail(
           userType = "Individual",
           agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+          params = Map("nino" -> validNino, "taxYear" -> taxYear, "calculationId" -> calculationId),
           requestBody = None,
           `X-CorrelationId` = correlationId,
           versionNumber = apiVersion.name,

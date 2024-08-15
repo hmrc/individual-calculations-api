@@ -16,14 +16,15 @@
 
 package v5.listCalculations
 
+import play.api.Configuration
+import play.api.mvc.Result
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.utils.MockIdGenerator
+import shared.models.audit.GenericAuditDetailFixture.nino
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
-import play.api.mvc.Result
-import shared.models.audit.GenericAuditDetailFixture.nino
+import shared.utils.MockIdGenerator
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
@@ -57,7 +58,6 @@ class ListCalculationsControllerSpec
           .returns(
             Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
           )
-
 
         runOkTest(OK, Some(listCalculationsMtdJson))
       }
@@ -93,7 +93,13 @@ class ListCalculationsControllerSpec
       mockIdGenerator
     )
 
-    override protected def callController(): Future[Result] = controller.list(nino, taxYear)(fakeRequest)
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
+    override protected def callController(): Future[Result] = controller.list(validNino, taxYear)(fakeRequest)
   }
 
 }

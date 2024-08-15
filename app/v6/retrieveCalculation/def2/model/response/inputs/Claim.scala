@@ -16,23 +16,24 @@
 
 package v6.retrieveCalculation.def2.model.response.inputs
 
-import shared.models.domain.TaxYear
+import common.TaxYearFormats
 import play.api.libs.json.{Format, Json, OFormat}
+import shared.models.domain.TaxYear
 import v6.retrieveCalculation.def2.model.response.common.IncomeSourceType._
 import v6.retrieveCalculation.def2.model.response.common.{ClaimType, IncomeSourceType}
 
 case class Claim(claimId: Option[String],
-                      originatingClaimId: Option[String],
-                      incomeSourceId: String,
-                      incomeSourceType: IncomeSourceType,
-                      submissionTimestamp: Option[String],
-                      taxYearClaimMade: TaxYear,
-                      claimType: ClaimType,
-                      sequence: Option[Int])
+                 originatingClaimId: Option[String],
+                 incomeSourceId: String,
+                 incomeSourceType: IncomeSourceType,
+                 submissionTimestamp: Option[String],
+                 taxYearClaimMade: TaxYear,
+                 claimType: ClaimType,
+                 sequence: Option[Int])
 
 object Claim extends {
 
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,

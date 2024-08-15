@@ -16,6 +16,7 @@
 
 package v4.models.response.retrieveCalculation.metadata
 
+import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -36,7 +37,7 @@ case class Metadata(calculationId: String,
 
 object Metadata {
 
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 
   implicit val writes: OWrites[Metadata] = Json.writes[Metadata]
 

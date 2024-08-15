@@ -26,12 +26,12 @@ class ResolveNinoSpec extends UnitSpec {
   "ResolveNino" should {
     "return the parsed Nino" when {
       "given a valid nino string" in
-        expectSuccess("ZG903729C")
+        expectSuccess("AA123456A")
     }
 
     "return an error" when {
       "given an invalid Nino" in
-        expectError("ZG903729CBCBBCBCBC")
+        expectError("AA123456ABCBBCBCBC")
 
       "given a valid number with spaces" in
         expectError("AB 12 34 56 C")

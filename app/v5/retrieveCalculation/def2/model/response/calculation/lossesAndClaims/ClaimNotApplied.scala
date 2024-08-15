@@ -16,6 +16,7 @@
 
 package v5.retrieveCalculation.def2.model.response.calculation.lossesAndClaims
 
+import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
 import v5.retrieveCalculation.def2.model.response.common.{ClaimType, IncomeSourceType}
@@ -30,7 +31,7 @@ case class ClaimNotApplied(
 
 object ClaimNotApplied {
 
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,

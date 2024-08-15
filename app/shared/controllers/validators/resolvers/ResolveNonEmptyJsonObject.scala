@@ -17,32 +17,37 @@
 package shared.controllers.validators.resolvers
 
 import cats.data.Validated
-import play.api.libs.json.{JsValue, OFormat, Reads}
+import play.api.libs.json.{JsValue, Reads}
+import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import shared.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
-import shared.utils.EmptinessChecker
 import shared.utils.EmptyPathsResult._
+import shared.utils.{EmptinessChecker, Logging}
 
-class ResolveNonEmptyJsonObject[T: OFormat: EmptinessChecker]()(implicit val reads: Reads[T]) extends ResolverSupport {
+class ResolveNonEmptyJsonObject[A: Reads: EmptinessChecker] extends ResolverSupport {
 
-  private val jsonResolver = new ResolveJsonObject[T].resolver
+  val resolver: Resolver[JsValue, A] = ResolveNonEmptyJsonObject.resolver
 
-  private val checkNonEmpty: Validator[T] = { data =>
-    EmptinessChecker.findEmptyPaths(data) match {
-      case CompletelyEmpty   => Some(List(RuleIncorrectOrEmptyBodyError))
-      case EmptyPaths(paths) => Some(List(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
-      case NoEmptyPaths      => None
-    }
-  }
-
-  val resolver: Resolver[JsValue, T] = jsonResolver thenValidate checkNonEmpty
-
-  def apply(data: JsValue): Validated[Seq[MtdError], T] = resolver(data)
+  def apply(data: JsValue): Validated[Seq[MtdError], A] = resolver(data)
 
 }
 
-object ResolveNonEmptyJsonObject extends ResolverSupport {
+object ResolveNonEmptyJsonObject extends ResolverSupport with Logging {
 
-  def resolver[T: OFormat: EmptinessChecker]: Resolver[JsValue, T] =
-    new ResolveNonEmptyJsonObject().resolver
+  private def nonEmptyValidator[A: EmptinessChecker]: Validator[A] = { data =>
+    EmptinessChecker.findEmptyPaths(data) match {
+      case CompletelyEmpty => Some(List(RuleIncorrectOrEmptyBodyError))
+      case EmptyPaths(paths) =>
+        logger.warn(s"Request body failed validation with errors - Empty object or array: $paths")
+        Some(List(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
+      case NoEmptyPaths => None
+    }
+  }
+
+  def resolver[A: Reads: EmptinessChecker]: Resolver[JsValue, A] = ResolveJsonObject.resolver thenValidate nonEmptyValidator
+
+  /** Gets a resolver that also validates for unexpected JSON fields
+    */
+  def strictResolver[A: Reads: EmptinessChecker: SchemaStructureSource]: Resolver[JsValue, A] =
+    ResolveJsonObject.strictResolver thenValidate nonEmptyValidator
 
 }

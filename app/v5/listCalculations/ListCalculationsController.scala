@@ -35,6 +35,8 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     extends AuthorisedController(cc)
     with Logging {
 
+  val endpointName = "list-calculations"
+
   implicit val endpointLogContext: EndpointLogContext = EndpointLogContext(
     controllerName = "ListCalculationsController",
     endpointName = "list"

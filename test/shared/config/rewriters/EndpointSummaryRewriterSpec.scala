@@ -28,7 +28,7 @@ class EndpointSummaryRewriterSpec extends UnitSpec with MockAppConfig {
 
     "check() is given employment_expenses_create_and_amend.yaml with the endpoint API docs disabled (assuming in production)" should {
       "indicate rewrite needed" in {
-        MockAppConfig.endpointReleasedInProduction("1.0", "employment-expenses-create-and-amend") returns false
+        MockedAppConfig.endpointReleasedInProduction("1.0", "employment-expenses-create-and-amend") returns false
         val result = check("1.0", "employment_expenses_create_and_amend.yaml")
         result shouldBe true
       }
@@ -36,7 +36,7 @@ class EndpointSummaryRewriterSpec extends UnitSpec with MockAppConfig {
 
     "check() is given any other combination" should {
       "indicate rewrite not needed" in {
-        MockAppConfig.endpointReleasedInProduction("1.0", "employment-expenses-create-and-amend") returns true
+        MockedAppConfig.endpointReleasedInProduction("1.0", "employment-expenses-create-and-amend") returns true
         val result = check("1.0", "employment_expenses_create_and_amend.yaml")
         result shouldBe false
       }

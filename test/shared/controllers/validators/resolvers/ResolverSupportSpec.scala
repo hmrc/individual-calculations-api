@@ -144,15 +144,13 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
       validator("XX") shouldBe Some(List(notIntegerError))
     }
 
-
     "provides the ability to combine resolvers with thenResolve" in {
       val resolvePresent: Resolver[Option[Int], Int] = _.toValid(Seq(notPresentError))
-      val resolver = resolveInt.resolveOptionally thenResolve resolvePresent
+      val resolver                                   = resolveInt.resolveOptionally thenResolve resolvePresent
 
       resolver(Some("1")) shouldBe Valid(1)
       resolver(Some("XX")) shouldBe Invalid(List(notIntegerError))
     }
-
 
     "provides the ability to create a validator for a larger object based on validators of its parts" in {
       val partValidator = satisfiesMax(10, outOfRangeError)

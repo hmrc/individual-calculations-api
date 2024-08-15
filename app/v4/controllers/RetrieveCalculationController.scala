@@ -16,17 +16,16 @@
 
 package v4.controllers
 
-import shared.utils.{IdGenerator, Logging}
-import shared.controllers._
-import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import shared.config.AppConfig
 import config.CalculationsFeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import shared.config.AppConfig
+import shared.controllers._
 import shared.routing.Version
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.{IdGenerator, Logging}
 import v4.controllers.validators.RetrieveCalculationValidatorFactory
 import v4.models.response.retrieveCalculation.RetrieveCalculationResponse
 import v4.services.RetrieveCalculationService
-
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
@@ -39,6 +38,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
                                                val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc)
     with Logging {
+
+  val endpointName = "retrieve-calculation"
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
@@ -72,7 +73,7 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
-          .withResponseModifier { response: RetrieveCalculationResponse => //modifyResponseBody
+          .withResponseModifier { response: RetrieveCalculationResponse => // modifyResponseBody
             val responseMaybeWithoutR8b              = updateResponseExceptR8b(response)
             val responseMaybeWithoutAdditionalFields = updateResponseExceptAdditionalFields(responseMaybeWithoutR8b)
             updateResponseExceptCl290(responseMaybeWithoutAdditionalFields)

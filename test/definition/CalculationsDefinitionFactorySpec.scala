@@ -29,16 +29,16 @@ class CalculationsDefinitionFactorySpec extends UnitSpec {
 
   class Test extends MockHttpClient with MockAppConfig with MockCalculationsConfig {
     val apiDefinitionFactory = new CalculationsDefinitionFactory(mockAppConfig)
-    MockAppConfig.apiGatewayContext returns "api.gateway.context"
+    MockedAppConfig.apiGatewayContext returns "api.gateway.context"
   }
 
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
         List(Version4, Version5, Version6).foreach { version =>
-          MockAppConfig.apiStatus(version) returns "BETA"
-          MockAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
-          MockAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
+          MockedAppConfig.apiStatus(version) returns "BETA"
+          MockedAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
+          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
         }
 
       }
@@ -48,8 +48,8 @@ class CalculationsDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
       "return the correct status" in new Test {
-        MockAppConfig.apiStatus(Version6) returns "BETA"
-        MockAppConfig
+        MockedAppConfig.apiStatus(Version6) returns "BETA"
+        MockedAppConfig
           .deprecationFor(Version6)
           .returns(NotDeprecated.valid)
           .anyNumberOfTimes()
@@ -58,8 +58,8 @@ class CalculationsDefinitionFactorySpec extends UnitSpec {
 
     "the 'apiStatus' parameter is present and invalid" should {
       "default to alpha" in new Test {
-        MockAppConfig.apiStatus(Version6) returns "ALPHO"
-        MockAppConfig
+        MockedAppConfig.apiStatus(Version6) returns "ALPHO"
+        MockedAppConfig
           .deprecationFor(Version6)
           .returns(NotDeprecated.valid)
           .anyNumberOfTimes()

@@ -76,7 +76,6 @@ class NestedJsonReadsSpec extends UnitSpec {
       |  }
       |}""".stripMargin)
 
-
   "Valid Json" should {
 
     "return JsSuccess" in {

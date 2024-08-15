@@ -22,7 +22,7 @@ import play.api.http.Status
 import play.api.http.Status._
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 

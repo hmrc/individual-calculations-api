@@ -17,133 +17,116 @@
 package shared.controllers.validators.resolvers
 
 import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 import shapeless.HNil
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.models.utils.JsonErrorValidators
 import shared.utils.{EmptinessChecker, UnitSpec}
 
-class ResolveNonEmptyJsonObjectSpec extends UnitSpec with JsonErrorValidators {
+class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with JsonErrorValidators {
 
-  case class TestDataObject(field1: String, field2: String, oneOf1: Option[String] = None, oneOf2: Option[String] = None)
-  case class TestDataWrapper(arrayField: Seq[TestDataObject])
-
-  implicit val testDataObjectFormat: OFormat[TestDataObject]   = Json.format[TestDataObject]
-  implicit val testDataWrapperFormat: OFormat[TestDataWrapper] = Json.format[TestDataWrapper]
+  case class Bar(field1: String, field2: String)
+  case class Baz(field1: Option[String], field2: Option[String])
+  case class Qux(mandatory: String, oneOf1: Option[String] = None, oneOf2: Option[String] = None)
 
   // at least one of oneOf1 and oneOf2 must be included:
-  implicit val emptinessChecker: EmptinessChecker[TestDataObject] = EmptinessChecker.use { o =>
+  implicit val emptinessChecker: EmptinessChecker[Qux] = EmptinessChecker.use { o =>
     "oneOf1" -> o.oneOf1 :: "oneOf2" -> o.oneOf2 :: HNil
   }
 
-  private val resolveTestDataObject = new ResolveNonEmptyJsonObject[TestDataObject]()
+  case class Foo(bar: Bar, bars: Option[Seq[Bar]] = None, baz: Option[Baz] = None, qux: Option[Qux] = None)
 
-  private val resolveTestDataWrapper = new ResolveNonEmptyJsonObject[TestDataWrapper]()
+  implicit val barFormat: Reads[Bar] = Json.reads
+  implicit val bazFormat: Reads[Baz] = Json.reads
+  implicit val quxFormat: Reads[Qux] = Json.reads
+  implicit val fooReads: Reads[Foo]  = Json.reads
 
-  "ResolveNonEmptyJsonObject" should {
-    "return the object" when {
+  private def jsonObjectResolver(resolver: Resolver[JsValue, Foo]): Unit = {
+    "return the parsed object" when {
       "given a valid JSON object" in {
-        withClue("Uses the implicit emptinessChecker from above, which requires oneOf1 and oneOf2") {
-          val json   = Json.parse("""{ "field1" : "Something", "field2" : "SomethingElse", "oneOf1": "another1", "oneOf2": "another2" }""")
-          val result = resolveTestDataObject(json)
-          result shouldBe Valid(TestDataObject("Something", "SomethingElse", Some("another1"), Some("another2")))
-        }
+        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }}""")
+
+        resolver(json) shouldBe Valid(Foo(bar = Bar("field one", "field two")))
       }
     }
 
-    "return an error" when {
-      "given a JSON object with a missing required field" in {
-        val json = Json.parse("""{ "field1" : "Something" }""")
+    "return the expected error " when {
+      "a required field is missing" in {
+        val json = Json.parse("""{ "bar": {"field1" : "field one" } }""")
 
-        val result = resolveTestDataObject(json)
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPath("/field2")
-          ))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/field2")))
+      }
+    }
+  }
+
+  private def jsonObjectResolverWithEmptinessChecking(resolver: Resolver[JsValue, Foo]): Unit = {
+
+    "given an empty JSON object at the top level" in {
+      resolver(JsObject.empty) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
+    }
+
+    "detect empty objects" in {
+      val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "baz": {} }""")
+
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/baz")))
+    }
+
+    "detect empty arrays" in {
+      val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "bars": [] }""")
+
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bars")))
+    }
+
+    "allow custom emptiness checker requiring at least one of a number of optional fields" when {
+      "one of the optional fields is present" must {
+        "return the object" in {
+          val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "qux": { "mandatory": "m", "oneOf1": "a1" } }""")
+
+          resolver(json) shouldBe Valid(Foo(bar = Bar("field one", "field two"), qux = Some(Qux("m", oneOf1 = Some("a1")))))
+        }
       }
 
-      "given a JSON object with a missing required field in an array object" in {
-        val json = Json.parse("""{ "arrayField" : [{ "field1" : "Something" }]}""")
+      "none of the required optional fields is present" must {
+        "detect this" in {
+          val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "qux": { "mandatory": "m" } }""")
 
-        val result = resolveTestDataWrapper(json)
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPath("/arrayField/0/field2")
-          ))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/qux")))
+        }
+      }
+    }
+  }
+
+  "ResolveNonEmptyJsonObject" when {
+
+    "the default resolver is used" must {
+      val resolver = ResolveNonEmptyJsonObject.resolver[Foo]
+
+      behave like jsonObjectResolver(resolver)
+      behave like jsonObjectResolverWithEmptinessChecking(resolver)
+
+      "not detect extra fields in the input" in {
+        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two", "extra": "x" }}""")
+
+        resolver(json) shouldBe Valid(Foo(bar = Bar("field one", "field two")))
+      }
+    }
+
+    "the strict resolver is used" must {
+      val resolver = ResolveNonEmptyJsonObject.strictResolver[Foo]
+
+      behave like jsonObjectResolver(resolver)
+      behave like jsonObjectResolverWithEmptinessChecking(resolver)
+
+      "detect extra fields in the input" in {
+        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two", "extra": "x" }}""")
+
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/extra")))
       }
 
-      "given a JSON object with a missing required field in multiple array objects" in {
-        val json = Json.parse("""
-          |{
-          |  "arrayField" : [
-          |    { "field1" : "Something" },
-          |    { "field1" : "Something" }
-          |  ]
-          |}
-          |""".stripMargin)
+      "detect extra fields first (when object would otherwise be detected as empty)" in {
+        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "baz": { "extra": "x" } }""")
 
-        val result = resolveTestDataWrapper(json)
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPaths(
-              List(
-                "/arrayField/0/field2",
-                "/arrayField/1/field2"
-              ))
-          ))
-      }
-
-      "given an empty JSON object" in {
-        val json = Json.parse("""{}""")
-
-        val result = resolveTestDataObject(json)
-        result shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
-      }
-
-      "given a non-empty JSON object without any expected fields" in {
-        val json = Json.parse("""{"field": "value"}""")
-
-        val result = resolveTestDataObject(json)
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPaths(List("/field1", "/field2"))
-          ))
-      }
-
-      "given a field with the wrong data type" in {
-        val json = Json.parse("""{"field1": true, "field2": "value"}""")
-
-        val result = resolveTestDataObject(json)
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPath("/field1")
-          ))
-      }
-
-      "detect empty objects" in {
-        val json = Json.parse("""{ "field1" : "Something", "field2" : "SomethingElse" }""")
-
-        val result = resolveTestDataObject(json)
-        result shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
-      }
-
-      "detect empty arrays" in {
-        val json   = Json.parse("""{ "arrayField": [] }""")
-        val result = resolveTestDataWrapper(json)
-
-        result shouldBe Invalid(
-          List(
-            RuleIncorrectOrEmptyBodyError.withPath("/arrayField")
-          ))
-      }
-
-      "return no error when all objects are non-empty" in {
-        val json = Json.parse("""{ "field1" : "Something", "field2" : "SomethingElse", "oneOf1": "another1" }""")
-
-        val result = resolveTestDataObject(json)
-        result shouldBe Valid(
-          TestDataObject("Something", "SomethingElse", Some("another1"))
-        )
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/baz/extra")))
       }
     }
   }

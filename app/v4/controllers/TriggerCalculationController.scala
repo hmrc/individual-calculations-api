@@ -40,6 +40,9 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
     with BaseController
     with Logging {
 
+
+  val endpointName = "trigger-calculation"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "TriggerCalculationController",

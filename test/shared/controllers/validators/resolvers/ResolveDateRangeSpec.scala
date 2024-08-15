@@ -29,7 +29,7 @@ class ResolveDateRangeSpec extends UnitSpec {
   private val validEnd   = "2024-06-21"
 
   private val sameValidStart = "2023-06-21"
-  private val sameValidEnd = "2023-06-21"
+  private val sameValidEnd   = "2023-06-21"
 
   // To be sure it's using the construction params...
   private val startDateFormatError    = StartDateFormatError.withPath("pathToStartDate")

@@ -31,7 +31,7 @@ import java.time.temporal.ChronoField
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
+class AppConfig @Inject() (config: ServicesConfig, protected[config] val configuration: Configuration) {
   // API name
   def appName: String = config.getString("appName")
 
@@ -97,6 +97,14 @@ class AppConfig @Inject() (config: ServicesConfig, configuration: Configuration)
     val conf = configuration.underlying
     if (versionReleasedInProd && conf.hasPath(path)) config.getBoolean(path) else versionReleasedInProd
   }
+
+  def endpointAllowsSupportingAgents(endpointName: String): Boolean =
+    supportingAgentEndpoints.getOrElse(endpointName, false)
+
+  lazy private val supportingAgentEndpoints: Map[String, Boolean] =
+    configuration
+      .getOptional[Map[String, Boolean]]("api.supporting-agent-endpoints")
+      .getOrElse(Map.empty)
 
   def apiDocumentationUrl: String =
     configuration

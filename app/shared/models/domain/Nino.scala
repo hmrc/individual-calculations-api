@@ -27,5 +27,4 @@ case class Nino(nino: String) {
   def withoutSuffix: String = value.take(LengthWithoutSuffix)
 }
 
-object Nino extends (String => Nino) {
-}
+object Nino extends (String => Nino) {}

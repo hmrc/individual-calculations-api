@@ -28,6 +28,8 @@ trait FeatureSwitches {
 
   private def isConfigTrue(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 
+  def supportingAgentsAccessControlEnabled: Boolean = isEnabled("supporting-agents-access-control")
+
 }
 
 /** This is just here for non-typesafe usage such as Handlebars using OasFeatureRewriter. In most cases, should use the API-specific

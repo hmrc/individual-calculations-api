@@ -16,6 +16,7 @@
 
 package v4.controllers
 
+import play.api.Configuration
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.utils.MockIdGenerator
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
@@ -119,11 +120,11 @@ class TriggerCalculationControllerSpec
 
   }
 
-  private trait Test extends ControllerTest with AuditEventChecking {
+  private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
     val finalDeclaration: Option[String] = None
 
-    private lazy val controller = new TriggerCalculationController(
+    lazy val controller = new TriggerCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockTriggerCalculationValidatorFactory,
@@ -133,7 +134,13 @@ class TriggerCalculationControllerSpec
       idGenerator = mockIdGenerator
     )
 
-    protected def callController(): Future[Result] = controller.triggerCalculation(nino, rawTaxYear, finalDeclaration)(fakeRequest)
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
+    protected def callController(): Future[Result] = controller.triggerCalculation(validNino, rawTaxYear, finalDeclaration)(fakeRequest)
 
     override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -142,7 +149,7 @@ class TriggerCalculationControllerSpec
         GenericAuditDetail(
           userType = "Individual",
           agentReferenceNumber = None,
-          params = Map("nino" -> nino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
+          params = Map("nino" -> validNino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
           requestBody = None,
           `X-CorrelationId` = correlationId,
           versionNumber = apiVersion.name,

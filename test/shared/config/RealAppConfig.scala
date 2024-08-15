@@ -29,6 +29,11 @@ trait RealAppConfig {
       .find(num => realAppConfig.safeEndpointsEnabled(s"$num.0"))
       .getOrElse(fail("Couldn't find an enabled API version in the config"))
 
+  protected lazy val emaEndpoints: Map[String, Boolean] =
+    realAppConfig.configuration
+      .getOptional[Map[String, Boolean]]("api.supporting-agent-endpoints")
+      .getOrElse(Map.empty)
+
   protected lazy val realAppConfig: AppConfig = {
     val conf           = ConfigFactory.load()
     val configuration  = Configuration(conf)

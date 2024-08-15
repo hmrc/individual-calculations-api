@@ -61,6 +61,7 @@ case class APIDefinition(name: String,
   private def uniqueVersions: Boolean = {
     !versions.map(_.version).groupBy(identity).view.mapValues(_.size).exists(_._2 > 1)
   }
+
 }
 
 object APIDefinition {

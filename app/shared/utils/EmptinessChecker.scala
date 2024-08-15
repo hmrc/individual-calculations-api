@@ -27,8 +27,7 @@ object EmptyPathsResult {
   case object CompletelyEmpty                 extends EmptyPathsResult
 }
 
-/**
-  * Type class to locate paths to empty objects or arrays within an instance of an object.
+/** Type class to locate paths to empty objects or arrays within an instance of an object.
   */
 trait EmptinessChecker[A] {
   import EmptinessChecker._
@@ -40,8 +39,8 @@ trait EmptinessChecker[A] {
         if (keyedChildren.isEmpty) {
           path :: acc
         } else {
-          keyedChildren.foldLeft(acc) {
-            case (acc, (name, value)) => search(acc, s"$path/$name", value)
+          keyedChildren.foldLeft(acc) { case (acc, (name, value)) =>
+            search(acc, s"$path/$name", value)
           }
         }
 
@@ -83,12 +82,15 @@ object EmptinessChecker {
   private[utils] sealed abstract class Structure
 
   private[utils] object Structure {
+
     case class Obj(fields: List[(String, Structure)]) extends Structure {
       def keyedChildren: Seq[(String, Structure)] = fields.filter(_._2 != Structure.Null)
     }
+
     case class Arr(items: Seq[Structure]) extends Structure {
       def keyedChildren: Seq[(String, Structure)] = items.zipWithIndex.map(x => x._2.toString -> x._1)
     }
+
     case object Primitive extends Structure
     case object Null      extends Structure
   }
@@ -125,35 +127,31 @@ object EmptinessChecker {
 
   implicit val hnilInstance: ObjEmptinessChecker[HNil] = instanceObj(_ => Structure.Obj(Nil))
 
-  implicit def hlistInstance[K <: Symbol, H, T <: HList](
-      implicit
+  implicit def hlistInstance[K <: Symbol, H, T <: HList](implicit
       witness: Witness.Aux[K],
       hInstance: Lazy[EmptinessChecker[H]],
       tInstance: ObjEmptinessChecker[T]
   ): ObjEmptinessChecker[FieldType[K, H] :: T] =
-    instanceObj {
-      case h :: t =>
-        val hField  = witness.value.name -> hInstance.value.structureOf(h)
-        val tFields = tInstance.structureOf(t).fields
-        Structure.Obj(hField :: tFields)
+    instanceObj { case h :: t =>
+      val hField  = witness.value.name -> hInstance.value.structureOf(h)
+      val tFields = tInstance.structureOf(t).fields
+      Structure.Obj(hField :: tFields)
     }
 
-  implicit def simpleHlistInstance[H, T <: HList](
-      implicit
+  implicit def simpleHlistInstance[H, T <: HList](implicit
       hInstance: Lazy[EmptinessChecker[H]],
       tInstance: ObjEmptinessChecker[T]
   ): ObjEmptinessChecker[(String, H) :: T] =
-    instanceObj {
-      case h :: t =>
-        val hField  = h._1 -> hInstance.value.structureOf(h._2)
-        val tFields = tInstance.structureOf(t).fields
-        Structure.Obj(hField :: tFields)
+    instanceObj { case h :: t =>
+      val hField  = h._1 -> hInstance.value.structureOf(h._2)
+      val tFields = tInstance.structureOf(t).fields
+      Structure.Obj(hField :: tFields)
     }
 
-  implicit def genericInstance[A, R](
-      implicit
+  implicit def genericInstance[A, R](implicit
       gen: LabelledGeneric.Aux[A, R],
       enc: Lazy[EmptinessChecker[R]]
   ): EmptinessChecker[A] =
     instance(a => enc.value.structureOf(gen.to(a)))
+
 }

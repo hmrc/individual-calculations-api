@@ -23,7 +23,7 @@ import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import shared.stubs._
+import shared.services._
 import support.IntegrationBaseSpec
 
 class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
