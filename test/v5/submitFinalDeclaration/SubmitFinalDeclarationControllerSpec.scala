@@ -17,23 +17,23 @@
 package v5.submitFinalDeclaration
 
 import api.nrs.{MockNrsProxyConnector, StubNrsProxyService}
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.utils.MockIdGenerator
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
-import shared.models.outcomes.ResponseWrapper
-import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import shared.config.MockAppConfig
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.GenericAuditDetailFixture.nino
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleTaxYearNotSupportedError}
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.utils.MockIdGenerator
+import v5.retrieveCalculation.MockRetrieveCalculationService
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
-import v5.retrieveCalculation.MockRetrieveCalculationService
 import v5.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -183,9 +183,3 @@ class SubmitFinalDeclarationControllerSpec
   }
 
 }
-/*
-The code passed to eventually never returned normally. Attempted 169 times over 5.022667542 seconds.
-Last failure message:
-[NrsProxyCall("AA123456A", "itsa-crystallisation", {"metadata":{"calculationId":"","taxYear":"2017-18","requestedBy":"","calculationReason":"","calculationType":"inYear","intentToSubmitFinalDeclaration":false,"finalDeclaration":false,"periodFrom":"","periodTo":""},"inputs":{"personalInformation":{"identifier":"","taxRegime":"UK"},"incomeSources":{}},"calculation":{"taxCalculation":{"incomeTax":{"totalIncomeReceivedFromAllSources":50,"totalAllowancesAndDeductions":50,"totalTaxableIncome":50,"incomeTaxCharged":50},"nics":{"class2Nics":{"underSmallProfitThreshold":true,"underLowerProfitThreshold":true}},"totalIncomeTaxAndNicsDue":50},"employmentAndPensionsIncome":{"employmentAndPensionsIncomeDetail":[{"offPayrollWorker":true}]},"reliefs":{"basicRateExtension":{"totalBasicRateExtension":2000}},"endOfYearEstimate":{"totalAllowancesAndDeductions":100}}})]
-did not contain the same elements as ArraySeq(NrsProxyCall("ZG903729C", "itsa-crystallisation", {"metadata":{"calculationId":"","taxYear":"2017-18","requestedBy":"","calculationReason":"","calculationType":"inYear","intentToSubmitFinalDeclaration":false,"finalDeclaration":false,"periodFrom":"","periodTo":""},"inputs":{"personalInformation":{"identifier":"","taxRegime":"UK"},"incomeSources":{}},"calculation":{"taxCalculation":{"incomeTax":{"totalIncomeReceivedFromAllSources":50,"totalAllowancesAndDeductions":50,"totalTaxableIncome":50,"incomeTaxCharged":50},"nics":{"class2Nics":{"underSmallProfitThreshold":true,"underLowerProfitThreshold":true}},"totalIncomeTaxAndNicsDue":50},"employmentAndPensionsIncome":{"employmentAndPensionsIncomeDetail":[{"offPayrollWorker":true}]},"reliefs":{"basicRateExtension":{"totalBasicRateExtension":2000}},"endOfYearEstimate":{"totalAllowancesAndDeductions":100}}})).
- */
