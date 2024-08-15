@@ -85,7 +85,7 @@ class SubmitFinalDeclarationControllerSpec
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
 
         eventually {
-          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
+          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
         }
       }
 
@@ -110,7 +110,7 @@ class SubmitFinalDeclarationControllerSpec
                                                        |""".stripMargin)
 
         eventually {
-          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", fallbackNrsPayload))
+          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", fallbackNrsPayload))
         }
       }
     }
@@ -136,7 +136,7 @@ class SubmitFinalDeclarationControllerSpec
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
 
         eventually {
-          verifyNrsProxyService(NrsProxyCall(nino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
+          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
         }
       }
     }
@@ -183,3 +183,9 @@ class SubmitFinalDeclarationControllerSpec
   }
 
 }
+/*
+The code passed to eventually never returned normally. Attempted 169 times over 5.022667542 seconds.
+Last failure message:
+[NrsProxyCall("AA123456A", "itsa-crystallisation", {"metadata":{"calculationId":"","taxYear":"2017-18","requestedBy":"","calculationReason":"","calculationType":"inYear","intentToSubmitFinalDeclaration":false,"finalDeclaration":false,"periodFrom":"","periodTo":""},"inputs":{"personalInformation":{"identifier":"","taxRegime":"UK"},"incomeSources":{}},"calculation":{"taxCalculation":{"incomeTax":{"totalIncomeReceivedFromAllSources":50,"totalAllowancesAndDeductions":50,"totalTaxableIncome":50,"incomeTaxCharged":50},"nics":{"class2Nics":{"underSmallProfitThreshold":true,"underLowerProfitThreshold":true}},"totalIncomeTaxAndNicsDue":50},"employmentAndPensionsIncome":{"employmentAndPensionsIncomeDetail":[{"offPayrollWorker":true}]},"reliefs":{"basicRateExtension":{"totalBasicRateExtension":2000}},"endOfYearEstimate":{"totalAllowancesAndDeductions":100}}})]
+did not contain the same elements as ArraySeq(NrsProxyCall("ZG903729C", "itsa-crystallisation", {"metadata":{"calculationId":"","taxYear":"2017-18","requestedBy":"","calculationReason":"","calculationType":"inYear","intentToSubmitFinalDeclaration":false,"finalDeclaration":false,"periodFrom":"","periodTo":""},"inputs":{"personalInformation":{"identifier":"","taxRegime":"UK"},"incomeSources":{}},"calculation":{"taxCalculation":{"incomeTax":{"totalIncomeReceivedFromAllSources":50,"totalAllowancesAndDeductions":50,"totalTaxableIncome":50,"incomeTaxCharged":50},"nics":{"class2Nics":{"underSmallProfitThreshold":true,"underLowerProfitThreshold":true}},"totalIncomeTaxAndNicsDue":50},"employmentAndPensionsIncome":{"employmentAndPensionsIncomeDetail":[{"offPayrollWorker":true}]},"reliefs":{"basicRateExtension":{"totalBasicRateExtension":2000}},"endOfYearEstimate":{"totalAllowancesAndDeductions":100}}})).
+ */
