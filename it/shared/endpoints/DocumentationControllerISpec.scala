@@ -23,7 +23,7 @@ import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import shared.config.AppConfig
 import shared.routing.{Version, Versions}
-import support.IntegrationBaseSpec
+import shared.support.IntegrationBaseSpec
 
 import scala.util.Try
 

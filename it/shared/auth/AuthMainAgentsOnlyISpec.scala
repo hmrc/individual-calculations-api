@@ -8,7 +8,7 @@ import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors.{ClientOrAgentNotAuthorisedError, InternalError}
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import support.IntegrationBaseSpec
+import shared.support.IntegrationBaseSpec
 
 abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
@@ -36,12 +36,12 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
   /** One endpoint where supporting agents are allowed.
     */
-  override def servicesConfig: Map[String, String] =
+  override def servicesConfig: Map[String, Any] =
     Map(
       s"api.supporting-agent-endpoints.$supportingAgentsNotAllowedEndpoint" -> "false"
     ) ++ super.servicesConfig
 
-  protected val nino = "ZG903729C"
+  protected val nino = "AA123456A"
 
   "Calling an endpoint that only allows primary agents" when {
     "the client is the primary agent" should {
@@ -147,7 +147,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
     def setupStubs(): StubMapping
 
     protected def request(): WSRequest = {
-      // AuthStub.resetAll()
+      AuthStub.resetAll()
       setupStubs()
       buildRequest(mtdUrl)
         .withHttpHeaders(

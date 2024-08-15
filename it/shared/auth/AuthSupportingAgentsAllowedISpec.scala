@@ -7,7 +7,7 @@ import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import support.IntegrationBaseSpec
+import shared.support.IntegrationBaseSpec
 
 abstract class AuthSupportingAgentsAllowedISpec extends IntegrationBaseSpec {
 
@@ -35,12 +35,12 @@ abstract class AuthSupportingAgentsAllowedISpec extends IntegrationBaseSpec {
 
   /** One endpoint where supporting agents are allowed.
     */
-  override def servicesConfig: Map[String, String] =
+  override def servicesConfig: Map[String, Any] =
     Map(
       s"api.supporting-agent-endpoints.$supportingAgentsAllowedEndpoint" -> "true"
     ) ++ super.servicesConfig
 
-  protected val nino = "ZG903729C"
+  protected val nino = "AA123456A"
 
   "Calling an endpoint that allows supporting agents" when {
     "the client is the primary agent" should {
@@ -82,16 +82,13 @@ abstract class AuthSupportingAgentsAllowedISpec extends IntegrationBaseSpec {
       }
     }
   }
-/*
-AhcWSRequest(StandaloneAhcWSRequest(play.api.libs.ws.ahc.StandaloneAhcWSClient@141eb85b,http://localhost:59811/ZG903729C/self-assessment/2017-18/f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c,GET,
-EmptyBody,TreeMap(Accept -> List(application/vnd.hmrc.6.0+json), Authorization -> List(Bearer 123)),Map(),List(),None,None,Some(false),None,None,None,None,List()))
- */
+
   protected trait Test {
 
     def setupStubs(): StubMapping
 
     protected def request: WSRequest = {
-      //AuthStub.resetAll()
+      AuthStub.resetAll()
       setupStubs()
       buildRequest(mtdUrl)
         .withHttpHeaders(

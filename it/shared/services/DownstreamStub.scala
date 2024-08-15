@@ -2,7 +2,7 @@ package shared.services
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.JsValue
-import support.WireMockMethods
+import shared.support.WireMockMethods
 
 object DownstreamStub extends WireMockMethods {
 

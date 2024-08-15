@@ -28,8 +28,8 @@ class CalculationsAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsA
   val callingApiVersion = "6.0"
 
   val supportingAgentsAllowedEndpoint = "retrieve-calculation"
-  val calculationId: String              = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  def taxYear: String                    = "2017-18"
+  val calculationId: String           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  def taxYear: String                 = "2017-18"
 
   val mtdUrl = s"/$nino/self-assessment/$taxYear/$calculationId"
 

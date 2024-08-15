@@ -3,7 +3,7 @@ package shared.services
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.{JsArray, JsObject, JsValue, Json}
-import support.WireMockMethods
+import shared.support.WireMockMethods
 import uk.gov.hmrc.auth.core.Enrolment
 
 object AuthStub extends WireMockMethods {

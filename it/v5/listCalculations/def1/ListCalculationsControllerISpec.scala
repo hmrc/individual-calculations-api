@@ -16,16 +16,16 @@
 
 package v5.listCalculations.def1
 
-import shared.models.domain.TaxYear
-import shared.models.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import shared.models.domain.TaxYear
+import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import support.IntegrationBaseSpec
+import shared.support.IntegrationBaseSpec
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
@@ -76,9 +76,9 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
   private trait TysIfsTest extends Test {
 
-    val mtdTaxYear: String      = TaxYear.now().asMtd
-    val downstreamTaxYear: String      = TaxYear.now().asTysDownstream
-    def taxYear: Option[String] = Some(mtdTaxYear)
+    val mtdTaxYear: String        = TaxYear.now().asMtd
+    val downstreamTaxYear: String = TaxYear.now().asTysDownstream
+    def taxYear: Option[String]   = Some(mtdTaxYear)
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
 

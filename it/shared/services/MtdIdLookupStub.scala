@@ -3,7 +3,7 @@ package shared.services
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.OK
 import play.api.libs.json.Json
-import support.WireMockMethods
+import shared.support.WireMockMethods
 
 object MtdIdLookupStub extends WireMockMethods {
 
