@@ -19,7 +19,7 @@ package v6.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType
+import v6.common.model.response.IncomeSourceType
 
 class UnclaimedLossSpec extends UnitSpec {
 

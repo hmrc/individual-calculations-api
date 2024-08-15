@@ -16,10 +16,9 @@
 
 package common.definition
 
-
 import shared.config.AppConfig
-import shared.definition.{APIDefinition, APIVersion, ApiDefinitionFactory, Definition, Scope}
-import shared.routing.{Version4, Version5, Version6}
+import shared.definition._
+import shared.routing.{Version5, Version6}
 
 import javax.inject.{Inject, Singleton}
 
@@ -49,11 +48,6 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(
-            version = Version4,
-            status = buildAPIStatus(Version4),
-            endpointsEnabled = appConfig.endpointsEnabled(Version4)
-          ),
-          APIVersion(
             version = Version5,
             status = buildAPIStatus(Version5),
             endpointsEnabled = appConfig.endpointsEnabled(Version5)
@@ -67,4 +61,5 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         requiresTrust = None
       )
     )
+
 }

@@ -25,7 +25,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import support.IntegrationBaseSpec
-import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
+import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
 
 class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
 

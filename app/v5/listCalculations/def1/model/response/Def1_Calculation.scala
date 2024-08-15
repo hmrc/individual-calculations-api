@@ -20,7 +20,7 @@ import common.TaxYearFormats._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import shared.models.domain.TaxYear
-import v4.models.response.common.CalculationType
+import v5.common.model.response.CalculationType
 
 sealed trait Calculation {
   def calculationId: String

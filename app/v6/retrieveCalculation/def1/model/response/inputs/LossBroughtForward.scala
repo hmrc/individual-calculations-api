@@ -19,8 +19,8 @@ package v6.retrieveCalculation.def1.model.response.inputs
 import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType
-import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType._
+import v6.common.model.response.IncomeSourceType
+import IncomeSourceType._
 
 case class LossBroughtForward(lossId: Option[String],
                                    incomeSourceId: String,

@@ -18,7 +18,7 @@ package v6.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate
 
 import play.api.libs.json.Json
 import shared.utils.UnitSpec
-import v6.retrieveCalculation.def1.model.response.common.IncomeSourceType._
+import v6.common.model.response.IncomeSourceType._
 
 class IncomeSourceSpec extends UnitSpec {
 

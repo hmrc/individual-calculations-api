@@ -20,7 +20,7 @@ import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v6.retrieveCalculation.def1.model.response.common.CalculationType
+import v6.common.model.response.CalculationType
 
 case class Metadata(calculationId: String,
                          taxYear: TaxYear,

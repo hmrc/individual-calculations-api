@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def1.model.response.calculation.pensionSavingsTaxCharges
 
 import play.api.libs.json.{Json, OFormat}
-import v5.retrieveCalculation.def1.model.response.common.TaxRate
+import v5.common.model.response.TaxRate
 
 case class PensionBands(name: TaxRate,
                              rate: BigDecimal,
