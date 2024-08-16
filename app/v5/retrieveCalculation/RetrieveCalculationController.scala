@@ -39,6 +39,8 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
     extends AuthorisedController(cc)
     with Logging {
 
+  val endpointName = "retrieve-calculation"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "RetrieveCalculationController",

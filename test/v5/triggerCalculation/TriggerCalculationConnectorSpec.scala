@@ -95,15 +95,15 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   }
 
   trait CrystalDesTest extends DesTest{
-    MockAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
+    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
   }
 
   trait CrystalIfsTest extends IfsTest{
-    MockAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
+    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 
   trait CrystalTysIfsTest extends TysIfsTest{
-    MockAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
+    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 
 }

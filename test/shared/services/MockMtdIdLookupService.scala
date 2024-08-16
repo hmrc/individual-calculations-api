@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object MockMtdIdLookupService{
+object MockMtdIdLookupService {
   type MtdIdServiceOutcome = Either[MtdError, String]
 }
 

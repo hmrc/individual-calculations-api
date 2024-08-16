@@ -19,7 +19,6 @@ package shared.models.domain
 import org.scalacheck.{Arbitrary, Gen, ShrinkLowPriority}
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
-
 // Use ShrinkLowPriority otherwise failures will shrink to produce TaxYears
 // outside the Gen.choose(...) range resulting in misleading failures
 trait TaxYearPropertyCheckSupport extends ShrinkLowPriority {

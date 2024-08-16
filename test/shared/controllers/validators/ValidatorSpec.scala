@@ -31,7 +31,7 @@ class ValidatorSpec extends UnitSpec with MockFactory {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = Nino("ZG903729C")
+  private val validNino    = Nino("AA123456A")
   private val validTaxYear = TaxYear.fromMtd("2023-24")
 
   private val validBody = Json.parse("""
@@ -50,7 +50,7 @@ class ValidatorSpec extends UnitSpec with MockFactory {
 
   /** The main/outermost validator.
     */
-  private class TestValidator(nino: String = "ZG903729C", taxYear: String = "2023-24", jsonBody: JsValue = validBody)
+  private class TestValidator(nino: String = "AA123456A", taxYear: String = "2023-24", jsonBody: JsValue = validBody)
       extends Validator[TestParsedRequest] {
 
     private val jsonResolver = new ResolveJsonObject[TestParsedRequestBody]

@@ -47,6 +47,8 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
     extends AuthorisedController(cc)
     with Logging {
 
+  val endpointName = "submit-final-declaration"
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
 

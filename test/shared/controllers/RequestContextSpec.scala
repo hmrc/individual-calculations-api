@@ -48,7 +48,7 @@ class RequestContextSpec extends UnitSpec with MockIdGenerator {
       MockedIdGenerator.generateCorrelationId.returns("some-correlation-id").anyNumberOfTimes()
       val requestContext = RequestContext.from(mockIdGenerator, endpointLogContext)
 
-      val result         = requestContext.withCorrelationId("new-correlation-id")
+      val result = requestContext.withCorrelationId("new-correlation-id")
       result shouldBe RequestContext(hc, "new-correlation-id", endpointLogContext)
     }
   }

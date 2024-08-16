@@ -17,11 +17,10 @@
 package shared.controllers
 
 import play.api.mvc._
+import shared.config.{AppConfig, ConfigFeatureSwitches}
 import shared.models.auth.UserDetails
 import shared.models.errors.MtdError
 import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
-import uk.gov.hmrc.auth.core.Enrolment
-import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -29,10 +28,22 @@ import scala.concurrent.{ExecutionContext, Future}
 
 case class UserRequest[A](userDetails: UserDetails, request: Request[A]) extends WrappedRequest[A](request)
 
-abstract class AuthorisedController(cc: ControllerComponents)(implicit ec: ExecutionContext) extends BackendController(cc) {
+abstract class AuthorisedController(
+    cc: ControllerComponents
+)(implicit appConfig: AppConfig, ec: ExecutionContext)
+    extends BackendController(cc) {
 
   val authService: EnrolmentsAuthService
   val lookupService: MtdIdLookupService
+
+  val endpointName: String
+
+  lazy val supportingAgentsAccessControlEnabled: Boolean = ConfigFeatureSwitches().supportingAgentsAccessControlEnabled
+
+  lazy private val endpointAllowsSupportingAgents: Boolean = {
+    supportingAgentsAccessControlEnabled &&
+    appConfig.endpointAllowsSupportingAgents(endpointName)
+  }
 
   def authorisedAction(nino: String): ActionBuilder[UserRequest, AnyContent] = new ActionBuilder[UserRequest, AnyContent] {
 
@@ -40,16 +51,17 @@ abstract class AuthorisedController(cc: ControllerComponents)(implicit ec: Execu
 
     override protected def executionContext: ExecutionContext = cc.executionContext
 
-    def predicate(mtdId: String): Predicate =
-      Enrolment("HMRC-MTD-IT")
-        .withIdentifier("MTDITID", mtdId)
-        .withDelegatedAuthRule("mtd-it-auth")
+    def invokeBlockWithAuthCheck[A](
+        mtdId: String,
+        request: Request[A],
+        block: UserRequest[A] => Future[Result]
+    )(implicit headerCarrier: HeaderCarrier): Future[Result] = {
 
-    def invokeBlockWithAuthCheck[A](mtdId: String, request: Request[A], block: UserRequest[A] => Future[Result])(implicit
-        headerCarrier: HeaderCarrier): Future[Result] = {
-      authService.authorised(predicate(mtdId)).flatMap[Result] {
-        case Right(userDetails) => block(UserRequest(userDetails.copy(mtdId = mtdId), request))
-        case Left(mtdError)     => errorResponse(mtdError)
+      authService.authorised(mtdId, endpointAllowsSupportingAgents).flatMap[Result] {
+        case Right(userDetails) =>
+          block(UserRequest(userDetails.copy(mtdId = mtdId), request))
+        case Left(mtdError) =>
+          errorResponse(mtdError)
       }
     }
 
@@ -58,8 +70,10 @@ abstract class AuthorisedController(cc: ControllerComponents)(implicit ec: Execu
       implicit val headerCarrier: HeaderCarrier = hc(request)
 
       lookupService.lookup(nino).flatMap[Result] {
-        case Right(mtdId)   => invokeBlockWithAuthCheck(mtdId, request, block)
-        case Left(mtdError) => errorResponse(mtdError)
+        case Right(mtdId) =>
+          invokeBlockWithAuthCheck(mtdId, request, block)
+        case Left(mtdError) =>
+          errorResponse(mtdError)
       }
     }
 

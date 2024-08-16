@@ -17,36 +17,58 @@
 package shared.controllers.validators.resolvers
 
 import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{JsValue, Json, Reads}
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
 
-class ResolveJsonObjectSpec extends UnitSpec with JsonErrorValidators {
+class ResolveJsonObjectSpec extends UnitSpec with ResolverSupport with JsonErrorValidators {
 
-  case class TestDataObject(fieldOne: String, fieldTwo: String)
+  case class Foo(field1: String, field2: String)
 
-  implicit val testDataObjectReads: Reads[TestDataObject] = Json.reads[TestDataObject]
+  implicit val fooReads: Reads[Foo] = Json.reads
 
-  private val resolve = new ResolveJsonObject[TestDataObject]
-
-  "ResolveJsonObject" should {
+  private def jsonObjectResolver(resolver: Resolver[JsValue, Foo]): Unit = {
     "return the parsed object" when {
       "given a valid JSON object" in {
-        val json = Json.parse("""{ "fieldOne" : "field one", "fieldTwo" : "field two" }""")
+        val json = Json.parse("""{ "field1" : "field one", "field2" : "field two" }""")
 
-        val result = resolve(json)
-        result shouldBe Valid(TestDataObject("field one", "field two"))
+        resolver(json) shouldBe Valid(Foo("field one", "field two"))
       }
     }
 
     "return the expected error " when {
       "a required field is missing" in {
-        val json = Json.parse("""{ "fieldOne" : "field one" }""")
+        val json = Json.parse("""{ "field1" : "field one" }""")
 
-        val result = resolve(json)
-        result shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/fieldTwo")))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/field2")))
       }
+    }
+  }
+
+  "ResolveJsonObject" when {
+    "the default resolver is used" must {
+      val resolver = ResolveJsonObject.resolver[Foo]
+
+      behave like jsonObjectResolver(resolver)
+
+      "not detect extra fields in the input" in {
+        val json = Json.parse("""{ "extra":123 , "field1" : "field one", "field2" : "field two" }""")
+
+        resolver(json) shouldBe Valid(Foo("field one", "field two"))
+      }
+    }
+  }
+
+  "the strict resolver is used" must {
+    val resolver = ResolveJsonObject.strictResolver[Foo]
+
+    behave like jsonObjectResolver(resolver)
+
+    "detect extra fields in the input" in {
+      val json = Json.parse("""{ "extra":123 , "field1" : "field one", "field2" : "field two" }""")
+
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/extra")))
     }
   }
 

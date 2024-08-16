@@ -16,6 +16,7 @@
 
 package v6.retrieveCalculation.def2.model.response.inputs
 
+import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
 import v6.common.model.response.IncomeSourceType
@@ -32,7 +33,7 @@ case class LossBroughtForward(lossId: Option[String],
 
 object LossBroughtForward {
 
-  implicit val taxYearFormat: Format[TaxYear] = TaxYear.downstreamIntToMtdFormat
+  implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,

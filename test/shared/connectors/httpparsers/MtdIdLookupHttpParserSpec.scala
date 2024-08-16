@@ -36,8 +36,9 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
         "return the MtdId" in {
           val mtdId    = "test-mtd-id"
           val response = HttpResponse(OK, Json.obj("mtdbsa" -> mtdId), Map.empty[String, Seq[String]])
+          val result   = mtdIdLookupHttpReads.read(method, url, response)
 
-          mtdIdLookupHttpReads.read(method, url, response) shouldBe Right(mtdId)
+          result shouldBe Right(mtdId)
         }
       }
 
@@ -54,8 +55,9 @@ class MtdIdLookupHttpParserSpec extends UnitSpec {
       "return the status code as an error" in {
         val status   = IM_A_TEAPOT
         val response = HttpResponse(status, "ignored")
+        val result   = mtdIdLookupHttpReads.read(method, url, response)
 
-        mtdIdLookupHttpReads.read(method, url, response) shouldBe Left(MtdIdLookupConnector.Error(status))
+        result shouldBe Left(MtdIdLookupConnector.Error(status))
       }
     }
   }

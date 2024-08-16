@@ -34,7 +34,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
       s"return the expected status" in new Test {
         setupMockConfig(Version9)
-        MockAppConfig.apiStatus(Version9) returns "BETA"
+        MockedAppConfig.apiStatus(Version9) returns "BETA"
 
         val result: APIStatus = apiDefinitionFactory.checkBuildApiStatus(Version9)
         result shouldBe BETA
@@ -45,7 +45,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present but invalid" should {
       s"default to alpha" in new Test {
         setupMockConfig(Version9)
-        MockAppConfig.apiStatus(Version9) returns "not-a-status"
+        MockedAppConfig.apiStatus(Version9) returns "not-a-status"
 
         apiDefinitionFactory.checkBuildApiStatus(Version9) shouldBe ALPHA
       }
@@ -53,9 +53,9 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'deprecatedOn' parameter is missing for a deprecated version" should {
       "throw an exception" in new Test {
-        MockAppConfig.apiStatus(Version9) returns "DEPRECATED"
+        MockedAppConfig.apiStatus(Version9) returns "DEPRECATED"
 
-        MockAppConfig
+        MockedAppConfig
           .deprecationFor(Version9)
           .returns("deprecatedOn date is required for a deprecated version".invalid)
           .anyNumberOfTimes()
@@ -78,7 +78,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     ).foreach { case (definitionEnabled, configCL, expectedDefinitionCL) =>
       s"confidence-level-check.definition.enabled is $definitionEnabled and confidence-level = $configCL" should {
         s"return confidence level $expectedDefinitionCL" in new Test {
-          MockAppConfig.confidenceLevelConfig returns ConfidenceLevelConfig(
+          MockedAppConfig.confidenceLevelConfig returns ConfidenceLevelConfig(
             confidenceLevel = configCL,
             definitionEnabled = definitionEnabled,
             authValidationEnabled = true)
@@ -89,7 +89,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   }
 
   class Test extends MockHttpClient with MockAppConfig {
-    MockAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
+    MockedAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
 
     protected val apiDefinitionFactory = new ApiDefinitionFactory {
       protected val appConfig: AppConfig = mockAppConfig
@@ -109,7 +109,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
 
     protected def setupMockConfig(version: Version): Unit = {
-      MockAppConfig
+      MockedAppConfig
         .deprecationFor(version)
         .returns(NotDeprecated.valid)
         .anyNumberOfTimes()

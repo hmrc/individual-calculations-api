@@ -49,6 +49,7 @@ object ValueFormatError extends MtdError("FORMAT_VALUE", "The value must be betw
 
   def forPathAndRange(path: String, min: String, max: String): MtdError =
     ValueFormatError.copy(paths = Some(Seq(path)), message = s"The value must be between $min and $max")
+
 }
 
 object CalculationIdFormatError extends MtdError("FORMAT_CALCULATION_ID", "The provided calculation ID is invalid", BAD_REQUEST)
@@ -77,7 +78,7 @@ object InvalidTaxYearParameterError
 
 /** Authentication OK but not allowed access to the requested resource
   */
-object ClientOrAgentNotAuthorisedError extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client or agent is not authorised", FORBIDDEN){
+object ClientOrAgentNotAuthorisedError extends MtdError("CLIENT_OR_AGENT_NOT_AUTHORISED", "The client or agent is not authorised", FORBIDDEN) {
   def withStatus401: MtdError = copy(httpStatus = UNAUTHORIZED)
 }
 

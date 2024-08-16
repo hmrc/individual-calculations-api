@@ -16,17 +16,17 @@
 
 package v5.retrieveCalculation
 
+import play.api.Configuration
+import play.api.libs.json.{JsObject, JsValue}
+import play.api.mvc.Result
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.utils.MockIdGenerator
+import shared.models.audit.GenericAuditDetailFixture.nino
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import play.api.Configuration
-import play.api.libs.json.{JsObject, JsValue}
-import play.api.mvc.Result
-import shared.models.audit.GenericAuditDetailFixture.nino
+import shared.utils.MockIdGenerator
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
@@ -63,7 +63,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> true,
@@ -71,8 +71,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> false,
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
-
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -88,7 +86,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -96,8 +94,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> false,
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
-
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -113,7 +109,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -121,7 +117,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> true,
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -137,7 +132,7 @@ class RetrieveCalculationControllerSpec
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithBasicRateDivergenceEnabled))))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -145,7 +140,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> false,
               "basicRateDivergence.enabled"        -> true))
           .anyNumberOfTimes()
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -155,14 +149,14 @@ class RetrieveCalculationControllerSpec
       }
 
       "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
-        val updatedMtdResponse: JsObject                 = minimumCalculationResponseWithSwitchesDisabledJson
+        val updatedMtdResponse: JsObject = minimumCalculationResponseWithSwitchesDisabledJson
         willUseValidator(returningSuccess(requestData))
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
               "r8b-api.enabled"                    -> false,
@@ -170,7 +164,6 @@ class RetrieveCalculationControllerSpec
               "cl290.enabled"                      -> false,
               "basicRateDivergence.enabled"        -> false))
           .anyNumberOfTimes()
-
 
         runOkTestWithAudit(
           expectedStatus = OK,
@@ -186,7 +179,7 @@ class RetrieveCalculationControllerSpec
 
         willUseValidator(returning(NinoFormatError))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
@@ -197,7 +190,7 @@ class RetrieveCalculationControllerSpec
 
         willUseValidator(returningSuccess(requestData))
 
-        MockAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .returns(Configuration("r8b-api.enabled" -> true))
           .anyNumberOfTimes()
 
@@ -210,7 +203,7 @@ class RetrieveCalculationControllerSpec
     }
   }
 
-  trait Test extends ControllerTest with AuditEventChecking {
+  trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
     def taxYear: String
 
     def requestData: RetrieveCalculationRequestData =
@@ -226,8 +219,14 @@ class RetrieveCalculationControllerSpec
       auditService = mockAuditService
     )
 
+    // MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    //   "supporting-agents-access-control.enabled" -> true
+    // )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
     protected def callController(): Future[Result] =
-      controller.retrieveCalculation(nino, taxYear, calculationId)(fakeRequest)
+      controller.retrieveCalculation(validNino, taxYear, calculationId)(fakeRequest)
 
     protected def event(auditResponse: AuditResponse, requestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -237,7 +236,7 @@ class RetrieveCalculationControllerSpec
           versionNumber = apiVersion.name,
           userType = "Individual",
           agentReferenceNumber = None,
-          params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
+          params = Map("nino" -> validNino, "calculationId" -> calculationId, "taxYear" -> taxYear),
           requestBody = requestBody,
           `X-CorrelationId` = correlationId,
           auditResponse = auditResponse

@@ -16,7 +16,7 @@
 
 package shared.models.domain
 
-import play.api.libs.json.{Format, Reads, Writes}
+import play.api.libs.json.Writes
 
 import java.time.{Clock, LocalDate}
 
@@ -123,8 +123,5 @@ object TaxYear {
 
   implicit val ordering: Ordering[TaxYear] = Ordering.by(_.year)
 
-  private val writes: Writes[TaxYear]                       = implicitly[Writes[String]].contramap(_.asMtd)
-  private val fromDownstreamIntReads: Reads[TaxYear]             = implicitly[Reads[Int]].map(fromDownstreamInt)
-  implicit val downstreamIntToMtdFormat: Format[TaxYear] = Format(fromDownstreamIntReads, writes)
-  //TODO create story for case match in shared code
+  implicit val writes: Writes[TaxYear] = implicitly[Writes[String]].contramap(_.asMtd)
 }

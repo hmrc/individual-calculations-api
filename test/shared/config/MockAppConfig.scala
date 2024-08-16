@@ -26,7 +26,7 @@ trait MockAppConfig extends MockFactory {
 
   implicit val mockAppConfig: AppConfig = mock[AppConfig]
 
-  object MockAppConfig {
+  object MockedAppConfig {
     // MTD ID Lookup Config
     def mtdIdBaseUrl: CallHandler0[String] = (() => mockAppConfig.mtdIdBaseUrl: String).expects()
 
@@ -72,6 +72,9 @@ trait MockAppConfig extends MockFactory {
 
     def confidenceLevelConfig: CallHandler0[ConfidenceLevelConfig] =
       (() => mockAppConfig.confidenceLevelConfig).expects()
+
+    def endpointAllowsSupportingAgents(endpointName: String): CallHandler[Boolean] =
+      (mockAppConfig.endpointAllowsSupportingAgents(_: String)).expects(endpointName)
 
     def allowRequestCannotBeFulfilledHeader(version: Version): CallHandler[Boolean] =
       (mockAppConfig.allowRequestCannotBeFulfilledHeader: Version => Boolean).expects(version)

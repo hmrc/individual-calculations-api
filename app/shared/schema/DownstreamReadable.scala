@@ -21,9 +21,9 @@ import play.api.libs.json.Reads
 trait DownstreamReadable[Base] {
 
   /** This is the type of response returned by the connector.
-   *
-   * It is not necessarily the same as the response type returned by the service to the controller.
-   */
+    *
+    * It is not necessarily the same as the response type returned by the service to the controller.
+    */
   type DownstreamResp <: Base
 
   implicit def connectorReads: Reads[DownstreamResp]

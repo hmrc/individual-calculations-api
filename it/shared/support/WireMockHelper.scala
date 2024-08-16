@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package support
+package shared.support
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -25,8 +25,8 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 
 object WireMockHelper extends Eventually with IntegrationPatience {
 
-  val wireMockPort: Int = 11114
-  val host: String      = "localhost"
+  val wireMockPort = 11128
+  val host         = "localhost"
 }
 
 trait WireMockHelper {

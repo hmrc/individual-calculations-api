@@ -37,7 +37,7 @@ class HateoasFactorySpec extends UnitSpec with MockAppConfig {
   private case class Data2(id: String) extends HateoasData
 
   private class Test {
-    MockAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes()
+    MockedAppConfig.apiGatewayContext.returns("context").anyNumberOfTimes()
   }
 
   "wrap" should {

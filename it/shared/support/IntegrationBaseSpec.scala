@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package support
+package shared.support
 
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
@@ -25,27 +25,23 @@ import play.api.{Application, Environment, Mode}
 import shared.utils.UnitSpec
 
 trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite with BeforeAndAfterEach with BeforeAndAfterAll {
+  lazy val client: WSClient = app.injector.instanceOf[WSClient]
 
   lazy val mockHost: String = WireMockHelper.host
   lazy val mockPort: String = WireMockHelper.wireMockPort.toString
 
-  lazy val client: WSClient = app.injector.instanceOf[WSClient]
-
-  def servicesConfig: Map[String, String] = Map(
-    "microservice.services.des.host"                     -> mockHost,
-    "microservice.services.des.port"                     -> mockPort,
-    "microservice.services.ifs.host"                     -> mockHost,
-    "microservice.services.ifs.port"                     -> mockPort,
-    "microservice.services.tys-ifs.host"                 -> mockHost,
-    "microservice.services.tys-ifs.port"                 -> mockPort,
-    "microservice.services.individual-calculations.host" -> mockHost,
-    "microservice.services.individual-calculations.port" -> mockPort,
-    "microservice.services.mtd-id-lookup.host"           -> mockHost,
-    "microservice.services.mtd-id-lookup.port"           -> mockPort,
-    "microservice.services.auth.host"                    -> mockHost,
-    "microservice.services.auth.port"                    -> mockPort,
-    "auditing.consumer.baseUri.port"                     -> mockPort,
-    "feature-switch.r8b.enabled"                         -> "true"
+  def servicesConfig: Map[String, Any] = Map(
+    "microservice.services.des.host"           -> mockHost,
+    "microservice.services.des.port"           -> mockPort,
+    "microservice.services.ifs.host"           -> mockHost,
+    "microservice.services.ifs.port"           -> mockPort,
+    "microservice.services.tys-ifs.host"       -> mockHost,
+    "microservice.services.tys-ifs.port"       -> mockPort,
+    "microservice.services.mtd-id-lookup.host" -> mockHost,
+    "microservice.services.mtd-id-lookup.port" -> mockPort,
+    "microservice.services.auth.host"          -> mockHost,
+    "microservice.services.auth.port"          -> mockPort,
+    "auditing.consumer.baseUri.port"           -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
@@ -64,8 +60,8 @@ trait IntegrationBaseSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   }
 
   override def beforeEach(): Unit = {
-    resetWireMock()
     super.beforeEach()
+    resetWireMock()
   }
 
   def buildRequest(path: String): WSRequest = client.url(s"http://localhost:$port$path").withFollowRedirects(false)

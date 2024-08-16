@@ -51,8 +51,8 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
 
   "/file endpoint" should {
     "return a file" in new Test {
-      MockAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns true
-      MockAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
+      MockedAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns true
+      MockedAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
 
       val response: Future[Result] = requestAsset("application.yaml")
       status(response) shouldBe OK
@@ -61,7 +61,7 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
 
     "return a 404" when {
       "the requested asset doesn't exist" in new Test {
-        MockAppConfig.endpointReleasedInProduction(apiVersionName, "does-not-exist").anyNumberOfTimes() returns true
+        MockedAppConfig.endpointReleasedInProduction(apiVersionName, "does-not-exist").anyNumberOfTimes() returns true
 
         val response: Future[Result] = requestAsset("does-not-exist.yaml")
         status(response) shouldBe NOT_FOUND
@@ -73,7 +73,7 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
       }
 
       "the requested asset doesn't form a canonical path" in new Test {
-        MockAppConfig.endpointReleasedInProduction(apiVersionName, "../does-not-exist").anyNumberOfTimes() returns true
+        MockedAppConfig.endpointReleasedInProduction(apiVersionName, "../does-not-exist").anyNumberOfTimes() returns true
 
         val response: Future[Result] = requestAsset("../does-not-exist.yaml")
         status(response) shouldBe NOT_FOUND
@@ -84,8 +84,8 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
     "return a 400 response" when {
       "the requested asseet's URI encoding is wrong" in new Test {
         val badlyEncodedAssetName = "applica\n\ntion"
-        MockAppConfig.endpointReleasedInProduction(apiVersionName, badlyEncodedAssetName).anyNumberOfTimes() returns true
-        MockAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
+        MockedAppConfig.endpointReleasedInProduction(apiVersionName, badlyEncodedAssetName).anyNumberOfTimes() returns true
+        MockedAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
 
         val response: Future[Result] = requestAsset(s"$badlyEncodedAssetName.yaml")
         status(response) shouldBe BAD_REQUEST
@@ -96,8 +96,8 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
   "rewrite()" when {
     "the API version is enabled" should {
       "return the yaml with the API title unchanged" in new Test {
-        MockAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns true
-        MockAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
+        MockedAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns true
+        MockedAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
 
         val response: Future[Result] = requestAsset("application.yaml", accept = "text/plain")
         status(response) shouldBe OK
@@ -116,8 +116,8 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
 
     "the API version is disabled" should {
       "return the yaml with [test only] in the API title" in new Test {
-        MockAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns false
-        MockAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
+        MockedAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns false
+        MockedAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
 
         val response: Future[Result] = requestAsset("application.yaml")
         status(response) shouldBe OK
@@ -149,8 +149,8 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
             override lazy val rewriteables: Seq[CheckAndRewrite] = Nil
           }
 
-        MockAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns false
-        MockAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
+        MockedAppConfig.apiVersionReleasedInProduction(apiVersionName).anyNumberOfTimes() returns false
+        MockedAppConfig.endpointsEnabled(apiVersionName).anyNumberOfTimes() returns true
 
         actualApplicationYaml should not be empty
 
@@ -173,7 +173,7 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
 
     protected def numberOfTestOnlyOccurrences(str: String): Int = "\\[test only]".r.findAllIn(str).size
 
-    MockAppConfig.featureSwitchConfig returns Configuration("openApiFeatureTest.enabled" -> featureEnabled)
+    MockedAppConfig.featureSwitchConfig returns Configuration("openApiFeatureTest.enabled" -> featureEnabled)
 
     private val apiFactory = new ApiDefinitionFactory {
       protected val appConfig: AppConfig = mockAppConfig

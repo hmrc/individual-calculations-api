@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package shared.stubs
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status.NO_CONTENT
-import support.WireMockMethods
+package shared.controllers.validators
 
-object AuditStub extends WireMockMethods {
+import cats.data.Validated.Invalid
+import play.api.http.Status
+import shared.models.errors.MtdError
+import shared.utils.UnitSpec
 
-  private val auditUri: String = s"/write/audit.*"
+class AlwaysErrorsValidatorSpec extends UnitSpec {
 
-  def audit(): StubMapping = {
-    when(method = POST, uri = auditUri)
-      .thenReturn(status = NO_CONTENT)
+  "AlwaysErrorsValidator" must {
+    "always return the errors that it is constructed with" in {
+      val errors = Seq(MtdError("E1", "", Status.BAD_REQUEST), MtdError("E2", "", Status.BAD_REQUEST))
+
+      AlwaysErrorsValidator(errors).validate shouldBe Invalid(errors)
+    }
   }
 
 }
