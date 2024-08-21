@@ -28,7 +28,7 @@
       "marriageAllowance": "transferor",
       "uniqueTaxpayerReference": "AGvHTfRUPO"
       {{#if (enabled "retrieveSAAdditionalFields")}}
-      ,"itsaStatus": "No status"
+      ,"itsaStatus": "No Status"
       {{/if}}
     },
     "incomeSources": {
