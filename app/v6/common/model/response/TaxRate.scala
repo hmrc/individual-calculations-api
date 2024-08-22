@@ -26,14 +26,16 @@ object TaxRate {
   case object `intermediate-rate` extends TaxRate
   case object `higher-rate`       extends TaxRate
   case object `additional-rate`   extends TaxRate
+  case object `advanced-rate`     extends TaxRate
 
   implicit val writes: Writes[TaxRate] = Enums.writes[TaxRate]
 
   implicit val reads: Reads[TaxRate] = Enums.readsUsing {
-    case "BRT" => `basic-rate`
-    case "IRT" => `intermediate-rate`
-    case "HRT" => `higher-rate`
-    case "ART" => `additional-rate`
+    case "BRT"  => `basic-rate`
+    case "IRT"  => `intermediate-rate`
+    case "HRT"  => `higher-rate`
+    case "ART"  => `additional-rate`
+    case "AVRT" => `advanced-rate`
   }
 
 }

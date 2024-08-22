@@ -23,17 +23,19 @@ import v6.common.model.response.TaxRate._
 class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[TaxRate](
-    "BRT" -> `basic-rate`,
-    "IRT" -> `intermediate-rate`,
-    "HRT" -> `higher-rate`,
-    "ART" -> `additional-rate`
+    "BRT"  -> `basic-rate`,
+    "IRT"  -> `intermediate-rate`,
+    "HRT"  -> `higher-rate`,
+    "ART"  -> `additional-rate`,
+    "AVRT" -> `advanced-rate`
   )
 
   testWrites[TaxRate](
     `basic-rate`        -> "basic-rate",
     `intermediate-rate` -> "intermediate-rate",
     `higher-rate`       -> "higher-rate",
-    `additional-rate`   -> "additional-rate"
+    `additional-rate`   -> "additional-rate",
+    `advanced-rate`     -> "advanced-rate"
   )
 
 }
