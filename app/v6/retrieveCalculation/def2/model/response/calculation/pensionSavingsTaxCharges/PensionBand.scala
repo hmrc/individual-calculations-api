@@ -17,15 +17,15 @@
 package v6.retrieveCalculation.def2.model.response.calculation.pensionSavingsTaxCharges
 
 import play.api.libs.json.{Json, OFormat}
-import v6.common.model.response.TaxRate
+import v6.common.model.response.PensionBandName
 
-case class PensionBands(name: TaxRate,
-                             rate: BigDecimal,
-                             bandLimit: BigInt,
-                             apportionedBandLimit: BigInt,
-                             contributionAmount: BigDecimal,
-                             pensionCharge: BigDecimal)
+case class PensionBand(name: PensionBandName,
+                       rate: BigDecimal,
+                       bandLimit: BigInt,
+                       apportionedBandLimit: BigInt,
+                       contributionAmount: BigDecimal,
+                       pensionCharge: BigDecimal)
 
-object PensionBands {
-  implicit val format: OFormat[PensionBands] = Json.format[PensionBands]
+object PensionBand {
+  implicit val format: OFormat[PensionBand] = Json.format[PensionBand]
 }

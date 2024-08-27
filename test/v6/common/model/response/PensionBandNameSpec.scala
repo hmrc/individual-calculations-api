@@ -18,22 +18,24 @@ package v6.common.model.response
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v6.common.model.response.TaxRate._
+import v6.common.model.response.PensionBandName._
 
-class TaxRateSpec extends UnitSpec with EnumJsonSpecSupport {
+class PensionBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  testReads[TaxRate](
-    "BRT" -> `basic-rate`,
-    "IRT" -> `intermediate-rate`,
-    "HRT" -> `higher-rate`,
-    "ART" -> `additional-rate`
+  testReads[PensionBandName](
+    "BRT"  -> `basic-rate`,
+    "IRT"  -> `intermediate-rate`,
+    "HRT"  -> `higher-rate`,
+    "ART"  -> `additional-rate`,
+    "AVRT" -> `advanced-rate`
   )
 
-  testWrites[TaxRate](
+  testWrites[PensionBandName](
     `basic-rate`        -> "basic-rate",
     `intermediate-rate` -> "intermediate-rate",
     `higher-rate`       -> "higher-rate",
-    `additional-rate`   -> "additional-rate"
+    `additional-rate`   -> "additional-rate",
+    `advanced-rate`     -> "advanced-rate"
   )
 
 }
