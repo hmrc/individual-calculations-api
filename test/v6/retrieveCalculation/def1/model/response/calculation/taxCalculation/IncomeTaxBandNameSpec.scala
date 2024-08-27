@@ -31,8 +31,7 @@ class IncomeTaxBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
     "BRT"   -> `basic-rate`,
     "IRT"   -> `intermediate-rate`,
     "HRT"   -> `higher-rate`,
-    "ART"   -> `additional-rate`,
-    "AVRT"  -> `advanced-rate`
+    "ART"   -> `additional-rate`
   )
 
   testWrites[IncomeTaxBandName](
@@ -44,8 +43,7 @@ class IncomeTaxBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
     `basic-rate`                           -> "basic-rate",
     `intermediate-rate`                    -> "intermediate-rate",
     `higher-rate`                          -> "higher-rate",
-    `additional-rate`                      -> "additional-rate",
-    `advanced-rate`                        -> "advanced-rate"
+    `additional-rate`                      -> "additional-rate"
   )
 
 }

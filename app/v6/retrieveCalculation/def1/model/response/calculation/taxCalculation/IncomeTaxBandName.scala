@@ -40,8 +40,6 @@ object IncomeTaxBandName {
 
   case object `additional-rate` extends IncomeTaxBandName
 
-  case object `advanced-rate` extends IncomeTaxBandName
-
   implicit val writes: Writes[IncomeTaxBandName] = Enums.writes[IncomeTaxBandName]
 
   implicit val reads: Reads[IncomeTaxBandName] = Enums.readsUsing {
@@ -54,7 +52,6 @@ object IncomeTaxBandName {
     case "IRT"   => `intermediate-rate`
     case "HRT"   => `higher-rate`
     case "ART"   => `additional-rate`
-    case "AVRT"  => `advanced-rate`
   }
 
 }
