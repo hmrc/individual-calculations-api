@@ -19,18 +19,18 @@ package v6.common.model.response
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
 
-sealed trait TaxRate
+sealed trait PensionBandName
 
-object TaxRate {
-  case object `basic-rate`        extends TaxRate
-  case object `intermediate-rate` extends TaxRate
-  case object `higher-rate`       extends TaxRate
-  case object `additional-rate`   extends TaxRate
-  case object `advanced-rate`     extends TaxRate
+object PensionBandName {
+  case object `basic-rate`        extends PensionBandName
+  case object `intermediate-rate` extends PensionBandName
+  case object `higher-rate`       extends PensionBandName
+  case object `additional-rate`   extends PensionBandName
+  case object `advanced-rate`     extends PensionBandName
 
-  implicit val writes: Writes[TaxRate] = Enums.writes[TaxRate]
+  implicit val writes: Writes[PensionBandName] = Enums.writes[PensionBandName]
 
-  implicit val reads: Reads[TaxRate] = Enums.readsUsing {
+  implicit val reads: Reads[PensionBandName] = Enums.readsUsing {
     case "BRT"  => `basic-rate`
     case "IRT"  => `intermediate-rate`
     case "HRT"  => `higher-rate`

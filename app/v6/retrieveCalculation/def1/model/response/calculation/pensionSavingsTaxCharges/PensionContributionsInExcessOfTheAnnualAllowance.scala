@@ -19,10 +19,10 @@ package v6.retrieveCalculation.def1.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class PensionContributionsInExcessOfTheAnnualAllowance(totalContributions: BigDecimal,
-                                                                 totalPensionCharge: BigDecimal,
-                                                                 annualAllowanceTaxPaid: Option[BigDecimal],
-                                                                 totalPensionChargeDue: BigDecimal,
-                                                                 pensionBands: Option[Seq[PensionBands]])
+                                                            totalPensionCharge: BigDecimal,
+                                                            annualAllowanceTaxPaid: Option[BigDecimal],
+                                                            totalPensionChargeDue: BigDecimal,
+                                                            pensionBands: Option[Seq[PensionBand]])
 
 object PensionContributionsInExcessOfTheAnnualAllowance {
 
