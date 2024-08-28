@@ -34,9 +34,6 @@
       "description": "Breakdown of pension savings tax charges.",
       "type": "object",
       "properties": {
-        "excessOfLifeTimeAllowance": {
-          "$ref": "#/definitions/excessOfLifeTimeAllowance"
-        },
         "pensionSchemeUnauthorisedPayments": {
           "$ref": "#/definitions/pensionSchemeUnauthorisedPayments"
         },
@@ -48,103 +45,6 @@
         },
         "overseasPensionContributions": {
           "$ref": "#/definitions/overseasPensionContributions"
-        }
-      },
-      "additionalProperties": false
-    },
-    "excessOfLifeTimeAllowance": {
-      "description": "Details of chargeable amounts in excess of lifetime allowance.",
-      "type": "object",
-      "properties": {
-        "totalChargeableAmount": {
-          "description": "Total chargeable amount for lump sum benefit taken in excess of lifetime allowance and benefit in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "160.00"
-        },
-        "totalTaxPaid": {
-          "description": "Total tax paid for lump sum benefit taken in excess of lifetime allowance and benefit in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "200.00"
-        },
-        "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-          "$ref": "#/definitions/lumpSumBenefitTakenInExcessOfLifetimeAllowance"
-        },
-        "benefitInExcessOfLifetimeAllowance": {
-          "$ref": "#/definitions/benefitInExcessOfLifetimeAllowance"
-        }
-      },
-      "additionalProperties": false
-    },
-    "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-      "description": "Details of lump sum benefit taken in excess of lifetime allowance.",
-      "type": "object",
-      "properties": {
-        "amount": {
-          "description": "The amount of lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "160.00"
-        },
-        "taxPaid": {
-          "description": "Tax paid on lump sum benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "100.50"
-        },
-        "rate": {
-          "description": "The percentage rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99.99,
-          "example": "20.50"
-        },
-        "chargeableAmount": {
-          "description": "The amount chargeable on the lump sum benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "160.12"
-        }
-      },
-      "additionalProperties": false
-    },
-    "benefitInExcessOfLifetimeAllowance": {
-      "description": "Details of benefits taken in excess of lifetime allowance.",
-      "type": "object",
-      "properties": {
-        "amount": {
-          "description": "The amount of benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "160.00"
-        },
-        "taxPaid": {
-          "type": "number",
-          "description": "Tax paid on benefit taken in excess of the lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "100.50"
-        },
-        "rate": {
-          "description": "The percentage rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99.99,
-          "example": "20.50"
-        },
-        "chargeableAmount": {
-          "description": "The amount chargeable on benefit taken in excess of lifetime allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "example": "160.12"
         }
       },
       "additionalProperties": false
