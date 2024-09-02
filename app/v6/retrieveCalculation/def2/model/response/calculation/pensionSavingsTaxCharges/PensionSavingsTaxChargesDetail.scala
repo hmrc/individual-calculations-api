@@ -19,7 +19,6 @@ package v6.retrieveCalculation.def2.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class PensionSavingsTaxChargesDetail(
-    excessOfLifeTimeAllowance: Option[ExcessOfLifeTimeAllowance],
     pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
     pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
     pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
