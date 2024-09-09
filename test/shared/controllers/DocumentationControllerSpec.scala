@@ -179,7 +179,6 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
       protected val appConfig: AppConfig = mockAppConfig
 
       val definition: Definition = Definition(
-        Nil,
         APIDefinition(
           "test API definition",
           "description",

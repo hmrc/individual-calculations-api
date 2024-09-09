@@ -27,20 +27,6 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
 
   lazy val definition: Definition =
     Definition(
-      scopes = Seq(
-        Scope(
-          key = readScope,
-          name = "View your Self Assessment information",
-          description = "Allow read access to self assessment data",
-          confidenceLevel = confidenceLevel
-        ),
-        Scope(
-          key = writeScope,
-          name = "Change your Self Assessment information",
-          description = "Allow write access to self assessment data",
-          confidenceLevel = confidenceLevel
-        )
-      ),
       api = APIDefinition(
         name = "Individual Calculations (MTD)",
         description = "An API for providing individual calculations data",
