@@ -29,7 +29,7 @@ import scala.util.Try
 
 class DocumentationControllerISpec extends IntegrationBaseSpec {
 
-  private val config          = app.injector.instanceOf[AppConfig]
+  private val config = app.injector.instanceOf[AppConfig]
 
   private lazy val enabledVersions: Seq[Version] =
     (1 to 99).collect {

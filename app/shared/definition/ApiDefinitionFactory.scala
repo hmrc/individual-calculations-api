@@ -20,22 +20,12 @@ import cats.data.Validated.Invalid
 import shared.config.AppConfig
 import shared.routing.Version
 import shared.utils.Logging
-import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 trait ApiDefinitionFactory extends Logging {
-
-  protected val readScope  = "read:self-assessment"
-  protected val writeScope = "write:self-assessment"
 
   protected val mtdCategory = "INCOME_TAX_MTD"
 
   protected val appConfig: AppConfig
-
-  lazy val confidenceLevel: ConfidenceLevel = {
-    val clConfig = appConfig.confidenceLevelConfig
-
-    if (clConfig.definitionEnabled) clConfig.confidenceLevel else ConfidenceLevel.L50
-  }
 
   val definition: Definition
 

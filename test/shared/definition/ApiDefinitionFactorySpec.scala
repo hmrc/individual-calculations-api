@@ -18,12 +18,11 @@ package shared.definition
 
 import cats.implicits.catsSyntaxValidatedId
 import shared.config.Deprecation.NotDeprecated
-import shared.config.{AppConfig, ConfidenceLevelConfig, MockAppConfig}
+import shared.config.{AppConfig, MockAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.mocks.MockHttpClient
 import shared.routing._
 import shared.utils.UnitSpec
-import uk.gov.hmrc.auth.core.ConfidenceLevel
 
 import scala.language.reflectiveCalls
 
@@ -66,24 +65,6 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
         val exceptionMessage: String = exception.getMessage
         exceptionMessage shouldBe "deprecatedOn date is required for a deprecated version"
-      }
-    }
-  }
-
-  "confidenceLevel" when {
-    List(
-      (true, ConfidenceLevel.L250, ConfidenceLevel.L250),
-      (true, ConfidenceLevel.L200, ConfidenceLevel.L200),
-      (false, ConfidenceLevel.L200, ConfidenceLevel.L50)
-    ).foreach { case (definitionEnabled, configCL, expectedDefinitionCL) =>
-      s"confidence-level-check.definition.enabled is $definitionEnabled and confidence-level = $configCL" should {
-        s"return confidence level $expectedDefinitionCL" in new Test {
-          MockedAppConfig.confidenceLevelConfig returns ConfidenceLevelConfig(
-            confidenceLevel = configCL,
-            definitionEnabled = definitionEnabled,
-            authValidationEnabled = true)
-          apiDefinitionFactory.confidenceLevel shouldBe expectedDefinitionCL
-        }
       }
     }
   }
