@@ -37,21 +37,6 @@ trait ApiDefinitionFactory extends Logging {
     if (clConfig.definitionEnabled) clConfig.confidenceLevel else ConfidenceLevel.L50
   }
 
-  lazy protected val scopes: Seq[Scope] = List(
-    Scope(
-      key = readScope,
-      name = "View your Self Assessment information",
-      description = "Allow read access to self assessment data",
-      confidenceLevel = confidenceLevel
-    ),
-    Scope(
-      key = writeScope,
-      name = "Change your Self Assessment information",
-      description = "Allow write access to self assessment data",
-      confidenceLevel = confidenceLevel
-    )
-  )
-
   val definition: Definition
 
   protected def buildAPIStatus(version: Version): APIStatus = {
