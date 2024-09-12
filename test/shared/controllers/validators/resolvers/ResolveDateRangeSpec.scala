@@ -69,7 +69,62 @@ class ResolveDateRangeSpec extends UnitSpec {
         val result = resolveDateRange(validEnd -> validStart)
         result shouldBe Invalid(List(endBeforeStartDateError))
       }
+    }
+  }
 
+  "ResolveDateRange withDatesLimitedTo" should {
+    val minDate            = LocalDate.parse("2000-02-01")
+    val maxDate            = LocalDate.parse("2000-02-10")
+    val resolverWithLimits = resolveDateRange.withDatesLimitedTo(minDate, maxDate)
+
+    "return no errors for dates within limits" in {
+      val result = resolverWithLimits("2000-02-01" -> "2000-02-10")
+      result shouldBe Valid(DateRange(minDate, maxDate))
+    }
+
+    "return an error for dates outside the limits" when {
+      "the start date is too early" in {
+        val result = resolverWithLimits("1999-12-31" -> "2000-02-10")
+        result shouldBe Invalid(List(startDateFormatError))
+      }
+
+      "the end date is too late" in {
+        val result = resolverWithLimits("2000-02-01" -> "2000-02-11")
+        result shouldBe Invalid(List(endDateFormatError))
+      }
+
+      "both start and end dates are outside the limits" in {
+        val result = resolverWithLimits("1999-12-31" -> "2000-02-11")
+        result shouldBe Invalid(List(startDateFormatError, endDateFormatError))
+      }
+    }
+  }
+
+  "ResolveDateRange withYearsLimitedTo" should {
+    val minYear                = 2000
+    val maxYear                = 2010
+    val resolverWithYearLimits = resolveDateRange.withYearsLimitedTo(minYear, maxYear)
+
+    "return no errors for dates within the year limits" in {
+      val result = resolverWithYearLimits("2000-01-01" -> "2010-12-31")
+      result shouldBe Valid(DateRange(LocalDate.parse("2000-01-01"), LocalDate.parse("2010-12-31")))
+    }
+
+    "return an error for dates outside the year limits" when {
+      "the start date is before the minimum year" in {
+        val result = resolverWithYearLimits("1999-12-31" -> "2010-12-31")
+        result shouldBe Invalid(List(startDateFormatError))
+      }
+
+      "the end date is after the maximum year" in {
+        val result = resolverWithYearLimits("2000-01-01" -> "2011-01-01")
+        result shouldBe Invalid(List(endDateFormatError))
+      }
+
+      "both start and end dates are outside the year limits" in {
+        val result = resolverWithYearLimits("1999-12-31" -> "2011-01-01")
+        result shouldBe Invalid(List(startDateFormatError, endDateFormatError))
+      }
     }
   }
 

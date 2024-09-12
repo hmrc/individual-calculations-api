@@ -85,14 +85,14 @@ case class ResolveTaxYearMaximum(maximumTaxYear: TaxYear) extends ResolverSuppor
 
 }
 
-case class ResolveTaxYearMinMax(minMax: (TaxYear, TaxYear), error: MtdError = RuleTaxYearNotSupportedError) extends ResolverSupport {
+case class ResolveTaxYearMinMax(minMax: (TaxYear, TaxYear), minError: MtdError, maxError: MtdError) extends ResolverSupport {
 
   private val (minimumTaxYear, maximumTaxYear) = minMax
 
   val resolver: Resolver[String, TaxYear] =
     ResolveTaxYear.resolver thenValidate
-      satisfiesMin(minimumTaxYear, error) thenValidate
-      satisfiesMax(maximumTaxYear, error)
+      satisfiesMin(minimumTaxYear, minError) thenValidate
+      satisfiesMax(maximumTaxYear, maxError)
 
   def apply(value: String): Validated[Seq[MtdError], TaxYear] = resolver(value)
 
@@ -101,6 +101,18 @@ case class ResolveTaxYearMinMax(minMax: (TaxYear, TaxYear), error: MtdError = Ru
       case Some(value) => resolver(value).map(Some(_))
       case None        => Valid(None)
     }
+
+}
+
+object ResolveTaxYearMinMax {
+
+  def apply(minMax: (TaxYear, TaxYear), error: MtdError): ResolveTaxYearMinMax = {
+    ResolveTaxYearMinMax(minMax, error, error)
+  }
+
+  def apply(minMax: (TaxYear, TaxYear)): ResolveTaxYearMinMax = {
+    ResolveTaxYearMinMax(minMax, RuleTaxYearNotSupportedError, RuleTaxYearNotSupportedError)
+  }
 
 }
 

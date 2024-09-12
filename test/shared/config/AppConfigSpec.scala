@@ -50,10 +50,6 @@ class AppConfigSpec extends UnitSpec {
           "Des-Content-Type"
         ))
 
-      simpleAppConfig.desBaseUrl shouldBe "http://127.0.0.1:6666"
-      simpleAppConfig.desEnv shouldBe "Prod"
-      simpleAppConfig.desToken shouldBe "DES-ABCD1234"
-      simpleAppConfig.desEnvironmentHeaders shouldBe expectedDesEnvHeaders
       simpleAppConfig.desDownstreamConfig shouldBe DownstreamConfig(
         "http://127.0.0.1:6666",
         "Prod",
@@ -70,11 +66,6 @@ class AppConfigSpec extends UnitSpec {
           "IFS-Content-Type"
         ))
 
-      simpleAppConfig.ifsEnabled shouldBe true
-      simpleAppConfig.ifsBaseUrl shouldBe "http://127.0.0.1:7777"
-      simpleAppConfig.ifsEnv shouldBe "Prod"
-      simpleAppConfig.ifsToken shouldBe "IFS-ABCD1234"
-      simpleAppConfig.ifsEnvironmentHeaders shouldBe expectedIfsEnvHeaders
       simpleAppConfig.ifsDownstreamConfig shouldBe DownstreamConfig(
         "http://127.0.0.1:7777",
         "Prod",
@@ -91,10 +82,6 @@ class AppConfigSpec extends UnitSpec {
           "TYS-IFS-Content-Type"
         ))
 
-      simpleAppConfig.tysIfsBaseUrl shouldBe "http://127.0.0.1:8888"
-      simpleAppConfig.tysIfsEnv shouldBe "Prod"
-      simpleAppConfig.tysIfsToken shouldBe "TYS-IFS-ABCD1234"
-      simpleAppConfig.tysIfsEnvironmentHeaders shouldBe expectedTysIfsEnvHeaders
       simpleAppConfig.tysIfsDownstreamConfig shouldBe DownstreamConfig(
         "http://127.0.0.1:8888",
         "Prod",

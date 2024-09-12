@@ -69,7 +69,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       behave like authorisedIndividual(authValidationEnabled, initialPredicate)
       behave like authorisedOrganisation(authValidationEnabled, initialPredicate)
 
-      behave like authorisedAgentsMissingArn(authValidationEnabled, initialPredicate)
+      behave like authorisedAgentsMissingArn(authValidationEnabled, initialPredicate, primaryAgentPredicate)
       behave like authorisedPrimaryAgent(authValidationEnabled, initialPredicate, primaryAgentPredicate)
       behave like authorisedSupportingAgent(authValidationEnabled, initialPredicate, primaryAgentPredicate, supportingAgentPredicate)
 
@@ -108,26 +108,39 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         result shouldBe Right(UserDetails("", "Organisation", None))
       }
 
-    def authorisedAgentsMissingArn(authValidationEnabled: Boolean, initialPredicate: Predicate): Unit = {
+    def authorisedAgentsMissingArn(
+        authValidationEnabled: Boolean,
+        initialPredicate: Predicate,
+        primaryAgentPredicate: Predicate
+    ): Unit =
       "disallow agents that are missing an ARN" in new Test {
-        val retrievalsResult = new ~(
-          Some(Agent),
-          Enrolments(
-            Set(Enrolment("HMRC-AS-AGENT", List(EnrolmentIdentifier("SomeOtherIdentifier", "123567890")), "Active"))
-          )
+        val arn = "123567890"
+        val enrolments: Enrolments = Enrolments(
+          Set(
+            Enrolment(
+              "HMRC-AS-AGENT",
+              List(EnrolmentIdentifier("NOAgentReferenceNumber", arn)),
+              "Active"
+            ))
         )
 
-        mockConfidenceLevelCheckConfig(authValidationEnabled = authValidationEnabled)
+        val initialRetrievalsResult = new ~(Some(Agent), enrolments)
 
         MockedAuthConnector
           .authorised(initialPredicate, affinityGroup and authorisedEnrolments)
           .once()
-          .returns(Future.successful(retrievalsResult))
+          .returns(Future.successful(initialRetrievalsResult))
+
+        MockedAuthConnector
+          .authorised(primaryAgentPredicate, EmptyRetrieval)
+          .once()
+          .returns(Future.successful(EmptyRetrieval))
+
+        mockConfidenceLevelCheckConfig(authValidationEnabled = authValidationEnabled)
 
         val result: AuthOutcome = await(enrolmentsAuthService.authorised(mtdId))
         result shouldBe Left(InternalError)
       }
-    }
 
     def authorisedPrimaryAgent(
         authValidationEnabled: Boolean,
