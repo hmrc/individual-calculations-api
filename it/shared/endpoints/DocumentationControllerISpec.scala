@@ -33,7 +33,7 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
 
   private lazy val enabledVersions: Seq[Version] =
     (1 to 99).collect {
-      case num if config.safeEndpointsEnabled(s"$num.0") =>
+      case num if config.safeEndpointsEnaled(s"$num.0") =>
         Versions.getFrom(s"$num.0").toOption
     }.flatten
 
