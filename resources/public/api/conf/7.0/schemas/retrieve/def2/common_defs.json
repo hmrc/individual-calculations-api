@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "dataSource": {
+      "description": "The source of the data.",
+      "type": "string",
+      "enum": [
+        "customer",
+        "HMRC HELD"
+      ]
+    },
+    "businessIncomeSourceType": {
+      "description": "The income source type.",
+      "type": "string",
+      "enum": [
+        "self-employment",
+        "uk-property-non-fhl",
+        "uk-property-fhl",
+        "foreign-property",
+        "foreign-property-fhl-eea"
+      ]
+    },
+    "claimType": {
+      "description": "The type of claim made.",
+      "type": "string",
+      "enum": [
+        "carry-forward",
+        "carry-sideways",
+        "carry-forward-to-carry-sideways",
+        "carry-sideways-fhl",
+        "carry-backwards",
+        "carry-backwards-general-income"
+      ]
+    },
+    "lossType": {
+      "description": "The type of loss.",
+      "type": "string",
+      "enum": [
+        "income",
+        "class4nics"
+      ]
+    },
+    "studentLoanPlanType": {
+      "description": "Student Loan plan type.",
+      "type": "string",
+      "enum": [
+        "plan1",
+        "plan2",
+        "postgraduate",
+        "plan4"
+      ]
+    }
+  }
+}
