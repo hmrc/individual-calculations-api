@@ -1,10 +1,10 @@
 This API enables you to:
 
-* trigger a customer’s self assessment tax calculation
+* trigger a customer’s Self Assessment tax calculation
 * control whether the calculation is to be used for a final declaration using a query parameter
-* list a customer’s self assessment tax calculations for a tax year
-* retrieve a customer’s self assessment tax calculation result
-* submit a self assessment final declaration for a tax year
+* list a customer’s Self Assessment tax calculations for a tax year
+* retrieve a customer’s Self Assessment tax calculation result
+* submit a Self Assessment final declaration for a tax year
 
 In versions prior to version 3.0, the term ‘crystallise’ was used to mean submit a final declaration, and the term ‘intent to crystallise’ 
 was used to mean trigger a final declaration self-assessment tax calculation.
