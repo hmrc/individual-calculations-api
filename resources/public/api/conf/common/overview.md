@@ -7,7 +7,7 @@ This API enables you to:
 * submit a Self Assessment final declaration for a tax year
 
 In versions prior to version 3.0, the term ‘crystallise’ was used to mean submit a final declaration, and the term ‘intent to crystallise’ 
-was used to mean trigger a final declaration self-assessment tax calculation.
+was used to mean trigger a final declaration Self Assessment tax calculation.
 
 For information on how to connect to this API [see the Income Tax MTD end-to-end service guide](https://developer.service.hmrc.gov.uk/guides/income-tax-mtd-end-to-end-service-guide/).
 
