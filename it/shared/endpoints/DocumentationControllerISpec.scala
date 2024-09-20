@@ -29,8 +29,7 @@ import scala.util.Try
 
 class DocumentationControllerISpec extends IntegrationBaseSpec {
 
-  private val config          = app.injector.instanceOf[AppConfig]
-  private val confidenceLevel = config.confidenceLevelConfig.confidenceLevel
+  private val config = app.injector.instanceOf[AppConfig]
 
   private lazy val enabledVersions: Seq[Version] =
     (1 to 99).collect {
@@ -47,7 +46,6 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
 
       responseBody should include(""""api":{"name":""")
       responseBody should include(""""categories":["INCOME_TAX_MTD"]""")
-      responseBody should include(s""""confidenceLevel":$confidenceLevel""")
 
       noException should be thrownBy Json.parse(responseBody)
     }
