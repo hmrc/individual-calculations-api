@@ -6,7 +6,7 @@
     "requestedTimestamp": "2019-02-15T09:35:15.000Z",
     "calculationReason": "customerRequest",
     "calculationTimestamp": "2019-02-15T09:35:15.094Z",
-    "calculationType": "finalDeclaration",
+    "calculationType": "final-declaration",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
     "finalDeclarationTimestamp": "2019-02-15T09:35:15.094Z",

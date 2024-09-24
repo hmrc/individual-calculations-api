@@ -43,7 +43,7 @@ class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with D
       setupStubs()
       buildRequest(s"/$nino/self-assessment/$taxYear/$calculationId")
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.6.0+json"),
+          (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }

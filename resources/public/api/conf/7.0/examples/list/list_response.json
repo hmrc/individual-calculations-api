@@ -14,7 +14,7 @@
     {
       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       "calculationTimestamp": "2021-06-22T08:53:44.122Z",
-      "calculationType": "inYear",
+      "calculationType": "in-year",
       "requestedBy": "customer",
       "taxYear": "2021-22",
       "totalIncomeTaxAndNicsDue": 10000.12,

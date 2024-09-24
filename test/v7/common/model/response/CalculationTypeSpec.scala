@@ -23,13 +23,13 @@ import v7.common.model.response.CalculationType._
 class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[CalculationType](
-    "inYear"          -> `inYear`,
-    "crystallisation" -> `finalDeclaration`
+    "in-year"          -> `in-year`,
+    "crystallisation" -> `final-declaration`
   )
 
   testWrites[CalculationType](
-    `inYear`           -> "inYear",
-    `finalDeclaration` -> "finalDeclaration"
+    `in-year`           -> "in-year",
+    `final-declaration` -> "final-declaration"
   )
 
 }

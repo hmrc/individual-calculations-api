@@ -48,7 +48,7 @@ trait Def1_ListCalculationsFixture {
                                                       |      {
                                                       |         "calculationId":"c432a56d-e811-474c-a26a-76fc3bcaefe5",
                                                       |         "calculationTimestamp":"2021-07-12T07:51:43.112Z",
-                                                      |         "calculationType":"finalDeclaration",
+                                                      |         "calculationType":"final-declaration",
                                                       |         "requestedBy":"customer",
                                                       |         "taxYear":"2020-21",
                                                       |         "totalIncomeTaxAndNicsDue":10000.12,
@@ -63,7 +63,7 @@ trait Def1_ListCalculationsFixture {
   val calculationModel: Def1_Calculation = Def1_Calculation(
     calculationId = "c432a56d-e811-474c-a26a-76fc3bcaefe5",
     calculationTimestamp = "2021-07-12T07:51:43.112Z",
-    calculationType = CalculationType.`finalDeclaration`,
+    calculationType = CalculationType.`final-declaration`,
     requestedBy = Some("customer"),
     taxYear = Some(TaxYear.fromDownstreamInt(2021)),
     totalIncomeTaxAndNicsDue = Some(10000.12),

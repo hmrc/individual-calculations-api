@@ -42,7 +42,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.6.0+json"),
+          (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
@@ -57,7 +57,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |    "taxYear": 2017,
          |    "requestedBy": "",
          |    "calculationReason": "",
-         |    "calculationType": "inYear",
+         |    "calculationType": "in-year",
          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
          |    "periodFrom": "",
          |    "periodTo": ""
@@ -92,7 +92,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |    "taxYear": "2016-17",
          |    "requestedBy": "",
          |    "calculationReason": "",
-         |    "calculationType": "inYear",
+         |    "calculationType": "in-year",
          |    "intentToSubmitFinalDeclaration": $canBeFinalised,
          |    "finalDeclaration": false,
          |    "periodFrom": "",

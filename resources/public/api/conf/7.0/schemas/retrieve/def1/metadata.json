@@ -98,7 +98,7 @@
         "description": "The type of calculation performed.",
         "type": "string",
         "oneOf": [
-          {"enum":  ["inYear"], "description": "Cannot be used for a final declaration."},
+          {"enum":  ["in-year"], "description": "Cannot be used for a final declaration."},
           {"enum":  ["finalDeclaration"], "description": "Can be used when submitting a final declaration."}
         ]
       },

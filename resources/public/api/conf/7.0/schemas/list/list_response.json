@@ -25,7 +25,7 @@
             "description": "The type of calculation performed.",
             "type": "string",
             "enum": [
-              "inYear",
+              "in-year",
               "finalDeclaration"
             ]
           },

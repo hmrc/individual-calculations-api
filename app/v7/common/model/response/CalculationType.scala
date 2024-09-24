@@ -23,14 +23,14 @@ sealed trait CalculationType
 
 object CalculationType {
 
-  case object `inYear`           extends CalculationType
-  case object `finalDeclaration` extends CalculationType
+  case object `in-year`           extends CalculationType
+  case object `final-declaration` extends CalculationType
 
   implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
 
   implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
-    case "inYear"          => `inYear`
-    case "crystallisation" => `finalDeclaration`
+    case "in-year"          => `in-year`
+    case "crystallisation" => `final-declaration`
   }
 
 }
