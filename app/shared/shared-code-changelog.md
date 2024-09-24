@@ -7,10 +7,14 @@ For the Shared Code update steps, see: https://confluence.tools.tax.service.gov.
 
 Place new items at the top, and auto-format the file...
 
+## September 17 2024:  ResolveTaxYearMinimum
+
+Added an apply function on ResolveTaxYearMinimum to allow adding custom errors. Required in individual-losses-api.
+
 ## August 29 2024:  Increased code coverage
 
-Increased the coverage for ResolveTaxYearMinMax and ResolveDateRange so that introducing the shared code into other APIs won't
-reduce their coverage % quite so much.
+Increased the coverage for ResolveTaxYearMinMax and ResolveDateRange so that introducing the shared code into other APIs
+won't reduce their coverage % quite so much.
 
 ## Aug 21 2024: Re-engineer BaseDownstreamConnector and DownstreamUri for HIP support
 

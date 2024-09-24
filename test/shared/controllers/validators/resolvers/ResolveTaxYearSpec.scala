@@ -69,7 +69,7 @@ class ResolveTaxYearSpec extends UnitSpec with ResolverSupport {
     }
   }
 
-  "ResolveTaxYearMinimum" should {
+  "ResolveTaxYearMinimum using the default errors" should {
     val minimumTaxYear = TaxYear.fromMtd("2021-22")
     val resolver       = ResolveTaxYearMinimum(minimumTaxYear)
 
@@ -99,6 +99,45 @@ class ResolveTaxYearSpec extends UnitSpec with ResolverSupport {
       "when the tax year is before the minimum tax year" in {
         val result: Validated[Seq[MtdError], TaxYear] = resolver("2020-21")
         result shouldBe Invalid(List(RuleTaxYearNotSupportedError))
+      }
+    }
+  }
+
+  "ResolveTaxYearMinimum using custom errors" should {
+    val minimumTaxYear = TaxYear.fromMtd("2021-22")
+
+    val notSupportedError = NotFoundError.withPath("/notSupported")
+    val formatError       = NinoFormatError.withPath("/formatError")
+    val rangeError        = BadRequestError.withPath("/rangeError")
+
+    val resolver = ResolveTaxYearMinimum(
+      minimumTaxYear,
+      notSupportedError = notSupportedError,
+      formatError = formatError,
+      rangeError = rangeError
+    )
+
+    "return no errors" when {
+      "given the minimum allowed tax year" in {
+        val result: Validated[Seq[MtdError], TaxYear] = resolver("2021-22")
+        result shouldBe Valid(minimumTaxYear)
+      }
+    }
+
+    "return the custom error" when {
+      "given a tax year before the minimum tax year" in {
+        val result: Validated[Seq[MtdError], TaxYear] = resolver("2020-21")
+        result shouldBe Invalid(List(notSupportedError))
+      }
+
+      "given a badly formatted tax year" in {
+        val result: Validated[Seq[MtdError], TaxYear] = resolver("not-a-tax-year")
+        result shouldBe Invalid(List(formatError))
+      }
+
+      "given a tax year with an invalid range" in {
+        val result: Validated[Seq[MtdError], TaxYear] = resolver("2024-26")
+        result shouldBe Invalid(List(rangeError))
       }
     }
   }
