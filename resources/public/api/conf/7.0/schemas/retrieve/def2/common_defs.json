@@ -37,7 +37,7 @@
       "type": "string",
       "enum": [
         "income",
-        "class4nics"
+        "class4-nics"
       ]
     },
     "studentLoanPlanType": {

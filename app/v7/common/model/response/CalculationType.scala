@@ -29,7 +29,7 @@ object CalculationType {
   implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
 
   implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
-    case "in-year"          => `in-year`
+    case "inYear"          => `in-year`
     case "crystallisation" => `final-declaration`
   }
 

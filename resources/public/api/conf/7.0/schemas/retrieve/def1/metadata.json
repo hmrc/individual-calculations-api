@@ -43,31 +43,31 @@
             "enum": [
               "class2NICEvent"
             ],
-            "description": "The calculation was triggered internally by HMRC once the actual Class 2 NIC amount became available. This event is only applicable for an in-year \"finalDeclaration\" calculation type."
+            "description": "The calculation was triggered internally by HMRC once the actual Class 2 NIC amount became available. This event is only applicable for an in-year \"final-declaration\" calculation type."
           },
           {
             "enum": [
               "newLossEvent"
             ],
-            "description": "The calculation was triggered by HMRC on receipt of a new pre-MTD brought forward loss made by the customer. This event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
+            "description": "The calculation was triggered by HMRC on receipt of a new pre-MTD brought forward loss made by the customer. This event is only applicable for a \"final-declaration\" calculation type. This event is not currently supported and will be supported in the future."
           },
           {
             "enum": [
               "newClaimEvent"
             ],
-            "description": "The calculation was triggered by HMRC on receipt of a new loss claim made by the customer. This event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
+            "description": "The calculation was triggered by HMRC on receipt of a new loss claim made by the customer. This event is only applicable for a \"final-declaration\" calculation type. This event is not currently supported and will be supported in the future."
           },
           {
             "enum": [
               "updatedClaimEvent"
             ],
-            "description": "The calculation was triggered internally by HMRC on receipt of an updated loss claim made by the customer. This event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
+            "description": "The calculation was triggered internally by HMRC on receipt of an updated loss claim made by the customer. This event is only applicable for a \"final-declaration\" calculation type. This event is not currently supported and will be supported in the future."
           },
           {
             "enum": [
               "updatedLossEvent"
             ],
-            "description": "The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer. This event is only applicable for a \"finalDeclaration\" calculation type. This event is not currently supported and will be supported in the future."
+            "description": "The calculation was triggered internally by HMRC on receipt of an updated pre-MTD brought forward loss made by the customer. This event is only applicable for a \"final-declaration\" calculation type. This event is not currently supported and will be supported in the future."
           },
           {
             "enum": [
@@ -99,7 +99,7 @@
         "type": "string",
         "oneOf": [
           {"enum":  ["in-year"], "description": "Cannot be used for a final declaration."},
-          {"enum":  ["finalDeclaration"], "description": "Can be used when submitting a final declaration."}
+          {"enum":  ["final-declaration"], "description": "Can be used when submitting a final declaration."}
         ]
       },
       "intentToSubmitFinalDeclaration": {

@@ -3,7 +3,7 @@
     {
       "calculationId": "c432a56d-e811-474c-a26a-76fc3bcaefe5",
       "calculationTimestamp": "2021-07-12T07:51:43.112Z",
-      "calculationType": "finalDeclaration",
+      "calculationType": "final-declaration",
       "requestedBy": "customer",
       "taxYear": "2021-22",
       "totalIncomeTaxAndNicsDue": 10000.12,

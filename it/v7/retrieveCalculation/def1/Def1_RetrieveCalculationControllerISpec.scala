@@ -57,7 +57,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |    "taxYear": 2017,
          |    "requestedBy": "",
          |    "calculationReason": "",
-         |    "calculationType": "in-year",
+         |    "calculationType": "inYear",
          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
          |    "periodFrom": "",
          |    "periodTo": ""
