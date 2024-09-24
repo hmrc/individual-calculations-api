@@ -737,7 +737,7 @@
       },
       "otherDividends": [
         {
-          "typeOfDividend": "stockDividend",
+          "typeOfDividend": "stock-dividend",
           "customerReference": "ODPDLY235A",
           "grossAmount": 5000.99
         }

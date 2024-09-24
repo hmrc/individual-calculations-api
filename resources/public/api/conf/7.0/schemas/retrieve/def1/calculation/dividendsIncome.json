@@ -53,10 +53,10 @@
             "description": "Type of dividend.",
             "type": "string",
             "enum": [
-              "stockDividend",
-              "redeemableShares",
-              "bonusIssuesOfSecurities",
-              "closeCompanyLoansWrittenOff"
+              "stock-dividend",
+              "redeemable-shares",
+              "bonus-issues-of-securities",
+              "close-company-loans-written-off"
             ]
           },
           "customerReference": {

@@ -31,7 +31,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
   )
 
   val otherModel: OtherDividends = OtherDividends(
-    Some("stockDividend"),
+    Some("stock-dividend"),
     Some("string"),
     Some(5000.99)
   )
@@ -68,7 +68,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
       |   },
       |   "otherDividends":[
       |      {
-      |         "typeOfDividend":"stockDividend",
+      |         "typeOfDividend":"stock-dividend",
       |         "customerReference":"string",
       |         "grossAmount":5000.99
       |      }
@@ -111,7 +111,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
       |   },
       |   "otherDividends":[
       |      {
-      |         "typeOfDividend":"stockDividend",
+      |         "typeOfDividend":"stock-dividend",
       |         "customerReference":"string",
       |         "grossAmount":5000.99
       |      }
