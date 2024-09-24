@@ -38,6 +38,16 @@ object ResolveTaxYear extends ResolverSupport {
     case _ => Invalid(List(TaxYearFormatError))
   }
 
+  def resolverWithCustomErrors(formatError: MtdError, rangeError: MtdError): Resolver[String, TaxYear] = {
+    case value @ taxYearFormat(start, end) =>
+      if (end.toInt - start.toInt == 1)
+        Valid(TaxYear.fromMtd(value))
+      else
+        Invalid(List(rangeError))
+
+    case _ => Invalid(List(formatError))
+  }
+
   def apply(value: String): Validated[Seq[MtdError], TaxYear] = resolver(value)
 
   def apply(value: Option[String]): Validated[Seq[MtdError], Option[TaxYear]] =
@@ -55,10 +65,15 @@ object ResolveTaxYear extends ResolverSupport {
 
 }
 
-case class ResolveTaxYearMinimum(minimumTaxYear: TaxYear, error: MtdError = RuleTaxYearNotSupportedError) extends ResolverSupport {
+case class ResolveTaxYearMinimum(
+    minimumTaxYear: TaxYear,
+    notSupportedError: MtdError = RuleTaxYearNotSupportedError,
+    formatError: MtdError = TaxYearFormatError,
+    rangeError: MtdError = RuleTaxYearRangeInvalidError
+) extends ResolverSupport {
 
   val resolver: Resolver[String, TaxYear] =
-    ResolveTaxYear.resolver thenValidate satisfiesMin(minimumTaxYear, error)
+    ResolveTaxYear.resolverWithCustomErrors(formatError, rangeError) thenValidate satisfiesMin(minimumTaxYear, notSupportedError)
 
   def apply(value: String): Validated[Seq[MtdError], TaxYear] = resolver(value)
 
