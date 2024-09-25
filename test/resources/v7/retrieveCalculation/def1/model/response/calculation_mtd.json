@@ -657,7 +657,7 @@
       "totalGainsWithTaxPaid": 12500,
       "gainsWithTaxPaidDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "string",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
@@ -667,7 +667,7 @@
       "totalGainsWithNoTaxPaidAndVoidedIsa": 12500,
       "gainsWithNoTaxPaidAndVoidedIsaDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "string",
           "gainAmount": 5000.99,
           "yearsHeld": 0,

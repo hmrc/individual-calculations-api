@@ -17,13 +17,14 @@
 package v7.retrieveCalculation.def1.model.response.calculation.chargeableEventGainsIncome
 
 import play.api.libs.json.{Format, Json}
+import v7.common.model.response.ChargeableEventGainsIncomeType
 
-case class GainsWithNoTaxPaidAndVoidedIsaDetail(`type`: String,
-                                                     customerReference: Option[String],
-                                                     gainAmount: Option[BigDecimal],
-                                                     yearsHeld: Option[BigInt],
-                                                     yearsHeldSinceLastGain: Option[BigInt],
-                                                     voidedIsaTaxPaid: Option[BigDecimal])
+case class GainsWithNoTaxPaidAndVoidedIsaDetail(`type`: ChargeableEventGainsIncomeType,
+                                                customerReference: Option[String],
+                                                gainAmount: Option[BigDecimal],
+                                                yearsHeld: Option[BigInt],
+                                                yearsHeldSinceLastGain: Option[BigInt],
+                                                voidedIsaTaxPaid: Option[BigDecimal])
 
 object GainsWithNoTaxPaidAndVoidedIsaDetail {
   implicit val format: Format[GainsWithNoTaxPaidAndVoidedIsaDetail] = Json.format[GainsWithNoTaxPaidAndVoidedIsaDetail]
