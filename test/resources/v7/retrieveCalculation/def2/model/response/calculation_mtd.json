@@ -212,7 +212,7 @@
               "name": "string",
               "socialEnterpriseName": "string",
               "companyName": "string",
-              "deficiencyReliefType": "lifeInsurance",
+              "deficiencyReliefType": "life-insurance",
               "customerReference": "string"
             }
           ]
