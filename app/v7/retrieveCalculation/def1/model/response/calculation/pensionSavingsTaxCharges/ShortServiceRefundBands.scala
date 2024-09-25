@@ -17,13 +17,14 @@
 package v7.retrieveCalculation.def1.model.response.calculation.pensionSavingsTaxCharges
 
 import play.api.libs.json.{Json, OFormat}
+import v7.common.model.response.ShortServiceRefundBandsName
 
-case class ShortServiceRefundBands(name: String,
-                                        rate: BigDecimal,
-                                        bandLimit: BigInt,
-                                        apportionedBandLimit: BigInt,
-                                        shortServiceRefundAmount: BigDecimal,
-                                        shortServiceRefundCharge: BigDecimal)
+case class ShortServiceRefundBands(name: ShortServiceRefundBandsName,
+                                   rate: BigDecimal,
+                                   bandLimit: BigInt,
+                                   apportionedBandLimit: BigInt,
+                                   shortServiceRefundAmount: BigDecimal,
+                                   shortServiceRefundCharge: BigDecimal)
 
 object ShortServiceRefundBands {
   implicit val format: OFormat[ShortServiceRefundBands] = Json.format[ShortServiceRefundBands]

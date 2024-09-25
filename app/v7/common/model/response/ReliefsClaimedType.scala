@@ -22,28 +22,28 @@ import play.api.libs.json.{Reads, Writes}
 sealed trait ReliefsClaimedType
 
 object ReliefsClaimedType {
-  case object vctSubscriptions                                      extends ReliefsClaimedType
-  case object eisSubscriptions                                      extends ReliefsClaimedType
-  case object communityInvestment                                   extends ReliefsClaimedType
-  case object seedEnterpriseInvestment                              extends ReliefsClaimedType
-  case object socialEnterpriseInvestment                            extends ReliefsClaimedType
-  case object maintenancePayments                                   extends ReliefsClaimedType
-  case object deficiencyRelief                                      extends ReliefsClaimedType
-  case object nonDeductibleLoanInterest                             extends ReliefsClaimedType
-  case object qualifyingDistributionRedemptionOfSharesAndSecurities extends ReliefsClaimedType
+  case object `vct-subscriptions`                                           extends ReliefsClaimedType
+  case object `eis-subscriptions`                                           extends ReliefsClaimedType
+  case object `community-investment`                                        extends ReliefsClaimedType
+  case object `seed-enterprise-investment`                                  extends ReliefsClaimedType
+  case object `social-enterprise-investment`                                extends ReliefsClaimedType
+  case object `maintenance-payments`                                        extends ReliefsClaimedType
+  case object `deficiency-relief`                                           extends ReliefsClaimedType
+  case object `non-deductible-loan-interest`                                extends ReliefsClaimedType
+  case object `qualifying-distribution-redemption-of-shares-and-securities` extends ReliefsClaimedType
 
   implicit val writes: Writes[ReliefsClaimedType] = Enums.writes[ReliefsClaimedType]
 
   implicit val reads: Reads[ReliefsClaimedType] = Enums.readsUsing {
-    case "vctSubscriptions"                                      => vctSubscriptions
-    case "eisSubscriptions"                                      => eisSubscriptions
-    case "communityInvestment"                                   => communityInvestment
-    case "seedEnterpriseInvestment"                              => seedEnterpriseInvestment
-    case "socialEnterpriseInvestment"                            => socialEnterpriseInvestment
-    case "maintenancePayments"                                   => maintenancePayments
-    case "deficiencyRelief"                                      => deficiencyRelief
-    case "nonDeductableLoanInterest"                             => nonDeductibleLoanInterest
-    case "qualifyingDistributionRedemptionOfSharesAndSecurities" => qualifyingDistributionRedemptionOfSharesAndSecurities
+    case "vctSubscriptions"                                      => `vct-subscriptions`
+    case "eisSubscriptions"                                      => `eis-subscriptions`
+    case "communityInvestment"                                   => `community-investment`
+    case "seedEnterpriseInvestment"                              => `seed-enterprise-investment`
+    case "socialEnterpriseInvestment"                            => `social-enterprise-investment`
+    case "maintenancePayments"                                   => `maintenance-payments`
+    case "deficiencyRelief"                                      => `deficiency-relief`
+    case "nonDeductableLoanInterest"                             => `non-deductible-loan-interest`
+    case "qualifyingDistributionRedemptionOfSharesAndSecurities" => `qualifying-distribution-redemption-of-shares-and-securities`
   }
 
 }

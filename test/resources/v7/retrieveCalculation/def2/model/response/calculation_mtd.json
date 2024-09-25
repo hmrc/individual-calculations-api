@@ -200,7 +200,7 @@
       },
       "reliefsClaimed": [
         {
-          "type": "vctSubscriptions",
+          "type": "vct-subscriptions",
           "amountClaimed": 5000.99,
           "allowableAmount": 5000.99,
           "amountUsed": 5000.99,
@@ -333,7 +333,7 @@
           "totalShortServiceRefundChargeDue": 5000.99,
           "shortServiceRefundBands": [
             {
-              "name": "lowerBand",
+              "name": "lower-band",
               "rate": 20.01,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,

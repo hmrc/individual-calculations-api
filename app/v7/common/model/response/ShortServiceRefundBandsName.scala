@@ -19,18 +19,17 @@ package v7.common.model.response
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
 
-sealed trait Source
+sealed trait ShortServiceRefundBandsName
 
-object Source {
+object ShortServiceRefundBandsName {
+  case object `lower-band` extends ShortServiceRefundBandsName
+  case object `upper-band` extends ShortServiceRefundBandsName
 
-  case object `customer`  extends Source
-  case object `hmrc-held` extends Source
+  implicit val writes: Writes[ShortServiceRefundBandsName] = Enums.writes[ShortServiceRefundBandsName]
 
-  implicit val writes: Writes[Source] = Enums.writes[Source]
-
-  implicit val reads: Reads[Source] = Enums.readsUsing[Source] {
-    case "customer" => `customer`
-    case "HMRC HELD" => `hmrc-held`
+  implicit val reads: Reads[ShortServiceRefundBandsName] = Enums.readsUsing {
+    case "lowerBand"  => `lower-band`
+    case "upperBand"  => `upper-band`
   }
 
 }

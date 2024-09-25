@@ -6,7 +6,7 @@
       "type": "string",
       "enum": [
         "customer",
-        "HMRC HELD"
+        "hmrc-held"
       ]
     },
     "businessIncomeSourceType": {

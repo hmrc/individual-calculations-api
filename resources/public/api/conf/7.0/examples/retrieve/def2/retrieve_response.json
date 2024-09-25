@@ -215,7 +215,7 @@
               "name": "VCT fund",
               "socialEnterpriseName": "SE Inc",
               "companyName": "Company Ltd.",
-              "deficiencyReliefType": "lifeInsurance",
+              "deficiencyReliefType": "life-insurance",
               "customerReference": "INPOLY123A"
             }
           ]
@@ -345,7 +345,7 @@
           "totalShortServiceRefundChargeDue": 5000.99,
           "shortServiceRefundBands": [
             {
-              "name": "lowerBand",
+              "name": "lower-band",
               "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
@@ -653,7 +653,7 @@
       "totalGainsWithTaxPaid": 12500,
       "gainsWithTaxPaidDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "string",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
@@ -663,7 +663,7 @@
       "totalGainsWithNoTaxPaidAndVoidedIsa": 12500,
       "gainsWithNoTaxPaidAndVoidedIsaDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "INPOLY123B",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
