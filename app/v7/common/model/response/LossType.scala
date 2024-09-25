@@ -22,14 +22,14 @@ import play.api.libs.json.{Reads, Writes}
 sealed trait LossType
 
 object LossType {
-  case object `income`  extends LossType
+  case object `income`      extends LossType
   case object `class4-nics` extends LossType
 
   implicit val writes: Writes[LossType] = Enums.writes[LossType]
 
   implicit val reads: Reads[LossType] = Enums.readsUsing {
-    case "income"       => `income`
-    case "class4nics"   => `class4-nics`
+    case "income"      => `income`
+    case "class4nics"  => `class4-nics`
   }
 
 }

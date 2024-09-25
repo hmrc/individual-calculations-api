@@ -714,7 +714,7 @@
       },
       "otherDividends": [
         {
-          "typeOfDividend": "stock-dividend",
+          "typeOfDividend": "stockDividend",
           "customerReference": "string",
           "grossAmount": 5000.99
         }

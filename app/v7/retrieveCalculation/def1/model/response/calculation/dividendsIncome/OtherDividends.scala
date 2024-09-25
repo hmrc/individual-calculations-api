@@ -17,8 +17,11 @@
 package v7.retrieveCalculation.def1.model.response.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
+import v7.common.model.response.TypeOfDividend
 
-case class OtherDividends(typeOfDividend: Option[String], customerReference: Option[String], grossAmount: Option[BigDecimal])
+case class OtherDividends(typeOfDividend: TypeOfDividend,
+                          customerReference: Option[String],
+                          grossAmount: Option[BigDecimal])
 
 object OtherDividends {
   implicit val format: Format[OtherDividends] = Json.format[OtherDividends]

@@ -19,7 +19,7 @@ package v7.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 import play.api.libs.json.{JsValue, Json}
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v7.common.model.response.IncomeSourceType
+import v7.common.model.response.{IncomeSourceType, TypeOfDividend}
 
 class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
 
@@ -31,7 +31,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
   )
 
   val otherModel: OtherDividends = OtherDividends(
-    Some("stock-dividend"),
+    TypeOfDividend.`stock-dividend`,
     Some("string"),
     Some(5000.99)
   )
@@ -68,7 +68,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
       |   },
       |   "otherDividends":[
       |      {
-      |         "typeOfDividend":"stock-dividend",
+      |         "typeOfDividend":"stockDividend",
       |         "customerReference":"string",
       |         "grossAmount":5000.99
       |      }
