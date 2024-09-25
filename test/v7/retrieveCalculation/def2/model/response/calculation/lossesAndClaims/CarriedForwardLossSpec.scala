@@ -19,11 +19,11 @@ package v7.retrieveCalculation.def2.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.{ClaimType, IncomeSourceType}
+import v7.common.model.response.{ClaimType, IncomeSourceType, LossType}
 
 class CarriedForwardLossSpec extends UnitSpec {
 
-  def downstreamJson(incomeSourceType: String, claimType: String): JsValue = Json.parse(s"""
+  def downstreamJson(incomeSourceType: String, claimType: String, lossType: String): JsValue = Json.parse(s"""
        |{
        |  "claimId": "123456789012345",
        |  "originatingClaimId": "123456789012346",
@@ -33,11 +33,11 @@ class CarriedForwardLossSpec extends UnitSpec {
        |  "taxYearClaimMade": 2020,
        |  "taxYearLossIncurred": 2019,
        |  "currentLossValue": 456,
-       |  "lossType": "income"
+       |  "lossType": "$lossType"
        |}
        |""".stripMargin)
 
-  def model(incomeSourceType: IncomeSourceType, claimType: ClaimType): CarriedForwardLoss =
+  def model(incomeSourceType: IncomeSourceType, claimType: ClaimType, lossType: LossType): CarriedForwardLoss =
     CarriedForwardLoss(
       claimId = Some("123456789012345"),
       originatingClaimId = Some("123456789012346"),
@@ -47,10 +47,10 @@ class CarriedForwardLossSpec extends UnitSpec {
       taxYearClaimMade = Some(TaxYear.fromDownstream("2020")),
       taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       currentLossValue = BigInt(456),
-      lossType = Some("income")
+      lossType = lossType
     )
 
-  def mtdJson(incomeSourceType: IncomeSourceType, claimType: ClaimType): JsValue = Json.parse(s"""
+  def mtdJson(incomeSourceType: IncomeSourceType, claimType: ClaimType, lossType: LossType): JsValue = Json.parse(s"""
        |{
        |  "claimId": "123456789012345",
        |  "originatingClaimId": "123456789012346",
@@ -60,28 +60,28 @@ class CarriedForwardLossSpec extends UnitSpec {
        |  "taxYearClaimMade": "2019-20",
        |  "taxYearLossIncurred": "2018-19",
        |  "currentLossValue": 456,
-       |  "lossType": "income"
+       |  "lossType": "$lossType"
        |}
        |""".stripMargin)
 
-  case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType, downstreamClaimType: String, claimType: ClaimType)
+  case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType, downstreamClaimType: String, claimType: ClaimType, lossType: LossType)
 
   val testData: Seq[Test] = Seq[Test](
-    Test("01", IncomeSourceType.`self-employment`, "CF", ClaimType.`carry-forward`),
-    Test("02", IncomeSourceType.`uk-property-non-fhl`, "CSGI", ClaimType.`carry-sideways`),
-    Test("03", IncomeSourceType.`foreign-property-fhl-eea`, "CFCSGI", ClaimType.`carry-forward-to-carry-sideways`),
-    Test("04", IncomeSourceType.`uk-property-fhl`, "CSFHL", ClaimType.`carry-sideways-fhl`),
-    Test("15", IncomeSourceType.`foreign-property`, "CB", ClaimType.`carry-backwards`),
-    Test("01", IncomeSourceType.`self-employment`, "CBGI", ClaimType.`carry-backwards-general-income`)
+    Test("01", IncomeSourceType.`self-employment`, "CF", ClaimType.`carry-forward`, LossType.`class4-nics`),
+    Test("02", IncomeSourceType.`uk-property-non-fhl`, "CSGI", ClaimType.`carry-sideways`, LossType.`class4-nics`),
+    Test("03", IncomeSourceType.`foreign-property-fhl-eea`, "CFCSGI", ClaimType.`carry-forward-to-carry-sideways`, LossType.`class4-nics`),
+    Test("04", IncomeSourceType.`uk-property-fhl`, "CSFHL", ClaimType.`carry-sideways-fhl`, LossType.`class4-nics`),
+    Test("15", IncomeSourceType.`foreign-property`, "CB", ClaimType.`carry-backwards`, LossType.`class4-nics`),
+    Test("01", IncomeSourceType.`self-employment`, "CBGI", ClaimType.`carry-backwards-general-income`, LossType.`class4-nics`)
   )
 
   "reads" should {
     "successfully read in a model" when {
 
-      testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType, downstreamClaimType, claimType) =>
+      testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType, downstreamClaimType, claimType, lossType) =>
         s"provided downstream type of claim $downstreamClaimType" in {
-          downstreamJson(downstreamIncomeSourceType, downstreamClaimType).as[CarriedForwardLoss] shouldBe
-            model(incomeSourceType, claimType)
+          downstreamJson(downstreamIncomeSourceType, downstreamClaimType, lossType = "class4nics").as[CarriedForwardLoss] shouldBe
+            model(incomeSourceType, claimType, lossType)
         }
       }
     }
@@ -90,10 +90,10 @@ class CarriedForwardLossSpec extends UnitSpec {
   "writes" should {
     "successfully write a model to json" when {
 
-      testData.foreach { case Test(_, incomeSourceType, _, claimType) =>
+      testData.foreach { case Test(_, incomeSourceType, _, claimType, lossType) =>
         s"provided type of claim $claimType" in {
-          Json.toJson(model(incomeSourceType, claimType)) shouldBe
-            mtdJson(incomeSourceType, claimType)
+          Json.toJson(model(incomeSourceType, claimType, lossType)) shouldBe
+            mtdJson(incomeSourceType, claimType, lossType)
         }
       }
     }

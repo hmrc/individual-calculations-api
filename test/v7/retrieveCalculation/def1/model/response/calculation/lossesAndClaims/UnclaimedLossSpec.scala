@@ -19,56 +19,56 @@ package v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.IncomeSourceType
+import v7.common.model.response.{IncomeSourceType, LossType}
 
 class UnclaimedLossSpec extends UnitSpec {
 
-  def downstreamJson(incomeSourceType: String): JsValue = Json.parse(s"""
+  def downstreamJson(incomeSourceType: String, lossType: String): JsValue = Json.parse(s"""
        |{
        |  "incomeSourceId": "123456789012345",
        |  "incomeSourceType": "$incomeSourceType",
        |  "taxYearLossIncurred": 2020,
        |  "currentLossValue": 456,
-       |  "lossType": "income"
+       |  "lossType": "$lossType"
        |}
        |""".stripMargin)
 
-  def model(incomeSourceType: IncomeSourceType): UnclaimedLoss =
+  def model(incomeSourceType: IncomeSourceType, lossType: LossType): UnclaimedLoss =
     UnclaimedLoss(
       incomeSourceId = Some("123456789012345"),
       incomeSourceType = incomeSourceType,
       taxYearLossIncurred = TaxYear.fromDownstream("2020"),
       currentLossValue = BigInt(456),
-      lossType = Some("income")
+      lossType = lossType
     )
 
-  def mtdJson(incomeSourceType: IncomeSourceType): JsValue = Json.parse(s"""
+  def mtdJson(incomeSourceType: IncomeSourceType, lossType: LossType): JsValue = Json.parse(s"""
        |{
        |  "incomeSourceId": "123456789012345",
        |  "incomeSourceType": "$incomeSourceType",
        |  "taxYearLossIncurred": "2019-20",
        |  "currentLossValue": 456,
-       |  "lossType": "income"
+       |  "lossType": "$lossType"
        |}
        |""".stripMargin)
 
-  case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType)
+  case class Test(downstreamIncomeSourceType: String, incomeSourceType: IncomeSourceType, lossType: LossType)
 
   val testData: Seq[Test] = Seq[Test](
-    Test("01", IncomeSourceType.`self-employment`),
-    Test("02", IncomeSourceType.`uk-property-non-fhl`),
-    Test("03", IncomeSourceType.`foreign-property-fhl-eea`),
-    Test("04", IncomeSourceType.`uk-property-fhl`),
-    Test("15", IncomeSourceType.`foreign-property`)
+    Test("01", IncomeSourceType.`self-employment`, LossType.`class4-nics`),
+    Test("02", IncomeSourceType.`uk-property-non-fhl`, LossType.`class4-nics`),
+    Test("03", IncomeSourceType.`foreign-property-fhl-eea`, LossType.`class4-nics`),
+    Test("04", IncomeSourceType.`uk-property-fhl`, LossType.`class4-nics`),
+    Test("15", IncomeSourceType.`foreign-property`, LossType.`class4-nics`)
   )
 
   "reads" should {
     "successfully read in a model" when {
 
-      testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType) =>
+      testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType, lossType) =>
         s"provided downstream income source type $downstreamIncomeSourceType" in {
-          downstreamJson(downstreamIncomeSourceType).as[UnclaimedLoss] shouldBe
-            model(incomeSourceType)
+          downstreamJson(downstreamIncomeSourceType, lossType = "class4nics").as[UnclaimedLoss] shouldBe
+            model(incomeSourceType, lossType)
         }
       }
     }
@@ -77,10 +77,10 @@ class UnclaimedLossSpec extends UnitSpec {
   "writes" should {
     "successfully write a model to json" when {
 
-      testData.foreach { case Test(_, incomeSourceType) =>
+      testData.foreach { case Test(_, incomeSourceType, lossType) =>
         s"provided income source type $incomeSourceType" in {
-          Json.toJson(model(incomeSourceType)) shouldBe
-            mtdJson(incomeSourceType)
+          Json.toJson(model(incomeSourceType, lossType)) shouldBe
+            mtdJson(incomeSourceType, lossType)
         }
       }
     }
