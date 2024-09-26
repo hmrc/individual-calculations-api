@@ -608,7 +608,7 @@
       "totalIncome": 5000.99,
       "shareSchemeDetail": [
         {
-          "type": "shareOption",
+          "type": "share-option",
           "employerName": "ABC-123 Ltd.",
           "employerRef": "123/AB56797",
           "taxableAmount": 5000.99

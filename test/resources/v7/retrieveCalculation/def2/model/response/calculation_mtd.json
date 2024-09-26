@@ -596,7 +596,7 @@
       "totalIncome": 5000.99,
       "shareSchemeDetail": [
         {
-          "type": "shareOption",
+          "type": "share-option",
           "employerName": "string",
           "employerRef": "123/AA12345",
           "taxableAmount": 5000.99

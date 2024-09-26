@@ -17,8 +17,12 @@
 package v7.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome
 
 import play.api.libs.json.{Json, OFormat}
+import v7.common.model.response.ShareSchemeDetailType
 
-case class ShareSchemeDetail(`type`: String, employerName: Option[String], employerRef: Option[String], taxableAmount: BigDecimal)
+case class ShareSchemeDetail(`type`: ShareSchemeDetailType,
+                             employerName: Option[String],
+                             employerRef: Option[String],
+                             taxableAmount: BigDecimal)
 
 object ShareSchemeDetail {
   implicit val format: OFormat[ShareSchemeDetail] = Json.format[ShareSchemeDetail]

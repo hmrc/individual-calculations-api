@@ -21,8 +21,8 @@
             "description": "The type of share scheme.",
             "type": "string",
             "enum": [
-              "shareOption",
-              "sharesAwardedOrReceived"
+              "share-option",
+              "shares-awarded-or-received"
             ]
           },
           "employerName": {
