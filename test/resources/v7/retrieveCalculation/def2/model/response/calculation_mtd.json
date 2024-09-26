@@ -4,7 +4,7 @@
     "taxYear": "2017-18",
     "requestedBy": "customer",
     "requestedTimestamp": "2019-02-15T09:35:15.000Z",
-    "calculationReason": "customerRequest",
+    "calculationReason": "customer-request",
     "calculationTimestamp": "2019-02-15T09:35:15.094Z",
     "calculationType": "final-declaration",
     "intentToSubmitFinalDeclaration": true,

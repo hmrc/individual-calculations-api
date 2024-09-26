@@ -19,7 +19,7 @@ package v7.retrieveCalculation.def1.model.response.metadata
 import play.api.libs.json.Json
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.CalculationType
+import v7.common.model.response.{CalculationType, CalculationReason}
 
 class MetadataSpec extends UnitSpec {
 
@@ -33,7 +33,7 @@ class MetadataSpec extends UnitSpec {
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
               |    "requestedTimestamp": "requested timestamp",
-              |    "calculationReason": "reason",
+              |    "calculationReason": "customerRequest",
               |    "calculationTimestamp": "calc timestamp",
               |    "calculationType": "crystallisation",
               |    "intentToCrystallise": true,
@@ -49,7 +49,7 @@ class MetadataSpec extends UnitSpec {
             taxYear = TaxYear.fromDownstream("2018"),
             requestedBy = "customer",
             requestedTimestamp = Some("requested timestamp"),
-            calculationReason = "reason",
+            calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = Some("calc timestamp"),
             calculationType = CalculationType.`final-declaration`,
             intentToSubmitFinalDeclaration = true,
@@ -69,7 +69,7 @@ class MetadataSpec extends UnitSpec {
               |    "calculationId": "calcId",
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
-              |    "calculationReason": "reason",
+              |    "calculationReason": "customerRequest",
               |    "calculationType": "crystallisation",
               |    "periodFrom": "from",
               |    "periodTo": "to"
@@ -81,7 +81,7 @@ class MetadataSpec extends UnitSpec {
             taxYear = TaxYear.fromDownstream("2018"),
             requestedBy = "customer",
             requestedTimestamp = None,
-            calculationReason = "reason",
+            calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = None,
             calculationType = CalculationType.`final-declaration`,
             intentToSubmitFinalDeclaration = false,
@@ -102,7 +102,7 @@ class MetadataSpec extends UnitSpec {
           taxYear = TaxYear.fromDownstream("2018"),
           requestedBy = "customer",
           requestedTimestamp = Some("requested timestamp"),
-          calculationReason = "reason",
+          calculationReason = CalculationReason.`customer-request`,
           calculationTimestamp = Some("calc timestamp"),
           calculationType = CalculationType.`final-declaration`,
           intentToSubmitFinalDeclaration = true,
@@ -116,7 +116,7 @@ class MetadataSpec extends UnitSpec {
           |    "taxYear": "2017-18",
           |    "requestedBy": "customer",
           |    "requestedTimestamp": "requested timestamp",
-          |    "calculationReason": "reason",
+          |    "calculationReason": "customer-request",
           |    "calculationTimestamp": "calc timestamp",
           |    "calculationType": "final-declaration",
           |    "intentToSubmitFinalDeclaration": true,

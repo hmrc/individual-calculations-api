@@ -56,7 +56,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |    "calculationId": "",
          |    "taxYear": 2017,
          |    "requestedBy": "",
-         |    "calculationReason": "",
+         |    "calculationReason": "customerRequest",
          |    "calculationType": "inYear",
          |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
          |    "periodFrom": "",
@@ -91,7 +91,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |    "calculationId": "",
          |    "taxYear": "2016-17",
          |    "requestedBy": "",
-         |    "calculationReason": "",
+         |    "calculationReason": "customer-request",
          |    "calculationType": "in-year",
          |    "intentToSubmitFinalDeclaration": $canBeFinalised,
          |    "finalDeclaration": false,

@@ -20,13 +20,13 @@ import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v7.common.model.response.CalculationType
+import v7.common.model.response.{CalculationType, CalculationReason}
 
 case class Metadata(calculationId: String,
                          taxYear: TaxYear,
                          requestedBy: String,
                          requestedTimestamp: Option[String],
-                         calculationReason: String,
+                         calculationReason: CalculationReason,
                          calculationTimestamp: Option[String],
                          calculationType: CalculationType,
                          intentToSubmitFinalDeclaration: Boolean,
@@ -46,7 +46,7 @@ object Metadata {
       (JsPath \ "taxYear").read[TaxYear] and
       (JsPath \ "requestedBy").read[String] and
       (JsPath \ "requestedTimestamp").readNullable[String] and
-      (JsPath \ "calculationReason").read[String] and
+      (JsPath \ "calculationReason").read[CalculationReason] and
       (JsPath \ "calculationTimestamp").readNullable[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
