@@ -62,9 +62,9 @@
           "description": "The tax regime which applies to this calculation.",
           "type": "string",
           "enum": [
-            "UK",
-            "Scotland",
-            "Wales"
+            "uk",
+            "scotland",
+            "wales"
           ]
         },
         "statePensionAgeDate": {

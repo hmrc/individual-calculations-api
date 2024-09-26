@@ -20,6 +20,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.models.domain.TaxYear
 import v7.common.model.response.CalculationType.`in-year`
 import v7.common.model.response.IncomeSourceType
+import v7.common.model.response.TaxRegime
 import v7.retrieveCalculation.def1.model.response.calculation.Calculation
 import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v7.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
@@ -323,7 +324,7 @@ trait Def1_CalculationFixture {
   val metadataWithBasicRateDivergenceData: Metadata = metadata.copy(taxYear = TaxYear.fromDownstream("2025"))
 
   val inputs: Inputs = Inputs(
-    PersonalInformation("", None, "UK", None, None, None, None, None, None),
+    PersonalInformation("", None, TaxRegime.`uk`, None, None, None, None, None, None),
     IncomeSources(None, None),
     // @formatter:off
     None, None, None, None,
@@ -355,7 +356,7 @@ trait Def1_CalculationFixture {
   )
 
   val inputsWithAdditionalFields: Inputs = Inputs(
-    PersonalInformation("", None, "UK", None, None, None, None, None, Some("No Status")),
+    PersonalInformation("", None, TaxRegime.`uk`, None, None, None, None, None, Some("No Status")),
     IncomeSources(Some(Seq(businessIncomeSourceWithAdditionalField)), None),
     // @formatter:off
     None, None, None, None,
@@ -440,7 +441,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },
@@ -499,7 +500,7 @@ trait Def1_CalculationFixture {
         |  "inputs": {
         |    "personalInformation": {
         |      "identifier": "",
-        |      "taxRegime": "UK"
+        |      "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },
@@ -558,7 +559,7 @@ trait Def1_CalculationFixture {
       "inputs": {
         "personalInformation": {
           "identifier": "",
-          "taxRegime": "UK",
+          "taxRegime": "uk",
           "itsaStatus": "No Status"
         },
         "incomeSources": {
@@ -625,7 +626,7 @@ trait Def1_CalculationFixture {
         |   "inputs":{
         |      "personalInformation":{
         |         "identifier":"",
-        |         "taxRegime":"UK"
+        |         "taxRegime":"uk"
         |      },
         |      "incomeSources":{
         |
@@ -659,7 +660,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },
@@ -709,7 +710,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },
@@ -760,7 +761,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  }
@@ -787,7 +788,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },
@@ -818,7 +819,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  }
@@ -845,7 +846,7 @@ trait Def1_CalculationFixture {
         |  "inputs" : {
         |    "personalInformation": {
         |       "identifier": "",
-        |       "taxRegime": "UK"
+        |       "taxRegime": "uk"
         |    },
         |    "incomeSources": {}
         |  },

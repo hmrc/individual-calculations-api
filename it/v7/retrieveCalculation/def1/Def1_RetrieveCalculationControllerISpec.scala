@@ -101,7 +101,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |  "inputs" : {
          |    "personalInformation": {
          |       "identifier": "",
-         |       "taxRegime": "UK"
+         |       "taxRegime": "uk"
          |    },
          |    "incomeSources": {}
          |  },

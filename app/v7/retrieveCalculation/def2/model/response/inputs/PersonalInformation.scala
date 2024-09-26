@@ -17,10 +17,11 @@
 package v7.retrieveCalculation.def2.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
+import v7.common.model.response.TaxRegime
 
 case class PersonalInformation(identifier: String,
                                dateOfBirth: Option[String],
-                               taxRegime: String,
+                               taxRegime: TaxRegime,
                                statePensionAgeDate: Option[String],
                                studentLoanPlan: Option[Seq[StudentLoanPlan]],
                                class2VoluntaryContributions: Option[Boolean],
