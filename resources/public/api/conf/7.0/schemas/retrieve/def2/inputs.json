@@ -445,11 +445,11 @@
             "description": "The type of allowance, deduction or relief claimed.",
             "type": "string",
             "enum": [
-              "investmentReliefs",
-              "otherReliefs",
-              "otherExpenses",
-              "otherDeductions",
-              "foreignReliefs"
+              "investment-reliefs",
+              "other-reliefs",
+              "other-expenses",
+              "other-deductions",
+              "foreign-reliefs"
             ]
           },
           "submittedTimestamp": {

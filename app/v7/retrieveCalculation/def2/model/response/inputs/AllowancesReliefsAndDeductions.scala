@@ -17,12 +17,13 @@
 package v7.retrieveCalculation.def2.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
+import v7.common.model.response.AllowancesReliefsAndDeductionsType
 
-case class AllowancesReliefsAndDeductions(`type`: Option[String],
-                                               submittedTimestamp: Option[String],
-                                               startDate: Option[String],
-                                               endDate: Option[String],
-                                               source: Option[String])
+case class AllowancesReliefsAndDeductions(`type`: AllowancesReliefsAndDeductionsType,
+                                          submittedTimestamp: Option[String],
+                                          startDate: Option[String],
+                                          endDate: Option[String],
+                                          source: Option[String])
 
 object AllowancesReliefsAndDeductions {
   implicit val format: OFormat[AllowancesReliefsAndDeductions] = Json.format[AllowancesReliefsAndDeductions]

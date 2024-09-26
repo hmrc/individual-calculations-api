@@ -121,7 +121,7 @@
     ],
     "allowancesReliefsAndDeductions": [
       {
-        "type": "investmentReliefs",
+        "type": "investment-reliefs",
         "submittedTimestamp": "2021-12-10T15:25:48.475Z",
         "startDate": "2021-11-02",
         "endDate": "2021-12-02",
