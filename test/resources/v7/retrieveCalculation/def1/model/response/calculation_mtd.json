@@ -123,7 +123,7 @@
     ],
     "pensionContributionAndCharges": [
       {
-        "type": "pensionReliefs",
+        "type": "pension-reliefs",
         "submissionTimestamp": "2021-12-02T15:25:48Z",
         "startDate": "2021-12-02",
         "endDate": "2021-12-02",

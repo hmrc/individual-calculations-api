@@ -500,8 +500,8 @@
             "description": "The type of pension contribution.",
             "type": "string",
             "enum": [
-              "pensionReliefs",
-              "pensionCharges"
+              "pension-reliefs",
+              "pension-charges"
             ]
           },
           "submissionTimestamp": {
