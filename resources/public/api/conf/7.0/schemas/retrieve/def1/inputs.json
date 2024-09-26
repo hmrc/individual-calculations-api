@@ -553,7 +553,7 @@
             "description": "An array of other inputs that have been pulled into this calculation.",
             "type": "string",
             "enum": [
-              "codingOut"
+              "coding-out"
             ]
           },
           "submittedOn": {
