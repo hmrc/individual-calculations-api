@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.retrieveCalculation.def2.model.response.calculation.pensionSavingsTaxCharges
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.retrieveCalculation.def2.model.response.calculation.pensionSavingsTaxCharges.ShortServiceRefundBandName._
 
-sealed trait ShortServiceRefundBandName
+class ShortServiceRefundBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object ShortServiceRefundBandName {
-  case object `lower-band` extends ShortServiceRefundBandName
-  case object `upper-band` extends ShortServiceRefundBandName
+  testReads[ShortServiceRefundBandName](
+    "lowerBand" -> `lower-band`,
+    "upperBand" -> `upper-band`
+  )
 
-  implicit val writes: Writes[ShortServiceRefundBandName] = Enums.writes[ShortServiceRefundBandName]
-
-  implicit val reads: Reads[ShortServiceRefundBandName] = Enums.readsUsing {
-    case "lowerBand"  => `lower-band`
-    case "upperBand"  => `upper-band`
-  }
-
+  testWrites[ShortServiceRefundBandName](
+    `lower-band` -> "lower-band",
+    `upper-band` -> "upper-band"
+  )
 }

@@ -16,15 +16,20 @@
 
 package v7.retrieveCalculation.def1.model.response.calculation.pensionSavingsTaxCharges
 
-import play.api.libs.json.{Json, OFormat}
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-case class ShortServiceRefundBands(name: ShortServiceRefundBandName,
-                                   rate: BigDecimal,
-                                   bandLimit: BigInt,
-                                   apportionedBandLimit: BigInt,
-                                   shortServiceRefundAmount: BigDecimal,
-                                   shortServiceRefundCharge: BigDecimal)
+sealed trait ShortServiceRefundBandName
 
-object ShortServiceRefundBands {
-  implicit val format: OFormat[ShortServiceRefundBands] = Json.format[ShortServiceRefundBands]
+object ShortServiceRefundBandName {
+  case object `lower-band` extends ShortServiceRefundBandName
+  case object `upper-band` extends ShortServiceRefundBandName
+
+  implicit val writes: Writes[ShortServiceRefundBandName] = Enums.writes[ShortServiceRefundBandName]
+
+  implicit val reads: Reads[ShortServiceRefundBandName] = Enums.readsUsing {
+    case "lowerBand"  => `lower-band`
+    case "upperBand"  => `upper-band`
+  }
+
 }

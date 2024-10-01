@@ -18,8 +18,7 @@ package v7.retrieveCalculation.def1.model.response.calculation.pensionSavingsTax
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.common.model.response.ShortServiceRefundBandName
-import v7.common.model.response.ShortServiceRefundBandName._
+import v7.retrieveCalculation.def1.model.response.calculation.pensionSavingsTaxCharges.ShortServiceRefundBandName._
 
 class ShortServiceRefundBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 
