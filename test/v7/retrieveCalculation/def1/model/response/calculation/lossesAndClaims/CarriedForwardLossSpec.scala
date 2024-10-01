@@ -47,7 +47,7 @@ class CarriedForwardLossSpec extends UnitSpec {
       taxYearClaimMade = Some(TaxYear.fromDownstream("2020")),
       taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       currentLossValue = BigInt(456),
-      lossType = lossType
+      lossType = Some(LossType.`class4-nics`)
     )
 
   def mtdJson(incomeSourceType: IncomeSourceType, claimType: ClaimType, lossType: LossType): JsValue = Json.parse(s"""

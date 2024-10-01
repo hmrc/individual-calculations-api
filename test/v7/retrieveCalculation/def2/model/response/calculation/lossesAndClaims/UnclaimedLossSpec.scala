@@ -39,7 +39,7 @@ class UnclaimedLossSpec extends UnitSpec {
       incomeSourceType = incomeSourceType,
       taxYearLossIncurred = TaxYear.fromDownstream("2020"),
       currentLossValue = BigInt(456),
-      lossType = lossType
+      lossType = Some(LossType.`class4-nics`)
     )
 
   def mtdJson(incomeSourceType: IncomeSourceType, lossType: LossType): JsValue = Json.parse(s"""

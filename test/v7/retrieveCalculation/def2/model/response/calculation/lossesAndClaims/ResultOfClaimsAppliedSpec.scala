@@ -51,7 +51,7 @@ class ResultOfClaimsAppliedSpec extends UnitSpec {
       taxYearLossIncurred = TaxYear.fromDownstream("2019"),
       lossAmountUsed = BigInt(123),
       remainingLossValue = BigInt(456),
-      lossType = lossType
+      lossType = Some(LossType.`class4-nics`)
     )
 
   def mtdJson(incomeSourceType: IncomeSourceType, claimType: ClaimType, lossType: LossType): JsValue = Json.parse(s"""

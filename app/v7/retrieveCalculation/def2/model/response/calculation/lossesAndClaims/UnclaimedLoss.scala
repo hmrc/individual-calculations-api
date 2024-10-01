@@ -26,7 +26,7 @@ case class UnclaimedLoss(
     incomeSourceType: IncomeSourceType,
     taxYearLossIncurred: TaxYear,
     currentLossValue: BigInt,
-    lossType: LossType
+    lossType: Option[LossType]
 )
 
 object UnclaimedLoss {

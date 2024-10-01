@@ -24,7 +24,7 @@ case class ReliefsClaimedDetail(amountClaimed: Option[BigDecimal],
                                 name: Option[String],
                                 socialEnterpriseName: Option[String],
                                 companyName: Option[String],
-                                deficiencyReliefType: ChargeableEventGainsIncomeType,
+                                deficiencyReliefType: Option[ChargeableEventGainsIncomeType],
                                 customerReference: Option[String])
 
 object ReliefsClaimedDetail {

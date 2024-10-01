@@ -240,7 +240,7 @@
                   "type": "string",
                   "enum": [
                     "life-insurance",
-                    "lifeAnnuity",
+                    "life-annuity",
                     "capital-redemption"
                   ]
                 },

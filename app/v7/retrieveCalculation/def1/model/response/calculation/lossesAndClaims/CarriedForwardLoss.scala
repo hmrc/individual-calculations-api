@@ -30,7 +30,7 @@ case class CarriedForwardLoss(
     taxYearClaimMade: Option[TaxYear],
     taxYearLossIncurred: TaxYear,
     currentLossValue: BigInt,
-    lossType: LossType
+    lossType: Option[LossType]
 )
 
 object CarriedForwardLoss {

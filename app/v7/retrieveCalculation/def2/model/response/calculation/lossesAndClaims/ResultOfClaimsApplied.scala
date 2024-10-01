@@ -32,7 +32,7 @@ case class ResultOfClaimsApplied(
     taxYearLossIncurred: TaxYear,
     lossAmountUsed: BigInt,
     remainingLossValue: BigInt,
-    lossType: LossType
+    lossType: Option[LossType]
 )
 
 object ResultOfClaimsApplied {

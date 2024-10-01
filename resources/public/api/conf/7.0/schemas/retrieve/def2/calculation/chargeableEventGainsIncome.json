@@ -25,7 +25,7 @@
             "enum": [
               "life-insurance",
               "capital-redemption",
-              "lifeAnnuity"
+              "life-annuity"
             ]
           },
           "customerReference": {
@@ -73,8 +73,8 @@
             "enum": [
               "life-insurance",
               "capital-redemption",
-              "lifeAnnuity",
-              "voidedIsa"
+              "life-annuity",
+              "voided-isa"
             ]
           },
           "customerReference": {

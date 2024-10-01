@@ -31,7 +31,7 @@ class DividendsIncomeSpec extends UnitSpec with JsonErrorValidators {
   )
 
   val otherModel: OtherDividends = OtherDividends(
-    TypeOfDividend.`stock-dividend`,
+    Some(TypeOfDividend.`stock-dividend`),
     Some("string"),
     Some(5000.99)
   )

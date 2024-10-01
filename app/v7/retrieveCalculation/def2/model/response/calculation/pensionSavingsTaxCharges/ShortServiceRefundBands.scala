@@ -17,9 +17,9 @@
 package v7.retrieveCalculation.def2.model.response.calculation.pensionSavingsTaxCharges
 
 import play.api.libs.json.{Json, OFormat}
-import v7.common.model.response.ShortServiceRefundBandsName
+import v7.common.model.response.ShortServiceRefundBandName
 
-case class ShortServiceRefundBands(name: ShortServiceRefundBandsName,
+case class ShortServiceRefundBands(name: ShortServiceRefundBandName,
                                    rate: BigDecimal,
                                    bandLimit: BigInt,
                                    apportionedBandLimit: BigInt,
