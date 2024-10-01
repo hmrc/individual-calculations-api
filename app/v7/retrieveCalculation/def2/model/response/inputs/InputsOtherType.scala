@@ -16,10 +16,18 @@
 
 package v7.retrieveCalculation.def2.model.response.inputs
 
-import play.api.libs.json.{Json, OFormat}
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-case class Other(`type`: InputsOtherType, submittedOn: Option[String])
+sealed trait InputsOtherType
 
-object Other {
-  implicit val format: OFormat[Other] = Json.format[Other]
+object InputsOtherType {
+  case object `coding-out`       extends InputsOtherType
+
+  implicit val writes: Writes[InputsOtherType] = Enums.writes[InputsOtherType]
+
+  implicit val reads: Reads[InputsOtherType] = Enums.readsUsing {
+    case "codingOut"        => `coding-out`
+  }
+
 }

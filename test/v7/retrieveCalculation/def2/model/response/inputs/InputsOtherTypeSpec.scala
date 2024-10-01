@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.retrieveCalculation.def2.model.response.inputs
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.retrieveCalculation.def2.model.response.inputs.InputsOtherType._
 
-sealed trait InputsOtherType
+class InputsOtherTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object InputsOtherType {
-  case object `coding-out`       extends InputsOtherType
+  testReads[InputsOtherType](
+    "codingOut" -> `coding-out`
+  )
 
-  implicit val writes: Writes[InputsOtherType] = Enums.writes[InputsOtherType]
-
-  implicit val reads: Reads[InputsOtherType] = Enums.readsUsing {
-    case "codingOut"        => `coding-out`
-  }
-
+  testWrites[InputsOtherType](
+    `coding-out` -> "coding-out"
+  )
 }

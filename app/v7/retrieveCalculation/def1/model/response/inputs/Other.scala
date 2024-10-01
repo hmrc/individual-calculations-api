@@ -17,7 +17,6 @@
 package v7.retrieveCalculation.def1.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
-import v7.common.model.response.InputsOtherType
 
 case class Other(`type`: InputsOtherType, submittedOn: Option[String])
 
