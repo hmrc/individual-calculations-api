@@ -25,17 +25,17 @@ class AllowancesReliefsAndDeductionsTypeSpec extends UnitSpec with EnumJsonSpecS
 
   testReads[AllowancesReliefsAndDeductionsType](
     "investmentReliefs" -> `investment-reliefs`,
-    "otherReliefs" -> `other-reliefs`,
-    "otherExpenses" -> `other-expenses`,
-    "otherDeductions" -> `other-deductions`,
-    "foreignReliefs" -> `foreign-reliefs`
+    "otherReliefs"      -> `other-reliefs`,
+    "otherExpenses"     -> `other-expenses`,
+    "otherDeductions"   -> `other-deductions`,
+    "foreignReliefs"    -> `foreign-reliefs`
   )
 
   testWrites[AllowancesReliefsAndDeductionsType](
     `investment-reliefs` -> "investment-reliefs",
-    `other-reliefs` -> "other-reliefs",
-    `other-expenses` -> "other-expenses",
-    `other-deductions` -> "other-deductions",
-    `foreign-reliefs` -> "foreign-reliefs"
+    `other-reliefs`      -> "other-reliefs",
+    `other-expenses`     -> "other-expenses",
+    `other-deductions`   -> "other-deductions",
+    `foreign-reliefs`    -> "foreign-reliefs"
   )
 }
