@@ -19,7 +19,6 @@ package v7.retrieveCalculation.def1.model
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.models.domain.TaxYear
 import v7.common.model.response.CalculationType.`in-year`
-import v7.common.model.response.CalculationReason.`customer-request`
 import v7.common.model.response.IncomeSourceType
 import v7.retrieveCalculation.def1.model.response.calculation.Calculation
 import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
@@ -29,6 +28,7 @@ import v7.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRate
 import v7.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v7.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
 import v7.retrieveCalculation.def1.model.response.inputs._
+import v7.retrieveCalculation.def1.model.response.metadata.CalculationReason.`customer-request`
 import v7.retrieveCalculation.def1.model.response.metadata.Metadata
 import v7.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 

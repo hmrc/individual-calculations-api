@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def1.model.response.metadata
+package v7.retrieveCalculation.def2.model.response.metadata
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.metadata.CalculationReason._
+import v7.retrieveCalculation.def2.model.response.metadata.CalculationReason._
 
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
