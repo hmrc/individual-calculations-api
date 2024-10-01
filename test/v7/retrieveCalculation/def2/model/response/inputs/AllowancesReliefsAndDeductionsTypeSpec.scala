@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def1.model.response.inputs
+package v7.retrieveCalculation.def2.model.response.inputs
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.inputs.AllowancesReliefsAndDeductionsType._
+import v7.retrieveCalculation.def2.model.response.inputs.AllowancesReliefsAndDeductionsType._
 
 class AllowancesReliefsAndDeductionsTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

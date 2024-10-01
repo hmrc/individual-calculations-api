@@ -17,7 +17,6 @@
 package v7.retrieveCalculation.def2.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
-import v7.common.model.response.AllowancesReliefsAndDeductionsType
 
 case class AllowancesReliefsAndDeductions(`type`: Option[AllowancesReliefsAndDeductionsType],
                                           submittedTimestamp: Option[String],
