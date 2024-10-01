@@ -16,22 +16,22 @@
 
 package v7.retrieveCalculation.def1.model.response.inputs
 
-import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.inputs.TaxRegime._
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
+sealed trait TaxRegime
 
-class TaxRegimeSpec extends UnitSpec with EnumJsonSpecSupport {
+object TaxRegime {
+  case object `uk`       extends TaxRegime
+  case object `scotland` extends TaxRegime
+  case object `wales`    extends TaxRegime
 
-  testReads[TaxRegime](
-    "UK"       -> `uk`,
-    "Scotland" -> `scotland`,
-    "Wales"    -> `wales`
-  )
+  implicit val writes: Writes[TaxRegime] = Enums.writes[TaxRegime]
 
-  testWrites[TaxRegime](
-    `uk`       -> "uk",
-    `scotland` -> "scotland",
-    `wales`    -> "wales"
-  )
+  implicit val reads: Reads[TaxRegime] = Enums.readsUsing {
+    case "UK"        => `uk`
+    case "Scotland"  => `scotland`
+    case "Wales"     => `wales`
+  }
+
 }

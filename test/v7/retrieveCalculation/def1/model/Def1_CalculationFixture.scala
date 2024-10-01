@@ -21,7 +21,6 @@ import shared.models.domain.TaxYear
 import v7.common.model.response.CalculationType.`in-year`
 import v7.common.model.response.CalculationReason.`customer-request`
 import v7.common.model.response.IncomeSourceType
-import v7.common.model.response.TaxRegime
 import v7.retrieveCalculation.def1.model.response.calculation.Calculation
 import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}
 import v7.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
