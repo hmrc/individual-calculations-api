@@ -1,16 +1,10 @@
-This API enables you to:
+Use the Individual Calculations API to generate and retrieve information about a customer's Self Assessment tax calculation, and submit their final declaration for the year.
 
-* trigger a customer’s Self Assessment tax calculation
-* control whether the calculation is to be used for a final declaration using a query parameter
-* list a customer’s Self Assessment tax calculations for a tax year
-* retrieve a customer’s Self Assessment tax calculation result
-* submit a Self Assessment final declaration for a tax year
+This API is related to the following customer journeys:
 
-In versions prior to version 3.0, the term ‘crystallise’ was used to mean submit a final declaration, and the term ‘intent to crystallise’ 
-was used to mean trigger a final declaration Self Assessment tax calculation.
+* Submit quarterly updates
+* Submit annual updates
+* Submit a final declaration
 
+Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping-csv-files.md](https://github.com/hmrc/income-tax-mtd-changelog/blob/main/mapping/mapping-csv-files.md) on GitHub. 
 For information on how to connect to this API [see the Income Tax MTD end-to-end service guide](https://developer.service.hmrc.gov.uk/guides/income-tax-mtd-end-to-end-service-guide/).
-
-### Mapping APIs to Self Assessment tax return forms
-
-Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping](https://github.com/hmrc/income-tax-mtd-changelog?tab=readme-ov-file#mapping-apis-to-self-assessment-tax-return-forms) on GitHub.
