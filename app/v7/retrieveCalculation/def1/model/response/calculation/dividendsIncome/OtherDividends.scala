@@ -17,7 +17,6 @@
 package v7.retrieveCalculation.def1.model.response.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
-import v7.common.model.response.TypeOfDividend
 
 case class OtherDividends(typeOfDividend: Option[TypeOfDividend],
                           customerReference: Option[String],

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}

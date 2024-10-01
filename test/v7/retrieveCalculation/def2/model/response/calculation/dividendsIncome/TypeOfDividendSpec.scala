@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def1.model.response.calculation.dividendsIncome
+package v7.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.calculation.dividendsIncome.TypeOfDividend._
+import v7.retrieveCalculation.def2.model.response.calculation.dividendsIncome.TypeOfDividend._
 
 class TypeOfDividendSpec extends UnitSpec with EnumJsonSpecSupport {
 
