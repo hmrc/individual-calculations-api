@@ -17,7 +17,6 @@
 package v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome
 
 import play.api.libs.json.{Format, Json}
-import v7.common.model.response.Source
 
 case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
                                                   source: Option[Source],

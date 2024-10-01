@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.retrieveCalculation.def2.model.response.calculation.employmentAndPensionsIncome
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.retrieveCalculation.def2.model.response.calculation.employmentAndPensionsIncome.Source._
 
-sealed trait Source
+class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object Source {
+  testReads[Source](
+    "customer"  -> `customer`,
+    "HMRC HELD" -> `hmrc-held`
+  )
 
-  case object `customer`  extends Source
-  case object `hmrc-held` extends Source
-
-  implicit val writes: Writes[Source] = Enums.writes[Source]
-
-  implicit val reads: Reads[Source] = Enums.readsUsing[Source] {
-    case "customer" => `customer`
-    case "HMRC HELD" => `hmrc-held`
-  }
-
+  testWrites[Source](
+    `customer`  -> "customer",
+    `hmrc-held` -> "hmrc-held"
+  )
 }
