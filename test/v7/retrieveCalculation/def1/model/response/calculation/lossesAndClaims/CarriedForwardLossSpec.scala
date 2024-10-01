@@ -19,7 +19,7 @@ package v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.{ClaimType, IncomeSourceType, LossType}
+import v7.common.model.response.{ClaimType, IncomeSourceType}
 
 class CarriedForwardLossSpec extends UnitSpec {
 

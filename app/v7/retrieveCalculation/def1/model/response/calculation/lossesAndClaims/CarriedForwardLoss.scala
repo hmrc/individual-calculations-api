@@ -19,7 +19,7 @@ package v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v7.common.model.response.{ClaimType, IncomeSourceType, LossType}
+import v7.common.model.response.{ClaimType, IncomeSourceType}
 
 case class CarriedForwardLoss(
     claimId: Option[String],

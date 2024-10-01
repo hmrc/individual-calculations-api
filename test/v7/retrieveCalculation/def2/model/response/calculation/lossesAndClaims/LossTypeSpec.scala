@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
+package v7.retrieveCalculation.def2.model.response.calculation.lossesAndClaims
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims.LossType._
+import v7.retrieveCalculation.def2.model.response.calculation.lossesAndClaims.LossType._
 
 class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

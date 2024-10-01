@@ -16,19 +16,20 @@
 
 package v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 
-import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def1.model.response.calculation.lossesAndClaims.LossType._
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+sealed trait LossType
 
-  testReads[LossType](
-    "income"     -> `income`,
-    "class4nics" -> `class4-nics`
-  )
+object LossType {
+  case object `income`      extends LossType
+  case object `class4-nics` extends LossType
 
-  testWrites[LossType](
-    `income`      -> "income",
-    `class4-nics` -> "class4-nics"
-  )
+  implicit val writes: Writes[LossType] = Enums.writes[LossType]
+
+  implicit val reads: Reads[LossType] = Enums.readsUsing {
+    case "income"      => `income`
+    case "class4nics"  => `class4-nics`
+  }
+
 }
