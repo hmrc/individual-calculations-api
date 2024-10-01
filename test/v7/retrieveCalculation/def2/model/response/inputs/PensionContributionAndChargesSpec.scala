@@ -16,14 +16,20 @@
 
 package v7.retrieveCalculation.def2.model.response.inputs
 
-import play.api.libs.json.{Json, OFormat}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.retrieveCalculation.def2.model.response.inputs.PensionContributionAndChargesType._
 
-case class PensionContributionAndCharges(`type`: PensionContributionAndChargesType,
-                                         submissionTimestamp: Option[String],
-                                         startDate: Option[String],
-                                         endDate: Option[String],
-                                         source: Option[String])
 
-object PensionContributionAndCharges {
-  implicit val format: OFormat[PensionContributionAndCharges] = Json.format[PensionContributionAndCharges]
+class PensionContributionAndChargesSpec extends UnitSpec with EnumJsonSpecSupport {
+
+  testReads[PensionContributionAndChargesType](
+    "pensionReliefs" -> `pension-reliefs`,
+    "pensionCharges" -> `pension-charges`
+  )
+
+  testWrites[PensionContributionAndChargesType](
+    `pension-reliefs` -> "pension-reliefs",
+    `pension-charges` -> "pension-charges"
+  )
 }

@@ -16,14 +16,20 @@
 
 package v7.retrieveCalculation.def1.model.response.inputs
 
-import play.api.libs.json.{Json, OFormat}
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-case class PensionContributionAndCharges(`type`: PensionContributionAndChargesType,
-                                         submissionTimestamp: Option[String],
-                                         startDate: Option[String],
-                                         endDate: Option[String],
-                                         source: Option[String])
+sealed trait PensionContributionAndChargesType
 
-object PensionContributionAndCharges {
-  implicit val format: OFormat[PensionContributionAndCharges] = Json.format[PensionContributionAndCharges]
+object PensionContributionAndChargesType {
+  case object `pension-reliefs` extends PensionContributionAndChargesType
+  case object `pension-charges` extends PensionContributionAndChargesType
+
+  implicit val writes: Writes[PensionContributionAndChargesType] = Enums.writes[PensionContributionAndChargesType]
+
+  implicit val reads: Reads[PensionContributionAndChargesType] = Enums.readsUsing {
+    case "pensionReliefs"  => `pension-reliefs`
+    case "pensionCharges"  => `pension-charges`
+  }
+
 }
