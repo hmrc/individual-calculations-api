@@ -16,13 +16,20 @@
 
 package v7.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome
 
-import play.api.libs.json.{Json, OFormat}
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-case class ShareSchemeDetail(`type`: ShareSchemeDetailType,
-                             employerName: Option[String],
-                             employerRef: Option[String],
-                             taxableAmount: BigDecimal)
+sealed trait ShareSchemeDetailType
 
-object ShareSchemeDetail {
-  implicit val format: OFormat[ShareSchemeDetail] = Json.format[ShareSchemeDetail]
+object ShareSchemeDetailType {
+  case object `share-option`               extends ShareSchemeDetailType
+  case object `shares-awarded-or-received` extends ShareSchemeDetailType
+
+  implicit val writes: Writes[ShareSchemeDetailType] = Enums.writes[ShareSchemeDetailType]
+
+  implicit val reads: Reads[ShareSchemeDetailType] = Enums.readsUsing {
+    case "shareOption"              => `share-option`
+    case "sharesAwardedOrReceived"  => `shares-awarded-or-received`
+  }
+
 }

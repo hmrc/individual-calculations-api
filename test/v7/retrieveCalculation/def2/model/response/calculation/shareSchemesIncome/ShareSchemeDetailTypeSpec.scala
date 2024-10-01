@@ -16,13 +16,19 @@
 
 package v7.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome
 
-import play.api.libs.json.{Json, OFormat}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome.ShareSchemeDetailType._
 
-case class ShareSchemeDetail(`type`: ShareSchemeDetailType,
-                             employerName: Option[String],
-                             employerRef: Option[String],
-                             taxableAmount: BigDecimal)
+class ShareSchemeDetailTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object ShareSchemeDetail {
-  implicit val format: OFormat[ShareSchemeDetail] = Json.format[ShareSchemeDetail]
+  testReads[ShareSchemeDetailType](
+    "shareOption"             -> `share-option`,
+    "sharesAwardedOrReceived" -> `shares-awarded-or-received`
+  )
+
+  testWrites[ShareSchemeDetailType](
+    `share-option`               -> "share-option",
+    `shares-awarded-or-received` -> "shares-awarded-or-received"
+  )
 }
