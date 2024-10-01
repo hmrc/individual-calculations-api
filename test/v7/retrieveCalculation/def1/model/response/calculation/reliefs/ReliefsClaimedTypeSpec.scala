@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.retrieveCalculation.def1.model.response.calculation.reliefs
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.common.model.response.ReliefsClaimedType._
+import v7.retrieveCalculation.def1.model.response.calculation.reliefs.ReliefsClaimedType._
+
 
 class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
@@ -45,5 +46,4 @@ class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `non-deductible-loan-interest`                                -> "non-deductible-loan-interest",
     `qualifying-distribution-redemption-of-shares-and-securities` -> "qualifying-distribution-redemption-of-shares-and-securities"
   )
-
 }

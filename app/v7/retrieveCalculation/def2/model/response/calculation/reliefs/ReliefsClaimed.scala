@@ -17,14 +17,13 @@
 package v7.retrieveCalculation.def2.model.response.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
-import v7.common.model.response.ReliefsClaimedType
 
 case class ReliefsClaimed(`type`: ReliefsClaimedType,
-                               amountClaimed: Option[BigDecimal],
-                               allowableAmount: Option[BigDecimal],
-                               amountUsed: Option[BigDecimal],
-                               rate: Option[BigDecimal],
-                               reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
+                          amountClaimed: Option[BigDecimal],
+                          allowableAmount: Option[BigDecimal],
+                          amountUsed: Option[BigDecimal],
+                          rate: Option[BigDecimal],
+                          reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
 
 object ReliefsClaimed {
   implicit val format: OFormat[ReliefsClaimed] = Json.format[ReliefsClaimed]
