@@ -4,9 +4,9 @@
     "taxYear": "2021-22",
     "requestedBy": "customer",
     "requestedTimestamp": "2021-02-15T09:35:15.094Z",
-    "calculationReason": "customerRequest",
+    "calculationReason": "customer-request",
     "calculationTimestamp": "2021-08-15T09:35:15.094Z",
-    "calculationType": "finalDeclaration",
+    "calculationType": "final-declaration",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
     "finalDeclarationTimestamp": "2021-02-15T09:35:15.094Z",
@@ -17,7 +17,7 @@
     "personalInformation": {
       "identifier": "VO123456A",
       "dateOfBirth": "1988-08-27",
-      "taxRegime": "UK",
+      "taxRegime": "uk",
       "statePensionAgeDate": "2050-04-06",
       "studentLoanPlan": [
         {
@@ -117,7 +117,7 @@
     ],
     "allowancesReliefsAndDeductions": [
       {
-        "type": "investmentReliefs",
+        "type": "investment-reliefs",
         "submittedTimestamp": "2021-12-10T15:25:48.475Z",
         "startDate": "2021-11-02",
         "endDate": "2021-12-02",
@@ -126,7 +126,7 @@
     ],
     "pensionContributionAndCharges": [
       {
-        "type": "pensionReliefs",
+        "type": "pension-reliefs",
         "submissionTimestamp": "2021-12-10T15:25:48.475Z",
         "startDate": "2021-11-02",
         "endDate": "2021-12-02",
@@ -135,7 +135,7 @@
     ],
     "other": [
       {
-        "type": "codingOut",
+        "type": "coding-out",
         "submittedOn": "2021-12-04T15:25:48.475Z"
       }
     ]
@@ -215,7 +215,7 @@
               "name": "VCT fund",
               "socialEnterpriseName": "SE Inc",
               "companyName": "Company Ltd.",
-              "deficiencyReliefType": "lifeInsurance",
+              "deficiencyReliefType": "life-insurance",
               "customerReference": "INPOLY123A"
             }
           ]
@@ -345,7 +345,7 @@
           "totalShortServiceRefundChargeDue": 5000.99,
           "shortServiceRefundBands": [
             {
-              "name": "lowerBand",
+              "name": "lower-band",
               "rate": 20.99,
               "bandLimit": 12500,
               "apportionedBandLimit": 12500,
@@ -608,7 +608,7 @@
       "totalIncome": 5000.99,
       "shareSchemeDetail": [
         {
-          "type": "shareOption",
+          "type": "share-option",
           "employerName": "ABC-123 Ltd.",
           "employerRef": "123/AB56797",
           "taxableAmount": 5000.99
@@ -653,7 +653,7 @@
       "totalGainsWithTaxPaid": 12500,
       "gainsWithTaxPaidDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "string",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
@@ -663,7 +663,7 @@
       "totalGainsWithNoTaxPaidAndVoidedIsa": 12500,
       "gainsWithNoTaxPaidAndVoidedIsaDetail": [
         {
-          "type": "lifeInsurance",
+          "type": "life-insurance",
           "customerReference": "INPOLY123B",
           "gainAmount": 5000.99,
           "yearsHeld": 0,
@@ -737,7 +737,7 @@
       },
       "otherDividends": [
         {
-          "typeOfDividend": "stockDividend",
+          "typeOfDividend": "stock-dividend",
           "customerReference": "ODPDLY235A",
           "grossAmount": 5000.99
         }

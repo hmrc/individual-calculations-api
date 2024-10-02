@@ -62,9 +62,9 @@
           "description": "The tax regime which applies to this calculation.",
           "type": "string",
           "enum": [
-            "UK",
-            "Scotland",
-            "Wales"
+            "uk",
+            "scotland",
+            "wales"
           ]
         },
         "statePensionAgeDate": {
@@ -445,11 +445,11 @@
             "description": "The type of allowance, deduction or relief claimed.",
             "type": "string",
             "enum": [
-              "investmentReliefs",
-              "otherReliefs",
-              "otherExpenses",
-              "otherDeductions",
-              "foreignReliefs"
+              "investment-reliefs",
+              "other-reliefs",
+              "other-expenses",
+              "other-deductions",
+              "foreign-reliefs"
             ]
           },
           "submittedTimestamp": {
@@ -498,8 +498,8 @@
             "description": "The type of pension contribution.",
             "type": "string",
             "enum": [
-              "pensionReliefs",
-              "pensionCharges"
+              "pension-reliefs",
+              "pension-charges"
             ]
           },
           "submissionTimestamp": {
@@ -551,7 +551,7 @@
             "description": "An array of other inputs that have been pulled into this calculation.",
             "type": "string",
             "enum": [
-              "codingOut"
+              "coding-out"
             ]
           },
           "submittedOn": {

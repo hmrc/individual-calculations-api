@@ -239,9 +239,9 @@
                   "description": "The type of relief. Populated only for deficiency relief.",
                   "type": "string",
                   "enum": [
-                    "lifeInsurance",
-                    "lifeAnnuity",
-                    "capitalRedemption"
+                    "life-insurance",
+                    "life-annuity",
+                    "capital-redemption"
                   ]
                 },
                 "customerReference": {

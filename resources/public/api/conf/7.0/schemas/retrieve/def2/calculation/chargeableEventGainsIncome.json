@@ -23,9 +23,9 @@
             "description": "The type of gains with tax paid.",
             "type": "string",
             "enum": [
-              "lifeInsurance",
-              "capitalRedemption",
-              "lifeAnnuity"
+              "life-insurance",
+              "capital-redemption",
+              "life-annuity"
             ]
           },
           "customerReference": {
@@ -71,10 +71,10 @@
             "description": "The type of gains with no tax paid and voided ISA.",
             "type": "string",
             "enum": [
-              "lifeInsurance",
-              "capitalRedemption",
-              "lifeAnnuity",
-              "voidedIsa"
+              "life-insurance",
+              "capital-redemption",
+              "life-annuity",
+              "voided-isa"
             ]
           },
           "customerReference": {
