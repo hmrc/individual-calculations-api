@@ -56,15 +56,17 @@ get:
             oneOf:
               - $ref: ./schemas/retrieve/def1/retrieve_response.json
               - $ref: ./schemas/retrieve/def2/retrieve_response.json
+              - $ref: ./schemas/retrieve/def3/retrieve_response.json
           examples:
-            example-response-TY-2023-24-or-before:
-              description: Example Response
+            "Example response for TY 2023-24 and before":
               value:
                 $ref: ./examples/retrieve/def1/retrieve_response.json
-            example-response-TY-2024-25-or-later:
-              description: Example Response
+            "Example response for TY 2024-25":
               value:
                 $ref: ./examples/retrieve/def2/retrieve_response.json
+            "Example response for TY 2025-26 onwards":
+              value:
+                $ref: ./examples/retrieve/def3/retrieve_response.json
 
     400:
       description: Bad request
