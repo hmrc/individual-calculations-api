@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
 import shared.controllers.validators.Validator
 import shared.utils.UnitSpec
-import v7.listCalculations.def1.Def1_ListCalculationsValidator
-import v7.listCalculations.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.def1.Def1_ListCalculationsValidator
+import v7.listCalculationsOld.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.schema.ListCalculationsSchema
 
 import javax.inject.Singleton
 
@@ -36,7 +37,7 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
     "given any request for schema definition 1" should {
       "return the Validator for schema definition 1" in {
         val result: Validator[ListCalculationsRequestData] =
-          validatorFactory.validator(validNino, taxYear = validTaxYear)
+          validatorFactory.validator(validNino, taxYear = Some(validTaxYear), ListCalculationsSchema.Def1)
 
         result shouldBe a[Def1_ListCalculationsValidator]
       }

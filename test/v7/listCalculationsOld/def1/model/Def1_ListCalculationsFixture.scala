@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1.model
+package v7.listCalculationsOld.def1.model
 
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import v7.common.model.response.CalculationType
-import v7.listCalculations.def1.model.response.{Def1_Calculation, Calculation}
-import v7.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
+import v7.listCalculationsOld.def1.model.response.{Calculation, Def1_Calculation}
+import v7.listCalculationsOld.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
 
 trait Def1_ListCalculationsFixture {
 
@@ -65,7 +65,7 @@ trait Def1_ListCalculationsFixture {
     calculationTimestamp = "2021-07-12T07:51:43.112Z",
     calculationType = CalculationType.`final-declaration`,
     requestedBy = Some("customer"),
-    taxYear = TaxYear.fromDownstreamInt(2021),
+    taxYear = Some(TaxYear.fromDownstreamInt(2021)),
     totalIncomeTaxAndNicsDue = Some(10000.12),
     intentToSubmitFinalDeclaration = Some(true),
     finalDeclaration = Some(true),

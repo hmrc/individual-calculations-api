@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
 import shared.utils.{IdGenerator, Logging}
 import shared.controllers._
 import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import v7.listCalculationsOld.schema.ListCalculationsSchema
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -41,11 +42,11 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     endpointName = "list"
   )
 
-  def list(nino: String, taxYear: String): Action[AnyContent] =
+  def list(nino: String, taxYear: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino, taxYear)
+      val validator = validatorFactory.validator(nino, taxYear, ListCalculationsSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler
