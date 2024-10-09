@@ -27,7 +27,7 @@ case class Metadata(calculationId: String,
                     requestedTimestamp: Option[String],
                     calculationReason: CalculationReason,
                     calculationTimestamp: Option[String],
-                    calculationType: CalculationType,
+                    calculationType: Def3_CalculationType,
                     finalisationTimestamp: Option[String],
                     confirmationTimestamp: Option[String],
                     periodFrom: String,
@@ -46,7 +46,7 @@ object Metadata {
       (JsPath \ "requestedTimestamp").readNullable[String] and
       (JsPath \ "calculationReason").read[CalculationReason] and
       (JsPath \ "calculationTimestamp").readNullable[String] and
-      (JsPath \ "calculationType").read[CalculationType] and
+      (JsPath \ "calculationType").read[Def3_CalculationType] and
       (JsPath \ "finalisationTimestamp").readNullable[String] and
       (JsPath \ "confirmationTimestamp").readNullable[String] and
       (JsPath \ "periodFrom").read[String] and

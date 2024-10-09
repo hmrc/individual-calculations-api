@@ -18,11 +18,11 @@ package v7.retrieveCalculation.def3.model.response.metadata
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.retrieveCalculation.def3.model.response.metadata.CalculationType._
+import v7.retrieveCalculation.def3.model.response.metadata.Def3_CalculationType._
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+class Def3_CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  testReads[CalculationType](
+  testReads[Def3_CalculationType](
     "IY" -> `in-year`,
     "IF" -> `intend-to-finalise`,
     "IA" -> `intend-to-amend`,
@@ -30,7 +30,7 @@ class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     "CA" -> `confirm-amendment`
   )
 
-  testWrites[CalculationType](
+  testWrites[Def3_CalculationType](
     `in-year`              -> "in-year",
     `intend-to-finalise`   -> "intend-to-finalise",
     `intend-to-amend`      -> "intend-to-amend",

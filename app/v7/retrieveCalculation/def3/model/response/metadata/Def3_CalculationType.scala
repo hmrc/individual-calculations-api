@@ -19,19 +19,19 @@ package v7.retrieveCalculation.def3.model.response.metadata
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
 
-sealed trait CalculationType
+sealed trait Def3_CalculationType
 
-object CalculationType {
+object Def3_CalculationType {
 
-  case object `in-year`              extends CalculationType
-  case object `intend-to-finalise`   extends CalculationType
-  case object `intend-to-amend`      extends CalculationType
-  case object `declare-finalisation` extends CalculationType
-  case object `confirm-amendment`    extends CalculationType
+  case object `in-year`              extends Def3_CalculationType
+  case object `intend-to-finalise`   extends Def3_CalculationType
+  case object `intend-to-amend`      extends Def3_CalculationType
+  case object `declare-finalisation` extends Def3_CalculationType
+  case object `confirm-amendment`    extends Def3_CalculationType
 
-  implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
+  implicit val writes: Writes[Def3_CalculationType] = Enums.writes[Def3_CalculationType]
 
-  implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
+  implicit val reads: Reads[Def3_CalculationType] = Enums.readsUsing[Def3_CalculationType] {
     case "IY" => `in-year`
     case "IF" => `intend-to-finalise`
     case "IA" => `intend-to-amend`
