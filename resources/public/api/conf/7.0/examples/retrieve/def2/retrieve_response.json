@@ -1,17 +1,17 @@
 {
   "metadata": {
     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    "taxYear": "2021-22",
+    "taxYear": "2024-25",
     "requestedBy": "customer",
-    "requestedTimestamp": "2021-02-15T09:35:15.094Z",
+    "requestedTimestamp": "2024-04-15T09:35:15.094Z",
     "calculationReason": "customer-request",
-    "calculationTimestamp": "2021-08-15T09:35:15.094Z",
+    "calculationTimestamp": "2024-08-15T09:35:15.094Z",
     "calculationType": "final-declaration",
     "intentToSubmitFinalDeclaration": true,
     "finalDeclaration": true,
-    "finalDeclarationTimestamp": "2021-02-15T09:35:15.094Z",
-    "periodFrom": "2021-04-06",
-    "periodTo": "2022-04-05"
+    "finalDeclarationTimestamp": "2024-08-15T09:35:15.094Z",
+    "periodFrom": "2024-04-06",
+    "periodTo": "2025-04-05"
   },
   "inputs": {
     "personalInformation": {
@@ -35,8 +35,8 @@
           "incomeSourceId": "XBIS12345678910",
           "incomeSourceType": "self-employment",
           "incomeSourceName": "Self-Employment Business One",
-          "accountingPeriodStartDate": "2021-04-06",
-          "accountingPeriodEndDate": "2022-04-05",
+          "accountingPeriodStartDate": "2024-04-06",
+          "accountingPeriodEndDate": "2025-04-05",
           "source": "MTD-SA",
           "cessationDate": "2021-04-06",
           "commencementDate": "2022-04-05",
