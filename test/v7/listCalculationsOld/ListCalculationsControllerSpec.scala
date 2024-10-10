@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
 import play.api.Configuration
 import play.api.mvc.Result
@@ -25,8 +25,8 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculationsOld.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,11 +41,11 @@ class ListCalculationsControllerSpec
     with MockIdGenerator
     with Def1_ListCalculationsFixture {
 
-  val taxYear: String = "2020-21"
+  val taxYear: Option[String] = Some("2020-21")
 
   private val requestData: ListCalculationsRequestData = Def1_ListCalculationsRequestData(
     nino = Nino(nino),
-    taxYear = TaxYear.fromMtd(taxYear)
+    taxYear = taxYear.map(TaxYear.fromMtd).getOrElse(TaxYear.now())
   )
 
   "ListCalculationsController" when {

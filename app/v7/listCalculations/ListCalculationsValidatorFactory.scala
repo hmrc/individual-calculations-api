@@ -26,8 +26,8 @@ import javax.inject.Singleton
 @Singleton
 class ListCalculationsValidatorFactory {
 
-  def validator(nino: String, taxYear: Option[String], schema: ListCalculationsSchema): Validator[ListCalculationsRequestData] =
-    schema match {
+  def validator(nino: String, taxYear: String): Validator[ListCalculationsRequestData] =
+    ListCalculationsSchema.schema match {
       case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear)
     }
 

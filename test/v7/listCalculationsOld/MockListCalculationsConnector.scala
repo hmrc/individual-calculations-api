@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
 import shared.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import v7.listCalculations.model.request.ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
-import v7.listCalculations.def1.model.response.Calculation
+import v7.listCalculationsOld.def1.model.response.Calculation
+import v7.listCalculationsOld.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

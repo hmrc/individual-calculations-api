@@ -1,0 +1,13 @@
+get:
+  $ref: "./list.yaml"
+  summary: List Self Assessment Tax Calculations
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+put:
+  $ref: "./trigger.yaml"
+  summary: Trigger a Self Assessment Tax Calculation
+  security:
+    - User-Restricted:
+        - write:self-assessment

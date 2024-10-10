@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1.model.response
+package v7.listCalculationsOld.def1.model.response
 
 import play.api.libs.json.Json
 import shared.utils.UnitSpec
-import v7.listCalculations.model.response.Def1_ListCalculationsResponse
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-
+import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculationsOld.model.response.Def1_ListCalculationsResponse
 
 class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculationsFixture {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1
+package v7.listCalculationsOld.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
@@ -26,14 +26,14 @@ import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
   private trait Test {
     val nino: String = "ZG903729C"
 
-    def taxYear: String
+    def taxYear: Option[String]
 
     private def uri: String = s"/$nino/self-assessment"
 
@@ -47,7 +47,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
       def downstreamQueryParams: Seq[(String, String)] =
         Seq("taxYear" -> taxYear)
-          .collect { case (k, v) => (k, v) }
+          .collect { case (k, Some(v)) => (k, v) }
 
       setupStubs()
       buildRequest(uri)
@@ -69,7 +69,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
   }
 
   private trait NonTysTest extends Test {
-    def taxYear: String = "2018-19"
+    def taxYear: Option[String] = Some("2018-19")
 
     override def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
   }
@@ -78,7 +78,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
     val mtdTaxYear: String        = TaxYear.now().asMtd
     val downstreamTaxYear: String = TaxYear.now().asTysDownstream
-    def taxYear: String   = mtdTaxYear
+    def taxYear: Option[String]   = Some(mtdTaxYear)
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
 
@@ -93,6 +93,22 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
           DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
+        }
+
+        val response: WSResponse = await(request.get())
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe listCalculationsMtdJson
+      }
+
+      "valid request is made without a tax year" in new TysIfsTest {
+        override def taxYear: Option[String] = None
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -121,7 +137,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new NonTysTest {
             override val nino: String            = requestNino
-            override val taxYear: String = requestTaxYear
+            override val taxYear: Option[String] = Some(requestTaxYear)
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()

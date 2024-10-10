@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1.model.response
+package v7.listCalculationsOld.def1.model.response
 
 import common.TaxYearFormats._
 import play.api.libs.functional.syntax._
@@ -24,7 +24,7 @@ import v7.common.model.response.CalculationType
 
 sealed trait Calculation {
   def calculationId: String
-  def taxYear: TaxYear
+  def taxYear: Option[TaxYear]
 }
 
 object Calculation {
@@ -39,7 +39,7 @@ case class Def1_Calculation(calculationId: String,
                             calculationTimestamp: String,
                             calculationType: CalculationType,
                             requestedBy: Option[String],
-                            taxYear: TaxYear,
+                            taxYear: Option[TaxYear],
                             totalIncomeTaxAndNicsDue: Option[BigDecimal],
                             intentToSubmitFinalDeclaration: Option[Boolean],
                             finalDeclaration: Option[Boolean],
@@ -54,7 +54,7 @@ object Def1_Calculation {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
-      (JsPath \ "year").read[TaxYear] and
+      (JsPath \ "year").readNullable[TaxYear] and
       (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and
       (JsPath \ "intentToCrystallise").readNullable[Boolean] and
       (JsPath \ "crystallised").readNullable[Boolean] and

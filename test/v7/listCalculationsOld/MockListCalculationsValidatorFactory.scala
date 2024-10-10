@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
 import shared.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
-import v7.listCalculations.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.schema.ListCalculationsSchema
 
 trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {
 
   val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
 
   def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
-    (mockListCalculationsFactory.validator(_: String, _: String)).expects(*, *)
+    (mockListCalculationsFactory.validator(_: String, _: Option[String], _: ListCalculationsSchema)).expects(*, *, *)
 
 }

@@ -71,11 +71,12 @@ tags:
         - submit final declaration for a tax year
 
 paths:
+
   /individuals/calculations/{nino}/self-assessment:
-    $ref: ./list.yaml
+    $ref: "./listOld.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}:
-    $ref: ./trigger.yaml
+    $ref: "./calculations_list_trigger.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
-    $ref: ./retrieve.yaml
+    $ref: "./retrieve.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/final-declaration:
-    $ref: ./submit_final_declaration.yaml
+    $ref: "./submit_final_declaration.yaml"

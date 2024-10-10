@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1
+package v7.listCalculationsOld.def1
 
+import shared.controllers.validators.Validator
+import shared.controllers.validators.resolvers.ResolverSupport._
+import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYear}
+import shared.models.domain.TaxYear
+import shared.models.errors.{MtdError, RuleTaxYearNotSupportedError}
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculationsOld.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def1_ListCalculationsValidator {
   private val listCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(listCalculationsMinimumTaxYear).resolver
+  private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
+    satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError)
 
 }
 
-class Def1_ListCalculationsValidator(nino: String, taxYear: String) extends Validator[ListCalculationsRequestData] {
+class Def1_ListCalculationsValidator(nino: String, taxYear: Option[String]) extends Validator[ListCalculationsRequestData] {
   import Def1_ListCalculationsValidator._
 
   def validate: Validated[Seq[MtdError], ListCalculationsRequestData] =

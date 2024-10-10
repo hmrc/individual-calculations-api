@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculationsOld
 
-import shared.controllers.validators.{MockValidatorFactory, Validator}
-import org.scalamock.handlers.CallHandler
-import v7.listCalculations.model.request.ListCalculationsRequestData
+import shared.controllers.validators.Validator
+import v7.listCalculationsOld.def1.Def1_ListCalculationsValidator
+import v7.listCalculationsOld.model.request.ListCalculationsRequestData
+import v7.listCalculationsOld.schema.ListCalculationsSchema
 
-trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {
+import javax.inject.Singleton
 
-  val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
+@Singleton
+class ListCalculationsValidatorFactory {
 
-  def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
-    (mockListCalculationsFactory.validator(_: String, _: String)).expects(*, *)
+  def validator(nino: String, taxYear: Option[String], schema: ListCalculationsSchema): Validator[ListCalculationsRequestData] =
+    schema match {
+      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear)
+    }
 
 }
