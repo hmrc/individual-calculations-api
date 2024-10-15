@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.schema
+package v7.listCalculationsOld.schema
 
+import shared.controllers.validators.resolvers.ResolveTaxYear
 import shared.models.domain.TaxYear
 import shared.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v7.listCalculations.def1.model.response.{Calculation, Def1_Calculation}
-import v7.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
+import v7.listCalculationsOld.def1.model.response.{Calculation, Def1_Calculation}
+import v7.listCalculationsOld.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
 
+import java.time.Clock
 import scala.math.Ordered.orderingToOrdered
 
 sealed trait ListCalculationsSchema extends DownstreamReadable[ListCalculationsResponse[Calculation]]
@@ -33,13 +35,20 @@ object ListCalculationsSchema {
     val connectorReads: Reads[DownstreamResp] = Def1_ListCalculationsResponse.reads
   }
 
-  val schema: ListCalculationsSchema = Def1
+  private val defaultSchema = Def1
+
+  def schemaFor(maybeTaxYear: Option[String])(implicit clock: Clock = Clock.systemUTC): ListCalculationsSchema = {
+    maybeTaxYear
+      .map(ResolveTaxYear.resolver)
+      .flatMap(_.toOption.map(schemaFor))
+      .getOrElse(schemaFor(TaxYear.currentTaxYear))
+  }
 
   def schemaFor(taxYear: TaxYear): ListCalculationsSchema = {
     if (TaxYear.starting(2023) <= taxYear) {
       Def1
     } else {
-      schema
+      defaultSchema
     }
   }
 
