@@ -24,16 +24,16 @@ class Def3_CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[Def3_CalculationType](
     "IY" -> `in-year`,
-    "IF" -> `intend-to-finalise`,
-    "IA" -> `intend-to-amend`,
+    "IF" -> `intent-to-finalise`,
+    "IA" -> `intent-to-amend`,
     "DF" -> `declare-finalisation`,
     "CA" -> `confirm-amendment`
   )
 
   testWrites[Def3_CalculationType](
     `in-year`              -> "in-year",
-    `intend-to-finalise`   -> "intend-to-finalise",
-    `intend-to-amend`      -> "intend-to-amend",
+    `intent-to-finalise`   -> "intent-to-finalise",
+    `intent-to-amend`      -> "intent-to-amend",
     `declare-finalisation` -> "declare-finalisation",
     `confirm-amendment`    -> "confirm-amendment"
   )

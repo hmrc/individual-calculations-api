@@ -24,8 +24,8 @@ sealed trait Def3_CalculationType
 object Def3_CalculationType {
 
   case object `in-year`              extends Def3_CalculationType
-  case object `intend-to-finalise`   extends Def3_CalculationType
-  case object `intend-to-amend`      extends Def3_CalculationType
+  case object `intent-to-finalise`   extends Def3_CalculationType
+  case object `intent-to-amend`      extends Def3_CalculationType
   case object `declare-finalisation` extends Def3_CalculationType
   case object `confirm-amendment`    extends Def3_CalculationType
 
@@ -33,8 +33,8 @@ object Def3_CalculationType {
 
   implicit val reads: Reads[Def3_CalculationType] = Enums.readsUsing[Def3_CalculationType] {
     case "IY" => `in-year`
-    case "IF" => `intend-to-finalise`
-    case "IA" => `intend-to-amend`
+    case "IF" => `intent-to-finalise`
+    case "IA" => `intent-to-amend`
     case "DF" => `declare-finalisation`
     case "CA" => `confirm-amendment`
   }
