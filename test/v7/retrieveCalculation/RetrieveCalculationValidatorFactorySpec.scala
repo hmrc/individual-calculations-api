@@ -19,6 +19,7 @@ package v7.retrieveCalculation
 import shared.utils.UnitSpec
 import v7.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v7.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
+import v7.retrieveCalculation.def3.Def3_RetrieveCalculationValidator
 import v7.retrieveCalculation.schema.RetrieveCalculationSchema
 
 class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
@@ -42,6 +43,13 @@ class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
       "return the Validator for schema definition 2" in {
         validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def2) shouldBe
           a[Def2_RetrieveCalculationValidator]
+      }
+    }
+
+    "given any request for schema 3" should {
+      "return the Validator for schema definition 3" in {
+        validatorFactory.validator(validNino, validTaxYear, validCalculationId, RetrieveCalculationSchema.Def3) shouldBe
+          a[Def3_RetrieveCalculationValidator]
       }
     }
 

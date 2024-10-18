@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def2.model.response.calculation.taxCalculation
+package v7.retrieveCalculation.def3.model.response.calculation.codedOutUnderpayments
 
-import play.api.libs.json.JsValue
-import shared.models.utils.JsonErrorValidators
-import shared.utils.UnitSpec
+import play.api.libs.json.{Json, OFormat}
 
-class OtherGainsSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
+case class PayeUnderpaymentsDetail(amount: BigDecimal, relatedTaxYear: String, source: Option[String])
 
-  "have the correct fields optional" when {
-    val json = (taxCalculationDownstreamJson \ "capitalGainsTax" \ "otherGains").as[JsValue]
-
-    testOptionalJsonFields[OtherGains](json)
-  }
-
+object PayeUnderpaymentsDetail {
+  implicit val format: OFormat[PayeUnderpaymentsDetail] = Json.format[PayeUnderpaymentsDetail]
 }

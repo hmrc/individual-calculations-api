@@ -19,6 +19,7 @@ package v7.retrieveCalculation
 import shared.controllers.validators.Validator
 import v7.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v7.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
+import v7.retrieveCalculation.def3.Def3_RetrieveCalculationValidator
 import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v7.retrieveCalculation.schema.RetrieveCalculationSchema
 
@@ -31,6 +32,7 @@ class RetrieveCalculationValidatorFactory {
     schema match {
       case RetrieveCalculationSchema.Def1 => new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def2 => new Def2_RetrieveCalculationValidator(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def3 => new Def3_RetrieveCalculationValidator(nino, taxYear, calculationId)
     }
 
 }
