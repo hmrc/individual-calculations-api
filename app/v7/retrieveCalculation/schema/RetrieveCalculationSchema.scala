@@ -54,6 +54,7 @@ object RetrieveCalculationSchema {
   {
     if (taxYear <= TaxYear.starting(2023)) Def1
     else if (taxYear == TaxYear.starting(2024)) Def2
+    else if (taxYear == TaxYear.starting(2025)) Def3
     else latestSchema
   }
 
