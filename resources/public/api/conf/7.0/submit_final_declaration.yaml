@@ -13,6 +13,7 @@ post:
     | Header Value (Gov-Test-Scenario)   | Scenario                                                                           |
     |------------------------------------|------------------------------------------------------------------------------------|
     | N/A - DEFAULT                      | Simulates success response.                                                        |
+    | OUTSIDE_AMENDMENT_WINDOW           | Simulates the scenario where the request cannot be completed as it is outside the amendment window. |
     | FINAL_DECLARATION_IN_PROGRESS      | Simulates the scenario where there is a calculation in progress for the tax year.  |
     | FINAL_DECLARATION_RECEIVED         | Simulates the scenario where a final declaration has already been received.        |
     | FINAL_DECLARATION_TAX_YEAR         | Simulates the scenario where the final declaration cannot be submitted until after the end of the tax year. |
@@ -30,6 +31,7 @@ post:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
     - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
     - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
+    - $ref: ./common/pathParameters.yaml#/components/parameters/calculationType
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
     - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
@@ -60,6 +62,10 @@ post:
           examples:
             FORMAT_NINO:
               $ref: ./common/errors.yaml#/components/examples/formatNino
+            FORMAT_CALCULATION_TYPE:
+              $ref: ./common/errors.yaml#/components/examples/formatCalculationType
+            RULE_OUTSIDE_AMENDMENT_WINDOW:
+              $ref: ./common/errors.yaml#/components/examples/ruleOutisdeAmendmentWindow
             FORMAT_TAX_YEAR:
               $ref: ./common/errors.yaml#/components/examples/formatTaxYear
             RULE_TAX_YEAR_RANGE_INVALID:

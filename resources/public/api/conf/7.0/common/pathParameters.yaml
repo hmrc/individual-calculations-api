@@ -33,3 +33,15 @@ components:
         type: string
         example: "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       required: true
+
+    calculationType:
+      name: calculationType
+      in: path
+      description: |
+        Specifies the calculation types to be confirmed Limited to the following possible values for TY24-25: final-declaration
+        
+        Limited to the following possible values for TY25-26: final-declaration confirm-amendment
+      schema:
+        type: string
+        example: "final-declaration"
+      required: true
