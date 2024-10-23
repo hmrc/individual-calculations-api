@@ -26,7 +26,7 @@ class IncomeSourceSpec extends UnitSpec {
     "successfully read in a model" when {
       Seq(
         ("01", `self-employment`),
-        ("02", `uk-property-non-fhl`),
+        ("02", `uk-property`),
         ("03", `foreign-property-fhl-eea`),
         ("04", `uk-property-fhl`),
         ("05", `employments`),

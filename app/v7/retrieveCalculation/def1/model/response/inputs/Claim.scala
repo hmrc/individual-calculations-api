@@ -37,7 +37,7 @@ object Claim extends {
 
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,
-    `uk-property-non-fhl`,
+    `uk-property`,
     `uk-property-fhl`,
     `foreign-property-fhl-eea`,
     `foreign-property`

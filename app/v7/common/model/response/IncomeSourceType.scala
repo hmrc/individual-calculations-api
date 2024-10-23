@@ -24,7 +24,7 @@ sealed trait IncomeSourceType
 object IncomeSourceType {
 
   case object `self-employment`           extends IncomeSourceType
-  case object `uk-property-non-fhl`       extends IncomeSourceType
+  case object `uk-property`               extends IncomeSourceType
   case object `foreign-property-fhl-eea`  extends IncomeSourceType
   case object `uk-property-fhl`           extends IncomeSourceType
   case object `employments`               extends IncomeSourceType
@@ -49,7 +49,7 @@ object IncomeSourceType {
 
   implicit val reads: Reads[IncomeSourceType] = Enums.readsUsing {
     case "01" => `self-employment`
-    case "02" => `uk-property-non-fhl`
+    case "02" => `uk-property`
     case "03" => `foreign-property-fhl-eea`
     case "04" => `uk-property-fhl`
     case "05" => `employments`
