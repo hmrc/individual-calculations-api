@@ -25,7 +25,7 @@ import cats.implicits._
 import v7.retrieveCalculation.models.request.{Def2_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def2_RetrieveCalculationValidator {
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2024-25")
   private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
 }
 

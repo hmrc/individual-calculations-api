@@ -16,9 +16,9 @@
 
 package v7.retrieveCalculation.models.response
 
-import shared.models.domain.TaxYear
 import config.CalculationsFeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
+import shared.models.domain.TaxYear
 import v7.retrieveCalculation._
 import v7.retrieveCalculation.def2.model.response.calculation.Calculation
 
@@ -39,6 +39,7 @@ object RetrieveCalculationResponse {
   implicit val writes: OWrites[RetrieveCalculationResponse] = {
     case def1: Def1_RetrieveCalculationResponse => Json.toJsObject(def1)
     case def2: Def2_RetrieveCalculationResponse => Json.toJsObject(def2)
+    case def3: Def3_RetrieveCalculationResponse => Json.toJsObject(def3)
   }
 
 }
@@ -188,5 +189,42 @@ object Def2_RetrieveCalculationResponse {
   implicit val reads: Reads[Def2_RetrieveCalculationResponse] = Json.reads[Def2_RetrieveCalculationResponse]
 
   implicit val writes: OWrites[Def2_RetrieveCalculationResponse] = Json.writes[Def2_RetrieveCalculationResponse]
+
+}
+
+case class Def3_RetrieveCalculationResponse(
+    metadata: def3.model.response.metadata.Metadata,
+    inputs: def3.model.response.inputs.Inputs,
+    calculation: Option[def3.model.response.calculation.Calculation],
+    messages: Option[def3.model.response.messages.Messages]
+) extends RetrieveCalculationResponse {
+
+  override def intentToSubmitFinalDeclaration: Boolean = false
+
+  override def finalDeclaration: Boolean = false
+
+  override def hasErrors: Boolean = {
+    for {
+      messages <- messages
+      errors   <- messages.errors
+    } yield errors.nonEmpty
+  }.getOrElse(false)
+
+  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def3_RetrieveCalculationResponse = {
+    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
+      this
+    } else {
+      import v7.retrieveCalculation.def3.model.response.calculation.Calculation
+      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
+    }
+  }
+
+}
+
+object Def3_RetrieveCalculationResponse {
+
+  implicit val reads: Reads[Def3_RetrieveCalculationResponse] = Json.reads[Def3_RetrieveCalculationResponse]
+
+  implicit val writes: OWrites[Def3_RetrieveCalculationResponse] = Json.writes[Def3_RetrieveCalculationResponse]
 
 }
