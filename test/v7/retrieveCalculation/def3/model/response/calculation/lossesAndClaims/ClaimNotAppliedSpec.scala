@@ -56,7 +56,7 @@ class ClaimNotAppliedSpec extends UnitSpec {
 
   val testData: Seq[Test] = Seq[Test](
     Test("01", IncomeSourceType.`self-employment`, "CF", ClaimType.`carry-forward`),
-    Test("02", IncomeSourceType.`uk-property-non-fhl`, "CSGI", ClaimType.`carry-sideways`),
+    Test("02", IncomeSourceType.`uk-property`, "CSGI", ClaimType.`carry-sideways`),
     Test("03", IncomeSourceType.`foreign-property-fhl-eea`, "CFCSGI", ClaimType.`carry-forward-to-carry-sideways`),
     Test("04", IncomeSourceType.`uk-property-fhl`, "CSFHL", ClaimType.`carry-sideways-fhl`),
     Test("15", IncomeSourceType.`foreign-property`, "CB", ClaimType.`carry-backwards`),
