@@ -36,7 +36,7 @@ class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
   "validator()" when {
 
     "given any request regardless of tax year" should {
-      "return the Validator for schema definition 1 when declare finalisation is taxType" in {
+      "return the Validator for schema definition 1 when calculationType is final-declaration" in {
         val result: Validator[SubmitFinalDeclarationRequestData] =
           validatorFactory.validator(validNino, taxYear, validCalculationId, calculationTypeDf, SubmitFinalDeclarationSchema.Def1)
 
