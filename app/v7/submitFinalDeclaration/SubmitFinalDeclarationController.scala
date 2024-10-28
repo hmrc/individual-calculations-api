@@ -61,7 +61,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
       val validator =
-        validatorFactory.validator(nino = nino, taxYear = taxYear, calculationId = calculationId, calculationType, SubmitFinalDeclarationSchema.schemaFor(taxYear))
+        validatorFactory.validator(nino, taxYear, calculationId, calculationType, SubmitFinalDeclarationSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler
