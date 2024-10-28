@@ -5,7 +5,7 @@ get:
     - User-Restricted:
         - read:self-assessment
 
-put:
+post:
   $ref: "./trigger.yaml"
   summary: Trigger a Self Assessment Tax Calculation
   security:
