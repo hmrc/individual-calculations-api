@@ -32,7 +32,7 @@ class SubmitFinalDeclarationValidatorFactory {
                 calculationType: String,
                 schema: SubmitFinalDeclarationSchema): Validator[SubmitFinalDeclarationRequestData] =
     schema match {
-      case SubmitFinalDeclarationSchema.Def1 => new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId, calculationType)
+      case Def1 => new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId, calculationType)
     }
 
 }
