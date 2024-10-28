@@ -133,7 +133,7 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
         val errors = Seq(
           (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
-          (BAD_REQUEST, "INVALID_CALCID", BAD_REQUEST, CalculationIdFormatError),
+          (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
           (BAD_REQUEST, "INVALID_CALCULATION_TYPE", INTERNAL_SERVER_ERROR, InternalError),
           (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
           (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),

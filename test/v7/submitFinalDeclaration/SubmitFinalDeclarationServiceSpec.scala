@@ -77,7 +77,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       val errors = List(
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_TAX_YEAR", TaxYearFormatError),
-        ("INVALID_CALCID", CalculationIdFormatError),
+        ("INVALID_CALCULATION_ID", CalculationIdFormatError),
         ("INVALID_CORRELATION_ID", InternalError),
         ("NOT_FOUND", NotFoundError),
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
