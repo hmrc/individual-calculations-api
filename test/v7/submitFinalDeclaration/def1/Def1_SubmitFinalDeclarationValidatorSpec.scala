@@ -30,7 +30,7 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
   private val validNino          = "ZG903729C"
   private val validTaxYear       = "2017-18"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val validDeclareFinalisation = "final-declaration"
+  private val validCalculationType = "final-declaration"
 
   private val parsedNino          = Nino(validNino)
   private val parsedTaxYear       = TaxYear.fromMtd(validTaxYear)
