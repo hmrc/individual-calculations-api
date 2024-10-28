@@ -42,7 +42,7 @@ class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 
         result shouldBe a[Def1_SubmitFinalDeclarationValidator]
       }
-      "return the Validator for schema definition 1 when confirm-amendment is taxType" in {
+      "return the Validator for schema definition 1 when calculationType is confirm-amendment" in {
         val result: Validator[SubmitFinalDeclarationRequestData] =
           validatorFactory.validator(validNino, taxYear2526, validCalculationId, calculationTypeCa, SubmitFinalDeclarationSchema.Def1)
 
