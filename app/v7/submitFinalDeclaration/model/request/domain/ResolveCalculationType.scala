@@ -26,7 +26,6 @@ import shared.models.errors.MtdError
 object ResolveCalculationType extends ResolverSupport {
 
   def apply(value: String): Validated[Seq[MtdError], CalculationType] = (value) match {
-    case ("final-declaration") => Valid(`final-declaration`)
     case "final-declaration" => Valid(`final-declaration`)
     case "confirm-amendment" => Valid(`confirm-amendment`)
     case _ => Invalid(Seq(FormatCalculationTypeError))
