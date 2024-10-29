@@ -18,7 +18,7 @@ package v7.submitFinalDeclaration.model.request
 
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 import v7.retrieveCalculation.schema.RetrieveCalculationSchema
 import v7.submitFinalDeclaration.model.request.domain.CalculationType
 
@@ -33,6 +33,7 @@ sealed trait SubmitFinalDeclarationRequestData {
     RetrieveCalculationSchema.schemaFor(taxYear) match {
       case RetrieveCalculationSchema.Def1 => Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def2 => Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def3 => Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     }
 
 }

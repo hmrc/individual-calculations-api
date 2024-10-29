@@ -18,7 +18,7 @@ package v7.submitFinalDeclaration.model.request
 
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData}
+import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData}
 import v7.submitFinalDeclaration.model.request.domain.`final-declaration`
 
 class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
@@ -43,8 +43,15 @@ class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
           Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId, calculationType).toRetrieveRequestData shouldBe
             Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
         }
+
+        "retrieve uses schema Def3" must {
+          "return a Def2_RetrieveCalculationRequestData" in {
+            val taxYear = TaxYear.fromMtd("2025-26")
+            Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId, calculationType).toRetrieveRequestData shouldBe
+              Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+          }
+        }
       }
     }
   }
-
 }
