@@ -65,7 +65,7 @@ post:
             FORMAT_CALCULATION_TYPE:
               $ref: ./common/errors.yaml#/components/examples/formatCalculationType
             RULE_OUTSIDE_AMENDMENT_WINDOW:
-              $ref: ./common/errors.yaml#/components/examples/ruleOutisdeAmendmentWindow
+              $ref: ./common/errors.yaml#/components/examples/ruleOutsideAmendmentWindow
             FORMAT_TAX_YEAR:
               $ref: ./common/errors.yaml#/components/examples/formatTaxYear
             RULE_TAX_YEAR_RANGE_INVALID:

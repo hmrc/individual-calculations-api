@@ -16,7 +16,7 @@
 
 package v7.submitFinalDeclaration.def1
 
-import api.errors.{RuleSubmissionFailedError, formatCalculationTypeError}
+import api.errors.{RuleSubmissionFailedError, FormatCalculationTypeError}
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
@@ -94,7 +94,7 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId, "notValid").validateAndWrapResult()
         result shouldBe Left(
-          ErrorWrapper(correlationId, formatCalculationTypeError)
+          ErrorWrapper(correlationId, FormatCalculationTypeError)
         )
       }
     }

@@ -29,7 +29,6 @@ import v7.retrieveCalculation.RetrieveCalculationService
 import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
-import v7.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

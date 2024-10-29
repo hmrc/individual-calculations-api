@@ -16,7 +16,7 @@
 
 package v7.submitFinalDeclaration.model.request.domain
 
-import api.errors.formatCalculationTypeError
+import api.errors.FormatCalculationTypeError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import shared.controllers.validators.resolvers.ResolverSupport
@@ -28,7 +28,7 @@ object ResolveCalculationType extends ResolverSupport {
   def apply(value: String): Validated[Seq[MtdError], CalculationType] = (value) match {
     case ("final-declaration") => Valid(`final-declaration`)
     case ("confirm-amendment") => Valid(`confirm-amendment`)
-    case _ => Invalid(Seq(formatCalculationTypeError))
+    case _ => Invalid(Seq(FormatCalculationTypeError))
   }
 
 }

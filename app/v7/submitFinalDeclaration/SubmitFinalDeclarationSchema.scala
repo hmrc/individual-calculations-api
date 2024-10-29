@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.submitFinalDeclaration.schema
+package v7.submitFinalDeclaration
 
 import shared.controllers.validators.resolvers.ResolveTaxYear
 import shared.models.domain.TaxYear

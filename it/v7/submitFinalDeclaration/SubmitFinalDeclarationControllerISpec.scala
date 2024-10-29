@@ -30,7 +30,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
   "Calling the submit final declaration endpoint" should {
     "return a 204 status code" when {
-      "a valid request is made pre 2026" in new Test {
+      "a valid request is made pre 2026" in new TestFinalDeclaration {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -73,13 +73,15 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
       def validationErrorTest(requestNino: String,
                               requestTaxYear: String,
                               requestCalculationId: String,
+                              requestCalculationType: String,
                               expectedStatus: Int,
                               expectedBody: MtdError): Unit = {
-        s"validation fails with ${expectedBody.code} error" in new Test {
+        s"validation fails with ${expectedBody.code} error" in new TestFinalDeclaration {
 
           override val nino: String          = requestNino
           override val taxYear: String       = requestTaxYear
           override val calculationId: String = requestCalculationId
+          override val calculationType: String = requestCalculationType
 
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
@@ -95,10 +97,12 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
       }
 
       val input = List(
-        ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
-        ("ZG903729C", "201number77", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
-        ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-        ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
+        ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, NinoFormatError),
+        ("ZG903729C", "201number77", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, TaxYearFormatError),
+        ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration",  BAD_REQUEST, RuleTaxYearRangeInvalidError),
+        ("ZG903729C", "2017-18", "bad id", "final-declaration", BAD_REQUEST, CalculationIdFormatError),
+        ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "invalid-calculation-type", BAD_REQUEST, FormatCalculationTypeError),
+        ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "confirm-amendment", BAD_REQUEST, RuleSubmissionFailedError)
       )
 
       input.foreach(args => (validationErrorTest _).tupled(args))
@@ -114,7 +118,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
            """.stripMargin
 
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $backendCode error and status $backendStatus" in new Test {
+          s"backend returns an $backendCode error and status $backendStatus" in new TestFinalDeclaration {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -164,37 +168,15 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
     }
   }
 
-  private trait Test {
-
-    val nino: String              = "ZG903729C"
-    val taxYear: String           = "2018-19"
-    val downstreamTaxYear: String = "18-19"
-    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-
-    def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
-
-    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
-
-    def setupStubs(): StubMapping
-
-    def request: WSRequest = {
-      setupStubs()
-      buildRequest(mtdUri)
-        .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.7.0+json"),
-          (AUTHORIZATION, "Bearer 123")
-        )
-    }
-
-  }
   private trait TestFinalDeclaration {
 
     val nino: String              = "ZG903729C"
     val taxYear: String           = "2025-26"
     val downstreamTaxYear: String = "25-26"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calculationType: String   = "final-declaration"
 
-    def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/final-declaration"
+    def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/$calculationType"
 
     def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/DF/confirm"
 

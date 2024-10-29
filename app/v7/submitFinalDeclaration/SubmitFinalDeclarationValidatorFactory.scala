@@ -19,8 +19,7 @@ package v7.submitFinalDeclaration
 import shared.controllers.validators.Validator
 import v7.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
-import v7.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
-import v7.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema.Def1
+import SubmitFinalDeclarationSchema.Def1
 
 import javax.inject.Singleton
 

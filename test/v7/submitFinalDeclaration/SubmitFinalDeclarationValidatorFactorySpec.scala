@@ -20,7 +20,6 @@ import shared.controllers.validators.Validator
 import shared.utils.UnitSpec
 import v7.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
-import v7.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 

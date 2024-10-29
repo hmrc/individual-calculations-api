@@ -78,6 +78,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
         ("INVALID_TAX_YEAR", TaxYearFormatError),
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
+        ("INVALID_CALCULATION_TYPE", InternalError),
         ("INVALID_CORRELATION_ID", InternalError),
         ("NOT_FOUND", NotFoundError),
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
@@ -92,7 +93,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
         ("SERVER_ERROR", InternalError),
         ("SERVICE_UNAVAILABLE", InternalError),
-        ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
+        ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError),
+        ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError)
       )
 
       val extraDesErrors = List(

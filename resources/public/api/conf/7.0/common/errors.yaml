@@ -37,7 +37,7 @@ components:
         The client and/or agent is outside the amendment window.
       value:
         code: RULE_OUTSIDE_AMENDMENT_WINDOW
-        message: The remote endpoint has indicated that the request cannot be completed as you are outside the amendment window.
+        message: You are outside the amendment window
 
     formatFinalDeclaration:
       description: |
