@@ -36,7 +36,7 @@ object RuleIncomeSourcesChangedError
 object RuleOutsideAmendmentWindowError
     extends MtdError(
       code = "RULE_OUTSIDE_AMENDMENT_WINDOW",
-      message = "The request cannot be completed as you are outside the amendment window",
+      message = "You are outside the amendment window",
       BAD_REQUEST
     )
 

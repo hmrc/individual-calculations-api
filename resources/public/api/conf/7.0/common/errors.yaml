@@ -32,7 +32,7 @@ components:
         code: FORMAT_CALCULATION_TYPE
         message: The provided calculationType is not invalid
 
-    ruleOutisdeAmendmentWindow:
+    ruleOutsideAmendmentWindow:
       description: |
         The client and/or agent is outside the amendment window.
       value:
