@@ -26,7 +26,7 @@ import shared.models.errors._
 import shared.services._
 import shared.support.IntegrationBaseSpec
 
-class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
+class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
   "Calling the submit final declaration endpoint" should {
     "return a 204 status code" when {
