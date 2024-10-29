@@ -38,9 +38,9 @@ components:
       name: calculationType
       in: path
       description: |
-        Specifies the calculation types to be confirmed Limited to the following possible values for TY24-25: final-declaration
+        Specifies the calculation types to be confirmed. Limited to the following possible values for TY24-25 and before: final-declaration
         
-        Limited to the following possible values for TY25-26: final-declaration confirm-amendment
+        Limited to the following possible values for TY25-26 onwards: final-declaration confirm-amendment
       schema:
         type: string
         example: "final-declaration"
