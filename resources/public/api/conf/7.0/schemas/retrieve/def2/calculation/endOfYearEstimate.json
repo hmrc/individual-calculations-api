@@ -19,7 +19,7 @@
             "description": "A list of income source types.",
             "enum": [
               "self-employment",
-              "uk-property-non-fhl",
+              "uk-property",
               "foreign-property-fhl-eea",
               "uk-property-fhl",
               "employments",

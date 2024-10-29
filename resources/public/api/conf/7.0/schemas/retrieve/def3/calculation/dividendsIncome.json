@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "An object containing information about dividends income in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalChargeableDividends": {
+      "description": "Total chargeable dividends. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5040"
+    },
+    "totalUkDividends": {
+      "description": "Total UK dividends. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "ukDividends": {
+      "description": "An object detailing UK dividends.",
+      "type": "object",
+      "properties": {
+        "incomeSourceId": {
+          "description": "The unique identifier of the income source.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9]{15}$",
+          "example": "XAIS12345678910"
+        },
+        "incomeSourceType": {
+          "description": "The income source type for UK dividends.",
+          "type": "string",
+          "enum": [
+            "uk-dividends"
+          ]
+        },
+        "dividends": {
+          "description": "Amount of UK dividends. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "example": "4300"
+        },
+        "otherUkDividends": {
+          "description": "Amount of other UK dividends. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "example": "5000"
+        }
+      },
+      "additionalProperties": false
+    },
+    "otherDividends": {
+      "description": "An array detailing other dividends.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "typeOfDividend": {
+            "description": "Type of dividend.",
+            "type": "string",
+            "enum": [
+              "stock-dividend",
+              "redeemable-shares",
+              "bonus-issues-of-securities",
+              "close-company-loans-written-off"
+            ]
+          },
+          "customerReference": {
+            "description": "A reference unique to the customer.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+            "example": "S1000z"
+          },
+          "grossAmount": {
+            "description": "Gross amount for other dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "184.04"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "chargeableForeignDividends": {
+      "description": "Amount of chargeable foreign dividends. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "4000"
+    },
+    "foreignDividends": {
+      "description": "An array detailing foreign dividends.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceType": {
+            "description": "The income source type for the dividend.",
+            "type": "string",
+            "enum": [
+              "foreign-dividends"
+            ]
+          },
+          "countryCode": {
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+            "type": "string",
+            "example": "FRA"
+          },
+          "grossIncome": {
+            "description": "Gross income for foreign dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "netIncome": {
+            "description": "Net income for foreign dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "500.99"
+          },
+          "taxDeducted": {
+            "description": "Tax deducted for foreign dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "501.98"
+          },
+          "foreignTaxCreditRelief": {
+            "description": "A boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "required": [
+          "countryCode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dividendIncomeReceivedWhilstAbroad": {
+      "description": "An array detailing dividend income received whilst abroad.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceType": {
+            "description": "The income source type for the dividend.",
+            "type": "string",
+            "enum": [
+              "foreign-dividends"
+            ]
+          },
+          "countryCode": {
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+            "type": "string",
+            "example": "FRA"
+          },
+          "grossIncome": {
+            "description": "Gross income for foreign dividends received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "400.99"
+          },
+          "netIncome": {
+            "description": "Net income for foreign dividends received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "4001.99"
+          },
+          "taxDeducted": {
+            "description": "Tax deducted for foreign dividends received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "501.98"
+          },
+          "foreignTaxCreditRelief": {
+            "description": "A boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "required": [
+          "countryCode"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

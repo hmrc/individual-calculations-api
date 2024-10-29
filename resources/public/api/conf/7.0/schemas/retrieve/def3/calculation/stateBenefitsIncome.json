@@ -1,0 +1,252 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about any state benefits income in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalStateBenefitsIncome": {
+      "description": "Total state benefits income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "5000.99"
+    },
+    "totalStateBenefitsTaxPaid": {
+      "description": "Total state benefits tax paid. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "5001.99"
+    },
+    "stateBenefitsDetail": {
+      "description": "Object detailing state benefits income.",
+      "type": "object",
+      "properties": {
+        "incapacityBenefit": {
+          "description": "Array detailing Incapacity Benefit income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of Incapacity Benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5002.99"
+              },
+              "taxPaid": {
+                "description": "The amount of tax paid on Incapacity Benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5003.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "statePension": {
+          "description": "Array detailing State Pension income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of State Pension. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5004.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ]
+          }
+        },
+        "statePensionLumpSum": {
+          "description": "Array detailing State Pension lump sum income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of State Pension lump sum. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5005.99"
+              },
+              "taxPaid": {
+                "description": "The amount of tax paid on State Pension lump sum. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5006.99"
+              },
+              "rate": {
+                "description": "Tar rate of tax paid on State Pension lump sum. This value must be between 0 and 99.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "4.85"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount",
+              "rate"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "employmentSupportAllowance": {
+          "description": "Array detailing Employment Support Allowance income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of Employment Support Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5008.99"
+              },
+              "taxPaid": {
+                "description": "The amount of tax paid on Employment Support Allowance. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5009.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "jobSeekersAllowance": {
+          "description": "Array detailing Job Seekers Allowance income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of Job Seekers Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5010.99"
+              },
+              "taxPaid": {
+                "description": "The amount of tax paid on Job Seekers Allowance. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5011.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "bereavementAllowance": {
+          "description": "Array detailing Bereavement Allowance income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of Bereavement Allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5012.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "otherStateBenefits": {
+          "description": "Array detailing other benefits income.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceId": {
+                "description": "The unique identifier of the income source.",
+                "type": "string",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "example": "bb74c290-cae6-11ec-9b64-0242ac120002"
+              },
+              "amount": {
+                "description": "The amount of other state benefits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5013.99"
+              },
+              "source": {
+                "$ref": "../common_defs.json#/definitions/dataSource"
+              }
+            },
+            "required": [
+              "incomeSourceId",
+              "amount"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "totalStateBenefitsIncomeExcStatePensionLumpSum": {
+      "description": "Total state benefits income excluding state pension lump sum. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "5000.99"
+    }
+  },
+  "additionalProperties": false
+}

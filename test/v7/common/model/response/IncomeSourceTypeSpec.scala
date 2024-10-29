@@ -25,7 +25,7 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[IncomeSourceType](
     "01" -> `self-employment`,
-    "02" -> `uk-property-non-fhl`,
+    "02" -> `uk-property`,
     "03" -> `foreign-property-fhl-eea`,
     "04" -> `uk-property-fhl`,
     "05" -> `employments`,
@@ -49,7 +49,7 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testWrites[IncomeSourceType](
     `self-employment`           -> "self-employment",
-    `uk-property-non-fhl`       -> "uk-property-non-fhl",
+    `uk-property`               -> "uk-property",
     `foreign-property-fhl-eea`  -> "foreign-property-fhl-eea",
     `uk-property-fhl`           -> "uk-property-fhl",
     `employments`               -> "employments",

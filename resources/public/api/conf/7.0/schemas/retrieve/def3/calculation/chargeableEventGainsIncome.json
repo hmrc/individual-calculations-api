@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about chargeable event gains income in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalOfAllGains": {
+      "description": "Total gains for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "totalGainsWithTaxPaid": {
+      "description": "Total gains with tax paid for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5002"
+    },
+    "gainsWithTaxPaidDetail": {
+      "description": "Array detailing gains with tax paid.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of gains with tax paid.",
+            "type": "string",
+            "enum": [
+              "life-insurance",
+              "capital-redemption",
+              "life-annuity"
+            ]
+          },
+          "customerReference": {
+            "description": "A reference unique to the customer.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+            "example": "S1000z"
+          },
+          "gainAmount": {
+            "description": "Gain amount for gains with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "180.00"
+          },
+          "yearsHeld": {
+            "description": "Years held. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "50"
+          },
+          "yearsHeldSinceLastGain": {
+            "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "35"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "totalGainsWithNoTaxPaidAndVoidedIsa": {
+      "description": "Total of gains with no tax paid and voided ISA. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "gainsWithNoTaxPaidAndVoidedIsaDetail": {
+      "description": "Array detailing gains with no tax paid and voided Isa.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of gains with no tax paid and voided ISA.",
+            "type": "string",
+            "enum": [
+              "life-insurance",
+              "capital-redemption",
+              "life-annuity",
+              "voided-isa"
+            ]
+          },
+          "customerReference": {
+            "description": "A reference unique to the customer.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+            "example": "S1000z"
+          },
+          "gainAmount": {
+            "description": "Gain amount for gains with no tax paid and voided ISA. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "180.00"
+          },
+          "yearsHeld": {
+            "description": "Years held. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "50"
+          },
+          "yearsHeldSinceLastGain": {
+            "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "83"
+          },
+          "voidedIsaTaxPaid": {
+            "description": "Voided ISA tax paid amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "180.55"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "totalForeignGainsOnLifePoliciesTaxPaid": {
+      "description": "Total of foreign gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "foreignGainsOnLifePoliciesTaxPaidDetail": {
+      "description": "Array detailing foreign gains on life policies with tax paid.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "customerReference": {
+            "description": "A reference unique to the customer.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+            "example": "S1000z"
+          },
+          "gainAmount": {
+            "description": "Gain amount for foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "taxPaidAmount": {
+            "description": "Foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "3500.99"
+          },
+          "yearsHeld": {
+            "description": "Years held. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "5"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "totalForeignGainsOnLifePoliciesNoTaxPaid": {
+      "description": "Total of foreign gains on life policies with no tax paid. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "3100"
+    },
+    "foreignGainsOnLifePoliciesNoTaxPaidDetail": {
+      "description": "Array detailing foreign gains on life policies with no tax paid.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "customerReference": {
+            "description": "A reference unique to the customer.",
+            "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+            "example": "S1000z"
+          },
+          "gainAmount": {
+            "description": "Foreign gain on life policies with no tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "yearsHeld": {
+            "description": "Years held. This value must be between 0 and 99. No decimals.",
+            "type": "integer",
+            "example": "62"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "totalOfAllGains"
+  ],
+  "additionalProperties": false
+}
