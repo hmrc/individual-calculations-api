@@ -30,7 +30,6 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   val taxYear: TaxYear             = TaxYear.fromMtd("2020-21")
   val calculationId: CalculationId = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
   val calculationTypeDf: CalculationType = `final-declaration`
-  val calculationTypeCa: CalculationType = `confirm-amendment`
 
   val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
     nino,
