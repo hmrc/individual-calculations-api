@@ -40,7 +40,7 @@ object RuleOutsideAmendmentWindowError
       BAD_REQUEST
     )
 
-object formatCalculationTypeError
+object FormatCalculationTypeError
     extends MtdError(
       code = "FORMAT_CALCULATION_TYPE",
       message = "The provided calculation type is not valid.",
