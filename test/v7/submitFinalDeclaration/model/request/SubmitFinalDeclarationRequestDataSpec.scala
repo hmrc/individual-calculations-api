@@ -18,8 +18,8 @@ package v7.submitFinalDeclaration.model.request
 
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.utils.UnitSpec
+import v7.common.model.`final-declaration`
 import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData}
-import v7.submitFinalDeclaration.model.request.domain.`final-declaration`
 
 class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
 

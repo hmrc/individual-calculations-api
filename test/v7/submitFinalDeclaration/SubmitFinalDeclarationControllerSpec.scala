@@ -31,11 +31,11 @@ import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleT
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
+import v7.common.model.{CalculationType, `final-declaration`}
 import v7.retrieveCalculation.MockRetrieveCalculationService
 import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v7.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 import v7.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
-import v7.submitFinalDeclaration.model.request.domain.{CalculationType, `final-declaration`}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

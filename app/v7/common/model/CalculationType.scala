@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-package v7.submitFinalDeclaration.model.request.domain
+package v7.common.model
 
-import api.errors.FormatCalculationTypeError
-import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
-import shared.controllers.validators.resolvers.ResolverSupport
-import shared.models.errors.MtdError
+sealed trait CalculationType{
+  def toDownstream: String
+}
 
-
-object ResolveCalculationType extends ResolverSupport {
-
-  def apply(value: String): Validated[Seq[MtdError], CalculationType] = (value) match {
-    case "final-declaration" => Valid(`final-declaration`)
-    case "confirm-amendment" => Valid(`confirm-amendment`)
-    case _ => Invalid(Seq(FormatCalculationTypeError))
-  }
-
+case object `final-declaration` extends CalculationType{
+ def toDownstream = "DF"
+}
+case object `confirm-amendment`    extends CalculationType{
+  def toDownstream = "CA"
 }

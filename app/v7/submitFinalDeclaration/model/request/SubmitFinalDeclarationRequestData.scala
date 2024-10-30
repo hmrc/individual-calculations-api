@@ -18,9 +18,9 @@ package v7.submitFinalDeclaration.model.request
 
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
+import v7.common.model.CalculationType
 import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 import v7.retrieveCalculation.schema.RetrieveCalculationSchema
-import v7.submitFinalDeclaration.model.request.domain.CalculationType
 
 sealed trait SubmitFinalDeclarationRequestData {
   val nino: Nino
