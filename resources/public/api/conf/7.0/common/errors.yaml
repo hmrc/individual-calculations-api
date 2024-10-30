@@ -25,6 +25,20 @@ components:
         code: FORMAT_TAX_YEAR
         message: The provided tax year is invalid
 
+    formatCalculationType:
+      description: |
+        The format of the supplied calculationType value is not valid.
+      value:
+        code: FORMAT_CALCULATION_TYPE
+        message: The provided calculationType is not invalid
+
+    ruleOutsideAmendmentWindow:
+      description: |
+        The client and/or agent is outside the amendment window.
+      value:
+        code: RULE_OUTSIDE_AMENDMENT_WINDOW
+        message: You are outside the amendment window
+
     formatFinalDeclaration:
       description: |
         The format of the supplied finalDeclaration value is not valid.

@@ -33,6 +33,20 @@ object RuleIncomeSourcesChangedError
       BAD_REQUEST
     )
 
+object RuleOutsideAmendmentWindowError
+    extends MtdError(
+      code = "RULE_OUTSIDE_AMENDMENT_WINDOW",
+      message = "You are outside the amendment window",
+      BAD_REQUEST
+    )
+
+object FormatCalculationTypeError
+    extends MtdError(
+      code = "FORMAT_CALCULATION_TYPE",
+      message = "The provided calculation type is not valid",
+      BAD_REQUEST
+    )
+
 object RuleIncomeSourcesInvalidError
     extends MtdError(
       code = "RULE_INCOME_SOURCES_INVALID",
