@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package v7.common.model
+package v7.common.model.domain
 
-sealed trait CalculationType{
+sealed trait CalculationType {
   def toDownstream: String
 }
 
-case object `final-declaration` extends CalculationType{
- def toDownstream = "DF"
+case object `final-declaration` extends CalculationType {
+  def toDownstream = "DF"
 }
-case object `confirm-amendment`    extends CalculationType{
+
+case object `confirm-amendment` extends CalculationType {
   def toDownstream = "CA"
 }

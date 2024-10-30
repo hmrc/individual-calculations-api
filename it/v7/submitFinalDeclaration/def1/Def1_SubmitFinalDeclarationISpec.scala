@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.submitFinalDeclaration
+package v7.submitFinalDeclaration.def1
 
 import api.errors._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -22,6 +22,7 @@ import play.api.http.Status._
 import play.api.libs.json._
 import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
+import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services._
 import shared.support.IntegrationBaseSpec
@@ -30,7 +31,8 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
   "Calling the submit final declaration endpoint" should {
     "return a 204 status code" when {
-      "a valid request is made pre 2026" in new TestFinalDeclaration {
+      "a valid request is made pre tax year 2025-26" in new TestFinalDeclaration {
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -42,7 +44,10 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
         response.status shouldBe NO_CONTENT
       }
-      "a valid request is made for Final Declaration 2026" in new TestFinalDeclaration{
+      "a valid request is made for Final Declaration post tax year 2025-26" in new TestFinalDeclaration {
+        override val taxYear: String       = "2025-26"
+        override def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/DF/confirm"
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -54,7 +59,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
         response.status shouldBe NO_CONTENT
       }
-      "a valid request is made for Confirm Amendment 2026" in new TestConfirmAmendment{
+      "a valid request is made for Confirm Amendment post tax year 2025-26" in new TestConfirmAmendment {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -67,7 +72,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
         response.status shouldBe NO_CONTENT
       }
 
-      }
+    }
 
     "return the correct error code" when {
       def validationErrorTest(requestNino: String,
@@ -78,9 +83,9 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
                               expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new TestFinalDeclaration {
 
-          override val nino: String          = requestNino
-          override val taxYear: String       = requestTaxYear
-          override val calculationId: String = requestCalculationId
+          override val nino: String            = requestNino
+          override val taxYear: String         = requestTaxYear
+          override val calculationId: String   = requestCalculationId
           override val calculationType: String = requestCalculationType
 
           override def setupStubs(): StubMapping = {
@@ -99,7 +104,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
       val input = List(
         ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, NinoFormatError),
         ("ZG903729C", "201number77", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, TaxYearFormatError),
-        ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration",  BAD_REQUEST, RuleTaxYearRangeInvalidError),
+        ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, RuleTaxYearRangeInvalidError),
         ("ZG903729C", "2017-18", "bad id", "final-declaration", BAD_REQUEST, CalculationIdFormatError),
         ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "invalid-calculation-type", BAD_REQUEST, FormatCalculationTypeError),
         ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "confirm-amendment", BAD_REQUEST, RuleSubmissionFailedError)
@@ -170,15 +175,15 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
   private trait TestFinalDeclaration {
 
-    val nino: String              = "ZG903729C"
-    val taxYear: String           = "2025-26"
-    val downstreamTaxYear: String = "25-26"
-    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-    val calculationType: String   = "final-declaration"
+    val nino: String                   = "ZG903729C"
+    val taxYear: String                = "2023-24"
+    lazy val downstreamTaxYear: String = TaxYear.fromMtd(taxYear).asTysDownstream
+    val calculationId: String          = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val calculationType: String        = "final-declaration"
 
     def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/$calculationType"
 
-    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/DF/confirm"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/calculation/$nino/$calculationId/crystallise"
 
     def setupStubs(): StubMapping
 
@@ -192,12 +197,13 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
     }
 
   }
+
   private trait TestConfirmAmendment {
 
-    val nino: String              = "ZG903729C"
-    val taxYear: String           = "2025-26"
-    val downstreamTaxYear: String = "25-26"
-    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    val nino: String                   = "ZG903729C"
+    val taxYear: String                = "2025-26"
+    lazy val downstreamTaxYear: String = TaxYear.fromMtd(taxYear).asTysDownstream
+    val calculationId: String          = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def mtdUri: String = s"/$nino/self-assessment/$taxYear/$calculationId/confirm-amendment"
 

@@ -21,7 +21,7 @@ import cats.implicits._
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
 import shared.models.errors.MtdError
-import v7.common.model.ResolveCalculationType
+import v7.common.model.resolver.ResolveCalculationType
 import v7.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)

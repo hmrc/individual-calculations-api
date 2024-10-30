@@ -31,7 +31,7 @@ import shared.models.errors.{ErrorWrapper, InternalError, NinoFormatError, RuleT
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v7.common.model.{CalculationType, `final-declaration`}
+import v7.common.model.domain.{CalculationType, `final-declaration`}
 import v7.retrieveCalculation.MockRetrieveCalculationService
 import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v7.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData

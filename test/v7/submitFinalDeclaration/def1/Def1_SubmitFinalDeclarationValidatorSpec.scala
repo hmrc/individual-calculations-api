@@ -16,42 +16,43 @@
 
 package v7.submitFinalDeclaration.def1
 
-import api.errors.{RuleSubmissionFailedError, FormatCalculationTypeError}
-import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
+import api.errors.{FormatCalculationTypeError, RuleSubmissionFailedError}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.{CalculationType, `confirm-amendment`, `final-declaration`}
+import v7.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
 import v7.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino          = "ZG903729C"
-  private val validTaxYear       = "2017-18"
+  private val validNino             = "ZG903729C"
+  private val validTaxYear          = "2017-18"
   private val validFinalDeclaration = "final-declaration"
-  private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val validConfirmAmendment = "confirm-amendment"
+  private val validCalculationId    = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-  private val parsedNino          = Nino(validNino)
-  private val parsedTaxYear       = TaxYear.fromMtd(validTaxYear)
-  private val parsedCalculationId = CalculationId(validCalculationId)
-  private val parsedFinalDeclaration: CalculationType = `final-declaration`
+  private val parsedNino                                     = Nino(validNino)
+  def parsedTaxYear(taxYear: String = validTaxYear): TaxYear = TaxYear.fromMtd(taxYear)
+  private val parsedCalculationId                            = CalculationId(validCalculationId)
+  private val parsedFinalDeclaration: CalculationType        = `final-declaration`
+  private val parsedConfirmAmendment: CalculationType        = `confirm-amendment`
 
   private def validator(nino: String, taxYear: String, calculationId: String, calculationType: String) =
     new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId, calculationType)
 
-  private def ruleValidator(nino: Nino, taxYear: TaxYear,
-                            calculationId: CalculationId, calculationType: CalculationType): Validated[Seq[MtdError], Def1_SubmitFinalDeclarationRequestData] =
-    Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules(Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId, calculationType)
-    )
-
   "running a validation" should {
     "return the parsed domain object" when {
-      "a valid request is supplied" in {
+      "a valid request is supplied with final-declaration CalculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear, parsedCalculationId, parsedFinalDeclaration))
+        result shouldBe Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear(), parsedCalculationId, parsedFinalDeclaration))
+      }
+
+      "a valid request is supplied with confirm-amendment CalculationType" in {
+        val result = validator(validNino, "2025-26", validCalculationId, validConfirmAmendment).validateAndWrapResult()
+        result shouldBe Right(
+          Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear("2025-26"), parsedCalculationId, parsedConfirmAmendment))
       }
     }
 
@@ -90,11 +91,20 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
         )
       }
     }
-    "return formatCalculationTypeError error" when {
+    "return FormatCalculationTypeError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId, "notValid").validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, FormatCalculationTypeError)
+        )
+      }
+    }
+
+    "return RuleSubmissionFailedError" when {
+      "confirm-amendment is supplied as the CalculationType for tax years pre 2025-26" in {
+        val result = validator(validNino, validTaxYear, validCalculationId, validConfirmAmendment).validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleSubmissionFailedError)
         )
       }
     }
@@ -110,20 +120,6 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
             Some(List(CalculationIdFormatError, NinoFormatError))
           )
         )
-      }
-    }
-
-    "Def1_SubmitFinalDeclarationRulesValidatorSpec.validateBusinessRules" should {
-      val validNino = Nino("ZG903729C")
-      val taxYear1780 = TaxYear.fromMtd("2017-18")
-      val taxYear2082 = TaxYear.fromMtd("2025-26")
-      val confirmAmendment: CalculationType = `confirm-amendment`
-
-      "return a Rule submission error" in {
-        ruleValidator(validNino, taxYear1780, parsedCalculationId, confirmAmendment) shouldBe Invalid(Seq(RuleSubmissionFailedError))
-      }
-      "return valid request data" in {
-        ruleValidator(validNino, taxYear2082, parsedCalculationId, confirmAmendment) shouldBe Valid(Def1_SubmitFinalDeclarationRequestData(validNino, taxYear2082, parsedCalculationId, confirmAmendment))
       }
     }
 

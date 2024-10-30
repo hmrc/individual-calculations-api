@@ -21,7 +21,7 @@ import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v7.common.model.{CalculationType, `final-declaration`}
+import v7.common.model.domain.{CalculationType, `final-declaration`}
 import v7.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import scala.concurrent.Future

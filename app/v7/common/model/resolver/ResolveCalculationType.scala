@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package v7.common.model
+package v7.common.model.resolver
 
 import api.errors.FormatCalculationTypeError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import shared.controllers.validators.resolvers.ResolverSupport
 import shared.models.errors.MtdError
-
+import v7.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
 
 object ResolveCalculationType extends ResolverSupport {
 
-  def apply(value: String): Validated[Seq[MtdError], CalculationType] = (value) match {
+  def apply(value: String): Validated[Seq[MtdError], CalculationType] = value match {
     case "final-declaration" => Valid(`final-declaration`)
     case "confirm-amendment" => Valid(`confirm-amendment`)
-    case _ => Invalid(Seq(FormatCalculationTypeError))
+    case _                   => Invalid(Seq(FormatCalculationTypeError))
   }
 
 }

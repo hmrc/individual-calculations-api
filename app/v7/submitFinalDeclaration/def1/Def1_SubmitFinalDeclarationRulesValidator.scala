@@ -21,7 +21,7 @@ import cats.data.Validated
 import cats.data.Validated.Invalid
 import shared.controllers.validators.RulesValidator
 import shared.models.errors.MtdError
-import v7.common.model.`confirm-amendment`
+import v7.common.model.domain.`confirm-amendment`
 import v7.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 object Def1_SubmitFinalDeclarationRulesValidator extends RulesValidator[Def1_SubmitFinalDeclarationRequestData] {
