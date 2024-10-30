@@ -78,5 +78,5 @@ paths:
     $ref: "./calculations_list_trigger.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
     $ref: "./retrieve.yaml"
-  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/final-declaration:
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/{calculationType}:
     $ref: "./submit_final_declaration.yaml"
