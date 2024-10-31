@@ -27,7 +27,6 @@ class IncomeSourceSpec extends UnitSpec {
       Seq(
         ("01", `self-employment`),
         ("02", `uk-property`),
-        ("03", `foreign-property-fhl-eea`),
         ("04", `uk-property-fhl`),
         ("05", `employments`),
         ("06", `foreign-income`),

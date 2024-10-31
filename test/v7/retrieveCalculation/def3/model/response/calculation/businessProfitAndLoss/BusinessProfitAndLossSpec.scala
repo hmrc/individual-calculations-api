@@ -113,7 +113,6 @@ class BusinessProfitAndLossSpec extends UnitSpec {
   val testData: Seq[Test] = Seq[Test](
     Test("01", IncomeSourceType.`self-employment`),
     Test("02", IncomeSourceType.`uk-property`),
-    Test("03", IncomeSourceType.`foreign-property-fhl-eea`),
     Test("04", IncomeSourceType.`uk-property-fhl`),
     Test("15", IncomeSourceType.`foreign-property`)
   )
