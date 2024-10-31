@@ -32,7 +32,6 @@ object AnnualAdjustment {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,
     `uk-property`,
-    `uk-property-fhl`,
     `foreign-property`
   )
 

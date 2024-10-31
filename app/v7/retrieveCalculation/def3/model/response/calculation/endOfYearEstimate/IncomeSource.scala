@@ -32,7 +32,6 @@ object IncomeSource {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property`,
-    IncomeSourceType.`uk-property-fhl`,
     IncomeSourceType.`employments`,
     IncomeSourceType.`foreign-income`,
     IncomeSourceType.`foreign-dividends`,

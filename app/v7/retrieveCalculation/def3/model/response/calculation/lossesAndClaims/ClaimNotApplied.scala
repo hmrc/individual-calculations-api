@@ -36,7 +36,6 @@ object ClaimNotApplied {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property`,
-    IncomeSourceType.`uk-property-fhl`,
     IncomeSourceType.`foreign-property`
   )
 
