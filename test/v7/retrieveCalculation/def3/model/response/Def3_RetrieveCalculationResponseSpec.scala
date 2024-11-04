@@ -72,13 +72,11 @@ class Def3_RetrieveCalculationResponseSpec extends UnitSpec with Def3_Calculatio
       }
 
       "also remove calculation if no other fields are defined in it" in {
-        // format: off
         val onlyTransitionProfitCalculation = Calculation(
-          None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
+          None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,
           None, None, None, None, None, None, None, None, None, None, None, None, None, None,
           transitionProfit = Some(TransitionProfit(totalTaxableTransitionProfit = Some(123), transitionProfitDetail = None))
         )
-        // format: on
 
         val response = fullResponse.copy(calculation = Some(onlyTransitionProfitCalculation))
 

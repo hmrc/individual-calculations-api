@@ -410,7 +410,6 @@
         "taxableProfit": 12501,
         "adjustedIncomeTaxLoss": 12502,
         "totalBroughtForwardIncomeTaxLosses": 12503,
-        "lossForCSFHL": 12504,
         "broughtForwardIncomeTaxLossesUsed": 12505,
         "taxableProfitAfterIncomeTaxLossesDeduction": 12506,
         "carrySidewaysIncomeTaxLossesUsed": 12507,
