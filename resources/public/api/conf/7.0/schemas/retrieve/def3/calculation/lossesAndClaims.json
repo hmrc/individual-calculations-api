@@ -16,7 +16,7 @@
             "example": "1234568790ABCDE"
           },
           "originatingClaimId": {
-            "description": "The unique identifier of the original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
+            "description": "The unique identifier of the original carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
             "type": "string",
             "pattern": "^[A-Za-z0-9]{15}$",
             "example": "1234568790ABCDE"
@@ -213,7 +213,7 @@
       }
     },
     "defaultCarriedForwardLosses": {
-      "description": "Losses arising in this calculation that have been carried forward to the next calculation by default. This applies to specific income sources e.g Furnished Holiday Lettings where losses can only be carried forward.",
+      "description": "Losses arising in this calculation that have been carried forward to the next calculation by default. This applies to specific income sources.",
       "type": "array",
       "items": {
         "type": "object",

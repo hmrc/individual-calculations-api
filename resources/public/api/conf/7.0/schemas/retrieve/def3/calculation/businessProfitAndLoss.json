@@ -111,15 +111,6 @@
         "maximum": 99999999999,
         "example": "160"
       },
-      "lossForCSFHL": {
-        "title": "lossForCSFHL",
-        "description": "The losses from UK Property Non-FHL that have been carried sideways to UK Property FHL. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
       "broughtForwardIncomeTaxLossesUsed": {
         "title": "broughtForwardIncomeTaxLossesUsed",
         "description": "This is the total sum of losses brought forward from previous years used against the taxable profit for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
