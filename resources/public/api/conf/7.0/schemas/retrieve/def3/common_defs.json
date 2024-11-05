@@ -14,10 +14,8 @@
       "type": "string",
       "enum": [
         "self-employment",
-        "uk-property-non-fhl",
-        "uk-property-fhl",
+        "uk-property",
         "foreign-property",
-        "foreign-property-fhl-eea"
       ]
     },
     "claimType": {
@@ -27,7 +25,6 @@
         "carry-forward",
         "carry-sideways",
         "carry-forward-to-carry-sideways",
-        "carry-sideways-fhl",
         "carry-backwards",
         "carry-backwards-general-income"
       ]
