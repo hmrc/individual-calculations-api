@@ -15,7 +15,7 @@
       "enum": [
         "self-employment",
         "uk-property",
-        "foreign-property",
+        "foreign-property"
       ]
     },
     "claimType": {
