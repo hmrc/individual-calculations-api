@@ -43,7 +43,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, OK, downstreamSuccessBody)
         }
 
-        val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
+        val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -178,6 +178,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
     val nino             = "ZG903729C"
     val finalDeclaration = true
+    val calculationType = "IF"
 
     val downstreamSuccessBody: JsValue = Json.parse("""
         |{
@@ -199,9 +200,8 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
     def setupStubs(): StubMapping
 
-    def request(nino: String, taxYear: String, maybeFinalDeclaration: Option[Boolean]): WSRequest = {
-      val suffix = maybeFinalDeclaration.map(d => s"?finalDeclaration=$d").getOrElse("")
-      val uri    = s"/$nino/self-assessment/$taxYear/$suffix"
+    def request(nino: String, taxYear: String, calculationType: String): WSRequest = {
+      val uri    = s"/$nino/self-assessment/$taxYear/$calculationType"
 
       setupStubs()
       buildRequest(uri)

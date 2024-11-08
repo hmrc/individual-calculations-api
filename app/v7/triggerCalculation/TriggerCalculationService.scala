@@ -38,15 +38,20 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
 
   private val downstreamErrorMap: Map[String, MtdError] = {
     val errors = Map(
-      "INVALID_NINO"            -> NinoFormatError,
-      "INVALID_TAX_YEAR"        -> TaxYearFormatError,
-      "INVALID_TAX_CRYSTALLISE" -> FinalDeclarationFormatError,
-      "INVALID_REQUEST"         -> InternalError,
-      "NO_SUBMISSION_EXIST"     -> RuleNoIncomeSubmissionsExistError,
-      "CONFLICT"                -> RuleFinalDeclarationReceivedError,
-      "SERVER_ERROR"            -> InternalError,
-      "SERVICE_UNAVAILABLE"     -> InternalError,
-      "UNMATCHED_STUB_ERROR"    -> RuleIncorrectGovTestScenarioError
+      "INVALID_NINO"                  -> NinoFormatError,
+      "INVALID_TAX_YEAR"              -> TaxYearFormatError,
+      "INVALID_CALCULATION_TYPE"      -> InternalError,
+      "INVALID_TAX_CRYSTALLISE"       -> FinalDeclarationFormatError,
+      "INVALID_REQUEST"               -> InternalError,
+      "FORMAT_CALCULATION_TYPE"       -> FormatCalculationTypeError,
+      "CALCULATION_TYPE_NOT_ALLOWED"  -> FormatCalculationTypeError,
+    "NO_SUBMISSION_EXIST"             -> RuleNoIncomeSubmissionsExistError,
+      "CONFLICT"                      -> RuleFinalDeclarationReceivedError,
+      "OUTSIDE_AMENDMENT_WINDOW"      -> RuleOutsideAmendmentWindowError,
+      "DECLARATION_NOT_RECEIVED"      -> RuleFinalDeclarationReceivedError,
+      "SERVER_ERROR"                  -> InternalError,
+      "SERVICE_UNAVAILABLE"           -> InternalError,
+      "UNMATCHED_STUB_ERROR"          -> RuleIncorrectGovTestScenarioError
     )
 
     val extraTysErrors = Map(

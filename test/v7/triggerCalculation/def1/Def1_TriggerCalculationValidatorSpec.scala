@@ -20,7 +20,7 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v5.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
+import v7.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
@@ -29,18 +29,20 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
   private val validNino             = "ZG903729C"
   private val validTaxYear          = "2017-18"
   private val validFinalDeclaration = "true"
+  private val validDeclarationType  = "IF"
 
   private val parsedNino             = Nino(validNino)
   private val parsedTaxYear          = TaxYear.fromMtd(validTaxYear)
   private val parsedFinalDeclaration = true
+//  private val parsedDeclarationType  = ???
 
-  private def validator(nino: String, taxYear: String, finalDeclaration: Option[String]) =
-    new Def1_TriggerCalculationValidator(nino, taxYear, finalDeclaration)
+  private def validator(nino: String, taxYear: String, calculationType: String) =
+    new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
 
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied with some finalDeclaration value" in {
-        val result = validator(validNino, validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
+        val result = validator(validNino, validTaxYear, validDeclarationType).validateAndWrapResult()
         result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, parsedFinalDeclaration))
       }
 
