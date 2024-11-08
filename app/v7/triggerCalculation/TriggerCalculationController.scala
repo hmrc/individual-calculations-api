@@ -16,13 +16,13 @@
 
 package v7.triggerCalculation
 
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import shared.utils.{IdGenerator, Logging}
 import shared.controllers._
 import shared.models.audit.GenericAuditDetail
-import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import shared.utils.{IdGenerator, Logging}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
+import shared.routing.Version
 import v7.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Inject
@@ -47,13 +47,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       endpointName = "triggerCalculation"
     )
 
-  private def auditResponseBody(maybeBody: Option[JsValue]) =
-    for {
-      body   <- maybeBody
-      calcId <- (body \ "calculationId").asOpt[String]
-    } yield Json.obj("calculationId" -> calcId)
-
-  def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
+def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
@@ -77,5 +71,11 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
 
       requestHandler.handleRequest()
     }
+
+  private def auditResponseBody(maybeBody: Option[JsValue]) =
+    for {
+      body   <- maybeBody
+      calcId <- (body \ "calculationId").asOpt[String]
+    } yield Json.obj("calculationId" -> calcId)
 
 }

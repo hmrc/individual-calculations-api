@@ -18,12 +18,14 @@ package v7.triggerCalculation
 
 import config.CalculationsFeatureSwitches
 import shared.config.AppConfig
-import shared.connectors.DownstreamUri.IfsUri
+import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.models.domain.EmptyJsonBody
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
+import v7.triggerCalculation.model.response.TriggerCalculationResponse
+import v7.triggerCalculation.schema.TriggerCalculationSchema.Def1.DownstreamResp
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,23 +37,27 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
       hc: HeaderCarrier,
       ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[Unit]] = {
+      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
 
-    val url = if (taxYear.year <= 2023) {
-      IfsUri[Unit](s"income-tax/nino/$nino/taxYear/${taxYear.asTysDownstream}/tax-calculation?crystallise=true")
+    val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=true"
+
+    val downstreamUrl = if (taxYear.year <= 2023) {
+      if (featureSwitches.isDesIf_MigrationEnabled) {
+        IfsUri[DownstreamResp](path)
+      } else {
+        DesUri[DownstreamResp](path)
+      }
     } else if (taxYear.year == 2024 || taxYear.year == 2025) {
-      IfsUri[Unit](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=true")
+      IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=true")
     } else {
-      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
+      IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
     }
 
-    post(
-      EmptyJsonBody,
-      url
-    )
+    post(EmptyJsonBody, downstreamUrl)
 
   }
+
 
 }

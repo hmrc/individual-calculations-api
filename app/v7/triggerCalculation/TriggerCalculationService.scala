@@ -22,6 +22,7 @@ import api.errors._
 import shared.services.{BaseService, ServiceOutcome}
 import cats.implicits._
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
+import v7.triggerCalculation.model.response.TriggerCalculationResponse
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -31,7 +32,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
       ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
+      ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
     connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
@@ -43,9 +44,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       "INVALID_CALCULATION_TYPE"      -> InternalError,
       "INVALID_TAX_CRYSTALLISE"       -> FinalDeclarationFormatError,
       "INVALID_REQUEST"               -> InternalError,
-      "FORMAT_CALCULATION_TYPE"       -> FormatCalculationTypeError,
-      "CALCULATION_TYPE_NOT_ALLOWED"  -> FormatCalculationTypeError,
-    "NO_SUBMISSION_EXIST"             -> RuleNoIncomeSubmissionsExistError,
+      "NO_SUBMISSION_EXIST"             -> RuleNoIncomeSubmissionsExistError,
       "CONFLICT"                      -> RuleFinalDeclarationReceivedError,
       "OUTSIDE_AMENDMENT_WINDOW"      -> RuleOutsideAmendmentWindowError,
       "DECLARATION_NOT_RECEIVED"      -> RuleFinalDeclarationReceivedError,
