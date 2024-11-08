@@ -19,11 +19,11 @@ package v7.triggerCalculation.def1
 import cats.data.Validated
 import cats.implicits._
 import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
+import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.common.model.resolver.ResolveCalculationType
+import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 
 object Def1_TriggerCalculationValidator {
 
@@ -31,7 +31,7 @@ object Def1_TriggerCalculationValidator {
   private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
 }
 
-class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
+class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String)
   extends Validator[TriggerCalculationRequestData] {
 
   import Def1_TriggerCalculationValidator._
@@ -40,7 +40,6 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
-      ResolveCalculationId(calculationId),
       ResolveCalculationType(calculationType)
     ).mapN(Def1_TriggerCalculationRequestData)
 

@@ -16,28 +16,18 @@
 
 package v7.triggerCalculation.model.request
 
-import play.api.libs.json.{JsValue, Json}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
+import shared.models.domain.{Nino, TaxYear}
+import v7.triggerCalculation.schema.TriggerCalculationSchema
 import v7.common.model.domain.CalculationType
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
-import v7.retrieveCalculation.schema.RetrieveCalculationSchema
 
 sealed trait TriggerCalculationRequestData {
   val nino: Nino
   val taxYear: TaxYear
-  val calculationId: CalculationId
   val calculationType: CalculationType
-  def toNrsJson: JsValue
 
-  def toRetrieveRequestData: RetrieveCalculationRequestData =
-    RetrieveCalculationSchema.schemaFor(taxYear) match {
-      case RetrieveCalculationSchema.Def1 => Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
-      case RetrieveCalculationSchema.Def2 => Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
-      case RetrieveCalculationSchema.Def3 => Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
-    }
+  val schema: TriggerCalculationSchema
 }
 
-case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId, calculationType: CalculationType
-                                             ) extends TriggerCalculationRequestData {
-  def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
+case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationType: CalculationType) extends TriggerCalculationRequestData {
+  override val schema: TriggerCalculationSchema = TriggerCalculationSchema.Def1
 }

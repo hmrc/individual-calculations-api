@@ -39,10 +39,12 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
 
     import request._
 
-    val url = if (taxYear.year >= 2026) {
-      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/${calculationType.toDownstream}/confirm")
+    val url = if (taxYear.year <= 2023) {
+      IfsUri[Unit](s"income-tax/nino/$nino/taxYear/${taxYear.asTysDownstream}/tax-calculation?crystallise=true")
+    } else if (taxYear.year == 2024 || taxYear.year == 2025) {
+      IfsUri[Unit](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino/crystallise=true")
     } else {
-      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise")
+      IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
     }
 
     post(

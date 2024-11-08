@@ -28,11 +28,10 @@ class TriggerCalculationValidatorFactory {
 
   def validator(nino: String,
                 taxYear: String,
-                calculationId: String,
                 calculationType: String,
                 schema: TriggerCalculationSchema): Validator[TriggerCalculationRequestData] =
     schema match {
-      case TriggerCalculationSchema.Def1 => new Def1_TriggerCalculationValidator(nino, taxYear, calculationId, calculationType)
+      case TriggerCalculationSchema.Def1 => new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
     }
 
 }

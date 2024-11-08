@@ -20,7 +20,7 @@ import shared.utils.{IdGenerator, Logging}
 import shared.controllers._
 import shared.models.audit.GenericAuditDetail
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, Writes}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
 import shared.routing.Version
 import v7.triggerCalculation.schema.TriggerCalculationSchema
@@ -47,11 +47,12 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       endpointName = "triggerCalculation"
     )
 
-  def triggerCalculation(nino: String, taxYear: String, calculationId: String, calculationType: String): Action[AnyContent] =
+  def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
+      implicit val ws: Writes[Unit] =
 
-      val validator = validatorFactory.validator(nino, taxYear, calculationId, calculationType, TriggerCalculationSchema.schemaFor(taxYear))
+      val validator = validatorFactory.validator(nino, taxYear, calculationType, TriggerCalculationSchema.schemaFor(taxYear))
 
       val requestHandler =
         RequestHandler
@@ -64,7 +65,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
             transactionName = "trigger-a-self-assessment-tax-calculation",
             auditDetailCreator = GenericAuditDetail.auditDetailCreator(
               apiVersion = Version(request),
-              params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)),
+              params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationType" -> calculationType)),
             requestBody = None,
             responseBodyMap = auditResponseBody
           ))
