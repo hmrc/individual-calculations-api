@@ -213,7 +213,7 @@
       }
     },
     "defaultCarriedForwardLosses": {
-      "description": "Losses arising in this calculation that have been carried forward to the next calculation by default. This applies to specific income sources.",
+      "description": "Losses arising in this calculation that have been carried forward to the next calculation by default.",
       "type": "array",
       "items": {
         "type": "object",
