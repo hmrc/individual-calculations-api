@@ -410,7 +410,6 @@
         "taxableProfit": 12501,
         "adjustedIncomeTaxLoss": 12502,
         "totalBroughtForwardIncomeTaxLosses": 12503,
-        "lossForCSFHL": 12504,
         "broughtForwardIncomeTaxLossesUsed": 12505,
         "taxableProfitAfterIncomeTaxLossesDeduction": 12506,
         "carrySidewaysIncomeTaxLossesUsed": 12507,
@@ -743,10 +742,8 @@
     "incomeSummaryTotals": {
       "totalSelfEmploymentProfit": 12500,
       "totalPropertyProfit": 12500,
-      "totalFHLPropertyProfit": 12500,
       "totalUKOtherPropertyProfit": 12500,
       "totalForeignPropertyProfit": 12500,
-      "totalEeaFhlProfit": 12500,
       "totalEmploymentIncome": 12500
     },
     "taxCalculation": {

@@ -19,7 +19,8 @@ package v7.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.{ClaimType, IncomeSourceType}
+import v7.common.model.response.IncomeSourceType
+import v7.retrieveCalculation.def3.model.response.ClaimType
 
 class CarriedForwardLossSpec extends UnitSpec {
 
@@ -69,8 +70,6 @@ class CarriedForwardLossSpec extends UnitSpec {
   val testData: Seq[Test] = Seq[Test](
     Test("01", IncomeSourceType.`self-employment`, "CF", ClaimType.`carry-forward`, LossType.`class4-nics`),
     Test("02", IncomeSourceType.`uk-property`, "CSGI", ClaimType.`carry-sideways`, LossType.`class4-nics`),
-    Test("03", IncomeSourceType.`foreign-property-fhl-eea`, "CFCSGI", ClaimType.`carry-forward-to-carry-sideways`, LossType.`class4-nics`),
-    Test("04", IncomeSourceType.`uk-property-fhl`, "CSFHL", ClaimType.`carry-sideways-fhl`, LossType.`class4-nics`),
     Test("15", IncomeSourceType.`foreign-property`, "CB", ClaimType.`carry-backwards`, LossType.`class4-nics`),
     Test("01", IncomeSourceType.`self-employment`, "CBGI", ClaimType.`carry-backwards-general-income`, LossType.`class4-nics`)
   )

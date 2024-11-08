@@ -33,8 +33,6 @@ object DefaultCarriedForwardLoss {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property`,
-    IncomeSourceType.`foreign-property-fhl-eea`,
-    IncomeSourceType.`uk-property-fhl`,
     IncomeSourceType.`foreign-property`
   )
 

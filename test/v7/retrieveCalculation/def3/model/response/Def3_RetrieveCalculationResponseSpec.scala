@@ -29,7 +29,7 @@ import v7.retrieveCalculation.models.response.Def3_RetrieveCalculationResponse
 
 class Def3_RetrieveCalculationResponseSpec extends UnitSpec with Def3_CalculationFixture with JsonErrorValidators with Inside {
 
-  "Def2_RetrieveCalculationResponse" must {
+  "Def3_RetrieveCalculationResponse" must {
     "allow conversion from downstream JSON to MTD JSON" when {
       "JSON contains every field" in {
         val model = calculationDownstreamJson.as[Def3_RetrieveCalculationResponse]
@@ -42,7 +42,7 @@ class Def3_RetrieveCalculationResponseSpec extends UnitSpec with Def3_Calculatio
     }
   }
 
-  "Def2_RetrieveCalculationResponse adjustFields" when {
+  "Def3_RetrieveCalculationResponse adjustFields" when {
     val fullResponse = calculationDownstreamJson.as[Def3_RetrieveCalculationResponse]
 
     val ignoredTaxYear = "ignoredTaxYear"
@@ -72,13 +72,11 @@ class Def3_RetrieveCalculationResponseSpec extends UnitSpec with Def3_Calculatio
       }
 
       "also remove calculation if no other fields are defined in it" in {
-        // format: off
         val onlyTransitionProfitCalculation = Calculation(
-          None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 
+          None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,
           None, None, None, None, None, None, None, None, None, None, None, None, None, None,
           transitionProfit = Some(TransitionProfit(totalTaxableTransitionProfit = Some(123), transitionProfitDetail = None))
         )
-        // format: on
 
         val response = fullResponse.copy(calculation = Some(onlyTransitionProfitCalculation))
 

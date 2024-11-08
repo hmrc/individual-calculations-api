@@ -19,7 +19,8 @@ package v7.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
-import v7.common.model.response.{ClaimType, IncomeSourceType}
+import v7.common.model.response.IncomeSourceType
+import v7.retrieveCalculation.def3.model.response.ClaimType
 
 case class ResultOfClaimsApplied(
     claimId: Option[String],
@@ -42,8 +43,6 @@ object ResultOfClaimsApplied {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     IncomeSourceType.`self-employment`,
     IncomeSourceType.`uk-property`,
-    IncomeSourceType.`foreign-property-fhl-eea`,
-    IncomeSourceType.`uk-property-fhl`,
     IncomeSourceType.`foreign-property`
   )
 

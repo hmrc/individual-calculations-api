@@ -33,7 +33,6 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                       taxableProfit: Option[BigInt],
                                       adjustedIncomeTaxLoss: Option[BigInt],
                                       totalBroughtForwardIncomeTaxLosses: Option[BigInt],
-                                      lossForCSFHL: Option[BigInt],
                                       broughtForwardIncomeTaxLossesUsed: Option[BigInt],
                                       taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                                       carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
@@ -50,8 +49,6 @@ object BusinessProfitAndLoss {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(
     `self-employment`,
     `uk-property`,
-    `foreign-property-fhl-eea`,
-    `uk-property-fhl`,
     `foreign-property`
   )
 
@@ -69,7 +66,6 @@ object BusinessProfitAndLoss {
     taxableProfit                                  <- (JsPath \ "taxableProfit").readNullable[BigInt]
     adjustedIncomeTaxLoss                          <- (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt]
     totalBroughtForwardIncomeTaxLosses             <- (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt]
-    lossForCSFHL                                   <- (JsPath \ "lossForCSFHL").readNullable[BigInt]
     broughtForwardIncomeTaxLossesUsed              <- (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt]
     taxableProfitAfterIncomeTaxLossesDeduction     <- (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt]
     carrySidewaysIncomeTaxLossesUsed               <- (JsPath \ "carrySidewaysIncomeTaxLossesUsed").readNullable[BigInt]
@@ -96,7 +92,6 @@ object BusinessProfitAndLoss {
       taxableProfit = taxableProfit,
       adjustedIncomeTaxLoss = adjustedIncomeTaxLoss,
       totalBroughtForwardIncomeTaxLosses = totalBroughtForwardIncomeTaxLosses,
-      lossForCSFHL = lossForCSFHL,
       broughtForwardIncomeTaxLossesUsed = broughtForwardIncomeTaxLossesUsed,
       taxableProfitAfterIncomeTaxLossesDeduction = taxableProfitAfterIncomeTaxLossesDeduction,
       carrySidewaysIncomeTaxLossesUsed = carrySidewaysIncomeTaxLossesUsed,
@@ -126,7 +121,6 @@ object BusinessProfitAndLoss {
         "taxableProfit"                                  -> Json.toJson(o.taxableProfit),
         "adjustedIncomeTaxLoss"                          -> Json.toJson(o.adjustedIncomeTaxLoss),
         "totalBroughtForwardIncomeTaxLosses"             -> Json.toJson(o.totalBroughtForwardIncomeTaxLosses),
-        "lossForCSFHL"                                   -> Json.toJson(o.lossForCSFHL),
         "broughtForwardIncomeTaxLossesUsed"              -> Json.toJson(o.broughtForwardIncomeTaxLossesUsed),
         "taxableProfitAfterIncomeTaxLossesDeduction"     -> Json.toJson(o.taxableProfitAfterIncomeTaxLossesDeduction),
         "carrySidewaysIncomeTaxLossesUsed"               -> Json.toJson(o.carrySidewaysIncomeTaxLossesUsed),

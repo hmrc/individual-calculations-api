@@ -37,7 +37,6 @@ class BusinessProfitAndLossSpec extends UnitSpec {
        |  "taxableProfit": 456,
        |  "adjustedIncomeTaxLoss": 456,
        |  "totalBroughtForwardIncomeTaxLosses": 456,
-       |  "lossForCSFHL": 456,
        |  "broughtForwardIncomeTaxLossesUsed": 456,
        |  "taxableProfitAfterIncomeTaxLossesDeduction": 456,
        |  "carrySidewaysIncomeTaxLossesUsed": 456,
@@ -66,7 +65,6 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       taxableProfit = Some(BigInt(456)),
       adjustedIncomeTaxLoss = Some(BigInt(456)),
       totalBroughtForwardIncomeTaxLosses = Some(BigInt(456)),
-      lossForCSFHL = Some(BigInt(456)),
       broughtForwardIncomeTaxLossesUsed = Some(BigInt(456)),
       taxableProfitAfterIncomeTaxLossesDeduction = Some(BigInt(456)),
       carrySidewaysIncomeTaxLossesUsed = Some(BigInt(456)),
@@ -94,7 +92,6 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       | "taxableProfit": 456,
       | "adjustedIncomeTaxLoss": 456,
       | "totalBroughtForwardIncomeTaxLosses": 456,
-      | "lossForCSFHL": 456,
       | "broughtForwardIncomeTaxLossesUsed": 456,
       | "taxableProfitAfterIncomeTaxLossesDeduction": 456,
       | "carrySidewaysIncomeTaxLossesUsed": 456,
@@ -113,8 +110,6 @@ class BusinessProfitAndLossSpec extends UnitSpec {
   val testData: Seq[Test] = Seq[Test](
     Test("01", IncomeSourceType.`self-employment`),
     Test("02", IncomeSourceType.`uk-property`),
-    Test("03", IncomeSourceType.`foreign-property-fhl-eea`),
-    Test("04", IncomeSourceType.`uk-property-fhl`),
     Test("15", IncomeSourceType.`foreign-property`)
   )
 
