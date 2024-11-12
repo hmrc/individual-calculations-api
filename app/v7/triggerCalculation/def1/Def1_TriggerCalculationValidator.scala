@@ -22,7 +22,7 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v7.common.model.resolver.ResolveCalculationType
+import v7.common.model.resolver.ResolveTriggerCalculationType
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 
 object Def1_TriggerCalculationValidator {
@@ -40,7 +40,7 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
-      ResolveCalculationType(calculationType)
+      ResolveTriggerCalculationType(calculationType)
     ).mapN(Def1_TriggerCalculationRequestData)
 
 }

@@ -20,10 +20,22 @@ sealed trait CalculationType {
   def toDownstream: String
 }
 
+case object `in-year` extends CalculationType {
+  def toDownstream: String = "IY"
+}
+
+case object `intent-to-finalise` extends CalculationType {
+  def toDownstream: String = "IF"
+}
+
+case object `intent-to-amend` extends CalculationType {
+  def toDownstream: String = "IA"
+}
+
 case object `final-declaration` extends CalculationType {
-  def toDownstream = "DF"
+  def toDownstream: String = "final-declaration"
 }
 
 case object `confirm-amendment` extends CalculationType {
-  def toDownstream = "CA"
+  def toDownstream: String = "confirm-amendment"
 }

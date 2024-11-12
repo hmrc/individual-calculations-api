@@ -49,7 +49,11 @@ trait BaseDownstreamConnector extends Logging {
     for {
       headers <- getBackendHeaders(strategy, jsonContentTypeHeader)
       result  <- doPost(headers)
-    } yield result
+    } yield {
+      println(s"\n$result\n")
+      println(s"\n$headers\n")
+      result
+    }
   }
 
   def get[Resp](uri: DownstreamUri[Resp])(implicit

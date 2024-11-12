@@ -39,7 +39,7 @@ object StandardDownstreamHttpParser extends HttpParser {
       doRead(url, response) { correlationId =>
         response.validateJson[A] match {
           case Some(ref) => Right(ResponseWrapper(correlationId, ref))
-          case None      => Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
+          case None      => println("\nWE ARE HERE");Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
         }
       }
 

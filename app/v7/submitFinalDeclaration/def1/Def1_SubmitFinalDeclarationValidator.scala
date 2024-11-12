@@ -21,7 +21,7 @@ import cats.implicits._
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
 import shared.models.errors.MtdError
-import v7.common.model.resolver.ResolveCalculationType
+import v7.common.model.resolver.ResolveFinalDeclarationCalculationType
 import v7.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
@@ -32,7 +32,7 @@ class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calcul
       ResolveNino(nino),
       ResolveTaxYear(taxYear),
       ResolveCalculationId(calculationId),
-      ResolveCalculationType(calculationType)
+      ResolveFinalDeclarationCalculationType(calculationType)
     ).mapN(Def1_SubmitFinalDeclarationRequestData) andThen Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules
 
 }

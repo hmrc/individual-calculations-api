@@ -34,7 +34,11 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
-    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap))).map{
+      s =>
+        println(s)
+        s
+    }
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {

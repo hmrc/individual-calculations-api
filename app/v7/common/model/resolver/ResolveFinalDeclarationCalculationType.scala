@@ -23,7 +23,7 @@ import shared.controllers.validators.resolvers.ResolverSupport
 import shared.models.errors.MtdError
 import v7.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
 
-object ResolveCalculationType extends ResolverSupport {
+object ResolveFinalDeclarationCalculationType extends ResolverSupport {
 
   def apply(value: String): Validated[Seq[MtdError], CalculationType] = value match {
     case "final-declaration" => Valid(`final-declaration`)

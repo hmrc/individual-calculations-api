@@ -17,6 +17,7 @@
 package v7.triggerCalculation
 
 import config.CalculationsFeatureSwitches
+import play.api.http.Status
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
@@ -40,6 +41,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
+    implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
 
     val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=true"
 

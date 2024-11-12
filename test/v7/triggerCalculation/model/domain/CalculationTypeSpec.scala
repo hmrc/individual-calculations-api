@@ -18,7 +18,6 @@ package v7.triggerCalculation.model.domain
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.common.model.response.CalculationType._
 
 class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
