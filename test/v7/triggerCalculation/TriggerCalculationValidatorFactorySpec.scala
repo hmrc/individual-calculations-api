@@ -18,15 +18,14 @@ package v7.triggerCalculation
 
 import shared.controllers.validators.Validator
 import shared.utils.UnitSpec
-import v5.triggerCalculation.def1.Def1_TriggerCalculationValidator
-import v5.triggerCalculation.model.request.TriggerCalculationRequestData
-import v5.triggerCalculation.schema.TriggerCalculationSchema
+import v7.triggerCalculation.def1.Def1_TriggerCalculationValidator
+import v7.triggerCalculation.model.request.TriggerCalculationRequestData
+import v7.triggerCalculation.schema.TriggerCalculationSchema
 
 class TriggerCalculationValidatorFactorySpec extends UnitSpec {
 
   private val validNino             = "ZG903729C"
   private val validTaxYear          = "2017-18"
-  private val validFinalDeclaration = "true"
 
   val validatorFactory = new TriggerCalculationValidatorFactory
 
@@ -35,7 +34,7 @@ class TriggerCalculationValidatorFactorySpec extends UnitSpec {
     "given any request regardless of tax year" should {
       "return the Validator for schema definition 1" in {
         val result: Validator[TriggerCalculationRequestData] =
-          validatorFactory.validator(validNino, validTaxYear, Some(validFinalDeclaration), TriggerCalculationSchema.Def1)
+          validatorFactory.validator(validNino, validTaxYear, "IY", TriggerCalculationSchema.Def1)
 
         result shouldBe a[Def1_TriggerCalculationValidator]
       }

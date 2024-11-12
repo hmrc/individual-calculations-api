@@ -20,6 +20,7 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
+import v7.common.model.domain.`confirm-amendment`
 import v7.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
@@ -28,34 +29,26 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
   private val validNino             = "ZG903729C"
   private val validTaxYear          = "2017-18"
-  private val validFinalDeclaration = "true"
-  private val validDeclarationType  = "IF"
+  private val validCalculationType  = "IY"
 
   private val parsedNino             = Nino(validNino)
   private val parsedTaxYear          = TaxYear.fromMtd(validTaxYear)
-  private val parsedFinalDeclaration = true
-//  private val parsedDeclarationType  = ???
 
   private def validator(nino: String, taxYear: String, calculationType: String) =
     new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
 
   "validator" should {
     "return the parsed domain object" when {
-      "a valid request is supplied with some finalDeclaration value" in {
-        val result = validator(validNino, validTaxYear, validDeclarationType).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, parsedFinalDeclaration))
-      }
-
-      "a valid request is supplied without a finalDeclaration value" in {
-        val result = validator(validNino, validTaxYear, None).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, false))
+      "a valid request is supplied with calculationType" in {
+        val result = validator(validNino, validTaxYear, validCalculationType).validateAndWrapResult()
+        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `confirm-amendment`))
       }
 
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        val result = validator("A12344A", validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
+        val result = validator("A12344A", validTaxYear, validCalculationType).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, NinoFormatError)
         )
@@ -64,7 +57,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        val result = validator(validNino, "20178", Some(validFinalDeclaration)).validateAndWrapResult()
+        val result = validator(validNino, "20178", validCalculationType).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, TaxYearFormatError)
         )
@@ -73,7 +66,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearRangeInvalid error" when {
       "a tax year with a range higher than 1 is supplied" in {
-        val result = validator(validNino, "2019-21", Some(validFinalDeclaration)).validateAndWrapResult()
+        val result = validator(validNino, "2019-21", validCalculationType).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
         )
@@ -82,7 +75,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        val result = validator(validNino, "2016-17", Some(validFinalDeclaration)).validateAndWrapResult()
+        val result = validator(validNino, "2016-17", validCalculationType).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
         )
@@ -91,7 +84,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return FinalDeclarationFormatError error" when {
       "an invalid final declaration is supplied" in {
-        val result = validator(validNino, validTaxYear, Some("error")).validateAndWrapResult()
+        val result = validator(validNino, validTaxYear, "error").validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, FinalDeclarationFormatError)
         )
@@ -100,7 +93,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
     "return multiple errors" when {
       "multiple invalid parameters are provided" in {
-        val result = validator("not-a-nino", validTaxYear, Some("error")).validateAndWrapResult()
+        val result = validator("not-a-nino", validTaxYear, "error").validateAndWrapResult()
 
         result shouldBe Left(
           ErrorWrapper(

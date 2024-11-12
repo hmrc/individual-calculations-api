@@ -27,8 +27,9 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v5.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v7.common.model.domain.`confirm-amendment`
+import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -47,10 +48,10 @@ class TriggerCalculationControllerSpec
   private val rawTaxYear = taxYear.asMtd
 
   val requestDataWithFinalDeclaration: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = true)
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`)
 
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, finalDeclaration = false)
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`)
 
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
@@ -120,8 +121,6 @@ class TriggerCalculationControllerSpec
 
   private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    val finalDeclaration: Option[String] = None
-
     lazy val controller = new TriggerCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
@@ -138,7 +137,7 @@ class TriggerCalculationControllerSpec
 
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.triggerCalculation(validNino, rawTaxYear, finalDeclaration)(fakeRequest)
+    protected def callController(): Future[Result] = controller.triggerCalculation(validNino, rawTaxYear, "IY")(fakeRequest)
 
     override protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
@@ -147,7 +146,7 @@ class TriggerCalculationControllerSpec
         GenericAuditDetail(
           userType = "Individual",
           agentReferenceNumber = None,
-          params = Map("nino" -> validNino, "taxYear" -> rawTaxYear, "finalDeclaration" -> s"${finalDeclaration.getOrElse(false)}"),
+          params = Map("nino" -> validNino, "taxYear" -> rawTaxYear, "calculationType" -> "IY"),
           requestBody = None,
           `X-CorrelationId` = correlationId,
           versionNumber = apiVersion.name,

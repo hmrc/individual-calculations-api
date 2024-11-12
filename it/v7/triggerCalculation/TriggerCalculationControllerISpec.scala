@@ -55,10 +55,10 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"false"), OK, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"true"), OK, downstreamSuccessBody)
         }
 
-        val response: WSResponse = await(request(nino, mtdTaxYear, None).post(EmptyBody))
+        val response: WSResponse = await(request(nino, mtdTaxYear, "").post(EmptyBody))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -73,7 +73,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> s"$finalDeclaration"), ACCEPTED, downstreamSuccessBody)
         }
 
-        val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
+        val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
 
         response.status shouldBe ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
@@ -93,7 +93,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
             MtdIdLookupStub.ninoFound(requestNino)
           }
 
-          val response: WSResponse = await(request(nino, requestTaxYear, Some(finalDeclaration)).post(EmptyBody))
+          val response: WSResponse = await(request(nino, requestTaxYear, calculationType).post(EmptyBody))
           response.status shouldBe expectedStatus
           response.json shouldBe Json.toJson(expectedBody)
           response.header("Content-Type") shouldBe Some("application/json")
@@ -134,7 +134,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
                 errorBody(backendCode))
             }
 
-            val response: WSResponse = await(request(nino, mtdTaxYear, Some(finalDeclaration)).post(EmptyBody))
+            val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -147,6 +147,8 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           (FORBIDDEN, "INVALID_TAX_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
           (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, InternalError),
           (FORBIDDEN, "NO_SUBMISSION_EXIST", BAD_REQUEST, RuleNoIncomeSubmissionsExistError),
+          (BAD_REQUEST, "FORMAT_CALCULATION_TYPE", BAD_REQUEST, FormatCalculationTypeError),
+          (BAD_REQUEST, "CALCULATION_TYPE_NOT_ALLOWED", BAD_REQUEST, FormatCalculationTypeError),
           (CONFLICT, "CONFLICT", BAD_REQUEST, RuleFinalDeclarationReceivedError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
@@ -179,6 +181,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     val nino             = "ZG903729C"
     val finalDeclaration = true
     val calculationType = "IF"
+    val
 
     val downstreamSuccessBody: JsValue = Json.parse("""
         |{
@@ -206,22 +209,29 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.5.0+json"),
+          (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
 
   }
 
+  private trait TysIfs2526Test extends Test {
+    def mtdTaxYear: String    = "2025-26"
+    def downstreamUri: String = s"income-tax/nino/$nino/taxYear/25-26/tax-calculation?crystallise=true"
+
+  }
+
+
   private trait TysIfsTest extends Test {
     def mtdTaxYear: String    = "2023-24"
-    def downstreamUri: String = s"/income-tax/calculation/23-24/$nino"
+    def downstreamUri: String = s"income-tax/calculation/23-24/$nino?crystallise=true"
 
   }
 
   private trait NonTysTest extends Test {
     def mtdTaxYear: String    = "2018-19"
-    def downstreamUri: String = s"/income-tax/nino/$nino/taxYear/2019/tax-calculation"
+    def downstreamUri: String = s"income-tax/nino/$nino/taxYear/18-19/tax-calculation?crystallise=true"
 
   }
 

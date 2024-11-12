@@ -31,3 +31,11 @@ case object `intent-to-finalise` extends CalculationType {
 case object `intent-to-amend` extends CalculationType {
   def toDownstream: String = "IA"
 }
+
+case object `final-declaration` extends CalculationType {
+  def toDownstream: String = "final-declaration"
+}
+
+case object `confirm-amendment` extends CalculationType {
+  def toDownstream: String = "confirm-amendment"
+}
