@@ -665,49 +665,46 @@
               }
             ]
           },
-          "submissionPeriods": {
-            "description": "Array containing submission periods for the business income source.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "periodId": {
-                  "description": "An identifier for the period, unique to the customer.",
-                  "type": "string",
-                  "example": "001"
-                },
-                "startDate": {
-                  "description": "The first day the period covers.",
-                  "allOf": [
-                    {
-                      "$ref": "#/definitions/date"
-                    }
-                  ]
-                },
-                "endDate": {
-                  "description": "The last day the period covers.",
-                  "allOf": [
-                    {
-                      "$ref": "#/definitions/date"
-                    }
-                  ]
-                },
-                "receivedDateTime": {
-                  "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-                  "allOf": [
-                    {
-                      "$ref": "#/definitions/timestamp"
-                    }
-                  ]
-                }
+          "submissionPeriod": {
+            "description": "Object containing submission period for the business income source.",
+            "type": "object",
+            "properties": {
+              "submissionId": {
+                "description": "A reference to the unique identifier of the period.",
+                "type": "string",
+                "example": "001"
               },
-              "additionalProperties": false,
-              "required": [
-                "startDate",
-                "endDate",
-                "receivedDateTime"
-              ]
-            }
+              "startDate": {
+                "description": "The first day the period covers.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/date"
+                  }
+                ]
+              },
+              "endDate": {
+                "description": "The last day the period covers.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/date"
+                  }
+                ]
+              },
+              "receivedDateTime": {
+                "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/timestamp"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "startDate",
+              "endDate",
+              "receivedDateTime"
+            ]
           }
         },
         "additionalProperties": false,
