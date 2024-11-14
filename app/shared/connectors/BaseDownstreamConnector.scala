@@ -50,8 +50,6 @@ trait BaseDownstreamConnector extends Logging {
       headers <- getBackendHeaders(strategy, jsonContentTypeHeader)
       result  <- doPost(headers)
     } yield {
-      println(s"\n$result\n")
-      println(s"\n$headers\n")
       result
     }
   }

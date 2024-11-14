@@ -16,12 +16,15 @@
 
 package v7.triggerCalculation.def1
 
+import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
 import cats.implicits._
 import shared.controllers.validators.Validator
+import shared.controllers.validators.resolvers.ResolverSupport._
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
+import v7.common.model.domain.`intent-to-amend`
 import v7.common.model.resolver.ResolveTriggerCalculationType
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 
@@ -42,5 +45,19 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
       resolveTaxYear(taxYear),
       ResolveTriggerCalculationType(calculationType)
     ).mapN(Def1_TriggerCalculationRequestData)
+      .andThen(validateRules)
+
+  private val validateRules = {
+
+    val validateCalcTypeForTaxYear = { request: TriggerCalculationRequestData =>
+      request.calculationType match {
+        case `intent-to-amend` if TaxYear.fromMtd(taxYear).year < 2025 =>  Some(List(RuleCalculationTypeNotAllowed))
+        case _ => None
+      }
+    }
+
+    resolveValid[TriggerCalculationRequestData]
+      .thenValidate(validateCalcTypeForTaxYear)
+  }
 
 }

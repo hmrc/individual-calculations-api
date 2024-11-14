@@ -19,7 +19,7 @@ package v7.retrieveCalculation.def2.model.response.metadata
 import play.api.libs.json.Json
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.CalculationType
+import v7.common.model.response.RetrieveCalculationType
 
 class MetadataSpec extends UnitSpec {
 
@@ -50,7 +50,7 @@ class MetadataSpec extends UnitSpec {
             requestedTimestamp = Some("requested timestamp"),
             calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = Some("calc timestamp"),
-            calculationType = CalculationType.`final-declaration`,
+            calculationType = RetrieveCalculationType.`final-declaration`,
             intentToSubmitFinalDeclaration = true,
             finalDeclaration = true,
             finalDeclarationTimestamp = Some("decl timestamp"),
@@ -81,7 +81,7 @@ class MetadataSpec extends UnitSpec {
             requestedTimestamp = None,
             calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = None,
-            calculationType = CalculationType.`final-declaration`,
+            calculationType = RetrieveCalculationType.`final-declaration`,
             intentToSubmitFinalDeclaration = false,
             finalDeclaration = false,
             finalDeclarationTimestamp = None,
@@ -102,7 +102,7 @@ class MetadataSpec extends UnitSpec {
           requestedTimestamp = Some("requested timestamp"),
           calculationReason = CalculationReason.`customer-request`,
           calculationTimestamp = Some("calc timestamp"),
-          calculationType = CalculationType.`final-declaration`,
+          calculationType = RetrieveCalculationType.`final-declaration`,
           intentToSubmitFinalDeclaration = true,
           finalDeclaration = true,
           finalDeclarationTimestamp = Some("decl timestamp"),

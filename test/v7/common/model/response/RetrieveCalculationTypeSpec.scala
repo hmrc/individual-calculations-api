@@ -18,16 +18,16 @@ package v7.common.model.response
 
 import shared.utils.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v7.common.model.response.CalculationType._
+import v7.common.model.response.RetrieveCalculationType._
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+class RetrieveCalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-  testReads[CalculationType](
+  testReads[RetrieveCalculationType](
     "inYear"          -> `in-year`,
     "crystallisation" -> `final-declaration`
   )
 
-  testWrites[CalculationType](
+  testWrites[RetrieveCalculationType](
     `in-year`           -> "in-year",
     `final-declaration` -> "final-declaration"
   )

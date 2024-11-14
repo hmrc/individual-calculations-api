@@ -19,16 +19,16 @@ package v7.common.model.response
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}
 
-sealed trait CalculationType
+sealed trait RetrieveCalculationType
 
-object CalculationType {
+object RetrieveCalculationType {
 
-  case object `in-year`           extends CalculationType
-  case object `final-declaration` extends CalculationType
+  case object `in-year`           extends RetrieveCalculationType
+  case object `final-declaration` extends RetrieveCalculationType
 
-  implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
+  implicit val writes: Writes[RetrieveCalculationType] = Enums.writes[RetrieveCalculationType]
 
-  implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
+  implicit val reads: Reads[RetrieveCalculationType] = Enums.readsUsing[RetrieveCalculationType] {
     case "inYear"          => `in-year`
     case "crystallisation" => `final-declaration`
   }

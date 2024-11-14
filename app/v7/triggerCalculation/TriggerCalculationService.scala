@@ -34,11 +34,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
-    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap))).map{
-      s =>
-        println(s)
-        s
-    }
+    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {
@@ -69,6 +65,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       "RESIDENCY_CHANGED"         -> RuleResidencyChangedError,
       "ALREADY_DECLARED"          -> RuleFinalDeclarationReceivedError,
       "PREMATURE_CRYSTALLISATION" -> RuleTaxYearNotEndedError,
+      "PREMATURE_FINALISATION"    -> RulePrematureFinalisationError,
       "CALCULATION_EXISTS"        -> RuleCalculationInProgressError,
       "BVR_FAILURE"               -> RuleBusinessValidationFailureError,
       "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError
