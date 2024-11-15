@@ -21,7 +21,7 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v7.common.model.domain.`confirm-amendment`
+import v7.common.model.domain.{Pre24Downstream, `confirm-amendment`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -33,7 +33,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
 
   val taxYear: TaxYear = TaxYear.fromDownstream("2020")
 
-  val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, taxYear, `confirm-amendment`)
+  val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, taxYear, `confirm-amendment`, Pre24Downstream)
 
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 

@@ -27,7 +27,7 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v7.common.model.domain.`confirm-amendment`
+import v7.common.model.domain.{Pre24Downstream, `confirm-amendment`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -48,10 +48,10 @@ class TriggerCalculationControllerSpec
   private val rawTaxYear = taxYear.asMtd
 
   val requestDataWithFinalDeclaration: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`)
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
 
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`)
+    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
 
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)

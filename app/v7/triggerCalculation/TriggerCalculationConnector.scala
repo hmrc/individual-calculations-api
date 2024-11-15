@@ -24,7 +24,7 @@ import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.models.domain.EmptyJsonBody
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v7.common.model.domain.`intent-to-finalise`
+import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
 import v7.triggerCalculation.model.response.TriggerCalculationResponse
 import v7.triggerCalculation.schema.TriggerCalculationSchema.Def1.DownstreamResp
@@ -34,33 +34,34 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
-    extends BaseDownstreamConnector {
+  extends BaseDownstreamConnector {
 
-  def triggerCalculation(request: TriggerCalculationRequestData)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
+
+  def triggerCalculation(request: TriggerCalculationRequestData)(implicit hc: HeaderCarrier,
+                                                                 ec: ExecutionContext,
+                                                                 correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
     implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
 
     val crystallisationFlag = request.calculationType == `intent-to-finalise`
 
-    val downstreamUrl = if (taxYear.year <= 2023) {
+    val downstreamUrl = tysDownstream match {
+      case Pre24Downstream =>
+        val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$crystallisationFlag"
 
-      val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$crystallisationFlag"
-
-      if (featureSwitches.isDesIf_MigrationEnabled) {
-        IfsUri[DownstreamResp](path)
-      } else {
-        DesUri[DownstreamResp](path)
-      }
-    } else if (taxYear.year == 2024 || taxYear.year == 2025) {
-      IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
-    } else {
-      IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
+        if (featureSwitches.isDesIf_MigrationEnabled) {
+          IfsUri[DownstreamResp](path)
+        } else {
+          DesUri[DownstreamResp](path)
+        }
+      case Either24or25Downstream =>
+        IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
+      case Post26Downstream =>
+        IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
     }
 
     post(EmptyJsonBody, downstreamUrl)
   }
+
 }

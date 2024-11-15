@@ -20,7 +20,7 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.domain.`confirm-amendment`
+import v7.common.model.domain.{Pre24Downstream, `confirm-amendment`}
 import v7.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
@@ -41,7 +41,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
     "return the parsed domain object" when {
       "a valid request is supplied with calculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationType).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `confirm-amendment`))
+        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `confirm-amendment`, Pre24Downstream))
       }
 
     }

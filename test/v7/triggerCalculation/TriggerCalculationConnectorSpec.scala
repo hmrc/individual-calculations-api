@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v7.common.model.domain.{CalculationType, `confirm-amendment`}
+import v7.common.model.domain.{CalculationType, Pre24Downstream, `confirm-amendment`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -41,7 +41,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   }
 
-  "connector" when {
+  "connector" should {
+
     "triggering an in year calculation" must {
       makeRequestWith(`confirm-amendment`, "false")
     }
@@ -57,7 +58,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     def makeRequestWith(calculationType: CalculationType, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalDesTest with Test {
 
-        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType)
+        val request: TriggerCalculationRequestData =
+          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType, Pre24Downstream)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -71,7 +73,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     def makeRequestWithIfsEnabled(calculationType: CalculationType, expectedCrystalliseParam: String): Unit =
       s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalIfsTest with Test {
 
-        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType)
+        val request: TriggerCalculationRequestData =
+          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType, Pre24Downstream)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -83,7 +86,8 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalTysIfsTest with Test {
-      val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), calculationType = `confirm-amendment`)
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), calculationType = `confirm-amendment`, Pre24Downstream)
       val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
       willPost(
@@ -93,6 +97,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
       await(connector.triggerCalculation(request)) shouldBe outcome
     }
+
   }
 
   trait CrystalDesTest extends DesTest{

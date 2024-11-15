@@ -31,5 +31,4 @@ object ResolveTriggerCalculationType extends ResolverSupport {
     case "intent-to-amend" => Valid(`intent-to-amend`)
     case _                   => Invalid(Seq(FormatCalculationTypeError))
   }
-
 }

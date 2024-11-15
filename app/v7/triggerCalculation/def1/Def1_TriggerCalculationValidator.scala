@@ -24,7 +24,7 @@ import shared.controllers.validators.resolvers.ResolverSupport._
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
-import v7.common.model.domain.`intent-to-amend`
+import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}
 import v7.common.model.resolver.ResolveTriggerCalculationType
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 
@@ -44,14 +44,32 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveTriggerCalculationType(calculationType)
-    ).mapN(Def1_TriggerCalculationRequestData)
+    ).mapN(Def1_TriggerCalculationRequestData.apply)
       .andThen(validateRules)
+      .map(provideTysDownstream)
+
+  private def provideTysDownstream(request: TriggerCalculationRequestData): TriggerCalculationRequestData = {
+
+    val tysDownstream = {
+      val taxYear = request.taxYear.year
+      if (taxYear <= 2023) {
+        Pre24Downstream
+      } else if (taxYear == 2024 || taxYear == 2025) {
+        Either24or25Downstream
+      } else {
+        //must be 2026 or later
+        Post26Downstream
+      }
+    }
+
+    Def1_TriggerCalculationRequestData(request.nino, request.taxYear, request.calculationType, tysDownstream)
+  }
 
   private val validateRules = {
 
     val validateCalcTypeForTaxYear = { request: TriggerCalculationRequestData =>
       request.calculationType match {
-        case `intent-to-amend` if TaxYear.fromMtd(taxYear).year < 2025 =>  Some(List(RuleCalculationTypeNotAllowed))
+        case `intent-to-amend` if TaxYear.fromMtd(taxYear).year <= 2025 =>  Some(List(RuleCalculationTypeNotAllowed))
         case _ => None
       }
     }

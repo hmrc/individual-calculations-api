@@ -16,11 +16,12 @@
 
 package v7.triggerCalculation
 
+import api.errors._
+import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
-import api.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
+import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream}
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
 import v7.triggerCalculation.model.response.TriggerCalculationResponse
 
@@ -31,47 +32,68 @@ import scala.concurrent.{ExecutionContext, Future}
 class TriggerCalculationService @Inject() (connector: TriggerCalculationConnector) extends BaseService {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
+                                                                 ctx: RequestContext,
+                                                                 ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
-    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    val tysErrorMap = request.tysDownstream match {
+      case Pre24Downstream => api1426downstreamErrorMap
+      case Either24or25Downstream => api1897downstreamErrorMap
+      case Post26Downstream => api2081downstreamErrorMap
+    }
+
+    connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(tysErrorMap)))
   }
 
-  private val downstreamErrorMap: Map[String, MtdError] = {
-    val errors = Map(
+  private val api1426downstreamErrorMap: Map[String, MtdError] =
+    Map(
       "INVALID_NINO"                  -> NinoFormatError,
       "INVALID_TAX_YEAR"              -> TaxYearFormatError,
-      "INVALID_CALCULATION_TYPE"      -> InternalError,
       "INVALID_TAX_CRYSTALLISE"       -> FinalDeclarationFormatError,
       "INVALID_REQUEST"               -> InternalError,
-      "FORMAT_CALCULATION_TYPE"       -> FormatCalculationTypeError,
-      "CALCULATION_TYPE_NOT_ALLOWED"  -> FormatCalculationTypeError,
       "NO_SUBMISSION_EXIST"           -> RuleNoIncomeSubmissionsExistError,
       "CONFLICT"                      -> RuleFinalDeclarationReceivedError,
-      "OUTSIDE_AMENDMENT_WINDOW"      -> RuleOutsideAmendmentWindowError,
-      "DECLARATION_NOT_RECEIVED"      -> RuleFinalDeclarationReceivedError,
       "SERVER_ERROR"                  -> InternalError,
       "SERVICE_UNAVAILABLE"           -> InternalError,
       "UNMATCHED_STUB_ERROR"          -> RuleIncorrectGovTestScenarioError
     )
 
-    val extraTysErrors = Map(
+  private val api1897downstreamErrorMap: Map[String, MtdError] =
+    Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+      "INVALID_TAX_YEAR" -> TaxYearFormatError,
       "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
       "NO_VALID_INCOME_SOURCES"   -> InternalError,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
-      "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,
-      "OUTDATED_SUBMISSION"       -> RuleRecentSubmissionsExistError,
-      "RESIDENCY_CHANGED"         -> RuleResidencyChangedError,
-      "ALREADY_DECLARED"          -> RuleFinalDeclarationReceivedError,
+      "CHANGED_INCOME_SOURCES" -> RuleIncomeSourcesChangedError,
+      "OUTDATED_SUBMISSION" -> RuleRecentSubmissionsExistError,
+      "RESIDENCY_CHANGED" -> RuleResidencyChangedError,
+      "ALREADY_DECLARED" -> RuleFinalDeclarationReceivedError,
       "PREMATURE_CRYSTALLISATION" -> RuleTaxYearNotEndedError,
-      "PREMATURE_FINALISATION"    -> RulePrematureFinalisationError,
-      "CALCULATION_EXISTS"        -> RuleCalculationInProgressError,
-      "BVR_FAILURE"               -> RuleBusinessValidationFailureError,
-      "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError
+      "CALCULATION_EXISTS" -> RuleCalculationInProgressError,
+      "BVR_FAILURE" -> RuleBusinessValidationFailureError,
+      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError,
+      "SERVER_ERROR" -> InternalError,
+      "SERVICE_UNAVAILABLE" -> InternalError,
+      "UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError
     )
 
-    errors ++ extraTysErrors
-  }
-
+  private val api2081downstreamErrorMap: Map[String, MtdError] =
+    Map(
+      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
+      "INVALID_TAX_YEAR" -> TaxYearFormatError,
+      "INVALID_CALCULATION_TYPE"      -> InternalError,
+      "NO_VALID_INCOME_SOURCES" -> InternalError,
+      "NO_VALID_INCOME_SOURCES"   -> InternalError,
+      "NO_SUBMISSIONS_EXIST" -> RuleNoIncomeSubmissionsExistError,
+      "ALREADY_DECLARED" -> RuleFinalDeclarationReceivedError,
+      "PREMATURE_FINALISATION"    -> RulePrematureFinalisationError,
+      "CALCULATION_EXISTS" -> RuleCalculationInProgressError,
+      "BVR_FAILURE" -> RuleBusinessValidationFailureError,
+      "DECLARATION_NOT_RECEIVED"      -> RuleDeclarationNotReceivedError,
+      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError,
+      "OUTSIDE_AMENDMENT_WINDOW"      -> RuleOutsideAmendmentWindowError,
+      "SERVER_ERROR" -> InternalError,
+      "SERVICE_UNAVAILABLE" -> InternalError,
+      "UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError
+    )
 }

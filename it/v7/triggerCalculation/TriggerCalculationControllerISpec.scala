@@ -191,7 +191,11 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     }
 
     "return the correct error code" when {
-      def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+      def validationErrorTest(requestNino: String,
+                              requestTaxYear: String,
+                              requestCalcType: String,
+                              expectedStatus: Int,
+                              expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new Tys2425Test {
 
           override val calculationType: String = "in-year"
@@ -204,7 +208,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
             MtdIdLookupStub.ninoFound(requestNino)
           }
 
-          val response: WSResponse = await(request(nino, requestTaxYear, calculationType).post(EmptyBody))
+          val response: WSResponse = await(request(nino, requestTaxYear, requestCalcType).post(EmptyBody))
           response.status shouldBe expectedStatus
           response.json shouldBe Json.toJson(expectedBody)
           response.header("Content-Type") shouldBe Some("application/json")
@@ -212,10 +216,11 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       }
 
       val input = Seq(
-        ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
-        ("ZG903729C", "20177", BAD_REQUEST, TaxYearFormatError),
-        ("ZG903729C", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
-        ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+        ("AA1123A", "2017-18", "in-year", BAD_REQUEST, NinoFormatError),
+        ("ZG903729C", "20177", "in-year", BAD_REQUEST, TaxYearFormatError),
+        ("ZG903729C", "2015-16", "in-year", BAD_REQUEST, RuleTaxYearNotSupportedError),
+        ("ZG903729C", "2024-25", "intent-to-amend", BAD_REQUEST, RuleCalculationTypeNotAllowed),
+        ("ZG903729C", "2020-22", "in-year", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
       input.foreach(args => (validationErrorTest _).tupled(args))
@@ -384,7 +389,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api1897errors).foreach(args => (serviceErrorTest _).tupled(args))
+        (api2081errors).foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
@@ -453,16 +458,16 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     val calculationType: String
 
     val downstreamSuccessBody: JsValue = Json.parse("""
-        |{
-        |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-        |}
-        |""".stripMargin)
+                                                      |{
+                                                      |  "id" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+                                                      |}
+                                                      |""".stripMargin)
 
     val successBody: JsValue = Json.parse(
       s"""
-        |{
-        | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-        |}
+         |{
+         | "calculationId" : "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+         |}
       """.stripMargin
     )
 
