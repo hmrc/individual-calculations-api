@@ -58,7 +58,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
       case Either24or25Downstream =>
         IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
       case Post26Downstream =>
-        IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationType")
+        IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
     }
 
     post(EmptyJsonBody, downstreamUrl)

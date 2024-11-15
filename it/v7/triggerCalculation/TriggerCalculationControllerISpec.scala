@@ -504,7 +504,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
   private trait TysPost2526Test extends Test {
     def mtdTaxYear: String = "2025-26"
 
-    def downstreamUri: String = s"/income-tax/25-26/calculation/$nino/$calculationType"
+    def downstreamUri: String = s"/income-tax/25-26/calculation/$nino/${calculationType}"
   }
 
 }
