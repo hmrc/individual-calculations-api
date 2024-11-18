@@ -21,7 +21,6 @@ import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream}
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
 import v7.triggerCalculation.model.response.TriggerCalculationResponse
 
@@ -35,11 +34,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
                                                                  ctx: RequestContext,
                                                                  ec: ExecutionContext): Future[ServiceOutcome[TriggerCalculationResponse]] = {
 
-    val tysErrorMap = request.tysDownstream match {
-      case Pre24Downstream => api1426downstreamErrorMap
-      case Either24or25Downstream => api1897downstreamErrorMap
-      case Post26Downstream => api2081downstreamErrorMap
-    }
+    val tysErrorMap =  api1426downstreamErrorMap ++ api1897downstreamErrorMap ++ api2081downstreamErrorMap
 
     connector.triggerCalculation(request).map(_.leftMap(mapDownstreamErrors(tysErrorMap)))
   }

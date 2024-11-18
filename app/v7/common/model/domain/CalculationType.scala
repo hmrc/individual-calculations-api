@@ -33,9 +33,9 @@ case object `intent-to-amend` extends CalculationType {
 }
 
 case object `final-declaration` extends CalculationType {
-  def toDownstream: String = "final-declaration"
+  def toDownstream: String = "DF"
 }
 
 case object `confirm-amendment` extends CalculationType {
-  def toDownstream: String = "confirm-amendment"
+  def toDownstream: String = "CA"
 }

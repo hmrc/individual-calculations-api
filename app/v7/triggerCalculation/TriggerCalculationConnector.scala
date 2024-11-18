@@ -42,26 +42,29 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
                                                                  correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
-    implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
 
     val crystallisationFlag = request.calculationType == `intent-to-finalise`
 
-    val downstreamUrl = tysDownstream match {
+    tysDownstream match {
       case Pre24Downstream =>
+        implicit val successCode: SuccessCode = SuccessCode(Status.OK)
         val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$crystallisationFlag"
-
-        if (featureSwitches.isDesIf_MigrationEnabled) {
+        val downstreamUrl = if (featureSwitches.isDesIf_MigrationEnabled) {
           IfsUri[DownstreamResp](path)
         } else {
           DesUri[DownstreamResp](path)
         }
+        post(EmptyJsonBody, downstreamUrl)
       case Either24or25Downstream =>
-        IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
+        implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+        val downstreamUrl =
+          IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
+        post(EmptyJsonBody, downstreamUrl)
       case Post26Downstream =>
-        IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
+        implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
+        val downstreamUrl =
+          IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
+        post(EmptyJsonBody, downstreamUrl)
     }
-
-    post(EmptyJsonBody, downstreamUrl)
   }
-
 }

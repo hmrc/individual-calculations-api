@@ -42,7 +42,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
 
-          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "false"), ACCEPTED, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "false"), OK, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
@@ -61,7 +61,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
 
-          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "true"), ACCEPTED, downstreamSuccessBody)
+          DownstreamStub.onSuccess(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "true"), OK, downstreamSuccessBody)
         }
 
         val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
@@ -271,6 +271,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       "a valid request is made with an 'in-year' calculation type" in new TysPost2526Test {
 
         val calculationType: String = "in-year"
+        val downstreamCalcType: String = "IY"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -290,6 +291,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       "a valid request is made with an 'intent-to-finalise' calculation type" in new TysPost2526Test {
 
         val calculationType: String = "intent-to-finalise"
+        val downstreamCalcType: String = "IF"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -309,6 +311,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       "a valid request is made with an 'intent-to-amend' calculation type" in new TysPost2526Test {
 
         val calculationType: String = "intent-to-amend"
+        val downstreamCalcType: String = "IA"
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -331,6 +334,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         s"validation fails with ${expectedBody.code} error" in new TysPost2526Test {
 
           override val calculationType: String = "in-year"
+          override val downstreamCalcType: String = "IY"
 
           override val nino: String = requestNino
 
@@ -370,6 +374,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           s"backend returns $backendCode with status $backendStatus" in new TysPost2526Test {
 
             override val calculationType: String = "in-year"
+            override val downstreamCalcType: String = "IY"
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -504,7 +509,9 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
   private trait TysPost2526Test extends Test {
     def mtdTaxYear: String = "2025-26"
 
-    def downstreamUri: String = s"/income-tax/25-26/calculation/$nino/${calculationType}"
+    val downstreamCalcType: String
+
+    def downstreamUri: String = s"/income-tax/25-26/calculation/$nino/$downstreamCalcType"
   }
 
 }

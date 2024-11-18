@@ -21,7 +21,7 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v7.common.model.domain.{Pre24Downstream, `confirm-amendment`, `intent-to-amend`}
+import v7.common.model.domain.{Pre24Downstream, `intent-to-amend`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -66,34 +66,6 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
 
             await(service.triggerCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
-
-        val errors = List(
-          ("INVALID_NINO", NinoFormatError),
-          ("INVALID_TAX_YEAR", TaxYearFormatError),
-          ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
-          ("INVALID_REQUEST", InternalError),
-          ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
-          ("CONFLICT", RuleFinalDeclarationReceivedError),
-          ("SERVER_ERROR", InternalError),
-          ("SERVICE_UNAVAILABLE", InternalError),
-          ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
-        )
-
-        val extraTysErrors = List(
-          ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
-          ("INVALID_CRYSTALLISE", FinalDeclarationFormatError),
-          ("NO_VALID_INCOME_SOURCES", InternalError),
-          ("NO_SUBMISSIONS_EXIST", RuleNoIncomeSubmissionsExistError),
-          ("INVALID_CALCULATION_ID", InternalError),
-          ("CHANGED_INCOME_SOURCES", RuleIncomeSourcesChangedError),
-          ("OUTDATED_SUBMISSION", RuleRecentSubmissionsExistError),
-          ("RESIDENCY_CHANGED", RuleResidencyChangedError),
-          ("ALREADY_DECLARED", RuleFinalDeclarationReceivedError),
-          ("PREMATURE_CRYSTALLISATION", RuleTaxYearNotEndedError),
-          ("CALCULATION_EXISTS", RuleCalculationInProgressError),
-          ("BVR_FAILURE", RuleBusinessValidationFailureError),
-          ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
-        )
 
         val api1426downstreamErrorMap =
           List(
@@ -148,7 +120,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
             ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
           )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
+        (api1426downstreamErrorMap ++ api1897downstreamErrorMap ++ api2081downstreamErrorMap).foreach(args => (serviceError _).tupled(args))
       }
     }
 
