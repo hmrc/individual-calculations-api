@@ -140,7 +140,7 @@ components:
         This error only occurs for taxYears from 2023-24 onwards.
       value:
         code: RULE_TAX_YEAR_NOT_ENDED
-        message: Tax year not ended
+        message: The specified tax year has not yet ended
 
     triggerRuleRecentSubmissionsExist:
       description: |
