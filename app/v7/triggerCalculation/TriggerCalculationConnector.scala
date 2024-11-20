@@ -18,11 +18,11 @@ package v7.triggerCalculation
 
 import config.CalculationsFeatureSwitches
 import play.api.http.Status
+import play.api.libs.json.JsObject
 import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import shared.models.domain.EmptyJsonBody
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}
 import v7.triggerCalculation.model.request.TriggerCalculationRequestData
@@ -54,17 +54,17 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
         } else {
           DesUri[DownstreamResp](path)
         }
-        post(EmptyJsonBody, downstreamUrl)
+        post(JsObject.empty, downstreamUrl)
       case Either24or25Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
         val downstreamUrl =
           IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
-        post(EmptyJsonBody, downstreamUrl)
+        post(JsObject.empty, downstreamUrl)
       case Post26Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
         val downstreamUrl =
           IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
-        post(EmptyJsonBody, downstreamUrl)
+        post(JsObject.empty, downstreamUrl)
     }
   }
 }

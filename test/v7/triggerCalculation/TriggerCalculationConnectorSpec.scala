@@ -22,7 +22,7 @@ import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v7.common.model.domain.{CalculationType, Pre24Downstream, `confirm-amendment`}
+import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `in-year`, `intent-to-amend`, `intent-to-finalise`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -34,6 +34,13 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
+  def api1426Url(intentToFinalise: String): String =
+    s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
+  def api1897Url(intentToFinalise: String): String =
+    s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=$intentToFinalise"
+  def api2081Url(intentToFinalise: String): String =
+    s"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
+
   trait Test { _: ConnectorTest =>
 
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
@@ -41,74 +48,74 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   }
 
-  "connector" should {
-
-    "triggering an in year calculation" must {
-      makeRequestWith(`confirm-amendment`, "false")
-    }
-
-    "triggering an in year calculation with ifs feature enabled" must {
-      makeRequestWithIfsEnabled(`confirm-amendment`, "false")
-    }
-
-    "triggering for a final declaration" must {
-      makeRequestWith(`confirm-amendment`, "true")
-    }
-
-    def makeRequestWith(calculationType: CalculationType, expectedCrystalliseParam: String): Unit =
-      s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalDesTest with Test {
-
-        val request: TriggerCalculationRequestData =
-          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType, Pre24Downstream)
-        val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
-
-        willPost(
-          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
-          body = Json.parse("{}")
-        ).returns(Future.successful(outcome))
-
-        await(connector.triggerCalculation(request)) shouldBe outcome
-      }
-
-    def makeRequestWithIfsEnabled(calculationType: CalculationType, expectedCrystalliseParam: String): Unit =
-      s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalIfsTest with Test {
-
-        val request: TriggerCalculationRequestData =
-          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), calculationType, Pre24Downstream)
-        val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
-
-        willPost(
-          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
-          body = Json.parse("{}")
-        ).returns(Future.successful(outcome))
-
-        await(connector.triggerCalculation(request)) shouldBe outcome
-      }
-
-    "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalTysIfsTest with Test {
+  "connector" when {
+    "triggering an in-year calculation in a pre 23-24 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), calculationType = `confirm-amendment`, Pre24Downstream)
-      val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
-
-      willPost(
-        url = s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
-        body = Json.parse("{}")
-      ).returns(Future.successful(outcome))
-
-      await(connector.triggerCalculation(request)) shouldBe outcome
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
+      makeRequestWithDESEnabled(request, api1426Url("false"))
+    }
+    "triggering an intent-to-finalise calculation in a pre 23-24 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `intent-to-finalise`, Pre24Downstream)
+      makeRequestWithDESEnabled(request, api1426Url("true"))
+    }
+    "triggering an in-year calculation in a 2024 or 2025 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `in-year`, Either24or25Downstream)
+      makeRequestWithIFSEnabled(request, api1897Url("false"))
+    }
+    "triggering an intent-to-finalise calculation in a 2024 or 2025 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `intent-to-finalise`, Either24or25Downstream)
+      makeRequestWithIFSEnabled(request, api1897Url("true"))
+    }
+    "triggering an in-year calculation in a post 2026 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `in-year`, Post26Downstream)
+      makeRequestWithIFSEnabled(request, api2081Url("IY"))
+    }
+    "triggering an intent-to-finalise calculation in a post 2026 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-finalise`, Post26Downstream)
+      makeRequestWithIFSEnabled(request, api2081Url("IF"))
+    }
+    "triggering an intent-to-amend calculation in a post 2026 tax year" must {
+      val request: TriggerCalculationRequestData =
+        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-amend`, Post26Downstream)
+      makeRequestWithIFSEnabled(request, api2081Url("IA"))
     }
 
+
+    def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: String): Unit =
+      s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsEnabledTest with Test {
+        val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
+
+        willPost(
+          url = downstreamUrl,
+          body = Json.parse("{}")
+        ).returns(Future.successful(expectedOutcome))
+
+        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+      }
+
+    def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: String): Unit =
+      s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new DesEnabledTest with Test {
+        val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
+
+        willPost(
+          url = downstreamUrl,
+          body = Json.parse("{}")
+        ).returns(Future.successful(expectedOutcome))
+
+        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+      }
   }
 
-  trait CrystalDesTest extends DesTest{
+  trait DesEnabledTest extends DesTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
   }
 
-  trait CrystalIfsTest extends IfsTest{
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
-  }
-
-  trait CrystalTysIfsTest extends TysIfsTest{
+  trait IfsEnabledTest extends IfsTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 

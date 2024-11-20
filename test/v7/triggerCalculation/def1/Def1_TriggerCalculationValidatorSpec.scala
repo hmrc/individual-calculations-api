@@ -20,7 +20,7 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.domain.{Pre24Downstream, `confirm-amendment`}
+import v7.common.model.domain.{Pre24Downstream, `in-year`}
 import v7.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
@@ -29,7 +29,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
   private val validNino             = "ZG903729C"
   private val validTaxYear          = "2017-18"
-  private val validCalculationType  = "IY"
+  private val validCalculationType  = "in-year"
 
   private val parsedNino             = Nino(validNino)
   private val parsedTaxYear          = TaxYear.fromMtd(validTaxYear)
@@ -41,7 +41,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
     "return the parsed domain object" when {
       "a valid request is supplied with calculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationType).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `confirm-amendment`, Pre24Downstream))
+        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Pre24Downstream))
       }
 
     }
@@ -82,24 +82,24 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
       }
     }
 
-    "return FinalDeclarationFormatError error" when {
+    "return FormatCalculationTypeError error" when {
       "an invalid final declaration is supplied" in {
-        val result = validator(validNino, validTaxYear, "error").validateAndWrapResult()
+        val result = validator(validNino, validTaxYear, "incorrect-calc-type").validateAndWrapResult()
         result shouldBe Left(
-          ErrorWrapper(correlationId, FinalDeclarationFormatError)
+          ErrorWrapper(correlationId, FormatCalculationTypeError)
         )
       }
     }
 
     "return multiple errors" when {
       "multiple invalid parameters are provided" in {
-        val result = validator("not-a-nino", validTaxYear, "error").validateAndWrapResult()
+        val result = validator("not-a-nino", validTaxYear, "incorrect-calc-type").validateAndWrapResult()
 
         result shouldBe Left(
           ErrorWrapper(
             correlationId,
             BadRequestError,
-            Some(List(FinalDeclarationFormatError, NinoFormatError))
+            Some(List(FormatCalculationTypeError, NinoFormatError))
           )
         )
       }
