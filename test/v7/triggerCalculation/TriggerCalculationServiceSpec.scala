@@ -120,7 +120,8 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
             ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
           )
 
-        (api1426downstreamErrorMap ++ api1897downstreamErrorMap ++ api2081downstreamErrorMap).foreach(args => (serviceError _).tupled(args))
+        (api1426downstreamErrorMap ++ api1897downstreamErrorMap ++ api2081downstreamErrorMap).distinct
+          .foreach(args => (serviceError _).tupled(args))
       }
     }
 
