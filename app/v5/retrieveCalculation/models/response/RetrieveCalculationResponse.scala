@@ -16,17 +16,14 @@
 
 package v5.retrieveCalculation.models.response
 
-import shared.models.domain.TaxYear
 import config.CalculationsFeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
+import shared.models.domain.TaxYear
 import v5.retrieveCalculation._
-import v5.retrieveCalculation.def2.model.response.calculation.Calculation
 
 import scala.math.Ordered.orderingToOrdered
 
 sealed trait RetrieveCalculationResponse {
-  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): RetrieveCalculationResponse
-
   def intentToSubmitFinalDeclaration: Boolean
 
   def finalDeclaration: Boolean
@@ -172,14 +169,6 @@ case class Def2_RetrieveCalculationResponse(
       errors   <- messages.errors
     } yield errors.nonEmpty
   }.getOrElse(false)
-
-  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
-    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
-      this
-    } else {
-      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
-    }
-  }
 
 }
 
