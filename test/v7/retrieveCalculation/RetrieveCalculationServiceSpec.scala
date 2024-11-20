@@ -22,8 +22,8 @@ import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v7.retrieveCalculation.downstreamErrorMapping.RetrieveDownstreamErrorMapping
-import v7.retrieveCalculation.downstreamErrorMapping.RetrieveDownstreamErrorMapping._
+import v7.retrieveCalculation.downstreamErrorMapping.RetrieveCalculationDownstreamErrorMapping._
+import v7.retrieveCalculation.downstreamErrorMapping.RetrieveCalculationDownstreamErrorMapping
 import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
 
@@ -60,7 +60,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFi
       }
 
       "return error response" when {
-        def serviceError(taxYear: String, downstreamErrorMapping: RetrieveDownstreamErrorMapping): Unit = {
+        def serviceError(taxYear: String, downstreamErrorMapping: RetrieveCalculationDownstreamErrorMapping): Unit = {
           val fullDownstreamErrorMap: Map[String, MtdError] = downstreamErrorMapping.errorMap ++ Map(
             "UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError
           )
@@ -77,11 +77,11 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFi
           }
         }
 
-        val input: Seq[(String, RetrieveDownstreamErrorMapping)] = Seq(
-          ("2022-23", PreTys),
-          ("2023-24", TaxYear2023),
-          ("2024-25", TaxYear2024),
-          ("2025-26", TaxYear2025)
+        val input: Seq[(String, RetrieveCalculationDownstreamErrorMapping)] = Seq(
+          ("2022-23", Api1523),
+          ("2023-24", Api1885),
+          ("2024-25", Api1885),
+          ("2025-26", Api1885)
         )
 
         input.foreach(args => (serviceError _).tupled(args))

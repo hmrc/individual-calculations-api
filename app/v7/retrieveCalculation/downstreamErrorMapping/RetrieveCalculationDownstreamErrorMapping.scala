@@ -21,11 +21,11 @@ import shared.models.errors._
 
 import scala.math.Ordered.orderingToOrdered
 
-sealed trait RetrieveDownstreamErrorMapping {
+sealed trait RetrieveCalculationDownstreamErrorMapping {
   def errorMap: Map[String, MtdError]
 }
 
-object RetrieveDownstreamErrorMapping {
+object RetrieveCalculationDownstreamErrorMapping {
 
   private val commonErrorsMap: Map[String, MtdError] = Map(
     "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
@@ -34,7 +34,7 @@ object RetrieveDownstreamErrorMapping {
     "SERVICE_UNAVAILABLE"       -> InternalError
   )
 
-  case object PreTys extends RetrieveDownstreamErrorMapping {
+  case object Api1523 extends RetrieveCalculationDownstreamErrorMapping {
     val errorMap: Map[String, MtdError] = commonErrorsMap ++ Map(
       "INVALID_CORRELATIONID" -> InternalError,
       "INVALID_CONSUMERID"    -> InternalError,
@@ -42,8 +42,7 @@ object RetrieveDownstreamErrorMapping {
     )
   }
 
-  // All other case objects were split in the case there is different mapping per tax year
-  case object TaxYear2023 extends RetrieveDownstreamErrorMapping {
+  case object Api1885 extends RetrieveCalculationDownstreamErrorMapping {
     val errorMap: Map[String, MtdError] = commonErrorsMap ++ Map(
       "INVALID_TAX_YEAR"       -> TaxYearFormatError,
       "INVALID_CORRELATION_ID" -> InternalError,
@@ -53,18 +52,8 @@ object RetrieveDownstreamErrorMapping {
     )
   }
 
-  case object TaxYear2024 extends RetrieveDownstreamErrorMapping {
-    val errorMap: Map[String, MtdError] = TaxYear2023.errorMap
-  }
-
-  case object TaxYear2025 extends RetrieveDownstreamErrorMapping {
-    val errorMap: Map[String, MtdError] = TaxYear2023.errorMap
-  }
-
-  def errorMapFor(taxYear: TaxYear): RetrieveDownstreamErrorMapping = taxYear match {
-    case ty if ty >= TaxYear.fromMtd("2025-26") => TaxYear2025
-    case ty if ty == TaxYear.fromMtd("2024-25") => TaxYear2024
-    case ty if ty == TaxYear.fromMtd("2023-24") => TaxYear2023
-    case _                                      => PreTys
+  def errorMapFor(taxYear: TaxYear): RetrieveCalculationDownstreamErrorMapping = taxYear match {
+    case ty if ty >= TaxYear.fromMtd("2023-24") => Api1885
+    case _                                      => Api1523
   }
 }

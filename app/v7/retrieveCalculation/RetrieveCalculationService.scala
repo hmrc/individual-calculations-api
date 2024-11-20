@@ -19,7 +19,7 @@ package v7.retrieveCalculation
 import shared.controllers.RequestContext
 import shared.services.{BaseService, ServiceOutcome}
 import cats.implicits._
-import v7.retrieveCalculation.downstreamErrorMapping.RetrieveDownstreamErrorMapping.errorMapFor
+import v7.retrieveCalculation.downstreamErrorMapping.RetrieveCalculationDownstreamErrorMapping.errorMapFor
 import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
 
