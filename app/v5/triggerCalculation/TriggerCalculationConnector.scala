@@ -17,7 +17,7 @@
 package v5.triggerCalculation
 
 import config.CalculationsFeatureSwitches
-import shared.connectors.DownstreamUri.{DesUri, IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.config.AppConfig
@@ -47,7 +47,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig
     if (taxYear.useTaxYearSpecificApi) {
       implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
       val downstreamUri =
-        TaxYearSpecificIfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
+        IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
       post(JsObject.empty, downstreamUri)
     } else if (featureSwitches.isDesIf_MigrationEnabled) {
       val downstreamUri = IfsUri[DownstreamResp](path)

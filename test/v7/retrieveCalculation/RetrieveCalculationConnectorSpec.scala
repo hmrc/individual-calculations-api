@@ -47,7 +47,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
         await(connector.retrieveCalculation(request)) shouldBe outcome
       }
 
-      "a valid request with Tax Year Specific tax year is supplied" in new TysIfsTest with Test {
+      "a valid request with Tax Year Specific tax year is supplied" in new IfsTest with Test {
         def taxYear: TaxYear = tysTaxYear
         val outcome: Right[Nothing, ResponseWrapper[RetrieveCalculationResponse]] =
           Right(ResponseWrapper(correlationId, minimalCalculationR8bResponse))
@@ -71,7 +71,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
           result shouldBe outcome
         }
 
-        "return the error given a TYS tax year request" in new TysIfsTest with Test {
+        "return the error given a TYS tax year request" in new IfsTest with Test {
           def taxYear: TaxYear = tysTaxYear
           stubTysHttpResponse(outcome)
 
