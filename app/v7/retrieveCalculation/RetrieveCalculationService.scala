@@ -17,9 +17,9 @@
 package v7.retrieveCalculation
 
 import shared.controllers.RequestContext
-import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
 import cats.implicits._
+import v7.retrieveCalculation.downstreamErrorMapping.RetrieveCalculationDownstreamErrorMapping.errorMapFor
 import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
 
@@ -33,31 +33,7 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
-    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(errorMapFor(request.taxYear).errorMap)))
 
   }
-
-  private val downstreamErrorMap: Map[String, MtdError] = {
-    val errors: Map[String, MtdError] = Map(
-      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-      "INVALID_CALCULATION_ID"    -> CalculationIdFormatError,
-      "INVALID_CORRELATIONID"     -> InternalError,
-      "INVALID_CONSUMERID"        -> InternalError,
-      "NO_DATA_FOUND"             -> NotFoundError,
-      "SERVER_ERROR"              -> InternalError,
-      "SERVICE_UNAVAILABLE"       -> InternalError,
-      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
-    )
-
-    val extraTysErrors: Map[String, MtdError] = Map(
-      "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> InternalError,
-      "INVALID_CONSUMER_ID"    -> InternalError,
-      "NOT_FOUND"              -> NotFoundError,
-      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
-    )
-
-    errors ++ extraTysErrors
-  }
-
 }

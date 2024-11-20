@@ -233,42 +233,64 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
           ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
         input.foreach(args => (validationErrorTest _).tupled(args))
-        "downstream returns a service error" when {
-          def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-            s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
-              override def setupStubs(): StubMapping = {
-                AuditStub.audit()
-                AuthStub.authorised()
-                MtdIdLookupStub.ninoFound(nino)
-                DownstreamStub.onError(DownstreamStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
-              }
-              val response: WSResponse = await(request.get())
-              response.status shouldBe expectedStatus
-              response.json shouldBe Json.toJson(expectedBody)
-              response.header("Content-Type") shouldBe Some("application/json")
+
+        def serviceErrorTestNonTys(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"downstream returns the $downstreamCode error and status $downstreamStatus for pre TYS" in new NonTysTest {
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              DownstreamStub.onError(DownstreamStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
             }
+
+            val response: WSResponse = await(request.get())
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
-          val errors = Seq(
-            (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
-            (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
-            (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
-            (BAD_REQUEST, "INVALID_CONSUMERID", INTERNAL_SERVER_ERROR, InternalError),
-            (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError),
-            (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
-            (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
-            (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
-          )
-          val extraTysErrors = Seq(
-            (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
-            (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
-            (BAD_REQUEST, "INVALID_CONSUMER_ID", INTERNAL_SERVER_ERROR, InternalError),
-            (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
-            (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
-          )
-          (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
         }
+
+        def serviceErrorTestTys(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"downstream returns the $downstreamCode error and status $downstreamStatus for TYS" in new TysIfsTest {
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              DownstreamStub.onError(DownstreamStub.GET, downstreamUri, downstreamStatus, errorBody(downstreamCode))
+            }
+
+            val response: WSResponse = await(request.get())
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
+          }
+        }
+
+        val nonTysErrors = Seq(
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
+          (BAD_REQUEST, "INVALID_CONSUMERID", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError),
+          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
+        )
+        val tysErrors = Seq(
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
+          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (BAD_REQUEST, "INVALID_CONSUMER_ID", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
+        )
+        nonTysErrors.foreach(args => (serviceErrorTestNonTys _).tupled(args))
+        tysErrors.foreach(args => (serviceErrorTestTys _).tupled(args))
       }
     }
   }
-
 }
