@@ -74,7 +74,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
     override def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
   }
 
-  private trait TysIfsTest extends Test {
+  private trait TysTest extends Test {
 
     val mtdTaxYear: String        = TaxYear.now().asMtd
     val downstreamTaxYear: String = TaxYear.now().asTysDownstream
@@ -101,7 +101,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         response.json shouldBe listCalculationsMtdJson
       }
 
-      "valid request is made without a tax year" in new TysIfsTest {
+      "valid request is made without a tax year" in new TysTest {
         override def taxYear: Option[String] = None
 
         override def setupStubs(): StubMapping = {
@@ -117,7 +117,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         response.json shouldBe listCalculationsMtdJson
       }
 
-      "valid TYS request is made with a tax year" in new TysIfsTest {
+      "valid TYS request is made with a tax year" in new TysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
