@@ -81,7 +81,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         await(connector.triggerCalculation(request)) shouldBe outcome
       }
 
-    "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalTysIfsTest with Test {
+    "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalIfsTest with Test {
       val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
       val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
@@ -99,10 +99,6 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   }
 
   trait CrystalIfsTest extends IfsTest{
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
-  }
-
-  trait CrystalTysIfsTest extends TysIfsTest{
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 

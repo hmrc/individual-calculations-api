@@ -16,7 +16,7 @@
 
 package v5.retrieveCalculation
 
-import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.DownstreamUri.IfsUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import shared.config.AppConfig
@@ -39,7 +39,7 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClient, val appConfi
     import schema._
 
     val downstreamUri: DownstreamUri[DownstreamResp] = if (taxYear.useTaxYearSpecificApi) {
-      TaxYearSpecificIfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
+      IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
     } else {
       IfsUri(s"income-tax/view/calculations/liability/$nino/$calculationId")
     }

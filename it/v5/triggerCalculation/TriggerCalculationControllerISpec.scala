@@ -65,7 +65,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         response.json shouldBe successBody
       }
 
-      "a valid request is made for a Tax Year Specific (TYS) tax year" in new TysIfsTest {
+      "a valid request is made for a Tax Year Specific (TYS) tax year" in new TysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
@@ -213,7 +213,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
   }
 
-  private trait TysIfsTest extends Test {
+  private trait TysTest extends Test {
     def mtdTaxYear: String    = "2023-24"
     def downstreamUri: String = s"/income-tax/calculation/23-24/$nino"
 

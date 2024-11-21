@@ -20,12 +20,10 @@ import config.CalculationsFeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
 import shared.models.domain.TaxYear
 import v7.retrieveCalculation._
-import v7.retrieveCalculation.def2.model.response.calculation.Calculation
 
 import scala.math.Ordered.orderingToOrdered
 
 sealed trait RetrieveCalculationResponse {
-  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): RetrieveCalculationResponse
 
   def intentToSubmitFinalDeclaration: Boolean
 
@@ -174,14 +172,6 @@ case class Def2_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def2_RetrieveCalculationResponse = {
-    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
-      this
-    } else {
-      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
-    }
-  }
-
 }
 
 object Def2_RetrieveCalculationResponse {
@@ -209,15 +199,6 @@ case class Def3_RetrieveCalculationResponse(
       errors   <- messages.errors
     } yield errors.nonEmpty
   }.getOrElse(false)
-
-  def adjustFields(featureSwitches: CalculationsFeatureSwitches, taxYear: String): Def3_RetrieveCalculationResponse = {
-    if (featureSwitches.isEnabled("retrieveTransitionProfit")) {
-      this
-    } else {
-      import v7.retrieveCalculation.def3.model.response.calculation.Calculation
-      this.copy(calculation = Calculation.withoutTransitionProfit(calculation))
-    }
-  }
 
 }
 

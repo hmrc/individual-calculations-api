@@ -16,14 +16,14 @@
 
 package v6.retrieveCalculation
 
-import shared.utils.{IdGenerator, Logging}
-import shared.controllers._
-import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import shared.config.AppConfig
 import config.CalculationsFeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import shared.config.AppConfig
+import shared.controllers._
 import shared.routing.Version
-import v6.retrieveCalculation.models.response.RetrieveCalculationResponse
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.{IdGenerator, Logging}
+import v6.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 import v6.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Inject
@@ -70,8 +70,9 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
-          .withResponseModifier { response: RetrieveCalculationResponse =>
-            response.adjustFields(CalculationsFeatureSwitches()(appConfig), taxYear)
+          .withResponseModifier {
+            case r: Def1_RetrieveCalculationResponse => r.adjustFields(CalculationsFeatureSwitches()(appConfig), taxYear)
+            case response                            => response
           }
           .withPlainJsonResult()
 

@@ -136,7 +136,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
   }
 
-  private trait TysIfsTest extends Test {
+  private trait TysTest extends Test {
     def taxYear: String = "2023-24"
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
@@ -161,7 +161,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
           response.json shouldBe responseBody(canBeFinalised = false)
         }
 
-        "a valid request is made with a Tax Year Specific tax year" in new TysIfsTest {
+        "a valid request is made with a Tax Year Specific tax year" in new TysTest {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()
@@ -189,7 +189,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
           response.json shouldBe responseBody(canBeFinalised = true)
         }
 
-        "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysIfsTest {
+        "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysTest {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()

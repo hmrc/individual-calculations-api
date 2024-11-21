@@ -58,7 +58,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         await(connector.list(request)) shouldBe outcome
       }
 
-      "TYS tax year query param is passed" in new TysIfsTest with Test {
+      "TYS tax year query param is passed" in new IfsTest with Test {
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
