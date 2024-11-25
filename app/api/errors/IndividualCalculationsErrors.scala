@@ -40,6 +40,15 @@ object RuleOutsideAmendmentWindowError
       BAD_REQUEST
     )
 
+object RulePrematureFinalisationError
+  extends MtdError("RULE_PREMATURE_FINALISATION", "Finalisation cannot occur until after the end of the tax year", BAD_REQUEST)
+
+object RuleDeclarationNotReceivedError
+  extends MtdError("RULE_DECLARATION_NOT_RECEIVED", "The final declaration has not been received", BAD_REQUEST)
+
+object RuleCalculationTypeNotAllowed
+  extends MtdError("RULE_CALCULATION_TYPE_NOT_ALLOWED", "The provided calculation type is not applicable for this tax year", BAD_REQUEST)
+
 object FormatCalculationTypeError
     extends MtdError(
       code = "FORMAT_CALCULATION_TYPE",

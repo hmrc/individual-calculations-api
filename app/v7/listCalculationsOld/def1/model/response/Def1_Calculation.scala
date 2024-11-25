@@ -20,7 +20,7 @@ import common.TaxYearFormats._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import shared.models.domain.TaxYear
-import v7.common.model.response.CalculationType
+import v7.common.model.response.RetrieveCalculationType
 
 sealed trait Calculation {
   def calculationId: String
@@ -37,7 +37,7 @@ object Calculation {
 
 case class Def1_Calculation(calculationId: String,
                             calculationTimestamp: String,
-                            calculationType: CalculationType,
+                            calculationType: RetrieveCalculationType,
                             requestedBy: Option[String],
                             taxYear: Option[TaxYear],
                             totalIncomeTaxAndNicsDue: Option[BigDecimal],
@@ -52,7 +52,7 @@ object Def1_Calculation {
   implicit val reads: Reads[Def1_Calculation] =
     ((JsPath \ "calculationId").read[String] and
       (JsPath \ "calculationTimestamp").read[String] and
-      (JsPath \ "calculationType").read[CalculationType] and
+      (JsPath \ "calculationType").read[RetrieveCalculationType] and
       (JsPath \ "requestedBy").readNullable[String] and
       (JsPath \ "year").readNullable[TaxYear] and
       (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and

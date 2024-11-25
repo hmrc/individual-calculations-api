@@ -20,20 +20,20 @@ import common.TaxYearFormats
 import shared.models.domain.TaxYear
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v7.common.model.response.CalculationType
+import v7.common.model.response.RetrieveCalculationType
 
 case class Metadata(calculationId: String,
-                         taxYear: TaxYear,
-                         requestedBy: String,
-                         requestedTimestamp: Option[String],
-                         calculationReason: CalculationReason,
-                         calculationTimestamp: Option[String],
-                         calculationType: CalculationType,
-                         intentToSubmitFinalDeclaration: Boolean,
-                         finalDeclaration: Boolean,
-                         finalDeclarationTimestamp: Option[String],
-                         periodFrom: String,
-                         periodTo: String)
+                    taxYear: TaxYear,
+                    requestedBy: String,
+                    requestedTimestamp: Option[String],
+                    calculationReason: CalculationReason,
+                    calculationTimestamp: Option[String],
+                    calculationType: RetrieveCalculationType,
+                    intentToSubmitFinalDeclaration: Boolean,
+                    finalDeclaration: Boolean,
+                    finalDeclarationTimestamp: Option[String],
+                    periodFrom: String,
+                    periodTo: String)
 
 object Metadata {
 
@@ -48,7 +48,7 @@ object Metadata {
       (JsPath \ "requestedTimestamp").readNullable[String] and
       (JsPath \ "calculationReason").read[CalculationReason] and
       (JsPath \ "calculationTimestamp").readNullable[String] and
-      (JsPath \ "calculationType").read[CalculationType] and
+      (JsPath \ "calculationType").read[RetrieveCalculationType] and
       (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
       (JsPath \ "crystallised").readWithDefault[Boolean](false) and
       (JsPath \ "crystallisationTimestamp").readNullable[String] and

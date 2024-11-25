@@ -18,7 +18,7 @@ package v7.retrieveCalculation.def1.model
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import shared.models.domain.TaxYear
-import v7.common.model.response.CalculationType.`in-year`
+import v7.common.model.response.RetrieveCalculationType.`in-year`
 import v7.common.model.response.IncomeSourceType
 import v7.retrieveCalculation.def1.model.response.calculation.Calculation
 import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.{EmploymentAndPensionsIncome, EmploymentAndPensionsIncomeDetail}

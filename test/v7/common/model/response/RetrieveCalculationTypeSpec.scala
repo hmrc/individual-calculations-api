@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,20 @@
 
 package v7.common.model.response
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import shared.utils.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v7.common.model.response.RetrieveCalculationType._
 
-sealed trait CalculationType
+class RetrieveCalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object CalculationType {
+  testReads[RetrieveCalculationType](
+    "inYear"          -> `in-year`,
+    "crystallisation" -> `final-declaration`
+  )
 
-  case object `in-year`           extends CalculationType
-  case object `final-declaration` extends CalculationType
-
-  implicit val writes: Writes[CalculationType] = Enums.writes[CalculationType]
-
-  implicit val reads: Reads[CalculationType] = Enums.readsUsing[CalculationType] {
-    case "inYear"          => `in-year`
-    case "crystallisation" => `final-declaration`
-  }
+  testWrites[RetrieveCalculationType](
+    `in-year`           -> "in-year",
+    `final-declaration` -> "final-declaration"
+  )
 
 }

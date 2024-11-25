@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package v7.common.model.domain
+package v7.common.model.response
 
-sealed trait CalculationType {
-  def toDownstream: String
-}
+import common.utils.enums.Enums
+import play.api.libs.json.{Reads, Writes}
 
-case object `in-year` extends CalculationType {
-  def toDownstream: String = "IY"
-}
+sealed trait RetrieveCalculationType
 
-case object `intent-to-finalise` extends CalculationType {
-  def toDownstream: String = "IF"
-}
+object RetrieveCalculationType {
 
-case object `intent-to-amend` extends CalculationType {
-  def toDownstream: String = "IA"
-}
+  case object `in-year`           extends RetrieveCalculationType
+  case object `final-declaration` extends RetrieveCalculationType
 
-case object `final-declaration` extends CalculationType {
-  def toDownstream: String = "DF"
-}
+  implicit val writes: Writes[RetrieveCalculationType] = Enums.writes[RetrieveCalculationType]
 
-case object `confirm-amendment` extends CalculationType {
-  def toDownstream: String = "CA"
+  implicit val reads: Reads[RetrieveCalculationType] = Enums.readsUsing[RetrieveCalculationType] {
+    case "inYear"          => `in-year`
+    case "crystallisation" => `final-declaration`
+  }
+
 }

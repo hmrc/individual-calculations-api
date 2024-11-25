@@ -18,7 +18,7 @@ package v7.listCalculationsOld.def1.model
 
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
-import v7.common.model.response.CalculationType
+import v7.common.model.response.RetrieveCalculationType
 import v7.listCalculationsOld.def1.model.response.{Calculation, Def1_Calculation}
 import v7.listCalculationsOld.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
 
@@ -63,7 +63,7 @@ trait Def1_ListCalculationsFixture {
   val calculationModel: Def1_Calculation = Def1_Calculation(
     calculationId = "c432a56d-e811-474c-a26a-76fc3bcaefe5",
     calculationTimestamp = "2021-07-12T07:51:43.112Z",
-    calculationType = CalculationType.`final-declaration`,
+    calculationType = RetrieveCalculationType.`final-declaration`,
     requestedBy = Some("customer"),
     taxYear = Some(TaxYear.fromDownstreamInt(2021)),
     totalIncomeTaxAndNicsDue = Some(10000.12),

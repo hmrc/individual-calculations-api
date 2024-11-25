@@ -69,5 +69,4 @@ object StandardDownstreamHttpParser extends HttpParser {
         Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
     }
   }
-
 }

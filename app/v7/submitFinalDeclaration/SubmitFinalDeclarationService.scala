@@ -16,11 +16,11 @@
 
 package v7.submitFinalDeclaration
 
+import api.errors._
+import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
-import api.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
@@ -68,5 +68,4 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
     errors ++ extraDesErrors
 
   }
-
 }

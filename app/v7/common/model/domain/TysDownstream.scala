@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-package v7.common.model.response
+package v7.common.model.domain
 
-import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
-import v7.common.model.response.CalculationType._
+sealed trait TysDownstream
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
-
-  testReads[CalculationType](
-    "inYear"          -> `in-year`,
-    "crystallisation" -> `final-declaration`
-  )
-
-  testWrites[CalculationType](
-    `in-year`           -> "in-year",
-    `final-declaration` -> "final-declaration"
-  )
-
-}
+case object Pre24Downstream extends TysDownstream
+case object Either24or25Downstream extends TysDownstream
+case object Post26Downstream extends TysDownstream
