@@ -34,14 +34,32 @@ components:
         example: "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
       required: true
 
-    calculationType:
+    finalDeclarationCalculationType:
       name: calculationType
       in: path
       description: |
         Specifies the calculation types to be confirmed. Limited to the following possible values for TY24-25 and before: final-declaration
         
-        Limited to the following possible values for TY25-26 onwards: final-declaration confirm-amendment
+        Limited to the following possible values for TY25-26 onwards: `final-declaration` `confirm-amendment`
       schema:
         type: string
         example: "final-declaration"
+      required: true
+
+    triggerCalculationType:
+      name: calculationType
+      in: path
+      description: |
+        Defines the caulation type requested.  
+        Tax years 2023-24 & 2024-25 will accept the following values:
+          - `in-year`
+          - `intent-to-finalise`
+        
+        Tax years 2025-26 onwards will accept the following values:
+          - `in-year`
+          - `intent-to-finalise`
+          - `intent-to-amend`
+      schema:
+        type: string
+        example: "in-year"
       required: true

@@ -31,7 +31,7 @@ post:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
     - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
     - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
-    - $ref: ./common/pathParameters.yaml#/components/parameters/calculationType
+    - $ref: ./common/pathParameters.yaml#/components/parameters/finalDeclarationCalculationType
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
     - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
