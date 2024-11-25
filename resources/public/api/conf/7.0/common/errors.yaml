@@ -30,7 +30,7 @@ components:
         The format of the supplied calculationType value is not valid.
       value:
         code: FORMAT_CALCULATION_TYPE
-        message: The provided calculationType is not invalid
+        message: The provided calculation type is not valid
 
     ruleOutsideAmendmentWindow:
       description: |
@@ -183,6 +183,26 @@ components:
         code: RULE_BUSINESS_VALIDATION_FAILURE
         message: Business validation rule failures
 
+    triggerRuleCalculationTypeNotAllowed:
+      description: |
+        The client and/or agent has provided a calculation type (intent-to-amend) that is not applicable for TY25-26.
+      value:
+        code: RULE_CALCULATION_TYPE_NOT_ALLOWED
+        message: The provided calculation type is not applicable for this tax year
+
+    triggerRuleDeclarationNotReceived:
+      description: |
+        The remote endpoint has indicated that this action cannot be completed as the final declaration has not been received.
+      value:
+        code: RULE_DECLARATION_NOT_RECEIVED
+        message: The final declaration has not been received
+
+    triggerPrematureFinalisation:
+      description: |
+        The remote endpoint has indicated that Finalisation cannot occur until after the end of tax year.
+      value:
+        code: RULE_PREMATURE_FINALISATION
+        message: Finalisation cannot occur until after the end of the tax year
     # 403
     clientOrAgentNotAuthorised:
       description: |
