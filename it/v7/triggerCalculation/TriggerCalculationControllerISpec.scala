@@ -483,7 +483,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     def setupStubs(): StubMapping
 
     def request(nino: String, taxYear: String, calculationType: String): WSRequest = {
-      val uri    = s"/$nino/self-assessment/trigger/$taxYear/$calculationType"
+      val uri    = s"/$nino/self-assessment/$taxYear/$calculationType/trigger"
 
       setupStubs()
       buildRequest(uri)
