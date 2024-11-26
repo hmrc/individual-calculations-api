@@ -72,7 +72,7 @@ tags:
 
 paths:
 
-  /individuals/calculations/{nino}/self-assessment/trigger/{taxYear}/{calculationType}:
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationType}/trigger:
     $ref: "./trigger.yaml"
   /individuals/calculations/{nino}/self-assessment:
     $ref: "./listOld.yaml"
