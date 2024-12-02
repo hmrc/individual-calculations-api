@@ -26,7 +26,7 @@ class Def1_RetrieveCalculationValidatorSpec extends UnitSpec {
   private implicit val correlationId: String = "1234"
 
   private val validNino          = "ZG903729C"
-  private val validTaxYear       = "2017-18"
+  private val validTaxYear       = "2024-25"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   private val parsedNino          = Nino(validNino)
@@ -64,7 +64,7 @@ class Def1_RetrieveCalculationValidatorSpec extends UnitSpec {
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
-        val result = validator(validNino, "2016-17", validCalculationId).validateAndWrapResult()
+        val result = validator(validNino, "2023-24", validCalculationId).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
         )
