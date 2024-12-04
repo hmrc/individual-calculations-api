@@ -652,19 +652,6 @@
               }
             ]
           },
-          "finalised": {
-            "description": "A boolean to identify whether the income source is finalised. This value must be true or false.",
-            "type": "boolean",
-            "example": "false"
-          },
-          "finalisationTimestamp": {
-            "description": "The timestamp of when finalisation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/timestamp"
-              }
-            ]
-          },
           "submissionPeriods": {
             "description": "Array containing submission periods for the business income source.",
             "type": "array",

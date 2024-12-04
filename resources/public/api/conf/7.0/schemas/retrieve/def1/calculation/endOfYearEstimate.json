@@ -52,11 +52,6 @@
             "type": "integer",
             "example": "5000"
           },
-          "finalised": {
-            "description": "A boolean indicating whether income source has been finalised for the tax year (only applies to self-employment and UK property income types). This value must be true or false.",
-            "type": "boolean",
-            "example": "false"
-          },
           "totalAllowancesAndDeductions": {
             "type": "integer",
             "description": "Total allowances and deductions. This value must be between 0 and 99999999999. No decimals.",

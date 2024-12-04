@@ -42,8 +42,6 @@
           "commencementDate": "2022-04-05",
           "latestPeriodEndDate": "2022-04-05",
           "latestReceivedDateTime": "2022-12-02T15:25:48.475Z",
-          "finalised": true,
-          "finalisationTimestamp": "2022-02-15T09:35:15.094Z",
           "submissionPeriods": [
             {
               "periodId": "001",
@@ -989,8 +987,7 @@
           "incomeSourceId": "XBIS12345678920",
           "incomeSourceType": "self-employment",
           "incomeSourceName": "Self-Employment Business One",
-          "taxableIncome": 12500,
-          "finalised": true
+          "taxableIncome": 12500
         }
       ],
       "totalEstimatedIncome": 12500,
