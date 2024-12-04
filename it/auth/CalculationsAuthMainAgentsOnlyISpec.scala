@@ -24,23 +24,16 @@ import shared.services.DownstreamStub
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class CalculationsAuthMainAgentsOnlyISpec extends AuthMainAgentsOnlyISpec with Def1_CalculationFixture {
-
+  override val downstreamHttpMethod: DownstreamStub.HTTPMethod = DownstreamStub.GET
+  override val downstreamSuccessStatus: Int = OK
   val callingApiVersion = "6.0"
-
   val supportingAgentsNotAllowedEndpoint = "retrieve-calculation"
   val calculationId: String              = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  def taxYear: String                    = "2017-18"
-
+  val taxYear: String                    = "2024-25"
+  val downstreamTaxYear: String          = "24-25"
   val mtdUrl = s"/$nino/self-assessment/$taxYear/$calculationId"
-
-  def sendMtdRequest(request: WSRequest): WSResponse = await(request.get())
-
-  val downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
-
+  val downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
   val maybeDownstreamResponseJson: Option[JsValue] = Some(calculationDownstreamJson)
 
-  override val downstreamHttpMethod: DownstreamStub.HTTPMethod = DownstreamStub.GET
-
-  override val downstreamSuccessStatus: Int = OK
-
+  def sendMtdRequest(request: WSRequest): WSResponse = await(request.get())
 }

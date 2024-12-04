@@ -54,7 +54,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |{
          |  "metadata" : {
          |    "calculationId": "",
-         |    "taxYear": 2017,
+         |    "taxYear": 2025,
          |    "requestedBy": "",
          |    "calculationReason": "",
          |    "calculationType": "inYear",
@@ -89,7 +89,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
          |{
          |  "metadata" : {
          |    "calculationId": "",
-         |    "taxYear": "2016-17",
+         |    "taxYear": "2024-25",
          |    "requestedBy": "",
          |    "calculationReason": "",
          |    "calculationType": "inYear",
@@ -131,17 +131,17 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
   }
 
   private trait NonTysTest extends Test {
-    def taxYear: String                = "2018-19"
-    def downstreamTaxYear: String      = "2018-19"
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+    def taxYear: String                = "2024-25"
+    def downstreamTaxYear: String      = "24-25"
+    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
   }
 
   private trait TysTest extends Test {
-    def taxYear: String = "2023-24"
+    def taxYear: String = "2024-25"
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
-    def downstreamTaxYear: String = "23-24"
+    def downstreamTaxYear: String = "24-25"
   }
 
   "Calling the retrieveCalculation endpoint" when {
@@ -226,11 +226,11 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
         val input = Seq(
-          ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
-          ("ZG903729C", "20177", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
-          ("ZG903729C", "2016-17", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
+          ("AA1123A", "2024-25", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
+          ("ZG903729C", "20244", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, TaxYearFormatError),
+          ("ZG903729C", "2023-24", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("ZG903729C", "2024-26", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("ZG903729C", "2024-25", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
         input.foreach(args => (validationErrorTest _).tupled(args))
         "downstream returns a service error" when {
