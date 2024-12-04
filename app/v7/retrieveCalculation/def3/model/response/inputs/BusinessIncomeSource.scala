@@ -30,8 +30,6 @@ case class BusinessIncomeSource(incomeSourceId: String,
                                 cessationDate: Option[String],
                                 latestPeriodEndDate: String,
                                 latestReceivedDateTime: String,
-                                finalised: Option[Boolean],
-                                finalisationTimestamp: Option[String],
                                 submissionPeriod: Option[SubmissionPeriod])
 
 case object BusinessIncomeSource {

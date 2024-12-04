@@ -51,8 +51,7 @@ class IncomeSourceSpec extends UnitSpec {
                  |  "incomeSourceId": "123456789012345",
                  |  "incomeSourceType": "$downstreamIncomeSourceType",
                  |  "incomeSourceName": "My name",
-                 |  "taxableIncome": 3,
-                 |  "finalised": true
+                 |  "taxableIncome": 3
                  |}
                  |""".stripMargin)
 
@@ -60,8 +59,7 @@ class IncomeSourceSpec extends UnitSpec {
             incomeSourceId = Some("123456789012345"),
             incomeSourceType = mtdIncomeSourceType,
             incomeSourceName = Some("My name"),
-            taxableIncome = 3,
-            finalised = Some(true))
+            taxableIncome = 3)
 
           json.as[IncomeSource] shouldBe model
         }

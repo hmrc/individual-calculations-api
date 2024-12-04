@@ -23,8 +23,7 @@ case class IncomeSource(
     incomeSourceId: Option[String],
     incomeSourceType: IncomeSourceType,
     incomeSourceName: Option[String],
-    taxableIncome: BigInt,
-    finalised: Option[Boolean]
+    taxableIncome: BigInt
 )
 
 object IncomeSource {

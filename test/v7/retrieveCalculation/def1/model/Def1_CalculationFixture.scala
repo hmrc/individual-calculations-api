@@ -343,8 +343,6 @@ trait Def1_CalculationFixture {
     cessationDate = Some("2019-04-05"),
     latestPeriodEndDate = "2021-12-02",
     latestReceivedDateTime = "2021-12-02T15:25:48Z",
-    finalised = Some(true),
-    finalisationTimestamp = Some("2019-02-15T09:35:15.094Z"),
     submissionPeriods = Some(
       Seq(
         SubmissionPeriod(
@@ -575,8 +573,6 @@ trait Def1_CalculationFixture {
               "source": "MTD-SA",
               "latestPeriodEndDate": "2021-12-02",
               "latestReceivedDateTime": "2021-12-02T15:25:48Z",
-              "finalised": true,
-              "finalisationTimestamp": "2019-02-15T09:35:15.094Z",
               "submissionPeriods": [
                 {
                   "periodId": "001",
