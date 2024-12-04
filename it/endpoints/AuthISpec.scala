@@ -31,9 +31,10 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
   private trait Test {
     val nino: String  = "ZG903729C"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-
-    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
-    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+    val taxYear = "2024-25"
+    val downstreamTaxYear = "24-25"
+    def uri = s"/$nino/self-assessment/$taxYear/$calculationId"
+    def backendUrl = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
