@@ -45,6 +45,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
+      println(s"\nCTRL${taxYear}\n")
       val validator = validatorFactory.validator(nino, taxYear)
 
       val requestHandler =

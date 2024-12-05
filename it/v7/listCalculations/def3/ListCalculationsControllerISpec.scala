@@ -14,29 +14,33 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1
+package v7.listCalculations.def3
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
-import play.api.http.Status._
+import play.api.http.Status.{BAD_REQUEST, _}
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculations.def3.model.Def3_ListCalculationsFixture
 
-class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
+class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_ListCalculationsFixture {
 
   private trait Test {
     val nino: String = "ZG903729C"
 
-    def taxYearString: String = "2018-19"
+    val mtdTaxYear: String = TaxYear.ending(2026).asMtd
+    val downstreamTaxYear: String = TaxYear.fromMtd(mtdTaxYear).asTysDownstream
 
-    private def uri: String = s"/$nino/self-assessment/$taxYearString"
+    def taxYear: String = mtdTaxYear
 
-    def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
+    private def uri: String = s"/$nino/self-assessment/$taxYear"
+
+    def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
 
     def setupStubs(): StubMapping
 
@@ -44,13 +48,13 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       AuthStub.authorised()
       MtdIdLookupStub.ninoFound(nino)
 
-      def downstreamQueryParams: Seq[(String, String)] =
-        Seq("taxYear" -> taxYearString)
-          .collect { case (k, v) => (k, v) }
+      //      def downstreamQueryParams: Seq[(String, String)] =
+      //        Seq("taxYear" -> mtdTaxYear)
+      //          .collect { case (k, v) => (k, v) }
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(downstreamQueryParams: _*)
+        //        .addQueryStringParameters(downstreamQueryParams: _*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -63,19 +67,20 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
          |  "code": "$code",
          |  "message": "backend message"
          |}
-           """.stripMargin
+         """.stripMargin
 
   }
 
-  "Calling the list calculations endpoint for tax years pre 23-24" should {
+
+  "Calling the list calculations endpoint for a post 26 tax year" should {
     "return a 200 status code" when {
       "valid request is made with a tax year" in new Test {
 
-        override def setupStubs(): StubMapping = {
+        def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -89,8 +94,9 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       "validation error" when {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
-            override val nino: String            = requestNino
-            override val taxYearString: String = requestTaxYear
+            override val nino: String = requestNino
+
+            override def taxYear: String = requestTaxYear
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()

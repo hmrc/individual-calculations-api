@@ -21,9 +21,8 @@ import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import shared.config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v7.listCalculations.def1.model.response.Calculation
 import v7.listCalculations.model.request.ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
+import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
