@@ -14,32 +14,36 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1
+package v7.listCalculations.def3
 
-import api.errors.{FormatCalculationTypeError, RuleCalculationTypeNotAllowed}
+import api.errors.FormatCalculationTypeError
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculations.def3.model.Def3_ListCalculationsFixture
 
-class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
+class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_ListCalculationsFixture {
 
   private trait Test {
     val nino: String = "ZG903729C"
+    val requestCalcType: Option[String] = Some("in-year")
+    val downstreamCalcType = "IY"
 
-    val calculationType: Option[String] = None
+    val mtdTaxYear: String = TaxYear.ending(2026).asMtd
+    val downstreamTaxYear: String = TaxYear.fromMtd(mtdTaxYear).asTysDownstream
 
-    def taxYearString: String = "2018-19"
+    def taxYear: String = mtdTaxYear
 
-    private def uri: String = s"/$nino/self-assessment/$taxYearString"
+    private def uri: String = s"/$nino/self-assessment/$taxYear"
 
-    def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/view/calculations-summary/$nino"
 
     def setupStubs(): StubMapping
 
@@ -47,11 +51,10 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       AuthStub.authorised()
       MtdIdLookupStub.ninoFound(nino)
 
-      def requestQueryParams: Seq[(String, String)] = {
-        calculationType.fold(Seq.empty[(String, String)]){ ct =>
+      def requestQueryParams: Seq[(String, String)] =
+        requestCalcType.fold(Seq.empty[(String, String)]) { ct =>
           Seq("calculationType" -> ct).collect { case (k, v) => (k, v) }
         }
-      }
 
       setupStubs()
       buildRequest(uri)
@@ -68,19 +71,20 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
          |  "code": "$code",
          |  "message": "backend message"
          |}
-           """.stripMargin
+         """.stripMargin
 
   }
 
-  "Calling the list calculations endpoint for tax years pre 23-24" should {
+
+  "Calling the list calculations endpoint for a post 26 tax year" should {
     "return a 200 status code" when {
       "valid request is made with a tax year" in new Test {
 
-        override def setupStubs(): StubMapping = {
+        def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("calculationType" -> downstreamCalcType), OK, listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -98,9 +102,11 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
                                  requestCalculationType: Option[String],
                                  expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
-            override val nino: String            = requestNino
-            override val taxYearString: String = requestTaxYear
-            override val calculationType: Option[String] = requestCalculationType
+            override val nino: String = requestNino
+
+            override def taxYear: String = requestTaxYear
+
+            override val requestCalcType: Option[String] = requestCalculationType
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -120,8 +126,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
           ("ZG903729C", "20177", None, BAD_REQUEST, TaxYearFormatError),
           ("ZG903729C", "2015-16", None, BAD_REQUEST, RuleTaxYearNotSupportedError),
           ("ZG903729C", "2020-22", None, BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("ZG903729C", "2017-18", Some("invalid-calc-type"), BAD_REQUEST, FormatCalculationTypeError),
-          ("ZG903729C", "2017-18", Some("in-year"), BAD_REQUEST, RuleCalculationTypeNotAllowed)
+          ("ZG903729C", "2017-18", Some("invalid-calc-type"), BAD_REQUEST, FormatCalculationTypeError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

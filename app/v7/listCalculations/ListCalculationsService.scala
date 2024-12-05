@@ -16,14 +16,13 @@
 
 package v7.listCalculations
 
+import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
-import v7.listCalculations.def1.model.response.Calculation
 import v7.listCalculations.model.request.ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
+import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}

@@ -21,9 +21,8 @@ import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import shared.config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import v7.listCalculations.def1.model.response.Calculation
-import v7.listCalculations.model.request.ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
+import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,22 +31,32 @@ import scala.concurrent.{ExecutionContext, Future}
 class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def list(request: ListCalculationsRequestData)(implicit
-      hc: HeaderCarrier,
-      ec: ExecutionContext,
-      correlationId: String
+                                                 hc: HeaderCarrier,
+                                                 ec: ExecutionContext,
+                                                 correlationId: String
   ): Future[DownstreamOutcome[ListCalculationsResponse[Calculation]]] = {
 
     import request._
     import schema._
 
-    val downstreamUri: DownstreamUri[DownstreamResp] =
-      if (taxYear.useTaxYearSpecificApi) {
-        IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
-      } else {
-        DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
-      }
+    //API1404
+    lazy val desDownstreamUri: DownstreamUri[DownstreamResp] = DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
+    //API2083 & 2150
+    lazy val downstreamUri: DownstreamUri[DownstreamResp] = IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino")
 
-    get(downstreamUri)
+    request match {
+      case Def1_ListCalculationsRequestData(_, _, _) =>
+        get(desDownstreamUri)
+      case Def2_ListCalculationsRequestData(_, _, calculationType) =>
+        val calcType: Option[String] = calculationType.map(_.to2150Downstream)
+        get(downstreamUri, params(calcType))
+      case Def3_ListCalculationsRequestData(_, _, calculationType) =>
+        val calcType: Option[String] = calculationType.map(_.toDownstream)
+        get(downstreamUri, params(calcType))
+    }
   }
+  def params(calcType: Option[String]): Seq[(String, String)] =
+    List("calculationType" -> calcType).collect { case (key, Some(value)) => key -> value }
+
 
 }

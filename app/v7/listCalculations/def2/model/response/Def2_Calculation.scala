@@ -14,37 +14,31 @@
  * limitations under the License.
  */
 
-package v7.listCalculations.def1.model.response
+package v7.listCalculations.def2.model.response
 
-import common.TaxYearFormats._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import shared.models.domain.TaxYear
 import v7.listCalculations.model.response.{Calculation, ListCalculationType}
 
-case class Def1_Calculation(calculationId: String,
+
+case class Def2_Calculation(calculationId: String,
                             calculationTimestamp: String,
                             calculationType: ListCalculationType,
-                            requestedBy: Option[String],
-                            taxYear: TaxYear,
-                            totalIncomeTaxAndNicsDue: Option[BigDecimal],
-                            intentToSubmitFinalDeclaration: Option[Boolean],
-                            finalDeclaration: Option[Boolean],
-                            finalDeclarationTimestamp: Option[String])
+                            calculationTrigger: String,
+                            calculationOutcome: String,
+                            liabilityAmount: Option[BigDecimal]
+                           )
     extends Calculation
 
-object Def1_Calculation {
-  implicit val writes: OWrites[Def1_Calculation] = Json.writes[Def1_Calculation]
+object Def2_Calculation {
+  implicit val writes: OWrites[Def2_Calculation] = Json.writes[Def2_Calculation]
 
-  implicit val reads: Reads[Def1_Calculation] =
+  implicit val reads: Reads[Def2_Calculation] =
     ((JsPath \ "calculationId").read[String] and
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[ListCalculationType] and
-      (JsPath \ "requestedBy").readNullable[String] and
-      (JsPath \ "year").read[TaxYear] and
-      (JsPath \ "totalIncomeTaxAndNicsDue").readNullable[BigDecimal] and
-      (JsPath \ "intentToCrystallise").readNullable[Boolean] and
-      (JsPath \ "crystallised").readNullable[Boolean] and
-      (JsPath \ "crystallisationTimestamp").readNullable[String])(Def1_Calculation.apply _)
+      (JsPath \ "calculationTrigger").read[String] and
+      (JsPath \ "calculationOutcome").read[String] and
+      (JsPath \ "liabilityAmount").readNullable[BigDecimal])(Def2_Calculation.apply _)
 
 }

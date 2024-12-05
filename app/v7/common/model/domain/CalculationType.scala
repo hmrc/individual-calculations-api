@@ -17,25 +17,33 @@
 package v7.common.model.domain
 
 sealed trait CalculationType {
+  def to2150Downstream: String
   def toDownstream: String
 }
 
 case object `in-year` extends CalculationType {
+  def to2150Downstream: String = "IY"
   def toDownstream: String = "IY"
 }
 
 case object `intent-to-finalise` extends CalculationType {
+  def to2150Downstream: String = "IC"
   def toDownstream: String = "IF"
 }
 
 case object `intent-to-amend` extends CalculationType {
+  //2150 not in use
+  def to2150Downstream: String = "AM"
   def toDownstream: String = "IA"
 }
 
 case object `final-declaration` extends CalculationType {
+  def to2150Downstream: String = "CR"
   def toDownstream: String = "DF"
 }
 
 case object `confirm-amendment` extends CalculationType {
+  //2150 not in use
+  def to2150Downstream: String = "AM"
   def toDownstream: String = "CA"
 }
