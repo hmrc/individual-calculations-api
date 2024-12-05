@@ -16,15 +16,13 @@
 
 package v7.listCalculations
 
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.models.errors.ErrorWrapper
 import shared.models.outcomes.ResponseWrapper
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
 import v7.listCalculations.model.request.ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
-import v7.listCalculations.def1.model.response.Calculation
-
+import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 

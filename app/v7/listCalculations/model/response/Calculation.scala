@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package v7.listCalculations
+package v7.listCalculations.model.response
 
-import shared.controllers.validators.{MockValidatorFactory, Validator}
-import org.scalamock.handlers.CallHandler
-import v7.listCalculations.model.request.ListCalculationsRequestData
+import play.api.libs.json.{Json, OWrites}
+import v7.listCalculations.def1.model.response.Def1_Calculation
+import v7.listCalculations.def2.model.response.Def2_Calculation
+import v7.listCalculations.def3.model.response.Def3_Calculation
 
-trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {
+trait Calculation {
 
-  val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
+  def calculationId: String
 
-  def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
-    (mockListCalculationsFactory.validator(_: String, _: String, _: Option[String])).expects(*, *, *)
+}
+
+object Calculation {
+
+  implicit val writes: OWrites[Calculation] = OWrites.apply[Calculation] {
+    case a: Def1_Calculation => Json.toJsObject(a)
+    case b: Def2_Calculation => Json.toJsObject(b)
+    case c: Def3_Calculation => Json.toJsObject(c)
+    case _ => Json.obj()
+  }
 
 }

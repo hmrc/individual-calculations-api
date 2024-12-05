@@ -18,6 +18,8 @@ package v7.listCalculations
 
 import shared.controllers.validators.Validator
 import v7.listCalculations.def1.Def1_ListCalculationsValidator
+import v7.listCalculations.def2.Def2_ListCalculationsValidator
+import v7.listCalculations.def3.Def3_ListCalculationsValidator
 import v7.listCalculations.model.request.ListCalculationsRequestData
 import v7.listCalculations.schema.ListCalculationsSchema
 
@@ -26,9 +28,11 @@ import javax.inject.Singleton
 @Singleton
 class ListCalculationsValidatorFactory {
 
-  def validator(nino: String, taxYear: String): Validator[ListCalculationsRequestData] =
-    ListCalculationsSchema.schema match {
-      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear)
+  def validator(nino: String, taxYear: String, calculationType: Option[String]): Validator[ListCalculationsRequestData] =
+    ListCalculationsSchema.schemaFor(taxYear) match {
+      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear, calculationType)
+      case ListCalculationsSchema.Def2 => new Def2_ListCalculationsValidator(nino, taxYear, calculationType)
+      case ListCalculationsSchema.Def3 => new Def3_ListCalculationsValidator(nino, taxYear, calculationType)
     }
 
 }
