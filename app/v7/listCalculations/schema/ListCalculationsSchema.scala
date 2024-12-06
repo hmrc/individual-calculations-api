@@ -35,7 +35,7 @@ object ListCalculationsSchema {
     type DownstreamResp = Def1_ListCalculationsResponse[Def1_Calculation]
     val connectorReads: Reads[DownstreamResp] = Def1_ListCalculationsResponse.reads
   }
-  
+
   case object Def2 extends ListCalculationsSchema {
     type DownstreamResp = Def2_ListCalculationsResponse[Def2_Calculation]
     val connectorReads: Reads[DownstreamResp] = Def2_ListCalculationsResponse.reads
@@ -49,13 +49,12 @@ object ListCalculationsSchema {
   private val latestSchema = Def3
 
   def schemaFor(taxYear: String): ListCalculationsSchema = {
-      val resolveTaxYear = ResolveTaxYear(taxYear).toOption
+    val resolveTaxYear = ResolveTaxYear(taxYear).toOption
 
-        val schema = resolveTaxYear.map(schemaFor)
-        println(s"\nSCHEMA$resolveTaxYear:$schema\n")
+    val schema = resolveTaxYear.map(schemaFor)
 
-        schema.getOrElse(latestSchema)
-    }
+    schema.getOrElse(latestSchema)
+  }
 
   private def schemaFor(taxYear: TaxYear): ListCalculationsSchema = {
     if (taxYear < TaxYear.ending(2023)) Def1

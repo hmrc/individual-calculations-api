@@ -16,12 +16,15 @@
 
 package v7.listCalculations.def1
 
+import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
-import cats.implicits.catsSyntaxTuple2Semigroupal
+import cats.implicits.catsSyntaxTuple3Semigroupal
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import shared.controllers.validators.resolvers.ResolverSupport._
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
+import v7.common.model.resolver.ResolveListCalculationType
 import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def1_ListCalculationsValidator {
@@ -31,13 +34,27 @@ object Def1_ListCalculationsValidator {
 
 }
 
-class Def1_ListCalculationsValidator(nino: String, taxYear: String) extends Validator[ListCalculationsRequestData] {
+class Def1_ListCalculationsValidator(nino: String, taxYear: String, calculationType: Option[String]) extends Validator[ListCalculationsRequestData] {
   import Def1_ListCalculationsValidator._
 
   def validate: Validated[Seq[MtdError], ListCalculationsRequestData] =
     (
       ResolveNino(nino),
-      resolveTaxYear(taxYear)
+      resolveTaxYear(taxYear),
+      ResolveListCalculationType(calculationType)
     ).mapN(Def1_ListCalculationsRequestData)
+      .andThen(validateRules)
+
+  private val validateRules = {
+    val validateCalcTypeForTaxYear = { request: ListCalculationsRequestData =>
+      request.calculationType match {
+        case Some(_) => Some(List(RuleCalculationTypeNotAllowed))
+        case None    => None
+      }
+    }
+
+    resolveValid[ListCalculationsRequestData]
+      .thenValidate(validateCalcTypeForTaxYear)
+  }
 
 }

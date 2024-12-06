@@ -16,6 +16,7 @@
 
 package v7.listCalculations.def2
 
+import api.errors.{FormatCalculationTypeError, RuleCalculationTypeNotAllowed}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
@@ -32,6 +33,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def2_List
 
   private trait Test {
     val nino: String = "ZG903729C"
+    val requestCalcType: Option[String] = Some("in-year")
 
     val mtdTaxYear: String = TaxYear.ending(2024).asMtd
     val downstreamTaxYear: String = TaxYear.ending(2024).asTysDownstream
@@ -48,13 +50,14 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def2_List
       AuthStub.authorised()
       MtdIdLookupStub.ninoFound(nino)
 
-//      def downstreamQueryParams: Seq[(String, String)] =
-//        Seq("taxYear" -> mtdTaxYear)
-//          .collect { case (k, v) => (k, v) }
+      def requestQueryParams: Seq[(String, String)] =
+        requestCalcType.fold(Seq.empty[(String, String)]) { ct =>
+          Seq("calculationType" -> ct).collect { case (k, v) => (k, v) }
+        }
 
       setupStubs()
       buildRequest(uri)
-//        .addQueryStringParameters(downstreamQueryParams: _*)
+        .addQueryStringParameters(requestQueryParams: _*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -92,10 +95,15 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def2_List
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(
+                                 requestNino: String,
+                                 requestTaxYear: String,
+                                 requestCalculationType: Option[String],
+                                 expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
-            override val nino: String     = requestNino
-            override def taxYear: String  = requestTaxYear
+            override val nino: String = requestNino
+            override def taxYear: String = requestTaxYear
+            override val requestCalcType: Option[String] = requestCalculationType
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -111,10 +119,12 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def2_List
         }
 
         val input = Seq(
-          ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
-          ("ZG903729C", "20177", BAD_REQUEST, TaxYearFormatError),
-          ("ZG903729C", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
+          ("AA1123A", "2017-18", None, BAD_REQUEST, NinoFormatError),
+          ("ZG903729C", "20177", None, BAD_REQUEST, TaxYearFormatError),
+          ("ZG903729C", "2015-16", None, BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("ZG903729C", "2020-22", None, BAD_REQUEST, RuleTaxYearRangeInvalidError),
+          ("ZG903729C", "2017-18", Some("invalid-calc-type"), BAD_REQUEST, FormatCalculationTypeError),
+          ("ZG903729C", "2017-18", Some("intent-to-amend"), BAD_REQUEST, RuleCalculationTypeNotAllowed)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

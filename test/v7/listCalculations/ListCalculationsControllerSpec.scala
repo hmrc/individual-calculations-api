@@ -46,7 +46,8 @@ class ListCalculationsControllerSpec
 
   private val requestData: ListCalculationsRequestData = Def1_ListCalculationsRequestData(
     nino = Nino(nino),
-    taxYear = TaxYear.fromMtd(taxYear)
+    taxYear = TaxYear.fromMtd(taxYear),
+    calculationType = None
   )
 
   "ListCalculationsController" when {

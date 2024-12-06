@@ -28,11 +28,11 @@ import javax.inject.Singleton
 @Singleton
 class ListCalculationsValidatorFactory {
 
-  def validator(nino: String, taxYear: String): Validator[ListCalculationsRequestData] =
+  def validator(nino: String, taxYear: String, calculationType: Option[String]): Validator[ListCalculationsRequestData] =
     ListCalculationsSchema.schemaFor(taxYear) match {
-      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear)
-      case ListCalculationsSchema.Def2 => new Def2_ListCalculationsValidator(nino, taxYear)
-      case ListCalculationsSchema.Def3 => new Def3_ListCalculationsValidator(nino, taxYear)
+      case ListCalculationsSchema.Def1 => new Def1_ListCalculationsValidator(nino, taxYear, calculationType)
+      case ListCalculationsSchema.Def2 => new Def2_ListCalculationsValidator(nino, taxYear, calculationType)
+      case ListCalculationsSchema.Def3 => new Def3_ListCalculationsValidator(nino, taxYear, calculationType)
     }
 
 }

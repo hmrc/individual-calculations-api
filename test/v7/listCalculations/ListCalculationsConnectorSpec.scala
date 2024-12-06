@@ -31,9 +31,10 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   val nino: Nino          = Nino("AA111111A")
   val taxYear: TaxYear    = TaxYear.fromMtd("2018-19")
   val tysTaxYear: TaxYear = TaxYear.fromMtd("2023-24")
+  val calculationType     = None
 
-  val request: Def1_ListCalculationsRequestData    = Def1_ListCalculationsRequestData(nino, taxYear)
-  val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear)
+  val request: Def1_ListCalculationsRequestData    = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
+  val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear, calculationType)
 
   trait Test { _: ConnectorTest =>
 

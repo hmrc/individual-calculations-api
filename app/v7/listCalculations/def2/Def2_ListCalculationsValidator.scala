@@ -16,12 +16,16 @@
 
 package v7.listCalculations.def2
 
+import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
-import cats.implicits.catsSyntaxTuple2Semigroupal
+import cats.implicits.catsSyntaxTuple3Semigroupal
 import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import shared.models.domain.TaxYear
 import shared.models.errors.MtdError
+import v7.common.model.domain.{CalculationType, `final-declaration`, `in-year`, `intent-to-finalise`}
+import v7.common.model.resolver.ResolveListCalculationType
+import v7.common.model.resolver.ResolveListCalculationType.{ResolverOps, resolveValid}
 import v7.listCalculations.model.request.{Def2_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def2_ListCalculationsValidator {
@@ -31,15 +35,30 @@ object Def2_ListCalculationsValidator {
 
 }
 
-class Def2_ListCalculationsValidator(nino: String, taxYear: String) extends Validator[ListCalculationsRequestData] {
+class Def2_ListCalculationsValidator(nino: String, taxYear: String, calculationType: Option[String]) extends Validator[ListCalculationsRequestData] {
   import Def2_ListCalculationsValidator._
-
-  println(s"\n$taxYear\n")
 
   def validate: Validated[Seq[MtdError], ListCalculationsRequestData] =
     (
       ResolveNino(nino),
-      resolveTaxYear(taxYear)
+      resolveTaxYear(taxYear),
+      ResolveListCalculationType(calculationType)
     ).mapN(Def2_ListCalculationsRequestData)
+      .andThen(validateRules)
+
+  private val validateRules = {
+    def isValidCalcTypeForDef2(calcType: CalculationType): Boolean =
+      Seq(`in-year`, `final-declaration`, `intent-to-finalise`).contains(calcType)
+
+    val validateCalcTypeForTaxYear = { request: ListCalculationsRequestData =>
+      request.calculationType.flatMap {
+        case ct if isValidCalcTypeForDef2(ct) => None
+        case _ => Some(List(RuleCalculationTypeNotAllowed))
+      }
+    }
+
+    resolveValid[ListCalculationsRequestData]
+      .thenValidate(validateCalcTypeForTaxYear)
+  }
 
 }

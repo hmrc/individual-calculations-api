@@ -25,20 +25,22 @@ class Def1_ListCalculationsValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
-  private val validNino    = "ZG903729C"
-  private val validTaxYear = "2017-18"
+  private val validNino     = "ZG903729C"
+  private val validTaxYear  = "2017-18"
+  private val emptyCalcType = None
 
-  private val parsedNino    = Nino(validNino)
-  private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
+  private val parsedNino      = Nino(validNino)
+  private val parsedTaxYear   = TaxYear.fromMtd(validTaxYear)
+  private val parsedCalcType  = None
 
   private def validator(nino: String, taxYear: String) =
-    new Def1_ListCalculationsValidator(nino, taxYear)
+    new Def1_ListCalculationsValidator(nino, taxYear, emptyCalcType)
 
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied with a tax year" in {
         val result = validator(validNino, validTaxYear).validateAndWrapResult()
-        result shouldBe Right(Def1_ListCalculationsRequestData(parsedNino, parsedTaxYear))
+        result shouldBe Right(Def1_ListCalculationsRequestData(parsedNino, parsedTaxYear, parsedCalcType))
       }
     }
 

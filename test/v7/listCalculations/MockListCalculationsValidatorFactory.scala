@@ -25,6 +25,6 @@ trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalc
   val mockListCalculationsFactory: ListCalculationsValidatorFactory = mock[ListCalculationsValidatorFactory]
 
   def validator(): CallHandler[Validator[ListCalculationsRequestData]] =
-    (mockListCalculationsFactory.validator(_: String, _: String)).expects(*, *)
+    (mockListCalculationsFactory.validator(_: String, _: String, _: Option[String])).expects(*, *, *)
 
 }
