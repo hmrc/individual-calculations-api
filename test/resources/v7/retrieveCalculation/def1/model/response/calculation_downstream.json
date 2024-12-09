@@ -39,8 +39,6 @@
           "source": "MTD-SA",
           "latestPeriodEndDate": "2021-12-02",
           "latestReceivedDateTime": "2021-12-02T15:25:48Z",
-          "finalised": true,
-          "finalisationTimestamp": "2019-02-15T09:35:15.094Z",
           "submissionPeriods": [
             {
               "periodId": "001",
@@ -980,8 +978,7 @@
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "01",
           "incomeSourceName": "string",
-          "taxableIncome": 12500,
-          "finalised": true
+          "taxableIncome": 12500
         }
       ],
       "totalEstimatedIncome": 12500,

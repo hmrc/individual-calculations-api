@@ -30,17 +30,12 @@ case class BusinessIncomeSource(incomeSourceId: String,
                                      cessationDate: Option[String],
                                      latestPeriodEndDate: String,
                                      latestReceivedDateTime: String,
-                                     finalised: Option[Boolean],
-                                     finalisationTimestamp: Option[String],
                                      submissionPeriods: Option[Seq[SubmissionPeriod]]) {
 
   val isDefined: Boolean =
     !(incomeSourceName.isEmpty &&
       commencementDate.isEmpty &&
       cessationDate.isEmpty &&
-      finalised.isEmpty &&
-      finalisationTimestamp.isEmpty &&
-      finalisationTimestamp.isEmpty &&
       submissionPeriods.isEmpty)
 
   def withoutCessationDate: BusinessIncomeSource = copy(cessationDate = None)
