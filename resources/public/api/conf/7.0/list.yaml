@@ -20,6 +20,7 @@ get:
   parameters:
     - $ref: ./common/pathParameters.yaml#/components/parameters/nino
     - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
+    - $ref: ./common/queryParameters.yaml#/components/parameters/listCalculationType
     - $ref: ./common/headers.yaml#/components/parameters/acceptJson
     - $ref: ./common/headers.yaml#/components/parameters/authorizationReadScopeHeader
     - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
@@ -69,12 +70,16 @@ get:
               $ref: ./common/errors.yaml#/components/examples/formatNino
             FORMAT_TAX_YEAR:
               $ref: ./common/errors.yaml#/components/examples/formatTaxYear
+            FORMAT_CALCULATION_TYPE:
+              $ref: ./common/errors.yaml#/components/examples/formatCalculationType
             RULE_TAX_YEAR_NOT_SUPPORTED:
               $ref: ./common/errors.yaml#/components/examples/ruleTaxYearNotSupported
             RULE_TAX_YEAR_RANGE_INVALID:
               $ref: ./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid
             RULE_INCORRECT_GOV_TEST_SCENARIO:
               $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
+            RULE_CALCULATION_TYPE_NOT_ALLOWED:
+              $ref: ./common/errors.yaml#/components/examples/listRuleCalculationTypeNotAllowed
 
     403:
       description: Forbidden

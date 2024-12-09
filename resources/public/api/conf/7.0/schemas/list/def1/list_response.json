@@ -27,8 +27,7 @@
             "enum": [
               "in-year",
               "intent-to-finalise",
-              "final-declaration",
-              "correction"
+              "final-declaration"
             ]
           }
         },

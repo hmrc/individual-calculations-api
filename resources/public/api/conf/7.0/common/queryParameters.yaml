@@ -25,3 +25,23 @@ components:
       schema:
         type: boolean
       required: false
+
+    listCalculationType:
+      name: calculationType
+      in: query
+      description: |
+        This field is used to filter API response based on given calculation type.
+        Tax years 23-24 and 24-25 will accept the following values:
+        - `in-year`
+        - `intent-to-finalise`
+        - `final-declaration`
+        
+        Tax years 25-26 onwards will accept the following values:
+        - `in-year`
+        - `intent-to-finalise`
+        - `intent-to-amend`
+        - `final-declaration`
+        - `confirm-amendment`
+      schema:
+        type: string
+      required: false
