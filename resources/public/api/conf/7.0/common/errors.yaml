@@ -190,6 +190,13 @@ components:
         code: RULE_CALCULATION_TYPE_NOT_ALLOWED
         message: The provided calculation type is not applicable for this tax year
 
+    listRuleCalculationTypeNotAllowed:
+      description: |
+        The client and/or agent has provided a calculation type that is not applicable for the tax year provided.
+      value:
+        code: RULE_CALCULATION_TYPE_NOT_ALLOWED
+        message: The provided calculation type is not applicable for this tax year
+
     triggerRuleDeclarationNotReceived:
       description: |
         The remote endpoint has indicated that this action cannot be completed as the final declaration has not been received.
