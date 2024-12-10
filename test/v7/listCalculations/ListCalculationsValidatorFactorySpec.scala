@@ -37,7 +37,7 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
 
     "given any request for pre 2023" should {
       "return the Validator for schema definition 1" in {
-        val validTaxYear = "2017-18"
+        val validTaxYear = "2022-23"
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)
 
@@ -45,7 +45,14 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
       }
     }
     "given any request for tax years 2023-24, 2024-5" should {
-      "return the Validator for schema definition 1" in {
+      "return the Validator for schema definition 2 for 23-24" in {
+        val validTaxYear = "2023-24"
+        val result: Validator[ListCalculationsRequestData] =
+          validatorFactory.validator(validNino, taxYear = validTaxYear, None)
+
+        result shouldBe a[Def2_ListCalculationsValidator]
+      }
+      "return the Validator for schema definition 2 for 24-25" in {
         val validTaxYear = "2024-25"
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)

@@ -57,7 +57,7 @@ object ListCalculationsSchema {
   }
 
   private def schemaFor(taxYear: TaxYear): ListCalculationsSchema = {
-    if (taxYear < TaxYear.ending(2023)) Def1
+    if (taxYear <= TaxYear.ending(2023)) Def1
     else if (taxYear == TaxYear.ending(2024) || taxYear == TaxYear.ending(2025)) Def2
     else if (taxYear >= TaxYear.ending(2026)) Def3
     else latestSchema
