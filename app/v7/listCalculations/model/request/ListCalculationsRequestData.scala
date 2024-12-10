@@ -17,15 +17,25 @@
 package v7.listCalculations.model.request
 
 import shared.models.domain.{Nino, TaxYear}
+import v7.common.model.domain.CalculationType
 import v7.listCalculations.schema.ListCalculationsSchema
 
 sealed trait ListCalculationsRequestData {
   val nino: Nino
   val taxYear: TaxYear
+  val calculationType: Option[CalculationType]
 
   val schema: ListCalculationsSchema
 }
 
-case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear) extends ListCalculationsRequestData{
+case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear, calculationType: Option[CalculationType]) extends ListCalculationsRequestData{
   override val schema: ListCalculationsSchema = ListCalculationsSchema.Def1
+}
+
+case class Def2_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear, calculationType: Option[CalculationType]) extends ListCalculationsRequestData{
+  override val schema: ListCalculationsSchema = ListCalculationsSchema.Def2
+}
+
+case class Def3_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear, calculationType: Option[CalculationType]) extends ListCalculationsRequestData{
+  override val schema: ListCalculationsSchema = ListCalculationsSchema.Def3
 }

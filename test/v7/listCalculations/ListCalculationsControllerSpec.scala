@@ -42,10 +42,12 @@ class ListCalculationsControllerSpec
     with Def1_ListCalculationsFixture {
 
   val taxYear: String = "2020-21"
+  val calculationType = Some("in-year")
 
   private val requestData: ListCalculationsRequestData = Def1_ListCalculationsRequestData(
     nino = Nino(nino),
-    taxYear = TaxYear.fromMtd(taxYear)
+    taxYear = TaxYear.fromMtd(taxYear),
+    calculationType = None
   )
 
   "ListCalculationsController" when {
@@ -99,7 +101,7 @@ class ListCalculationsControllerSpec
 
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    override protected def callController(): Future[Result] = controller.list(validNino, taxYear)(fakeRequest)
+    override protected def callController(): Future[Result] = controller.list(validNino, taxYear, calculationType)(fakeRequest)
   }
 
 }
