@@ -4,4 +4,4 @@ POST        /:nino/self-assessment/:taxYear/:calculationId/:calculationType     
 
 GET         /:nino/self-assessment/:taxYear/:calculationId                          v7.retrieveCalculation.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 GET         /:nino/self-assessment                                                  v7.listCalculationsOld.ListCalculationsController.list(nino: String, taxYear: Option[String])
-GET         /:nino/self-assessment/:taxYear                                         v7.listCalculations.ListCalculationsController.list(nino: String, taxYear: String)
+GET         /:nino/self-assessment/:taxYear                                         v7.listCalculations.ListCalculationsController.list(nino: String, taxYear: String, calculationType: Option[String])

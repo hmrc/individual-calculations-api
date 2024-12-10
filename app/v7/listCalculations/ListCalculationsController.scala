@@ -41,11 +41,11 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
     endpointName = "list"
   )
 
-  def list(nino: String, taxYear: String): Action[AnyContent] =
+  def list(nino: String, taxYear: String, calculationType: Option[String]): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino, taxYear)
+      val validator = validatorFactory.validator(nino, taxYear, calculationType)
 
       val requestHandler =
         RequestHandler

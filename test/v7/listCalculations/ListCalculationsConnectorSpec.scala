@@ -20,23 +20,24 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
+import v7.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`, `in-year`, `intent-to-amend`, `intent-to-finalise`}
 import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.def1.model.response.Calculation
-import v7.listCalculations.model.request.Def1_ListCalculationsRequestData
-import v7.listCalculations.model.response.ListCalculationsResponse
+import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import scala.concurrent.Future
 
 class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculationsFixture {
 
   val nino: Nino          = Nino("AA111111A")
-  val taxYear: TaxYear    = TaxYear.fromMtd("2018-19")
-  val tysTaxYear: TaxYear = TaxYear.fromMtd("2023-24")
 
-  val request: Def1_ListCalculationsRequestData    = Def1_ListCalculationsRequestData(nino, taxYear)
-  val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear)
+  val def3TaxYear: TaxYear = TaxYear.fromMtd("2025-26")
 
   trait Test { _: ConnectorTest =>
+
+    val taxYear: TaxYear
+    val request: ListCalculationsRequestData
+    val calculationType: Option[CalculationType]
 
     val connector: ListCalculationsConnector = new ListCalculationsConnector(
       http = mockHttpClient,
@@ -47,7 +48,12 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
   "ListCalculationsConnector" should {
     "return successful response" when {
-      "Non-TYS tax year query param is passed" in new DesTest with Test {
+      "Pre 23/24 tax year path param is passed" in new DesTest with Test {
+        val taxYear = TaxYear.fromMtd("2018-19")
+        val calculationType = None
+
+        val request: Def1_ListCalculationsRequestData    = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
+
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
@@ -58,20 +64,139 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         await(connector.list(request)) shouldBe outcome
       }
 
-      "TYS tax year query param is passed" in new IfsTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+      "a 23/24 or 24/25 tax year path param is passed" when {
+        "an in year calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2023-24")
+          val calculationType = Some(`in-year`)
+          val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
 
-        willGet(
-          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
-        )
-          .returns(Future.successful(outcome))
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
-        await(connector.list(tysRequest)) shouldBe outcome
+          willGet(
+            url = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            parameters = Seq("calculationType" -> "IY")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "an intent to finalise calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2023-24")
+          val calculationType = Some(`intent-to-finalise`)
+          val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "IC")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "a final declaration calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2023-24")
+          val calculationType = Some(`final-declaration`)
+          val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "CR")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+      }
+
+      "a post 25/26 tax year path param is passed" when {
+        "an in year calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2025-26")
+          val calculationType = Some(`in-year`)
+          val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "IY")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "an intent to finalise calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2025-26")
+          val calculationType = Some(`intent-to-finalise`)
+          val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "IF")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "a final declaration calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2025-26")
+          val calculationType = Some(`final-declaration`)
+          val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "DF")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "an intent to amend calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2025-26")
+          val calculationType = Some(`intent-to-amend`)
+          val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "IA")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
+        "a confirm amendment calcType query param is passed" in new IfsTest with Test {
+          val taxYear = TaxYear.fromMtd("2025-26")
+          val calculationType = Some(`confirm-amendment`)
+          val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
+
+          val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+
+          willGet(
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            Seq("calculationType" -> "CA")
+          )
+            .returns(Future.successful(outcome))
+
+          await(connector.list(request)) shouldBe outcome
+        }
       }
     }
 
     "an error is received" must {
       "return the expected result" in new DesTest with Test {
+        val taxYear = TaxYear.fromMtd("2018-19")
+        val calculationType = None
+
+        val request: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         willGet(
