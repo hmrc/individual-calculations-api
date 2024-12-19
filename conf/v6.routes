@@ -1,5 +1,6 @@
 #V6 endpoints
-GET         /:nino/self-assessment/:taxYear/:calculationId                          v6.retrieveCalculation.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 POST        /:nino/self-assessment/:taxYear/:calculationId/final-declaration        v5.submitFinalDeclaration.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String)
-GET         /:nino/self-assessment                                                  v5.listCalculations.ListCalculationsController.list(nino: String, taxYear: Option[String])
 POST        /:nino/self-assessment/:taxYear                                         v5.triggerCalculation.TriggerCalculationController.triggerCalculation(nino: String, taxYear: String, finalDeclaration: Option[String])
+
+GET         /:nino/self-assessment/:taxYear/:calculationId                          v6.retrieveCalculation.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
+GET         /:nino/self-assessment                                                  v5.listCalculations.ListCalculationsController.list(nino: String, taxYear: Option[String])

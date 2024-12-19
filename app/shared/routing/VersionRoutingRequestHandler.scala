@@ -53,7 +53,6 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
       Versions.getFromRequest(request) match {
         case Left(InvalidHeader)   => Some(invalidAcceptHeaderError)
         case Left(VersionNotFound) => Some(unsupportedVersionAction)
-
         case Right(version) =>
           versionRoutingMap.versionRouter(version) match {
             case Some(versionRouter) if config.endpointsEnabled(version) =>
