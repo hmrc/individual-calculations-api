@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils.enums
+package common.utils.enums
 
 import cats.Show
 import common.utils.enums.Enums

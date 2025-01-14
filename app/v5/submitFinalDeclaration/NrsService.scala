@@ -22,33 +22,27 @@ import config.CalculationsConfig
 import org.apache.pekko.actor.Scheduler
 import play.api.libs.json.Json
 import shared.controllers.RequestContext
-import shared.services.ServiceOutcome
+import shared.models.errors.{ErrorWrapper, InternalError}
+import shared.services.{BaseService, ServiceOutcome}
 import shared.utils.Logging
-import uk.gov.hmrc.http.HeaderCarrier
 import v5.retrieveCalculation.RetrieveCalculationService
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
-import shared.models.errors.InternalError
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Success, Try}
 
-class SubmitFinalDeclarationNrsService @Inject() (connector: NrsProxyConnector,
-                                                  retrieveService: RetrieveCalculationService,
-                                                  config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
-    extends Retrying
+class NrsService @Inject()(connector: NrsProxyConnector,
+                           retrieveService: RetrieveCalculationService,
+                           config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
+    extends BaseService
+    with Retrying
     with Delayer
     with Logging {
 
-  private val maxNrsAttempts = 3
-  private val interval       = 100
-
-  private def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[Unit] = {
-    implicit val hc: HeaderCarrier = ctx.hc
+  def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[Unit] = {
 
     retrieveCalculationDetails(submitRequest.toRetrieveRequestData) map {
       case Left(_)                => connector.submitAsync(nino, "itsa-crystallisation", submitRequest.toNrsJson)
@@ -59,39 +53,18 @@ class SubmitFinalDeclarationNrsService @Inject() (connector: NrsProxyConnector,
   private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
-    retrieveService.retrieveCalculation(retrieveRequest).flatMap {
-      case Right(result) =>
-        Future.successful(Right(result))
-
-      case Left(error) =>
-        if (attempt <= maxNrsAttempts) {
-          Thread.sleep(interval)
-          retrieveCalculationDetails(retrieveRequest, attempt + 1)
-        } else {
-          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
-          Future.successful(Left(error.copy(error = InternalError, errors = None)))
-        }
-    }
-  }
-
-  private def retrieveCalculationDetails2(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
-      ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
     val retryCondition: Try[ServiceOutcome[RetrieveCalculationResponse]] => Boolean = {
-      case Success(Left(error)) => error.error.httpStatus == 500
-      case _                    => false
+      case Success(Left(_)) => true
+      case _                => false
     }
 
     retry(config.retrieveCalcRetries, retryCondition) { attemptNumber =>
-      logger.info(s"Attempt $attemptNumber calculation retrieval")
-
-      retrieveService.retrieveCalculation(retrieveRequest).flatMap {
-        case Right(result) => Future.successful(Right(result))
-        case Left(error) =>
-          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
-          Future.successful(Left(error.copy(error = InternalError, errors = None)))
-      }
+      logger.info(s"Attempt $attemptNumber calculation retrieval for NRS logging")
+      retrieveService.retrieveCalculation(retrieveRequest)
+    }.recover { case e: Throwable =>
+      logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${ctx.correlationId}")
+      Left(ErrorWrapper(ctx.correlationId, InternalError, None))
     }
   }
 

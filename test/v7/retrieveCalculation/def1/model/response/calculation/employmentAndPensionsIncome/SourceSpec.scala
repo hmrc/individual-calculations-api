@@ -16,8 +16,8 @@
 
 package v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome
 
+import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
 import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.Source._
 
 class SourceSpec extends UnitSpec with EnumJsonSpecSupport {

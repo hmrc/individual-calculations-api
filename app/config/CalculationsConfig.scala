@@ -33,8 +33,8 @@ class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Confi
   // NRS Config
   def mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
 
-  private val retryConfig = configuration.get[Configuration]("retry-mechanism")
-  lazy val retrieveCalcRetries: List[FiniteDuration] =
+  private def retryConfig: Configuration = configuration.get[Configuration]("retry-mechanism")
+  def retrieveCalcRetries: List[FiniteDuration] =
     Retrying.fibonacciDelays(getFiniteDuration(retryConfig), retryConfig.get[Int]("numberOfRetries"))
 
   private final def getFiniteDuration(config: Configuration, path: String = "initialDelay"): FiniteDuration = {

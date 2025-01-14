@@ -16,31 +16,21 @@
 
 package v5.submitFinalDeclaration
 
-import api.nrs.NrsProxyService
-import play.api.libs.json.Json
-import shared.utils.{IdGenerator, Logging}
-import shared.controllers._
-import shared.services._
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import shared.controllers._
 import shared.routing.Version
-import shared.models.errors.InternalError
-import uk.gov.hmrc.http.HeaderCarrier
-import v5.retrieveCalculation.RetrieveCalculationService
-import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
-import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
-import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import shared.services._
+import shared.utils.{IdGenerator, Logging}
 import v5.submitFinalDeclaration.schema.SubmitFinalDeclarationSchema
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAuthService,
                                                   val lookupService: MtdIdLookupService,
                                                   validatorFactory: SubmitFinalDeclarationValidatorFactory,
                                                   service: SubmitFinalDeclarationService,
-                                                  nrsProxyService: NrsProxyService,
-                                                  retrieveService: RetrieveCalculationService,
                                                   cc: ControllerComponents,
                                                   auditService: AuditService,
                                                   idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
@@ -51,10 +41,6 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
 
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "SubmitFinalDeclarationController", endpointName = "submitFinalDeclaration")
-
-
-  private val maxNrsAttempts = 3
-  private val interval       = 100
 
   def submitFinalDeclaration(nino: String, taxYear: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
@@ -67,8 +53,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
         RequestHandler
           .withValidator(validator)
           .withService { parsedRequest =>
-            updateNrs(nino, parsedRequest)
-            service.submitFinalDeclaration(parsedRequest)
+            service.submitFinalDeclaration(nino, parsedRequest)
           }
           .withNoContentResult()
           .withAuditing(AuditHandler(
@@ -81,33 +66,5 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
 
       requestHandler.handleRequest()
     }
-  private def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit
-                                                                                        ctx: RequestContext,
-                                                                                        ec: ExecutionContext): Future[Unit] = {
-    implicit val hc: HeaderCarrier = ctx.hc
 
-    retrieveCalculationDetails(submitRequest.toRetrieveRequestData) map {
-      case Left(_)                => nrsProxyService.submit(nino, "itsa-crystallisation", submitRequest.toNrsJson)
-      case Right(responseWrapper) => nrsProxyService.submit(nino, "itsa-crystallisation", Json.toJson(responseWrapper.responseData))
-    }
-  }
-
-  private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
-                                                                                                            ctx: RequestContext,
-                                                                                                            ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
-
-    retrieveService.retrieveCalculation(retrieveRequest).flatMap {
-      case Right(result) =>
-        Future.successful(Right(result))
-
-      case Left(error) =>
-        if (attempt <= maxNrsAttempts) {
-          Thread.sleep(interval)
-          retrieveCalculationDetails(retrieveRequest, attempt + 1)
-        } else {
-          logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${error.correlationId}")
-          Future.successful(Left(error.copy(error = InternalError, errors = None)))
-        }
-    }
-  }
 }

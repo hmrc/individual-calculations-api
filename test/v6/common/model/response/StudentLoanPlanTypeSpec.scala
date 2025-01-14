@@ -16,8 +16,8 @@
 
 package v6.common.model.response
 
+import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
 import v6.common.model.response.StudentLoanPlanType._
 
 class StudentLoanPlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
