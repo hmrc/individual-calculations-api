@@ -17,23 +17,26 @@
 package v5.submitFinalDeclaration
 
 import api.nrs.MockNrsProxyConnector
+import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 import mocks.MockCalculationsConfig
-import play.api.libs.json.JsValue
-import shared.utils.UnitSpec
-import uk.gov.hmrc.http.HeaderCarrier
+import shared.controllers.RequestContext
+import shared.services.ServiceSpec
 import v5.retrieveCalculation.MockRetrieveCalculationService
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import java.util.concurrent.ConcurrentLinkedQueue
+import scala.concurrent.{ExecutionContext, Future}
 
-trait StubSubmitFinalDeclarationNrsService { _: MockNrsProxyConnector with MockRetrieveCalculationService with UnitSpec with MockCalculationsConfig =>
-
+trait StubNrsService extends ServiceSpec with MockRetrieveCalculationService with MockNrsProxyConnector with MockCalculationsConfig {
   private val called = new ConcurrentLinkedQueue[NrsProxyCall]()
 
-  protected val stubService: NrsService = new NrsService(mockNrsProxyConnector, mockRetrieveCalculationService, mockCalculationsConfig) {
+  val virtualTime                           = new VirtualTime
+  implicit val mockScheduler: MockScheduler = virtualTime.scheduler
 
-    override def updateNrs(nino: String, body: SubmitFinalDeclarationRequestData)(implicit hc: HeaderCarrier): Unit =
-      called.add(NrsProxyCall(nino, notableEvent, body))
+  val stubNrsService: NrsService = new NrsService(mockNrsProxyConnector, mockRetrieveCalculationService, mockCalculationsConfig) {
+
+    override def updateNrs(nino: String, body: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[Unit] =
+      Future.successful(called.add(NrsProxyCall(nino, "itsa-crystallisation", body)))
 
   }
 
@@ -44,5 +47,5 @@ trait StubSubmitFinalDeclarationNrsService { _: MockNrsProxyConnector with MockR
 
   def resetNrsProxyService(): Unit = called.clear()
 
-  protected case class NrsProxyCall(nino: String, notableEvent: String, body: JsValue)
+  protected case class NrsProxyCall(nino: String, notableEvent: String, body: SubmitFinalDeclarationRequestData)
 }

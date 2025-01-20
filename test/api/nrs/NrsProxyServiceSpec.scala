@@ -16,6 +16,8 @@
 
 package api.nrs
 
+import org.scalamock.matchers.ArgCapture.CaptureOne
+import play.api.libs.json.JsValue
 import shared.services.ServiceSpec
 
 import scala.concurrent.Future
@@ -27,7 +29,8 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyC
   "NrsProxyService" when {
     "submitting asynchronously" should {
       "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+        val bodyCapture: CaptureOne[JsValue] = CaptureOne[JsValue]()
+        MockNrsProxyConnector.submit(nino, event, bodyCapture) returns Future.successful(Right(()))
 
         service.submit(nino, event, body)
       }

@@ -17,6 +17,7 @@
 package api.nrs
 
 import org.scalamock.handlers.CallHandler
+import org.scalamock.matchers.ArgCapture.CaptureOne
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
@@ -29,10 +30,10 @@ trait MockNrsProxyConnector extends MockFactory {
 
   object MockNrsProxyConnector {
 
-    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
+    def submit(nino: String, notableEvent: String, body: CaptureOne[JsValue]): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
       (mockNrsProxyConnector
         .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, notableEvent, body, *)
+        .expects(nino, notableEvent, capture(body), *)
 
   }
 

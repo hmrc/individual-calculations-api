@@ -24,23 +24,36 @@ import play.api.libs.json.Json
 import shared.controllers.RequestContext
 import shared.models.errors.{ErrorWrapper, InternalError}
 import shared.services.{BaseService, ServiceOutcome}
-import shared.utils.Logging
 import v5.retrieveCalculation.RetrieveCalculationService
 import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Success, Try}
 
-class NrsService @Inject()(connector: NrsProxyConnector,
-                           retrieveService: RetrieveCalculationService,
-                           config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
+@Singleton
+class NrsService @Inject()(val connector: NrsProxyConnector,
+                           val retrieveService: RetrieveCalculationService,
+                           val config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
     extends BaseService
     with Retrying
-    with Delayer
-    with Logging {
+    with Delayer {
+
+//  def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[Unit] = {
+//
+//    retrieveCalculationDetails(submitRequest.toRetrieveRequestData) map { repsonse =>
+//      val json = repsonse match {
+//        case Left(_)                => submitRequest.toNrsJson
+//        case Right(responseWrapper) => Json.toJson(responseWrapper.responseData)
+//      }
+//
+//      println(s"\n******\nJSON:\n\n$json\n\n******")
+//
+//      connector.submitAsync(nino, "itsa-crystallisation", json)
+//    }
+//  }
 
   def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[Unit] = {
 
@@ -50,7 +63,7 @@ class NrsService @Inject()(connector: NrsProxyConnector,
     }
   }
 
-  private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData, attempt: Int = 1)(implicit
+  private def retrieveCalculationDetails(retrieveRequest: RetrieveCalculationRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
@@ -62,7 +75,7 @@ class NrsService @Inject()(connector: NrsProxyConnector,
     retry(config.retrieveCalcRetries, retryCondition) { attemptNumber =>
       logger.info(s"Attempt $attemptNumber calculation retrieval for NRS logging")
       retrieveService.retrieveCalculation(retrieveRequest)
-    }.recover { case e: Throwable =>
+    }.recover { case _: Throwable =>
       logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${ctx.correlationId}")
       Left(ErrorWrapper(ctx.correlationId, InternalError, None))
     }

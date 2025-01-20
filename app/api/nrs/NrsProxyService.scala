@@ -19,7 +19,6 @@ package api.nrs
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 
-
 import javax.inject.{Inject, Singleton}
 
 @Singleton
