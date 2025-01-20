@@ -30,10 +30,15 @@ trait MockNrsProxyConnector extends MockFactory {
 
   object MockNrsProxyConnector {
 
-    def submit(nino: String, notableEvent: String, body: CaptureOne[JsValue]): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
+    def submit(nino: String, notableEvent: String, body: JsValue): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
       (mockNrsProxyConnector
         .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-        .expects(nino, notableEvent, capture(body), *)
+        .expects(nino, notableEvent, body, *)
+
+    def submitCapture(nino: String, notableEvent: String, body: CaptureOne[JsValue]): CallHandler[Future[Either[UpstreamErrorResponse, Unit]]] =
+      (mockNrsProxyConnector
+        .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
+        .expects(nino, *, capture(body), *)
 
   }
 

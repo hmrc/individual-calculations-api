@@ -16,7 +16,7 @@
 
 package v5.submitFinalDeclaration
 
-import api.nrs.{NrsFixture, NrsProxyConnector}
+import api.nrs.{MockNrsProxyConnector, NrsFixture}
 import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 import mocks.MockCalculationsConfig
 import org.scalamock.matchers.ArgCapture.CaptureOne
@@ -25,7 +25,6 @@ import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{ErrorWrapper, InternalError}
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import uk.gov.hmrc.http.HeaderCarrier
 import v5.retrieveCalculation.MockRetrieveCalculationService
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
@@ -43,7 +42,6 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
   private val calculationId                 = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
   private val retrieveDetailsRequestData    = Def1_RetrieveCalculationRequestData(Nino(nino), taxYear, calculationId)
   private val retrieveDetailsResponseData   = minimalCalculationR8bResponse
-  val mockNrsProxyConnector                 = mock[NrsProxyConnector]
 
   val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
     Nino(nino),
@@ -51,7 +49,7 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
     calculationId
   )
 
-  trait Test extends MockRetrieveCalculationService with MockCalculationsConfig {
+  trait Test extends MockRetrieveCalculationService with MockCalculationsConfig with MockNrsProxyConnector {
 
     val service: NrsService = new NrsService(mockNrsProxyConnector, mockRetrieveCalculationService, mockCalculationsConfig)
   }
@@ -69,15 +67,11 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Right(ResponseWrapper[Def1_RetrieveCalculationResponse]("correlationId", retrieveDetailsResponseData))))
 
-        (mockNrsProxyConnector
-          .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-          .expects(*, *, capture(nrsBodyCapture), *)
+        MockNrsProxyConnector
+          .submitCapture(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
-//        MockNrsProxyConnector
-//          .submit(nino, event, nrsBodyCapture)
-//          .returns(Future.successful(Right(())))
 
-        service.updateNrs(nino, request)
+        await(service.updateNrs(nino, request))
         nrsBodyCapture.value shouldBe Json.toJson(retrieveDetailsResponseData)
       }
 
@@ -90,13 +84,11 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Left(ErrorWrapper(requestContext.correlationId, InternalError))))
 
-        (mockNrsProxyConnector
-          .submitAsync(_: String, _: String, _: JsValue)(_: HeaderCarrier))
-          .expects(*, *, *, *)
+        MockNrsProxyConnector
+          .submit(nino, event, request.toNrsJson)
           .returns(Future.successful(Right(())))
 
-        service.updateNrs(nino, request)
-//        mockNrsProxyConnector.submitAsync(nino, event, request.toNrsJson).
+        await(service.updateNrs(nino, request))
       }
 
     }

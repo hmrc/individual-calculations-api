@@ -33,7 +33,8 @@ class RetrieveCalculationService @Inject() (connector: RetrieveCalculationConnec
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[RetrieveCalculationResponse]] = {
 
-    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+//    connector.retrieveCalculation(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    Future.successful(Left(ErrorWrapper(ctx.correlationId, InternalError, None)))
 
   }
 
