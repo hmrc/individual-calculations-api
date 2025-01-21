@@ -17,17 +17,15 @@
 package v5.submitFinalDeclaration
 
 import api.errors._
-import org.scalatest.concurrent.Eventually
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 import scala.concurrent.Future
 
-class SubmitFinalDeclarationServiceSpec extends ServiceSpec with Eventually with Def1_CalculationFixture {
+class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
   trait Test extends MockSubmitFinalDeclarationConnector with MockNrsService {
 
