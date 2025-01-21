@@ -17,10 +17,13 @@
 package v5.submitFinalDeclaration
 
 import api.nrs.{MockNrsProxyConnector, NrsFixture}
-import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 import mocks.MockCalculationsConfig
+import org.apache.pekko.actor.{ActorSystem, Scheduler}
 import org.scalamock.matchers.ArgCapture.CaptureOne
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsValue, Json}
+import play.api.{Application, Environment, Mode}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{ErrorWrapper, InternalError}
 import shared.models.outcomes.ResponseWrapper
@@ -34,14 +37,19 @@ import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationReque
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFixture {
+class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFixture with GuiceOneAppPerSuite {
 
-  val virtualTime                           = new VirtualTime
-  implicit val mockScheduler: MockScheduler = virtualTime.scheduler
-  private val taxYear                       = TaxYear.fromMtd("2020-21")
-  private val calculationId                 = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
-  private val retrieveDetailsRequestData    = Def1_RetrieveCalculationRequestData(Nino(nino), taxYear, calculationId)
-  private val retrieveDetailsResponseData   = minimalCalculationR8bResponse
+  override lazy val app: Application = new GuiceApplicationBuilder()
+    .in(Environment.simple(mode = Mode.Dev))
+    .configure("metrics.enabled" -> "false")
+    .build()
+
+  val actorSystem                         = app.injector.instanceOf[ActorSystem]
+  implicit val scheduler: Scheduler       = actorSystem.scheduler
+  private val taxYear                     = TaxYear.fromMtd("2020-21")
+  private val calculationId               = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
+  private val retrieveDetailsRequestData  = Def1_RetrieveCalculationRequestData(Nino(nino), taxYear, calculationId)
+  private val retrieveDetailsResponseData = minimalCalculationR8bResponse
 
   val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
     Nino(nino),
@@ -71,24 +79,28 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
           .submitCapture(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
-        await(service.updateNrs(nino, request))
+        val result = await(service.updateNrs(nino, request))
+        result shouldBe (): Unit
         nrsBodyCapture.value shouldBe Json.toJson(retrieveDetailsResponseData)
       }
 
       "submit fallback details to NRS when retrieveCalculationDetails fails" in new Test {
-
+        val nrsBodyCapture: CaptureOne[JsValue] = CaptureOne[JsValue]()
         MockCalculationsConfig.retrieveCalcRetries
           .returns(List(500.millis, 500.millis, 1000.millis))
 
         MockRetrieveCalculationService
           .retrieveCalculation(retrieveDetailsRequestData)
           .returns(Future.successful(Left(ErrorWrapper(requestContext.correlationId, InternalError))))
+          .repeat(3)
 
         MockNrsProxyConnector
-          .submit(nino, event, request.toNrsJson)
+          .submitCapture(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
-        await(service.updateNrs(nino, request))
+        val result = await(service.updateNrs(nino, request))
+        result shouldBe (): Unit
+        nrsBodyCapture.value shouldBe request.toNrsJson
       }
 
     }
