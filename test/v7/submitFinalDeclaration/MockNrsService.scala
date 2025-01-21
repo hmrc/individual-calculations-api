@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,27 +19,24 @@ package v7.submitFinalDeclaration
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
-import shared.models.errors.ErrorWrapper
-import shared.models.outcomes.ResponseWrapper
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockSubmitFinalDeclarationService extends MockFactory {
+trait MockNrsService extends MockFactory {
+  val mockNrsService: NrsService = mock[NrsService]
 
-  val mockSubmitFinalDeclarationService: SubmitFinalDeclarationService = mock[SubmitFinalDeclarationService]
+  object MockNrsService {
 
-  object MockSubmitFinalDeclarationService {
-
-    def submitFinalDeclaration(nino: String, requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+    def updateNrs(nino: String, submitRequest: SubmitFinalDeclarationRequestData): CallHandler[Future[Unit]] = {
       (
-        mockSubmitFinalDeclarationService
-          .submitFinalDeclaration(_: String, _: SubmitFinalDeclarationRequestData)(
+        mockNrsService
+          .updateNrs(_: String, _: SubmitFinalDeclarationRequestData)(
             _: RequestContext,
             _: ExecutionContext
           )
         )
-        .expects(nino, requestData, *, *)
+        .expects(nino, submitRequest, *, *)
     }
 
   }

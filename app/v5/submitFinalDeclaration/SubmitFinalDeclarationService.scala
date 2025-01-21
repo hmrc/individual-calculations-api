@@ -27,13 +27,11 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector, nrsService: NrsService)
-    extends BaseService {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector, nrsService: NrsService) extends BaseService {
 
   def submitFinalDeclaration(nino: String, request: SubmitFinalDeclarationRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
-
     nrsService.updateNrs(nino, request)
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }

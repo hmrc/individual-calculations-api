@@ -28,18 +28,19 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
-  trait Test extends MockSubmitFinalDeclarationConnector {
+  trait Test extends MockSubmitFinalDeclarationConnector with MockNrsService {
 
     val service: SubmitFinalDeclarationService = new SubmitFinalDeclarationService(
-      mockSubmitFinalDeclarationConnector
+      mockSubmitFinalDeclarationConnector,
+      mockNrsService
     )
 
   }
 
   "SubmitFinalDeclarationService" when {
-    val nino: Nino                   = Nino("ZG903729C")
-    val taxYear: TaxYear             = TaxYear.fromMtd("2019-20")
-    val calculationId: CalculationId = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
+    val nino: Nino                       = Nino("ZG903729C")
+    val taxYear: TaxYear                 = TaxYear.fromMtd("2019-20")
+    val calculationId: CalculationId     = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
     val calculationType: CalculationType = `final-declaration`
 
     val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
@@ -53,11 +54,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
+        MockNrsService
+          .updateNrs(nino.nino, request)
+          .returns(Future.successful(()))
+
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
           .returns(Future.successful(outcome))
 
-        val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+        val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
         result shouldBe outcome
       }
     }
@@ -66,11 +71,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
         s"a $downstreamErrorCode error is returned from the service" in new Test {
 
+          MockNrsService
+            .updateNrs(nino.nino, request)
+            .returns(Future.successful(()))
+
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-          val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+          val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
           result shouldBe Left(ErrorWrapper(correlationId, error))
         }
 

@@ -27,13 +27,13 @@ import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationReque
 
 import scala.concurrent.Future
 
-class SubmitFinalDeclarationServiceSpec extends ServiceSpec with Eventually with StubNrsService with Def1_CalculationFixture {
+class SubmitFinalDeclarationServiceSpec extends ServiceSpec with Eventually with Def1_CalculationFixture {
 
   trait Test extends MockSubmitFinalDeclarationConnector with MockNrsService {
 
     val service: SubmitFinalDeclarationService = new SubmitFinalDeclarationService(
       mockSubmitFinalDeclarationConnector,
-      stubNrsService
+      mockNrsService
     )
 
   }

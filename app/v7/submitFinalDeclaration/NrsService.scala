@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v5.submitFinalDeclaration
+package v7.submitFinalDeclaration
 
 import api.nrs.NrsProxyConnector
 import common.utils.{Delayer, Retrying}
@@ -24,10 +24,10 @@ import play.api.libs.json.Json
 import shared.controllers.RequestContext
 import shared.models.errors.{ErrorWrapper, InternalError}
 import shared.services.{BaseService, ServiceOutcome}
-import v5.retrieveCalculation.RetrieveCalculationService
-import v5.retrieveCalculation.models.request.RetrieveCalculationRequestData
-import v5.retrieveCalculation.models.response.RetrieveCalculationResponse
-import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v7.retrieveCalculation.RetrieveCalculationService
+import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -59,7 +59,7 @@ class NrsService @Inject()(connector: NrsProxyConnector,
     }
 
     retry(config.retrieveCalcRetries, retryCondition) { attemptNumber =>
-      logger.info(s"Attempt $attemptNumber calculation retrieval for NRS logging")
+      logger.info(s"Attempt ${attemptNumber + 1} of calculationDetails retrieval for NRS logging")
       retrieveService.retrieveCalculation(retrieveRequest)
     }.recover { case _: Throwable =>
       logger.warn(s"Error fetching Calculation details for NRS logging. Correlation ID: ${ctx.correlationId}")

@@ -16,7 +16,7 @@
 
 package v5.submitFinalDeclaration
 
-import api.nrs.{MockNrsProxyConnector, StubNrsProxyService}
+import api.nrs.MockNrsProxyConnector
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.concurrent.Eventually
 import play.api.Configuration
@@ -52,7 +52,6 @@ class SubmitFinalDeclarationControllerSpec
     with MockIdGenerator
     with MockNrsProxyConnector
     with MockRetrieveCalculationService
-    with StubNrsProxyService
     with MockAppConfig
     with Def1_CalculationFixture {
 
@@ -62,7 +61,6 @@ class SubmitFinalDeclarationControllerSpec
   implicit override val patienceConfig: PatienceConfig =
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
-  override protected def beforeEach(): Unit = resetNrsProxyService()
   private val requestData = Def1_SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
   "SubmitFinalDeclarationController" should {
@@ -76,9 +74,6 @@ class SubmitFinalDeclarationControllerSpec
 
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
 
-//        eventually {
-//          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
-//        }
       }
 
       "the request is valid but the Details lookup for NRS logging fails" in new Test {
@@ -88,22 +83,7 @@ class SubmitFinalDeclarationControllerSpec
           .submitFinalDeclaration(validNino, requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-//        MockRetrieveCalculationService
-//          .retrieveCalculation(retrieveDetailsRequestData)
-//          .returns(Future.successful(Left(ErrorWrapper(correlationId, InternalError))))
-//          .anyNumberOfTimes()
-
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
-
-//        private val fallbackNrsPayload = Json.parse(s"""
-//                                                       |{
-//                                                       |  "calculationId": "$calculationId"
-//                                                       |}
-//                                                       |""".stripMargin)
-
-//        eventually {
-//          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", fallbackNrsPayload))
-//        }
       }
     }
 
@@ -121,15 +101,7 @@ class SubmitFinalDeclarationControllerSpec
           .submitFinalDeclaration(validNino, requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
 
-//        MockRetrieveCalculationService
-//          .retrieveCalculation(retrieveDetailsRequestData)
-//          .returns(Future.successful(Right(ResponseWrapper("correlationId", retrieveDetailsResponseData))))
-
         runErrorTestWithAudit(RuleTaxYearNotSupportedError)
-
-//        eventually {
-//          verifyNrsProxyService(NrsProxyCall(validNino, "itsa-crystallisation", Json.toJson(retrieveDetailsResponseData)))
-//        }
       }
     }
 
