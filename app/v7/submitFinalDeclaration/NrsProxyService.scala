@@ -34,9 +34,9 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Success, Try}
 
 @Singleton
-class NrsService @Inject()(connector: NrsProxyConnector,
-                           retrieveService: RetrieveCalculationService,
-                           config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
+class NrsProxyService @Inject()(connector: NrsProxyConnector,
+                                retrieveService: RetrieveCalculationService,
+                                config: CalculationsConfig)(implicit val scheduler: Scheduler, val ec: ExecutionContext)
     extends BaseService
     with Retrying
     with Delayer {

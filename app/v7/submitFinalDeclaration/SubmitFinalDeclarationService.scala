@@ -27,7 +27,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector, nrsService: NrsService) extends BaseService {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector, nrsService: NrsProxyService) extends BaseService {
 
   def submitFinalDeclaration(nino: String, request: SubmitFinalDeclarationRequestData)(implicit
       ctx: RequestContext,

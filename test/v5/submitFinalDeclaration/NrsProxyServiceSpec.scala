@@ -37,7 +37,7 @@ import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationReque
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFixture with GuiceOneAppPerSuite {
+class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFixture with GuiceOneAppPerSuite {
 
   override lazy val app: Application = new GuiceApplicationBuilder()
     .in(Environment.simple(mode = Mode.Dev))
@@ -59,7 +59,7 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
 
   trait Test extends MockRetrieveCalculationService with MockCalculationsConfig with MockNrsProxyConnector {
 
-    val service: NrsService = new NrsService(mockNrsProxyConnector, mockRetrieveCalculationService, mockCalculationsConfig)
+    val service: NrsProxyService = new NrsProxyService(mockNrsProxyConnector, mockRetrieveCalculationService, mockCalculationsConfig)
   }
 
   "NrsService" when {
@@ -76,7 +76,7 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
           .returns(Future.successful(Right(ResponseWrapper[Def1_RetrieveCalculationResponse]("correlationId", retrieveDetailsResponseData))))
 
         MockNrsProxyConnector
-          .submitCapture(nino, "itsa-crystallisation", nrsBodyCapture)
+          .submit(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
         val result = await(service.updateNrs(nino, request))
@@ -95,7 +95,7 @@ class NrsServiceSpec extends ServiceSpec with NrsFixture with Def1_CalculationFi
           .repeat(3)
 
         MockNrsProxyConnector
-          .submitCapture(nino, "itsa-crystallisation", nrsBodyCapture)
+          .submit(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
         val result = await(service.updateNrs(nino, request))

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package v7.submitFinalDeclaration
+package v5.submitFinalDeclaration
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
-import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockNrsService extends MockFactory {
-  val mockNrsService: NrsService = mock[NrsService]
+trait MockNrsProxyService extends MockFactory {
+  val mockNrsService: NrsProxyService = mock[NrsProxyService]
 
   object MockNrsService {
 

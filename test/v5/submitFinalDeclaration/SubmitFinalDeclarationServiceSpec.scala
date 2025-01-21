@@ -27,7 +27,7 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
-  trait Test extends MockSubmitFinalDeclarationConnector with MockNrsService {
+  trait Test extends MockSubmitFinalDeclarationConnector with MockNrsProxyService {
 
     val service: SubmitFinalDeclarationService = new SubmitFinalDeclarationService(
       mockSubmitFinalDeclarationConnector,
