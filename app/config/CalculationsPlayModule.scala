@@ -16,8 +16,9 @@
 
 package config
 
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule, Provides}
 import common.definition.CalculationsDefinitionFactory
+import org.apache.pekko.actor.{ActorSystem, Scheduler}
 import routing.CalculationsVersionRoutingMap
 import shared.definition.ApiDefinitionFactory
 import shared.routing.VersionRoutingMap
@@ -28,5 +29,9 @@ class CalculationsPlayModule extends AbstractModule {
     bind(classOf[ApiDefinitionFactory]).to(classOf[CalculationsDefinitionFactory]).asEagerSingleton()
     bind(classOf[VersionRoutingMap]).to(classOf[CalculationsVersionRoutingMap]).asEagerSingleton()
   }
+
+  @Provides
+  def pekkoScheduler(actorSystem: ActorSystem): Scheduler =
+    actorSystem.scheduler
 
 }

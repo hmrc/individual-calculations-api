@@ -16,8 +16,8 @@
 
 package v5.common.model.response
 
+import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import utils.enums.EnumJsonSpecSupport
 import v5.common.model.response.CalculationType._
 
 class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {

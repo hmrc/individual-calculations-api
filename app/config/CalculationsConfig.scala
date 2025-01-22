@@ -16,11 +16,13 @@
 
 package config
 
+import common.utils.Retrying
 import play.api.Configuration
 import shared.config.FeatureSwitches
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.duration.{Duration, FiniteDuration}
 
 @Singleton
 class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
@@ -30,5 +32,18 @@ class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Confi
 
   // NRS Config
   def mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
+
+  private def retryConfig: Configuration = configuration.get[Configuration]("retry-mechanism")
+  def retrieveCalcRetries: List[FiniteDuration] =
+    Retrying.fibonacciDelays(getFiniteDuration(retryConfig), retryConfig.get[Int]("numberOfRetries"))
+
+  private final def getFiniteDuration(config: Configuration, path: String = "initialDelay"): FiniteDuration = {
+    val string = config.get[String](path)
+
+    Duration.create(string) match {
+      case f: FiniteDuration => f
+      case _                 => throw new RuntimeException(s"Not a finite duration '$string' for $path")
+    }
+  }
 }
 

@@ -16,22 +16,23 @@
 
 package v5.submitFinalDeclaration
 
+import api.errors._
+import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
-import api.errors._
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
 import v5.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector) extends BaseService {
+class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclarationConnector, nrsService: NrsProxyService) extends BaseService {
 
-  def submitFinalDeclaration(
-      request: SubmitFinalDeclarationRequestData)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
-
+  def submitFinalDeclaration(nino: String, request: SubmitFinalDeclarationRequestData)(implicit
+      ctx: RequestContext,
+      ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
+    nrsService.updateNrs(nino, request)
     connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
   }
 

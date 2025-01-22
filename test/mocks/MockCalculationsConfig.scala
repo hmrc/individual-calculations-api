@@ -17,9 +17,11 @@
 package mocks
 
 import config.CalculationsConfig
-import shared.config.{ConfidenceLevelConfig, MockAppConfig}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import shared.config.{ConfidenceLevelConfig, MockAppConfig}
+
+import scala.concurrent.duration.FiniteDuration
 
 trait MockCalculationsConfig extends MockFactory {
   val mockCalculationsConfig: CalculationsConfig = mock[CalculationsConfig]
@@ -30,6 +32,10 @@ trait MockCalculationsConfig extends MockFactory {
 
     // NRS Config
     def mtdNrsProxyBaseUrl: CallHandler[String] = (() => mockCalculationsConfig.mtdNrsProxyBaseUrl: String).expects()
+
+    def retrieveCalcRetries: CallHandler[List[FiniteDuration]] = (()=> mockCalculationsConfig.retrieveCalcRetries: List[FiniteDuration]).expects()
+
+
   }
 
 }

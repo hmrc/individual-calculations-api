@@ -16,9 +16,9 @@
 
 package v5.submitFinalDeclaration
 
+import api.errors._
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
-import api.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
@@ -27,10 +27,11 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
-  trait Test extends MockSubmitFinalDeclarationConnector {
+  trait Test extends MockSubmitFinalDeclarationConnector with MockNrsProxyService {
 
     val service: SubmitFinalDeclarationService = new SubmitFinalDeclarationService(
-      mockSubmitFinalDeclarationConnector
+      mockSubmitFinalDeclarationConnector,
+      mockNrsService
     )
 
   }
@@ -50,11 +51,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
+        MockNrsService
+          .updateNrs(nino.nino, request)
+          .returns(Future.successful(()))
+
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
           .returns(Future.successful(outcome))
 
-        val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+        val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
         result shouldBe outcome
       }
     }
@@ -63,11 +68,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
       def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
         s"a $downstreamErrorCode error is returned from the service" in new Test {
 
+          MockNrsService
+            .updateNrs(nino.nino, request)
+            .returns(Future.successful(()))
+
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-          val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(request))
+          val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
           result shouldBe Left(ErrorWrapper(correlationId, error))
         }
 

@@ -31,15 +31,15 @@ trait MockSubmitFinalDeclarationService extends MockFactory {
 
   object MockSubmitFinalDeclarationService {
 
-    def submitFinalDeclaration(requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+    def submitFinalDeclaration(nino: String, requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
       (
         mockSubmitFinalDeclarationService
-          .submitFinalDeclaration(_: SubmitFinalDeclarationRequestData)(
+          .submitFinalDeclaration(_: String, _: SubmitFinalDeclarationRequestData)(
             _: RequestContext,
             _: ExecutionContext
           )
         )
-        .expects(requestData, *, *)
+        .expects(nino, requestData, *, *)
     }
 
   }

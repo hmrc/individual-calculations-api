@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package utils.enums
+package common.utils.enums
 
 import play.api.libs.json._
 import shared.utils.UnitSpec

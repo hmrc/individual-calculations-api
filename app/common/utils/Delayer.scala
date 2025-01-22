@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package api.nrs
+package common.utils
 
-import shared.services.ServiceSpec
+import org.apache.pekko.actor.Scheduler
 
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future, Promise}
 
-class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with MockNrsProxyConnector {
+trait Delayer {
 
-  val service = new NrsProxyService(mockNrsProxyConnector)
+  implicit val scheduler: Scheduler
+  implicit val ec: ExecutionContext
 
-  "NrsProxyService" when {
-    "submitting asynchronously" should {
-      "forward to the connector" in {
-        MockNrsProxyConnector.submit(nino, event, body) returns Future.successful(Right(()))
+  def delay(delay: FiniteDuration): Future[Unit] = {
+    val promise = Promise[Unit]()
 
-        service.submit(nino, event, body)
-      }
-    }
+    scheduler.scheduleOnce(delay)(promise.success(()))
+
+    promise.future
   }
 
 }
