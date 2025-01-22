@@ -42,8 +42,7 @@ object AppDependencies {
     "uk.gov.hmrc"          %% "bootstrap-test-play-30" % bootstrapPlayVersion % scope,
     "org.wiremock"          % "wiremock"               % "3.0.4"              % scope,
     "io.swagger.parser.v3"  % "swagger-parser-v3"      % "2.1.21"             % scope,
-    "com.github.pjfanning" %% "pekko-mock-scheduler"   % "0.6.0"              % scope,
-    "com.miguno.akka"      %% "akka-mock-scheduler"    % "0.5.5"              % scope
+    "com.github.pjfanning" %% "pekko-mock-scheduler"   % "0.6.0"              % scope
   )
 
 }
