@@ -32,8 +32,10 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
   def submitFinalDeclaration(nino: String, request: SubmitFinalDeclarationRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
-    nrsService.updateNrs(nino, request)
-    connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    connector.submitFinalDeclaration(request).map { response =>
+      if (response.isRight) nrsService.updateNrs(nino, request)
+      response.leftMap(mapDownstreamErrors(downstreamErrorMap))
+    }
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {
