@@ -17,7 +17,6 @@
 package v5.submitFinalDeclaration
 
 import api.errors._
-import cats.implicits._
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -32,8 +31,12 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
   def submitFinalDeclaration(nino: String, request: SubmitFinalDeclarationRequestData)(implicit
       ctx: RequestContext,
       ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
-    nrsService.updateNrs(nino, request)
-    connector.submitFinalDeclaration(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
+    connector.submitFinalDeclaration(request).map {
+      case Right(success) =>
+        nrsService.updateNrs(nino, request)
+        Right(success)
+      case Left(error) => Left(mapDownstreamErrors(downstreamErrorMap)(error))
+    }
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {

@@ -56,7 +56,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
         MockNrsService
           .updateNrs(nino.nino, request)
-          .returns(Future.successful(()))
+          .returns(Future.successful(())).once()
 
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
@@ -73,7 +73,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockNrsService
             .updateNrs(nino.nino, request)
-            .returns(Future.successful(()))
+            .returns(Future.successful(())).never()
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
