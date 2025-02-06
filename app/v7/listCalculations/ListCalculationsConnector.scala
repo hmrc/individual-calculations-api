@@ -40,19 +40,24 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
     import schema._
 
     //API1404
-    lazy val desDownstreamUri: DownstreamUri[DownstreamResp] = DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
-    //API2083 & 2150
-    lazy val downstreamUri: DownstreamUri[DownstreamResp] = IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino")
+    lazy val desDownstreamUri: DownstreamUri[DownstreamResp] =
+      DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
+    //API2150
+    lazy val downstreamUri2150: DownstreamUri[DownstreamResp] =
+      IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino")
+    //API2083
+    lazy val downstreamUri2083: DownstreamUri[DownstreamResp] =
+      IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary")
 
     request match {
       case Def1_ListCalculationsRequestData(_, _, _) =>
         get(desDownstreamUri)
       case Def2_ListCalculationsRequestData(_, _, calculationType) =>
         val calcType: Option[String] = calculationType.map(_.to2150Downstream)
-        get(downstreamUri, params(calcType))
+        get(downstreamUri2150, params(calcType))
       case Def3_ListCalculationsRequestData(_, _, calculationType) =>
         val calcType: Option[String] = calculationType.map(_.toDownstream)
-        get(downstreamUri, params(calcType))
+        get(downstreamUri2083, params(calcType))
     }
   }
   def params(calcType: Option[String]): Seq[(String, String)] =

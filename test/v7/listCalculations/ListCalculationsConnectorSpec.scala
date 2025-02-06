@@ -121,7 +121,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IY")
           )
             .returns(Future.successful(outcome))
@@ -136,7 +136,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IF")
           )
             .returns(Future.successful(outcome))
@@ -151,7 +151,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "DF")
           )
             .returns(Future.successful(outcome))
@@ -166,7 +166,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IA")
           )
             .returns(Future.successful(outcome))
@@ -181,7 +181,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "CA")
           )
             .returns(Future.successful(outcome))
