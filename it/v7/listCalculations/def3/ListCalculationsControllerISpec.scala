@@ -43,7 +43,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
 
     private def uri: String = s"/$nino/self-assessment/$taxYear"
 
-    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/view/calculations-summary/$nino"
+    def downstreamUri: String = s"/income-tax/$downstreamTaxYear/view/$nino/calculations-summary"
 
     def setupStubs(): StubMapping
 
