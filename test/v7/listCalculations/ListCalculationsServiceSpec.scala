@@ -68,6 +68,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
       )
 
       val extraTysErrors = Seq(
+        "NO_DATA_FOUND"          -> NotFoundError,
         "INVALID_TAX_YEAR"       -> TaxYearFormatError,
         "INVALID_CORRELATION_ID" -> InternalError,
         "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
