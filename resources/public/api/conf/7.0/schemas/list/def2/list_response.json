@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "TY 2024-25",
+  "title": "TY 2023-24 and 2024-25",
   "description": "List Self Assessment Tax Calculations",
   "type": "object",
   "properties": {
@@ -27,9 +27,7 @@
             "enum": [
               "in-year",
               "intent-to-finalise",
-              "final-declaration",
-              "intent-to-amend",
-              "confirm-amendment"
+              "final-declaration"
             ]
           },
           "calculationTrigger": {

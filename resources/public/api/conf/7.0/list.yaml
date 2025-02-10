@@ -49,10 +49,10 @@ get:
               - $ref: ./schemas/list/def2/list_response.json
               - $ref: ./schemas/list/def3/list_response.json
           examples:
-            "Example response for TY 2023-24 and before":
+            "Example response for TY 2022-23 and before":
               value:
                 $ref: ./examples/list/def1/list_response.json
-            "Example response for TY 2024-25":
+            "Example response for TY 2023-24 and 2024-25":
               value:
                 $ref: ./examples/list/def2/list_response.json
             "Example response for TY 2025-26 onwards":
