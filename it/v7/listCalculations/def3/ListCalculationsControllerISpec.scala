@@ -160,6 +160,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
         )
 
         val extraTysErrors = Seq(
+          (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError),
           (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
           (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)

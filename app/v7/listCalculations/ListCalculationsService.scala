@@ -48,6 +48,7 @@ class ListCalculationsService @Inject() (connector: ListCalculationsConnector) e
       "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
     )
     val extraTysErrors = Map(
+      "NO_DATA_FOUND"          -> NotFoundError,
       "INVALID_TAX_YEAR"       -> TaxYearFormatError,
       "INVALID_CORRELATION_ID" -> models.errors.InternalError,
       "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
