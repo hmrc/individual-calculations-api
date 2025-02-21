@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about foreign income in the received tax calculation.",
+  "type": "object",
+  "properties": {
+    "chargeableOverseasPensionsStateBenefitsRoyalties": {
+      "description": "Chargeable overseas pensions and state benefits royalties income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "500.99"
+    },
+    "overseasPensionsStateBenefitsRoyaltiesDetail": {
+      "description": "Array containing information about income from overseas pensions, state benefits, and royalties.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "countryCode": {
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+            "type": "string",
+            "example": "FRA"
+          },
+          "grossIncome": {
+            "description": "Gross income for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "501.99"
+          },
+          "netIncome": {
+            "description": "Net income for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "502.99"
+          },
+          "taxDeducted": {
+            "description": "Tax deducted for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "503.99"
+          },
+          "foreignTaxCreditRelief": {
+            "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. This value must be true or false.",
+            "type": "boolean",
+            "example": "true"
+          }
+        },
+        "required": [
+          "countryCode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "chargeableAllOtherIncomeReceivedWhilstAbroad": {
+      "description": "Chargeable income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "504.99"
+    },
+    "allOtherIncomeReceivedWhilstAbroadDetail": {
+      "description": "Array detailing all other income received whilst abroad.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "countryCode": {
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+            "type": "string",
+            "example": "FRA"
+          },
+          "grossIncome": {
+            "description": "Gross income from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "502.99"
+          },
+          "netIncome": {
+            "description": "Net income from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "503.99"
+          },
+          "taxDeducted": {
+            "description": "Tax deducted from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "504.99"
+          },
+          "foreignTaxCreditRelief": {
+            "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. This value must be true or false.",
+            "type": "boolean",
+            "example": "true"
+          }
+        },
+        "required": [
+          "countryCode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "overseasIncomeAndGains": {
+      "description": "Object detailing overseas income and gains.",
+      "type": "object",
+      "properties": {
+        "gainAmount": {
+          "description": "Gain from overseas income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "506.99"
+        }
+      },
+      "required": [
+        "gainAmount"
+      ],
+      "additionalProperties": false
+    },
+    "totalForeignBenefitsAndGifts": {
+      "description": "Total foreign benefits and gifts. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "507.99"
+    },
+    "chargeableForeignBenefitsAndGiftsDetail": {
+      "description": "Object detailing chargeable foreign benefits and gifts.",
+      "type": "object",
+      "properties": {
+        "transactionBenefit": {
+          "description": "Amount of transaction benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "508.99"
+        },
+        "protectedForeignIncomeSourceBenefit": {
+          "description": "Amount of protected foreign income source benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "509.99"
+        },
+        "protectedForeignIncomeOnwardGift": {
+          "description": "Amount of protected foreign income onward gift. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "510.99"
+        },
+        "benefitReceivedAsASettler": {
+          "description": "Amount of benefit received as a settler. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "511.99"
+        },
+        "onwardGiftReceivedAsASettler": {
+          "description": "Amount of onward gift received as a settler. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "512.99"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

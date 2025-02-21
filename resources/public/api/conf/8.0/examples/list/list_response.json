@@ -1,0 +1,25 @@
+{
+  "calculations": [
+    {
+      "calculationId": "c432a56d-e811-474c-a26a-76fc3bcaefe5",
+      "calculationTimestamp": "2021-07-12T07:51:43.112Z",
+      "calculationType": "finalDeclaration",
+      "requestedBy": "customer",
+      "taxYear": "2021-22",
+      "totalIncomeTaxAndNicsDue": 10000.12,
+      "intentToSubmitFinalDeclaration": true,
+      "finalDeclaration": true,
+      "finalDeclarationTimestamp": "2021-07-13T07:51:43.112Z"
+    },
+    {
+      "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      "calculationTimestamp": "2021-06-22T08:53:44.122Z",
+      "calculationType": "inYear",
+      "requestedBy": "customer",
+      "taxYear": "2021-22",
+      "totalIncomeTaxAndNicsDue": 10000.12,
+      "intentToSubmitFinalDeclaration": false,
+      "finalDeclaration": false
+    }
+  ]
+}

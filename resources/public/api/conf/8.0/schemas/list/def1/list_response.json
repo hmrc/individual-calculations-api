@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TY 2022-23 and before",
+  "description": "List Self Assessment Tax Calculations",
+  "type": "object",
+  "properties": {
+    "calculations": {
+      "type": "array",
+      "description": "The array holding calculation details.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "calculationId": {
+            "description": "The unique identifier of the calculation.",
+            "type": "string",
+            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+          },
+          "calculationTimestamp": {
+            "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ if BVRs do not fail or populated from requestTimestamp if BVRs fail.",
+            "type": "string",
+            "example": "2019-07-13T07:51:43.112Z"
+          },
+          "calculationType": {
+            "description": "The type of calculation performed.",
+            "type": "string",
+            "enum": [
+              "in-year",
+              "final-declaration"
+            ]
+          },
+          "requestedBy": {
+            "description": "The requestor of the calculation. Currently agent will default to customer until it can be supported.",
+            "type": "string",
+            "enum": [
+              "customer",
+              "hmrc",
+              "agent"
+            ]
+          },
+          "taxYear": {
+            "description": "The tax year the calculation was requested for.",
+            "id": "tax-year",
+            "type": "string",
+            "example": "2020-21"
+          },
+          "totalIncomeTaxAndNicsDue": {
+            "description": "The total amount of Income Tax and National Insurance Contributions due. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2000.58"
+          },
+          "intentToSubmitFinalDeclaration": {
+            "description": "A boolean to indicate whether the calculation can be used to make a final declaration. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          },
+          "finalDeclaration": {
+            "description": "A boolean to indicate whether the calculation has been used to make a final declaration. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          },
+          "finalDeclarationTimestamp": {
+            "description": "The timestamp of when the final calculation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "type": "string",
+            "example": "2019-07-13T07:51:43.112Z"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "calculationId",
+          "calculationTimestamp",
+          "calculationType"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "calculations"
+  ]
+}

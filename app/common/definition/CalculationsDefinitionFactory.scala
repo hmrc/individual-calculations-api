@@ -18,7 +18,7 @@ package common.definition
 
 import shared.config.AppConfig
 import shared.definition._
-import shared.routing.{Version5, Version6, Version7}
+import shared.routing.{Version5, Version6, Version7, Version8}
 
 import javax.inject.{Inject, Singleton}
 
@@ -47,6 +47,11 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
             version = Version7,
             status = buildAPIStatus(Version7),
             endpointsEnabled = appConfig.endpointsEnabled(Version7)
+          ),
+          APIVersion(
+            version = Version8,
+            status = buildAPIStatus(Version8),
+            endpointsEnabled = appConfig.endpointsEnabled(Version8)
           )
         ),
         requiresTrust = None

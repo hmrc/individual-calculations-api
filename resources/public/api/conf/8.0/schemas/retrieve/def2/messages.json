@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve a Self Assessment Tax Calculation Messages",
+  "description": "Object containing messages associated with the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "info": {
+      "type": "array",
+      "description": "A list of 'info' messages relating to the Calculation ID.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "A list of 'warning' messages relating to the Calculation ID.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "A list of 'error' messages relating to the Calculation ID.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the message.",
+            "type": "string"
+          },
+          "text": {
+            "description": "The message text.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
