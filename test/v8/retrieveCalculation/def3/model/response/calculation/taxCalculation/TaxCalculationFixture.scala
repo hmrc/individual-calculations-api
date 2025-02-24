@@ -21,10 +21,10 @@ import play.api.libs.json.{JsValue, Json}
 trait TaxCalculationFixture {
 
   val taxCalculationMtdJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def3/model/response/calculation/taxCalculation/taxCalculation_mtd.json"))
+    Json.parse(getClass.getResourceAsStream("/v8.retrieveCalculation/def3/model/response/calculation/taxCalculation/taxCalculation_mtd.json"))
 
   val taxCalculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def3/model/response/calculation/taxCalculation/taxCalculation_downstream.json"))
+    Json.parse(getClass.getResourceAsStream("/v8.retrieveCalculation/def3/model/response/calculation/taxCalculation/taxCalculation_downstream.json"))
 
 
 }

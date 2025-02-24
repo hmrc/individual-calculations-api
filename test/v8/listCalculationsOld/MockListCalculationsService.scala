@@ -21,9 +21,9 @@ import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.models.errors.ErrorWrapper
 import shared.models.outcomes.ResponseWrapper
-import v7.listCalculationsOld.def1.model.response.Calculation
-import v7.listCalculationsOld.model.request.ListCalculationsRequestData
-import v7.listCalculationsOld.model.response.ListCalculationsResponse
+import v8.listCalculationsOld.def1.model.response.Calculation
+import v8.listCalculationsOld.model.request.ListCalculationsRequestData
+import v8.listCalculationsOld.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

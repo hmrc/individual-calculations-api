@@ -19,7 +19,7 @@ package v8.listCalculationsOld.def1
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.listCalculationsOld.model.request.Def1_ListCalculationsRequestData
+import v8.listCalculationsOld.model.request.Def1_ListCalculationsRequestData
 
 class Def1_ListCalculationsValidatorSpec extends UnitSpec {
 

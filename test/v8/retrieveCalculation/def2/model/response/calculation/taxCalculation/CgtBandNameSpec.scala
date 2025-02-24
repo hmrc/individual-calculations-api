@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def2.model.response.calculation.taxCalculation
 
 import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def2.model.response.calculation.taxCalculation.CgtBandName._
+import v8.retrieveCalculation.def2.model.response.calculation.taxCalculation.CgtBandName._
 
 class CgtBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 

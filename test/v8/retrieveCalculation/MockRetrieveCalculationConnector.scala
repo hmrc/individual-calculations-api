@@ -20,8 +20,8 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import shared.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
-import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
-import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v8.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v8.retrieveCalculation.models.response.RetrieveCalculationResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 

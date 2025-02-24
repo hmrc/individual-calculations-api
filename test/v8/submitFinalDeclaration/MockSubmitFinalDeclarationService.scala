@@ -21,7 +21,7 @@ import org.scalamock.scalatest.MockFactory
 import shared.controllers.RequestContext
 import shared.models.errors.ErrorWrapper
 import shared.models.outcomes.ResponseWrapper
-import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
+import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def1.model.response
 
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class RetrieveCalculationResponseWithoutSpec extends UnitSpec with Def1_CalculationFixture {
 

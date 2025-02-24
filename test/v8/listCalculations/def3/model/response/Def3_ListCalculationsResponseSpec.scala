@@ -18,8 +18,8 @@ package v8.listCalculations.def3.model.response
 
 import play.api.libs.json.Json
 import shared.utils.UnitSpec
-import v7.listCalculations.def3.model.Def3_ListCalculationsFixture
-import v7.listCalculations.model.response.Def3_ListCalculationsResponse
+import v8.listCalculations.def3.model.Def3_ListCalculationsFixture
+import v8.listCalculations.model.response.Def3_ListCalculationsResponse
 
 
 class Def3_ListCalculationsResponseSpec extends UnitSpec with Def3_ListCalculationsFixture {

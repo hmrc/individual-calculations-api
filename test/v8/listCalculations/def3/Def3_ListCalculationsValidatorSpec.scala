@@ -19,8 +19,8 @@ package v8.listCalculations.def3
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.domain.`in-year`
-import v7.listCalculations.model.request.Def3_ListCalculationsRequestData
+import v8.common.model.domain.`in-year`
+import v8.listCalculations.model.request.Def3_ListCalculationsRequestData
 
 class Def3_ListCalculationsValidatorSpec extends UnitSpec {
 

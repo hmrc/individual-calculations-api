@@ -20,8 +20,8 @@ import org.scalatest.Inside
 import play.api.libs.json.Json
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def2.model.Def2_CalculationFixture
-import v7.retrieveCalculation.models.response.Def2_RetrieveCalculationResponse
+import v8.retrieveCalculation.def2.model.Def2_CalculationFixture
+import v8.retrieveCalculation.models.response.Def2_RetrieveCalculationResponse
 
 class Def2_RetrieveCalculationResponseSpec extends UnitSpec with Def2_CalculationFixture with JsonErrorValidators with Inside {
 

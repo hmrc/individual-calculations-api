@@ -18,7 +18,7 @@ package v8.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import v7.common.model.response.PensionBandName._
+import v8.common.model.response.PensionBandName._
 
 class PensionBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 

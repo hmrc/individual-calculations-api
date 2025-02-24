@@ -18,7 +18,7 @@ package v8.triggerCalculation.def1.model.response
 
 import play.api.libs.json.{JsValue, Json}
 import shared.utils.UnitSpec
-import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 class Def1_TriggerCalculationResponseSpec extends UnitSpec {
   private val calculationId                                       = "testId"

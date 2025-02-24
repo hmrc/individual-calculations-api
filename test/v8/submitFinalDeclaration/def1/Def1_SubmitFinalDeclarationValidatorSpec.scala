@@ -20,8 +20,8 @@ import api.errors.{FormatCalculationTypeError, RuleSubmissionFailedError}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
-import v7.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
+import v8.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
+import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
 

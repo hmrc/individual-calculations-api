@@ -18,8 +18,8 @@ package v8.triggerCalculation
 
 import org.scalamock.handlers.CallHandler
 import shared.controllers.validators.{MockValidatorFactory, Validator}
-import v7.triggerCalculation.model.request.TriggerCalculationRequestData
-import v7.triggerCalculation.schema.TriggerCalculationSchema
+import v8.triggerCalculation.model.request.TriggerCalculationRequestData
+import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 trait MockTriggerCalculationValidatorFactory extends MockValidatorFactory[TriggerCalculationRequestData] {
 

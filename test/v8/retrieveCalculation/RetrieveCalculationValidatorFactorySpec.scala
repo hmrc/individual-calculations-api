@@ -17,10 +17,10 @@
 package v8.retrieveCalculation
 
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
-import v7.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
-import v7.retrieveCalculation.def3.Def3_RetrieveCalculationValidator
-import v7.retrieveCalculation.schema.RetrieveCalculationSchema
+import v8.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
+import v8.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
+import v8.retrieveCalculation.def3.Def3_RetrieveCalculationValidator
+import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
 class RetrieveCalculationValidatorFactorySpec extends UnitSpec {
 

@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def2.model.response.metadata
 
 import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def2.model.response.metadata.CalculationReason._
+import v8.retrieveCalculation.def2.model.response.metadata.CalculationReason._
 
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 

@@ -20,10 +20,10 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
-import v7.common.model.domain._
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
-import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
+import v8.common.model.domain._
+import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
+import v8.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import scala.concurrent.Future
 

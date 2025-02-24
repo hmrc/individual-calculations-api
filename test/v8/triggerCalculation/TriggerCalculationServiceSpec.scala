@@ -21,9 +21,9 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v7.common.model.domain.{Pre24Downstream, `intent-to-amend`}
-import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v8.common.model.domain.{Pre24Downstream, `intent-to-amend`}
+import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import scala.concurrent.Future
 

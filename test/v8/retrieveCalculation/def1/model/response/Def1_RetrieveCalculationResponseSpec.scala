@@ -19,8 +19,8 @@ package v8.retrieveCalculation.def1.model.response
 import play.api.libs.json.Json
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v7.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_CalculationFixture with JsonErrorValidators {
 

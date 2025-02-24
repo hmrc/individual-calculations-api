@@ -22,9 +22,9 @@ import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
-import v7.common.model.domain._
-import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v8.common.model.domain._
+import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 import scala.concurrent.Future
 

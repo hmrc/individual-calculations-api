@@ -21,9 +21,9 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
-import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v8.retrieveCalculation.models.response.RetrieveCalculationResponse
 
 import scala.concurrent.Future
 

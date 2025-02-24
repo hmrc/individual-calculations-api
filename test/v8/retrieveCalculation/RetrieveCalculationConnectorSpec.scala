@@ -21,9 +21,9 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
-import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
-import v7.retrieveCalculation.models.response.RetrieveCalculationResponse
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
+import v8.retrieveCalculation.models.response.RetrieveCalculationResponse
 
 import scala.concurrent.Future
 

@@ -25,8 +25,8 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

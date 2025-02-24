@@ -18,8 +18,8 @@ package v8.retrieveCalculation
 
 import org.scalamock.handlers.CallHandler
 import shared.controllers.validators.{MockValidatorFactory, Validator}
-import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
-import v7.retrieveCalculation.schema.RetrieveCalculationSchema
+import v8.retrieveCalculation.models.request.RetrieveCalculationRequestData
+import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
 trait MockRetrieveCalculationValidatorFactory extends MockValidatorFactory[RetrieveCalculationRequestData] {
 

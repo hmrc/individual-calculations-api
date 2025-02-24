@@ -19,8 +19,8 @@ package v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
-import v7.common.model.response.IncomeSourceType
-import v7.retrieveCalculation.def3.model.response.ClaimType
+import v8.common.model.response.IncomeSourceType
+import v8.retrieveCalculation.def3.model.response.ClaimType
 
 class ResultOfClaimsAppliedSpec extends UnitSpec {
 

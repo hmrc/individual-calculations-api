@@ -18,8 +18,8 @@ package v8.listCalculations.def1.model
 
 import play.api.libs.json.{JsValue, Json}
 import shared.models.domain.TaxYear
-import v7.listCalculations.def1.model.response.Def1_Calculation
-import v7.listCalculations.model.response.{Calculation, Def1_ListCalculationsResponse, ListCalculationType, ListCalculationsResponse}
+import v8.listCalculations.def1.model.response.Def1_Calculation
+import v8.listCalculations.model.response.{Calculation, Def1_ListCalculationsResponse, ListCalculationType, ListCalculationsResponse}
 
 trait Def1_ListCalculationsFixture {
 

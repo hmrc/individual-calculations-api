@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def3.model.response.calculation.reliefs
 
 import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.def3.model.response.calculation.reliefs.ReliefsClaimedType._
+import v8.retrieveCalculation.def3.model.response.calculation.reliefs.ReliefsClaimedType._
 
 
 class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {

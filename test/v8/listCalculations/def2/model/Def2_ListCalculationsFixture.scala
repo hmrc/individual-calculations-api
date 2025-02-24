@@ -17,8 +17,8 @@
 package v8.listCalculations.def2.model
 
 import play.api.libs.json.{JsValue, Json}
-import v7.listCalculations.def2.model.response.Def2_Calculation
-import v7.listCalculations.model.response.{Calculation, Def2_ListCalculationsResponse, ListCalculationType, ListCalculationsResponse}
+import v8.listCalculations.def2.model.response.Def2_Calculation
+import v8.listCalculations.model.response.{Calculation, Def2_ListCalculationsResponse, ListCalculationType, ListCalculationsResponse}
 
 trait Def2_ListCalculationsFixture {
 

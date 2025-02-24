@@ -18,10 +18,10 @@ package v8.listCalculations
 
 import shared.controllers.validators.Validator
 import shared.utils.UnitSpec
-import v7.listCalculations.def1.Def1_ListCalculationsValidator
-import v7.listCalculations.def2.Def2_ListCalculationsValidator
-import v7.listCalculations.def3.Def3_ListCalculationsValidator
-import v7.listCalculations.model.request.ListCalculationsRequestData
+import v8.listCalculations.def1.Def1_ListCalculationsValidator
+import v8.listCalculations.def2.Def2_ListCalculationsValidator
+import v8.listCalculations.def3.Def3_ListCalculationsValidator
+import v8.listCalculations.model.request.ListCalculationsRequestData
 
 import javax.inject.Singleton
 

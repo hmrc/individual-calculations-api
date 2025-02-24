@@ -19,7 +19,7 @@ package v8.retrieveCalculation.def3
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.retrieveCalculation.models.request.Def3_RetrieveCalculationRequestData
+import v8.retrieveCalculation.models.request.Def3_RetrieveCalculationRequestData
 
 class Def3_RetrieveCalculationValidatorSpec extends UnitSpec {
 

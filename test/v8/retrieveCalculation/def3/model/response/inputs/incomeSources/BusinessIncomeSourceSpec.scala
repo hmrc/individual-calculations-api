@@ -18,9 +18,9 @@ package v8.retrieveCalculation.def3.model.response.inputs.incomeSources
 
 import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import shared.utils.UnitSpec
-import v7.common.model.response.IncomeSourceType
-import v7.common.model.response.IncomeSourceType._
-import v7.retrieveCalculation.def3.model.response.inputs.{BusinessIncomeSource, SubmissionPeriod}
+import v8.common.model.response.IncomeSourceType
+import v8.common.model.response.IncomeSourceType._
+import v8.retrieveCalculation.def3.model.response.inputs.{BusinessIncomeSource, SubmissionPeriod}
 
 class BusinessIncomeSourceSpec extends UnitSpec {
 

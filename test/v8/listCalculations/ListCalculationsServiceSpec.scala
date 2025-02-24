@@ -20,8 +20,8 @@ import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 import scala.concurrent.Future
 

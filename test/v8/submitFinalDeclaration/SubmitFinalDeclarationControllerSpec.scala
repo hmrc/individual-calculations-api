@@ -31,10 +31,10 @@ import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSuppor
 import shared.models.outcomes.ResponseWrapper
 import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import shared.utils.MockIdGenerator
-import v7.common.model.domain.{CalculationType, `final-declaration`}
-import v7.retrieveCalculation.MockRetrieveCalculationService
-import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v7.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
+import v8.common.model.domain.{CalculationType, `final-declaration`}
+import v8.retrieveCalculation.MockRetrieveCalculationService
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

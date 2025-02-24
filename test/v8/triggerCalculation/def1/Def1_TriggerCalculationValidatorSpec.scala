@@ -20,8 +20,8 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v7.common.model.domain.{Pre24Downstream, `in-year`}
-import v7.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
+import v8.common.model.domain.{Pre24Downstream, `in-year`}
+import v8.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
