@@ -26,7 +26,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 

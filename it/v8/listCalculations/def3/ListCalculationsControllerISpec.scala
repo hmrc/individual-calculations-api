@@ -27,7 +27,7 @@ import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.listCalculations.def3.model.Def3_ListCalculationsFixture
+import v8.listCalculations.def3.model.Def3_ListCalculationsFixture
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_ListCalculationsFixture {
 
