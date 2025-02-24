@@ -1,0 +1,237 @@
+components:
+  examples:
+
+    # 400
+    ruleIncorrectGTS:
+      description: |
+        The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. 
+        
+        This error will only be returned in the Sandbox environment.
+      value:
+        code: RULE_INCORRECT_GOV_TEST_SCENARIO
+        message: The Gov-Test-Scenario was not found
+
+    formatNino:
+      description: |
+        The format of the supplied NINO field is not valid.
+      value:
+        code: FORMAT_NINO
+        message: The provided NINO is invalid
+
+    formatTaxYear:
+      description: |
+        The format of the supplied taxYear value is not valid.
+      value:
+        code: FORMAT_TAX_YEAR
+        message: The provided tax year is invalid
+
+    formatCalculationType:
+      description: |
+        The format of the supplied calculationType value is not valid.
+      value:
+        code: FORMAT_CALCULATION_TYPE
+        message: The provided calculation type is not valid
+
+    ruleOutsideAmendmentWindow:
+      description: |
+        The client and/or agent is outside the amendment window.
+      value:
+        code: RULE_OUTSIDE_AMENDMENT_WINDOW
+        message: You are outside the amendment window
+
+    formatFinalDeclaration:
+      description: |
+        The format of the supplied finalDeclaration value is not valid.
+      value:
+        code: FORMAT_FINAL_DECLARATION
+        message: The provided finalDeclaration is invalid
+
+    ruleTaxYearNotSupported:
+      description: |
+        The specified tax year is not supported. 
+        Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+      value:
+        code: RULE_TAX_YEAR_NOT_SUPPORTED
+        message: The tax year specified does not lie within the supported range
+
+    ruleTaxYearRangeInvalid:
+      description: Tax year range invalid. A tax year range of one year is required.
+      value:
+        code: RULE_TAX_YEAR_RANGE_INVALID
+        message: Tax year range invalid. A tax year range of one year is required
+
+    formatCalculationId:
+      description: |
+        Invalid Calculation ID.
+      value:
+        code: FORMAT_CALCULATION_ID
+        message: The provided calculationId is invalid
+
+    ruleNoIncomeSubmissionExists:
+      description: A calculation could not be performed because no income data has been submitted against the tax year.
+      value:
+        code: RULE_NO_INCOME_SUBMISSIONS_EXIST
+        message: No income submissions exist for the tax year
+
+    ruleFinalDeclarationReceived:
+      description: |
+        Final declaration has already been received.
+      value:
+        code: RULE_FINAL_DECLARATION_RECEIVED
+        message: Final declaration has already been received
+
+    ruleIncomeSourcesChanged:
+      description: |
+        Information relating to your income sources changed. You must trigger a new calculation before final declaration.
+      value:
+        code: RULE_INCOME_SOURCES_CHANGED
+        message: Income sources data has changed. Trigger a new calculation
+
+    ruleRecentSubmissionsExist:
+      description: |
+        More recent submissions exist. You must trigger a new calculation before final declaration.
+      value:
+        code: RULE_RECENT_SUBMISSIONS_EXIST
+        message: More recent submissions exist. Trigger a new calculation
+
+    ruleResidencyChanged:
+      description: | 
+        Your residency has changed. You must trigger a new calculation again before final declaration.
+      value:
+        code: RULE_RESIDENCY_CHANGED
+        message: Residency has changed. Trigger a new calculation
+
+    ruleIncomeSourcesInvalid:
+      description: | 
+        There are no valid income sources.
+      value:
+        code: RULE_INCOME_SOURCES_INVALID
+        message: No valid income sources could be found
+
+    ruleSubmissionFailed:
+      description: |
+        The submission cannot be completed due to validation failures.
+      value:
+        code: RULE_SUBMISSION_FAILED
+        message: The submission cannot be completed due to validation failures
+
+    ruleFinalDeclarationTaxYear:
+      description: |
+        The final declaration cannot be submitted until after the end of the tax year.
+      value:
+        code: RULE_FINAL_DECLARATION_TAX_YEAR
+        message: The final declaration cannot be submitted until after the end of the tax year
+
+    ruleFinalDeclarationInProgress:
+      description: |
+        There is a calculation in progress for the tax year.
+      value:
+        code: RULE_FINAL_DECLARATION_IN_PROGRESS
+        message: There is a calculation in progress for the tax year
+
+    triggerRuleIncomeSourcesChanged:
+      description: |
+        Information relating to income sources changed. You must first trigger a calculation with finalDeclaration false.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_INCOME_SOURCES_CHANGED
+        message: Income sources data has changed. Trigger a new calculation
+
+    triggerRuleResidencyChanged:
+      description: |
+        Information relating to residency has changed. You must first trigger a calculation with finalDeclaration false.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_RESIDENCY_CHANGED
+        message: Residency has changed. Trigger a new calculation
+
+    triggerRuleTaxYearNotEnded:
+      description: |
+        A calculation with finalDeclaration true cannot be triggered before the taxYear to which it relates has ended.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_TAX_YEAR_NOT_ENDED
+        message: The specified tax year has not yet ended
+
+    triggerRuleRecentSubmissionsExist:
+      description: |
+        More recent submissions exist. You must first trigger a calculation with finalDeclaration false.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_RECENT_SUBMISSIONS_EXIST
+        message: More recent submissions exist. Trigger a new calculation
+
+    triggerRuleCalculationInProgress:
+      description: |
+        A calculation is in progress. Please wait before triggering a new calculation.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_CALCULATION_IN_PROGRESS
+        message: A calculation is in progress. Please wait before triggering a new calculation
+
+    triggerRuleBusinessValidationFailure:
+      description: |
+        Business validation rule failures.
+        
+        This error only occurs for taxYears from 2023-24 onwards.
+      value:
+        code: RULE_BUSINESS_VALIDATION_FAILURE
+        message: Business validation rule failures
+
+    triggerRuleCalculationTypeNotAllowed:
+      description: |
+        The client and/or agent has provided a calculation type (intent-to-amend) that is not applicable for TY25-26.
+      value:
+        code: RULE_CALCULATION_TYPE_NOT_ALLOWED
+        message: The provided calculation type is not applicable for this tax year
+
+    listRuleCalculationTypeNotAllowed:
+      description: |
+        The client and/or agent has provided a calculation type that is not applicable for the tax year provided.
+      value:
+        code: RULE_CALCULATION_TYPE_NOT_ALLOWED
+        message: The provided calculation type is not applicable for this tax year
+
+    triggerRuleDeclarationNotReceived:
+      description: |
+        The remote endpoint has indicated that this action cannot be completed as the final declaration has not been received.
+      value:
+        code: RULE_DECLARATION_NOT_RECEIVED
+        message: The final declaration has not been received
+
+    triggerPrematureFinalisation:
+      description: |
+        The remote endpoint has indicated that Finalisation cannot occur until after the end of tax year.
+      value:
+        code: RULE_PREMATURE_FINALISATION
+        message: Finalisation cannot occur until after the end of the tax year
+    # 403
+    clientOrAgentNotAuthorised:
+      description: |
+        The client and/or agent is not authorised. 
+        This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, 
+        or the client has not authorised the agent to act on their behalf.
+      value:
+        code: CLIENT_OR_AGENT_NOT_AUTHORISED
+        message: The client and/or agent is not authorised
+
+    # 404
+    notFound:
+      description: |
+        Either the calculation ID was not found or the calculation was in year.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: Matching resource not found
+
+    notFoundList:
+      description: |
+        No tax calculations can be found for the supplied NINO and tax year.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: Matching resource not found
+

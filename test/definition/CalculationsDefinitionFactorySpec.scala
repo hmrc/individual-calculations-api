@@ -22,7 +22,7 @@ import mocks.MockCalculationsConfig
 import shared.config.Deprecation.NotDeprecated
 import shared.config.MockAppConfig
 import shared.mocks.MockHttpClient
-import shared.routing.{Version5, Version6, Version7}
+import shared.routing.{Version5, Version6, Version7, Version8}
 import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec {
@@ -35,7 +35,7 @@ class CalculationsDefinitionFactorySpec extends UnitSpec {
   "definition" when {
     "called" should {
       "return a valid Definition case class" in new Test {
-        List(Version5, Version6, Version7).foreach { version =>
+        List(Version5, Version6, Version7, Version8).foreach { version =>
           MockedAppConfig.apiStatus(version) returns "BETA"
           MockedAppConfig.endpointsEnabled(version).returns(true).anyNumberOfTimes()
           MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()

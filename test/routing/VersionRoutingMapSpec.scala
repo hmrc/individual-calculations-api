@@ -18,7 +18,7 @@ package routing
 
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.routing.Router
-import shared.routing.{Version5, Version6, Version7}
+import shared.routing.{Version5, Version6, Version7, Version8}
 import shared.utils.UnitSpec
 
 class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
@@ -27,15 +27,17 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
   val v5Routes: v5.Routes   = app.injector.instanceOf[v5.Routes]
   val v6Routes: v6.Routes   = app.injector.instanceOf[v6.Routes]
   val v7Routes: v7.Routes   = app.injector.instanceOf[v7.Routes]
+  val v8Routes: v8.Routes   = app.injector.instanceOf[v8.Routes]
 
   "map" when {
-    "routing to v4, v5 or v6" should {
+    "routing to v4, v5, v6, v7 or v8" should {
 
       val versionRoutingMap: CalculationsVersionRoutingMap = CalculationsVersionRoutingMap(
         defaultRouter = defaultRouter,
         v5Router = v5Routes,
         v6Router = v6Routes,
-        v7Router = v7Routes
+        v7Router = v7Routes,
+        v8Router = v8Routes
       )
 
       s"route to ${v5Routes.toString}" in {
@@ -48,6 +50,9 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 
       s"route to ${v7Routes.toString}" in {
         versionRoutingMap.map(Version7) shouldBe v7Routes
+      }
+      s"route to ${v8Routes.toString}" in {
+        versionRoutingMap.map(Version8) shouldBe v8Routes
       }
     }
 

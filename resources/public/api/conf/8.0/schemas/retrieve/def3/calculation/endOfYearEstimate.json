@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about an end of year estimate for the retrieved tax calculation. This object will only be present for an in year calculation.",
+  "type": "object",
+  "properties": {
+    "incomeSource": {
+      "description": "Array detailing related income sources.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "pattern": "^[A-Za-z0-9]{15}$|^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "type": "string",
+            "example": "XAIS12345678910"
+          },
+          "incomeSourceType": {
+            "description": "A list of income source types.",
+            "enum": [
+              "self-employment",
+              "uk-property",
+              "employments",
+              "foreign-income",
+              "foreign-dividends",
+              "uk-savings-and-gains",
+              "uk-dividends",
+              "state-benefits",
+              "gains-on-life-policies",
+              "share-schemes",
+              "foreign-property",
+              "foreign-savings-and-gains",
+              "other-dividends",
+              "uk-securities",
+              "other-income",
+              "foreign-pension",
+              "non-paye-income",
+              "capital-gains-tax",
+              "charitable-giving"
+            ],
+            "type": "string"
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "type": "string",
+            "example": "Self-Employment Business One"
+          },
+          "taxableIncome": {
+            "description": "Estimated taxable income. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "example": "5000"
+          },
+          "totalAllowancesAndDeductions": {
+            "type": "integer",
+            "description": "Total allowances and deductions. This value must be between 0 and 99999999999. No decimals.",
+            "example": "5000"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceType",
+          "taxableIncome"
+        ]
+      }
+    },
+    "totalEstimatedIncome": {
+      "description": "Total estimated income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "5000"
+    },
+    "totalTaxableIncome": {
+      "description": "Total taxable income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "5000"
+    },
+    "incomeTaxAmount": {
+      "description": "Income tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "nic2": {
+      "description": "Class 2 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "nic4": {
+      "description": "Class 4 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalTaxDeductedBeforeCodingOut": {
+      "description": "Total tax deducted before coding out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "saUnderpaymentsCodedOut": {
+      "description": "Self Assessment underpayments coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalNicAmount": {
+      "description": "Total NIC amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalStudentLoansRepaymentAmount": {
+      "description": "Total student loans repayment amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalAnnuityPaymentsTaxCharged": {
+      "description": "Total annuity payments tax charged. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalRoyaltyPaymentsTaxCharged": {
+      "description": "Total royalty payments tax charged. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalTaxDeducted": {
+      "description": "Total tax deducted. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "incomeTaxNicAmount": {
+      "description": "Income Tax and NIC amount. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "cgtAmount": {
+      "description": "Capital Gains Tax amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "incomeTaxNicAndCgtAmount": {
+      "description": "Income Tax, NIC and CGT Amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    },
+    "totalAllowancesAndDeductions": {
+      "description": "Total Allowances and Deductions. This value must be between 0 and 99999999999. No decimals.",
+      "type": "number",
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "5000"
+
+    }
+  },
+  "additionalProperties": false
+}

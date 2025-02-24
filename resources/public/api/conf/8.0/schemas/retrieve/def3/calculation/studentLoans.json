@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Array containing information about student loan repayment amount and employment deductions per plan type for the retrieved tax calculation.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "planType": {
+        "description": "The repayment plan type.",
+        "allOf": [
+          {
+            "$ref": "../common_defs.json#/definitions/studentLoanPlanType"
+          }
+        ]
+      },
+      "studentLoanTotalIncomeAmount": {
+        "description": "The total income used in the student loan calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "studentLoanChargeableIncomeAmount": {
+        "description": "The total student loan income less the threshold. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "studentLoanRepaymentAmount": {
+        "description": "The student loan repayment before deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "studentLoanDeductionsFromEmployment": {
+        "description": "The student loan deduction collected by the employer. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "studentLoanRepaymentAmountNetOfDeductions": {
+        "description": "The student loan repayment after deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "studentLoanApportionedIncomeThreshold": {
+        "description": "The student loan threshold. This value must be between 0 and 99999999999. No decimals.",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 99999999999,
+        "example": "2000"
+      },
+      "studentLoanRate": {
+        "description": "The percentage rate income is charged at. This value must be between 0 and 99.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99.99,
+        "example": "3.52"
+      },
+      "payeIncomeForStudentLoan": {
+        "description": "The PAYE income for student loan threshold. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      },
+      "nonPayeIncomeForStudentLoan": {
+        "description": "The non-PAYE income for student loan threshold. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "100.50"
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "planType",
+      "studentLoanTotalIncomeAmount",
+      "studentLoanChargeableIncomeAmount",
+      "studentLoanRepaymentAmount",
+      "studentLoanRepaymentAmountNetOfDeductions",
+      "studentLoanApportionedIncomeThreshold",
+      "studentLoanRate"
+    ]
+  }
+}
