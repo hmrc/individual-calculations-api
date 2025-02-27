@@ -53,7 +53,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       buildRequest(uri)
         .addQueryStringParameters(downstreamQueryParams: _*)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.7.0+json"),
+          (ACCEPT, "application/vnd.hmrc.8.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
