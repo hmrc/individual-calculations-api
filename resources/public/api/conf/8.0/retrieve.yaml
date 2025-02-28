@@ -1,0 +1,136 @@
+get:
+  tags:
+    - Tax Calculations
+  summary: Retrieve a Self Assessment Tax Calculation
+  description: |
+    This endpoint allows the developer to retrieve all the tax calculation data 
+    for a given National Insurance number and Calculation ID.
+    
+    Note: if the calculation has been triggered recently and has not yet completed, this endpoint will return 404 Not Found.
+
+    ### Test data
+    Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
+    
+    | Header Value (Gov-Test-Scenario)   | Scenario                                                                           |
+    |------------------------------------|------------------------------------------------------------------------------------|
+    | N/A - DEFAULT                      | Simulates success response.                                                        |
+    | NOT_FOUND                          | Simulates the scenario where no data is found.                                     |
+    | ERROR_MESSAGES_EXIST               | Simulates the scenario where errors exist and no calculation has been generated.  |
+    | UK_MULTIPLE_INCOMES_EXAMPLE        | Simulates an example tax calculation for a UK FHL Property business with Savings and Dividends. |
+    | UK_PROP_DIVIDENDS_EXAMPLE          | Simulates an example tax calculation for a UK Property (Non-FHL) business with Dividends. |
+    | UK_PROP_GIFTAID_EXAMPLE            | Simulates an example tax calculation for a UK Property (Non-FHL) business with Gift Aid. |
+    | UK_PROP_SAVINGS_EXAMPLE            | Simulates an example tax calculation for a UK Property (Non-FHL) business with Savings. |
+    | UK_SE_GIFTAID_EXAMPLE              | Simulates an example tax calculation for a UK Self-Employment business with Gift Aid. |
+    | UK_SE_SAVINGS_EXAMPLE              | Simulates an example tax calculation for a UK Self-Employment business with Savings. |
+    | SCOT_SE_DIVIDENDS_EXAMPLE          | Simulates an example tax calculation for a Scottish Self-Employment business with Dividends. |
+    | DYNAMIC                            | The date fields in the response are made dynamic based on the tax year passed within the request.<br><br/> The dynamic response will work for tax years (taxYear) starting 2023-24 onwards. For any previous tax years supplied, it will result in a HTTP 400 (RULE_INCORRECT_GOV_TEST_SCENARIO) error being returned. |
+
+
+  parameters:
+    - $ref: ./common/pathParameters.yaml#/components/parameters/nino
+    - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
+    - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
+    - $ref: ./common/headers.yaml#/components/parameters/acceptJson
+    - $ref: ./common/headers.yaml#/components/parameters/authorizationReadScopeHeader
+    - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
+
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+  responses:
+    200:
+      description: Success
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ./schemas/retrieve/def1/retrieve_response.json
+              - $ref: ./schemas/retrieve/def2/retrieve_response.json
+              - $ref: ./schemas/retrieve/def3/retrieve_response.json
+          examples:
+            "Example response for TY 2023-24 and before":
+              value:
+                $ref: ./examples/retrieve/def1/retrieve_response.json
+            "Example response for TY 2024-25":
+              value:
+                $ref: ./examples/retrieve/def2/retrieve_response.json
+            "Example response for TY 2025-26 onwards":
+              value:
+                $ref: ./examples/retrieve/def3/retrieve_response.json
+
+    400:
+      description: Bad request
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            FORMAT_NINO:
+              $ref: ./common/errors.yaml#/components/examples/formatNino
+            FORMAT_TAX_YEAR:
+              $ref: ./common/errors.yaml#/components/examples/formatTaxYear
+            FORMAT_CALCULATION_ID:
+              $ref: ./common/errors.yaml#/components/examples/formatCalculationId
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearNotSupported
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid
+            RULE_INCORRECT_GOV_TEST_SCENARIO:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncorrectGTS
+
+    403:
+      description: Forbidden
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: ./common/errors.yaml#/components/examples/clientOrAgentNotAuthorised
+
+    404:
+      description: Not Found
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: ./common/errors.yaml#/components/examples/notFound

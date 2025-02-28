@@ -1,0 +1,855 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing the input data supplied for use in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "personalInformation": {
+      "description": "Object containing personal information about the taxpayer for whom the calculation was performed.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/personalInformation"
+        }
+      ]
+    },
+    "incomeSources": {
+      "$ref": "#/definitions/incomeSources"
+    },
+    "annualAdjustments": {
+      "$ref": "#/definitions/annualAdjustments"
+    },
+    "lossesBroughtForward": {
+      "$ref": "#/definitions/lossesBroughtForward"
+    },
+    "claims": {
+      "$ref": "#/definitions/claims"
+    },
+    "constructionIndustryScheme": {
+      "$ref": "#/definitions/constructionIndustryScheme"
+    },
+    "allowancesReliefsAndDeductions": {
+      "$ref": "#/definitions/allowancesReliefsAndDeductions"
+    },
+    "pensionContributionAndCharges": {
+      "$ref": "#/definitions/pensionContributionAndCharges"
+    },
+    "other": {
+      "$ref": "#/definitions/other"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "personalInformation",
+    "incomeSources"
+  ],
+  "definitions": {
+    "personalInformation": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "description": "Identifies the taxpayer for whom the calculation was performed.",
+          "pattern": "^[a-zA-Z0-9]+$",
+          "example": "VO123456A"
+        },
+        "dateOfBirth": {
+          "description": "The date of birth of the taxpayer.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/date"
+            }
+          ]
+        },
+        "taxRegime": {
+          "description": "The tax regime which applies to this calculation.",
+          "type": "string",
+          "enum": [
+            "uk",
+            "scotland",
+            "wales"
+          ]
+        },
+        "statePensionAgeDate": {
+          "description": "The date the taxpayer qualifies for state pension.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/date"
+            }
+          ]
+        },
+        "studentLoanPlan": {
+          "$ref": "#/definitions/studentLoanPlans"
+        },
+        "class2VoluntaryContributions": {
+          "description": "A boolean to identify the Class 2 Voluntary Contributions. This value must be true.",
+          "type": "boolean",
+          "example": "true"
+        },
+        "marriageAllowance": {
+          "description": "Indicates whether the customer has transferred out their allowance or received an allowance.",
+          "type": "string",
+          "enum": [
+            "transferor",
+            "recipient"
+          ]
+        },
+        "uniqueTaxpayerReference": {
+          "description": "The Unique Taxpayer Reference for the customer.",
+          "type": "string",
+          "example": "AGvHTfRUPO"
+        },
+        "itsaStatus": {
+          "description": "The ITSA status for the tax year.",
+          "type": "string",
+          "enum": [
+            "No Status",
+            "MTD Mandated",
+            "MTD Voluntary",
+            "Annual",
+            "Non Digital",
+            "Dormant",
+            "MTD Exempt"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "identifier",
+        "taxRegime"
+      ]
+    },
+    "studentLoanPlans": {
+      "description": "An array containing details about student loan plans.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "planType": {
+            "$ref": "common_defs.json#/definitions/studentLoanPlanType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "planType"
+        ]
+      }
+    },
+    "incomeSources": {
+      "description": "Object containing the income sources used in the retrieved tax calculation.",
+      "type": "object",
+      "properties": {
+        "businessIncomeSources": {
+          "$ref": "#/definitions/businessIncomeSources"
+        },
+        "nonBusinessIncomeSources": {
+          "$ref": "#/definitions/nonBusinessIncomeSources"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annualAdjustments": {
+      "description": "An array containing income source annual adjustments for the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the annual adjustment income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
+          },
+          "incomeSourceType": {
+            "description": "Business income source type.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "bsasId": {
+            "description": "The unique identifier of the annual adjustment.",
+            "type": "string",
+            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "example": "123a456b-789c-1d23-845e-678b9d1bd2ab"
+          },
+          "receivedDateTime": {
+            "description": "The latest date of when the adjustment was created, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "applied": {
+            "description": "A boolean to identify whether the adjustment has been applied to this calculation. This value must be true or false.",
+            "type": "boolean",
+            "example": "true"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "bsasId",
+          "receivedDateTime",
+          "applied"
+        ]
+      }
+    },
+    "lossesBroughtForward": {
+      "description": "An array containing losses which have been brought forward into the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lossId": {
+            "description": "The unique identifier of the loss which the customer declared when joining MTD.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/lossId"
+              }
+            ]
+          },
+          "incomeSourceId": {
+            "description": "The unique identifier of the loss brought forward income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
+          },
+          "incomeSourceType": {
+            "description": "The income source type on which the loss was made.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "submissionTimestamp": {
+            "description": "The date and time the loss was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "lossType": {
+            "description": "The type of loss.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/lossType"
+              }
+            ]
+          },
+          "taxYearLossIncurred": {
+            "description": "The tax year that the loss was incurred.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "currentLossValue": {
+            "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/intPos"
+              }
+            ]
+          },
+          "mtdLoss": {
+            "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "taxYearLossIncurred",
+          "currentLossValue"
+        ]
+      }
+    },
+    "claims": {
+      "description": "An array containing claims which have been applied in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claimId": {
+            "description": "An identifier for the claim made by the taxpayer.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/claimId"
+              }
+            ]
+          },
+          "originatingClaimId": {
+            "description": "An identifier for the claim made by the taxpayer that resulted in this claim.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/claimId"
+              }
+            ]
+          },
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
+          },
+          "incomeSourceType": {
+            "description": "The income source type on which the loss was made.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "submissionTimestamp": {
+            "description": "The date and time the claim was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "taxYearClaimMade": {
+            "description": "The tax year in which the claim was made.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "claimType": {
+            "description": "The type of claim made.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/claimType"
+              }
+            ]
+          },
+          "sequence": {
+            "description": "The order in which this claim is to be used for a carry-sideways claim. It must be in the range 1 to 99. The sequence must start with 1 and have no gaps.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 99,
+            "example": "1"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "taxYearClaimMade",
+          "claimType"
+        ]
+      }
+    },
+    "constructionIndustryScheme": {
+      "description": "An array containing information about Construction Industry Scheme (CIS) deduction periods by contractor reference.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "employerRef": {
+            "description": "A unique identifier, the contractor reference number.",
+            "type": "string",
+            "pattern": "^[0-9]{3}\\/[^ ].{0,9}$",
+            "example": "123/AB56797"
+          },
+          "contractorName": {
+            "description": "The name of the contractor the subcontractor worked for.",
+            "pattern": "^[A-Za-z0-9 \\-,.&'/]{1,105}$",
+            "example": "Company-123 Ltd."
+          },
+          "periodData": {
+            "description": "An array containing submission periods made.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "deductionFromDate": {
+                  "description": "The from date for when the deduction was made within the CIS tax year period.",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
+                },
+                "deductionToDate": {
+                  "description": "The to date for when the deduction was made within the CIS tax year period.",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/date"
+                    }
+                  ]
+                },
+                "submissionTimestamp": {
+                  "description": "The date and time the period information was recorded in MTD, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/timestamp"
+                    }
+                  ]
+                },
+                "source": {
+                  "description": "Identifies whether the period information was submitted by the contractor or customer.",
+                  "type": "string",
+                  "enum": [
+                    "contractor",
+                    "customer"
+                  ]
+                },
+                "deductionAmount": {
+                  "description": "The amount of tax deducted by the contractor. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/monetaryPos"
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "deductionFromDate",
+                "deductionToDate",
+                "submissionTimestamp",
+                "source",
+                "deductionAmount"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "employerRef",
+          "periodData"
+        ]
+      }
+    },
+    "allowancesReliefsAndDeductions": {
+      "description": "An array of allowances, reliefs, and deductions claimed as part of the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of allowance, deduction or relief claimed.",
+            "type": "string",
+            "enum": [
+              "investment-reliefs",
+              "other-reliefs",
+              "other-expenses",
+              "other-deductions",
+              "foreign-reliefs"
+            ]
+          },
+          "submittedTimestamp": {
+            "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "startDate": {
+            "description": "The start date for the period of the submission.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "endDate": {
+            "description": "The end date for the period of the submission.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "source": {
+            "description": "The source of the income data used in this calculation.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pensionContributionAndCharges": {
+      "description": "An array indicating pension information used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of pension contribution.",
+            "type": "string",
+            "enum": [
+              "pension-reliefs",
+              "pension-charges"
+            ]
+          },
+          "submissionTimestamp": {
+            "description": "The date and time when the latest submission was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "startDate": {
+            "description": "The start date of the period.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "endDate": {
+            "description": "The end date of the period.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "source": {
+            "description": "The source of the data.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/source"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ]
+      }
+    },
+    "other": {
+      "description": "An array other inputs used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "An array of other inputs that have been pulled into this calculation.",
+            "type": "string",
+            "enum": [
+              "coding-out"
+            ]
+          },
+          "submittedOn": {
+            "description": "The date and time when the information was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ]
+      }
+    },
+    "businessIncomeSources": {
+      "description": "Array containing business income sources used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
+          },
+          "incomeSourceType": {
+            "description": "Business income source type.",
+            "allOf": [
+              {
+                "$ref": "common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "type": "string",
+            "example": "ABC-123 Ltd."
+          },
+          "accountingPeriodStartDate": {
+            "description": "The accounting start date of the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "accountingPeriodEndDate": {
+            "description": "The accounting end date of the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "source": {
+            "description": "The source of the income data used in this calculation.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
+          },
+          "commencementDate": {
+            "description": "The date the income source commenced.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "cessationDate": {
+            "description": "The date the income source ceased.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "latestPeriodEndDate": {
+            "description": "The end date of the period for which income has been submitted for the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "latestReceivedDateTime": {
+            "description": "The latest date & time when this income source had data submitted against it, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          },
+          "submissionPeriod": {
+            "description": "Object containing submission period for the business income source.",
+            "type": "object",
+            "properties": {
+              "submissionId": {
+                "description": "A reference to the unique identifier of the period.",
+                "type": "string",
+                "example": "001"
+              },
+              "startDate": {
+                "description": "The first day the period covers.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/date"
+                  }
+                ]
+              },
+              "endDate": {
+                "description": "The last day the period covers.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/date"
+                  }
+                ]
+              },
+              "receivedDateTime": {
+                "description": "The date and time when the income data was received in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+                "allOf": [
+                  {
+                    "$ref": "#/definitions/timestamp"
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "startDate",
+              "endDate",
+              "receivedDateTime"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "accountingPeriodStartDate",
+          "accountingPeriodEndDate",
+          "source",
+          "latestPeriodEndDate",
+          "latestReceivedDateTime"
+        ]
+      }
+    },
+    "nonBusinessIncomeSources": {
+      "description": "Array containing non-business income sources used in the retrieved tax calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the non-business income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/incomeSourceId"
+              }
+            ]
+          },
+          "incomeSourceType": {
+            "description": "Non-business income source type.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/nonBusinessIncomeSourceType"
+              }
+            ]
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "example": "Savings Account"
+          },
+          "startDate": {
+            "description": "The start date of the income source. ",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "endDate": {
+            "description": "The end date of the income source.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/date"
+              }
+            ]
+          },
+          "source": {
+            "description": "The source of the income data used in this calculation.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/sourceMtdOnly"
+              }
+            ]
+          },
+          "periodId": {
+            "description": "An identifier for the period, unique to the customer.",
+            "type": "string",
+            "example": "001"
+          },
+          "latestReceivedDateTime": {
+            "description": "The date and time when the latest income data was received by the source. This field may not be present for employments for which no pay data has been received. In ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceType",
+          "startDate",
+          "source"
+        ]
+      }
+    },
+    "incomeSourceId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "XAIS12345678910"
+    },
+    "nonBusinessIncomeSourceType": {
+      "type": "string",
+      "enum": [
+        "employments",
+        "foreign-dividends",
+        "uk-savings-and-gains",
+        "uk-dividends",
+        "state-benefits",
+        "gains-on-life-policies",
+        "foreign-savings-and-gains",
+        "other-dividends",
+        "uk-securities",
+        "other-income",
+        "foreign-pension",
+        "non-paye-income",
+        "capital-gains-tax",
+        "charitable-giving"
+      ]
+    },
+    "lossId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "AAZZ1234567890a"
+    },
+    "claimId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]{15}$",
+      "example": "1234568790ABCDE"
+    },
+    "sourceMtdOnly": {
+      "type": "string",
+      "enum": [
+        "MTD-SA"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "MTD-SA",
+        "customer"
+      ]
+    },
+    "date": {
+      "id": "full-date",
+      "type": "string",
+      "example": "2020-01-01"
+    },
+    "timestamp": {
+      "type": "string",
+      "example": "2019-02-15T09:35:15.094Z"
+    },
+    "taxYear": {
+      "id": "tax-year",
+      "type": "string",
+      "example": "2020-21"
+    },
+    "intPos": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "5000"
+    },
+    "monetaryPos": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": "5000.99"
+    }
+  }
+}

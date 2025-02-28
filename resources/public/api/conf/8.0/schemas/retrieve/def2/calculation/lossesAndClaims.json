@@ -1,0 +1,318 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about losses and claims in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "resultOfClaimsApplied": {
+      "description": "Array detailing the result of claims applied.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claimId": {
+            "description": "The unique identifier of the claim.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "1234568790ABCDE"
+          },
+          "originatingClaimId": {
+            "description": "The unique identifier of the original carry-sideways-fhl/carry-sideways claim where not all of the loss in the calculation year could be carried sideways and the resulting loss balance was carried forwards. Where a resulting carry sideways loss balance is carried forwards there will not be a new claim ID for the carried forward portion of the loss.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "1234568790ABCDE"
+          },
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "XAIP12345678910"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the claim.",
+            "allOf": [
+              {
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "taxYearClaimMade": {
+            "description": "The tax year in which the claim was made.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "claimType": {
+            "$ref": "../common_defs.json#/definitions/claimType"
+          },
+          "mtdLoss": {
+            "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
+            "type": "boolean",
+            "example": "false"
+          },
+          "taxYearLossIncurred": {
+            "description": "The tax year in which the loss was incurred.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "lossAmountUsed": {
+            "description": "Loss amount used. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "multipleOf": 1,
+            "minimum": 0,
+            "maximum": 99999999999,
+            "example": "160"
+          },
+          "remainingLossValue": {
+            "description": "Remaining loss value. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "multipleOf": 1,
+            "minimum": 0,
+            "maximum": 99999999999,
+            "example": "160"
+          },
+          "lossType": {
+            "$ref": "../common_defs.json#/definitions/lossType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "taxYearClaimMade",
+          "claimType",
+          "taxYearLossIncurred",
+          "lossAmountUsed",
+          "remainingLossValue"
+        ]
+      }
+    },
+    "unclaimedLosses": {
+      "description": "Array detailing unclaimed losses.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "XAIP12345678910"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the unclaimed loss.",
+            "allOf": [
+              {
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "taxYearLossIncurred": {
+            "description": "The tax year in which the loss was incurred.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "currentLossValue": {
+            "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "multipleOf": 1,
+            "minimum": 0,
+            "maximum": 99999999999,
+            "example": "160"
+          },
+          "lossType": {
+            "$ref": "../common_defs.json#/definitions/lossType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceType",
+          "taxYearLossIncurred",
+          "currentLossValue"
+        ]
+      }
+    },
+    "carriedForwardLosses": {
+      "description": "Array detailing carried forward losses.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claimId": {
+            "description": "The unique identifier of the claim.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "1234568790ABCDE"
+          },
+          "originatingClaimId": {
+            "description": "The unique identifier of the originating claim.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "1234568790ABCDE"
+          },
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "XAIS12345678910"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the carried forward loss.",
+            "allOf": [
+              {
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "claimType": {
+            "$ref": "../common_defs.json#/definitions/claimType"
+          },
+          "taxYearClaimMade": {
+            "description": "The tax year in which the claim was made.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "taxYearLossIncurred": {
+            "description": "The tax year in which the loss was incurred.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "currentLossValue": {
+            "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "multipleOf": 1,
+            "minimum": 0,
+            "maximum": 99999999999,
+            "example": "160"
+          },
+          "lossType": {
+            "$ref": "../common_defs.json#/definitions/lossType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "claimType",
+          "taxYearLossIncurred",
+          "currentLossValue"
+        ]
+      }
+    },
+    "defaultCarriedForwardLosses": {
+      "description": "Losses arising in this calculation that have been carried forward to the next calculation by default. This applies to specific income sources e.g Furnished Holiday Lettings where losses can only be carried forward.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "XAIS12345678910"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the default carried forward loss.",
+            "allOf": [
+              {
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "taxYearLossIncurred": {
+            "description": "The tax year in which the loss was incurred.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "currentLossValue": {
+            "description": "The current value of the loss. This value must be between 0 and 99999999999. No decimals.",
+            "type": "integer",
+            "multipleOf": 1,
+            "minimum": 0,
+            "maximum": 99999999999,
+            "example": "160"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "incomeSourceId",
+          "incomeSourceType",
+          "taxYearLossIncurred",
+          "currentLossValue"
+        ]
+      }
+    },
+    "claimsNotApplied": {
+      "description": "Array detailing claims that could not be applied in this calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claimId": {
+            "description": "The unique identifier of the claim.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "1234568790ABCDE"
+          },
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "XAIS12345678910"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the claim not applied.",
+            "allOf": [
+              {
+                "$ref": "../common_defs.json#/definitions/businessIncomeSourceType"
+              }
+            ]
+          },
+          "taxYearClaimMade": {
+            "description": "The tax year in which the claim was made.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/taxYear"
+              }
+            ]
+          },
+          "claimType": {
+            "$ref": "../common_defs.json#/definitions/claimType"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "claimId",
+          "incomeSourceId",
+          "incomeSourceType",
+          "taxYearClaimMade",
+          "claimType"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "taxYear": {
+      "id": "tax-year",
+      "type": "string",
+      "example": "2020-21"
+    }
+  }
+}
