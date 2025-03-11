@@ -16,10 +16,11 @@
 
 package v7.listCalculationsOld
 
-import shared.connectors.DownstreamUri.{DesUri, IfsUri}
+import shared.connectors.DownstreamUri.{DesUri, HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import shared.config.AppConfig
+import shared.config.{AppConfig, ConfigFeatureSwitches}
+import shared.models.domain.TaxYear
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v7.listCalculationsOld.def1.model.response.Calculation
 import v7.listCalculationsOld.model.request.ListCalculationsRequestData
@@ -40,11 +41,27 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
     import request._
     import schema._
 
-    val downstreamUri: DownstreamUri[DownstreamResp] =
-      if (taxYear.useTaxYearSpecificApi) {
-        IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
+    //API1404
+     lazy val downstreamUri1404: DownstreamUri[DownstreamResp] =
+      if (ConfigFeatureSwitches().isEnabled("des_hip_migration_1404")) {
+        HipUri[DownstreamResp](s"itsd/calculations/liability/$nino?taxYear=${taxYear.asDownstream}")
       } else {
         DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
+      }
+    //API2150
+    lazy val downstreamUri2150: DownstreamUri[DownstreamResp] =
+      IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino")
+    //API2083
+    lazy val downstreamUri2083: DownstreamUri[DownstreamResp] =
+      IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary")
+
+    val downstreamUri: DownstreamUri[DownstreamResp] =
+      if (taxYear.year >= 2026) {
+        downstreamUri2083
+      } else if (taxYear.year == 2024 || taxYear.year == 2025) {
+        downstreamUri2150
+      } else {
+        downstreamUri1404
       }
 
     get(downstreamUri)
