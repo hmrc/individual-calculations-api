@@ -30,7 +30,11 @@ import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
+  override def servicesConfig: Map[String, Any] =
+    Map("feature-switch.des_hip_migration_1404.enabled" -> false) ++ super.servicesConfig
+
   private trait Test {
+
     val nino: String = "ZG903729C"
 
     def taxYear: Option[String]
@@ -76,11 +80,18 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
   private trait TysTest extends Test {
 
-    val mtdTaxYear: String        = TaxYear.now().asMtd
-    val downstreamTaxYear: String = TaxYear.now().asTysDownstream
+    val currentTaxYear: TaxYear   = TaxYear.now()
+    val mtdTaxYear: String        = currentTaxYear.asMtd
+    val downstreamTaxYear: String = currentTaxYear.asTysDownstream
     def taxYear: Option[String]   = Some(mtdTaxYear)
 
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
+    override def downstreamUri: String = {
+      if (currentTaxYear.year < 2026) {
+        s"/income-tax/$downstreamTaxYear/view/calculations-summary/$nino"
+      } else {
+        s"income-tax/$downstreamTaxYear/view/$nino/calculations-summary"
+      }
+    }
 
   }
 

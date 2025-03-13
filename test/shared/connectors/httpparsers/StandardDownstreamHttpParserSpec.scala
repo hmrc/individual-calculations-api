@@ -66,11 +66,14 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         httpReads.read(method, url, httpResponse) shouldBe Left(expected)
       }
 
-      handleErrorsCorrectly(httpReads)
-      handleInternalErrorsCorrectly(httpReads)
-      handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
+
     }
+
+    handleErrorsCorrectly(httpReads)
+    handleInternalErrorsCorrectly(httpReads)
+    handleUnexpectedResponse(httpReads)
+    handleBvrsCorrectly(httpReads)
+    handleHipErrorsCorrectly(httpReads)
 
     "a success code is specified" should {
       "use that status code for success" in {
@@ -96,11 +99,13 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         }
       }
 
-      handleErrorsCorrectly(httpReads)
-      handleInternalErrorsCorrectly(httpReads)
-      handleUnexpectedResponse(httpReads)
-      handleBvrsCorrectly(httpReads)
     }
+
+    handleErrorsCorrectly(httpReads)
+    handleInternalErrorsCorrectly(httpReads)
+    handleUnexpectedResponse(httpReads)
+    handleBvrsCorrectly(httpReads)
+    handleHipErrorsCorrectly(httpReads)
 
     "a success code is specified" should {
       implicit val successCode: SuccessCode             = SuccessCode(PARTIAL_CONTENT)
@@ -247,6 +252,61 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         )
       }
     }
+  }
+
+  private def handleHipErrorsCorrectly[A](httpReads: HttpReads[DownstreamOutcome[A]]): Unit = {
+
+    val topLevelErrorsJson: JsValue = Json.parse(
+      """
+        |[
+        |   {
+        |       "errorCode": "5010",
+        |       "errorDescription": "Not Found"
+        |   }
+        |]
+    """.stripMargin
+    )
+
+    val multipleErrorsInResponseJson: JsValue = Json.parse(
+      """
+        |{
+        |    "origin": "HIP",
+        |    "response": [
+        |        {
+        |            "errorCode": "1117",
+        |            "errorDescription": "First description"
+        |        },
+        |        {
+        |            "errorCode": "1215",
+        |            "errorDescription": "Second description"
+        |        }
+        |    ]
+        |}
+    """.stripMargin
+    )
+
+    "receiving a response with multiple HIP errors containing top level error codes" should {
+      "return a Left ResponseWrapper containing the extracted error codes" in {
+        val httpResponse = HttpResponse(NOT_FOUND, topLevelErrorsJson, Map("CorrelationId" -> List(correlationId)))
+        val result       = httpReads.read(method, url, httpResponse)
+
+        result shouldBe Left(
+          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("5010"))))
+        )
+      }
+    }
+
+    "receiving a response with multiple HIP errors containing error codes in response array" should {
+      "return a Left ResponseWrapper containing the extracted error codes" in {
+        val httpResponse = HttpResponse(NOT_FOUND, multipleErrorsInResponseJson, Map("CorrelationId" -> List(correlationId)))
+        val result       = httpReads.read(method, url, httpResponse)
+
+        result shouldBe Left(
+          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"))))
+        )
+      }
+    }
+
   }
 
 }

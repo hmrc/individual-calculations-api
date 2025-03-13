@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v8.listCalculations.def1
+package v7.listCalculations.def1
 
 import api.errors.{FormatCalculationTypeError, RuleCalculationTypeNotAllowed}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -26,12 +26,9 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
 
-class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
-
-  override def servicesConfig: Map[String, Any] =
-    Map("feature-switch.des_hip_migration_1404.enabled" -> false) ++ super.servicesConfig
+class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
   private trait Test {
     val nino: String = "ZG903729C"
@@ -42,7 +39,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
     private def uri: String = s"/$nino/self-assessment/$taxYearString"
 
-    def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
+    def downstreamUri: String = s"/itsd/calculations/liability/$nino"
 
     def setupStubs(): StubMapping
 
@@ -60,18 +57,20 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       buildRequest(uri)
         .addQueryStringParameters(requestQueryParams: _*)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.8.0+json"),
+          (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
 
     def errorBody(code: String): String =
       s"""
-         |{
-         |  "code": "$code",
-         |  "message": "backend message"
-         |}
-           """.stripMargin
+         |[
+         |    {
+         |        "errorCode": "$code",
+         |        "errorDescription": "error description"
+         |    }
+         |]
+          """.stripMargin
 
   }
 
@@ -149,24 +148,12 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         }
 
         val errors = Seq(
-          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
-          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
-          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError),
           (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
           (NOT_FOUND, "5010", NOT_FOUND, NotFoundError),
         )
 
-        val extraTysErrors = Seq(
-          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
-          (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
-          (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
-        )
-
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        errors.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }

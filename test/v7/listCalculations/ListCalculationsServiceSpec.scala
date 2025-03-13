@@ -64,7 +64,10 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         "NOT_FOUND"                 -> NotFoundError,
         "SERVER_ERROR"              -> InternalError,
         "SERVICE_UNAVAILABLE"       -> InternalError,
-        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError,
+        "1215"                      -> NinoFormatError,
+        "1117"                      -> TaxYearFormatError,
+        "5010"                      -> NotFoundError
       )
 
       val extraTysErrors = Seq(

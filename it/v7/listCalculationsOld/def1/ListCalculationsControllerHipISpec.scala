@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package v8.listCalculations.def1
+package v7.listCalculationsOld.def1
 
-import api.errors.{FormatCalculationTypeError, RuleCalculationTypeNotAllowed}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
@@ -26,23 +25,18 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
-class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
-
-  override def servicesConfig: Map[String, Any] =
-    Map("feature-switch.des_hip_migration_1404.enabled" -> false) ++ super.servicesConfig
+class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
   private trait Test {
     val nino: String = "ZG903729C"
 
-    val calculationType: Option[String] = None
+    def taxYear: Option[String]
 
-    def taxYearString: String = "2018-19"
+    private def uri: String = s"/$nino/self-assessment"
 
-    private def uri: String = s"/$nino/self-assessment/$taxYearString"
-
-    def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
+    def downstreamUri: String
 
     def setupStubs(): StubMapping
 
@@ -50,34 +44,40 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
       AuthStub.authorised()
       MtdIdLookupStub.ninoFound(nino)
 
-      def requestQueryParams: Seq[(String, String)] = {
-        calculationType.fold(Seq.empty[(String, String)]){ ct =>
-          Seq("calculationType" -> ct).collect { case (k, v) => (k, v) }
-        }
-      }
+      def downstreamQueryParams: Seq[(String, String)] =
+        Seq("taxYear" -> taxYear)
+          .collect { case (k, Some(v)) => (k, v) }
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(requestQueryParams: _*)
+        .addQueryStringParameters(downstreamQueryParams: _*)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.8.0+json"),
+          (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
 
     def errorBody(code: String): String =
       s"""
-         |{
-         |  "code": "$code",
-         |  "message": "backend message"
-         |}
+         |[
+         |    {
+         |        "errorCode": "$code",
+         |        "errorDescription": "error description"
+         |    }
+         |]
            """.stripMargin
 
   }
 
-  "Calling the list calculations endpoint for tax years pre 23-24" should {
+  private trait NonTysTest extends Test {
+    def taxYear: Option[String] = Some("2018-19")
+
+    override def downstreamUri: String = s"/itsd/calculations/liability/$nino"
+  }
+
+  "Calling the list calculations endpoint" should {
     "return a 200 status code" when {
-      "valid request is made with a tax year" in new Test {
+      "valid request is made with a tax year" in new NonTysTest {
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -91,19 +91,16 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJson
       }
+
+
     }
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(
-                                 requestNino: String,
-                                 requestTaxYear: String,
-                                 requestCalculationType: Option[String],
-                                 expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new Test {
+        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"validation fails with ${expectedBody.code} error" in new NonTysTest {
             override val nino: String            = requestNino
-            override val taxYearString: String = requestTaxYear
-            override val calculationType: Option[String] = requestCalculationType
+            override val taxYear: Option[String] = Some(requestTaxYear)
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -119,12 +116,10 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         }
 
         val input = Seq(
-          ("AA1123A", "2017-18", None, BAD_REQUEST, NinoFormatError),
-          ("ZG903729C", "20177", None, BAD_REQUEST, TaxYearFormatError),
-          ("ZG903729C", "2015-16", None, BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("ZG903729C", "2020-22", None, BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("ZG903729C", "2017-18", Some("invalid-calc-type"), BAD_REQUEST, FormatCalculationTypeError),
-          ("ZG903729C", "2017-18", Some("in-year"), BAD_REQUEST, RuleCalculationTypeNotAllowed)
+          ("AA1123A", "2017-18", BAD_REQUEST, NinoFormatError),
+          ("ZG903729C", "20177", BAD_REQUEST, TaxYearFormatError),
+          ("ZG903729C", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
@@ -132,7 +127,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
       "downstream returns a service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $downstreamStatus error and status $downstreamCode" in new Test {
+          s"backend returns an $downstreamStatus error and status $downstreamCode" in new NonTysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -154,10 +149,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
           (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError),
-          (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
-          (NOT_FOUND, "5010", NOT_FOUND, NotFoundError),
+          (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
         val extraTysErrors = Seq(
