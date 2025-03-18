@@ -64,13 +64,13 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
 
     def errorBody(code: String): String =
       s"""
-         |[
-         |    {
-         |        "errorCode": "$code",
-         |        "errorDescription": "error description"
-         |    }
-         |]
-          """.stripMargin
+        |[
+        |    {
+        |        "errorCode": "$code",
+        |        "errorDescription": "error description"
+        |    }
+        |]
+      """.stripMargin
 
   }
 
@@ -131,7 +131,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
 
       "downstream returns a service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $downstreamStatus error and status $downstreamCode" in new Test {
+          s"backend returns a code $downstreamStatus error and status $downstreamCode" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -150,7 +150,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
         val errors = Seq(
           (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
-          (NOT_FOUND, "5010", NOT_FOUND, NotFoundError),
+          (NOT_FOUND, "5010", NOT_FOUND, NotFoundError)
         )
 
         errors.foreach(args => (serviceErrorTest _).tupled(args))

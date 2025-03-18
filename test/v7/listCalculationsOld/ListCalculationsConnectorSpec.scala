@@ -109,14 +109,28 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
     }
 
-    "an error is received" must {
-      "return the expected result" in new DesTest with Test {
+    "return the expected result" when {
+      "an error is received and feature switch disabled (DES enabled)" in new DesTest with Test {
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
 
         willGet(
           s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
+        )
+          .returns(Future.successful(outcome))
+
+        private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request(taxYear2019)))
+        result shouldBe outcome
+      }
+
+      "an error is received and feature switch enabled (HIP enabled)" in new HipTest with Test {
+        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
+
+        MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
+
+        willGet(
+          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 

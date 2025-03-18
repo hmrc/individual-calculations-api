@@ -72,7 +72,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         await(connector.list(request)) shouldBe outcome
       }
 
-      "Pre 23/24 tax year path param is passed and feature switch enabled (DES enabled)" in new HipTest with Test {
+      "Pre 23/24 tax year path param is passed and feature switch enabled (HIP enabled)" in new HipTest with Test {
         val taxYear         = TaxYear.fromMtd("2018-19")
         val calculationType = None
 

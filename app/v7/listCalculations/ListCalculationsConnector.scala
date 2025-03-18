@@ -45,7 +45,7 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
     import schema._
 
     // API1404
-    lazy val desDownstreamUri1404: DownstreamUri[DownstreamResp] =
+    lazy val downstreamUri1404: DownstreamUri[DownstreamResp] =
       if (ConfigFeatureSwitches().isEnabled("des_hip_migration_1404")) {
         HipUri(s"itsd/calculations/liability/$nino?taxYear=${taxYear.asDownstream}")
       } else {
@@ -60,7 +60,7 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
 
     request match {
       case Def1_ListCalculationsRequestData(_, _, _) =>
-        get(desDownstreamUri1404)
+        get(downstreamUri1404)
       case Def2_ListCalculationsRequestData(_, _, calculationType) =>
         val calcType: Option[String] = calculationType.map(_.to2150Downstream)
         get(downstreamUri2150, params(calcType))

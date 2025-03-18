@@ -58,26 +58,29 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         }
       }
 
-      val errors = Seq(
+      val desErrors = Seq(
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
         "INVALID_TAXYEAR"           -> TaxYearFormatError,
         "NOT_FOUND"                 -> NotFoundError,
         "SERVER_ERROR"              -> InternalError,
         "SERVICE_UNAVAILABLE"       -> InternalError,
-        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError,
-        "1215"                      -> NinoFormatError,
-        "1117"                      -> TaxYearFormatError,
-        "5010"                      -> NotFoundError
+        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
       )
 
-      val extraTysErrors = Seq(
+      val extraTysDesErrors = Seq(
         "NO_DATA_FOUND"          -> NotFoundError,
         "INVALID_TAX_YEAR"       -> TaxYearFormatError,
         "INVALID_CORRELATION_ID" -> InternalError,
         "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
       )
 
-      (errors ++ extraTysErrors).foreach(args => (checkErrorMappings _).tupled(args))
+      val hipErrors = Map(
+        "1215" -> NinoFormatError,
+        "1117" -> TaxYearFormatError,
+        "5010" -> NotFoundError
+      )
+
+      (desErrors ++ extraTysDesErrors ++ hipErrors).foreach(args => (checkErrorMappings _).tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
