@@ -207,7 +207,7 @@
       },
       "reliefsClaimed": [
         {
-          "type": "vctSubscriptions",
+          "type": "vct-subscriptions",
           "amountClaimed": 5000.99,
           "allowableAmount": 5000.99,
           "amountUsed": 5000.99,
