@@ -172,15 +172,15 @@
             "description": "The type of relief claimed.",
             "type": "string",
             "enum": [
-              "vctSubscriptions",
-              "eisSubscriptions",
-              "communityInvestment",
-              "seedEnterpriseInvestment",
-              "socialEnterpriseInvestment",
-              "maintenancePayments",
-              "deficiencyRelief",
-              "nonDeductibleLoanInterest",
-              "qualifyingDistributionRedemptionOfSharesAndSecurities"
+              "vct-subscriptions",
+              "eis-subscriptions",
+              "community-investment",
+              "seed-enterprise-investment",
+              "social-enterprise-investment",
+              "maintenance-payments",
+              "deficiency-relief",
+              "non-deductible-loan-interest",
+              "qualifying-distribution-redemption-of-shares-and-securities"
             ]
           },
           "amountClaimed": {
