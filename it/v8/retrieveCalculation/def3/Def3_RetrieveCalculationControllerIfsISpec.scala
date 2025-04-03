@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v6.retrieveCalculation.def2
+package v8.retrieveCalculation.def3
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
@@ -25,15 +25,18 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
+import v8.retrieveCalculation.def3.model.Def3_CalculationFixture
 
-class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
+class Def3_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec with Def3_CalculationFixture {
+
+  override def servicesConfig: Map[String, Any] =
+    Map("feature-switch.ifs_hip_migration_1885.enabled" -> false) ++ super.servicesConfig
 
   private trait Test {
     val nino: String              = "ZG903729C"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-    def taxYear: String           = "2024-25"
-    def downstreamTaxYear: String = "24-25"
+    def taxYear: String           = "2025-26"
+    def downstreamTaxYear: String = "25-26"
 
     def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
@@ -43,7 +46,7 @@ class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with D
       setupStubs()
       buildRequest(s"/$nino/self-assessment/$taxYear/$calculationId")
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.6.0+json"),
+          (ACCEPT, "application/vnd.hmrc.8.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,14 @@ package v5.retrieveCalculation.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
-import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers.AUTHORIZATION
+import play.api.test.Helpers._
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 
-class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
+class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
 
   private trait Test {
     val nino: String          = "ZG903729C"
@@ -47,7 +46,7 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
         )
     }
 
-    def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId"
+    private def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId"
 
     def downstreamResponseBody(canBeFinalised: Boolean): JsValue = Json.parse(
       s"""
@@ -120,14 +119,20 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
         """.stripMargin
     )
 
-    def errorBody(code: String): String =
+    def errorBody(`type`: String): String =
       s"""
-         |{
-         |  "code": "$code",
-         |  "message": "backend message"
-         |}
-           """.stripMargin
-
+        |{
+        |    "origin": "HIP",
+        |    "response": {
+        |        "failures": [
+        |            {
+        |                "type": "${`type`}",
+        |                "reason": "downstream message"
+        |            }
+        |        ]
+        |    }
+        |}
+      """.stripMargin
   }
 
   private trait NonTysTest extends Test {
@@ -139,7 +144,8 @@ class Def1_RetrieveCalculationControllerISpec extends IntegrationBaseSpec {
   private trait TysTest extends Test {
     def taxYear: String = "2023-24"
 
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
+    override def downstreamUri: String =
+      s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
 
     def downstreamTaxYear: String = "23-24"
   }
