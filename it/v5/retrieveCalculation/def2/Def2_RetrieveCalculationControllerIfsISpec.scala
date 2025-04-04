@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def2
+package v5.retrieveCalculation.def2
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
@@ -25,9 +25,12 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v7.retrieveCalculation.def2.model.Def2_CalculationFixture
+import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
 
-class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
+class Def2_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
+
+  override def servicesConfig: Map[String, Any] =
+    Map("feature-switch.ifs_hip_migration_1885.enabled" -> false) ++ super.servicesConfig
 
   private trait Test {
     val nino: String              = "ZG903729C"
@@ -43,7 +46,7 @@ class Def2_RetrieveCalculationControllerISpec extends IntegrationBaseSpec with D
       setupStubs()
       buildRequest(s"/$nino/self-assessment/$taxYear/$calculationId")
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.7.0+json"),
+          (ACCEPT, "application/vnd.hmrc.5.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
