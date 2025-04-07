@@ -74,8 +74,6 @@ paths:
 
   /individuals/calculations/{nino}/self-assessment/{taxYear}/trigger/{calculationType}:
     $ref: "./trigger.yaml"
-  /individuals/calculations/{nino}/self-assessment:
-    $ref: "./listOld.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}:
     $ref: "./list.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
