@@ -7,6 +7,8 @@ get:
     
     A National Insurance number must be provided.
     
+    <strong>Caution: This endpoint only supports retrievals up to tax year 2022-23 and will be removed. Use the <a href="#operation/listSelfAssessmentTaxCalculations">List Self Assessment Tax Calculations</a> endpoint.</strong>
+    
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
     
