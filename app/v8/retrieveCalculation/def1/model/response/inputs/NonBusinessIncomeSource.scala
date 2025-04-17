@@ -37,7 +37,7 @@ case object NonBusinessIncomeSource {
     `uk-savings-and-gains`,
     `uk-dividends`,
     `state-benefits`,
-    `share-schemes`,
+    `gains-on-life-policies`,
     `foreign-savings-and-gains`,
     `other-dividends`,
     `uk-securities`,
