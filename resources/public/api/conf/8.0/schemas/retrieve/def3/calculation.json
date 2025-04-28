@@ -92,6 +92,9 @@
     },
     "transitionProfit": {
       "$ref": "calculation/transitionProfit.json"
+    },
+    "highIncomeChildBenefitCharge": {
+      "$ref": "calculation/highIncomeChildBenefitCharge.json"
     }
   },
   "additionalProperties": false
