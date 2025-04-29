@@ -137,7 +137,7 @@ class SubmitFinalDeclarationControllerSpec
         GenericAuditDetail(
           userType = "Individual",
           agentReferenceNumber = None,
-          params = Map("nino" -> validNino, "taxYear" -> taxYear, "calculationId" -> calculationId),
+          params = Map("nino" -> validNino, "taxYear" -> taxYear, "calculationId" -> calculationId, "calculationType" -> calculationType.toString),
           requestBody = None,
           `X-CorrelationId` = correlationId,
           versionNumber = apiVersion.name,

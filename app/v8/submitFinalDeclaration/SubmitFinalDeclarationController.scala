@@ -60,7 +60,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
             auditType = "SubmitAFinalDeclaration",
             transactionName = "submit-a-final-declaration",
             apiVersion = Version(request),
-            params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId)
+            params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationId" -> calculationId, "calculationType" -> calculationType)
           ))
 
       requestHandler.handleRequest()
