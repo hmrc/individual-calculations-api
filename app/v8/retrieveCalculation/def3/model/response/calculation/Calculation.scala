@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import v8.retrieveCalculation.def3.model.response.calculation.foreignIncome.Fore
 import v8.retrieveCalculation.def3.model.response.calculation.foreignPropertyIncome.ForeignPropertyIncome
 import v8.retrieveCalculation.def3.model.response.calculation.foreignTaxForFtcrNotClaimed.ForeignTaxForFtcrNotClaimed
 import v8.retrieveCalculation.def3.model.response.calculation.giftAid.GiftAid
+import v8.retrieveCalculation.def3.model.response.calculation.highIncomeChildBenefitCharge.HighIncomeChildBenefitCharge
 import v8.retrieveCalculation.def3.model.response.calculation.incomeSummaryTotals.IncomeSummaryTotals
 import v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims.LossesAndClaims
 import v8.retrieveCalculation.def3.model.response.calculation.marriageAllowanceTransferredIn.MarriageAllowanceTransferredIn
@@ -78,7 +79,8 @@ case class Calculation(
     previousCalculation: Option[PreviousCalculation],
     endOfYearEstimate: Option[EndOfYearEstimate],
     lossesAndClaims: Option[LossesAndClaims],
-    transitionProfit: Option[TransitionProfit]
+    transitionProfit: Option[TransitionProfit],
+    highIncomeChildBenefitCharge: Option[HighIncomeChildBenefitCharge]
 )
 
 object Calculation {
@@ -114,6 +116,7 @@ object Calculation {
     endOfYearEstimate              <- (JsPath \ "endOfYearEstimate").readNullable[EndOfYearEstimate]
     lossesAndClaims                <- (JsPath \ "lossesAndClaims").readNullable[LossesAndClaims]
     transitionProfit               <- (JsPath \ "transitionProfit").readNullable[TransitionProfit]
+    highIncomeChildBenefitCharge   <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[HighIncomeChildBenefitCharge]
   } yield {
     Calculation(
       allowancesAndDeductions = allowancesAndDeductions,
@@ -145,7 +148,8 @@ object Calculation {
       previousCalculation = previousCalculation,
       endOfYearEstimate = endOfYearEstimate,
       lossesAndClaims = lossesAndClaims,
-      transitionProfit = transitionProfit
+      transitionProfit = transitionProfit,
+      highIncomeChildBenefitCharge = highIncomeChildBenefitCharge
     )
   }
 
@@ -181,7 +185,8 @@ object Calculation {
         "previousCalculation"            -> Json.toJson(o.previousCalculation),
         "endOfYearEstimate"              -> Json.toJson(o.endOfYearEstimate),
         "lossesAndClaims"                -> Json.toJson(o.lossesAndClaims),
-        "transitionProfit"               -> Json.toJson(o.transitionProfit)
+        "transitionProfit"               -> Json.toJson(o.transitionProfit),
+        "highIncomeChildBenefitCharge"   -> Json.toJson(o.highIncomeChildBenefitCharge)
       ).filterNot { case (_, value) =>
         value == JsNull
       }
@@ -191,7 +196,7 @@ object Calculation {
   // format: off
   val empty: Calculation = Calculation(
     None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,
-    None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
+    None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None
   )
   // format: on
 

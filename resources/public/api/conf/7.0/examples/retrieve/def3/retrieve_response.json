@@ -78,7 +78,7 @@
         "incomeSourceType": "uk-property",
         "submissionTimestamp": "2025-04-06T09:35:15.094Z",
         "lossType": "income",
-        "taxYearLossIncurred": 2025-26,
+        "taxYearLossIncurred": "2025-26",
         "currentLossValue": 12500,
         "mtdLoss": false
       }
@@ -90,7 +90,7 @@
         "incomeSourceId": "000000000000210",
         "incomeSourceType": "self-employment",
         "submissionTimestamp": "2025-04-06T09:35:15.094Z",
-        "taxYearClaimMade": 2025-26,
+        "taxYearClaimMade": "2025-26",
         "claimType": "carry-forward",
         "sequence": 1
       }
@@ -877,6 +877,9 @@
         "statePensionLumpSumCharges": 5000.99,
         "payeUnderpaymentsCodedOut": 5000.99,
         "totalIncomeTaxDue": 5000.99
+        {{#if (enabled "high-income-child-benefit-charge-fields")}}
+          ,"highIncomeBenefitCharge": 5000.99
+        {{/if}}
       },
       "nics": {
         "class2Nics": {
@@ -1023,10 +1026,10 @@
           "originatingClaimId": "0vayS9JrW2jTa6n",
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
-          "taxYearClaimMade": 2025-26,
+          "taxYearClaimMade": "2025-26",
           "claimType": "CF",
           "mtdLoss": true,
-          "taxYearLossIncurred": 2024-25,
+          "taxYearLossIncurred": "2024-25",
           "lossAmountUsed": 12500,
           "remainingLossValue": 12500,
           "lossType": "income"
@@ -1036,7 +1039,7 @@
         {
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": 2025-26,
+          "taxYearLossIncurred": "2025-26",
           "currentLossValue": 12500,
           "lossType": "income"
         }
@@ -1048,8 +1051,8 @@
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
           "claimType": "carry-forward",
-          "taxYearClaimMade": 2025-26,
-          "taxYearLossIncurred": 2020-21,
+          "taxYearClaimMade": "2025-26",
+          "taxYearLossIncurred": "2020-21",
           "currentLossValue": 12500,
           "lossType": "income"
         }
@@ -1058,7 +1061,7 @@
         {
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": 2025-26,
+          "taxYearLossIncurred": "2025-26",
           "currentLossValue": 12500
         }
       ],
@@ -1067,7 +1070,7 @@
           "claimId": "0vayS9JrW2jTa6n",
           "incomeSourceId": "000000000000210",
           "incomeSourceType": "self-employment",
-          "taxYearClaimMade": 2025-26,
+          "taxYearClaimMade": "2025-26",
           "claimType": "carry-forward"
         }
       ]
@@ -1087,6 +1090,16 @@
         }
       ]
     }
+    {{#if (enabled "high-income-child-benefit-charge-fields")}}
+      ,"highIncomeChildBenefitCharge": {
+        "adjustedNetIncome": 2000.01,
+        "amountOfChildBenefitReceived": 2000.01,
+        "incomeThreshold": 60000,
+        "childBenefitChargeTaper": 200,
+        "rate": 10.25,
+        "highIncomeBenefitCharge": 32000.01
+      }
+    {{/if}}
   },
   "messages": {
     "info": [
