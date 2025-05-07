@@ -40,6 +40,12 @@ components:
         code: RULE_TAX_YEAR_NOT_SUPPORTED
         message: The tax year specified does not lie within the supported range
 
+    ruleTaxYearForVersionNotSupported:
+      description: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
+      value:
+        code: RULE_TAX_YEAR_NOT_SUPPORTED
+        message: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
+
     ruleTaxYearRangeInvalid:
       description: Tax year range invalid. A tax year range of one year is required.
       value:
