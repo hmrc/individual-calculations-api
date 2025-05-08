@@ -17,19 +17,27 @@
 package v5.submitFinalDeclaration.def1
 
 import shared.controllers.validators.Validator
+import shared.controllers.validators.resolvers.ResolverSupport._
 import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
-import shared.models.errors.MtdError
+import shared.models.errors.{MtdError, RuleTaxYearForVersionNotSupportedError}
 import cats.data.Validated
 import cats.implicits._
+import shared.controllers.validators.resolvers.ResolverSupport.satisfiesMax
+import shared.models.domain.TaxYear
 import v5.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
 class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String)
     extends Validator[SubmitFinalDeclarationRequestData] {
 
+  private val maximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
+
+  private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
+    satisfiesMax(maximumSupportedTaxYear, RuleTaxYearForVersionNotSupportedError)
+
   def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
     (
       ResolveNino(nino),
-      ResolveTaxYear(taxYear),
+      resolveTaxYear(Some(taxYear)),
       ResolveCalculationId(calculationId)
     ).mapN(Def1_SubmitFinalDeclarationRequestData)
 

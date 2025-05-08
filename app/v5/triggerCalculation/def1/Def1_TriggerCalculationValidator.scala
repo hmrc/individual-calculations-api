@@ -18,9 +18,9 @@ package v5.triggerCalculation.def1
 
 import api.errors.FinalDeclarationFormatError
 import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveBoolean, ResolveNino, ResolveTaxYearMinimum}
+import shared.controllers.validators.resolvers.{ResolveBoolean, ResolveNino, ResolveTaxYearMinMax}
 import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
+import shared.models.errors.{MtdError, RuleTaxYearForVersionNotSupportedError, RuleTaxYearNotSupportedError}
 import cats.data.Validated
 import cats.data.Validated.Valid
 import cats.implicits._
@@ -29,7 +29,11 @@ import v5.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, 
 object Def1_TriggerCalculationValidator {
 
   private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
+  private val triggerCalculationMaximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
+  private val resolveTaxYear                     = ResolveTaxYearMinMax(
+    (triggerCalculationMinimumTaxYear, triggerCalculationMaximumSupportedTaxYear),
+    RuleTaxYearNotSupportedError,
+    RuleTaxYearForVersionNotSupportedError)
 
   private val resolveFinalDeclaration = ResolveBoolean(FinalDeclarationFormatError)
 
