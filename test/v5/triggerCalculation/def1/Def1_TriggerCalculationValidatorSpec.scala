@@ -87,6 +87,15 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
       }
     }
 
+    "return RuleTaxYearForVersionNotSupportedError error" when {
+      "a tax year after 2024-25 is supplied" in {
+        val result = validator(validNino, "2025-26", Some(validFinalDeclaration)).validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
+        )
+      }
+    }
+
     "return FinalDeclarationFormatError error" when {
       "an invalid final declaration is supplied" in {
         val result = validator(validNino, validTaxYear, Some("error")).validateAndWrapResult()

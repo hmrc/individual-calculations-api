@@ -80,6 +80,15 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
       }
     }
 
+    "return RuleTaxYearForVersionNotSupportedErrorr error" when {
+      "a tax year after 2024-25 is supplied" in {
+        val result = validator(validNino, "2025-26", validCalculationId).validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
+        )
+      }
+    }
+
     "return multiple errors" when {
       "multiple invalid parameters are provided" in {
         val result = validator("not-a-nino", validTaxYear, "bad id").validateAndWrapResult()
