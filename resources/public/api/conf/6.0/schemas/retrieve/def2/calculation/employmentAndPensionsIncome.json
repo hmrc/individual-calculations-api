@@ -73,7 +73,7 @@
             "example": "S9500206"
           },
           "offPayrollWorker": {
-            "description": "Indicates whether the employer (who is using or procuring the services of the contract worker) is deducting PAYE as they consider that the worker contract falls under Off-Payroll Working (OPW) rules. Required only for tax year 2023/24 or later. Not supported for earlier tax years.\nFor example: true\nWhen the flag is true, the worker is subject to OPW rules and the employer is deducting PAYE based on those rules.",
+            "description": "Indicates whether the employer (who is using or procuring the services of the contract worker) is deducting PAYE as they consider that the worker contract falls under Off-Payroll Working (OPW) rules. Required only for tax year 2023/24 or 2024/25. Not supported for earlier tax years.\nFor example: true\nWhen the flag is true, the worker is subject to OPW rules and the employer is deducting PAYE based on those rules.",
             "type": "boolean",
             "example": "true"
           },
