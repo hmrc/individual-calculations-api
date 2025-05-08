@@ -20,16 +20,18 @@ import shared.controllers.validators.Validator
 import shared.controllers.validators.resolvers.ResolverSupport._
 import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYear}
 import shared.models.domain.TaxYear
-import shared.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import shared.models.errors.{MtdError, RuleTaxYearForVersionNotSupportedError, RuleTaxYearNotSupportedError}
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple2Semigroupal
 import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def1_ListCalculationsValidator {
   private val listCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val listCalculationsMaximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
 
   private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
-    satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError)
+    satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError) thenValidate
+    satisfiesMax(listCalculationsMaximumSupportedTaxYear, RuleTaxYearForVersionNotSupportedError)
 
 }
 
