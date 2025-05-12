@@ -3,7 +3,9 @@ get:
     - Tax Calculations
   summary: List Self Assessment Tax Calculations
   description: |
-    This endpoint enables you to list Self Assessment tax calculations for a given National Insurance number and tax year. 
+    This endpoint enables you to list Self Assessment tax calculations for a given National Insurance number and tax year.
+    
+    This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
     
     A National Insurance number must be provided.
     

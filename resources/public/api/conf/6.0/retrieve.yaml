@@ -6,6 +6,8 @@ get:
     This endpoint allows the developer to retrieve all the tax calculation data 
     for a given National Insurance number and Calculation ID.
     
+    This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
+    
     Note: if the calculation has been triggered recently and has not yet completed, this endpoint will return 404 Not Found.
 
     ### Test data
