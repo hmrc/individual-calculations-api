@@ -31,13 +31,13 @@ class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calcul
 
   private val maximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
 
-  private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
+  private val resolveTaxYear = ResolveTaxYear.resolver thenValidate
     satisfiesMax(maximumSupportedTaxYear, RuleTaxYearForVersionNotSupportedError)
 
   def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
     (
       ResolveNino(nino),
-      resolveTaxYear(Some(taxYear)),
+      resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
     ).mapN(Def1_SubmitFinalDeclarationRequestData)
 
