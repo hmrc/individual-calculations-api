@@ -7,6 +7,8 @@ get:
     
     A National Insurance number must be provided.
     
+    > <strong> Note: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7. </strong>
+    
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
     
@@ -72,6 +74,8 @@ get:
               $ref: ./common/errors.yaml#/components/examples/formatTaxYear
             RULE_TAX_YEAR_NOT_SUPPORTED:
               $ref: ./common/errors.yaml#/components/examples/ruleTaxYearNotSupported
+            RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported
             RULE_TAX_YEAR_RANGE_INVALID:
               $ref: ./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid
             RULE_INCORRECT_GOV_TEST_SCENARIO:
