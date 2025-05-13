@@ -8,14 +8,14 @@ post:
     To trigger a final declaration self assessment tax calculation, 
     you must supply the finalDeclaration query parameter as true. 
     
-    This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
-    
     A National Insurance number and tax year must be provided. 
     
     The tax calculation process is asynchronous, so it is recommended you wait at least 5 seconds 
     before calling the retrieval endpoint. 
     The result of the calculation can be seen using the 
     “Retrieve a Self Assessment Tax Calculation” endpoint.
+    
+    > <strong> Note: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7. </strong>
     
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.

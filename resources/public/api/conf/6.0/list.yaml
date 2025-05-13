@@ -5,9 +5,9 @@ get:
   description: |
     This endpoint enables you to list Self Assessment tax calculations for a given National Insurance number and tax year.
     
-    This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7.
-    
     A National Insurance number must be provided.
+    
+    > <strong> Note: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7. </strong>
     
     ### Test data
     Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
