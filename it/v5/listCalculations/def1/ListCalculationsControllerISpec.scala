@@ -76,8 +76,8 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
 
   private trait TysTest extends Test {
 
-    val mtdTaxYear: String        = TaxYear.now().asMtd
-    val downstreamTaxYear: String = TaxYear.now().asTysDownstream
+    val mtdTaxYear: String        = TaxYear("2024").asMtd
+    val downstreamTaxYear: String = TaxYear("2024").asTysDownstream
     def taxYear: Option[String]   = Some(mtdTaxYear)
 
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino"
@@ -101,22 +101,6 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         response.json shouldBe listCalculationsMtdJson
       }
 
-      "valid request is made without a tax year" in new TysTest {
-        override def taxYear: Option[String] = None
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
-        }
-
-        val response: WSResponse = await(request.get())
-        response.status shouldBe OK
-        response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJson
-      }
-
       "valid TYS request is made with a tax year" in new TysTest {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -129,6 +113,24 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def1_List
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe listCalculationsMtdJson
+      }
+    }
+
+    "return a RuleTaxYearNotSupportedForVersionError" when {
+      "valid request is made without a tax year" in new TysTest {
+        override def taxYear: Option[String] = None
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, OK, listCalculationsDownstreamJson)
+        }
+
+        val response: WSResponse = await(request.get())
+        response.status shouldBe BAD_REQUEST
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe Json.toJson(RuleTaxYearForVersionNotSupportedError)
       }
     }
 

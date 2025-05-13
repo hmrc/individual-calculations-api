@@ -40,10 +40,14 @@ class Def1_ListCalculationsValidatorSpec extends UnitSpec {
         val result = validator(validNino, Some(validTaxYear)).validateAndWrapResult()
         result shouldBe Right(Def1_ListCalculationsRequestData(parsedNino, parsedTaxYear))
       }
+    }
 
+    "return RuleTaxYearForVersionNotSupportedError error" when {
       "a valid request is supplied without a tax year" in {
         val result = validator(validNino, None).validateAndWrapResult()
-        result shouldBe Right(Def1_ListCalculationsRequestData(parsedNino, TaxYear.now()))
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
+        )
       }
     }
 
@@ -70,6 +74,15 @@ class Def1_ListCalculationsValidatorSpec extends UnitSpec {
         val result = validator(validNino, Some("2016-17")).validateAndWrapResult()
         result shouldBe Left(
           ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
+        )
+      }
+    }
+
+    "return RuleTaxYearForVersionNotSupportedError error" when {
+      "a tax year after 2024-25 is supplied" in {
+        val result = validator(validNino, Some("2025-26")).validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
         )
       }
     }

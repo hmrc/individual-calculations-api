@@ -71,6 +71,15 @@ class Def1_RetrieveCalculationValidatorSpec extends UnitSpec {
       }
     }
 
+    "return RuleTaxYearForVersionNotSupportedError error" when {
+      "a tax year after 2024-25 is supplied" in {
+        val result = validator(validNino, "2025-26", validCalculationId).validateAndWrapResult()
+        result shouldBe Left(
+          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
+        )
+      }
+    }
+
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year range is supplied" in {
         val result = validator(validNino, "2017-19", validCalculationId).validateAndWrapResult()
