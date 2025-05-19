@@ -5,8 +5,8 @@ post:
   description: |
     This endpoint allows the user to trigger a self assessment tax calculation for a given tax year. 
     It should be called whenever income data is updated through a periodic or annual endpoint. 
-    To trigger a final declaration self assessment tax calculation, 
-    you must supply the finalDeclaration query parameter as true. 
+    To trigger a final declaration self assessment tax calculation, you must set the calculationType
+    path parameter to intent-to-finalise.
     
     A National Insurance number and tax year must be provided. 
     
