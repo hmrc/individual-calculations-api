@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v6.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v6.listCalculations.def1.model.response.Calculation
 import v6.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v6.listCalculations.model.response.ListCalculationsResponse
 
 import scala.concurrent.Future
 
@@ -37,7 +39,8 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
   "ListCalculationsService" when {
     "a successful response is returned" must {
       "return a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         MockListCalculationsConnector
           .list(request)
@@ -58,25 +61,29 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         }
       }
 
-      val errors = Seq(
+      val commonError = Seq("UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError)
+
+      val nonTysErrors = Seq(
+        "1215" -> NinoFormatError,
+        "1117" -> TaxYearFormatError,
+        "5010" -> NotFoundError
+      )
+
+      val tysErrors = Seq(
         "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-        "INVALID_TAXYEAR"           -> TaxYearFormatError,
+        "INVALID_TAX_YEAR"          -> TaxYearFormatError,
+        "INVALID_CORRELATION_ID"    -> InternalError,
         "NOT_FOUND"                 -> NotFoundError,
+        "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError,
         "SERVER_ERROR"              -> InternalError,
-        "SERVICE_UNAVAILABLE"       -> InternalError,
-        "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+        "SERVICE_UNAVAILABLE"       -> InternalError
       )
 
-      val extraTysErrors = Seq(
-        "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-        "INVALID_CORRELATION_ID" -> InternalError,
-        "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
-      )
-
-      (errors ++ extraTysErrors).foreach(args => (checkErrorMappings _).tupled(args))
+      (commonError ++ nonTysErrors ++ tysErrors).foreach(args => (checkErrorMappings _).tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
-        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
+        val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
+          Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
         await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
       }

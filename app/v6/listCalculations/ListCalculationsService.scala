@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package v6.listCalculations
 
 import shared.controllers.RequestContext
-import shared.models
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
 import cats.implicits._
@@ -33,27 +32,29 @@ class ListCalculationsService @Inject() (connector: ListCalculationsConnector) e
 
   def list(request: ListCalculationsRequestData)(implicit
       ctx: RequestContext,
-      ec: ExecutionContext): Future[ServiceOutcome[ListCalculationsResponse[Calculation]]] = {
-
+      ec: ExecutionContext): Future[ServiceOutcome[ListCalculationsResponse[Calculation]]] =
     connector.list(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
-  }
-
   private val downstreamErrorMap: Map[String, MtdError] = {
-    val errors = Map(
+    val commonError = Map("UNMATCHED_STUB_ERROR" -> RuleIncorrectGovTestScenarioError)
+
+    val nonTysErrors = Map(
+      "1215" -> NinoFormatError,
+      "1117" -> TaxYearFormatError,
+      "5010" -> NotFoundError
+    )
+
+    val tysErrors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-      "INVALID_TAXYEAR"           -> TaxYearFormatError,
+      "INVALID_TAX_YEAR"          -> TaxYearFormatError,
+      "INVALID_CORRELATION_ID"    -> InternalError,
       "NOT_FOUND"                 -> NotFoundError,
-      "SERVER_ERROR"              -> models.errors.InternalError,
-      "SERVICE_UNAVAILABLE"       -> models.errors.InternalError,
-      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+      "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError,
+      "SERVER_ERROR"              -> InternalError,
+      "SERVICE_UNAVAILABLE"       -> InternalError
     )
-    val extraTysErrors = Map(
-      "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> models.errors.InternalError,
-      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
-    )
-    errors ++ extraTysErrors
+
+    commonError ++ nonTysErrors ++ tysErrors
   }
 
 }

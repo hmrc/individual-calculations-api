@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 
 package v5.listCalculations
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
+import play.api.Configuration
+import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
@@ -37,50 +38,76 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear)
 
   trait Test { _: ConnectorTest =>
-
     val connector: ListCalculationsConnector = new ListCalculationsConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
-
   }
 
   "ListCalculationsConnector" should {
     "return successful response" when {
-      "Non-TYS tax year query param is passed" in new DesTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+      val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+        Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
+      "a valid request with a Non-TYS tax year is supplied" in new HipTest with Test {
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
-        )
-          .returns(Future.successful(outcome))
+          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
+        ).returns(Future.successful(outcome))
 
         await(connector.list(request)) shouldBe outcome
       }
 
-      "TYS tax year query param is passed" in new IfsTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+      "a valid request with a TYS tax year is supplied and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
+        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
 
         willGet(
           s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
-        )
-          .returns(Future.successful(outcome))
+        ).returns(Future.successful(outcome))
+
+        await(connector.list(tysRequest)) shouldBe outcome
+      }
+
+      "a valid request with a TYS tax year is supplied and feature switch is enabled (HIP enabled)" in new HipTest with Test {
+        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
+
+        willGet(
+          s"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
+        ).returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome
       }
     }
 
-    "an error is received" must {
-      "return the expected result" in new DesTest with Test {
-        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
+    "return an error" when {
+      val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
+        Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
+
+      "downstream returns an error for a request with a Non-TYS tax year" in new HipTest with Test {
+        willGet(
+          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
+        ).returns(Future.successful(outcome))
+
+        await(connector.list(request)) shouldBe outcome
+      }
+
+      "downstream returns an error for a request with a TYS tax year and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
+        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
-        )
-          .returns(Future.successful(outcome))
+          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+        ).returns(Future.successful(outcome))
 
-        private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request))
-        result shouldBe outcome
+        await(connector.list(tysRequest)) shouldBe outcome
+      }
+
+      "downstream returns an error for a request with a TYS tax year and feature switch is enabled (HIP enabled)" in new HipTest with Test {
+        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
+
+        willGet(
+          s"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
+        ).returns(Future.successful(outcome))
+
+        await(connector.list(tysRequest)) shouldBe outcome
       }
     }
   }

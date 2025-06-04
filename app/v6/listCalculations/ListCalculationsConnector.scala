@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package v6.listCalculations
 
-import shared.connectors.DownstreamUri.{DesUri, IfsUri}
+import shared.connectors.DownstreamUri.{HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import shared.config.AppConfig
+import shared.config.{AppConfig, ConfigFeatureSwitches}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v6.listCalculations.def1.model.response.Calculation
 import v6.listCalculations.model.request.ListCalculationsRequestData
@@ -40,12 +40,18 @@ class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: 
     import request._
     import schema._
 
-    val downstreamUri: DownstreamUri[DownstreamResp] =
-      if (taxYear.useTaxYearSpecificApi) {
-        IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
+    lazy val downstreamUri1404: DownstreamUri[DownstreamResp] =
+      HipUri(s"itsd/calculations/liability/$nino?taxYear=${taxYear.asDownstream}")
+
+    lazy val downstreamUri1896: DownstreamUri[DownstreamResp] =
+      if (ConfigFeatureSwitches().isEnabled("ifs_hip_migration_1896")) {
+        HipUri(s"itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino")
       } else {
-        DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
+        IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino")
       }
+
+    val downstreamUri: DownstreamUri[DownstreamResp] =
+      if (taxYear.useTaxYearSpecificApi) downstreamUri1896 else downstreamUri1404
 
     get(downstreamUri)
   }
