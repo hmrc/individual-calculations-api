@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package retrieveCalculation.def2
+package v6.retrieveCalculation.def2
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
+import play.api.http.Status._
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers._
+import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 
-class Def2_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
+class Def2_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
+
+  override def servicesConfig: Map[String, Any] =
+    Map("feature-switch.ifs_hip_migration_1885.enabled" -> false) ++ super.servicesConfig
 
   private trait Test {
     val nino: String              = "ZG903729C"
     val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
     def taxYear: String           = "2024-25"
-    private def downstreamTaxYear: String = "24-25"
+    def downstreamTaxYear: String = "24-25"
 
-    def downstreamUri: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
+    def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
@@ -51,20 +55,14 @@ class Def2_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec wit
 
     val responseBody: JsValue = calculationMtdJson.as[JsObject]
 
-    def errorBody(`type`: String): String =
+    def errorBody(code: String): String =
       s"""
-        |{
-        |    "origin": "HIP",
-        |    "response": {
-        |        "failures": [
-        |            {
-        |                "type": "${`type`}",
-        |                "reason": "downstream message"
-        |            }
-        |        ]
-        |    }
-        |}
-      """.stripMargin
+         |{
+         |  "code": "$code",
+         |  "message": "backend message"
+         |}
+           """.stripMargin
+
   }
 
   "Calling the retrieveCalculation endpoint" when {
