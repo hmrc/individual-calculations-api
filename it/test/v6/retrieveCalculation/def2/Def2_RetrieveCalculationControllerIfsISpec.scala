@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package retrieveCalculation.def2
+package v6.retrieveCalculation.def2
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
@@ -23,9 +23,9 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
-import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
 
 class Def2_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
 

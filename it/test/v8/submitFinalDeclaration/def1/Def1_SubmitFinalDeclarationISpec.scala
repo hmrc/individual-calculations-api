@@ -24,7 +24,7 @@ import play.api.libs.ws._
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 import shared.models.domain.TaxYear
 import shared.models.errors._
-import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.services._
 import shared.support.IntegrationBaseSpec
 
 class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {

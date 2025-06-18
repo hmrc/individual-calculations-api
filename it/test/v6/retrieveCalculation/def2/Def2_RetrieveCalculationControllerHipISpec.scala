@@ -14,110 +14,42 @@
  * limitations under the License.
  */
 
-package retrieveCalculation.def1
+package v6.retrieveCalculation.def2
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers._
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import v6.retrieveCalculation.def2.model.Def2_CalculationFixture
 
-class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
+class Def2_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
 
   private trait Test {
-    val nino: String          = "ZG903729C"
-    val calculationId: String = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-    def taxYear: String
-    def downstreamTaxYear: String
+    val nino: String              = "ZG903729C"
+    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    def taxYear: String           = "2024-25"
+    private def downstreamTaxYear: String = "24-25"
 
-    def downstreamUri: String
+    def downstreamUri: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
       setupStubs()
-      buildRequest(uri)
+      buildRequest(s"/$nino/self-assessment/$taxYear/$calculationId")
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.6.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
 
-    private def uri: String = s"/$nino/self-assessment/$taxYear/$calculationId"
+    val downstreamResponseBody: JsValue = calculationDownstreamJson
 
-    def downstreamResponseBody(canBeFinalised: Boolean): JsValue = Json.parse(
-      s"""
-         |{
-         |  "metadata" : {
-         |    "calculationId": "",
-         |    "taxYear": 2017,
-         |    "requestedBy": "",
-         |    "calculationReason": "",
-         |    "calculationType": "inYear",
-         |    ${if (canBeFinalised) """"intentToCrystallise": true,""" else ""}
-         |    "periodFrom": "",
-         |    "periodTo": ""
-         |  },
-         |  "inputs" : {
-         |    "personalInformation": {
-         |       "identifier": "",
-         |       "taxRegime": "UK"
-         |    },
-         |    "incomeSources": {}
-         |  },
-         |  "calculation" : {
-         |   "endOfYearEstimate": {
-         |     "totalAllowancesAndDeductions": 100
-         |   },
-         |   "reliefs": {
-         |       "basicRateExtension": {
-         |       "totalBasicRateExtension": 2000.00
-         |       }
-         |    }
-         |  },
-         |  "messages" : {}
-         |}
-        """.stripMargin
-    )
-
-    def responseBody(canBeFinalised: Boolean): JsValue = Json.parse(
-      s"""
-         |{
-         |  "metadata" : {
-         |    "calculationId": "",
-         |    "taxYear": "2016-17",
-         |    "requestedBy": "",
-         |    "calculationReason": "",
-         |    "calculationType": "inYear",
-         |    "intentToSubmitFinalDeclaration": $canBeFinalised,
-         |    "finalDeclaration": false,
-         |    "periodFrom": "",
-         |    "periodTo": ""
-         |  },
-         |  "inputs" : {
-         |    "personalInformation": {
-         |       "identifier": "",
-         |       "taxRegime": "UK"
-         |    },
-         |    "incomeSources": {}
-         |  },
-         |  "calculation" : {
-         |   "endOfYearEstimate": {
-         |     "totalAllowancesAndDeductions": 100
-         |   },
-         |   "reliefs": {
-         |       "basicRateExtension": {
-         |       "totalBasicRateExtension": 2000.00
-         |       }
-         |    }
-         |  },
-         |  "messages" : {}
-         |}
-        """.stripMargin
-    )
+    val responseBody: JsValue = calculationMtdJson.as[JsObject]
 
     def errorBody(`type`: String): String =
       s"""
@@ -135,79 +67,23 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
       """.stripMargin
   }
 
-  private trait NonTysTest extends Test {
-    def taxYear: String                = "2018-19"
-    def downstreamTaxYear: String      = "2018-19"
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
-  }
-
-  private trait TysTest extends Test {
-    def taxYear: String = "2023-24"
-
-    override def downstreamUri: String =
-      s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
-
-    def downstreamTaxYear: String = "23-24"
-  }
-
   "Calling the retrieveCalculation endpoint" when {
-    "the response can be finalised" should {
+    "successful" should {
       "return a 200 status code" when {
-        "a valid request is made" in new NonTysTest {
+        "a valid request is made" in new Test {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()
             MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
+            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody)
           }
 
           val response: WSResponse = await(request.get())
           response.status shouldBe OK
           response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = false)
+          response.json shouldBe responseBody
         }
 
-        "a valid request is made with a Tax Year Specific tax year" in new TysTest {
-          override def setupStubs(): StubMapping = {
-            AuditStub.audit()
-            AuthStub.authorised()
-            MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
-          }
-
-          val response: WSResponse = await(request.get())
-          response.status shouldBe OK
-          response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = false)
-        }
-
-        "a valid request is made and the response can be finalised" in new NonTysTest {
-          override def setupStubs(): StubMapping = {
-            AuditStub.audit()
-            AuthStub.authorised()
-            MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
-          }
-
-          val response: WSResponse = await(request.get())
-          response.status shouldBe OK
-          response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = true)
-        }
-
-        "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysTest {
-          override def setupStubs(): StubMapping = {
-            AuditStub.audit()
-            AuthStub.authorised()
-            MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
-          }
-
-          val response: WSResponse = await(request.get())
-          response.status shouldBe OK
-          response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = true)
-        }
       }
 
       "return the correct error code" when {
@@ -216,7 +92,7 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
                                 requestCalculationId: String,
                                 expectedStatus: Int,
                                 expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new NonTysTest {
+          s"validation fails with ${expectedBody.code} error" in new Test {
             override val nino: String          = requestNino
             override val taxYear: String       = requestTaxYear
             override val calculationId: String = requestCalculationId
@@ -241,7 +117,7 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
         input.foreach(args => (validationErrorTest _).tupled(args))
         "downstream returns a service error" when {
           def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-            s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
+            s"backend returns an $downstreamCode error and status $downstreamStatus" in new Test {
               override def setupStubs(): StubMapping = {
                 AuditStub.audit()
                 AuthStub.authorised()
