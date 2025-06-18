@@ -26,13 +26,12 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NrsProxyConnector @Inject()(http: HttpClientV2, calculationsConfig: CalculationsConfig)(implicit ec: ExecutionContext) {
+class NrsProxyConnector @Inject() (http: HttpClientV2, calculationsConfig: CalculationsConfig)(implicit ec: ExecutionContext) {
 
   def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpstreamErrorResponse, Unit]] = {
 
-    //http.POST[JsValue, Either[UpstreamErrorResponse, Unit]](s"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent", body)
-
-    http.post(url"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent")
+    http
+      .post(url"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent")
       .withBody(Json.toJson(body))
       .execute[Either[UpstreamErrorResponse, Unit]]
 
