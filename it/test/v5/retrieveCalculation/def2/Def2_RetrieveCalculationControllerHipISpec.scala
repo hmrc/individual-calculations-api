@@ -22,9 +22,9 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers._
 import shared.models.errors._
-import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import v5.retrieveCalculation.def2.model.Def2_CalculationFixture
 
 class Def2_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec with Def2_CalculationFixture {
 
