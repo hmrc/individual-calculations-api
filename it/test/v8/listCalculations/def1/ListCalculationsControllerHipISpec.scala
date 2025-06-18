@@ -24,9 +24,9 @@ import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
-import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 

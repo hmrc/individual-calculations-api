@@ -25,9 +25,9 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.domain.TaxYear
 import shared.models.domain.TaxYear.currentTaxYear
 import shared.models.errors._
-import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
