@@ -20,6 +20,7 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v5.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.Def1_ListCalculationsRequestData
@@ -51,7 +52,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
+          url"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 
@@ -62,7 +63,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
-          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+          url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
         )
           .returns(Future.successful(outcome))
 
@@ -75,7 +76,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
+          url"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 

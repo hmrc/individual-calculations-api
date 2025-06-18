@@ -26,7 +26,7 @@ Start the service manager profile: `sm2 --start MTDFB_CALC`
 
 Run unit tests: `sbt test`
 
-Run integration tests: `sbt it:test`
+Run integration tests: `sbt it/test`
 
 ## Viewing OAS
 

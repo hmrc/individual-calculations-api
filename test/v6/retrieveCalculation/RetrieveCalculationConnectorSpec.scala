@@ -22,10 +22,12 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v6.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v6.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 import v6.retrieveCalculation.models.response.RetrieveCalculationResponse
 
+import java.net.URL
 import scala.concurrent.Future
 
 class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_CalculationFixture {
@@ -116,7 +118,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
     protected def stubHttpResponse(outcome: DownstreamOutcome[RetrieveCalculationResponse])
     : CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
       willGet(
-        url = s"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId"
+        url = url"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId"
       )
         .returns(Future.successful(outcome))
     }
@@ -124,10 +126,10 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
     protected def stubTysHttpResponse(isHipEnabled: Boolean, outcome: DownstreamOutcome[RetrieveCalculationResponse])
     : CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
 
-      val url: String = if (isHipEnabled) {
-        s"$baseUrl/itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"
+      val url: URL = if (isHipEnabled) {
+        url"$baseUrl/itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"
       } else {
-        s"$baseUrl/income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId"
+        url"$baseUrl/income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId"
       }
 
       MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1885.enabled" -> isHipEnabled)

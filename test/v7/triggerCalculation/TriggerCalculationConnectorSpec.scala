@@ -22,10 +22,12 @@ import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v7.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `in-year`, `intent-to-amend`, `intent-to-finalise`}
 import v7.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v7.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
+import java.net.URL
 import scala.concurrent.Future
 
 class TriggerCalculationConnectorSpec extends ConnectorSpec {
@@ -34,12 +36,12 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
-  def api1426Url(intentToFinalise: String): String =
-    s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
-  def api1897Url(intentToFinalise: String): String =
-    s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=$intentToFinalise"
-  def api2081Url(intentToFinalise: String): String =
-    s"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
+  def api1426Url(intentToFinalise: String): URL =
+    url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
+  def api1897Url(intentToFinalise: String): URL =
+    url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=$intentToFinalise"
+  def api2081Url(intentToFinalise: String): URL =
+    url"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
 
   trait Test { _: ConnectorTest =>
 
@@ -86,7 +88,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     }
 
 
-    def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: String): Unit =
+    def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
       s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsEnabledTest with Test {
         val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
@@ -98,7 +100,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         await(connector.triggerCalculation(request)) shouldBe expectedOutcome
       }
 
-    def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: String): Unit =
+    def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
       s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new DesEnabledTest with Test {
         val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 

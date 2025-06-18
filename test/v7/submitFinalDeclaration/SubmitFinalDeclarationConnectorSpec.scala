@@ -19,6 +19,7 @@ package v7.submitFinalDeclaration
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v7.common.model.domain.{CalculationType, `final-declaration`}
 import v7.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
@@ -54,7 +55,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
       val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
 
       willPost(
-        url = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise",
+        url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/crystallise",
         body = EmptyJsonBody
       )
         .returns(Future.successful(outcome))
