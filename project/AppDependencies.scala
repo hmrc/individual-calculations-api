@@ -30,7 +30,7 @@ object AppDependencies {
 
   val test: Seq[sbt.ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-test-play-30" % bootstrapPlayVersion,
-    "org.scalamock"       %% "scalamock"              % "5.2.0",
+    "org.scalamock"       %% "scalamock"              % "7.3.2",
     "org.scalatestplus"   %% "scalacheck-1-18"        % "3.2.19.0",
     "com.github.pjfanning" %% "pekko-mock-scheduler"   % "0.6.0"
   ).map(_ % Test)

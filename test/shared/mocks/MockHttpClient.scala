@@ -19,6 +19,7 @@ package shared.mocks
 import izumi.reflect.Tag
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.JsValue
 import play.api.libs.ws.BodyWritable
@@ -29,7 +30,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import java.net.URL
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockHttpClient extends MockFactory {
+trait MockHttpClient extends TestSuite with MockFactory {
 
   val mockHttpClient: HttpClientV2       = mock[HttpClientV2]
   val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
