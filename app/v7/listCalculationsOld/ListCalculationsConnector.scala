@@ -20,7 +20,8 @@ import shared.config.{AppConfig, ConfigFeatureSwitches}
 import shared.connectors.DownstreamUri.{DesUri, HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.HeaderCarrier
 import v7.listCalculationsOld.def1.model.response.Calculation
 import v7.listCalculationsOld.model.request.ListCalculationsRequestData
 import v7.listCalculationsOld.model.response.ListCalculationsResponse
@@ -29,7 +30,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ListCalculationsConnector @Inject() (val http: HttpClient, val appConfig: AppConfig) extends BaseDownstreamConnector {
+class ListCalculationsConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def list(request: ListCalculationsRequestData)(implicit
       hc: HeaderCarrier,

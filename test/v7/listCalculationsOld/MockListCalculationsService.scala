@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,13 +21,14 @@ import shared.models.errors.ErrorWrapper
 import shared.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import v7.listCalculationsOld.def1.model.response.Calculation
 import v7.listCalculationsOld.model.request.ListCalculationsRequestData
 import v7.listCalculationsOld.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockListCalculationsService extends MockFactory {
+trait MockListCalculationsService extends TestSuite with MockFactory {
   val mockListCalculationsService: ListCalculationsService = mock[ListCalculationsService]
 
   object MockListCalculationsService {

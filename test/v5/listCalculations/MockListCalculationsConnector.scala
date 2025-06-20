@@ -19,6 +19,7 @@ package v5.listCalculations
 import shared.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import uk.gov.hmrc.http.HeaderCarrier
 import v5.listCalculations.def1.model.response.Calculation
 import v5.listCalculations.model.request.ListCalculationsRequestData
@@ -26,7 +27,7 @@ import v5.listCalculations.model.response.ListCalculationsResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockListCalculationsConnector extends MockFactory {
+trait MockListCalculationsConnector extends TestSuite with MockFactory {
   val mockListCalculationsConnector: ListCalculationsConnector = mock[ListCalculationsConnector]
 
   object MockListCalculationsConnector {

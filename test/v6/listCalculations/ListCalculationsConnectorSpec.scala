@@ -21,6 +21,7 @@ import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v6.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v6.listCalculations.def1.model.response.Calculation
 import v6.listCalculations.model.request.Def1_ListCalculationsRequestData
@@ -51,7 +52,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
       "a valid request with a Non-TYS tax year is supplied" in new HipTest with Test {
         willGet(
-          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
+          url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
         ).returns(Future.successful(outcome))
 
         await(connector.list(request)) shouldBe outcome
@@ -61,7 +62,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
 
         willGet(
-          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+          url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
         ).returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome
@@ -71,7 +72,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
 
         willGet(
-          s"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
+          url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
         ).returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome
@@ -84,7 +85,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
       "downstream returns an error for a request with a Non-TYS tax year" in new HipTest with Test {
         willGet(
-          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
+          url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
         ).returns(Future.successful(outcome))
 
         await(connector.list(request)) shouldBe outcome
@@ -94,7 +95,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
 
         willGet(
-          s"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
+          url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
         ).returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome
@@ -104,7 +105,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
 
         willGet(
-          s"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
+          url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
         ).returns(Future.successful(outcome))
 
         await(connector.list(tysRequest)) shouldBe outcome

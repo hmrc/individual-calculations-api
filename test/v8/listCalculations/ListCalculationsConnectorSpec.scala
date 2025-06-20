@@ -21,14 +21,10 @@ import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v8.common.model.domain._
 import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v8.listCalculations.model.request.{
-  Def1_ListCalculationsRequestData,
-  Def2_ListCalculationsRequestData,
-  Def3_ListCalculationsRequestData,
-  ListCalculationsRequestData
-}
+import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
 import v8.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import scala.concurrent.Future
@@ -65,7 +61,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
+          url"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 
@@ -83,7 +79,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 
         willGet(
-          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"
+          url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 
@@ -99,7 +95,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            url = s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
             parameters = Seq("calculationType" -> "IY")
           )
             .returns(Future.successful(outcome))
@@ -114,7 +110,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
             Seq("calculationType" -> "IC")
           )
             .returns(Future.successful(outcome))
@@ -129,7 +125,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino",
             Seq("calculationType" -> "CR")
           )
             .returns(Future.successful(outcome))
@@ -147,7 +143,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IY")
           )
             .returns(Future.successful(outcome))
@@ -162,7 +158,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IF")
           )
             .returns(Future.successful(outcome))
@@ -177,7 +173,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "DF")
           )
             .returns(Future.successful(outcome))
@@ -192,7 +188,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "IA")
           )
             .returns(Future.successful(outcome))
@@ -207,7 +203,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
           willGet(
-            s"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
+            url"$baseUrl/income-tax/${taxYear.asTysDownstream}/view/$nino/calculations-summary",
             Seq("calculationType" -> "CA")
           )
             .returns(Future.successful(outcome))
@@ -228,7 +224,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
 
         willGet(
-          s"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
+          url"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 
@@ -246,7 +242,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 
         willGet(
-          s"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"
+          url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"
         )
           .returns(Future.successful(outcome))
 

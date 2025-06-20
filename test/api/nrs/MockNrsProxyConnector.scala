@@ -19,12 +19,13 @@ package api.nrs
 import org.scalamock.handlers.CallHandler
 import org.scalamock.matchers.ArgCapture.CaptureOne
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 
 import scala.concurrent.Future
 
-trait MockNrsProxyConnector extends MockFactory {
+trait MockNrsProxyConnector extends TestSuite with MockFactory {
 
   val mockNrsProxyConnector: NrsProxyConnector = mock[NrsProxyConnector]
 
