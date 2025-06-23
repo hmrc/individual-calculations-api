@@ -20,9 +20,10 @@ import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.models.errors.MtdError
 
-trait MockValidatorFactory[Request] extends MockFactory {
+trait MockValidatorFactory[Request] extends TestSuite with MockFactory {
 
   def validator(): CallHandler[Validator[Request]]
 

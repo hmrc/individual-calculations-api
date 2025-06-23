@@ -19,14 +19,15 @@ package mocks
 import config.CalculationsConfig
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.config.{ConfidenceLevelConfig, MockAppConfig}
 
 import scala.concurrent.duration.FiniteDuration
 
-trait MockCalculationsConfig extends MockFactory {
+trait MockCalculationsConfig extends TestSuite with MockFactory {
   val mockCalculationsConfig: CalculationsConfig = mock[CalculationsConfig]
 
-  object MockCalculationsConfig extends MockAppConfig{
+  object MockCalculationsConfig extends TestSuite with MockAppConfig{
     def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] =
       (() => mockAppConfig.confidenceLevelConfig: ConfidenceLevelConfig).expects()
 

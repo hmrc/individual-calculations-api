@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIED OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -19,17 +19,17 @@ package auth
 import play.api.http.Status.OK
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
-import shared.auth.AuthMainAgentsOnlyISpec
+import shared.auth.AuthSupportingAgentsAllowedISpec
 import shared.services.DownstreamStub
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
 
-class CalculationsAuthMainAgentsOnlyISpec extends AuthMainAgentsOnlyISpec with Def1_CalculationFixture {
+class CalculationsAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsAllowedISpec with Def1_CalculationFixture {
 
   val callingApiVersion = "6.0"
 
-  val supportingAgentsNotAllowedEndpoint = "retrieve-calculation"
-  val calculationId: String              = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  def taxYear: String                    = "2017-18"
+  val supportingAgentsAllowedEndpoint = "retrieve-calculation"
+  val calculationId: String           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  def taxYear: String                 = "2017-18"
 
   val mtdUrl = s"/$nino/self-assessment/$taxYear/$calculationId"
 

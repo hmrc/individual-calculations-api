@@ -22,6 +22,7 @@ import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v6.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v6.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
@@ -60,7 +61,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          url = url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
@@ -74,7 +75,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
-          url = s"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          url = url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
@@ -86,7 +87,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
       willPost(
-        url = s"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
+        url = url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
         body = Json.parse("{}")
       ).returns(Future.successful(outcome))
 

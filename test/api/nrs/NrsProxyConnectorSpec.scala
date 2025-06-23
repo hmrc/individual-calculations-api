@@ -20,7 +20,7 @@ import shared.mocks.MockHttpClient
 import mocks.MockCalculationsConfig
 import play.api.libs.json.{JsValue, Json}
 import shared.connectors.ConnectorSpec
-import uk.gov.hmrc.http.UpstreamErrorResponse
+import uk.gov.hmrc.http.{StringContextOps, UpstreamErrorResponse}
 
 import scala.concurrent.Future
 
@@ -45,7 +45,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
 
       MockedHttpClient
         .post(
-          url = s"$baseUrl/mtd-api-nrs-proxy/$nino/$notableEvent",
+          url = url"$baseUrl/mtd-api-nrs-proxy/$nino/$notableEvent",
           config = dummyHeaderCarrierConfig,
           body = body
         )

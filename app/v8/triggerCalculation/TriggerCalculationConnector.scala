@@ -23,7 +23,8 @@ import shared.config.AppConfig
 import shared.connectors.DownstreamUri.{DesUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 import v8.triggerCalculation.model.response.TriggerCalculationResponse
@@ -33,7 +34,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject() (val http: HttpClient, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
+class TriggerCalculationConnector @Inject()(val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
   extends BaseDownstreamConnector {
 
 

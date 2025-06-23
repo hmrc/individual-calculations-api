@@ -17,17 +17,24 @@
 package api.nrs
 
 import config.CalculationsConfig
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, UpstreamErrorResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NrsProxyConnector @Inject() (http: HttpClient, calculationsConfig: CalculationsConfig)(implicit ec: ExecutionContext) {
+class NrsProxyConnector @Inject() (http: HttpClientV2, calculationsConfig: CalculationsConfig)(implicit ec: ExecutionContext) {
 
-  def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpstreamErrorResponse, Unit]] =
-    http.POST[JsValue, Either[UpstreamErrorResponse, Unit]](s"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent", body)
+  def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpstreamErrorResponse, Unit]] = {
+
+    http
+      .post(url"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent")
+      .withBody(Json.toJson(body))
+      .execute[Either[UpstreamErrorResponse, Unit]]
+
+  }
 
 }

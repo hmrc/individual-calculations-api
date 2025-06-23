@@ -18,12 +18,13 @@ package v7.submitFinalDeclaration
 
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import shared.controllers.RequestContext
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockNrsProxyService extends MockFactory {
+trait MockNrsProxyService extends TestSuite with MockFactory {
   val mockNrsService: NrsProxyService = mock[NrsProxyService]
 
   object MockNrsService {
