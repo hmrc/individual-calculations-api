@@ -69,7 +69,7 @@
           "payrollId": {
             "description": "The unique identifier used by the employer to identify the employee.",
             "type": "string",
-            "pattern": "^[A-Za-z0-9.,\\-()/=!\"%&*; <>'+:\\?]{0,38}$",
+            "pattern": "^[A-Za-z0-9.,\\-()/=!\"%&*; <>'+:\\?#]{0,35}$$",
             "example": "S9500206"
           },
           "offPayrollWorker": {
