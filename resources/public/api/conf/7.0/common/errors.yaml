@@ -9,7 +9,7 @@ components:
         This error will only be returned in the Sandbox environment.
       value:
         code: RULE_INCORRECT_GOV_TEST_SCENARIO
-        message: The Gov-Test-Scenario was not found
+        message: The supplied Gov-Test-Scenario is not valid
 
     formatNino:
       description: |
