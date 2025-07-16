@@ -17,14 +17,15 @@
 package shared.controllers.validators.resolvers
 
 import play.api.libs.json.{JsArray, JsObject, JsValue}
-import shapeless.labelled.FieldType
-import shapeless.{::, HList, HNil, LabelledGeneric, Lazy, Witness}
+import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
+import shared.models.domain.TaxYear
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.utils.Logging
-import UnexpectedJsonFieldsValidator.SchemaStructureSource
-import shared.models.domain.TaxYear
 
-class UnexpectedJsonFieldsValidator[A](implicit extraPathChecker: SchemaStructureSource[A]) extends ResolverSupport with Logging {
+import scala.compiletime.{constValue, erasedValue, summonInline}
+import scala.deriving.Mirror
+
+class UnexpectedJsonFieldsValidator[A](using extraPathChecker: SchemaStructureSource[A]) extends ResolverSupport with Logging {
   import UnexpectedJsonFieldsValidator.SchemaStructure
 
   def validator: Validator[(JsObject, A)] = { case (inputJson, data) =>
@@ -70,7 +71,7 @@ class UnexpectedJsonFieldsValidator[A](implicit extraPathChecker: SchemaStructur
 }
 
 object UnexpectedJsonFieldsValidator extends ResolverSupport {
-  def validator[A](implicit extraPathChecker: SchemaStructureSource[A]): Validator[(JsObject, A)] = new UnexpectedJsonFieldsValidator[A].validator
+  def validator[A](using extraPathChecker: SchemaStructureSource[A]): Validator[(JsObject, A)] = new UnexpectedJsonFieldsValidator[A].validator
 
   sealed trait SchemaStructure
 
@@ -95,7 +96,7 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
   object SchemaStructureSource {
 
-    def apply[A](implicit aInstance: SchemaStructureSource[A]): SchemaStructureSource[A] = aInstance
+    def apply[A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[A] = aInstance
 
     def instance[A](func: A => SchemaStructure): SchemaStructureSource[A] = (value: A) => func(value)
 
@@ -103,43 +104,51 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
     def leaf[A]: SchemaStructureSource[A] = SchemaStructureSource.instance(_ => SchemaStructure.Leaf)
 
-    implicit val stringInstance: SchemaStructureSource[String]   = instance(_ => SchemaStructure.Leaf)
-    implicit val intInstance: SchemaStructureSource[Int]         = instance(_ => SchemaStructure.Leaf)
-    implicit val doubleInstance: SchemaStructureSource[Double]   = instance(_ => SchemaStructure.Leaf)
-    implicit val booleanInstance: SchemaStructureSource[Boolean] = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[String]     = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[Int]        = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[Double]     = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[Boolean]    = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[BigInt]     = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[BigDecimal] = instance(_ => SchemaStructure.Leaf)
+    given SchemaStructureSource[TaxYear]    = instance(_ => SchemaStructure.Leaf)
 
-    implicit val bigIntInstance: SchemaStructureSource[BigInt]         = instance(_ => SchemaStructure.Leaf)
-    implicit val bigDecimalInstance: SchemaStructureSource[BigDecimal] = instance(_ => SchemaStructure.Leaf)
-    implicit val taxYearInstance: SchemaStructureSource[TaxYear]       = instance(_ => SchemaStructure.Leaf)
-
-    implicit def optionInstance[A](implicit aInstance: SchemaStructureSource[A]): SchemaStructureSource[Option[A]] =
+    given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[Option[A]] =
       instance(opt => opt.map(aInstance.schemaStructureOf).getOrElse(SchemaStructure.Leaf))
 
-    implicit def seqInstance[A, I](implicit aInstance: SchemaStructureSource[A]): SchemaStructureSource[Seq[A]] =
+    given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[List[A]] =
       instance(list => SchemaStructure.Arr(list.map(aInstance.schemaStructureOf)))
 
-    implicit def listInstance[A](implicit aInstance: SchemaStructureSource[A]): SchemaStructureSource[List[A]] =
-      instance(list => SchemaStructure.Arr(list.map(aInstance.schemaStructureOf)))
+    given [A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[Seq[A]] =
+      instance(seq => SchemaStructure.Arr(seq.map(aInstance.schemaStructureOf)))
 
-    implicit val hnilInstance: ObjSchemaStructureSource[HNil] = instanceObj(_ => SchemaStructure.Obj(Nil))
+    // Lazy prevents infinite recursion in generic derivation
+    final class Lazy[+A](val value: () => A) extends AnyVal
+    object Lazy {
+      given [A](using a: => A): Lazy[A] = new Lazy(() => a)
+    }
 
-    implicit def hlistInstance[K <: Symbol, H, T <: HList](implicit
-        witness: Witness.Aux[K],
-        hInstance: Lazy[SchemaStructureSource[H]],
-        tInstance: ObjSchemaStructureSource[T]
-    ): ObjSchemaStructureSource[FieldType[K, H] :: T] =
-      instanceObj { case h :: t =>
-        val hField  = witness.value.name -> hInstance.value.schemaStructureOf(h)
-        val tFields = tInstance.schemaStructureOf(t).fields
-        SchemaStructure.Obj(hField :: tFields)
+    inline given derived[A](using m: Mirror.ProductOf[A]): SchemaStructureSource[A] =
+      instance { a =>
+        val elemLabels = summonLabels[m.MirroredElemLabels]
+        val elemInstances = summonAllInstances[m.MirroredElemTypes]
+        val elems = a.asInstanceOf[Product].productIterator.toList
+        val fields = elemLabels.lazyZip(elems).lazyZip(elemInstances).map { (label, value, checker) =>
+          label -> checker.value().schemaStructureOf(value)
+        }
+        SchemaStructure.Obj(fields)
       }
 
-    implicit def genericInstance[A, R](implicit
-        gen: LabelledGeneric.Aux[A, R],
-        enc: Lazy[SchemaStructureSource[R]]
-    ): SchemaStructureSource[A] =
-      instance(a => enc.value.schemaStructureOf(gen.to(a)))
+    private inline def summonLabels[T <: Tuple]: List[String] =
+      inline erasedValue[T] match {
+        case _: (h *: t) => constValue[h].asInstanceOf[String] :: summonLabels[t]
+        case _: EmptyTuple => Nil
+      }
 
+    private inline def summonAllInstances[T <: Tuple]: List[Lazy[SchemaStructureSource[Any]]] =
+      inline erasedValue[T] match {
+        case _: (h *: t) => summonInline[Lazy[SchemaStructureSource[h]]].asInstanceOf[Lazy[SchemaStructureSource[Any]]] :: summonAllInstances[t]
+        case _: EmptyTuple => Nil
+      }
   }
 
 }

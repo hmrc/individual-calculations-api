@@ -46,12 +46,11 @@ class Def1_ListCalculationsValidator(nino: String, taxYear: String, calculationT
       .andThen(validateRules)
 
   private val validateRules = {
-    val validateCalcTypeForTaxYear = { request: ListCalculationsRequestData =>
+    val validateCalcTypeForTaxYear = (request: ListCalculationsRequestData) =>
       request.calculationType match {
         case Some(_) => Some(List(RuleCalculationTypeNotAllowed))
         case None    => None
       }
-    }
 
     resolveValid[ListCalculationsRequestData]
       .thenValidate(validateCalcTypeForTaxYear)

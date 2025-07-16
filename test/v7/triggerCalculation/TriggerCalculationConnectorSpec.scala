@@ -43,7 +43,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   def api2081Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
       new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))

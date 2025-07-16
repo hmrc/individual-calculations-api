@@ -17,8 +17,7 @@
 package shared.controllers.validators.resolvers
 
 import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json._
-import shapeless.HNil
+import play.api.libs.json.*
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.models.utils.JsonErrorValidators
 import shared.utils.{EmptinessChecker, UnitSpec}
@@ -31,7 +30,7 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
 
   // at least one of oneOf1 and oneOf2 must be included:
   implicit val emptinessChecker: EmptinessChecker[Qux] = EmptinessChecker.use { o =>
-    "oneOf1" -> o.oneOf1 :: "oneOf2" -> o.oneOf2 :: HNil
+    (o.oneOf1, o.oneOf2)
   }
 
   case class Foo(bar: Bar, bars: Option[Seq[Bar]] = None, baz: Option[Baz] = None, qux: Option[Qux] = None)

@@ -25,7 +25,7 @@ object Retrying {
   private val fibonacci: LazyList[Int] = 1 #:: fibonacci.scanLeft(1)(_ + _)
 
   def fibonacciDelays(initialDelay: FiniteDuration, numRetries: Int): List[FiniteDuration] =
-    fibonacci.take(numRetries).map(i => i * initialDelay).toList
+    fibonacci.take(numRetries).map(initialDelay * _).toList
 
 }
 

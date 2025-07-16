@@ -39,7 +39,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
   def request(taxYear: TaxYear): Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear)
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     val connector: ListCalculationsConnector = new ListCalculationsConnector(
       http = mockHttpClient,
@@ -51,7 +51,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   "ListCalculationsConnector" should {
     "return successful response" when {
       "Non-TYS tax year query param is passed and feature switch is disabled (DES enabled)" in new DesTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
 
@@ -64,7 +65,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
 
       "Non-TYS tax year query param is passed and feature switch is enabled (HIP  enabled)" in new HipTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 
@@ -77,7 +79,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
 
       "2024 tax year query param is passed" in new IfsTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
           url"$baseUrl/income-tax/${taxYear2024.asTysDownstream}/view/calculations-summary/$nino"
@@ -88,7 +91,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
 
       "2025 tax year query param is passed" in new IfsTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
           url"$baseUrl/income-tax/${taxYear2025.asTysDownstream}/view/calculations-summary/$nino"
@@ -99,7 +103,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
 
       "2026 or later tax year query param is passed" in new IfsTest with Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         willGet(
           url"$baseUrl/income-tax/${taxYear2026.asTysDownstream}/view/$nino/calculations-summary"
@@ -112,7 +117,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
     "return the expected result" when {
       "an error is received and feature switch disabled (DES enabled)" in new DesTest with Test {
-        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
+        val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
+          Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
 
@@ -126,7 +132,8 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
       }
 
       "an error is received and feature switch enabled (HIP enabled)" in new HipTest with Test {
-        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
+        val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
+          Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
 
         MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 

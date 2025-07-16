@@ -21,6 +21,7 @@ import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
+import org.scalatest.TestSuite
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
@@ -105,7 +106,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
     def taxYear: TaxYear
 
     val request: RetrieveCalculationRequestData = Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)

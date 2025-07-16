@@ -31,7 +31,7 @@ case class Claim(claimId: Option[String],
                       claimType: ClaimType,
                       sequence: Option[Int])
 
-object Claim extends {
+object Claim {
 
   implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 

@@ -40,7 +40,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   )
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
 
     val connector: SubmitFinalDeclarationConnector = new SubmitFinalDeclarationConnector(
       http = mockHttpClient,

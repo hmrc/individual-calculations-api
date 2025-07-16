@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,13 @@
 
 package shared.models.domain
 
-import play.api.libs.json.Format
+import play.api.libs.json.*
 import shared.utils.enums.Enums
 
-sealed trait Status {}
+enum Status {
+  case valid, invalid, superseded
+}
 
-//noinspection ScalaStyle
 object Status {
-
-  case object valid extends Status
-
-  case object invalid extends Status
-
-  case object superseded extends Status
-
-  implicit val format: Format[Status] = Enums.format[Status]
+  given Format[Status] = Enums.format(values)
 }

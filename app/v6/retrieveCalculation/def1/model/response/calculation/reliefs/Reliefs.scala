@@ -34,7 +34,7 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
 
 }
 
-object Reliefs extends {
+object Reliefs {
 
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
 }

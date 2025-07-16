@@ -28,8 +28,8 @@ trait ApiDefinitionFactory extends Logging {
   protected val appConfig: AppConfig
 
   val definition: Definition
-
-  protected def buildAPIStatus(version: Version): APIStatus = {
+  
+  def buildAPIStatus(version: Version): APIStatus = {
     checkDeprecationConfigFor(version)
 
     APIStatus.parser

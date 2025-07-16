@@ -18,6 +18,7 @@ package shared.connectors
 
 import com.google.common.base.Charsets
 import org.scalamock.handlers.CallHandler
+import org.scalatest.TestSuite
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.libs.json.{Json, Writes}
 import shared.config.{BasicAuthDownstreamConfig, DownstreamConfig, MockAppConfig}
@@ -29,7 +30,7 @@ import java.net.URL
 import java.util.Base64
 import scala.concurrent.{ExecutionContext, Future}
 
-trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames {
+trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames { self: TestSuite =>
 
   lazy val baseUrl                   = "http://test-BaseUrl"
   implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
@@ -49,10 +50,10 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
       Some("this-api")
     )
 
-  protected trait ConnectorTest extends MockHttpClient with MockAppConfig {
+  protected trait ConnectorTest extends UnitSpec with MockHttpClient with MockAppConfig { self: TestSuite =>
     protected val baseUrl: String = "http://test-BaseUrl"
 
-    protected val requiredHeaders: Seq[(String, String)]
+    protected lazy val requiredHeaders: Seq[(String, String)]
 
     protected val allowedHeaders: Seq[String] = List("Gov-Test-Scenario")
 
@@ -103,13 +104,13 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
 
   }
 
-  protected trait StandardConnectorTest extends ConnectorTest {
+  protected trait StandardConnectorTest extends ConnectorTest { self: TestSuite =>
     protected def name: String
 
     private val token       = s"$name-token"
     private val environment = s"$name-environment"
 
-    protected final lazy val requiredHeaders: Seq[(String, String)] = List(
+    protected lazy val requiredHeaders: Seq[(String, String)] = List(
       "Authorization"        -> s"Bearer $token",
       "Environment"          -> environment,
       "User-Agent"           -> "this-api",
@@ -120,25 +121,25 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     protected final val config: DownstreamConfig = DownstreamConfig(this.baseUrl, environment, token, Some(allowedHeaders))
   }
 
-  protected trait DesTest extends StandardConnectorTest {
+  protected trait DesTest extends StandardConnectorTest { self: TestSuite =>
     val name = "des"
 
     MockedAppConfig.desDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait IfsTest extends StandardConnectorTest {
+  protected trait IfsTest extends StandardConnectorTest { self: TestSuite =>
     override val name = "ifs"
 
     MockedAppConfig.ifsDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait TysTest extends StandardConnectorTest {
+  protected trait TysTest extends StandardConnectorTest { self: TestSuite =>
     override val name = "tys-ifs"
 
     MockedAppConfig.tysIfsDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait HipTest extends ConnectorTest {
+  protected trait HipTest extends ConnectorTest { self: TestSuite =>
     private val clientId     = "clientId"
     private val clientSecret = "clientSecret"
 
@@ -147,7 +148,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
 
     private val environment = "hip-environment"
 
-    protected final lazy val requiredHeaders: Seq[(String, String)] = List(
+    protected lazy val requiredHeaders: Seq[(String, String)] = List(
       "Authorization"        -> s"Basic $token",
       "Environment"          -> environment,
       "User-Agent"           -> "this-api",

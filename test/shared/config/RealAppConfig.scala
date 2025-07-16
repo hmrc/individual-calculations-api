@@ -22,7 +22,7 @@ import shared.utils.UnitSpec
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait RealAppConfig {
-  _: UnitSpec =>
+  self: UnitSpec =>
 
   protected lazy val latestEnabledApiVersion: Int =
     (99 to 1 by -1)

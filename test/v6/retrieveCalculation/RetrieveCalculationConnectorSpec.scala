@@ -105,7 +105,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
     }
   }
 
-  trait Test { _: ConnectorTest =>
+  trait Test {self: ConnectorTest =>
     def taxYear: TaxYear
 
     val request: RetrieveCalculationRequestData = Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)

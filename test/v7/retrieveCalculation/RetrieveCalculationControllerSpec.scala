@@ -211,7 +211,7 @@ class RetrieveCalculationControllerSpec
     def requestData: RetrieveCalculationRequestData =
       Def1_RetrieveCalculationRequestData(Nino(validNino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
-    lazy val controller = new RetrieveCalculationController(
+    val controller: RetrieveCalculationController = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveCalculationValidatorFactory,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,33 @@
 
 package common.utils.enums
 
-import shapeless.{:+:, CNil, Coproduct, Generic, Witness}
+import scala.deriving.*
+import scala.compiletime.*
 
-import scala.annotation.nowarn
+object Values:
 
-// Based on code in https://github.com/milessabin/shapeless/blob/master/examples/src/main/scala/shapeless/examples/enum.scala
-object Values {
-
-  trait MkValues[E] {
+  trait MkValues[E]:
     def values: List[E]
-  }
 
-  object MkValues {
+  object MkValues:
 
-    implicit def values[E, Impls <: Coproduct](implicit @nowarn("msg=parameter gen") gen: Generic.Aux[E, Impls], v: Aux[E, Impls]): MkValues[E] =
-      new MkValues[E] {
-        def values: List[E] = v.values
-      }
+    inline def apply[E](using m: Mirror.SumOf[E]): MkValues[E] = new MkValues[E]:
+      def values: List[E] = enumValues[E, m.MirroredElemTypes]
 
-    trait Aux[E, Impls] {
-      def values: List[E]
-    }
+    private inline def enumValues[E, Elems <: Tuple]: List[E] =
+      val size = constValue[Tuple.Size[Elems]]
+      List.tabulate(size)(i => fromOrdinal[E](i))
 
-    object Aux {
+    private inline def fromOrdinal[E](ordinal: Int): E =
+      // Requires E to have a `fromOrdinal` method (only true for `enum`)
+      ${ fromOrdinalImpl[E]('ordinal) }
 
-      implicit def cnilAux[E]: Aux[E, CNil] =
-        new Aux[E, CNil] {
-          def values: List[E] = Nil
-        }
+  import scala.quoted.*
 
-      implicit def cconsAux[E, L <: E, R <: Coproduct](implicit l: Witness.Aux[L], r: Aux[E, R]): Aux[E, L :+: R] =
-        new Aux[E, L :+: R] {
-          def values: List[E] = l.value :: r.values
-        }
-
-    }
-
-  }
-
-}
+  private def fromOrdinalImpl[E: Type](ordinalExpr: Expr[Int])(using Quotes): Expr[E] =
+    import quotes.reflect.*
+    val tpe = TypeRepr.of[E]
+    val companion = tpe.typeSymbol.companionModule
+    val fromOrdinalSym = companion.methodMember("fromOrdinal").head
+    val fromOrdinal = Select(Ref(companion), fromOrdinalSym)
+    Apply(fromOrdinal, List(ordinalExpr.asTerm)).asExprOf[E]

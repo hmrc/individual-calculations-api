@@ -34,7 +34,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
       new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))

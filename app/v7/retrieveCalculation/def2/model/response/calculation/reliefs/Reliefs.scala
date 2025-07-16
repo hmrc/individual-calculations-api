@@ -25,7 +25,7 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    basicRateExtension: Option[BasicRateExtension],
                    giftAidTaxReductionWhereBasicRateDiffers: Option[GiftAidTaxReductionWhereBasicRateDiffers])
 
-object Reliefs extends {
+object Reliefs {
 
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
 }

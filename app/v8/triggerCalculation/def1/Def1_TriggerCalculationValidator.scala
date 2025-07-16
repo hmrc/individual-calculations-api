@@ -67,12 +67,11 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
 
   private val validateRules = {
 
-    val validateCalcTypeForTaxYear = { request: TriggerCalculationRequestData =>
+    val validateCalcTypeForTaxYear = (request: TriggerCalculationRequestData) =>
       request.calculationType match {
         case `intent-to-amend` if TaxYear.fromMtd(taxYear).year <= 2025 =>  Some(List(RuleCalculationTypeNotAllowed))
         case _ => None
       }
-    }
 
     resolveValid[TriggerCalculationRequestData]
       .thenValidate(validateCalcTypeForTaxYear)

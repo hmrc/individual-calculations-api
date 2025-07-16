@@ -18,6 +18,7 @@ package api.nrs
 
 import shared.mocks.MockHttpClient
 import mocks.MockCalculationsConfig
+import org.scalatest.TestSuite
 import play.api.libs.json.{JsValue, Json}
 import shared.connectors.ConnectorSpec
 import uk.gov.hmrc.http.{StringContextOps, UpstreamErrorResponse}
@@ -30,7 +31,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
   val notableEvent: String = "test-event"
   val body: JsValue        = Json.obj("field" -> "value")
 
-  class Test extends MockHttpClient with MockCalculationsConfig {
+  class Test extends ConnectorSpec with MockHttpClient with MockCalculationsConfig { self: TestSuite =>
 
     val connector: NrsProxyConnector = new NrsProxyConnector(
       http = mockHttpClient,

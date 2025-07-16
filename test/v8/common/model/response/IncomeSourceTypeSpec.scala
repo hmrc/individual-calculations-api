@@ -82,7 +82,10 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
         val exception = intercept[JsResultException] {
           JsString("02").as[IncomeSourceType](formatRestricted(`self-employment`))
         }
-        exception.errors.head._2.head.message shouldBe "error.expected.IncomeSourceType"
+        exception.errors.head._2.head.message shouldBe "Value must be one of: self-employment"
+
+
+
       }
     }
 
