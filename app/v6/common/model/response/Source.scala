@@ -19,16 +19,6 @@ package v6.common.model.response
 import play.api.libs.json.*
 import shared.utils.enums.Enums
 
-//sealed trait Source
-//
-//object Source {
-//
-//  case object `customer`  extends Source
-//  case object `HMRC HELD` extends Source
-//
-//  implicit val format: Format[Source] = Enums.format[Source]
-//}
-
 enum Source {
   case `customer`
   case `HMRC HELD`

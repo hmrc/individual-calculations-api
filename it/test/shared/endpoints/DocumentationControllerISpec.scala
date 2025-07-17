@@ -24,6 +24,8 @@ import play.api.libs.ws.WSResponse
 import shared.config.AppConfig
 import shared.routing.{Version, Versions}
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.DefaultBodyReadables._
+import play.api.libs.ws.DefaultBodyWritables._
 
 import scala.util.Try
 

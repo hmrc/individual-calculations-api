@@ -46,7 +46,7 @@ object ResolveNonEmptyJsonObject extends ResolverSupport with Logging {
   def resolver[A: Reads: EmptinessChecker]: Resolver[JsValue, A] = ResolveJsonObject.resolver thenValidate nonEmptyValidator
 
   /** Gets a resolver that also validates for unexpected JSON fields
-    */
+   */
   def strictResolver[A: Reads: EmptinessChecker: SchemaStructureSource]: Resolver[JsValue, A] =
     ResolveJsonObject.strictResolver thenValidate nonEmptyValidator
 

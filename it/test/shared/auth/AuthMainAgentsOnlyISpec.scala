@@ -25,6 +25,10 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors.{ClientOrAgentNotAuthorisedError, InternalError}
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.DefaultBodyReadables._
+import play.api.libs.ws.DefaultBodyWritables._
+
+
 
 abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
@@ -93,7 +97,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
         val response: WSResponse = sendMtdRequest(request())
 
         response.status.shouldBe(FORBIDDEN)
-        response.body should include(ClientOrAgentNotAuthorisedError.message)
+        response.body[String] should include(ClientOrAgentNotAuthorisedError.message)
       }
     }
   }
@@ -125,7 +129,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
         val response: WSResponse = sendMtdRequest(request())
         response.status.shouldBe(FORBIDDEN)
-        response.body should include(ClientOrAgentNotAuthorisedError.message)
+        response.body[String] should include(ClientOrAgentNotAuthorisedError.message)
       }
     }
 
@@ -139,7 +143,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
         val response: WSResponse = sendMtdRequest(request())
         response.status.shouldBe(INTERNAL_SERVER_ERROR)
-        response.body should include(InternalError.message)
+        response.body[String] should include(InternalError.message)
       }
     }
 
@@ -153,7 +157,7 @@ abstract class AuthMainAgentsOnlyISpec extends IntegrationBaseSpec {
 
         val response: WSResponse = sendMtdRequest(request())
         response.status.shouldBe(FORBIDDEN)
-        response.body should include(ClientOrAgentNotAuthorisedError.message)
+        response.body[String] should include(ClientOrAgentNotAuthorisedError.message)
       }
     }
   }

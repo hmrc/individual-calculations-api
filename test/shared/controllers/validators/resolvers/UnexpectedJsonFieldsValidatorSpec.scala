@@ -19,7 +19,7 @@ package shared.controllers.validators.resolvers
 import play.api.libs.json.{JsObject, Json}
 import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
-import shared.utils.UnitSpec
+import shared.utils.{EmptinessChecker, UnitSpec}
 
 class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
@@ -30,11 +30,15 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
     object Y extends SomeEnum
   }
 
+  implicit val barSchemaStructure: SchemaStructureSource[Bar] = SchemaStructureSource.derived
+  implicit val fooSchemaStructure: SchemaStructureSource[Foo] = SchemaStructureSource.derived
+
   case class Bar(a: Option[String] = None, b: Option[String] = None, e: Option[SomeEnum] = None)
 
   case class Foo(bar: Bar, bars: Option[Seq[Bar]] = None, bar2: Option[Bar] = None)
 
   implicit val someEnumChecker: SchemaStructureSource[SomeEnum] = SchemaStructureSource.leaf
+
 
   val validator = new UnexpectedJsonFieldsValidator[Foo]
 
@@ -119,9 +123,9 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
         "the field is nested in an object" must {
           "return an error with path to the extra field" in {
             val json = Json
-              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" }, 
+              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" },
                    |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" }, 
+                   |    {"a" : "v1",  "b" : "v2" },
                    |    {"a" : "v1", "b" : "v2" }
                    |  ]
                    |}""".stripMargin)
@@ -137,7 +141,7 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
               .parse("""{
                    |  "bar": {"a" : "v1", "b" : "v2" },
                    |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" }, 
+                   |    {"a" : "v1",  "b" : "v2" },
                    |    {"a" : "v1", "baz": "extra", "b" : "v2" }
                    |  ]
                    |}""".stripMargin)
@@ -154,7 +158,7 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
                  |  "bar": {"a" : "v1", "b" : "v2" , "baz": "extra"},
                  |  "baz": "extra",
                  |  "bars": [
-                 |    {"a" : "v1", "baz": "extra0", "b" : "v2" }, 
+                 |    {"a" : "v1", "baz": "extra0", "b" : "v2" },
                  |    {"a" : "v1", "baz": "extra1", "b" : "v2" }
                  |  ]
                  |}""".stripMargin)

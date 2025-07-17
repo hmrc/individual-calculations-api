@@ -26,6 +26,8 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.DefaultBodyReadables._
+import play.api.libs.ws.DefaultBodyWritables._
 
 class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
@@ -142,7 +144,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api1426errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api1426errors.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
@@ -259,7 +261,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api1897errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api1897errors.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
@@ -394,12 +396,12 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api2081errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api2081errors.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }
   }
 
-  lazy val api1426errors = List(
+  lazy val api1426errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (FORBIDDEN, "INVALID_TAX_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
@@ -413,7 +415,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
   )
 
-  lazy val api1897errors = List(
+  lazy val api1897errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (BAD_REQUEST, "INVALID_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
@@ -434,7 +436,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
   )
 
-  lazy val api2081errors = List(
+  lazy val api2081errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (BAD_REQUEST, "INVALID_CALCULATION_TYPE", INTERNAL_SERVER_ERROR, InternalError),

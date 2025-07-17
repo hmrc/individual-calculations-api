@@ -152,3 +152,4 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
   }
 
 }
+
