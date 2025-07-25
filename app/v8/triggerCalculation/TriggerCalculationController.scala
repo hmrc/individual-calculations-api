@@ -47,27 +47,39 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       endpointName = "triggerCalculation"
     )
 
-def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
+  def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(nino, taxYear, calculationType, TriggerCalculationSchema.schemaFor(taxYear))
+      val validator = validatorFactory.validator(
+        nino,
+        taxYear,
+        calculationType,
+        TriggerCalculationSchema.schemaFor(taxYear)
+      )
 
       val requestHandler =
         RequestHandler
           .withValidator(validator)
           .withService(service.triggerCalculation)
           .withPlainJsonResult(ACCEPTED)
-          .withAuditing(AuditHandler.custom(
-            auditService,
-            auditType = "TriggerASelfAssessmentTaxCalculation",
-            transactionName = "trigger-a-self-assessment-tax-calculation",
-            auditDetailCreator = GenericAuditDetail.auditDetailCreator(
-              apiVersion = Version(request),
-              params = Map("nino" -> nino, "taxYear" -> taxYear, "calculationType" -> calculationType)),
-            requestBody = None,
-            responseBodyMap = auditResponseBody
-          ))
+          .withAuditing(
+            AuditHandler.custom(
+              auditService,
+              auditType = "TriggerASelfAssessmentTaxCalculation",
+              transactionName = "trigger-a-self-assessment-tax-calculation",
+              auditDetailCreator = GenericAuditDetail.auditDetailCreator(
+                apiVersion = Version(request),
+                params = Map(
+                  "nino"            -> nino,
+                  "taxYear"         -> taxYear,
+                  "calculationType" -> calculationType
+                )
+              ),
+              requestBody = None,
+              responseBodyMap = auditResponseBody
+            )
+          )
 
       requestHandler.handleRequest()
     }

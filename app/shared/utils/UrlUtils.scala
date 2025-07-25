@@ -24,13 +24,13 @@ object UrlUtils {
     if (queryParams.isEmpty) {
       uri
     } else {
-      val oldUri = new URI(uri)
+      val oldUri   = new URI(uri)
       val oldQuery = oldUri.getQuery
 
       val appendQuery = queryParams.map { case (k, v) => s"$k=$v" }.mkString("&")
 
       val newQuery = Option(oldQuery) match {
-        case None => appendQuery
+        case None                => appendQuery
         case Some(existingQuery) => s"$existingQuery&$appendQuery"
       }
 

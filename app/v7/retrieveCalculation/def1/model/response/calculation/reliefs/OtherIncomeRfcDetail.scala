@@ -19,8 +19,8 @@ package v7.retrieveCalculation.def1.model.response.calculation.reliefs
 import play.api.libs.json.{Json, OFormat}
 
 case class OtherIncomeRfcDetail(countryCode: String,
-                                     residentialFinancialCostAmount: Option[BigDecimal],
-                                     broughtFwdResidentialFinancialCostAmount: Option[BigDecimal])
+                                residentialFinancialCostAmount: Option[BigDecimal],
+                                broughtFwdResidentialFinancialCostAmount: Option[BigDecimal])
 
 object OtherIncomeRfcDetail {
   implicit val format: OFormat[OtherIncomeRfcDetail] = Json.format[OtherIncomeRfcDetail]

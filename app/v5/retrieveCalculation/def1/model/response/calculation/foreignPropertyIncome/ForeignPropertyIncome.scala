@@ -21,16 +21,16 @@ import v5.common.model.response.IncomeSourceType
 import IncomeSourceType.`foreign-property`
 
 case class ForeignPropertyIncome(incomeSourceId: String,
-                                      incomeSourceType: IncomeSourceType,
-                                      countryCode: String,
-                                      totalIncome: Option[BigDecimal],
-                                      totalExpenses: Option[BigDecimal],
-                                      netProfit: Option[BigDecimal],
-                                      netLoss: Option[BigDecimal],
-                                      totalAdditions: Option[BigDecimal],
-                                      totalDeductions: Option[BigDecimal],
-                                      taxableProfit: Option[BigDecimal],
-                                      adjustedIncomeTaxLoss: Option[BigDecimal])
+                                 incomeSourceType: IncomeSourceType,
+                                 countryCode: String,
+                                 totalIncome: Option[BigDecimal],
+                                 totalExpenses: Option[BigDecimal],
+                                 netProfit: Option[BigDecimal],
+                                 netLoss: Option[BigDecimal],
+                                 totalAdditions: Option[BigDecimal],
+                                 totalDeductions: Option[BigDecimal],
+                                 taxableProfit: Option[BigDecimal],
+                                 adjustedIncomeTaxLoss: Option[BigDecimal])
 
 object ForeignPropertyIncome {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-property`)

@@ -16,7 +16,7 @@
 
 package shared.models.audit
 
-import play.api.libs.functional.syntax.*
+import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, JsValue, OWrites}
 import shared.controllers.{AuditHandler, RequestContext}
 import shared.models.auth.UserDetails
@@ -40,13 +40,13 @@ object GenericAuditDetail {
       (JsPath \ "request").writeNullable[JsValue] and
       (JsPath \ "X-CorrelationId").write[String] and
       (JsPath \ "response").write[AuditResponse]
-    )(w => Tuple.fromProductTyped(w))
+  )(w => Tuple.fromProductTyped(w))
 
   def auditDetailCreator(apiVersion: Version, params: Map[String, String]): AuditHandler.AuditDetailCreator[GenericAuditDetail] =
     new AuditHandler.AuditDetailCreator[GenericAuditDetail] {
 
       def createAuditDetail(userDetails: UserDetails, requestBody: Option[JsValue], auditResponse: AuditResponse)(implicit
-                                                                                                                  ctx: RequestContext): GenericAuditDetail =
+          ctx: RequestContext): GenericAuditDetail =
         GenericAuditDetail(
           userDetails = userDetails,
           apiVersion = apiVersion.name,

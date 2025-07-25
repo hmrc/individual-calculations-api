@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def2.model.response.calculation.lossesAndClaims
 
 import shared.models.domain.TaxYear
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v5.common.model.response.{ClaimType, IncomeSourceType}
 
@@ -86,8 +86,7 @@ class ResultOfClaimsAppliedSpec extends UnitSpec {
 
       testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType, downstreamClaimType, claimType) =>
         s"provided downstream type of claim $downstreamClaimType" in {
-          downstreamJson(downstreamIncomeSourceType, downstreamClaimType).as[ResultOfClaimsApplied] shouldBe
-            model(incomeSourceType, claimType)
+          downstreamJson(downstreamIncomeSourceType, downstreamClaimType).as[ResultOfClaimsApplied].shouldBe(model(incomeSourceType, claimType))
         }
       }
     }
@@ -98,11 +97,14 @@ class ResultOfClaimsAppliedSpec extends UnitSpec {
 
       testData.foreach { case Test(_, incomeSourceType, _, claimType) =>
         s"provided type of claim $claimType" in {
-          Json.toJson(model(incomeSourceType, claimType)) shouldBe
-            mtdJson(incomeSourceType, claimType)
+          Json.toJson(model(incomeSourceType, claimType)).shouldBe(mtdJson(incomeSourceType, claimType))
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[ResultOfClaimsApplied].shouldBe(a[JsError])
   }
 
 }

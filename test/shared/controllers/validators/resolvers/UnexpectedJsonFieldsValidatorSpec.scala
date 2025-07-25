@@ -19,7 +19,7 @@ package shared.controllers.validators.resolvers
 import play.api.libs.json.{JsObject, Json}
 import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
-import shared.utils.{EmptinessChecker, UnitSpec}
+import shared.utils.UnitSpec
 
 class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
@@ -38,7 +38,6 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
   case class Foo(bar: Bar, bars: Option[Seq[Bar]] = None, bar2: Option[Bar] = None)
 
   implicit val someEnumChecker: SchemaStructureSource[SomeEnum] = SchemaStructureSource.leaf
-
 
   val validator = new UnexpectedJsonFieldsValidator[Foo]
 
@@ -68,6 +67,12 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
         validator.validator((json, data)) shouldBe None
       }
+    }
+
+    "a primitive JsValue inside an object is compared to Leaf, it should return no extra paths" in {
+      val validator      = new UnexpectedJsonFieldsValidator[String]
+      val json: JsObject = Json.parse("""{ "value": "primitive" }""").as[JsObject]
+      validator.validator((json, "primitive")) shouldBe None
     }
 
     "an additional field is present" when {
@@ -226,6 +231,66 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
         }
       }
     }
+
+    "handle arrays with more items than expected schema items" in {
+      val json = Json
+        .parse("""{
+        "bars": [
+          {"a" : "v1", "b": "v2"},
+          {"a" : "v1", "b": "v2"},
+          {"a" : "v1", "extra": "v3"}
+        ],
+        "bar": {"a": "v1", "b": "v2"}
+      }""")
+        .as[JsObject]
+
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "handle arrays with fewer items than expected schema items" in {
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
+
+      val json = Json
+        .parse("""{
+        "bar": {"a": "v1", "b": "v2"},
+        "bars": [
+          {"a" : "v1", "b": "v2"}
+        ]
+      }""")
+        .as[JsObject]
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "empty array is valid even if expected items exist" in {
+      val json = Json
+        .parse("""{
+        "bar": {"a": "v1", "b": "v2"},
+        "bars": []
+      }""")
+        .as[JsObject]
+
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")))))
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "missing optional fields should not cause errors" in {
+      val json = Json.parse("""{ "bar": {"a" : "v1"} }""").as[JsObject]
+      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "null field in input should be ignored if not in schema" in {
+      val json = Json.parse("""{ "bar": {"a" : "v1", "b": null}, "bar2": null }""").as[JsObject]
+      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
+
+      validator.validator((json, data)) shouldBe None
+    }
+
   }
 
 }

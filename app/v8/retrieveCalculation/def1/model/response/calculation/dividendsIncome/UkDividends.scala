@@ -21,9 +21,9 @@ import v8.common.model.response.IncomeSourceType
 import IncomeSourceType.`uk-dividends`
 
 case class UkDividends(incomeSourceId: Option[String],
-                            incomeSourceType: Option[IncomeSourceType],
-                            dividends: Option[BigInt],
-                            otherUkDividends: Option[BigInt])
+                       incomeSourceType: Option[IncomeSourceType],
+                       dividends: Option[BigInt],
+                       otherUkDividends: Option[BigInt])
 
 object UkDividends {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`uk-dividends`)

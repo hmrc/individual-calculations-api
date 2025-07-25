@@ -38,14 +38,14 @@ object Foo {
 
 class EnumsSpec extends UnitSpec with Inspectors {
 
-  import Enum.*
+  import Enum._
 
-  given Arbitrary[Enum] = Arbitrary(Gen.oneOf(values))
+  given Arbitrary[Enum] = Arbitrary(Gen.oneOf(values.toList))
 
   "SealedTraitEnumJson" must {
 
     "check toString assumption" in {
-      `enum-two`.toString shouldBe "enum-two"
+      `enum-two`.toString.shouldBe("enum-two")
     }
 
     def json(value: Enum): JsValue = Json.parse(s"""
@@ -81,8 +81,8 @@ class EnumsSpec extends UnitSpec with Inspectors {
     "allows alternative names (specified by method)" in {
 
       enum Enum2(val altName: String) {
-        case `enum-one` extends Enum2("one")
-        case `enum-two` extends Enum2("two")
+        case `enum-one`   extends Enum2("one")
+        case `enum-two`   extends Enum2("two")
         case `enum-three` extends Enum2("three")
       }
 
@@ -92,7 +92,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
         given Format[Enum2] = Enums.format(values)
       }
 
-      import Enum2.*
+      import Enum2._
 
       val json: JsValue = Json.parse(
         """

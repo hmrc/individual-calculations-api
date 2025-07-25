@@ -42,6 +42,6 @@ object Inputs {
       (JsPath \ "allowancesReliefsAndDeductions").readNullable[Seq[AllowancesReliefsAndDeductions]] and
       (JsPath \ "pensionContributionAndCharges").readNullable[Seq[PensionContributionAndCharges]] and
       (JsPath \ "other").readNullable[Seq[Other]]
-  )(Inputs.apply _)
+  )(Inputs.apply)
 
 }

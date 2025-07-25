@@ -37,6 +37,6 @@ class Def3_RetrieveCalculationValidator(nino: String, taxYear: String, calculati
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
-    ).mapN(Def3_RetrieveCalculationRequestData)
+    ).mapN(Def3_RetrieveCalculationRequestData.apply)
 
 }

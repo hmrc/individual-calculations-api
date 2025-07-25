@@ -29,9 +29,9 @@ object TaxRegime {
   implicit val writes: Writes[TaxRegime] = Enums.writes[TaxRegime]
 
   implicit val reads: Reads[TaxRegime] = Enums.readsUsing {
-    case "UK"        => `uk`
-    case "Scotland"  => `scotland`
-    case "Wales"     => `wales`
+    case "UK"       => `uk`
+    case "Scotland" => `scotland`
+    case "Wales"    => `wales`
   }
 
 }

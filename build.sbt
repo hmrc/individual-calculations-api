@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import sbt.*
 import uk.gov.hmrc.DefaultBuildSettings
 
-ThisBuild / scalaVersion := "3.4.3"
+ThisBuild / scalaVersion := "3.5.2"
 ThisBuild / majorVersion := 1
-
+ThisBuild / scalafmtOnCompile := true
+ThisBuild / scalacOptions ++= Seq(
+  "-Werror",
+  "-Wconf:msg=Flag.*repeatedly:s"
+)
 val appName = "individual-calculations-api"
 
 lazy val microservice = Project(appName, file("."))
-  .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
+  .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
-    retrieveManaged                 := true,
-    update / evictionWarningOptions := EvictionWarningOptions.default.withWarnScalaVersionEviction(warnScalaVersionEviction = false),
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:src=routes/.*:s",
-      "-Werror"
-    ),
-    scalacOptions ++= Seq("-nowarn")
+      "-Wconf:src=routes/.*:s"
+    )
   )
   .settings(
     Compile / unmanagedResourceDirectories += baseDirectory.value / "resources",
@@ -45,17 +44,9 @@ lazy val microservice = Project(appName, file("."))
 lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(microservice % "test->test")
-  .settings(DefaultBuildSettings.itSettings() ++ ScalafmtPlugin.scalafmtConfigSettings)
+  .settings(DefaultBuildSettings.itSettings())
   .settings(
     Test / fork := true,
     Test / javaOptions += "-Dlogger.resource=logback-test.xml")
   .settings(libraryDependencies ++= AppDependencies.itDependencies)
-  .settings(
-    scalacOptions ++= Seq("-Werror"),
-    scalacOptions ++= Seq("-nowarn")
-  )
 
-dependencyUpdatesFilter -= moduleFilter(name = "bootstrap-backend-play-30")
-dependencyUpdatesFilter -= moduleFilter(organization = "org.playframework")
-dependencyUpdatesFilter -= moduleFilter(name = "scala-library")
-dependencyUpdatesFilter -= moduleFilter(name = "scalatestplus-play")

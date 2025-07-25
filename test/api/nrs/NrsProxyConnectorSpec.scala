@@ -37,6 +37,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
       http = mockHttpClient,
       calculationsConfig = mockCalculationsConfig
     )
+
     MockCalculationsConfig.mtdNrsProxyBaseUrl returns baseUrl
   }
 
@@ -53,7 +54,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(Right(())))
 
       val result: Either[UpstreamErrorResponse, Unit] = await(connector.submitAsync(nino, notableEvent, body))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
   }
 

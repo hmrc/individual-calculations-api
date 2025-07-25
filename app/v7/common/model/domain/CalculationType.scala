@@ -23,27 +23,27 @@ sealed trait CalculationType {
 
 case object `in-year` extends CalculationType {
   def to2150Downstream: String = "IY"
-  def toDownstream: String = "IY"
+  def toDownstream: String     = "IY"
 }
 
 case object `intent-to-finalise` extends CalculationType {
   def to2150Downstream: String = "IC"
-  def toDownstream: String = "IF"
+  def toDownstream: String     = "IF"
 }
 
 case object `intent-to-amend` extends CalculationType {
-  //2150 not in use
+  // 2150 not in use
   def to2150Downstream: String = "AM"
-  def toDownstream: String = "IA"
+  def toDownstream: String     = "IA"
 }
 
 case object `final-declaration` extends CalculationType {
   def to2150Downstream: String = "CR"
-  def toDownstream: String = "DF"
+  def toDownstream: String     = "DF"
 }
 
 case object `confirm-amendment` extends CalculationType {
-  //2150 not in use
+  // 2150 not in use
   def to2150Downstream: String = "AM"
-  def toDownstream: String = "CA"
+  def toDownstream: String     = "CA"
 }

@@ -19,14 +19,14 @@ package v7.retrieveCalculation.def2.model.response.calculation.chargeableEventGa
 import play.api.libs.json.{Format, Json}
 
 case class ChargeableEventGainsIncome(totalOfAllGains: BigInt,
-                                           totalGainsWithTaxPaid: Option[BigInt],
-                                           gainsWithTaxPaidDetail: Option[Seq[GainsWithTaxPaidDetail]],
-                                           totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt],
-                                           gainsWithNoTaxPaidAndVoidedIsaDetail: Option[Seq[GainsWithNoTaxPaidAndVoidedIsaDetail]],
-                                           totalForeignGainsOnLifePoliciesTaxPaid: Option[BigInt],
-                                           foreignGainsOnLifePoliciesTaxPaidDetail: Option[Seq[ForeignGainsOnLifePoliciesTaxPaidDetail]],
-                                           totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt],
-                                           foreignGainsOnLifePoliciesNoTaxPaidDetail: Option[Seq[ForeignGainsOnLifePoliciesNoTaxPaidDetail]])
+                                      totalGainsWithTaxPaid: Option[BigInt],
+                                      gainsWithTaxPaidDetail: Option[Seq[GainsWithTaxPaidDetail]],
+                                      totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt],
+                                      gainsWithNoTaxPaidAndVoidedIsaDetail: Option[Seq[GainsWithNoTaxPaidAndVoidedIsaDetail]],
+                                      totalForeignGainsOnLifePoliciesTaxPaid: Option[BigInt],
+                                      foreignGainsOnLifePoliciesTaxPaidDetail: Option[Seq[ForeignGainsOnLifePoliciesTaxPaidDetail]],
+                                      totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt],
+                                      foreignGainsOnLifePoliciesNoTaxPaidDetail: Option[Seq[ForeignGainsOnLifePoliciesNoTaxPaidDetail]])
 
 object ChargeableEventGainsIncome {
   implicit val format: Format[ChargeableEventGainsIncome] = Json.format[ChargeableEventGainsIncome]

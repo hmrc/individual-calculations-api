@@ -39,10 +39,12 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear)
 
   trait Test { self: ConnectorTest =>
+
     val connector: ListCalculationsConnector = new ListCalculationsConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
+
   }
 
   "ListCalculationsConnector" should {

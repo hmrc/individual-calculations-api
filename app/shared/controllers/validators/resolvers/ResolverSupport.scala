@@ -70,7 +70,7 @@ trait ResolverSupport {
     a => Option.when(!predicate(a))(List(error))
 
   def inRange[A: Ordering](minAllowed: A, maxAllowed: A, error: => MtdError): Validator[A] =
-    satisfiesMin[A](minAllowed, error) thenValidate satisfiesMax[A](maxAllowed, error)
+    satisfiesMin[A](minAllowed, error).thenValidate(satisfiesMax[A](maxAllowed, error))
 
   def satisfiesMin[A: Ordering](minAllowed: A, error: => MtdError): Validator[A] = satisfies(error)(minAllowed <= _)
   def satisfiesMax[A: Ordering](maxAllowed: A, error: => MtdError): Validator[A] = satisfies(error)(_ <= maxAllowed)

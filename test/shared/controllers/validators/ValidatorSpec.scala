@@ -60,11 +60,11 @@ class ValidatorSpec extends UnitSpec with MockFactory {
         ResolveNino(nino),
         ResolveTaxYear(taxYear),
         jsonResolver(jsonBody)
-      ).mapN(TestParsedRequest) andThen TestRulesValidator.validateBusinessRules
+      ).mapN(TestParsedRequest.apply) andThen TestRulesValidator.validateBusinessRules
 
     override def invalid(error: MtdError): Invalid[Seq[MtdError]] = super.invalid(error)
 
-    override def combine(results: Validated[Seq[MtdError], _]*): Validated[Seq[MtdError], Unit] = super.combine(results: _*)
+    override def combine(results: Validated[Seq[MtdError], ?]*): Validated[Seq[MtdError], Unit] = super.combine(results*)
   }
 
   /** Perform additional business-rules validation on the correctly parsed request.

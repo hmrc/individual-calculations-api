@@ -43,13 +43,13 @@ class Def1_TriggerCalculationResponseSpec extends UnitSpec {
   "TriggerCalculationResponse" when {
     "read from valid JSON from the downstream response" should {
       "produce the expected TriggerCalculationResponse object" in {
-        downstreamResponseJson.as[Def1_TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
+        downstreamResponseJson.as[Def1_TriggerCalculationResponse].shouldBe(triggerCalculationResponseModel)
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        Json.toJson(triggerCalculationResponseModel) shouldBe vendorResponseJson
+        Json.toJson(triggerCalculationResponseModel).shouldBe(vendorResponseJson)
       }
     }
   }

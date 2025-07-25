@@ -28,8 +28,8 @@ object ShortServiceRefundBandName {
   implicit val writes: Writes[ShortServiceRefundBandName] = Enums.writes[ShortServiceRefundBandName]
 
   implicit val reads: Reads[ShortServiceRefundBandName] = Enums.readsUsing {
-    case "lowerBand"  => `lower-band`
-    case "upperBand"  => `upper-band`
+    case "lowerBand" => `lower-band`
+    case "upperBand" => `upper-band`
   }
 
 }

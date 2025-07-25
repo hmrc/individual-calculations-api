@@ -20,19 +20,19 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
-                                        marriageAllowanceTransferOut: Option[MarriageAllowanceTransferOut],
-                                        reducedPersonalAllowance: Option[BigInt],
-                                        giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
-                                        blindPersonsAllowance: Option[BigInt],
-                                        lossesAppliedToGeneralIncome: Option[BigInt],
-                                        cgtLossSetAgainstInYearGeneralIncome: Option[BigInt],
-                                        qualifyingLoanInterestFromInvestments: Option[BigDecimal],
-                                        postCessationTradeReceipts: Option[BigDecimal],
-                                        paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
-                                        grossAnnuityPayments: Option[BigDecimal],
-                                        annuityPayments: Option[AnnuityPayments],
-                                        pensionContributions: Option[BigDecimal],
-                                        pensionContributionsDetail: Option[PensionContributionsDetail])
+                                   marriageAllowanceTransferOut: Option[MarriageAllowanceTransferOut],
+                                   reducedPersonalAllowance: Option[BigInt],
+                                   giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
+                                   blindPersonsAllowance: Option[BigInt],
+                                   lossesAppliedToGeneralIncome: Option[BigInt],
+                                   cgtLossSetAgainstInYearGeneralIncome: Option[BigInt],
+                                   qualifyingLoanInterestFromInvestments: Option[BigDecimal],
+                                   postCessationTradeReceipts: Option[BigDecimal],
+                                   paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
+                                   grossAnnuityPayments: Option[BigDecimal],
+                                   annuityPayments: Option[AnnuityPayments],
+                                   pensionContributions: Option[BigDecimal],
+                                   pensionContributionsDetail: Option[PensionContributionsDetail])
 
 object AllowancesAndDeductions {
 
@@ -51,7 +51,7 @@ object AllowancesAndDeductions {
       (JsPath \ "annuityPayments").readNullable[AnnuityPayments] and
       (JsPath \ "pensionContributions").readNullable[BigDecimal] and
       (JsPath \ "pensionContributionsDetail").readNullable[PensionContributionsDetail]
-  )(AllowancesAndDeductions.apply _)
+  )(AllowancesAndDeductions.apply)
 
   implicit val writes: Writes[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]
 

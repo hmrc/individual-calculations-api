@@ -27,9 +27,9 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
-  val nino: Nino                   = Nino("AA111111A")
-  val taxYear: TaxYear             = TaxYear.fromMtd("2020-21")
-  val calculationId: CalculationId = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
+  val nino: Nino                         = Nino("AA111111A")
+  val taxYear: TaxYear                   = TaxYear.fromMtd("2020-21")
+  val calculationId: CalculationId       = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
   val calculationTypeDf: CalculationType = `final-declaration`
 
   val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
@@ -61,7 +61,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(outcome))
 
       val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
   }
 

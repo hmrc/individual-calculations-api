@@ -31,4 +31,5 @@ class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
     `customer`  -> "customer",
     `hmrc-held` -> "hmrc-held"
   )
+
 }

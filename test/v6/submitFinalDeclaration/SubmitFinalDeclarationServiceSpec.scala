@@ -53,7 +53,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
         MockNrsService
           .updateNrs(nino.nino, request)
-          .returns(Future.successful(())).once()
+          .returns(Future.successful(()))
+          .once()
 
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
@@ -70,7 +71,8 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockNrsService
             .updateNrs(nino.nino, request)
-            .returns(Future.successful(())).never()
+            .returns(Future.successful(()))
+            .never()
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
@@ -107,7 +109,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INVALID_TAXYEAR", TaxYearFormatError)
       )
 
-      (errors ++ extraDesErrors).foreach(args => (serviceError _).tupled(args))
+      (errors ++ extraDesErrors).foreach(args => serviceError.tupled(args))
     }
   }
 

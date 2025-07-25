@@ -111,7 +111,7 @@ class SubmitFinalDeclarationControllerSpec
 
   private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-     val controller: SubmitFinalDeclarationController = new SubmitFinalDeclarationController(
+    val controller: SubmitFinalDeclarationController = new SubmitFinalDeclarationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockSubmitFinalDeclarationValidatorFactory,

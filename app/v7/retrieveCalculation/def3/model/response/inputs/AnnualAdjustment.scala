@@ -21,11 +21,7 @@ import play.api.libs.json._
 import v7.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
-case class AnnualAdjustment(incomeSourceId: String,
-                                 incomeSourceType: IncomeSourceType,
-                                 bsasId: String,
-                                 receivedDateTime: String,
-                                 applied: Boolean)
+case class AnnualAdjustment(incomeSourceId: String, incomeSourceType: IncomeSourceType, bsasId: String, receivedDateTime: String, applied: Boolean)
 
 object AnnualAdjustment {
 
@@ -41,7 +37,7 @@ object AnnualAdjustment {
       (JsPath \ "ascId").read[String] and
       (JsPath \ "receivedDateTime").read[String] and
       (JsPath \ "applied").read[Boolean]
-  )(AnnualAdjustment.apply _)
+  )(AnnualAdjustment.apply)
 
   implicit val writes: OWrites[AnnualAdjustment] = Json.writes
 }

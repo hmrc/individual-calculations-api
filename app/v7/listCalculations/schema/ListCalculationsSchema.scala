@@ -23,7 +23,13 @@ import shared.schema.DownstreamReadable
 import v7.listCalculations.def1.model.response.Def1_Calculation
 import v7.listCalculations.def2.model.response.Def2_Calculation
 import v7.listCalculations.def3.model.response.Def3_Calculation
-import v7.listCalculations.model.response.{Calculation, Def1_ListCalculationsResponse, Def2_ListCalculationsResponse, Def3_ListCalculationsResponse, ListCalculationsResponse}
+import v7.listCalculations.model.response.{
+  Calculation,
+  Def1_ListCalculationsResponse,
+  Def2_ListCalculationsResponse,
+  Def3_ListCalculationsResponse,
+  ListCalculationsResponse
+}
 
 import scala.math.Ordered.orderingToOrdered
 

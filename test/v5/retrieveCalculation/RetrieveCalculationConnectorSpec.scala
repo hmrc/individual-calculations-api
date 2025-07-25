@@ -21,7 +21,6 @@ import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import shared.models.outcomes.ResponseWrapper
 import org.scalamock.handlers.CallHandler
-import org.scalatest.TestSuite
 import play.api.Configuration
 import uk.gov.hmrc.http.StringContextOps
 import v5.retrieveCalculation.def1.model.Def1_CalculationFixture
@@ -48,7 +47,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         stubHttpResponse(outcome)
 
-        await(connector.retrieveCalculation(request)) shouldBe outcome
+        await(connector.retrieveCalculation(request)).shouldBe(outcome)
       }
 
       "a valid request with a TYS tax year is supplied and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
@@ -58,7 +57,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         stubTysHttpResponse(isHipEnabled = false, outcome = outcome)
 
-        await(connector.retrieveCalculation(request)) shouldBe outcome
+        await(connector.retrieveCalculation(request)).shouldBe(outcome)
       }
 
       "a valid request with a TYS tax year is supplied and feature switch is enabled (HIP enabled)" in new HipTest with Test {
@@ -68,7 +67,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         stubTysHttpResponse(isHipEnabled = true, outcome = outcome)
 
-        await(connector.retrieveCalculation(request)) shouldBe outcome
+        await(connector.retrieveCalculation(request)).shouldBe(outcome)
       }
     }
 
@@ -83,7 +82,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         val result: DownstreamOutcome[RetrieveCalculationResponse] =
           await(connector.retrieveCalculation(request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
 
       "downstream returns an error for a request with a TYS tax year and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
@@ -92,7 +91,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         val result: DownstreamOutcome[RetrieveCalculationResponse] =
           await(connector.retrieveCalculation(request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
 
       "downstream returns an error for a request with a TYS tax year and feature switch is enabled (HIP enabled)" in new HipTest with Test {
@@ -101,7 +100,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
 
         val result: DownstreamOutcome[RetrieveCalculationResponse] =
           await(connector.retrieveCalculation(request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
     }
   }
@@ -116,16 +115,17 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
       appConfig = mockAppConfig
     )
 
-    protected def stubHttpResponse(outcome: DownstreamOutcome[RetrieveCalculationResponse])
-    : CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
+    protected def stubHttpResponse(
+        outcome: DownstreamOutcome[RetrieveCalculationResponse]): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
       willGet(
         url = url"$baseUrl/income-tax/view/calculations/liability/${nino.nino}/$calculationId"
       )
         .returns(Future.successful(outcome))
     }
 
-    protected def stubTysHttpResponse(isHipEnabled: Boolean, outcome: DownstreamOutcome[RetrieveCalculationResponse])
-    : CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
+    protected def stubTysHttpResponse(
+        isHipEnabled: Boolean,
+        outcome: DownstreamOutcome[RetrieveCalculationResponse]): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
 
       val url: URL = if (isHipEnabled) {
         url"$baseUrl/itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"

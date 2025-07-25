@@ -18,10 +18,7 @@ package v7.retrieveCalculation.def2.model.response.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ForeignPropertyRfcDetail(countryCode: String,
-                                         amountClaimed: BigInt,
-                                         allowableAmount: BigDecimal,
-                                         carryForwardAmount: Option[BigDecimal])
+case class ForeignPropertyRfcDetail(countryCode: String, amountClaimed: BigInt, allowableAmount: BigDecimal, carryForwardAmount: Option[BigDecimal])
 
 object ForeignPropertyRfcDetail {
   implicit val format: OFormat[ForeignPropertyRfcDetail] = Json.format[ForeignPropertyRfcDetail]

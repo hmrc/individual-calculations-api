@@ -17,7 +17,7 @@
 package v7.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import play.api.libs.json.{JsResultException, JsString, Json}
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v7.common.model.response.IncomeSourceType._
 
@@ -82,7 +82,7 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
         val exception = intercept[JsResultException] {
           JsString("02").as[IncomeSourceType](formatRestricted(`self-employment`))
         }
-        exception.errors.head._2.head.message shouldBe "Value must be one of: self-employment"
+        exception.errors.head._2.head.message shouldBe "error.expected.IncomeSourceType"
       }
     }
 
@@ -91,6 +91,10 @@ class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
         Json
           .toJson(`self-employment`: IncomeSourceType)(formatRestricted(`self-employment`)) shouldBe JsString("self-employment")
       }
+    }
+
+    "error when JSON is invalid" in {
+      JsObject.empty.validate[IncomeSourceType] shouldBe a[JsError]
     }
   }
 

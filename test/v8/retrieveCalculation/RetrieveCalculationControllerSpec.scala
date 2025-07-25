@@ -211,7 +211,7 @@ class RetrieveCalculationControllerSpec
     def requestData: RetrieveCalculationRequestData =
       Def1_RetrieveCalculationRequestData(Nino(validNino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
 
-     val controller: RetrieveCalculationController = new RetrieveCalculationController(
+    val controller: RetrieveCalculationController = new RetrieveCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockRetrieveCalculationValidatorFactory,
@@ -220,11 +220,7 @@ class RetrieveCalculationControllerSpec
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
-
-    // MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
-    //   "supporting-agents-access-control.enabled" -> true
-    // )
-
+    
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =

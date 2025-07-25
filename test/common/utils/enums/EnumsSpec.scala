@@ -17,7 +17,6 @@
 package common.utils.enums
 
 import cats.Show
-import common.utils.enums.Enums
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
 import play.api.libs.json._
@@ -46,7 +45,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
   "SealedTraitEnumJson" must {
 
     "check toString assumption" in {
-      `enum-two`.toString shouldBe "enum-two"
+      `enum-two`.toString.shouldBe("enum-two")
     }
 
     def json(value: Enum) = Json.parse(s"""
@@ -57,33 +56,33 @@ class EnumsSpec extends UnitSpec with Inspectors {
 
     "generates reads" in {
       forAll(values.toList) { value =>
-        json(value).as[Foo[Enum]] shouldBe Foo(value)
+        json(value).as[Foo[Enum]].shouldBe(Foo(value))
       }
     }
 
     "generates writes" in {
       forAll(values.toList) { value =>
-        Json.toJson(Foo(value)) shouldBe json(value)
+        Json.toJson(Foo(value)).shouldBe(json(value))
       }
     }
 
     "allow roundtrip" in {
       forAll(values.toList) { value =>
         val foo: Foo[Enum] = Foo(value)
-        Json.toJson(foo).as[Foo[Enum]] shouldBe foo
+        Json.toJson(foo).as[Foo[Enum]].shouldBe(foo)
       }
     }
 
     "allows external parse by name" in {
       Enums.parser(values).lift("enum-one").shouldBe(Some(`enum-one`))
-      Enums.parser(values).lift("unknown") shouldBe None
+      Enums.parser(values).lift("unknown").shouldBe(None)
     }
 
     "allows alternative names (specified by method)" in {
 
       enum Enum2(val altName: String) {
-        case `enum-one` extends Enum2("one")
-        case `enum-two` extends Enum2("two")
+        case `enum-one`   extends Enum2("one")
+        case `enum-two`   extends Enum2("two")
         case `enum-three` extends Enum2("three")
       }
 
@@ -93,7 +92,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
         given Format[Enum2] = Enums.format(values)
       }
 
-      import Enum2.*
+      import Enum2._
 
       val json: JsValue = Json.parse(
         """
@@ -104,7 +103,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
       )
 
       json.as[Foo[Enum2]] shouldBe Foo(`enum-one`)
-      Json.toJson(Foo[Enum2](`enum-one`)) shouldBe json
+      Json.toJson(Foo[Enum2](`enum-one`)).shouldBe(json)
     }
 
     "detects badly formatted values" in {
@@ -114,7 +113,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
       |}
       |""".stripMargin)
 
-      badJson.validate[Foo[Enum]] shouldBe JsError(__ \ "someField", JsonValidationError("error.expected.Enum"))
+      badJson.validate[Foo[Enum]].shouldBe(JsError(__ \ "someField", JsonValidationError("error.expected.Enum")))
     }
 
     "detects type errors" in {
@@ -124,7 +123,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
                                   |}
                                   |""".stripMargin)
 
-      badJson.validate[Foo[Enum]] shouldBe JsError(__ \ "someField", JsonValidationError("error.expected.jsstring"))
+      badJson.validate[Foo[Enum]].shouldBe(JsError(__ \ "someField", JsonValidationError("error.expected.jsstring")))
     }
 
     "allow custom reads (e.g. to allow conversion)" in {
@@ -135,7 +134,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
       }
 
       forAll(List("1" -> `enum-one`, "2" -> `enum-two`, "3" -> `enum-three`)) { case (name, value) =>
-        JsString(name).as[Enum](customReads) shouldBe value
+        JsString(name).as[Enum](customReads).shouldBe(value)
       }
     }
 
@@ -143,12 +142,10 @@ class EnumsSpec extends UnitSpec with Inspectors {
       val customReads: Reads[Enum] = Enums.readsRestricted(`enum-one`, `enum-three`)
 
       forAll(List("enum-one" -> `enum-one`, "enum-three" -> `enum-three`)) { case (name, value) =>
-        JsString(name).as[Enum](customReads) shouldBe value
+        JsString(name).as[Enum](customReads).shouldBe(value)
       }
 
-      //JsString("enum-two").validate[Enum](customReads) shouldBe JsError(__, JsonValidationError("error.expected.Enum"))
-      JsString("enum-two").validate[Enum](customReads) shouldBe
-        JsError(__, JsonValidationError("Value must be one of: enum-one, enum-three"))
+      JsString("enum-two").validate[Enum](customReads).shouldBe(JsError(__, JsonValidationError("error.expected.Enum")))
 
     }
 

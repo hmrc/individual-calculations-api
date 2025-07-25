@@ -19,9 +19,9 @@ package v7.retrieveCalculation.def3.model.response.calculation.chargeableEventGa
 import play.api.libs.json.{Format, Json}
 
 case class ForeignGainsOnLifePoliciesTaxPaidDetail(customerReference: Option[String],
-                                                        gainAmount: Option[BigDecimal],
-                                                        taxPaidAmount: Option[BigDecimal],
-                                                        yearsHeld: Option[BigInt])
+                                                   gainAmount: Option[BigDecimal],
+                                                   taxPaidAmount: Option[BigDecimal],
+                                                   yearsHeld: Option[BigInt])
 
 object ForeignGainsOnLifePoliciesTaxPaidDetail {
   implicit val format: Format[ForeignGainsOnLifePoliciesTaxPaidDetail] = Json.format[ForeignGainsOnLifePoliciesTaxPaidDetail]

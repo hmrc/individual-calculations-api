@@ -49,7 +49,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
             .triggerCalculation(request)
             .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-          await(service.triggerCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, response))
+          await(service.triggerCalculation(request)).shouldBe(Right(ResponseWrapper(correlationId, response)))
         }
       }
     }
@@ -63,7 +63,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
               .triggerCalculation(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-            await(service.triggerCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
+            await(service.triggerCalculation(request)).shouldBe(Left(ErrorWrapper(correlationId, error)))
           }
 
         val errors = List(
@@ -94,7 +94,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceError.tupled(args))
       }
     }
 

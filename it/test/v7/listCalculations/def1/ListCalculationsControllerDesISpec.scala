@@ -51,14 +51,14 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
       MtdIdLookupStub.ninoFound(nino)
 
       def requestQueryParams: Seq[(String, String)] = {
-        calculationType.fold(Seq.empty[(String, String)]){ ct =>
+        calculationType.fold(Seq.empty[(String, String)]) { ct =>
           Seq("calculationType" -> ct).collect { case (k, v) => (k, v) }
         }
       }
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(requestQueryParams: _*)
+        .addQueryStringParameters(requestQueryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -95,14 +95,14 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(
-                                 requestNino: String,
-                                 requestTaxYear: String,
-                                 requestCalculationType: Option[String],
-                                 expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestTaxYear: String,
+                                requestCalculationType: Option[String],
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
-            override val nino: String            = requestNino
-            override val taxYearString: String = requestTaxYear
+            override val nino: String                    = requestNino
+            override val taxYearString: String           = requestTaxYear
             override val calculationType: Option[String] = requestCalculationType
 
             override def setupStubs(): StubMapping = {
@@ -127,7 +127,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
           ("ZG903729C", "2017-18", Some("in-year"), BAD_REQUEST, RuleCalculationTypeNotAllowed)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream returns a service error" when {
@@ -164,7 +164,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
           (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

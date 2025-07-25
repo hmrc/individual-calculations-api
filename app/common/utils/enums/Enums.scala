@@ -17,7 +17,7 @@
 package common.utils.enums
 
 import cats.Show
-import play.api.libs.json.*
+import play.api.libs.json._
 
 import scala.reflect.ClassTag
 
@@ -29,8 +29,10 @@ object Enums {
 
   def format[E: ClassTag](values: Array[E])(using ev: Show[E] = Shows.toStringShow[E]): Format[E] = Format(reads(values), writes)
 
-  def reads[E: ClassTag](values: Array[E])(using ev: Show[E] = Shows.toStringShow[E]): Reads[E] =
-    summon[Reads[String]].collect(JsonValidationError(s"error.expected.$typeName"))(parser(values))
+  def reads[E: ClassTag](values: Array[E])(using ev: Show[E]): Reads[E] = readsUsing(parser(values))
+
+  def readsUsing[E: ClassTag](customParser: PartialFunction[String, E]): Reads[E] =
+    summon[Reads[String]].collect(readsError)(customParser)
 
   private def typeName[E: ClassTag]: String = summon[ClassTag[E]].runtimeClass.getSimpleName
 
@@ -39,50 +41,8 @@ object Enums {
 
   def writes[E](using ev: Show[E] = Shows.toStringShow[E]): Writes[E] = Writes(e => JsString(ev.show(e)))
 
-  def readsRestricted[E](es: E*)(using r: Reads[E], ct: ClassTag[E]): Reads[E] =
-    r.filter(JsonValidationError(s"Value must be one of: ${es.mkString(", ")}"))(es.contains)
+  def readsRestricted[E: Reads: ClassTag](es: E*): Reads[E] = summon[Reads[E]].filter(readsError)(es.contains)
 
-  def readsUsing[E](customParser: PartialFunction[String, E])(using ct: ClassTag[E]): Reads[E] =
-    implicitly[Reads[String]].collect(
-      JsonValidationError(s"Unable to parse to ${ct.runtimeClass.getSimpleName}")
-    )(customParser)
+  private def readsError[E: ClassTag] = JsonValidationError(s"error.expected.$typeName")
 
 }
-
-//
-//import cats.Show
-//import common.utils.enums.Values.MkValues
-//import play.api.libs.json._
-//
-//import scala.reflect.ClassTag
-//
-//object Shows {
-//  implicit def toStringShow[E]: Show[E] = Show.show(_.toString)
-//}
-//
-//object Enums {
-//
-//  implicit def typeName[E: ClassTag]: String = implicitly[ClassTag[E]].runtimeClass.getSimpleName
-//
-//  def parser[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): PartialFunction[String, E] =
-//    implicitly[MkValues[E]].values.map(e => ev.show(e) -> e).toMap
-//
-//  def reads[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Reads[E] =
-//    readsUsing(parser)
-//
-//  def readsUsing[E: ClassTag](customParser: PartialFunction[String, E]): Reads[E] =
-//    implicitly[Reads[String]].collect(readsError)(customParser)
-//
-//  def readsRestricted[E: Reads: ClassTag](es: E*): Reads[E] =
-//    implicitly[Reads[E]].filter(readsError)(es.contains(_))
-//
-//  def writes[E: MkValues](implicit ev: Show[E] = Shows.toStringShow[E]): Writes[E] = { (e =>
-//    Json.toJson(ev.show(e)))
-//  }
-//
-//  def format[E: MkValues: ClassTag](implicit ev: Show[E] = Shows.toStringShow[E]): Format[E] =
-//    Format(reads, writes)
-//
-//  private def readsError[E: ClassTag] = JsonValidationError(s"error.expected.$typeName")
-//
-//}

@@ -33,6 +33,6 @@ class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calcul
       ResolveTaxYear(taxYear),
       ResolveCalculationId(calculationId),
       ResolveFinalDeclarationCalculationType(calculationType)
-    ).mapN(Def1_SubmitFinalDeclarationRequestData) andThen Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules
+    ).mapN(Def1_SubmitFinalDeclarationRequestData.apply) andThen Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules
 
 }

@@ -34,8 +34,7 @@ object Def1_TriggerCalculationValidator {
   private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
 }
 
-class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String)
-  extends Validator[TriggerCalculationRequestData] {
+class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String) extends Validator[TriggerCalculationRequestData] {
 
   import Def1_TriggerCalculationValidator._
 
@@ -57,7 +56,7 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
       } else if (taxYear == 2024 || taxYear == 2025) {
         Either24or25Downstream
       } else {
-        //must be 2026 or later
+        // must be 2026 or later
         Post26Downstream
       }
     }
@@ -69,8 +68,8 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
 
     val validateCalcTypeForTaxYear = (request: TriggerCalculationRequestData) =>
       request.calculationType match {
-        case `intent-to-amend` if TaxYear.fromMtd(taxYear).year <= 2025 =>  Some(List(RuleCalculationTypeNotAllowed))
-        case _ => None
+        case `intent-to-amend` if TaxYear.fromMtd(taxYear).year <= 2025 => Some(List(RuleCalculationTypeNotAllowed))
+        case _                                                          => None
       }
 
     resolveValid[TriggerCalculationRequestData]

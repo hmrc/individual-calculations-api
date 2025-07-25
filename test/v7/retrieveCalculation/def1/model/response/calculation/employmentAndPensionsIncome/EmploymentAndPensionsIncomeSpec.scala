@@ -40,8 +40,8 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
 
   val detailWithIncomeSource: EmploymentAndPensionsIncomeDetail        = detail.copy(incomeSourceId = Some("incomeSourceId"))
   val updatedDetailWithIncomeSource: EmploymentAndPensionsIncomeDetail = detailWithIncomeSource.copy(offPayrollWorker = None)
-  val model: EmploymentAndPensionsIncome        = EmploymentAndPensionsIncome(None, None, None, None, Some(Seq(detail)))
-  val updatedModel: EmploymentAndPensionsIncome = model.copy(employmentAndPensionsIncomeDetail = None)
+  val model: EmploymentAndPensionsIncome                               = EmploymentAndPensionsIncome(None, None, None, None, Some(Seq(detail)))
+  val updatedModel: EmploymentAndPensionsIncome                        = model.copy(employmentAndPensionsIncomeDetail = None)
 
   "withoutOffPayrollWorker" when {
     "employmentAndPensionIncome is defined, returns true" should {
@@ -55,7 +55,7 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
     "employmentAndPensionIncome is defined, returns false" should {
       "employmentAndPensionDetail should be None" in {
         val employmentAndPensionsIncome: EmploymentAndPensionsIncome = model
-        val result                                                        = employmentAndPensionsIncome.withoutOffPayrollWorker
+        val result                                                   = employmentAndPensionsIncome.withoutOffPayrollWorker
         result.employmentAndPensionsIncomeDetail shouldBe None
       }
     }
@@ -63,7 +63,7 @@ class EmploymentAndPensionsIncomeSpec extends UnitSpec {
     "employmentAndPensionIncome is not defined, returns false" should {
       "employmentAndPensionDetail should be None" in {
         val employmentAndPensionsIncome: EmploymentAndPensionsIncome = updatedModel
-        val result                                                        = employmentAndPensionsIncome.withoutOffPayrollWorker
+        val result                                                   = employmentAndPensionsIncome.withoutOffPayrollWorker
         result.employmentAndPensionsIncomeDetail shouldBe None
       }
     }

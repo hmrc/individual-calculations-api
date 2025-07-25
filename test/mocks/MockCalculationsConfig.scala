@@ -27,15 +27,15 @@ import scala.concurrent.duration.FiniteDuration
 trait MockCalculationsConfig extends TestSuite with MockFactory {
   val mockCalculationsConfig: CalculationsConfig = mock[CalculationsConfig]
 
-  object MockCalculationsConfig extends TestSuite with MockAppConfig{
+  object MockCalculationsConfig extends TestSuite with MockAppConfig {
+
     def confidenceLevelCheckEnabled: CallHandler[ConfidenceLevelConfig] =
       (() => mockAppConfig.confidenceLevelConfig: ConfidenceLevelConfig).expects()
 
     // NRS Config
     def mtdNrsProxyBaseUrl: CallHandler[String] = (() => mockCalculationsConfig.mtdNrsProxyBaseUrl: String).expects()
 
-    def retrieveCalcRetries: CallHandler[List[FiniteDuration]] = (()=> mockCalculationsConfig.retrieveCalcRetries: List[FiniteDuration]).expects()
-
+    def retrieveCalcRetries: CallHandler[List[FiniteDuration]] = (() => mockCalculationsConfig.retrieveCalcRetries: List[FiniteDuration]).expects()
 
   }
 

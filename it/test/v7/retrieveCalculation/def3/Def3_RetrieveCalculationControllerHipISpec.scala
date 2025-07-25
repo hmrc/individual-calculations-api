@@ -17,7 +17,6 @@
 package v7.retrieveCalculation.def3
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers._
@@ -29,9 +28,9 @@ import v7.retrieveCalculation.def3.model.Def3_CalculationFixture
 class Def3_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec with Def3_CalculationFixture {
 
   private trait Test {
-    val nino: String              = "ZG903729C"
-    val calculationId: String     = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-    def taxYear: String           = "2025-26"
+    val nino: String                      = "ZG903729C"
+    val calculationId: String             = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+    def taxYear: String                   = "2025-26"
     private def downstreamTaxYear: String = "25-26"
 
     def downstreamUri: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
@@ -65,6 +64,7 @@ class Def3_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec wit
         |    }
         |}
       """.stripMargin
+
   }
 
   "Calling the retrieveCalculation endpoint" when {
@@ -114,7 +114,7 @@ class Def3_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec wit
           ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
           ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
         "downstream returns a service error" when {
           def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
             s"backend returns an $downstreamCode error and status $downstreamStatus" in new Test {
@@ -147,7 +147,7 @@ class Def3_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec wit
             (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
             (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
           )
-          (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+          (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
         }
       }
     }

@@ -17,8 +17,8 @@
 package api.nrs
 
 import config.CalculationsConfig
-import play.api.libs.json.*
-import play.api.libs.ws.*
+import play.api.libs.json._
+import play.api.libs.ws._
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class NrsProxyConnector @Inject() (http: HttpClientV2, calculationsConfig: CalculationsConfig)(implicit ec: ExecutionContext) {
 
   def submitAsync(nino: String, notableEvent: String, body: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpstreamErrorResponse, Unit]] = {
-    
+
     http
       .post(url"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent")
       .withBody(body)

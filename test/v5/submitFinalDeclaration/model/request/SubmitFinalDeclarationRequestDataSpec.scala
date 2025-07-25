@@ -30,16 +30,16 @@ class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
       "retrieve uses schema Def1" must {
         "return a Def1_RetrieveCalculationRequestData" in {
           val taxYear = TaxYear.fromMtd("2023-24")
-          Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId).toRetrieveRequestData shouldBe
-            Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+          Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId).toRetrieveRequestData.shouldBe(
+            Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId))
         }
       }
 
       "retrieve uses schema Def2" must {
         "return a Def2_RetrieveCalculationRequestData" in {
           val taxYear = TaxYear.fromMtd("2024-25")
-          Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId).toRetrieveRequestData shouldBe
-            Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+          Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId).toRetrieveRequestData.shouldBe(
+            Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId))
         }
       }
     }

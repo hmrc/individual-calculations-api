@@ -35,16 +35,16 @@ trait Retrying {
   implicit val ec: ExecutionContext
 
   /** Retries an operation returning a future
-   *
-   * @param delays
-   * delays between retries
-   * @param retryCondition
-   * whether to retry based on a result or otherwise return that result (which may be a failed future)
-   * @param task
-   * the task returning a future (a function that accepts the attempt number)
-   * @return
-   * the result of the last attempt
-   */
+    *
+    * @param delays
+    *   delays between retries
+    * @param retryCondition
+    *   whether to retry based on a result or otherwise return that result (which may be a failed future)
+    * @param task
+    *   the task returning a future (a function that accepts the attempt number)
+    * @return
+    *   the result of the last attempt
+    */
   def retry[A](delays: List[FiniteDuration], retryCondition: Try[A] => Boolean)(task: Int => Future[A]): Future[A] = {
 
     def loop(attemptNumber: Int, delays: List[FiniteDuration]): Future[A] = {
@@ -54,7 +54,7 @@ trait Retrying {
           case delay :: tail =>
             if (retryCondition(result)) {
               for {
-                _ <- delayer.delay(delay)
+                _      <- delayer.delay(delay)
                 result <- loop(attemptNumber + 1, tail)
               } yield result
             } else {
@@ -64,9 +64,9 @@ trait Retrying {
 
       task(attemptNumber)
         .transformWith {
-          case e: Success[A] => retryIfPossible(e)
-          case e@Failure(NonFatal(_)) => retryIfPossible(e)
-          case Failure(e) => Future.failed(e)
+          case e: Success[A]            => retryIfPossible(e)
+          case e @ Failure(NonFatal(_)) => retryIfPossible(e)
+          case Failure(e)               => Future.failed(e)
         }
     }
 

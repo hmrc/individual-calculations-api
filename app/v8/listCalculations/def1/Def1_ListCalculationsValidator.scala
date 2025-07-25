@@ -42,7 +42,7 @@ class Def1_ListCalculationsValidator(nino: String, taxYear: String, calculationT
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveListCalculationType(calculationType)
-    ).mapN(Def1_ListCalculationsRequestData)
+    ).mapN(Def1_ListCalculationsRequestData.apply)
       .andThen(validateRules)
 
   private val validateRules = {

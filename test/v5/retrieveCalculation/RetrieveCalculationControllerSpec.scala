@@ -218,7 +218,7 @@ class RetrieveCalculationControllerSpec
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
-    
+
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =

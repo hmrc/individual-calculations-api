@@ -27,8 +27,7 @@ case class Def3_Calculation(calculationId: String,
                             calculationOutcome: String,
                             liabilityAmount: Option[BigDecimal],
                             fromDate: Option[String],
-                            toDate: Option[String]
-                           )
+                            toDate: Option[String])
     extends Calculation
 
 object Def3_Calculation {
@@ -42,6 +41,6 @@ object Def3_Calculation {
       (JsPath \ "calculationOutcome").read[String] and
       (JsPath \ "liabilityAmount").readNullable[BigDecimal] and
       (JsPath \ "fromDate").readNullable[String] and
-      (JsPath \ "toDate").readNullable[String])(Def3_Calculation.apply _)
+      (JsPath \ "toDate").readNullable[String])(Def3_Calculation.apply)
 
 }

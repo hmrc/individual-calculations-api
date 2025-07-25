@@ -22,7 +22,7 @@ import shared.config.Deprecation.NotDeprecated
 import shared.config.{AppConfig, MockAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.mocks.MockHttpClient
-import shared.routing.*
+import shared.routing._
 import shared.utils.UnitSpec
 
 import scala.language.reflectiveCalls
@@ -85,6 +85,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
           List(APIVersion(Version1, APIStatus.BETA, endpointsEnabled = true)),
           None)
       )
+
     }
 
     def checkBuildApiStatus(version: Version): APIStatus = apiDefinitionFactory.buildAPIStatus(version)
@@ -97,5 +98,5 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
 
   }
-  
+
 }

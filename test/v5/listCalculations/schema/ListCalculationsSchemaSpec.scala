@@ -29,20 +29,20 @@ class ListCalculationsSchemaSpec extends UnitSpec with ScalaCheckDrivenPropertyC
     "a tax year is present" must {
       "use Def1 for tax years from 2023-24" in {
         forTaxYearsFrom(TaxYear.fromMtd("2023-24")) { taxYear =>
-          ListCalculationsSchema.schemaFor(Some(taxYear.asMtd)) shouldBe ListCalculationsSchema.Def1
+          ListCalculationsSchema.schemaFor(Some(taxYear.asMtd)).shouldBe(ListCalculationsSchema.Def1)
         }
       }
 
       "use Def1 for pre-TYS tax years" in {
         forPreTysTaxYears { taxYear =>
-          ListCalculationsSchema.schemaFor(Some(taxYear.asMtd)) shouldBe ListCalculationsSchema.Def1
+          ListCalculationsSchema.schemaFor(Some(taxYear.asMtd)).shouldBe(ListCalculationsSchema.Def1)
         }
       }
     }
 
     "the tax year is present but not valid" must {
       "use a default of Def1" in {
-        ListCalculationsSchema.schemaFor(Some("NotATaxYear")) shouldBe ListCalculationsSchema.Def1
+        ListCalculationsSchema.schemaFor(Some("NotATaxYear")).shouldBe(ListCalculationsSchema.Def1)
       }
     }
 

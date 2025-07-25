@@ -17,11 +17,13 @@
 package v7.listCalculationsOld
 
 import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
+import v7.listCalculationsOld.def1.model.response.Calculation
 import v7.listCalculationsOld.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculationsOld.model.response.ListCalculationsResponse
 
 import scala.concurrent.Future
 
@@ -37,7 +39,8 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
   "ListCalculationsService" when {
     "a successful response is returned" must {
       "return a success" in new Test {
-        val outcome = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         MockListCalculationsConnector
           .list(request)
@@ -45,7 +48,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
             Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
           )
 
-        await(service.list(request)) shouldBe outcome
+        await(service.list(request)).shouldBe(outcome)
       }
     }
 
@@ -54,7 +57,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         s"map appropriately for error code: '$downstreamErrorCode'" in {
           val connectorOutcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))
           MockListCalculationsConnector.list(request).returns(Future.successful(connectorOutcome))
-          await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, mtdError))
+          await(service.list(request)).shouldBe(Left(ErrorWrapper(correlationId, mtdError)))
         }
       }
 
@@ -80,12 +83,13 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         "5010" -> NotFoundError
       )
 
-      (desErrors ++ extraTysDesErrors ++ hipErrors).foreach(args => (checkErrorMappings _).tupled(args))
+      (desErrors ++ extraTysDesErrors ++ hipErrors).foreach(args => checkErrorMappings.tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
-        val outcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
+        val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
+          Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
-        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
+        await(service.list(request)).shouldBe(Left(ErrorWrapper(correlationId, InternalError)))
       }
     }
   }

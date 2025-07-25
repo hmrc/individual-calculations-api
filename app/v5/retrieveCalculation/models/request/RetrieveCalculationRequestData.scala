@@ -26,10 +26,10 @@ sealed trait RetrieveCalculationRequestData {
   val schema: RetrieveCalculationSchema
 }
 
-case class Def1_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData{
+case class Def1_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData {
   override val schema: RetrieveCalculationSchema = RetrieveCalculationSchema.Def1
 }
 
-case class Def2_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData{
+case class Def2_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData {
   override val schema: RetrieveCalculationSchema = RetrieveCalculationSchema.Def2
 }

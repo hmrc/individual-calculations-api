@@ -34,4 +34,5 @@ object ResolveListCalculationType extends ResolverSupport {
     case Some("confirm-amendment")  => Valid(Some(`confirm-amendment`))
     case Some(_)                    => Invalid(Seq(FormatCalculationTypeError))
   }
+
 }

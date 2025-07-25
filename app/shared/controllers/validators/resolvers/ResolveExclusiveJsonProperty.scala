@@ -28,7 +28,7 @@ class ResolveExclusiveJsonProperty(error: => MtdError, fieldNames: String*) exte
   private def numExclusiveFieldsPresentIn(body: JsValue) =
     fieldNames.count(field => (body \ field).isDefined)
 
-  def resolver: Resolver[JsValue, JsValue] = resolveValid[JsValue] thenValidate validator
+  def resolver: Resolver[JsValue, JsValue] = resolveValid[JsValue].thenValidate(validator)
 
   def apply(body: JsValue): Validated[Seq[MtdError], JsValue] = resolver(body)
 

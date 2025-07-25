@@ -47,7 +47,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       endpointName = "triggerCalculation"
     )
 
-def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
+  def triggerCalculation(nino: String, taxYear: String, calculationType: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
@@ -72,10 +72,10 @@ def triggerCalculation(nino: String, taxYear: String, calculationType: String): 
       requestHandler.handleRequest()
     }
 
-  private def auditResponseBody(maybeBody: Option[JsValue]) =
-    for {
-      body   <- maybeBody
-      calcId <- (body \ "calculationId").asOpt[String]
-    } yield Json.obj("calculationId" -> calcId)
-
 }
+
+private def auditResponseBody(maybeBody: Option[JsValue]) =
+  for {
+    body   <- maybeBody
+    calcId <- (body \ "calculationId").asOpt[String]
+  } yield Json.obj("calculationId" -> calcId)

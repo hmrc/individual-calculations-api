@@ -35,4 +35,5 @@ class TypeOfDividendSpec extends UnitSpec with EnumJsonSpecSupport {
     `bonus-issues-of-securities`      -> "bonus-issues-of-securities",
     `close-company-loans-written-off` -> "close-company-loans-written-off"
   )
+
 }

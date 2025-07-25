@@ -32,13 +32,7 @@ trait MockHateoasFactory extends TestSuite with MockFactory {
         .wrap(_: A, _: D)(_: HateoasLinksFactory[A, D]))
         .expects(a, data, *)
     }
-    
-//    def wrapList[A[_], I, D <: HateoasData](a: A[I], data: D)(using Functor[A], HateoasListLinksFactory[A, I, D]): CallHandler[HateoasWrapper[A[HateoasWrapper[I]]]] =
-//      (mockHateoasFactory.wrapList(_: A[I], _: D)).expects(a, data)
 
-      def wrapList[A[_] : Functor, I, D <: HateoasData](a: A[I], d: D)(using HateoasListLinksFactory[A, I, D]): HateoasWrapper[A[HateoasWrapper[I]]] =
-        mockHateoasFactory.wrapList(a, d)
-    
   }
 
 }

@@ -18,17 +18,13 @@ package definition
 
 import cats.implicits.catsSyntaxValidatedId
 import common.definition.CalculationsDefinitionFactory
-import mocks.MockCalculationsConfig
-import org.scalatest.TestSuite
 import shared.config.Deprecation.NotDeprecated
 import shared.config.MockAppConfig
-import shared.connectors.ConnectorSpec
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.definition.{APIDefinition, APIVersion, Definition}
 import shared.mocks.MockHttpClient
-import shared.routing.{Version1, Version2, Version5, Version6, Version7, Version8}
+import shared.routing.{Version5, Version6, Version7, Version8}
 import shared.utils.UnitSpec
-
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 
@@ -89,4 +85,5 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
       }
     }
   }
+
 }

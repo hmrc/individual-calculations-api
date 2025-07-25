@@ -17,7 +17,7 @@
 package v8.common.model.response
 
 import common.utils.enums.Enums
-import play.api.libs.json.*
+import play.api.libs.json._
 
 import scala.reflect.ClassTag
 
@@ -75,9 +75,8 @@ object IncomeSourceType {
 
   def formatRestricted(types: IncomeSourceType*): Format[IncomeSourceType] = new Format[IncomeSourceType] {
     override def writes(o: IncomeSourceType): JsValue = incomeSourceTypeWrites.writes(o)
-    
 
-    override def reads(json: JsValue): JsResult[IncomeSourceType] = json.validate[IncomeSourceType](Enums.readsRestricted(types: _*))
+    override def reads(json: JsValue): JsResult[IncomeSourceType] = json.validate[IncomeSourceType](Enums.readsRestricted(types*))
   }
 
 }

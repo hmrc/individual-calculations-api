@@ -43,7 +43,7 @@ class Def3_ListCalculationsValidator(nino: String, taxYear: String, calculationT
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveListCalculationType(calculationType)
-    ).mapN(Def3_ListCalculationsRequestData)
+    ).mapN(Def3_ListCalculationsRequestData.apply)
       .andThen(validateRules)
 
   private val validateRules = {
@@ -54,7 +54,7 @@ class Def3_ListCalculationsValidator(nino: String, taxYear: String, calculationT
     val validateCalcTypeForTaxYear = (request: ListCalculationsRequestData) =>
       request.calculationType.flatMap {
         case ct if isValidCalcTypeForDef3(ct) => None
-        case _ => Some(List(RuleCalculationTypeNotAllowed))
+        case _                                => Some(List(RuleCalculationTypeNotAllowed))
       }
 
     resolveValid[ListCalculationsRequestData]

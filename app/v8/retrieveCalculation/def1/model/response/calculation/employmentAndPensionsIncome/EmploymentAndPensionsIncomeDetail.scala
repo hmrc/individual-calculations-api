@@ -19,20 +19,20 @@ package v8.retrieveCalculation.def1.model.response.calculation.employmentAndPens
 import play.api.libs.json.{Format, Json}
 
 case class EmploymentAndPensionsIncomeDetail(incomeSourceId: Option[String],
-                                                  source: Option[Source],
-                                                  occupationalPension: Option[Boolean],
-                                                  employerRef: Option[String],
-                                                  employerName: Option[String],
-                                                  offPayrollWorker: Option[Boolean],
-                                                  payrollId: Option[String],
-                                                  startDate: Option[String],
-                                                  dateEmploymentEnded: Option[String],
-                                                  taxablePayToDate: Option[BigDecimal],
-                                                  totalTaxToDate: Option[BigDecimal],
-                                                  disguisedRemuneration: Option[Boolean],
-                                                  lumpSums: Option[LumpSums],
-                                                  studentLoans: Option[StudentLoans],
-                                                  benefitsInKind: Option[BenefitsInKind]) {
+                                             source: Option[Source],
+                                             occupationalPension: Option[Boolean],
+                                             employerRef: Option[String],
+                                             employerName: Option[String],
+                                             offPayrollWorker: Option[Boolean],
+                                             payrollId: Option[String],
+                                             startDate: Option[String],
+                                             dateEmploymentEnded: Option[String],
+                                             taxablePayToDate: Option[BigDecimal],
+                                             totalTaxToDate: Option[BigDecimal],
+                                             disguisedRemuneration: Option[Boolean],
+                                             lumpSums: Option[LumpSums],
+                                             studentLoans: Option[StudentLoans],
+                                             benefitsInKind: Option[BenefitsInKind]) {
 
   val isDefined: Boolean =
     !(incomeSourceId.isEmpty &&

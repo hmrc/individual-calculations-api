@@ -26,10 +26,7 @@ import javax.inject.Singleton
 @Singleton
 class TriggerCalculationValidatorFactory {
 
-  def validator(nino: String,
-                taxYear: String,
-                calculationType: String,
-                schema: TriggerCalculationSchema): Validator[TriggerCalculationRequestData] =
+  def validator(nino: String, taxYear: String, calculationType: String, schema: TriggerCalculationSchema): Validator[TriggerCalculationRequestData] =
     schema match {
       case TriggerCalculationSchema.Def1 => new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
     }

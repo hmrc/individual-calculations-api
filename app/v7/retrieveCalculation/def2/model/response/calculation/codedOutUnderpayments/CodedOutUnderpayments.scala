@@ -19,11 +19,11 @@ package v7.retrieveCalculation.def2.model.response.calculation.codedOutUnderpaym
 import play.api.libs.json.{Json, OFormat}
 
 case class CodedOutUnderpayments(totalPayeUnderpayments: Option[BigDecimal],
-                                      payeUnderpaymentsDetail: Option[Seq[PayeUnderpaymentsDetail]],
-                                      totalSelfAssessmentUnderpayments: Option[BigDecimal],
-                                      totalCollectedSelfAssessmentUnderpayments: Option[BigDecimal],
-                                      totalUncollectedSelfAssessmentUnderpayments: Option[BigDecimal],
-                                      selfAssessmentUnderpaymentsDetail: Option[Seq[SelfAssessmentUnderpaymentsDetail]])
+                                 payeUnderpaymentsDetail: Option[Seq[PayeUnderpaymentsDetail]],
+                                 totalSelfAssessmentUnderpayments: Option[BigDecimal],
+                                 totalCollectedSelfAssessmentUnderpayments: Option[BigDecimal],
+                                 totalUncollectedSelfAssessmentUnderpayments: Option[BigDecimal],
+                                 selfAssessmentUnderpaymentsDetail: Option[Seq[SelfAssessmentUnderpaymentsDetail]])
 
 object CodedOutUnderpayments {
   implicit val format: OFormat[CodedOutUnderpayments] = Json.format[CodedOutUnderpayments]

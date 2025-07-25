@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def2.model.response.metadata
 
 import shared.models.domain.TaxYear
-import play.api.libs.json.Json
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v5.common.model.response.CalculationType
 
@@ -42,8 +42,8 @@ class MetadataSpec extends UnitSpec {
                   |    "periodTo": "to"
                   |  }
                   |""".stripMargin)
-          .as[Metadata] shouldBe
-          Metadata(
+          .as[Metadata]
+          .shouldBe(Metadata(
             calculationId = "calcId",
             taxYear = TaxYear.fromDownstream("2018"),
             requestedBy = "customer",
@@ -56,7 +56,7 @@ class MetadataSpec extends UnitSpec {
             finalDeclarationTimestamp = Some("decl timestamp"),
             periodFrom = "from",
             periodTo = "to"
-          )
+          ))
       }
     }
 
@@ -73,8 +73,8 @@ class MetadataSpec extends UnitSpec {
                    |    "periodTo": "to"
                    |  }
                    |""".stripMargin)
-          .as[Metadata] shouldBe
-          Metadata(
+          .as[Metadata]
+          .shouldBe(Metadata(
             calculationId = "calcId",
             taxYear = TaxYear.fromDownstream("2018"),
             requestedBy = "customer",
@@ -87,15 +87,15 @@ class MetadataSpec extends UnitSpec {
             finalDeclarationTimestamp = None,
             periodFrom = "from",
             periodTo = "to"
-          )
+          ))
       }
     }
   }
 
   "writes" should {
     "work" in {
-      Json.toJson(
-        Metadata(
+      Json
+        .toJson(Metadata(
           calculationId = "calcId",
           taxYear = TaxYear.fromDownstream("2018"),
           requestedBy = "customer",
@@ -108,7 +108,8 @@ class MetadataSpec extends UnitSpec {
           finalDeclarationTimestamp = Some("decl timestamp"),
           periodFrom = "from",
           periodTo = "to"
-        )) shouldBe Json.parse("""{
+        ))
+        .shouldBe(Json.parse("""{
                  |    "calculationId": "calcId",
                  |    "taxYear": "2017-18",
                  |    "requestedBy": "customer",
@@ -122,8 +123,12 @@ class MetadataSpec extends UnitSpec {
                  |    "periodFrom": "from",
                  |    "periodTo": "to"
                  |  }
-                 |""".stripMargin)
+                 |""".stripMargin))
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[Metadata].shouldBe(a[JsError])
   }
 
 }

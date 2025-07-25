@@ -49,7 +49,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFi
           .retrieveCalculation(request)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        await(service.retrieveCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, response))
+        await(service.retrieveCalculation(request)).shouldBe(Right(ResponseWrapper(correlationId, response)))
       }
     }
 
@@ -62,7 +62,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFi
             .retrieveCalculation(request)
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-          await(service.retrieveCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
+          await(service.retrieveCalculation(request)).shouldBe(Left(ErrorWrapper(correlationId, error)))
         }
 
       // TODO ensure errors match
@@ -85,7 +85,7 @@ class RetrieveCalculationServiceSpec extends ServiceSpec with Def1_CalculationFi
         ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError)
       )
 
-      (errors ++ extraTysErrors).foreach(args => (serviceError _).tupled(args))
+      (errors ++ extraTysErrors).foreach(args => serviceError.tupled(args))
     }
   }
 

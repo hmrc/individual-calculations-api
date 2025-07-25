@@ -21,7 +21,7 @@ class JsonErrorSanitiserSpec extends UnitSpec {
   "JsonErrorSanitiser" should {
 
     "return an empty string for an empty string" in {
-      JsonErrorSanitiser.sanitise("") shouldBe ""
+      JsonErrorSanitiser.sanitise("").shouldBe("")
     }
 
     "return the original non-sensitive string with spaces trimmed" in {

@@ -19,9 +19,9 @@ package v5.retrieveCalculation.def2.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class ExcessOfLifeTimeAllowance(totalChargeableAmount: Option[BigDecimal],
-                                          totalTaxPaid: Option[BigDecimal],
-                                          lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown],
-                                          benefitInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown])
+                                     totalTaxPaid: Option[BigDecimal],
+                                     lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown],
+                                     benefitInExcessOfLifetimeAllowance: Option[PensionSavingsDetailBreakdown])
 
 object ExcessOfLifeTimeAllowance {
   implicit val format: OFormat[ExcessOfLifeTimeAllowance] = Json.format[ExcessOfLifeTimeAllowance]

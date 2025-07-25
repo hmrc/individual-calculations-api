@@ -112,7 +112,7 @@ class Def2_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec wit
           ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
           ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
         "downstream returns a service error" when {
           def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
             s"backend returns an $downstreamCode error and status $downstreamStatus" in new Test {
@@ -145,7 +145,7 @@ class Def2_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec wit
             (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
             (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
           )
-          (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+          (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
         }
       }
     }

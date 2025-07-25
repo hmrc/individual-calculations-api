@@ -20,11 +20,11 @@ import play.api.libs.json.{Json, OFormat}
 import v5.common.model.response.TaxRate
 
 case class PensionBands(name: TaxRate,
-                             rate: BigDecimal,
-                             bandLimit: BigInt,
-                             apportionedBandLimit: BigInt,
-                             contributionAmount: BigDecimal,
-                             pensionCharge: BigDecimal)
+                        rate: BigDecimal,
+                        bandLimit: BigInt,
+                        apportionedBandLimit: BigInt,
+                        contributionAmount: BigDecimal,
+                        pensionCharge: BigDecimal)
 
 object PensionBands {
   implicit val format: OFormat[PensionBands] = Json.format[PensionBands]

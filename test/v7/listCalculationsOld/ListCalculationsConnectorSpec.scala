@@ -61,7 +61,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request(taxYear2019))) shouldBe outcome
+        await(connector.list(request(taxYear2019))).shouldBe(outcome)
       }
 
       "Non-TYS tax year query param is passed and feature switch is enabled (HIP  enabled)" in new HipTest with Test {
@@ -75,7 +75,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request(taxYear2019))) shouldBe outcome
+        await(connector.list(request(taxYear2019))).shouldBe(outcome)
       }
 
       "2024 tax year query param is passed" in new IfsTest with Test {
@@ -87,7 +87,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request(taxYear2024))) shouldBe outcome
+        await(connector.list(request(taxYear2024))).shouldBe(outcome)
       }
 
       "2025 tax year query param is passed" in new IfsTest with Test {
@@ -99,7 +99,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request(taxYear2025))) shouldBe outcome
+        await(connector.list(request(taxYear2025))).shouldBe(outcome)
       }
 
       "2026 or later tax year query param is passed" in new IfsTest with Test {
@@ -111,7 +111,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request(taxYear2026))) shouldBe outcome
+        await(connector.list(request(taxYear2026))).shouldBe(outcome)
       }
     }
 
@@ -128,7 +128,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           .returns(Future.successful(outcome))
 
         private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request(taxYear2019)))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
 
       "an error is received and feature switch enabled (HIP enabled)" in new HipTest with Test {
@@ -143,7 +143,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           .returns(Future.successful(outcome))
 
         private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request(taxYear2019)))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
     }
   }

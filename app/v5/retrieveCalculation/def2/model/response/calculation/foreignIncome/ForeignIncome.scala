@@ -19,12 +19,12 @@ package v5.retrieveCalculation.def2.model.response.calculation.foreignIncome
 import play.api.libs.json.{Json, OFormat}
 
 case class ForeignIncome(chargeableOverseasPensionsStateBenefitsRoyalties: Option[BigDecimal],
-                              overseasPensionsStateBenefitsRoyaltiesDetail: Option[Seq[CommonForeignIncome]],
-                              chargeableAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal],
-                              allOtherIncomeReceivedWhilstAbroadDetail: Option[Seq[CommonForeignIncome]],
-                              overseasIncomeAndGains: Option[OverseasIncomeAndGains],
-                              totalForeignBenefitsAndGifts: Option[BigDecimal],
-                              chargeableForeignBenefitsAndGiftsDetail: Option[ChargeableForeignBenefitsAndGiftsDetail])
+                         overseasPensionsStateBenefitsRoyaltiesDetail: Option[Seq[CommonForeignIncome]],
+                         chargeableAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal],
+                         allOtherIncomeReceivedWhilstAbroadDetail: Option[Seq[CommonForeignIncome]],
+                         overseasIncomeAndGains: Option[OverseasIncomeAndGains],
+                         totalForeignBenefitsAndGifts: Option[BigDecimal],
+                         chargeableForeignBenefitsAndGiftsDetail: Option[ChargeableForeignBenefitsAndGiftsDetail])
 
 object ForeignIncome {
   implicit val format: OFormat[ForeignIncome] = Json.format[ForeignIncome]

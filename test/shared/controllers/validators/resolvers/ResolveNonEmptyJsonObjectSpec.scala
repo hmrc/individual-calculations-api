@@ -17,13 +17,11 @@
 package shared.controllers.validators.resolvers
 
 import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.*
-import shared.controllers.validators.resolvers.ResolveNonEmptyJsonObject
+import play.api.libs.json._
 import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.models.utils.JsonErrorValidators
 import shared.utils.{EmptinessChecker, UnitSpec}
-import scala.deriving.Mirror
 import scala.compiletime.summonInline
 
 class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with JsonErrorValidators {
@@ -47,7 +45,6 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
   given SchemaStructureSource[Baz] = SchemaStructureSource.derived
   given SchemaStructureSource[Qux] = SchemaStructureSource.derived
   given SchemaStructureSource[Foo] = SchemaStructureSource.derived
-
 
   private def jsonObjectResolver(resolver: Resolver[JsValue, Foo]): Unit = {
     "return the parsed object" when {
@@ -134,4 +131,5 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
       }
     }
   }
+
 }

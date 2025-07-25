@@ -38,11 +38,13 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   val request: Def1_ListCalculationsRequestData    = Def1_ListCalculationsRequestData(nino, taxYear)
   val tysRequest: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, tysTaxYear)
 
-  trait Test {self: ConnectorTest => 
+  trait Test { self: ConnectorTest =>
+
     val connector: ListCalculationsConnector = new ListCalculationsConnector(
       http = mockHttpClient,
       appConfig = mockAppConfig
     )
+
   }
 
   "ListCalculationsConnector" should {
@@ -55,7 +57,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(request)) shouldBe outcome
+        await(connector.list(request)).shouldBe(outcome)
       }
 
       "a valid request with a TYS tax year is supplied and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
@@ -65,7 +67,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(tysRequest)) shouldBe outcome
+        await(connector.list(tysRequest)).shouldBe(outcome)
       }
 
       "a valid request with a TYS tax year is supplied and feature switch is enabled (HIP enabled)" in new HipTest with Test {
@@ -75,7 +77,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(tysRequest)) shouldBe outcome
+        await(connector.list(tysRequest)).shouldBe(outcome)
       }
     }
 
@@ -88,7 +90,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=${taxYear.asDownstream}"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(request)) shouldBe outcome
+        await(connector.list(request)).shouldBe(outcome)
       }
 
       "downstream returns an error for a request with a TYS tax year and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
@@ -98,7 +100,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(tysRequest)) shouldBe outcome
+        await(connector.list(tysRequest)).shouldBe(outcome)
       }
 
       "downstream returns an error for a request with a TYS tax year and feature switch is enabled (HIP enabled)" in new HipTest with Test {
@@ -108,7 +110,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
         ).returns(Future.successful(outcome))
 
-        await(connector.list(tysRequest)) shouldBe outcome
+        await(connector.list(tysRequest)).shouldBe(outcome)
       }
     }
   }

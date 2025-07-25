@@ -18,8 +18,7 @@ package v6.retrieveCalculation.def1.model.response.inputs
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]],
-                              nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]]) {
+case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]], nonBusinessIncomeSources: Option[Seq[NonBusinessIncomeSource]]) {
 
   val isDefined: Boolean =
     !(businessIncomeSources.isEmpty && nonBusinessIncomeSources.isEmpty)

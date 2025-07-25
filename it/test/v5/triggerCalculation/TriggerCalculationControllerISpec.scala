@@ -26,8 +26,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import play.api.libs.ws.DefaultBodyReadables._
-import play.api.libs.ws.DefaultBodyWritables._
+import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 
 class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
@@ -109,7 +108,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -171,7 +170,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

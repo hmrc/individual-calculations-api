@@ -24,17 +24,21 @@ sealed trait ListCalculationsResponse[+I] {
 }
 
 object ListCalculationsResponse {
-
+  
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = {
-    case def1: Def1_ListCalculationsResponse[I] => Json.toJsObject(def1)
-    case def2: Def2_ListCalculationsResponse[I] => Json.toJsObject(def2)
-    case def3: Def3_ListCalculationsResponse[I] => Json.toJsObject(def3)
+    case def1: Def1_ListCalculationsResponse[_] =>
+      Json.toJsObject(def1.asInstanceOf[Def1_ListCalculationsResponse[I]])
+    case def2: Def2_ListCalculationsResponse[_] =>
+      Json.toJsObject(def2.asInstanceOf[Def2_ListCalculationsResponse[I]])
+    case def3: Def3_ListCalculationsResponse[_] =>
+      Json.toJsObject(def3.asInstanceOf[Def3_ListCalculationsResponse[I]])
   }
 
   implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
 
     override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
       fa.mapItems(f)
+
   }
 
 }
@@ -63,7 +67,8 @@ case class Def2_ListCalculationsResponse[I](calculations: Seq[I]) extends ListCa
 object Def2_ListCalculationsResponse {
 
   implicit def writes[I: Writes]: OWrites[Def2_ListCalculationsResponse[I]] = Json.writes[Def2_ListCalculationsResponse[I]]
-  implicit def reads[I: Reads]: Reads[Def2_ListCalculationsResponse[I]]     =
+
+  implicit def reads[I: Reads]: Reads[Def2_ListCalculationsResponse[I]] =
     (JsPath \ "calculationsSummary").read[Seq[I]].map(Def2_ListCalculationsResponse(_))
 
 }
@@ -78,8 +83,8 @@ case class Def3_ListCalculationsResponse[I](calculations: Seq[I]) extends ListCa
 object Def3_ListCalculationsResponse {
 
   implicit def writes[I: Writes]: OWrites[Def3_ListCalculationsResponse[I]] = Json.writes[Def3_ListCalculationsResponse[I]]
-  implicit def reads[I: Reads]: Reads[Def3_ListCalculationsResponse[I]]     =
-    (JsPath \ "calculationsSummary").read[Seq[I]].map(Def3_ListCalculationsResponse(_))
 
+  implicit def reads[I: Reads]: Reads[Def3_ListCalculationsResponse[I]] =
+    (JsPath \ "calculationsSummary").read[Seq[I]].map(Def3_ListCalculationsResponse(_))
 
 }

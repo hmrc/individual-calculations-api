@@ -36,4 +36,5 @@ class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculati
       }
     }
   }
+
 }

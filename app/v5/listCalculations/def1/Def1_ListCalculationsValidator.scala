@@ -26,12 +26,13 @@ import cats.implicits.catsSyntaxTuple2Semigroupal
 import v5.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def1_ListCalculationsValidator {
-  private val listCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val listCalculationsMinimumTaxYear          = TaxYear.fromMtd("2017-18")
   private val listCalculationsMaximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
 
-  private val resolveTaxYear = ResolveTaxYear.resolver.resolveOptionallyWithDefault(TaxYear.currentTaxYear) thenValidate
-    satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError) thenValidate
-    satisfiesMax(listCalculationsMaximumSupportedTaxYear, RuleTaxYearForVersionNotSupportedError)
+  private val resolveTaxYear = ResolveTaxYear.resolver
+    .resolveOptionallyWithDefault(TaxYear.currentTaxYear)
+    .thenValidate(satisfiesMin(listCalculationsMinimumTaxYear, RuleTaxYearNotSupportedError))
+    .thenValidate(satisfiesMax(listCalculationsMaximumSupportedTaxYear, RuleTaxYearForVersionNotSupportedError))
 
 }
 
@@ -42,6 +43,6 @@ class Def1_ListCalculationsValidator(nino: String, taxYear: Option[String]) exte
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear)
-    ).mapN(Def1_ListCalculationsRequestData)
+    ).mapN(Def1_ListCalculationsRequestData.apply)
 
 }

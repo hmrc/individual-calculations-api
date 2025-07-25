@@ -79,37 +79,37 @@ class NestedJsonReadsSpec extends UnitSpec {
   "Valid Json" should {
 
     "return JsSuccess" in {
-      firstOutput.validate[Test] shouldBe a[JsSuccess[_]]
+      firstOutput.validate[Test].shouldBe(a[JsSuccess[?]])
     }
   }
 
   "A missing path" should {
     "return a None" in {
-      firstOutput.as[Test] shouldBe Test("string", None)
+      firstOutput.as[Test].shouldBe(Test("string", None))
     }
   }
 
   "With no missing sections" should {
     "return a full test as the second parameter" in {
-      secondOutput.as[Test] shouldBe Test("string", Some("example"))
+      secondOutput.as[Test].shouldBe(Test("string", Some("example")))
     }
   }
 
   "With no missing sections and a null value" should {
     "return a full test as the second parameter" in {
-      jsonWithNull.as[Test] shouldBe Test("string", None)
+      jsonWithNull.as[Test].shouldBe(Test("string", None))
     }
   }
 
   "Path with an invalid data type" should {
     "return a None " in {
-      thirdOutput.validate[Test] shouldBe a[JsError]
+      thirdOutput.validate[Test].shouldBe(a[JsError])
     }
   }
 
   "Empty path" should {
     "return a None " in {
-      fourthOutput.validate[Test] shouldBe a[JsSuccess[_]]
+      fourthOutput.validate[Test].shouldBe(a[JsSuccess[?]])
     }
   }
 
@@ -120,7 +120,7 @@ class NestedJsonReadsSpec extends UnitSpec {
     implicit val reads: Reads[Test] = (
       (JsPath \ "a" \ "b" \ "c").read[String] and
         (__ \ "a" \ "c" \ "e").readNestedNullable[String]
-    )(Test.apply _)
+    )(Test.apply)
 
   }
 

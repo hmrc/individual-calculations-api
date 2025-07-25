@@ -38,8 +38,10 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   def api1426Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
+
   def api1897Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=$intentToFinalise"
+
   def api2081Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
 
@@ -87,6 +89,19 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       makeRequestWithIFSEnabled(request, api2081Url("IA"))
     }
 
+    "triggering a calculation for Pre24Downstream when migration is enabled" must {
+      "use IfsUri" in new IfsEnabledTest with Test {
+        val request: Def1_TriggerCalculationRequestData =
+          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
+
+        val expectedUrl: URL                                                             = api1426Url("false")
+        val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
+
+        willPost(url = expectedUrl, body = Json.obj()).returns(Future.successful(expectedOutcome))
+
+        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
+      }
+    }
 
     def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
       s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsEnabledTest with Test {
@@ -97,7 +112,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(expectedOutcome))
 
-        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
       }
 
     def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
@@ -109,7 +124,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(expectedOutcome))
 
-        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
       }
   }
 

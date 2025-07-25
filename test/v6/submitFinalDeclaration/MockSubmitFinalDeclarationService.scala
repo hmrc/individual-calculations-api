@@ -32,7 +32,8 @@ trait MockSubmitFinalDeclarationService extends TestSuite with MockFactory {
 
   object MockSubmitFinalDeclarationService {
 
-    def submitFinalDeclaration(nino: String, requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
+    def submitFinalDeclaration(nino: String,
+                               requestData: SubmitFinalDeclarationRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[Unit]]]] = {
       (
         mockSubmitFinalDeclarationService
           .submitFinalDeclaration(_: String, _: SubmitFinalDeclarationRequestData)(

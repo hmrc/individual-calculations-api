@@ -16,7 +16,7 @@
 
 package v6.common.model.response
 
-import play.api.libs.json.*
+import play.api.libs.json._
 import shared.utils.enums.Enums
 
 enum Source {
@@ -27,4 +27,3 @@ enum Source {
 object Source {
   given Format[Source] = Enums.format(values)
 }
-

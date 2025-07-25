@@ -30,10 +30,10 @@ object TypeOfDividend {
   implicit val writes: Writes[TypeOfDividend] = Enums.writes[TypeOfDividend]
 
   implicit val reads: Reads[TypeOfDividend] = Enums.readsUsing {
-    case "stockDividend"                => `stock-dividend`
-    case "redeemableShares"             => `redeemable-shares`
-    case "bonusIssuesOfSecurities"      => `bonus-issues-of-securities`
-    case "closeCompanyLoansWrittenOff"  => `close-company-loans-written-off`
+    case "stockDividend"               => `stock-dividend`
+    case "redeemableShares"            => `redeemable-shares`
+    case "bonusIssuesOfSecurities"     => `bonus-issues-of-securities`
+    case "closeCompanyLoansWrittenOff" => `close-company-loans-written-off`
   }
 
 }

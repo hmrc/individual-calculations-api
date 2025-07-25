@@ -38,8 +38,10 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   def api1426Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
+
   def api1897Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=$intentToFinalise"
+
   def api2081Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/25-26/calculation/$ninoString/$intentToFinalise"
 
@@ -87,7 +89,6 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
       makeRequestWithIFSEnabled(request, api2081Url("IA"))
     }
 
-
     def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
       s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsEnabledTest with Test {
         val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
@@ -97,7 +98,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(expectedOutcome))
 
-        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
       }
 
     def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
@@ -109,7 +110,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(expectedOutcome))
 
-        await(connector.triggerCalculation(request)) shouldBe expectedOutcome
+        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
       }
   }
 

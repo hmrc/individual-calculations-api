@@ -32,7 +32,8 @@ trait MockListCalculationsService extends TestSuite with MockFactory {
 
   object MockListCalculationsService {
 
-    def list[I](requestData: ListCalculationsRequestData): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[Calculation]]]]] = {
+    def list[I](requestData: ListCalculationsRequestData)
+        : CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse[Calculation]]]]] = {
       (mockListCalculationsService
         .list(_: ListCalculationsRequestData)(_: RequestContext, _: ExecutionContext))
         .expects(requestData, *, *)

@@ -34,13 +34,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject()(val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
-  extends BaseDownstreamConnector {
+class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
+    extends BaseDownstreamConnector {
 
-
-  def triggerCalculation(request: TriggerCalculationRequestData)(implicit hc: HeaderCarrier,
-                                                                 ec: ExecutionContext,
-                                                                 correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
+  def triggerCalculation(request: TriggerCalculationRequestData)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext,
+      correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
     import request._
 
@@ -68,4 +68,5 @@ class TriggerCalculationConnector @Inject()(val http: HttpClientV2, val appConfi
         post(JsObject.empty, downstreamUrl)
     }
   }
+
 }

@@ -36,8 +36,8 @@ class JsonWritesUtilSpec extends UnitSpec with JsonWritesUtil {
 
     "writing an object matched by the partial function" must {
       "correctly write to JSON" in {
-        Json.toJson[D](D1("value")) shouldBe Json.obj("field" -> "value")
-        Json.toJson[D](D2(1)) shouldBe Json.obj("field" -> 1)
+        Json.toJson[D](D1("value")).shouldBe(Json.obj("field" -> "value"))
+        Json.toJson[D](D2(1)).shouldBe(Json.obj("field" -> 1))
       }
     }
 
@@ -61,7 +61,7 @@ class JsonWritesUtilSpec extends UnitSpec with JsonWritesUtil {
         )
 
         val result = filterNull(json)
-        result shouldBe json
+        result.shouldBe(json)
       }
     }
 

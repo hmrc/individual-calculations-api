@@ -19,13 +19,13 @@ package v8.retrieveCalculation.def3.model.response.calculation.employmentExpense
 import play.api.libs.json.{Format, Json}
 
 case class EmploymentExpensesDetail(businessTravelCosts: Option[BigDecimal],
-                                         jobExpenses: Option[BigDecimal],
-                                         flatRateJobExpenses: Option[BigDecimal],
-                                         professionalSubscriptions: Option[BigDecimal],
-                                         hotelAndMealExpenses: Option[BigDecimal],
-                                         otherAndCapitalAllowances: Option[BigDecimal],
-                                         vehicleExpenses: Option[BigDecimal],
-                                         mileageAllowanceRelief: Option[BigDecimal])
+                                    jobExpenses: Option[BigDecimal],
+                                    flatRateJobExpenses: Option[BigDecimal],
+                                    professionalSubscriptions: Option[BigDecimal],
+                                    hotelAndMealExpenses: Option[BigDecimal],
+                                    otherAndCapitalAllowances: Option[BigDecimal],
+                                    vehicleExpenses: Option[BigDecimal],
+                                    mileageAllowanceRelief: Option[BigDecimal])
 
 object EmploymentExpensesDetail {
 

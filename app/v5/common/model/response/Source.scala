@@ -16,7 +16,7 @@
 
 package v5.common.model.response
 
-import play.api.libs.json.*
+import play.api.libs.json._
 import shared.utils.enums.Enums
 
 enum Source {

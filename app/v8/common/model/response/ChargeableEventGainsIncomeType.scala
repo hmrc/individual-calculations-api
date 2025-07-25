@@ -30,10 +30,10 @@ object ChargeableEventGainsIncomeType {
   implicit val writes: Writes[ChargeableEventGainsIncomeType] = Enums.writes[ChargeableEventGainsIncomeType]
 
   implicit val reads: Reads[ChargeableEventGainsIncomeType] = Enums.readsUsing {
-    case "lifeInsurance"      => `life-insurance`
-    case "capitalRedemption"  => `capital-redemption`
-    case "lifeAnnuity"        => `life-annuity`
-    case "voidedIsa"          => `voided-isa`
+    case "lifeInsurance"     => `life-insurance`
+    case "capitalRedemption" => `capital-redemption`
+    case "lifeAnnuity"       => `life-annuity`
+    case "voidedIsa"         => `voided-isa`
   }
 
 }

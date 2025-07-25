@@ -21,8 +21,8 @@ import shared.models.domain.TaxYear
 import shared.schema.DownstreamReadable
 import play.api.libs.json.Reads
 import v6.listCalculations.def1.model.response.{Calculation, Def1_Calculation}
-import v6.listCalculations.model.response.{Def1_ListCalculationsResponse, ListCalculationsResponse}
-
+import v6.listCalculations.model.response.ListCalculationsResponse
+import v6.listCalculations.model.response.Def1_ListCalculationsResponse
 import java.time.Clock
 import scala.math.Ordered.orderingToOrdered
 

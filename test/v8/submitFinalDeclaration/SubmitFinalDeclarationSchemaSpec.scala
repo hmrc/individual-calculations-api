@@ -26,20 +26,20 @@ class SubmitFinalDeclarationSchemaSpec extends UnitSpec with ScalaCheckDrivenPro
     "a tax year is valid" must {
       "use Def1 for tax years from 2023-24" in {
         forTaxYearsFrom(TaxYear.fromMtd("2023-24")) { taxYear =>
-          SubmitFinalDeclarationSchema.schemaFor(taxYear.asMtd) shouldBe SubmitFinalDeclarationSchema.Def1
+          SubmitFinalDeclarationSchema.schemaFor(taxYear.asMtd).shouldBe(SubmitFinalDeclarationSchema.Def1)
         }
       }
 
       "use Def1 for pre-TYS tax years" in {
         forPreTysTaxYears { taxYear =>
-          SubmitFinalDeclarationSchema.schemaFor(taxYear.asMtd) shouldBe SubmitFinalDeclarationSchema.Def1
+          SubmitFinalDeclarationSchema.schemaFor(taxYear.asMtd).shouldBe(SubmitFinalDeclarationSchema.Def1)
         }
       }
     }
 
     "the tax year is not valid" must {
       "use a default of Def1" in {
-        SubmitFinalDeclarationSchema.schemaFor("NotATaxYear") shouldBe SubmitFinalDeclarationSchema.Def1
+        SubmitFinalDeclarationSchema.schemaFor("NotATaxYear").shouldBe(SubmitFinalDeclarationSchema.Def1)
       }
     }
   }

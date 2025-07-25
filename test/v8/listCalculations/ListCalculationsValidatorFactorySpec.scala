@@ -28,8 +28,7 @@ import javax.inject.Singleton
 @Singleton
 class ListCalculationsValidatorFactorySpec extends UnitSpec {
 
-  private val validNino    = "ZG903729C"
-
+  private val validNino = "ZG903729C"
 
   private val validatorFactory = new ListCalculationsValidatorFactory
 
@@ -41,7 +40,7 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)
 
-        result shouldBe a[Def1_ListCalculationsValidator]
+        result.shouldBe(a[Def1_ListCalculationsValidator])
       }
     }
     "given any request for tax years 2023-24, 2024-5" should {
@@ -50,14 +49,14 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)
 
-        result shouldBe a[Def2_ListCalculationsValidator]
+        result.shouldBe(a[Def2_ListCalculationsValidator])
       }
       "return the Validator for schema definition 2 for 24-25" in {
         val validTaxYear = "2024-25"
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)
 
-        result shouldBe a[Def2_ListCalculationsValidator]
+        result.shouldBe(a[Def2_ListCalculationsValidator])
       }
     }
     "given any request for post 2025-26" should {
@@ -66,7 +65,7 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = validTaxYear, None)
 
-        result shouldBe a[Def3_ListCalculationsValidator]
+        result.shouldBe(a[Def3_ListCalculationsValidator])
       }
     }
 

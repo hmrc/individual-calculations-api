@@ -58,7 +58,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(outcome))
 
       val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
   }
 

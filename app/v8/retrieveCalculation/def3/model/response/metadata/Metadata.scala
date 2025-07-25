@@ -51,6 +51,6 @@ object Metadata {
       (JsPath \ "confirmationTimestamp").readNullable[String] and
       (JsPath \ "periodFrom").read[String] and
       (JsPath \ "periodTo").read[String]
-  )(Metadata.apply _)
+  )(Metadata.apply)
 
 }

@@ -20,7 +20,6 @@ import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
 import v7.retrieveCalculation.def3.model.response.inputs.TaxRegime._
 
-
 class TaxRegimeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[TaxRegime](
@@ -34,4 +33,5 @@ class TaxRegimeSpec extends UnitSpec with EnumJsonSpecSupport {
     `scotland` -> "scotland",
     `wales`    -> "wales"
   )
+
 }

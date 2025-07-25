@@ -32,11 +32,11 @@ import v7.listCalculations.def3.model.Def3_ListCalculationsFixture
 class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_ListCalculationsFixture {
 
   private trait Test {
-    val nino: String = "ZG903729C"
+    val nino: String                    = "ZG903729C"
     val requestCalcType: Option[String] = Some("in-year")
-    val downstreamCalcType = "IY"
+    val downstreamCalcType              = "IY"
 
-    val mtdTaxYear: String = TaxYear.ending(2026).asMtd
+    val mtdTaxYear: String        = TaxYear.ending(2026).asMtd
     val downstreamTaxYear: String = TaxYear.fromMtd(mtdTaxYear).asTysDownstream
 
     def taxYear: String = mtdTaxYear
@@ -58,7 +58,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(requestQueryParams: _*)
+        .addQueryStringParameters(requestQueryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -75,7 +75,6 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
 
   }
 
-
   "Calling the list calculations endpoint for a post 26 tax year" should {
     "return a 200 status code" when {
       "valid request is made with a tax year" in new Test {
@@ -84,7 +83,12 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("calculationType" -> downstreamCalcType), OK, listCalculationsDownstreamJson)
+          DownstreamStub.onSuccess(
+            DownstreamStub.GET,
+            downstreamUri,
+            Map("calculationType" -> downstreamCalcType),
+            OK,
+            listCalculationsDownstreamJson)
         }
 
         val response: WSResponse = await(request.get())
@@ -96,11 +100,11 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
 
     "return error according to spec" when {
       "validation error" when {
-        def validationErrorTest(
-                                 requestNino: String,
-                                 requestTaxYear: String,
-                                 requestCalculationType: Option[String],
-                                 expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String,
+                                requestTaxYear: String,
+                                requestCalculationType: Option[String],
+                                expectedStatus: Int,
+                                expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
             override val nino: String = requestNino
 
@@ -129,7 +133,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
           ("ZG903729C", "2017-18", Some("invalid-calc-type"), BAD_REQUEST, FormatCalculationTypeError)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream returns a service error" when {
@@ -166,7 +170,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec with Def3_List
           (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

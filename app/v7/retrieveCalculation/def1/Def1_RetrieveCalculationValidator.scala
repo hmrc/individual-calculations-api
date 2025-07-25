@@ -38,6 +38,6 @@ class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculati
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
-    ).mapN(Def1_RetrieveCalculationRequestData)
+    ).mapN(Def1_RetrieveCalculationRequestData.apply)
 
 }

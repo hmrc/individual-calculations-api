@@ -28,9 +28,9 @@ object EmptyPathsResult {
 }
 
 /** Type class to locate paths to empty objects or arrays within an instance of an object.
- */
+  */
 trait EmptinessChecker[A] {
-  import EmptinessChecker.*
+  import EmptinessChecker._
 
   final def findEmptyPaths(a: A): EmptyPathsResult = {
 
@@ -69,7 +69,7 @@ trait EmptinessChecker[A] {
 
 // Internal specialization of EmptinessChecker for object instances so we can directly access its fields
 private[utils] trait ObjEmptinessChecker[A] extends EmptinessChecker[A] {
-  import EmptinessChecker.*
+  import EmptinessChecker._
 
   def structureOf(value: A): Structure.Obj
 }
@@ -126,15 +126,16 @@ object EmptinessChecker {
 
   // Lazy prevents infinite recursion in generic derivation
   final class Lazy[+A](val value: () => A) extends AnyVal
+
   object Lazy {
     given [A](using a: => A): Lazy[A] = new Lazy(() => a)
   }
 
   inline given derived[A](using m: Mirror.ProductOf[A]): EmptinessChecker[A] =
     instance { a =>
-      val elemLabels = summonLabels[m.MirroredElemLabels]
+      val elemLabels    = summonLabels[m.MirroredElemLabels]
       val elemInstances = summonAllInstances[m.MirroredElemTypes]
-      val elems = a.asInstanceOf[Product].productIterator.toList
+      val elems         = a.asInstanceOf[Product].productIterator.toList
       val fields = elemLabels.lazyZip(elems).lazyZip(elemInstances).map { (label, value, checker) =>
         label -> checker.value().structureOf(value)
       }
@@ -143,14 +144,14 @@ object EmptinessChecker {
 
   private inline def summonLabels[T <: Tuple]: List[String] =
     inline erasedValue[T] match {
-      case _: (h *: t) => constValue[h].asInstanceOf[String] :: summonLabels[t]
+      case _: (h *: t)   => constValue[h].asInstanceOf[String] :: summonLabels[t]
       case _: EmptyTuple => Nil
     }
 
   private inline def summonAllInstances[T <: Tuple]: List[Lazy[EmptinessChecker[Any]]] =
     inline erasedValue[T] match {
-      case _: (h *: t) => summonInline[Lazy[EmptinessChecker[h]]].asInstanceOf[Lazy[EmptinessChecker[Any]]] :: summonAllInstances[t]
+      case _: (h *: t)   => summonInline[Lazy[EmptinessChecker[h]]].asInstanceOf[Lazy[EmptinessChecker[Any]]] :: summonAllInstances[t]
       case _: EmptyTuple => Nil
     }
-}
 
+}

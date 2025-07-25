@@ -16,7 +16,7 @@
 
 package shared.definition
 
-import play.api.libs.json.*
+import play.api.libs.json._
 import shared.routing.Version
 import shared.utils.enums.Enums
 

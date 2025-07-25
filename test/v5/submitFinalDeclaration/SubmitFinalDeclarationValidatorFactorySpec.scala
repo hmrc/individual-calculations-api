@@ -37,7 +37,7 @@ class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
         val result: Validator[SubmitFinalDeclarationRequestData] =
           validatorFactory.validator(validNino, validTaxYear, validCalculationId, SubmitFinalDeclarationSchema.Def1)
 
-        result shouldBe a[Def1_SubmitFinalDeclarationValidator]
+        result.shouldBe(a[Def1_SubmitFinalDeclarationValidator])
       }
     }
   }

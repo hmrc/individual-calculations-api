@@ -65,7 +65,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
     }
 
     "provide the ability to compose a resolver with a subsequent validator" in {
-      val resolver = resolveInt thenValidate satisfiesMax(9, outOfRangeError)
+      val resolver = resolveInt.thenValidate(satisfiesMax(9, outOfRangeError))
 
       resolver("9") shouldBe Valid(9)
       resolver("10") shouldBe Invalid(List(outOfRangeError))
@@ -75,7 +75,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
     "provide the ability to compose a resolver with multiple subsequent validators (and keep all errors)" in {
       val isEven = satisfies[Int](oddNumberError)(_ % 2 == 0)
 
-      val resolver = resolveInt thenValidate combinedValidator(satisfiesMax(10, outOfRangeError), isEven)
+      val resolver = resolveInt.thenValidate(combinedValidator(satisfiesMax(10, outOfRangeError), isEven))
 
       resolver("2") shouldBe Valid(2)
       resolver("3") shouldBe Invalid(List(oddNumberError))
@@ -86,7 +86,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
     }
 
     "provide the ability to map a valid result" in {
-      val resolver = resolveInt map (v => -v)
+      val resolver = resolveInt.map(v => -v)
 
       resolver("2") shouldBe Valid(-2)
       resolver("xx") shouldBe Invalid(List(notIntegerError))
@@ -131,7 +131,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
     }
 
     "provides the ability to create resolvers don't actually parse but only validate" in {
-      val resolver = resolveValid[Int] thenValidate satisfiesMax(10, outOfRangeError)
+      val resolver = resolveValid[Int].thenValidate(satisfiesMax(10, outOfRangeError))
 
       resolver(1) shouldBe Valid(1)
       resolver(11) shouldBe Invalid(List(outOfRangeError))
@@ -146,7 +146,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
 
     "provides the ability to combine resolvers with thenResolve" in {
       val resolvePresent: Resolver[Option[Int], Int] = _.toValid(Seq(notPresentError))
-      val resolver                                   = resolveInt.resolveOptionally thenResolve resolvePresent
+      val resolver                                   = resolveInt.resolveOptionally.thenResolve(resolvePresent)
 
       resolver(Some("1")) shouldBe Valid(1)
       resolver(Some("XX")) shouldBe Invalid(List(notIntegerError))
@@ -156,7 +156,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
       val partValidator = satisfiesMax(10, outOfRangeError)
 
       // Validator for tuples (String, Int) that validates the Int part
-      val resolver = resolveValid[(String, Int)] thenValidate partValidator.contramap(_._2)
+      val resolver = resolveValid[(String, Int)].thenValidate(partValidator.contramap(_._2))
 
       resolver(("A", 1)) shouldBe Valid(("A", 1))
       resolver(("A", 11)) shouldBe Invalid(List(outOfRangeError))
@@ -166,7 +166,7 @@ class ResolverSupportSpec extends UnitSpec with ResolverSupport {
       val partValidator = satisfiesMax(10, outOfRangeError)
 
       // Validator for tuples (String, Option[Int]) that validates the Int part
-      val resolver = resolveValid[(String, Option[Int])] thenValidate partValidator.validateOptionally.contramap(_._2)
+      val resolver = resolveValid[(String, Option[Int])].thenValidate(partValidator.validateOptionally.contramap(_._2))
 
       resolver(("A", None)) shouldBe Valid(("A", None))
       resolver(("A", Some(1))) shouldBe Valid(("A", Some(1)))

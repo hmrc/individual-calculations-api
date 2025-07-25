@@ -31,4 +31,5 @@ class ShareSchemeDetailTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `share-option`               -> "share-option",
     `shares-awarded-or-received` -> "shares-awarded-or-received"
   )
+
 }

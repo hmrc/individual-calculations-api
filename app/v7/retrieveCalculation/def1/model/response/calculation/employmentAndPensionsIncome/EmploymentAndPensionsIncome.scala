@@ -19,10 +19,10 @@ package v7.retrieveCalculation.def1.model.response.calculation.employmentAndPens
 import play.api.libs.json.{Format, Json}
 
 case class EmploymentAndPensionsIncome(totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
-                                            totalOccupationalPensionIncome: Option[BigDecimal],
-                                            totalBenefitsInKind: Option[BigDecimal],
-                                            tipsIncome: Option[BigDecimal],
-                                            employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]) {
+                                       totalOccupationalPensionIncome: Option[BigDecimal],
+                                       totalBenefitsInKind: Option[BigDecimal],
+                                       tipsIncome: Option[BigDecimal],
+                                       employmentAndPensionsIncomeDetail: Option[Seq[EmploymentAndPensionsIncomeDetail]]) {
 
   val isDefined: Boolean =
     !(totalPayeEmploymentAndLumpSumIncome.isEmpty &&

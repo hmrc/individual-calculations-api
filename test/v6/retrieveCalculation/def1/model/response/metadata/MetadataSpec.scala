@@ -16,7 +16,7 @@
 
 package v6.retrieveCalculation.def1.model.response.metadata
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
 import v6.common.model.response.CalculationType
@@ -27,8 +27,7 @@ class MetadataSpec extends UnitSpec {
     "passed valid JSON with all fields populated" should {
       "return the correct model" in {
         Json
-          .parse(
-            """{
+          .parse("""{
               |    "calculationId": "calcId",
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
@@ -64,8 +63,7 @@ class MetadataSpec extends UnitSpec {
     "only mandatory fields populated" should {
       "default the final declaration fields to false" in {
         Json
-          .parse(
-            """{
+          .parse("""{
               |    "calculationId": "calcId",
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
@@ -110,8 +108,7 @@ class MetadataSpec extends UnitSpec {
           finalDeclarationTimestamp = Some("decl timestamp"),
           periodFrom = "from",
           periodTo = "to"
-        )) shouldBe Json.parse(
-        """{
+        )) shouldBe Json.parse("""{
           |    "calculationId": "calcId",
           |    "taxYear": "2017-18",
           |    "requestedBy": "customer",
@@ -127,6 +124,10 @@ class MetadataSpec extends UnitSpec {
           |  }
           |""".stripMargin)
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[Metadata] shouldBe a[JsError]
   }
 
 }

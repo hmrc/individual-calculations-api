@@ -25,6 +25,7 @@ import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 import shared.models.errors._
 import shared.services._
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 
 class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
 
@@ -76,7 +77,7 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -132,7 +133,7 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError)
         )
 
-        (errors ++ extraDesErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraDesErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

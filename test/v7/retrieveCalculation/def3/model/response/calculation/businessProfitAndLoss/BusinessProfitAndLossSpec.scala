@@ -16,7 +16,7 @@
 
 package v7.retrieveCalculation.def3.model.response.calculation.businessProfitAndLoss
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v7.common.model.response.IncomeSourceType
 
@@ -135,6 +135,10 @@ class BusinessProfitAndLossSpec extends UnitSpec {
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[BusinessProfitAndLoss] shouldBe a[JsError]
   }
 
 }

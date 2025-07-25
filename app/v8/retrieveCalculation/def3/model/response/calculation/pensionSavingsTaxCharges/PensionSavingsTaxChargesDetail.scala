@@ -18,11 +18,10 @@ package v8.retrieveCalculation.def3.model.response.calculation.pensionSavingsTax
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PensionSavingsTaxChargesDetail(
-    pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
-    pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
-    pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
-    overseasPensionContributions: Option[OverseasPensionContributions])
+case class PensionSavingsTaxChargesDetail(pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
+                                          pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
+                                          pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
+                                          overseasPensionContributions: Option[OverseasPensionContributions])
 
 object PensionSavingsTaxChargesDetail {
   implicit val format: OFormat[PensionSavingsTaxChargesDetail] = Json.format[PensionSavingsTaxChargesDetail]

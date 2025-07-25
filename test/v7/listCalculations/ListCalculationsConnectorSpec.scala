@@ -24,7 +24,12 @@ import shared.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
 import v7.common.model.domain._
 import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculations.model.request.{
+  Def1_ListCalculationsRequestData,
+  Def2_ListCalculationsRequestData,
+  Def3_ListCalculationsRequestData,
+  ListCalculationsRequestData
+}
 import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import scala.concurrent.Future
@@ -51,7 +56,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
   "ListCalculationsConnector" should {
     "return successful response" when {
       "Pre 23/24 tax year path param is passed and feature switch disabled (DES enabled)" in new DesTest with Test {
-        val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+        val taxYear: TaxYear                         = TaxYear.fromMtd("2018-19")
         val calculationType: Option[CalculationType] = None
 
         val request: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
@@ -66,11 +71,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request)) shouldBe outcome
+        await(connector.list(request)).shouldBe(outcome)
       }
 
       "Pre 23/24 tax year path param is passed and feature switch enabled (HIP enabled)" in new HipTest with Test {
-        val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+        val taxYear: TaxYear                         = TaxYear.fromMtd("2018-19")
         val calculationType: Option[CalculationType] = None
 
         val request: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
@@ -85,13 +90,13 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         )
           .returns(Future.successful(outcome))
 
-        await(connector.list(request)) shouldBe outcome
+        await(connector.list(request)).shouldBe(outcome)
       }
 
       "a 23/24 or 24/25 tax year path param is passed" when {
         "an in year calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2023-24")
-          val calculationType: Option[CalculationType] = Some(`in-year`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2023-24")
+          val calculationType: Option[CalculationType]  = Some(`in-year`)
           val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -103,12 +108,12 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
 
         "an intent to finalise calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2023-24")
-          val calculationType: Option[CalculationType] = Some(`intent-to-finalise`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2023-24")
+          val calculationType: Option[CalculationType]  = Some(`intent-to-finalise`)
           val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -120,11 +125,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
         "a final declaration calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2023-24")
-          val calculationType: Option[CalculationType] = Some(`final-declaration`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2023-24")
+          val calculationType: Option[CalculationType]  = Some(`final-declaration`)
           val request: Def2_ListCalculationsRequestData = Def2_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -136,14 +141,14 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
       }
 
       "a post 25/26 tax year path param is passed" when {
         "an in year calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2025-26")
-          val calculationType: Option[CalculationType] = Some(`in-year`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2025-26")
+          val calculationType: Option[CalculationType]  = Some(`in-year`)
           val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -155,11 +160,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
         "an intent to finalise calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2025-26")
-          val calculationType: Option[CalculationType] = Some(`intent-to-finalise`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2025-26")
+          val calculationType: Option[CalculationType]  = Some(`intent-to-finalise`)
           val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -171,11 +176,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
         "a final declaration calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2025-26")
-          val calculationType: Option[CalculationType] = Some(`final-declaration`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2025-26")
+          val calculationType: Option[CalculationType]  = Some(`final-declaration`)
           val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -187,11 +192,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
         "an intent to amend calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2025-26")
-          val calculationType: Option[CalculationType] = Some(`intent-to-amend`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2025-26")
+          val calculationType: Option[CalculationType]  = Some(`intent-to-amend`)
           val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -203,11 +208,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
         "a confirm amendment calcType query param is passed" in new IfsTest with Test {
-          val taxYear: TaxYear = TaxYear.fromMtd("2025-26")
-          val calculationType: Option[CalculationType] = Some(`confirm-amendment`)
+          val taxYear: TaxYear                          = TaxYear.fromMtd("2025-26")
+          val calculationType: Option[CalculationType]  = Some(`confirm-amendment`)
           val request: Def3_ListCalculationsRequestData = Def3_ListCalculationsRequestData(nino, taxYear, calculationType)
 
           val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
@@ -219,14 +224,14 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           )
             .returns(Future.successful(outcome))
 
-          await(connector.list(request)) shouldBe outcome
+          await(connector.list(request)).shouldBe(outcome)
         }
       }
     }
 
     "return the expected result" when {
       "an error is received and feature switch disabled (DES enabled)" in new DesTest with Test {
-        val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+        val taxYear: TaxYear                         = TaxYear.fromMtd("2018-19")
         val calculationType: Option[CalculationType] = None
 
         val request: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
@@ -241,11 +246,11 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           .returns(Future.successful(outcome))
 
         private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
 
       "an error is received and feature switch enabled (HIP enabled)" in new HipTest with Test {
-        val taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+        val taxYear: TaxYear                         = TaxYear.fromMtd("2018-19")
         val calculationType: Option[CalculationType] = None
 
         val request: Def1_ListCalculationsRequestData = Def1_ListCalculationsRequestData(nino, taxYear, calculationType)
@@ -260,7 +265,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
           .returns(Future.successful(outcome))
 
         private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
     }
   }

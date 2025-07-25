@@ -19,9 +19,9 @@ package v8.retrieveCalculation.def2.model.response.calculation.employmentAndPens
 import play.api.libs.json.{Format, Json}
 
 case class BenefitFromEmployerFinancedRetirementScheme(amount: Option[BigDecimal],
-                                                            exemptAmount: Option[BigDecimal],
-                                                            taxPaid: Option[BigDecimal],
-                                                            taxTakenOffInEmployment: Option[Boolean])
+                                                       exemptAmount: Option[BigDecimal],
+                                                       taxPaid: Option[BigDecimal],
+                                                       taxTakenOffInEmployment: Option[Boolean])
 
 object BenefitFromEmployerFinancedRetirementScheme {
 

@@ -36,13 +36,13 @@ class DelayerSpec extends UnitSpec {
     "delay  by that amount" in {
       val delay = 10.seconds
       val f     = delayer.delay(delay)
-      f.isCompleted shouldBe false
+      f.isCompleted.shouldBe(false)
 
       virtualTime.advance(9.seconds)
-      f.isCompleted shouldBe false
+      f.isCompleted.shouldBe(false)
 
       virtualTime.advance(1.second)
-      f.isCompleted shouldBe true
+      f.isCompleted.shouldBe(true)
     }
   }
 
