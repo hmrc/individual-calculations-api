@@ -220,11 +220,7 @@ class RetrieveCalculationControllerSpec
       idGenerator = mockIdGenerator,
       auditService = mockAuditService
     )
-
-    // MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
-    //   "supporting-agents-access-control.enabled" -> true
-    // )
-
+    
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =
