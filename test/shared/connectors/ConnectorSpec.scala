@@ -18,7 +18,6 @@ package shared.connectors
 
 import com.google.common.base.Charsets
 import org.scalamock.handlers.CallHandler
-import org.scalatest.TestSuite
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.libs.json.{Json, Writes}
 import shared.config.{BasicAuthDownstreamConfig, DownstreamConfig, MockAppConfig}
@@ -50,7 +49,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
       Some("this-api")
     )
 
-  protected trait ConnectorTest extends UnitSpec with MockHttpClient with MockAppConfig { self: TestSuite =>
+  protected trait ConnectorTest extends UnitSpec with MockHttpClient with MockAppConfig {
     protected val baseUrl: String = "http://test-BaseUrl"
 
     protected lazy val requiredHeaders: Seq[(String, String)]
@@ -104,7 +103,7 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
 
   }
 
-  protected trait StandardConnectorTest extends ConnectorTest { self: TestSuite =>
+  protected trait StandardConnectorTest extends ConnectorTest {
     protected def name: String
 
     private val token       = s"$name-token"
@@ -121,25 +120,25 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     protected final val config: DownstreamConfig = DownstreamConfig(this.baseUrl, environment, token, Some(allowedHeaders))
   }
 
-  protected trait DesTest extends StandardConnectorTest { self: TestSuite =>
+  protected trait DesTest extends StandardConnectorTest {
     val name = "des"
 
     MockedAppConfig.desDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait IfsTest extends StandardConnectorTest { self: TestSuite =>
+  protected trait IfsTest extends StandardConnectorTest {
     override val name = "ifs"
 
     MockedAppConfig.ifsDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait TysTest extends StandardConnectorTest { self: TestSuite =>
+  protected trait TysTest extends StandardConnectorTest {
     override val name = "tys-ifs"
 
     MockedAppConfig.tysIfsDownstreamConfig.anyNumberOfTimes() returns config
   }
 
-  protected trait HipTest extends ConnectorTest { self: TestSuite =>
+  protected trait HipTest extends ConnectorTest {
     private val clientId     = "clientId"
     private val clientSecret = "clientSecret"
 

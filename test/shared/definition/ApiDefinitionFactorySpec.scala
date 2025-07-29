@@ -17,7 +17,6 @@
 package shared.definition
 
 import cats.implicits.catsSyntaxValidatedId
-import org.scalatest.TestSuite
 import shared.config.Deprecation.NotDeprecated
 import shared.config.{AppConfig, MockAppConfig}
 import shared.definition.APIStatus.{ALPHA, BETA}
@@ -70,7 +69,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
   }
 
-  trait Test extends UnitSpec with MockHttpClient with MockAppConfig { self: TestSuite =>
+  trait Test extends UnitSpec with MockHttpClient with MockAppConfig {
     MockedAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
 
     protected val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory {

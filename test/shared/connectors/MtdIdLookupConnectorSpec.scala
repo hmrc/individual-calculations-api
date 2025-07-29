@@ -16,7 +16,6 @@
 
 package shared.connectors
 
-import org.scalatest.TestSuite
 import shared.config.MockAppConfig
 import shared.connectors.MtdIdLookupConnector.Outcome
 import shared.mocks.MockHttpClient
@@ -24,12 +23,12 @@ import uk.gov.hmrc.http.StringContextOps
 
 import scala.concurrent.Future
 
-class MtdIdLookupConnectorSpec extends ConnectorSpec { self: TestSuite =>
+class MtdIdLookupConnectorSpec extends ConnectorSpec {
 
   val nino  = "test-nino"
   val mtdId = "test-mtdId"
 
-  class Test extends ConnectorSpec with MockHttpClient with MockAppConfig { self: TestSuite =>
+  class Test extends ConnectorSpec with MockHttpClient with MockAppConfig {
 
     val connector = new MtdIdLookupConnector(
       http = mockHttpClient,
