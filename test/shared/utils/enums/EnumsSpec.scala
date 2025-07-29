@@ -42,7 +42,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
 
   given Arbitrary[Enum] = Arbitrary(Gen.oneOf(values.toList))
 
-  "SealedTraitEnumJson" must {
+  "EnumJson" must {
 
     "check toString assumption" in {
       `enum-two`.toString.shouldBe("enum-two")
