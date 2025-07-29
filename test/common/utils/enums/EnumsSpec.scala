@@ -42,7 +42,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
 
   implicit val arbitraryEnumValue: Arbitrary[Enum] = Arbitrary[Enum](Gen.oneOf(`enum-one`, `enum-two`, `enum-three`))
 
-  "SealedTraitEnumJson" must {
+  "EnumJson" must {
 
     "check toString assumption" in {
       `enum-two`.toString.shouldBe("enum-two")
@@ -149,7 +149,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
 
     }
 
-    "only work for sealed trait singletons (objects)" in {
+    "only work for enums with singleton cases (no parameters)" in {
       assertTypeError(
         """
           |      enum NotEnum {

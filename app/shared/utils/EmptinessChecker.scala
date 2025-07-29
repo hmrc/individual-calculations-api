@@ -30,7 +30,7 @@ object EmptyPathsResult {
 /** Type class to locate paths to empty objects or arrays within an instance of an object.
   */
 trait EmptinessChecker[A] {
-  import EmptinessChecker._
+  import EmptinessChecker.*
 
   final def findEmptyPaths(a: A): EmptyPathsResult = {
 
@@ -45,9 +45,9 @@ trait EmptinessChecker[A] {
         }
 
       structure match {
-        case o: Structure.Obj => recurseIfNotEmpty(o.keyedChildren)
-        case a: Structure.Arr => recurseIfNotEmpty(a.keyedChildren)
-        case _                => acc
+        case o: Structure.Obj   => recurseIfNotEmpty(o.keyedChildren)
+        case arr: Structure.Arr => recurseIfNotEmpty(arr.keyedChildren)
+        case _                  => acc
       }
     }
 
@@ -69,7 +69,7 @@ trait EmptinessChecker[A] {
 
 // Internal specialization of EmptinessChecker for object instances so we can directly access its fields
 private[utils] trait ObjEmptinessChecker[A] extends EmptinessChecker[A] {
-  import EmptinessChecker._
+  import EmptinessChecker.*
 
   def structureOf(value: A): Structure.Obj
 }
@@ -99,20 +99,24 @@ object EmptinessChecker {
 
   def instance[A](func: A => Structure): EmptinessChecker[A] = (value: A) => func(value)
 
-  def instanceObj[A](func: A => Structure.Obj): ObjEmptinessChecker[A] = (value: A) => func(value)
-
-  def use[A, B: EmptinessChecker](func: A => B): EmptinessChecker[A] = EmptinessChecker.instance { a =>
-    val b = func(a)
-    EmptinessChecker[B].structureOf(b)
+  def use[A](func: A => List[(String, Structure)]): EmptinessChecker[A] = EmptinessChecker.instance { a =>
+    Structure.Obj(func(a))
   }
+
+  def field[A](name: String, value: A)(using checker: EmptinessChecker[A]): (String, Structure) = name -> checker.structureOf(value)
 
   def primitive[A]: EmptinessChecker[A] = EmptinessChecker.instance(_ => Structure.Primitive)
 
-  given EmptinessChecker[String]     = instance(_ => Structure.Primitive)
-  given EmptinessChecker[Int]        = instance(_ => Structure.Primitive)
-  given EmptinessChecker[Double]     = instance(_ => Structure.Primitive)
-  given EmptinessChecker[Boolean]    = instance(_ => Structure.Primitive)
-  given EmptinessChecker[BigInt]     = instance(_ => Structure.Primitive)
+  given EmptinessChecker[String] = instance(_ => Structure.Primitive)
+
+  given EmptinessChecker[Int] = instance(_ => Structure.Primitive)
+
+  given EmptinessChecker[Double] = instance(_ => Structure.Primitive)
+
+  given EmptinessChecker[Boolean] = instance(_ => Structure.Primitive)
+
+  given EmptinessChecker[BigInt] = instance(_ => Structure.Primitive)
+
   given EmptinessChecker[BigDecimal] = instance(_ => Structure.Primitive)
 
   given [A](using aInstance: EmptinessChecker[A]): EmptinessChecker[Option[A]] =
@@ -131,7 +135,7 @@ object EmptinessChecker {
     given [A](using a: => A): Lazy[A] = new Lazy(() => a)
   }
 
-  inline given derived[A](using m: Mirror.ProductOf[A]): EmptinessChecker[A] =
+  inline given derived[A](using m: Mirror.Of[A]): EmptinessChecker[A] =
     instance { a =>
       val elemLabels    = summonLabels[m.MirroredElemLabels]
       val elemInstances = summonAllInstances[m.MirroredElemTypes]

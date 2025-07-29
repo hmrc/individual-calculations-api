@@ -24,7 +24,7 @@ sealed trait ListCalculationsResponse[+I] {
 }
 
 object ListCalculationsResponse {
-  
+
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = { case def1: Def1_ListCalculationsResponse[_] =>
     Json.toJsObject(def1.asInstanceOf[Def1_ListCalculationsResponse[I]])
   }

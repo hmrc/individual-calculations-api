@@ -24,13 +24,13 @@ sealed trait ListCalculationsResponse[+I] {
 }
 
 object ListCalculationsResponse {
-  
+
   implicit def writes[I: Writes]: OWrites[ListCalculationsResponse[I]] = {
-    case def1: Def1_ListCalculationsResponse[_] =>
+    case def1: Def1_ListCalculationsResponse[?] =>
       Json.toJsObject(def1.asInstanceOf[Def1_ListCalculationsResponse[I]])
-    case def2: Def2_ListCalculationsResponse[_] =>
+    case def2: Def2_ListCalculationsResponse[?] =>
       Json.toJsObject(def2.asInstanceOf[Def2_ListCalculationsResponse[I]])
-    case def3: Def3_ListCalculationsResponse[_] =>
+    case def3: Def3_ListCalculationsResponse[?] =>
       Json.toJsObject(def3.asInstanceOf[Def3_ListCalculationsResponse[I]])
   }
 

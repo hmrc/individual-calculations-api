@@ -38,7 +38,8 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
   "ListCalculationsService" when {
     "a successful response is returned" must {
       "return a success" in new Test {
-        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] = Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
+        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
+          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
 
         MockListCalculationsConnector
           .list(request)

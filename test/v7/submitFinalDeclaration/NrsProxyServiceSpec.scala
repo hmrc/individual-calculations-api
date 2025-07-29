@@ -45,7 +45,7 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_Calculat
     .configure("metrics.enabled" -> "false")
     .build()
 
-  val actorSystem: ActorSystem = app.injector.instanceOf[ActorSystem]
+  val actorSystem: ActorSystem                 = app.injector.instanceOf[ActorSystem]
   implicit val scheduler: Scheduler            = actorSystem.scheduler
   private val taxYear                          = TaxYear.fromMtd("2020-21")
   private val calculationId                    = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")

@@ -30,7 +30,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import java.net.URL
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockHttpClient extends MockFactory { self: TestSuite =>
+trait MockHttpClient extends TestSuite with MockFactory {
 
   val mockHttpClient: HttpClientV2       = mock[HttpClientV2]
   val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]

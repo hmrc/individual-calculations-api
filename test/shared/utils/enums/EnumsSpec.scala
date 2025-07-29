@@ -126,7 +126,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
       badJson.validate[Foo[Enum]] shouldBe JsError(__ \ "someField", JsonValidationError("error.expected.jsstring"))
     }
 
-    "only work for sealed trait singletons (objects)" in {
+    "only work for enums with singleton cases (no parameters)" in {
       assertTypeError(
         """
           |      enum NotEnum {

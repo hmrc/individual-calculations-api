@@ -429,11 +429,8 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (UNPROCESSABLE_ENTITY, "NO_VALID_INCOME_SOURCES", INTERNAL_SERVER_ERROR, InternalError),
     (UNPROCESSABLE_ENTITY, "NO_SUBMISSIONS_EXIST", BAD_REQUEST, RuleNoIncomeSubmissionsExistError),
     (UNPROCESSABLE_ENTITY, "ALREADY_DECLARED", BAD_REQUEST, RuleFinalDeclarationReceivedError),
-    // new
     (UNPROCESSABLE_ENTITY, "PREMATURE_FINALISATION", BAD_REQUEST, RulePrematureFinalisationError),
-    // new
     (UNPROCESSABLE_ENTITY, "DECLARATION_NOT_RECEIVED", BAD_REQUEST, RuleDeclarationNotReceivedError),
-    // new
     (UNPROCESSABLE_ENTITY, "OUTSIDE_AMENDMENT_WINDOW", BAD_REQUEST, RuleOutsideAmendmentWindowError),
     (UNPROCESSABLE_ENTITY, "CALCULATION_EXISTS", BAD_REQUEST, RuleCalculationInProgressError),
     (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),

@@ -17,7 +17,6 @@
 package shared.controllers
 
 import cats.implicits.catsSyntaxValidatedId
-import org.scalatest.TestSuite
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
@@ -43,7 +42,7 @@ abstract class ControllerBaseSpec
     with ResultExtractors
     with MockAuditService
     with ControllerSpecHateoasSupport
-    with MockAppConfig { self: TestSuite =>
+    with MockAppConfig {
 
   protected val apiVersion: Version = Version9
 
@@ -60,7 +59,7 @@ abstract class ControllerBaseSpec
 }
 
 trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLookupService with MockIdGenerator with RealAppConfig {
-  this: ControllerBaseSpec =>
+  self: ControllerBaseSpec =>
 
   protected val correlationId    = "X-123"
   protected val validNino        = "AA123456A"
