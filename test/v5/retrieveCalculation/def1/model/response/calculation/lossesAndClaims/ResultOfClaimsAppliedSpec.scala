@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 
 import shared.models.domain.TaxYear
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v5.common.model.response.{ClaimType, IncomeSourceType}
 
@@ -103,6 +103,10 @@ class ResultOfClaimsAppliedSpec extends UnitSpec {
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[ResultOfClaimsApplied] shouldBe a[JsError]
   }
 
 }

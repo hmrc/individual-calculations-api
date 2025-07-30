@@ -48,7 +48,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
             Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
           )
 
-        await(service.list(request)) shouldBe outcome
+        await(service.list(request)).shouldBe(outcome)
       }
     }
 
@@ -57,7 +57,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         s"map appropriately for error code: '$downstreamErrorCode'" in {
           val connectorOutcome = Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))
           MockListCalculationsConnector.list(request).returns(Future.successful(connectorOutcome))
-          await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, mtdError))
+          await(service.list(request)).shouldBe(Left(ErrorWrapper(correlationId, mtdError)))
         }
       }
 
@@ -79,13 +79,13 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         "SERVICE_UNAVAILABLE"       -> InternalError
       )
 
-      (commonError ++ nonTysErrors ++ tysErrors).foreach(args => (checkErrorMappings _).tupled(args))
+      (commonError ++ nonTysErrors ++ tysErrors).foreach(args => checkErrorMappings.tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
         val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
           Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("NOT_MAPPED"))))
         MockListCalculationsConnector.list(request).returns(Future.successful(outcome))
-        await(service.list(request)) shouldBe Left(ErrorWrapper(correlationId, InternalError))
+        await(service.list(request)).shouldBe(Left(ErrorWrapper(correlationId, InternalError)))
       }
     }
   }

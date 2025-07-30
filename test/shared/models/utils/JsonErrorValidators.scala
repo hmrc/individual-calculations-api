@@ -19,8 +19,7 @@ package shared.models.utils
 import play.api.libs.json._
 import shared.utils.UnitSpec
 
-trait JsonErrorValidators {
-  _: UnitSpec =>
+trait JsonErrorValidators extends UnitSpec {
 
   type JsError  = (JsPath, Seq[JsonValidationError])
   type JsErrors = Seq[JsError]

@@ -19,7 +19,6 @@ package shared.utils
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.http.Status
-import play.api.http.Status.UNSUPPORTED_MEDIA_TYPE
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, RequestHeader, Result}
 import play.api.test.FakeRequest
@@ -44,45 +43,45 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       s"URI not found" in new Test {
 
         val result: Future[Result] = handler.onClientError(requestHeader, Status.NOT_FOUND, "test")
-        status(result) shouldBe Status.NOT_FOUND
+        status(result).shouldBe(Status.NOT_FOUND)
 
-        contentAsJson(result) shouldBe NotFoundError.asJson
+        contentAsJson(result).shouldBe(NotFoundError.asJson)
       }
     }
 
     "return 400 with error body" when {
       "JsValidationException thrown and header is supplied" in new Test {
         val result: Future[Result] = handler.onClientError(requestHeader, BAD_REQUEST, "test")
-        status(result) shouldBe BAD_REQUEST
+        status(result).shouldBe(BAD_REQUEST)
 
-        contentAsJson(result) shouldBe BadRequestError.asJson
+        contentAsJson(result).shouldBe(BadRequestError.asJson)
       }
     }
 
     "return 401 with error body" when {
       "unauthorised and header is supplied" in new Test {
         val result: Future[Result] = handler.onClientError(requestHeader, UNAUTHORIZED, "test")
-        status(result) shouldBe UNAUTHORIZED
+        status(result).shouldBe(UNAUTHORIZED)
 
-        contentAsJson(result) shouldBe ClientOrAgentNotAuthorisedError.asJson
+        contentAsJson(result).shouldBe(ClientOrAgentNotAuthorisedError.asJson)
       }
     }
 
     "return 415 with error body" when {
       "unsupported body and header is supplied" in new Test {
         val result: Future[Result] = handler.onClientError(requestHeader, UNSUPPORTED_MEDIA_TYPE, "test")
-        status(result) shouldBe UNSUPPORTED_MEDIA_TYPE
+        status(result).shouldBe(UNSUPPORTED_MEDIA_TYPE)
 
-        contentAsJson(result) shouldBe InvalidBodyTypeError.asJson
+        contentAsJson(result).shouldBe(InvalidBodyTypeError.asJson)
       }
     }
 
     "return 405 with error body" when {
       "invalid method type" in new Test {
         val result: Future[Result] = handler.onClientError(requestHeader, METHOD_NOT_ALLOWED, "test")
-        status(result) shouldBe METHOD_NOT_ALLOWED
+        status(result).shouldBe(METHOD_NOT_ALLOWED)
 
-        contentAsJson(result) shouldBe InvalidHttpMethodError.asJson
+        contentAsJson(result).shouldBe(InvalidHttpMethodError.asJson)
       }
     }
 
@@ -90,15 +89,16 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       "no matching error was found" in new Test {
         val result: Future[Result] = handler.onClientError(requestHeader, statusCode = 499, "unmatched error")
 
-        status(result) shouldBe BAD_REQUEST
-        contentAsJson(result) shouldBe Json.parse(
-          """
+        status(result).shouldBe(BAD_REQUEST)
+        contentAsJson(result).shouldBe(
+          Json.parse(
+            """
           |{
           |  "code": "INVALID_REQUEST",
           |  "message": "unmatched error"
           |}
           |""".stripMargin
-        )
+          ))
       }
     }
   }
@@ -108,9 +108,9 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
     "return 404 with error body" when {
       "NotFoundException thrown" in new Test {
         val result: Future[Result] = handler.onServerError(requestHeader, new NotFoundException("test") with NoStackTrace)
-        status(result) shouldBe NOT_FOUND
+        status(result).shouldBe(NOT_FOUND)
 
-        contentAsJson(result) shouldBe NotFoundError.asJson
+        contentAsJson(result).shouldBe(NotFoundError.asJson)
       }
     }
 
@@ -118,9 +118,9 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       "AuthorisationException thrown" in new Test {
         val result: Future[Result] = handler.onServerError(requestHeader, new InsufficientEnrolments("test") with NoStackTrace)
         // TODO This really should be FORBIDDEN (403), but would need to be changed across all the APIs at once (if at all).
-        status(result) shouldBe UNAUTHORIZED
+        status(result).shouldBe(UNAUTHORIZED)
 
-        contentAsJson(result) shouldBe ClientOrAgentNotAuthorisedError.asJson
+        contentAsJson(result).shouldBe(ClientOrAgentNotAuthorisedError.asJson)
       }
     }
 
@@ -128,18 +128,18 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
       "JsValidationException thrown" in new Test {
         val result: Future[Result] =
           handler.onServerError(requestHeader, new JsValidationException("test", "test", classOf[String], "errs") with NoStackTrace)
-        status(result) shouldBe BAD_REQUEST
+        status(result).shouldBe(BAD_REQUEST)
 
-        contentAsJson(result) shouldBe BadRequestError.asJson
+        contentAsJson(result).shouldBe(BadRequestError.asJson)
       }
     }
 
     "return 500 with error body" when {
       "other exception thrown" in new Test {
         val result: Future[Result] = handler.onServerError(requestHeader, new Exception with NoStackTrace)
-        status(result) shouldBe INTERNAL_SERVER_ERROR
+        status(result).shouldBe(INTERNAL_SERVER_ERROR)
 
-        contentAsJson(result) shouldBe InternalError.asJson
+        contentAsJson(result).shouldBe(InternalError.asJson)
       }
     }
   }

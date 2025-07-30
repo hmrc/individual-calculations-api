@@ -30,12 +30,13 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
   val notableEvent: String = "test-event"
   val body: JsValue        = Json.obj("field" -> "value")
 
-  class Test extends MockHttpClient with MockCalculationsConfig {
+  class Test extends ConnectorSpec with MockHttpClient with MockCalculationsConfig {
 
     val connector: NrsProxyConnector = new NrsProxyConnector(
       http = mockHttpClient,
       calculationsConfig = mockCalculationsConfig
     )
+
     MockCalculationsConfig.mtdNrsProxyBaseUrl returns baseUrl
   }
 
@@ -52,7 +53,7 @@ class NrsProxyConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(Right(())))
 
       val result: Either[UpstreamErrorResponse, Unit] = await(connector.submitAsync(nino, notableEvent, body))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
   }
 

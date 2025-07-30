@@ -26,20 +26,20 @@ class TriggerCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenPropert
     "a tax year is valid" must {
       "use Def1 for tax years from 2023-24" in {
         forTaxYearsFrom(TaxYear.fromMtd("2023-24")) { taxYear =>
-          TriggerCalculationSchema.schemaFor(taxYear.asMtd) shouldBe TriggerCalculationSchema.Def1
+          TriggerCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(TriggerCalculationSchema.Def1)
         }
       }
 
       "use Def1 for pre-TYS tax years" in {
         forPreTysTaxYears { taxYear =>
-          TriggerCalculationSchema.schemaFor(taxYear.asMtd) shouldBe TriggerCalculationSchema.Def1
+          TriggerCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(TriggerCalculationSchema.Def1)
         }
       }
     }
 
     "the tax year is not valid" must {
       "use a default of Def1" in {
-        TriggerCalculationSchema.schemaFor("NotATaxYear") shouldBe TriggerCalculationSchema.Def1
+        TriggerCalculationSchema.schemaFor("NotATaxYear").shouldBe(TriggerCalculationSchema.Def1)
       }
     }
   }

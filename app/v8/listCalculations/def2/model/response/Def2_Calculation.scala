@@ -20,14 +20,12 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v8.listCalculations.model.response.{Calculation, ListCalculationType}
 
-
 case class Def2_Calculation(calculationId: String,
                             calculationTimestamp: String,
                             calculationType: ListCalculationType,
                             calculationTrigger: String,
                             calculationOutcome: String,
-                            liabilityAmount: Option[BigDecimal]
-                           )
+                            liabilityAmount: Option[BigDecimal])
     extends Calculation
 
 object Def2_Calculation {
@@ -39,6 +37,6 @@ object Def2_Calculation {
       (JsPath \ "calculationType").read[ListCalculationType] and
       (JsPath \ "calculationTrigger").read[String] and
       (JsPath \ "calculationOutcome").read[String] and
-      (JsPath \ "liabilityAmount").readNullable[BigDecimal])(Def2_Calculation.apply _)
+      (JsPath \ "liabilityAmount").readNullable[BigDecimal])(Def2_Calculation.apply)
 
 }

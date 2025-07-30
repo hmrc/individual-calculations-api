@@ -66,6 +66,12 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
       }
     }
 
+    "a primitive JsValue inside an object is compared to Leaf, it should return no extra paths" in {
+      val validator      = new UnexpectedJsonFieldsValidator[String]
+      val json: JsObject = Json.parse("""{ "value": "primitive" }""").as[JsObject]
+      validator.validator((json, "primitive")) shouldBe None
+    }
+
     "an additional field is present" when {
       "a top level extra field is present" when {
         def bazWithValue(bazValue: String) =
@@ -119,9 +125,9 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
         "the field is nested in an object" must {
           "return an error with path to the extra field" in {
             val json = Json
-              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" }, 
+              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" },
                    |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" }, 
+                   |    {"a" : "v1",  "b" : "v2" },
                    |    {"a" : "v1", "b" : "v2" }
                    |  ]
                    |}""".stripMargin)
@@ -137,7 +143,7 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
               .parse("""{
                    |  "bar": {"a" : "v1", "b" : "v2" },
                    |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" }, 
+                   |    {"a" : "v1",  "b" : "v2" },
                    |    {"a" : "v1", "baz": "extra", "b" : "v2" }
                    |  ]
                    |}""".stripMargin)
@@ -154,7 +160,7 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
                  |  "bar": {"a" : "v1", "b" : "v2" , "baz": "extra"},
                  |  "baz": "extra",
                  |  "bars": [
-                 |    {"a" : "v1", "baz": "extra0", "b" : "v2" }, 
+                 |    {"a" : "v1", "baz": "extra0", "b" : "v2" },
                  |    {"a" : "v1", "baz": "extra1", "b" : "v2" }
                  |  ]
                  |}""".stripMargin)
@@ -222,6 +228,66 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
         }
       }
     }
+
+    "handle arrays with more items than expected schema items" in {
+      val json = Json
+        .parse("""{
+        "bars": [
+          {"a" : "v1", "b": "v2"},
+          {"a" : "v1", "b": "v2"},
+          {"a" : "v1", "extra": "v3"}
+        ],
+        "bar": {"a": "v1", "b": "v2"}
+      }""")
+        .as[JsObject]
+
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "handle arrays with fewer items than expected schema items" in {
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
+
+      val json = Json
+        .parse("""{
+        "bar": {"a": "v1", "b": "v2"},
+        "bars": [
+          {"a" : "v1", "b": "v2"}
+        ]
+      }""")
+        .as[JsObject]
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "empty array is valid even if expected items exist" in {
+      val json = Json
+        .parse("""{
+        "bar": {"a": "v1", "b": "v2"},
+        "bars": []
+      }""")
+        .as[JsObject]
+
+      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")))))
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "missing optional fields should not cause errors" in {
+      val json = Json.parse("""{ "bar": {"a" : "v1"} }""").as[JsObject]
+      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
+
+      validator.validator((json, data)) shouldBe None
+    }
+
+    "null field in input should be ignored if not in schema" in {
+      val json = Json.parse("""{ "bar": {"a" : "v1", "b": null}, "bar2": null }""").as[JsObject]
+      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
+
+      validator.validator((json, data)) shouldBe None
+    }
+
   }
 
 }

@@ -19,14 +19,18 @@ package v7.submitFinalDeclaration.model.request
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.utils.UnitSpec
 import v7.common.model.domain.`final-declaration`
-import v7.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, Def2_RetrieveCalculationRequestData, Def3_RetrieveCalculationRequestData}
+import v7.retrieveCalculation.models.request.{
+  Def1_RetrieveCalculationRequestData,
+  Def2_RetrieveCalculationRequestData,
+  Def3_RetrieveCalculationRequestData
+}
 
 class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
 
   "SubmitFinalDeclarationRequestData" when {
     "getting corresponding retrieve data (for NRS)" when {
-      val nino          = Nino("ZG903729C")
-      val calculationId = CalculationId("calcId")
+      val nino            = Nino("ZG903729C")
+      val calculationId   = CalculationId("calcId")
       val calculationType = `final-declaration`
 
       "retrieve uses schema Def1" must {
@@ -54,4 +58,5 @@ class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
       }
     }
   }
+
 }

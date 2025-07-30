@@ -20,7 +20,12 @@ import shared.controllers.validators.resolvers.ResolveTaxYear
 import shared.models.domain.TaxYear
 import shared.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v8.retrieveCalculation.models.response.{Def1_RetrieveCalculationResponse, Def2_RetrieveCalculationResponse, Def3_RetrieveCalculationResponse, RetrieveCalculationResponse}
+import v8.retrieveCalculation.models.response.{
+  Def1_RetrieveCalculationResponse,
+  Def2_RetrieveCalculationResponse,
+  Def3_RetrieveCalculationResponse,
+  RetrieveCalculationResponse
+}
 
 import scala.math.Ordered.orderingToOrdered
 
@@ -50,8 +55,7 @@ object RetrieveCalculationSchema {
       .map(schemaFor)
       .getOrElse(latestSchema)
 
-  def schemaFor(taxYear: TaxYear): RetrieveCalculationSchema =
-  {
+  def schemaFor(taxYear: TaxYear): RetrieveCalculationSchema = {
     if (taxYear <= TaxYear.starting(2023)) Def1
     else if (taxYear == TaxYear.starting(2024)) Def2
     else if (taxYear == TaxYear.starting(2025)) Def3

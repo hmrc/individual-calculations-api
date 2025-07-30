@@ -29,8 +29,8 @@ import java.time.LocalDate
 
 class DownstreamResponseMappingSupportSpec extends UnitSpec {
 
-  implicit val logContext: EndpointLogContext                = EndpointLogContext("ctrl", "ep")
-  val mapping: DownstreamResponseMappingSupport with Logging = new DownstreamResponseMappingSupport with Logging {}
+  implicit val logContext: EndpointLogContext             = EndpointLogContext("ctrl", "ep")
+  val mapping: DownstreamResponseMappingSupport & Logging = new DownstreamResponseMappingSupport with Logging {}
 
   val correlationId = "someCorrelationId"
 
@@ -43,11 +43,11 @@ class DownstreamResponseMappingSupportSpec extends UnitSpec {
   object ErrorBvr extends MtdError("msg", "bvr", BAD_REQUEST)
 
   val errorCodeMap: PartialFunction[String, MtdError] = {
-    case "ERR1" => Error1
-    case "ERR2" => Error2
-    case "DS"   => errors.InternalError
+    case "ERR1"                   => Error1
+    case "ERR2"                   => Error2
+    case "DS"                     => errors.InternalError
     case "INVALID_CORRELATION_ID" => errors.InternalError
-    case "INVALID_CORRELATIONID" => errors.InternalError
+    case "INVALID_CORRELATIONID"  => errors.InternalError
   }
 
   lazy val date: LocalDate = LocalDate.now()

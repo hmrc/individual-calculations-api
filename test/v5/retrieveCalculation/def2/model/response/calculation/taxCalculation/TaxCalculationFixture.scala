@@ -26,5 +26,4 @@ trait TaxCalculationFixture {
   val taxCalculationDownstreamJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v5/retrieveCalculation/def2/model/response/calculation/taxCalculation/taxCalculation_downstream.json"))
 
-
 }

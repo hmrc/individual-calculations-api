@@ -19,12 +19,12 @@ package v5.retrieveCalculation.def2.model.response.calculation.dividendsIncome
 import play.api.libs.json.{Format, Json}
 
 case class DividendsIncome(totalChargeableDividends: Option[BigInt],
-                                totalUkDividends: Option[BigInt],
-                                ukDividends: Option[UkDividends],
-                                otherDividends: Option[Seq[OtherDividends]],
-                                chargeableForeignDividends: Option[BigInt],
-                                foreignDividends: Option[Seq[CommonForeignDividend]],
-                                dividendIncomeReceivedWhilstAbroad: Option[Seq[CommonForeignDividend]])
+                           totalUkDividends: Option[BigInt],
+                           ukDividends: Option[UkDividends],
+                           otherDividends: Option[Seq[OtherDividends]],
+                           chargeableForeignDividends: Option[BigInt],
+                           foreignDividends: Option[Seq[CommonForeignDividend]],
+                           dividendIncomeReceivedWhilstAbroad: Option[Seq[CommonForeignDividend]])
 
 object DividendsIncome {
   implicit val format: Format[DividendsIncome] = Json.format[DividendsIncome]

@@ -79,7 +79,7 @@ class ListCalculationsServiceSpec extends ServiceSpec with Def1_ListCalculations
         "SERVICE_UNAVAILABLE"       -> InternalError
       )
 
-      (commonError ++ nonTysErrors ++ tysErrors).foreach(args => (checkErrorMappings _).tupled(args))
+      (commonError ++ nonTysErrors ++ tysErrors).foreach(args => checkErrorMappings.tupled(args))
 
       "return an internal server error for an unexpected error code" in new Test {
         val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =

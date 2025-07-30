@@ -37,7 +37,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   )
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
 
     val connector: SubmitFinalDeclarationConnector = new SubmitFinalDeclarationConnector(
       http = mockHttpClient,
@@ -58,7 +58,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(outcome))
 
       val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
   }
 

@@ -17,7 +17,7 @@
 package v5.retrieveCalculation.def2.model.response.calculation.lossesAndClaims
 
 import shared.models.domain.TaxYear
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.utils.UnitSpec
 import v5.common.model.response.IncomeSourceType
 
@@ -67,8 +67,7 @@ class UnclaimedLossSpec extends UnitSpec {
 
       testData.foreach { case Test(downstreamIncomeSourceType, incomeSourceType) =>
         s"provided downstream income source type $downstreamIncomeSourceType" in {
-          downstreamJson(downstreamIncomeSourceType).as[UnclaimedLoss] shouldBe
-            model(incomeSourceType)
+          downstreamJson(downstreamIncomeSourceType).as[UnclaimedLoss].shouldBe(model(incomeSourceType))
         }
       }
     }
@@ -79,11 +78,14 @@ class UnclaimedLossSpec extends UnitSpec {
 
       testData.foreach { case Test(_, incomeSourceType) =>
         s"provided income source type $incomeSourceType" in {
-          Json.toJson(model(incomeSourceType)) shouldBe
-            mtdJson(incomeSourceType)
+          Json.toJson(model(incomeSourceType)).shouldBe(mtdJson(incomeSourceType))
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[UnclaimedLoss].shouldBe(a[JsError])
   }
 
 }

@@ -19,10 +19,10 @@ package v8.retrieveCalculation.def3.model.response.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class CgtBand(
-                         name: CgtBandName,
-                         rate: BigDecimal,
-                         income: BigDecimal,
-                         taxAmount: BigDecimal
+    name: CgtBandName,
+    rate: BigDecimal,
+    income: BigDecimal,
+    taxAmount: BigDecimal
 )
 
 object CgtBand {

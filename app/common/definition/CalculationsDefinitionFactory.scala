@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfig) extends ApiDefinitionFactory {
 
-  lazy val definition: Definition =
+  val definition: Definition =
     Definition(
       api = APIDefinition(
         name = "Individual Calculations (MTD)",

@@ -27,9 +27,9 @@ import scala.concurrent.Future
 
 class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
-  val nino: Nino                   = Nino("AA111111A")
-  val taxYear: TaxYear             = TaxYear.fromMtd("2020-21")
-  val calculationId: CalculationId = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
+  val nino: Nino                         = Nino("AA111111A")
+  val taxYear: TaxYear                   = TaxYear.fromMtd("2020-21")
+  val calculationId: CalculationId       = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
   val calculationTypeDf: CalculationType = `final-declaration`
 
   val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
@@ -40,7 +40,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   )
 
   trait Test {
-    _: ConnectorTest =>
+    self: ConnectorTest =>
 
     val connector: SubmitFinalDeclarationConnector = new SubmitFinalDeclarationConnector(
       http = mockHttpClient,
@@ -61,8 +61,24 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
         .returns(Future.successful(outcome))
 
       val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
-      result shouldBe outcome
+      result.shouldBe(outcome)
     }
+
+    "return a success response when request is made to IFS downstream API for tax year 2026 or later" in new IfsTest with Test {
+      val post2026TaxYear: TaxYear                   = TaxYear.fromMtd("2026-27")
+      val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(nino, post2026TaxYear, calculationId, calculationTypeDf)
+
+      val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
+
+      willPost(
+        url = url"$baseUrl/income-tax/${post2026TaxYear.asTysDownstream}/calculation/$nino/$calculationId/${calculationTypeDf.toDownstream}/confirm",
+        body = EmptyJsonBody
+      ).returns(Future.successful(outcome))
+
+      val result: DownstreamOutcome[Unit] = await(connector.submitFinalDeclaration(request))
+      result.shouldBe(outcome)
+    }
+
   }
 
 }

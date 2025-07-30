@@ -50,7 +50,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
             .triggerCalculation(request)
             .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-          await(service.triggerCalculation(request)) shouldBe Right(ResponseWrapper(correlationId, response))
+          await(service.triggerCalculation(request)).shouldBe(Right(ResponseWrapper(correlationId, response)))
         }
       }
     }
@@ -64,40 +64,40 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
               .triggerCalculation(request)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
-            await(service.triggerCalculation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
+            await(service.triggerCalculation(request)).shouldBe(Left(ErrorWrapper(correlationId, error)))
           }
 
         val api1426downstreamErrorMap =
           List(
-            ("INVALID_NINO" , NinoFormatError),
-            ("INVALID_TAX_YEAR" , TaxYearFormatError),
-            ("INVALID_TAX_CRYSTALLISE" , FinalDeclarationFormatError),
-            ("INVALID_REQUEST" , InternalError),
-            ("NO_SUBMISSION_EXIST" , RuleNoIncomeSubmissionsExistError),
-            ("CONFLICT" , RuleFinalDeclarationReceivedError),
-            ("SERVER_ERROR" , InternalError),
-            ("SERVICE_UNAVAILABLE" , InternalError),
-            ("UNMATCHED_STUB_ERROR" , RuleIncorrectGovTestScenarioError)
+            ("INVALID_NINO", NinoFormatError),
+            ("INVALID_TAX_YEAR", TaxYearFormatError),
+            ("INVALID_TAX_CRYSTALLISE", FinalDeclarationFormatError),
+            ("INVALID_REQUEST", InternalError),
+            ("NO_SUBMISSION_EXIST", RuleNoIncomeSubmissionsExistError),
+            ("CONFLICT", RuleFinalDeclarationReceivedError),
+            ("SERVER_ERROR", InternalError),
+            ("SERVICE_UNAVAILABLE", InternalError),
+            ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
           )
 
         val api1897downstreamErrorMap =
           List(
-            ("INVALID_TAXABLE_ENTITY_ID" , NinoFormatError),
-            ("INVALID_TAX_YEAR" , TaxYearFormatError),
-            ("INVALID_CRYSTALLISE" , FinalDeclarationFormatError),
-            ("NO_VALID_INCOME_SOURCES" , InternalError),
-            ("NO_SUBMISSIONS_EXIST" , RuleNoIncomeSubmissionsExistError),
-            ("CHANGED_INCOME_SOURCES" , RuleIncomeSourcesChangedError),
-            ("OUTDATED_SUBMISSION" , RuleRecentSubmissionsExistError),
-            ("RESIDENCY_CHANGED" , RuleResidencyChangedError),
-            ("ALREADY_DECLARED" , RuleFinalDeclarationReceivedError),
-            ("PREMATURE_CRYSTALLISATION" , RuleTaxYearNotEndedError),
-            ("CALCULATION_EXISTS" , RuleCalculationInProgressError),
-            ("BVR_FAILURE" , RuleBusinessValidationFailureError),
-            ("TAX_YEAR_NOT_SUPPORTED" , RuleTaxYearNotSupportedError),
-            ("SERVER_ERROR" , InternalError),
-            ("SERVICE_UNAVAILABLE" , InternalError),
-            ("UNMATCHED_STUB_ERROR" , RuleIncorrectGovTestScenarioError)
+            ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
+            ("INVALID_TAX_YEAR", TaxYearFormatError),
+            ("INVALID_CRYSTALLISE", FinalDeclarationFormatError),
+            ("NO_VALID_INCOME_SOURCES", InternalError),
+            ("NO_SUBMISSIONS_EXIST", RuleNoIncomeSubmissionsExistError),
+            ("CHANGED_INCOME_SOURCES", RuleIncomeSourcesChangedError),
+            ("OUTDATED_SUBMISSION", RuleRecentSubmissionsExistError),
+            ("RESIDENCY_CHANGED", RuleResidencyChangedError),
+            ("ALREADY_DECLARED", RuleFinalDeclarationReceivedError),
+            ("PREMATURE_CRYSTALLISATION", RuleTaxYearNotEndedError),
+            ("CALCULATION_EXISTS", RuleCalculationInProgressError),
+            ("BVR_FAILURE", RuleBusinessValidationFailureError),
+            ("TAX_YEAR_NOT_SUPPORTED", RuleTaxYearNotSupportedError),
+            ("SERVER_ERROR", InternalError),
+            ("SERVICE_UNAVAILABLE", InternalError),
+            ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
           )
 
         val api2081downstreamErrorMap =
@@ -121,7 +121,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
           )
 
         (api1426downstreamErrorMap ++ api1897downstreamErrorMap ++ api2081downstreamErrorMap).distinct
-          .foreach(args => (serviceError _).tupled(args))
+          .foreach(args => serviceError.tupled(args))
       }
     }
 

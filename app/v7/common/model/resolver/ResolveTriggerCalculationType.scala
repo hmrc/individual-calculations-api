@@ -26,9 +26,10 @@ import v7.common.model.domain._
 object ResolveTriggerCalculationType extends ResolverSupport {
 
   def apply(value: String): Validated[Seq[MtdError], CalculationType] = value match {
-    case "in-year" => Valid(`in-year`)
+    case "in-year"            => Valid(`in-year`)
     case "intent-to-finalise" => Valid(`intent-to-finalise`)
-    case "intent-to-amend" => Valid(`intent-to-amend`)
-    case _                   => Invalid(Seq(FormatCalculationTypeError))
+    case "intent-to-amend"    => Valid(`intent-to-amend`)
+    case _                    => Invalid(Seq(FormatCalculationTypeError))
   }
+
 }

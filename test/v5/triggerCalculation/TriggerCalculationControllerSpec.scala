@@ -122,7 +122,7 @@ class TriggerCalculationControllerSpec
 
     val finalDeclaration: Option[String] = None
 
-    lazy val controller = new TriggerCalculationController(
+    val controller: TriggerCalculationController = new TriggerCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockTriggerCalculationValidatorFactory,

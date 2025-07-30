@@ -19,12 +19,12 @@ package v5.retrieveCalculation.def2.model.response.calculation.stateBenefitsInco
 import play.api.libs.json.{Json, OFormat}
 
 case class StateBenefitsDetail(incapacityBenefit: Option[Seq[CommonBenefitWithTaxPaid]],
-                                    statePension: Option[Seq[CommonBenefit]],
-                                    statePensionLumpSum: Option[Seq[StatePensionLumpSum]],
-                                    employmentSupportAllowance: Option[Seq[CommonBenefitWithTaxPaid]],
-                                    jobSeekersAllowance: Option[Seq[CommonBenefitWithTaxPaid]],
-                                    bereavementAllowance: Option[Seq[CommonBenefit]],
-                                    otherStateBenefits: Option[Seq[CommonBenefit]])
+                               statePension: Option[Seq[CommonBenefit]],
+                               statePensionLumpSum: Option[Seq[StatePensionLumpSum]],
+                               employmentSupportAllowance: Option[Seq[CommonBenefitWithTaxPaid]],
+                               jobSeekersAllowance: Option[Seq[CommonBenefitWithTaxPaid]],
+                               bereavementAllowance: Option[Seq[CommonBenefit]],
+                               otherStateBenefits: Option[Seq[CommonBenefit]])
 
 object StateBenefitsDetail {
   implicit val format: OFormat[StateBenefitsDetail] = Json.format[StateBenefitsDetail]

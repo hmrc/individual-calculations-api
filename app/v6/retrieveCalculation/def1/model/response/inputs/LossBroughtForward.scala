@@ -23,13 +23,13 @@ import v6.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
 case class LossBroughtForward(lossId: Option[String],
-                                   incomeSourceId: String,
-                                   incomeSourceType: IncomeSourceType,
-                                   submissionTimestamp: Option[String],
-                                   lossType: Option[String],
-                                   taxYearLossIncurred: TaxYear,
-                                   currentLossValue: BigInt,
-                                   mtdLoss: Option[Boolean])
+                              incomeSourceId: String,
+                              incomeSourceType: IncomeSourceType,
+                              submissionTimestamp: Option[String],
+                              lossType: Option[String],
+                              taxYearLossIncurred: TaxYear,
+                              currentLossValue: BigInt,
+                              mtdLoss: Option[Boolean])
 
 object LossBroughtForward {
 

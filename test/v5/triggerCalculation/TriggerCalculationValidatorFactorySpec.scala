@@ -37,7 +37,7 @@ class TriggerCalculationValidatorFactorySpec extends UnitSpec {
         val result: Validator[TriggerCalculationRequestData] =
           validatorFactory.validator(validNino, validTaxYear, Some(validFinalDeclaration), TriggerCalculationSchema.Def1)
 
-        result shouldBe a[Def1_TriggerCalculationValidator]
+        result.shouldBe(a[Def1_TriggerCalculationValidator])
       }
     }
 

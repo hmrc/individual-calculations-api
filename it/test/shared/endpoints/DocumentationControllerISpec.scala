@@ -20,10 +20,11 @@ import io.swagger.v3.parser.OpenAPIV3Parser
 import play.api.http.Status
 import play.api.http.Status.OK
 import play.api.libs.json.Json
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.WSResponse
-import shared.config.AppConfig
 import shared.routing.{Version, Versions}
 import shared.support.IntegrationBaseSpec
+import shared.config.AppConfig
 
 import scala.util.Try
 

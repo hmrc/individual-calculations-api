@@ -21,11 +21,11 @@ import v6.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
 case class UkSavingsAndGainsIncome(incomeSourceId: Option[String],
-                                        incomeSourceType: IncomeSourceType,
-                                        incomeSourceName: Option[String],
-                                        grossIncome: BigDecimal,
-                                        netIncome: Option[BigDecimal],
-                                        taxDeducted: Option[BigDecimal])
+                                   incomeSourceType: IncomeSourceType,
+                                   incomeSourceName: Option[String],
+                                   grossIncome: BigDecimal,
+                                   netIncome: Option[BigDecimal],
+                                   taxDeducted: Option[BigDecimal])
 
 object UkSavingsAndGainsIncome {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`uk-savings-and-gains`, `uk-securities`)

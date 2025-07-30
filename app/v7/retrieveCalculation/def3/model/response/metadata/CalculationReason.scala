@@ -35,15 +35,15 @@ object CalculationReason {
   implicit val writes: Writes[CalculationReason] = Enums.writes[CalculationReason]
 
   implicit val reads: Reads[CalculationReason] = Enums.readsUsing {
-    case "customerRequest"                => `customer-request`
-    case "class2NICEvent"                 => `class2-nic-event`
-    case "newLossEvent"                   => `new-loss-event`
-    case "updatedLossEvent"               => `updated-loss-event`
-    case "newClaimEvent"                  => `new-claim-event`
-    case "updatedClaimEvent"              => `updated-claim-event`
-    case "newAnnualAdjustmentEvent"       => `new-annual-adjustment-event`
-    case "updatedAnnualAdjustmentEvent"   => `updated-annual-adjustment-event`
-    case "unattendedCalculation"          => `unattended-calculation`
+    case "customerRequest"              => `customer-request`
+    case "class2NICEvent"               => `class2-nic-event`
+    case "newLossEvent"                 => `new-loss-event`
+    case "updatedLossEvent"             => `updated-loss-event`
+    case "newClaimEvent"                => `new-claim-event`
+    case "updatedClaimEvent"            => `updated-claim-event`
+    case "newAnnualAdjustmentEvent"     => `new-annual-adjustment-event`
+    case "updatedAnnualAdjustmentEvent" => `updated-annual-adjustment-event`
+    case "unattendedCalculation"        => `unattended-calculation`
   }
 
 }

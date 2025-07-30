@@ -19,9 +19,9 @@ package v7.retrieveCalculation.def3.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class PensionSchemeOverseasTransfers(transferCharge: Option[BigDecimal],
-                                               transferChargeTaxPaid: Option[BigDecimal],
-                                               rate: Option[BigDecimal],
-                                               chargeableAmount: Option[BigDecimal])
+                                          transferChargeTaxPaid: Option[BigDecimal],
+                                          rate: Option[BigDecimal],
+                                          chargeableAmount: Option[BigDecimal])
 
 object PensionSchemeOverseasTransfers {
   implicit val format: OFormat[PensionSchemeOverseasTransfers] = Json.format[PensionSchemeOverseasTransfers]

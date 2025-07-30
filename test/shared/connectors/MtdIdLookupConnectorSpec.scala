@@ -28,7 +28,7 @@ class MtdIdLookupConnectorSpec extends ConnectorSpec {
   val nino  = "test-nino"
   val mtdId = "test-mtdId"
 
-  class Test extends MockHttpClient with MockAppConfig {
+  class Test extends ConnectorSpec with MockHttpClient with MockAppConfig {
 
     val connector = new MtdIdLookupConnector(
       http = mockHttpClient,

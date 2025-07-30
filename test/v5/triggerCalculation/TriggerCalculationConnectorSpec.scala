@@ -34,7 +34,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
       new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))
@@ -65,7 +65,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
-        await(connector.triggerCalculation(request)) shouldBe outcome
+        await(connector.triggerCalculation(request)).shouldBe(outcome)
       }
 
     def makeRequestWithIfsEnabled(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
@@ -79,7 +79,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
-        await(connector.triggerCalculation(request)) shouldBe outcome
+        await(connector.triggerCalculation(request)).shouldBe(outcome)
       }
 
     "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalIfsTest with Test {
@@ -91,15 +91,15 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
         body = Json.parse("{}")
       ).returns(Future.successful(outcome))
 
-      await(connector.triggerCalculation(request)) shouldBe outcome
+      await(connector.triggerCalculation(request)).shouldBe(outcome)
     }
   }
 
-  trait CrystalDesTest extends DesTest{
+  trait CrystalDesTest extends DesTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
   }
 
-  trait CrystalIfsTest extends IfsTest{
+  trait CrystalIfsTest extends IfsTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 

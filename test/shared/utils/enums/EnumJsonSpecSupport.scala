@@ -36,7 +36,7 @@ trait EnumJsonSpecSupport {
         namesAndValues.foreach { case (name, obj) =>
           val json = Json.parse(s""""$name"""")
 
-          Json.toJson(obj) shouldBe json
+          Json.toJson(obj).shouldBe(json)
           json.as[A] shouldBe obj
         }
       }

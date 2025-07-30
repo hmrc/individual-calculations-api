@@ -49,7 +49,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
+        .addQueryStringParameters(queryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.5.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -70,6 +70,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
         |    }
         |}
       """.stripMargin
+
   }
 
   private trait NonTysTest extends Test {
@@ -162,7 +163,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
           ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream returns a service error" that {
@@ -200,7 +201,7 @@ class ListCalculationsControllerHipISpec extends IntegrationBaseSpec with Def1_L
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError)
         )
 
-        (commonError ++ nonTysErrors ++ tysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (commonError ++ nonTysErrors ++ tysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

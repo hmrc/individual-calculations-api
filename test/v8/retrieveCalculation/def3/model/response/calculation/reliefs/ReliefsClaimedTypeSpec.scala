@@ -20,7 +20,6 @@ import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
 import v8.retrieveCalculation.def3.model.response.calculation.reliefs.ReliefsClaimedType._
 
-
 class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[ReliefsClaimedType](
@@ -46,4 +45,5 @@ class ReliefsClaimedTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `non-deductible-loan-interest`                                -> "non-deductible-loan-interest",
     `qualifying-distribution-redemption-of-shares-and-securities` -> "qualifying-distribution-redemption-of-shares-and-securities"
   )
+
 }

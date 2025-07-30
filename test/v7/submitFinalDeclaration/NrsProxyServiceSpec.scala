@@ -45,7 +45,7 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_Calculat
     .configure("metrics.enabled" -> "false")
     .build()
 
-  val actorSystem                              = app.injector.instanceOf[ActorSystem]
+  val actorSystem: ActorSystem                 = app.injector.instanceOf[ActorSystem]
   implicit val scheduler: Scheduler            = actorSystem.scheduler
   private val taxYear                          = TaxYear.fromMtd("2020-21")
   private val calculationId                    = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
@@ -82,9 +82,9 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_Calculat
           .submit(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
-        val result = await(service.updateNrs(nino, request))
-        result shouldBe (): Unit
-        nrsBodyCapture.value shouldBe Json.toJson(retrieveDetailsResponseData)
+        val result: Unit = await(service.updateNrs(nino, request))
+        result.shouldBe((): Unit)
+        nrsBodyCapture.value.shouldBe(Json.toJson(retrieveDetailsResponseData))
       }
 
       "submit fallback details to NRS when retrieveCalculationDetails fails" in new Test {
@@ -101,9 +101,9 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_Calculat
           .submit(nino, "itsa-crystallisation", nrsBodyCapture)
           .returns(Future.successful(Right(())))
 
-        val result = await(service.updateNrs(nino, request))
-        result shouldBe (): Unit
-        nrsBodyCapture.value shouldBe request.toNrsJson
+        val result: Unit = await(service.updateNrs(nino, request))
+        result.shouldBe((): Unit)
+        nrsBodyCapture.value.shouldBe(request.toNrsJson)
       }
 
     }

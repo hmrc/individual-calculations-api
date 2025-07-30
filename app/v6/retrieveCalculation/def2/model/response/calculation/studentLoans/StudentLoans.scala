@@ -20,15 +20,15 @@ import play.api.libs.json.{Json, OFormat}
 import v6.common.model.response.StudentLoanPlanType
 
 case class StudentLoans(planType: StudentLoanPlanType,
-                             studentLoanTotalIncomeAmount: BigDecimal,
-                             studentLoanChargeableIncomeAmount: BigDecimal,
-                             studentLoanRepaymentAmount: BigDecimal,
-                             studentLoanDeductionsFromEmployment: Option[BigDecimal],
-                             studentLoanRepaymentAmountNetOfDeductions: BigDecimal,
-                             studentLoanApportionedIncomeThreshold: BigInt,
-                             studentLoanRate: BigDecimal,
-                             payeIncomeForStudentLoan: Option[BigDecimal],
-                             nonPayeIncomeForStudentLoan: Option[BigDecimal])
+                        studentLoanTotalIncomeAmount: BigDecimal,
+                        studentLoanChargeableIncomeAmount: BigDecimal,
+                        studentLoanRepaymentAmount: BigDecimal,
+                        studentLoanDeductionsFromEmployment: Option[BigDecimal],
+                        studentLoanRepaymentAmountNetOfDeductions: BigDecimal,
+                        studentLoanApportionedIncomeThreshold: BigInt,
+                        studentLoanRate: BigDecimal,
+                        payeIncomeForStudentLoan: Option[BigDecimal],
+                        nonPayeIncomeForStudentLoan: Option[BigDecimal])
 
 object StudentLoans {
   implicit val format: OFormat[StudentLoans] = Json.format[StudentLoans]

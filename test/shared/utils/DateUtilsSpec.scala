@@ -26,7 +26,7 @@ class DateUtilsSpec extends UnitSpec {
         val result = DateUtils.longDateTimestampGmt(
           LocalDateTime.of(2023, 1, 17, 12, 0)
         )
-        result shouldBe "Tue, 17 Jan 2023 12:00:00 GMT"
+        result.shouldBe("Tue, 17 Jan 2023 12:00:00 GMT")
       }
     }
   }

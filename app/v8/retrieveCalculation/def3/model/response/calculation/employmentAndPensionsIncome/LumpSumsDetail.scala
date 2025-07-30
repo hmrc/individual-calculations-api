@@ -19,9 +19,9 @@ package v8.retrieveCalculation.def3.model.response.calculation.employmentAndPens
 import play.api.libs.json.{Format, Json}
 
 case class LumpSumsDetail(taxableLumpSumsAndCertainIncome: Option[TaxableLumpSumsAndCertainIncome],
-                               benefitFromEmployerFinancedRetirementScheme: Option[BenefitFromEmployerFinancedRetirementScheme],
-                               redundancyCompensationPaymentsOverExemption: Option[RedundancyCompensationPaymentsOverExemption],
-                               redundancyCompensationPaymentsUnderExemption: Option[RedundancyCompensationPaymentsUnderExemption])
+                          benefitFromEmployerFinancedRetirementScheme: Option[BenefitFromEmployerFinancedRetirementScheme],
+                          redundancyCompensationPaymentsOverExemption: Option[RedundancyCompensationPaymentsOverExemption],
+                          redundancyCompensationPaymentsUnderExemption: Option[RedundancyCompensationPaymentsUnderExemption])
 
 object LumpSumsDetail {
 

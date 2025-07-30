@@ -56,7 +56,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(downstreamQueryParams: _*)
+        .addQueryStringParameters(downstreamQueryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.7.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -89,6 +89,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
     } else {
       s"/income-tax/$downstreamTaxYear/view/calculations-summary/$nino"
     }
+
   }
 
   "Calling the list calculations endpoint" should {
@@ -170,7 +171,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
           ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream returns a service error" when {
@@ -207,7 +208,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
           (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError)
         )
 
-        (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

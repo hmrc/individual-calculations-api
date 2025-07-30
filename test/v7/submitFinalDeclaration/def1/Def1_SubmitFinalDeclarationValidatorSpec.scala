@@ -46,66 +46,72 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
     "return the parsed domain object" when {
       "a valid request is supplied with final-declaration CalculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear(), parsedCalculationId, parsedFinalDeclaration))
+        result.shouldBe(Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear(), parsedCalculationId, parsedFinalDeclaration)))
       }
 
       "a valid request is supplied with confirm-amendment CalculationType" in {
         val result = validator(validNino, "2025-26", validCalculationId, validConfirmAmendment).validateAndWrapResult()
-        result shouldBe Right(
-          Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear("2025-26"), parsedCalculationId, parsedConfirmAmendment))
+        result.shouldBe(
+          Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear("2025-26"), parsedCalculationId, parsedConfirmAmendment)))
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
         val result = validator("A12344A", validTaxYear, validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, NinoFormatError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, NinoFormatError)
+          ))
       }
     }
 
     "return CalculationIdFormatError error" when {
       "an invalid calculationId is supplied" in {
         val result = validator(validNino, validTaxYear, "bad id", validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, CalculationIdFormatError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, CalculationIdFormatError)
+          ))
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, "201718", validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, TaxYearFormatError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, TaxYearFormatError)
+          ))
       }
     }
 
     "return RuleTaxYearRangeInvalidError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, "2017-19", validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
+          ))
       }
     }
     "return FormatCalculationTypeError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId, "notValid").validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, FormatCalculationTypeError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, FormatCalculationTypeError)
+          ))
       }
     }
 
     "return RuleSubmissionFailedError" when {
       "confirm-amendment is supplied as the CalculationType for tax years pre 2025-26" in {
         val result = validator(validNino, validTaxYear, validCalculationId, validConfirmAmendment).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleSubmissionFailedError)
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, RuleSubmissionFailedError)
+          ))
       }
     }
 
@@ -113,13 +119,14 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
       "multiple invalid parameters are provided" in {
         val result = validator("not-a-nino", validTaxYear, "bad id", validFinalDeclaration).validateAndWrapResult()
 
-        result shouldBe Left(
-          ErrorWrapper(
-            correlationId,
-            BadRequestError,
-            Some(List(CalculationIdFormatError, NinoFormatError))
-          )
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(
+              correlationId,
+              BadRequestError,
+              Some(List(CalculationIdFormatError, NinoFormatError))
+            )
+          ))
       }
     }
 

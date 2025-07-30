@@ -22,12 +22,12 @@ import play.api.libs.json.{Reads, Writes}
 sealed trait InputsOtherType
 
 object InputsOtherType {
-  case object `coding-out`       extends InputsOtherType
+  case object `coding-out` extends InputsOtherType
 
   implicit val writes: Writes[InputsOtherType] = Enums.writes[InputsOtherType]
 
-  implicit val reads: Reads[InputsOtherType] = Enums.readsUsing {
-    case "codingOut"        => `coding-out`
+  implicit val reads: Reads[InputsOtherType] = Enums.readsUsing { case "codingOut" =>
+    `coding-out`
   }
 
 }

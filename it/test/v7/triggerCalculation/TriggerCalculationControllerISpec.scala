@@ -26,6 +26,7 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.errors._
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 
 class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
@@ -73,12 +74,11 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     }
 
     "return the correct error code" when {
-      def validationErrorTest(
-                               requestNino: String,
-                               requestTaxYear: String,
-                               requestCalcType: String,
-                               expectedStatus: Int,
-                               expectedBody: MtdError): Unit = {
+      def validationErrorTest(requestNino: String,
+                              requestTaxYear: String,
+                              requestCalcType: String,
+                              expectedStatus: Int,
+                              expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new Pre2324Test {
 
           override val calculationType: String = requestCalcType
@@ -106,7 +106,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2020-22", "in-year", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -127,12 +127,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(
-                DownstreamStub.POST,
-                downstreamUri,
-                Map("crystallise" -> "false"),
-                backendStatus,
-                errorBody(backendCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "false"), backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
@@ -142,7 +137,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api1426errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api1426errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }
@@ -223,7 +218,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2020-22", "in-year", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -244,12 +239,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(
-                DownstreamStub.POST,
-                downstreamUri,
-                Map("crystallise" -> "false"),
-                backendStatus,
-                errorBody(backendCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, Map("crystallise" -> "false"), backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
@@ -259,7 +249,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api1897errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api1897errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }
@@ -270,7 +260,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
       "a valid request is made with an 'in-year' calculation type" in new TysPost2526Test {
 
-        val calculationType: String = "in-year"
+        val calculationType: String    = "in-year"
         val downstreamCalcType: String = "IY"
 
         override def setupStubs(): StubMapping = {
@@ -290,7 +280,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
       "a valid request is made with an 'intent-to-finalise' calculation type" in new TysPost2526Test {
 
-        val calculationType: String = "intent-to-finalise"
+        val calculationType: String    = "intent-to-finalise"
         val downstreamCalcType: String = "IF"
 
         override def setupStubs(): StubMapping = {
@@ -310,7 +300,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
       "a valid request is made with an 'intent-to-amend' calculation type" in new TysPost2526Test {
 
-        val calculationType: String = "intent-to-amend"
+        val calculationType: String    = "intent-to-amend"
         val downstreamCalcType: String = "IA"
 
         override def setupStubs(): StubMapping = {
@@ -333,7 +323,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
       def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
         s"validation fails with ${expectedBody.code} error" in new TysPost2526Test {
 
-          override val calculationType: String = "in-year"
+          override val calculationType: String    = "in-year"
           override val downstreamCalcType: String = "IY"
 
           override val nino: String = requestNino
@@ -358,7 +348,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -373,18 +363,14 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns $backendCode with status $backendStatus" in new TysPost2526Test {
 
-            override val calculationType: String = "in-year"
+            override val calculationType: String    = "in-year"
             override val downstreamCalcType: String = "IY"
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(
-                DownstreamStub.POST,
-                downstreamUri,
-                backendStatus,
-                errorBody(backendCode))
+              DownstreamStub.onError(DownstreamStub.POST, downstreamUri, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request(nino, mtdTaxYear, calculationType).post(EmptyBody))
@@ -394,12 +380,12 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
           }
         }
 
-        (api2081errors).foreach(args => (serviceErrorTest _).tupled(args))
+        api2081errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }
 
-  lazy val api1426errors = List(
+  lazy val api1426errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_NINO", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (FORBIDDEN, "INVALID_TAX_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
@@ -413,7 +399,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
   )
 
-  lazy val api1897errors = List(
+  lazy val api1897errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (BAD_REQUEST, "INVALID_CRYSTALLISE", BAD_REQUEST, FinalDeclarationFormatError),
@@ -434,7 +420,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
   )
 
-  lazy val api2081errors = List(
+  lazy val api2081errors: List[(Int, String, Int, MtdError)] = List(
     (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
     (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
     (BAD_REQUEST, "INVALID_CALCULATION_TYPE", INTERNAL_SERVER_ERROR, InternalError),
@@ -443,11 +429,8 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     (UNPROCESSABLE_ENTITY, "NO_VALID_INCOME_SOURCES", INTERNAL_SERVER_ERROR, InternalError),
     (UNPROCESSABLE_ENTITY, "NO_SUBMISSIONS_EXIST", BAD_REQUEST, RuleNoIncomeSubmissionsExistError),
     (UNPROCESSABLE_ENTITY, "ALREADY_DECLARED", BAD_REQUEST, RuleFinalDeclarationReceivedError),
-    //new
     (UNPROCESSABLE_ENTITY, "PREMATURE_FINALISATION", BAD_REQUEST, RulePrematureFinalisationError),
-    //new
     (UNPROCESSABLE_ENTITY, "DECLARATION_NOT_RECEIVED", BAD_REQUEST, RuleDeclarationNotReceivedError),
-    //new
     (UNPROCESSABLE_ENTITY, "OUTSIDE_AMENDMENT_WINDOW", BAD_REQUEST, RuleOutsideAmendmentWindowError),
     (UNPROCESSABLE_ENTITY, "CALCULATION_EXISTS", BAD_REQUEST, RuleCalculationInProgressError),
     (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError),
@@ -459,7 +442,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
 
   private trait Test {
 
-    val nino             = "ZG903729C"
+    val nino = "ZG903729C"
     val calculationType: String
 
     val downstreamSuccessBody: JsValue = Json.parse("""
@@ -483,7 +466,7 @@ class TriggerCalculationControllerISpec extends IntegrationBaseSpec {
     def setupStubs(): StubMapping
 
     def request(nino: String, taxYear: String, calculationType: String): WSRequest = {
-      val uri    = s"/$nino/self-assessment/$taxYear/trigger/$calculationType"
+      val uri = s"/$nino/self-assessment/$taxYear/trigger/$calculationType"
 
       setupStubs()
       buildRequest(uri)

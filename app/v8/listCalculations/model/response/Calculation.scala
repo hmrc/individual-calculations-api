@@ -33,7 +33,7 @@ object Calculation {
     case a: Def1_Calculation => Json.toJsObject(a)
     case b: Def2_Calculation => Json.toJsObject(b)
     case c: Def3_Calculation => Json.toJsObject(c)
-    case _ => Json.obj()
+    case _                   => Json.obj()
   }
 
 }

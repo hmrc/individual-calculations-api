@@ -20,14 +20,14 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class Inputs(personalInformation: PersonalInformation,
-                       incomeSources: IncomeSources,
-                       annualAdjustments: Option[Seq[AnnualAdjustment]],
-                       lossesBroughtForward: Option[Seq[LossBroughtForward]],
-                       claims: Option[Seq[Claim]],
-                       constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], // This field name has been changed from downstream.
-                       allowancesReliefsAndDeductions: Option[Seq[AllowancesReliefsAndDeductions]],
-                       pensionContributionAndCharges: Option[Seq[PensionContributionAndCharges]],
-                       other: Option[Seq[Other]]) {
+                  incomeSources: IncomeSources,
+                  annualAdjustments: Option[Seq[AnnualAdjustment]],
+                  lossesBroughtForward: Option[Seq[LossBroughtForward]],
+                  claims: Option[Seq[Claim]],
+                  constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], // This field name has been changed from downstream.
+                  allowancesReliefsAndDeductions: Option[Seq[AllowancesReliefsAndDeductions]],
+                  pensionContributionAndCharges: Option[Seq[PensionContributionAndCharges]],
+                  other: Option[Seq[Other]]) {
   def withoutCessationDate: Inputs = copy(incomeSources = incomeSources.withoutCessationDate)
 
   def withoutCommencementDate: Inputs = copy(incomeSources = incomeSources.withoutCommencementDate)
@@ -48,6 +48,6 @@ object Inputs {
       (JsPath \ "allowancesReliefsAndDeductions").readNullable[Seq[AllowancesReliefsAndDeductions]] and
       (JsPath \ "pensionContributionAndCharges").readNullable[Seq[PensionContributionAndCharges]] and
       (JsPath \ "other").readNullable[Seq[Other]]
-  )(Inputs.apply _)
+  )(Inputs.apply)
 
 }

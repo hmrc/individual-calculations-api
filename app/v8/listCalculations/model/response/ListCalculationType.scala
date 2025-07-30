@@ -23,22 +23,22 @@ sealed trait ListCalculationType
 
 object ListCalculationType {
 
-  case object `in-year`               extends ListCalculationType
-  case object `intent-to-finalise`    extends ListCalculationType
-  case object `intent-to-amend`       extends ListCalculationType
-  case object `confirm-amendment`     extends ListCalculationType
-  case object `final-declaration`     extends ListCalculationType
-  case object `correction`            extends ListCalculationType
+  case object `in-year`            extends ListCalculationType
+  case object `intent-to-finalise` extends ListCalculationType
+  case object `intent-to-amend`    extends ListCalculationType
+  case object `confirm-amendment`  extends ListCalculationType
+  case object `final-declaration`  extends ListCalculationType
+  case object `correction`         extends ListCalculationType
 
   implicit val writes: Writes[ListCalculationType] = Enums.writes[ListCalculationType]
 
   implicit val reads: Reads[ListCalculationType] = Enums.readsUsing[ListCalculationType] {
-    case "inYear" | "IY"                  => `in-year`
-    case "IF" | "IC"                      => `intent-to-finalise`
-    case "IA"                             => `intent-to-amend`   // AM from 2150?
-    case "CA"                             => `confirm-amendment` // AM from 2150?
-    case "crystallisation" | "CR" | "DF"  => `final-declaration`
-    case "CO"                             => `correction`
+    case "inYear" | "IY"                 => `in-year`
+    case "IF" | "IC"                     => `intent-to-finalise`
+    case "IA"                            => `intent-to-amend`   // AM from 2150?
+    case "CA"                            => `confirm-amendment` // AM from 2150?
+    case "crystallisation" | "CR" | "DF" => `final-declaration`
+    case "CO"                            => `correction`
   }
 
 }

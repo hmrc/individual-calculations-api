@@ -20,11 +20,11 @@ import play.api.libs.json.{Json, OFormat}
 import v6.common.model.response.ReliefsClaimedType
 
 case class ReliefsClaimed(`type`: ReliefsClaimedType,
-                               amountClaimed: Option[BigDecimal],
-                               allowableAmount: Option[BigDecimal],
-                               amountUsed: Option[BigDecimal],
-                               rate: Option[BigDecimal],
-                               reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
+                          amountClaimed: Option[BigDecimal],
+                          allowableAmount: Option[BigDecimal],
+                          amountUsed: Option[BigDecimal],
+                          rate: Option[BigDecimal],
+                          reliefsClaimedDetail: Option[Seq[ReliefsClaimedDetail]])
 
 object ReliefsClaimed {
   implicit val format: OFormat[ReliefsClaimed] = Json.format[ReliefsClaimed]

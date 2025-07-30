@@ -19,14 +19,14 @@ package v5.retrieveCalculation.def1.model.response.inputs
 import play.api.libs.json.{Json, OFormat}
 
 case class PersonalInformation(identifier: String,
-                                    dateOfBirth: Option[String],
-                                    taxRegime: String,
-                                    statePensionAgeDate: Option[String],
-                                    studentLoanPlan: Option[Seq[StudentLoanPlan]],
-                                    class2VoluntaryContributions: Option[Boolean],
-                                    marriageAllowance: Option[String],
-                                    uniqueTaxpayerReference: Option[String],
-                                    itsaStatus: Option[String]) {
+                               dateOfBirth: Option[String],
+                               taxRegime: String,
+                               statePensionAgeDate: Option[String],
+                               studentLoanPlan: Option[Seq[StudentLoanPlan]],
+                               class2VoluntaryContributions: Option[Boolean],
+                               marriageAllowance: Option[String],
+                               uniqueTaxpayerReference: Option[String],
+                               itsaStatus: Option[String]) {
   def withoutItsaStatus: PersonalInformation = copy(itsaStatus = None)
 }
 

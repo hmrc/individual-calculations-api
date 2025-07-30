@@ -21,16 +21,16 @@ import v7.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
 case class BusinessIncomeSource(incomeSourceId: String,
-                                     incomeSourceType: IncomeSourceType,
-                                     incomeSourceName: Option[String],
-                                     accountingPeriodStartDate: String,
-                                     accountingPeriodEndDate: String,
-                                     source: String,
-                                     commencementDate: Option[String],
-                                     cessationDate: Option[String],
-                                     latestPeriodEndDate: String,
-                                     latestReceivedDateTime: String,
-                                     submissionPeriods: Option[Seq[SubmissionPeriod]]) {
+                                incomeSourceType: IncomeSourceType,
+                                incomeSourceName: Option[String],
+                                accountingPeriodStartDate: String,
+                                accountingPeriodEndDate: String,
+                                source: String,
+                                commencementDate: Option[String],
+                                cessationDate: Option[String],
+                                latestPeriodEndDate: String,
+                                latestReceivedDateTime: String,
+                                submissionPeriods: Option[Seq[SubmissionPeriod]]) {
 
   val isDefined: Boolean =
     !(incomeSourceName.isEmpty &&

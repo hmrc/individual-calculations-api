@@ -21,11 +21,11 @@ import v6.common.model.response.IncomeSourceType
 import IncomeSourceType.`foreign-dividends`
 
 case class CommonForeignDividend(incomeSourceType: Option[IncomeSourceType],
-                                      countryCode: String,
-                                      grossIncome: Option[BigDecimal],
-                                      netIncome: Option[BigDecimal],
-                                      taxDeducted: Option[BigDecimal],
-                                      foreignTaxCreditRelief: Option[Boolean])
+                                 countryCode: String,
+                                 grossIncome: Option[BigDecimal],
+                                 netIncome: Option[BigDecimal],
+                                 taxDeducted: Option[BigDecimal],
+                                 foreignTaxCreditRelief: Option[Boolean])
 
 object CommonForeignDividend {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-dividends`)

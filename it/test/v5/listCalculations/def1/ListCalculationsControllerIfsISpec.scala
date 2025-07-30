@@ -55,7 +55,7 @@ class ListCalculationsControllerIfsISpec extends IntegrationBaseSpec with Def1_L
 
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
+        .addQueryStringParameters(queryParams*)
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.5.0+json"),
           (AUTHORIZATION, "Bearer 123")
@@ -73,6 +73,7 @@ class ListCalculationsControllerIfsISpec extends IntegrationBaseSpec with Def1_L
         |  ]
         |}
       """.stripMargin
+
   }
 
   "Calling the list calculations endpoint" should {
@@ -137,7 +138,7 @@ class ListCalculationsControllerIfsISpec extends IntegrationBaseSpec with Def1_L
           ("ZG903729C", "2020-22", BAD_REQUEST, RuleTaxYearRangeInvalidError)
         )
 
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
       }
 
       "downstream returns a service error" that {
@@ -168,7 +169,7 @@ class ListCalculationsControllerIfsISpec extends IntegrationBaseSpec with Def1_L
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        errors.foreach(args => (serviceErrorTest _).tupled(args))
+        errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

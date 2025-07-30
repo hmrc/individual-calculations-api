@@ -36,8 +36,8 @@ trait EnumJsonSpecSupport {
         namesAndValues.foreach { case (name, obj) =>
           val json = JsString(name)
 
-          Json.toJson(obj) shouldBe json
-          json.as[A] shouldBe obj
+          Json.toJson(obj).shouldBe(json)
+          json.as[A].shouldBe(obj)
         }
       }
     }
@@ -53,7 +53,7 @@ trait EnumJsonSpecSupport {
     "JSON reads" must {
       "work" in {
         namesAndValues.foreach { case (name, obj) =>
-          JsString(name).as[A] shouldBe obj
+          JsString(name).as[A].shouldBe(obj)
         }
       }
     }
@@ -69,7 +69,7 @@ trait EnumJsonSpecSupport {
     "JSON writes" must {
       "work" in {
         valuesAndNames.foreach { case (obj, name) =>
-          Json.toJson(obj) shouldBe JsString(name)
+          Json.toJson(obj).shouldBe(JsString(name))
         }
       }
     }

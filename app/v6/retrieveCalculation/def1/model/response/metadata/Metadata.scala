@@ -23,17 +23,17 @@ import play.api.libs.json._
 import v6.common.model.response.CalculationType
 
 case class Metadata(calculationId: String,
-                         taxYear: TaxYear,
-                         requestedBy: String,
-                         requestedTimestamp: Option[String],
-                         calculationReason: String,
-                         calculationTimestamp: Option[String],
-                         calculationType: CalculationType,
-                         intentToSubmitFinalDeclaration: Boolean,
-                         finalDeclaration: Boolean,
-                         finalDeclarationTimestamp: Option[String],
-                         periodFrom: String,
-                         periodTo: String)
+                    taxYear: TaxYear,
+                    requestedBy: String,
+                    requestedTimestamp: Option[String],
+                    calculationReason: String,
+                    calculationTimestamp: Option[String],
+                    calculationType: CalculationType,
+                    intentToSubmitFinalDeclaration: Boolean,
+                    finalDeclaration: Boolean,
+                    finalDeclarationTimestamp: Option[String],
+                    periodFrom: String,
+                    periodTo: String)
 
 object Metadata {
 
@@ -54,6 +54,6 @@ object Metadata {
       (JsPath \ "crystallisationTimestamp").readNullable[String] and
       (JsPath \ "periodFrom").read[String] and
       (JsPath \ "periodTo").read[String]
-  )(Metadata.apply _)
+  )(Metadata.apply)
 
 }

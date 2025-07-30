@@ -31,4 +31,5 @@ class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
     `income`      -> "income",
     `class4-nics` -> "class4-nics"
   )
+
 }

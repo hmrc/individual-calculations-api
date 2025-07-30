@@ -25,12 +25,14 @@ import cats.implicits._
 import v6.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def1_RetrieveCalculationValidator {
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val retrieveCalculationsMinimumTaxYear          = TaxYear.fromMtd("2017-18")
   private val retrieveCalculationsMaximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
-  private val resolveTaxYear                     = ResolveTaxYearMinMax(
+
+  private val resolveTaxYear = ResolveTaxYearMinMax(
     (retrieveCalculationsMinimumTaxYear, retrieveCalculationsMaximumSupportedTaxYear),
     RuleTaxYearNotSupportedError,
     RuleTaxYearForVersionNotSupportedError)
+
 }
 
 class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {
@@ -42,6 +44,6 @@ class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculati
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId)
-    ).mapN(Def1_RetrieveCalculationRequestData)
+    ).mapN(Def1_RetrieveCalculationRequestData.apply)
 
 }

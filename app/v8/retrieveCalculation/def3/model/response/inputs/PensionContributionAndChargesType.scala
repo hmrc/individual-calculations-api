@@ -28,8 +28,8 @@ object PensionContributionAndChargesType {
   implicit val writes: Writes[PensionContributionAndChargesType] = Enums.writes[PensionContributionAndChargesType]
 
   implicit val reads: Reads[PensionContributionAndChargesType] = Enums.readsUsing {
-    case "pensionReliefs"  => `pension-reliefs`
-    case "pensionCharges"  => `pension-charges`
+    case "pensionReliefs" => `pension-reliefs`
+    case "pensionCharges" => `pension-charges`
   }
 
 }

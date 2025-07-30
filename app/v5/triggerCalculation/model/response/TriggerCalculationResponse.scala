@@ -23,7 +23,7 @@ sealed trait TriggerCalculationResponse {
   val calculationId: String
 }
 
-object TriggerCalculationResponse{
+object TriggerCalculationResponse {
 
   implicit val vendorWrites: OWrites[TriggerCalculationResponse] = { case def1: Def1_TriggerCalculationResponse =>
     Json.toJsObject(def1)

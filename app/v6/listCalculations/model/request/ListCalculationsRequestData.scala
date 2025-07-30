@@ -26,6 +26,6 @@ sealed trait ListCalculationsRequestData {
   val schema: ListCalculationsSchema
 }
 
-case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear) extends ListCalculationsRequestData{
+case class Def1_ListCalculationsRequestData(nino: Nino, taxYear: TaxYear) extends ListCalculationsRequestData {
   override val schema: ListCalculationsSchema = ListCalculationsSchema.Def1
 }

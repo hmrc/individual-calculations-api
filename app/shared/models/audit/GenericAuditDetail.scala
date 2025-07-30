@@ -16,10 +16,10 @@
 
 package shared.models.audit
 
-import shared.controllers.{AuditHandler, RequestContext}
-import shared.models.auth.UserDetails
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, JsValue, OWrites}
+import shared.controllers.{AuditHandler, RequestContext}
+import shared.models.auth.UserDetails
 import shared.routing.Version
 
 case class GenericAuditDetail(userType: String,
@@ -40,7 +40,7 @@ object GenericAuditDetail {
       (JsPath \ "request").writeNullable[JsValue] and
       (JsPath \ "X-CorrelationId").write[String] and
       (JsPath \ "response").write[AuditResponse]
-  )(unlift(GenericAuditDetail.unapply))
+  )(w => Tuple.fromProductTyped(w))
 
   def auditDetailCreator(apiVersion: Version, params: Map[String, String]): AuditHandler.AuditDetailCreator[GenericAuditDetail] =
     new AuditHandler.AuditDetailCreator[GenericAuditDetail] {

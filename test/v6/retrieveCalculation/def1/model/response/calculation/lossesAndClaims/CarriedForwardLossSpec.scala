@@ -16,7 +16,7 @@
 
 package v6.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
 import v6.common.model.response.{ClaimType, IncomeSourceType}
@@ -97,6 +97,10 @@ class CarriedForwardLossSpec extends UnitSpec {
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[CarriedForwardLoss] shouldBe a[JsError]
   }
 
 }

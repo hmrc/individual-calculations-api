@@ -39,7 +39,7 @@ class ListCalculationsValidatorFactorySpec extends UnitSpec {
         val result: Validator[ListCalculationsRequestData] =
           validatorFactory.validator(validNino, taxYear = Some(validTaxYear), ListCalculationsSchema.Def1)
 
-        result shouldBe a[Def1_ListCalculationsValidator]
+        result.shouldBe(a[Def1_ListCalculationsValidator])
       }
     }
 

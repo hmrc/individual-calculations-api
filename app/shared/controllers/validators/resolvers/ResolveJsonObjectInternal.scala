@@ -42,9 +42,9 @@ class ResolveJsonObjectInternal[A](implicit val reads: Reads[A]) extends Resolve
 
   private def toMtdError(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[MtdError] = {
     val failures = errors.map {
-      case (path, List(JsonValidationError(List("error.path.missing"))))                      => MissingMandatoryField(path)
-      case (path, List(JsonValidationError(List(error)))) if error.contains("error.expected") => WrongFieldType(path)
-      case (path, _)                                                                          => OtherFailure(path)
+      case (path, List(JsonValidationError(List("error.path.missing"))))                              => MissingMandatoryField(path)
+      case (path, List(JsonValidationError(List(error: String)))) if error.contains("error.expected") => WrongFieldType(path)
+      case (path, _)                                                                                  => OtherFailure(path)
     }
 
     log(failures)

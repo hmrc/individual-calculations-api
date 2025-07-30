@@ -29,15 +29,14 @@ sealed trait TriggerCalculationRequestData {
   val schema: TriggerCalculationSchema
 }
 
-case class Def1_TriggerCalculationRequestData(
-                                               nino: Nino,
-                                               taxYear: TaxYear,
-                                               calculationType: CalculationType,
-                                               tysDownstream: TysDownstream) extends TriggerCalculationRequestData {
+case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationType: CalculationType, tysDownstream: TysDownstream)
+    extends TriggerCalculationRequestData {
   override val schema: TriggerCalculationSchema = TriggerCalculationSchema.Def1
 }
 
 object Def1_TriggerCalculationRequestData {
+
   def apply(nino: Nino, taxYear: TaxYear, calculationType: CalculationType): TriggerCalculationRequestData =
     Def1_TriggerCalculationRequestData(nino, taxYear, calculationType, Post26Downstream)
+
 }

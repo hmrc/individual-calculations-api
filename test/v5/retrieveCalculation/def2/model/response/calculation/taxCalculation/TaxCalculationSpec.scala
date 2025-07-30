@@ -26,7 +26,7 @@ class TaxCalculationSpec extends UnitSpec with TaxCalculationFixture with JsonEr
     "allow conversion from downstream JSON to MTD JSON" when {
       "JSON contains every field" in {
         val model = taxCalculationDownstreamJson.as[TaxCalculation]
-        Json.toJson(model) shouldBe taxCalculationMtdJson
+        Json.toJson(model).shouldBe(taxCalculationMtdJson)
       }
     }
 

@@ -52,14 +52,13 @@ case class MtdError(code: String, message: String, httpStatus: Int, paths: Optio
 
 object MtdError {
 
+  def asTuple(e: MtdError): (String, String, Option[Seq[String]]) = (e.code, e.message, e.paths)
+
   implicit val writes: OWrites[MtdError] = (
     (JsPath \ "code").write[String] and
       (JsPath \ "message").write[String] and
       (JsPath \ "paths").writeNullable[Seq[String]]
-  )(unlift(MtdError.unapply))
-
-  // excludes httpStatus
-  def unapply(e: MtdError): Option[(String, String, Option[Seq[String]])] = Some((e.code, e.message, e.paths))
+  ).tupled.contramap(asTuple)
 
   implicit def genericWrites[T <: MtdError]: OWrites[T] =
     writes.contramap[T](c => c: MtdError)

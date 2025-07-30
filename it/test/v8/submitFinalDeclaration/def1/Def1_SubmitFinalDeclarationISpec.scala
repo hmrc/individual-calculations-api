@@ -26,6 +26,7 @@ import shared.models.domain.TaxYear
 import shared.models.errors._
 import shared.services._
 import shared.support.IntegrationBaseSpec
+import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 
 class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
@@ -110,7 +111,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
         ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "confirm-amendment", BAD_REQUEST, RuleSubmissionFailedError)
       )
 
-      input.foreach(args => (validationErrorTest _).tupled(args))
+      input.foreach(args => validationErrorTest.tupled(args))
 
       "the backend returns a service error" when {
 
@@ -170,7 +171,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError)
         )
 
-        (errors ++ extraDesErrors).foreach(args => (serviceErrorTest _).tupled(args))
+        (errors ++ extraDesErrors).foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

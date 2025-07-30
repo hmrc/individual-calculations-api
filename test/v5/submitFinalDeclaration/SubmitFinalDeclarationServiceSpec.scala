@@ -53,14 +53,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
         MockNrsService
           .updateNrs(nino.nino, request)
-          .returns(Future.successful(())).once()
+          .returns(Future.successful(()))
+          .once()
 
         MockSubmitFinalDeclarationConnector
           .submitFinalDeclaration(request)
           .returns(Future.successful(outcome))
 
         val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
-        result shouldBe outcome
+        result.shouldBe(outcome)
       }
     }
 
@@ -70,14 +71,15 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
 
           MockNrsService
             .updateNrs(nino.nino, request)
-            .returns(Future.successful(())).never()
+            .returns(Future.successful(()))
+            .never()
 
           MockSubmitFinalDeclarationConnector
             .submitFinalDeclaration(request)
             .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
           val result: Either[ErrorWrapper, ResponseWrapper[Unit]] = await(service.submitFinalDeclaration(nino.nino, request))
-          result shouldBe Left(ErrorWrapper(correlationId, error))
+          result.shouldBe(Left(ErrorWrapper(correlationId, error)))
         }
 
       val errors = List(
@@ -107,7 +109,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INVALID_TAXYEAR", TaxYearFormatError)
       )
 
-      (errors ++ extraDesErrors).foreach(args => (serviceError _).tupled(args))
+      (errors ++ extraDesErrors).foreach(args => serviceError.tupled(args))
     }
   }
 

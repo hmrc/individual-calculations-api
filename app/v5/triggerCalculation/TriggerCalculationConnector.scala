@@ -32,7 +32,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject()(val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
+class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
     extends BaseDownstreamConnector {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit

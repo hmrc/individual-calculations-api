@@ -34,6 +34,7 @@ class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Confi
   def mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")
 
   private def retryConfig: Configuration = configuration.get[Configuration]("retry-mechanism")
+
   def retrieveCalcRetries: List[FiniteDuration] =
     Retrying.fibonacciDelays(getFiniteDuration(retryConfig), retryConfig.get[Int]("numberOfRetries"))
 
@@ -45,5 +46,5 @@ class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Confi
       case _                 => throw new RuntimeException(s"Not a finite duration '$string' for $path")
     }
   }
-}
 
+}

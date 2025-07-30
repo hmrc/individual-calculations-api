@@ -34,7 +34,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
-  trait Test { _: ConnectorTest =>
+  trait Test { self: ConnectorTest =>
 
     val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
       new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))
@@ -95,11 +95,11 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     }
   }
 
-  trait CrystalDesTest extends DesTest{
+  trait CrystalDesTest extends DesTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
   }
 
-  trait CrystalIfsTest extends IfsTest{
+  trait CrystalIfsTest extends IfsTest {
     MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 

@@ -19,20 +19,20 @@ package v7.retrieveCalculation.def3.model.response.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class CapitalGainsTax(
-                                 totalCapitalGainsIncome: BigDecimal,
-                                 annualExemptionAmount: BigDecimal,
-                                 totalTaxableGains: BigDecimal,
-                                 businessAssetsDisposalsAndInvestorsRel: Option[BusinessAssetsDisposalsAndInvestorsRel],
-                                 residentialPropertyAndCarriedInterest: Option[ResidentialPropertyAndCarriedInterest],
-                                 otherGains: Option[OtherGains],
-                                 capitalGainsTaxAmount: Option[BigDecimal],
-                                 adjustments: Option[BigDecimal],
-                                 adjustedCapitalGainsTax: Option[BigDecimal],
-                                 foreignTaxCreditRelief: Option[BigDecimal],
-                                 capitalGainsTaxAfterFTCR: Option[BigDecimal],
-                                 taxOnGainsAlreadyPaid: Option[BigDecimal],
-                                 capitalGainsTaxDue: BigDecimal,
-                                 capitalGainsOverpaid: Option[BigDecimal]
+    totalCapitalGainsIncome: BigDecimal,
+    annualExemptionAmount: BigDecimal,
+    totalTaxableGains: BigDecimal,
+    businessAssetsDisposalsAndInvestorsRel: Option[BusinessAssetsDisposalsAndInvestorsRel],
+    residentialPropertyAndCarriedInterest: Option[ResidentialPropertyAndCarriedInterest],
+    otherGains: Option[OtherGains],
+    capitalGainsTaxAmount: Option[BigDecimal],
+    adjustments: Option[BigDecimal],
+    adjustedCapitalGainsTax: Option[BigDecimal],
+    foreignTaxCreditRelief: Option[BigDecimal],
+    capitalGainsTaxAfterFTCR: Option[BigDecimal],
+    taxOnGainsAlreadyPaid: Option[BigDecimal],
+    capitalGainsTaxDue: BigDecimal,
+    capitalGainsOverpaid: Option[BigDecimal]
 )
 
 object CapitalGainsTax {

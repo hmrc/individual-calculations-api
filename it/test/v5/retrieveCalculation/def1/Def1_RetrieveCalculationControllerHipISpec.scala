@@ -17,7 +17,6 @@
 package v5.retrieveCalculation.def1
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers._
@@ -133,6 +132,7 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
         |    }
         |}
       """.stripMargin
+
   }
 
   private trait NonTysTest extends Test {
@@ -238,7 +238,7 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
           ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
           ("ZG903729C", "2017-18", "bad id", BAD_REQUEST, CalculationIdFormatError)
         )
-        input.foreach(args => (validationErrorTest _).tupled(args))
+        input.foreach(args => validationErrorTest.tupled(args))
         "downstream returns a service error" when {
           def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
             s"backend returns an $downstreamCode error and status $downstreamStatus" in new NonTysTest {
@@ -271,7 +271,7 @@ class Def1_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec {
             (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
             (UNPROCESSABLE_ENTITY, "TAX_YEAR_NOT_SUPPORTED", BAD_REQUEST, RuleTaxYearNotSupportedError)
           )
-          (errors ++ extraTysErrors).foreach(args => (serviceErrorTest _).tupled(args))
+          (errors ++ extraTysErrors).foreach(args => serviceErrorTest.tupled(args))
         }
       }
     }

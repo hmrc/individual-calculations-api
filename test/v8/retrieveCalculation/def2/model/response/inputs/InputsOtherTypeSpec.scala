@@ -29,4 +29,5 @@ class InputsOtherTypeSpec extends UnitSpec with EnumJsonSpecSupport {
   testWrites[InputsOtherType](
     `coding-out` -> "coding-out"
   )
+
 }

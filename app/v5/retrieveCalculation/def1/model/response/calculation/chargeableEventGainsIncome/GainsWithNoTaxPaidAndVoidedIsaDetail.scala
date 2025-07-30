@@ -19,11 +19,11 @@ package v5.retrieveCalculation.def1.model.response.calculation.chargeableEventGa
 import play.api.libs.json.{Format, Json}
 
 case class GainsWithNoTaxPaidAndVoidedIsaDetail(`type`: String,
-                                                     customerReference: Option[String],
-                                                     gainAmount: Option[BigDecimal],
-                                                     yearsHeld: Option[BigInt],
-                                                     yearsHeldSinceLastGain: Option[BigInt],
-                                                     voidedIsaTaxPaid: Option[BigDecimal])
+                                                customerReference: Option[String],
+                                                gainAmount: Option[BigDecimal],
+                                                yearsHeld: Option[BigInt],
+                                                yearsHeldSinceLastGain: Option[BigInt],
+                                                voidedIsaTaxPaid: Option[BigDecimal])
 
 object GainsWithNoTaxPaidAndVoidedIsaDetail {
   implicit val format: Format[GainsWithNoTaxPaidAndVoidedIsaDetail] = Json.format[GainsWithNoTaxPaidAndVoidedIsaDetail]

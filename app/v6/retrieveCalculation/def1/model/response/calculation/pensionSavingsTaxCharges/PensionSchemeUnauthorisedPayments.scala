@@ -19,9 +19,9 @@ package v6.retrieveCalculation.def1.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class PensionSchemeUnauthorisedPayments(totalChargeableAmount: Option[BigDecimal],
-                                                  totalTaxPaid: Option[BigDecimal],
-                                                  pensionSchemeUnauthorisedPaymentsSurcharge: Option[PensionSavingsDetailBreakdown],
-                                                  pensionSchemeUnauthorisedPaymentsNonSurcharge: Option[PensionSavingsDetailBreakdown])
+                                             totalTaxPaid: Option[BigDecimal],
+                                             pensionSchemeUnauthorisedPaymentsSurcharge: Option[PensionSavingsDetailBreakdown],
+                                             pensionSchemeUnauthorisedPaymentsNonSurcharge: Option[PensionSavingsDetailBreakdown])
 
 object PensionSchemeUnauthorisedPayments {
   implicit val format: OFormat[PensionSchemeUnauthorisedPayments] = Json.format[PensionSchemeUnauthorisedPayments]

@@ -38,7 +38,6 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClientV2, val app
 
     import request._
 
-
     val url = if (taxYear.year >= 2026) {
       IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/${calculationType.toDownstream}/confirm")
     } else {

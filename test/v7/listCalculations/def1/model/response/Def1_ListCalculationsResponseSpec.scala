@@ -21,7 +21,6 @@ import shared.utils.UnitSpec
 import v7.listCalculations.model.response.Def1_ListCalculationsResponse
 import v7.listCalculations.def1.model.Def1_ListCalculationsFixture
 
-
 class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculationsFixture {
 
   "ListCalculationsResponse" when {
@@ -37,4 +36,5 @@ class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculati
       }
     }
   }
+
 }

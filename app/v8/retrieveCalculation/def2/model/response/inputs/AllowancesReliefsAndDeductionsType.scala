@@ -22,20 +22,20 @@ import play.api.libs.json.{Reads, Writes}
 sealed trait AllowancesReliefsAndDeductionsType
 
 object AllowancesReliefsAndDeductionsType {
-  case object `investment-reliefs`  extends AllowancesReliefsAndDeductionsType
-  case object `other-reliefs`       extends AllowancesReliefsAndDeductionsType
-  case object `other-expenses`      extends AllowancesReliefsAndDeductionsType
-  case object `other-deductions`    extends AllowancesReliefsAndDeductionsType
-  case object `foreign-reliefs`     extends AllowancesReliefsAndDeductionsType
+  case object `investment-reliefs` extends AllowancesReliefsAndDeductionsType
+  case object `other-reliefs`      extends AllowancesReliefsAndDeductionsType
+  case object `other-expenses`     extends AllowancesReliefsAndDeductionsType
+  case object `other-deductions`   extends AllowancesReliefsAndDeductionsType
+  case object `foreign-reliefs`    extends AllowancesReliefsAndDeductionsType
 
   implicit val writes: Writes[AllowancesReliefsAndDeductionsType] = Enums.writes[AllowancesReliefsAndDeductionsType]
 
   implicit val reads: Reads[AllowancesReliefsAndDeductionsType] = Enums.readsUsing {
-    case "investmentReliefs"  => `investment-reliefs`
-    case "otherReliefs"       => `other-reliefs`
-    case "otherExpenses"      => `other-expenses`
-    case "otherDeductions"    => `other-deductions`
-    case "foreignReliefs"     => `foreign-reliefs`
+    case "investmentReliefs" => `investment-reliefs`
+    case "otherReliefs"      => `other-reliefs`
+    case "otherExpenses"     => `other-expenses`
+    case "otherDeductions"   => `other-deductions`
+    case "foreignReliefs"    => `foreign-reliefs`
   }
 
 }

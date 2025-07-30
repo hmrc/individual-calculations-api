@@ -27,8 +27,7 @@ class MetadataSpec extends UnitSpec {
     "passed valid JSON with all fields populated" should {
       "return the correct model" in {
         Json
-          .parse(
-            """{
+          .parse("""{
               |    "calculationId": "calcId",
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
@@ -64,8 +63,7 @@ class MetadataSpec extends UnitSpec {
     "only mandatory fields populated" should {
       "default the final declaration fields to false" in {
         Json
-          .parse(
-            """{
+          .parse("""{
               |    "calculationId": "calcId",
               |    "taxYear": 2018,
               |    "requestedBy": "customer",
@@ -110,8 +108,7 @@ class MetadataSpec extends UnitSpec {
           finalDeclarationTimestamp = Some("decl timestamp"),
           periodFrom = "from",
           periodTo = "to"
-        )) shouldBe Json.parse(
-        """{
+        )) shouldBe Json.parse("""{
           |    "calculationId": "calcId",
           |    "taxYear": "2017-18",
           |    "requestedBy": "customer",

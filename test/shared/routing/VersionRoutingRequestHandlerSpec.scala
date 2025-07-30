@@ -19,7 +19,6 @@ package shared.routing
 import org.apache.pekko.actor.ActorSystem
 import org.scalatest.Inside
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.http.HeaderNames.ACCEPT
 import play.api.http.{HttpConfiguration, HttpErrorHandler, HttpFilters}
 import play.api.mvc._
 import play.api.routing.Router

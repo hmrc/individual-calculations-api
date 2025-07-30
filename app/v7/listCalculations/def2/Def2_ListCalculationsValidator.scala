@@ -43,19 +43,18 @@ class Def2_ListCalculationsValidator(nino: String, taxYear: String, calculationT
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveListCalculationType(calculationType)
-    ).mapN(Def2_ListCalculationsRequestData)
+    ).mapN(Def2_ListCalculationsRequestData.apply)
       .andThen(validateRules)
 
   private val validateRules = {
     def isValidCalcTypeForDef2(calcType: CalculationType): Boolean =
       Seq(`in-year`, `final-declaration`, `intent-to-finalise`).contains(calcType)
 
-    val validateCalcTypeForTaxYear = { request: ListCalculationsRequestData =>
+    val validateCalcTypeForTaxYear = (request: ListCalculationsRequestData) =>
       request.calculationType.flatMap {
         case ct if isValidCalcTypeForDef2(ct) => None
-        case _ => Some(List(RuleCalculationTypeNotAllowed))
+        case _                                => Some(List(RuleCalculationTypeNotAllowed))
       }
-    }
 
     resolveValid[ListCalculationsRequestData]
       .thenValidate(validateCalcTypeForTaxYear)

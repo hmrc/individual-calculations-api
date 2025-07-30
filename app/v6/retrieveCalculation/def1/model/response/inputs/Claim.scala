@@ -23,15 +23,15 @@ import v6.common.model.response.{ClaimType, IncomeSourceType}
 import v6.common.model.response.IncomeSourceType._
 
 case class Claim(claimId: Option[String],
-                      originatingClaimId: Option[String],
-                      incomeSourceId: String,
-                      incomeSourceType: IncomeSourceType,
-                      submissionTimestamp: Option[String],
-                      taxYearClaimMade: TaxYear,
-                      claimType: ClaimType,
-                      sequence: Option[Int])
+                 originatingClaimId: Option[String],
+                 incomeSourceId: String,
+                 incomeSourceType: IncomeSourceType,
+                 submissionTimestamp: Option[String],
+                 taxYearClaimMade: TaxYear,
+                 claimType: ClaimType,
+                 sequence: Option[Int])
 
-object Claim extends {
+object Claim {
 
   implicit val taxYearFormat: Format[TaxYear] = TaxYearFormats.downstreamIntToMtdFormat
 

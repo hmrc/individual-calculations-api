@@ -43,6 +43,7 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     `updated-claim-event`             -> "updated-claim-event",
     `new-annual-adjustment-event`     -> "new-annual-adjustment-event",
     `updated-annual-adjustment-event` -> "updated-annual-adjustment-event",
-    `unattended-calculation`          -> "unattended-calculation",
+    `unattended-calculation`          -> "unattended-calculation"
   )
+
 }

@@ -58,7 +58,7 @@ object ResolveIsoDate extends ResolverSupport {
   }
 
   def withMinMaxCheck(value: String, error: MtdError, minMaxError: MtdError): Validated[Seq[MtdError], LocalDate] = {
-    val resolver = ResolveIsoDate(error).resolver thenValidate validateYearRange(minMaxError)
+    val resolver = ResolveIsoDate(error).resolver.thenValidate(validateYearRange(minMaxError))
     resolver(value)
   }
 

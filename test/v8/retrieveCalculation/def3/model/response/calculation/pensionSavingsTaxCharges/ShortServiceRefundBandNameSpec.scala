@@ -31,4 +31,5 @@ class ShortServiceRefundBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
     `lower-band` -> "lower-band",
     `upper-band` -> "upper-band"
   )
+
 }

@@ -19,12 +19,12 @@ package v7.retrieveCalculation.def1.model.response.calculation.incomeSummaryTota
 import play.api.libs.json.{Format, Json}
 
 case class IncomeSummaryTotals(totalSelfEmploymentProfit: Option[BigInt],
-                                    totalPropertyProfit: Option[BigInt],
-                                    totalFHLPropertyProfit: Option[BigInt],
-                                    totalUKOtherPropertyProfit: Option[BigInt],
-                                    totalForeignPropertyProfit: Option[BigInt],
-                                    totalEeaFhlProfit: Option[BigInt],
-                                    totalEmploymentIncome: Option[BigInt])
+                               totalPropertyProfit: Option[BigInt],
+                               totalFHLPropertyProfit: Option[BigInt],
+                               totalUKOtherPropertyProfit: Option[BigInt],
+                               totalForeignPropertyProfit: Option[BigInt],
+                               totalEeaFhlProfit: Option[BigInt],
+                               totalEmploymentIncome: Option[BigInt])
 
 object IncomeSummaryTotals {
   implicit val format: Format[IncomeSummaryTotals] = Json.format[IncomeSummaryTotals]

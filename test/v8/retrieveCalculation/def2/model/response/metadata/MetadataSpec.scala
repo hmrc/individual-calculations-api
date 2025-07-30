@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def2.model.response.metadata
 
-import play.api.libs.json.Json
+import play.api.libs.json._
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
 import v8.common.model.response.RetrieveCalculationType
@@ -124,6 +124,10 @@ class MetadataSpec extends UnitSpec {
                  |  }
                  |""".stripMargin)
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[Metadata] shouldBe a[JsError]
   }
 
 }

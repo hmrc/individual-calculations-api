@@ -19,11 +19,11 @@ package v5.retrieveCalculation.def1.model.response.calculation.reliefs
 import play.api.libs.json.{Json, OFormat}
 
 case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                        reliefsClaimed: Option[Seq[ReliefsClaimed]],
-                        foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
-                        topSlicingRelief: Option[TopSlicingRelief],
-                        basicRateExtension: Option[BasicRateExtension],
-                        giftAidTaxReductionWhereBasicRateDiffers: Option[GiftAidTaxReductionWhereBasicRateDiffers]) {
+                   reliefsClaimed: Option[Seq[ReliefsClaimed]],
+                   foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
+                   topSlicingRelief: Option[TopSlicingRelief],
+                   basicRateExtension: Option[BasicRateExtension],
+                   giftAidTaxReductionWhereBasicRateDiffers: Option[GiftAidTaxReductionWhereBasicRateDiffers]) {
 
   val isDefined: Boolean =
     !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty && giftAidTaxReductionWhereBasicRateDiffers.isEmpty)
@@ -34,7 +34,7 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
 
 }
 
-object Reliefs extends {
+object Reliefs {
 
   implicit val format: OFormat[Reliefs] = Json.format[Reliefs]
 }

@@ -16,7 +16,7 @@
 
 package v7.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import shared.models.domain.TaxYear
 import shared.utils.UnitSpec
 import v7.common.model.response.IncomeSourceType
@@ -82,6 +82,10 @@ class UnclaimedLossSpec extends UnitSpec {
         }
       }
     }
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[UnclaimedLoss] shouldBe a[JsError]
   }
 
 }

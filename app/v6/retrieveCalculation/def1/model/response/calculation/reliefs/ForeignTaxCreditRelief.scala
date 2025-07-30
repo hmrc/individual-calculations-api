@@ -19,12 +19,12 @@ package v6.retrieveCalculation.def1.model.response.calculation.reliefs
 import play.api.libs.json.{Json, OFormat}
 
 case class ForeignTaxCreditRelief(customerCalculatedRelief: Option[Boolean],
-                                       totalForeignTaxCreditRelief: BigDecimal,
-                                       foreignTaxCreditReliefOnProperty: Option[BigDecimal],
-                                       foreignTaxCreditReliefOnDividends: Option[BigDecimal],
-                                       foreignTaxCreditReliefOnSavings: Option[BigDecimal],
-                                       foreignTaxCreditReliefOnForeignIncome: Option[BigDecimal],
-                                       foreignTaxCreditReliefDetail: Option[Seq[ForeignTaxCreditReliefDetail]])
+                                  totalForeignTaxCreditRelief: BigDecimal,
+                                  foreignTaxCreditReliefOnProperty: Option[BigDecimal],
+                                  foreignTaxCreditReliefOnDividends: Option[BigDecimal],
+                                  foreignTaxCreditReliefOnSavings: Option[BigDecimal],
+                                  foreignTaxCreditReliefOnForeignIncome: Option[BigDecimal],
+                                  foreignTaxCreditReliefDetail: Option[Seq[ForeignTaxCreditReliefDetail]])
 
 object ForeignTaxCreditRelief {
   implicit val format: OFormat[ForeignTaxCreditRelief] = Json.format[ForeignTaxCreditRelief]

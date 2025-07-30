@@ -19,10 +19,10 @@ package v7.retrieveCalculation.def1.model.response.calculation.savingsAndGainsIn
 import play.api.libs.json.{Format, Json}
 
 case class SavingsAndGainsIncome(totalChargeableSavingsAndGains: Option[BigInt],
-                                      totalUkSavingsAndGains: Option[BigInt],
-                                      ukSavingsAndGainsIncome: Option[Seq[UkSavingsAndGainsIncome]],
-                                      chargeableForeignSavingsAndGains: Option[BigInt],
-                                      foreignSavingsAndGainsIncome: Option[Seq[ForeignSavingsAndGainsIncome]])
+                                 totalUkSavingsAndGains: Option[BigInt],
+                                 ukSavingsAndGainsIncome: Option[Seq[UkSavingsAndGainsIncome]],
+                                 chargeableForeignSavingsAndGains: Option[BigInt],
+                                 foreignSavingsAndGainsIncome: Option[Seq[ForeignSavingsAndGainsIncome]])
 
 object SavingsAndGainsIncome {
   implicit val format: Format[SavingsAndGainsIncome] = Json.format[SavingsAndGainsIncome]

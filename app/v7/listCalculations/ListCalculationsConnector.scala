@@ -22,7 +22,12 @@ import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
-import v7.listCalculations.model.request.{Def1_ListCalculationsRequestData, Def2_ListCalculationsRequestData, Def3_ListCalculationsRequestData, ListCalculationsRequestData}
+import v7.listCalculations.model.request.{
+  Def1_ListCalculationsRequestData,
+  Def2_ListCalculationsRequestData,
+  Def3_ListCalculationsRequestData,
+  ListCalculationsRequestData
+}
 import v7.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 
 import javax.inject.{Inject, Singleton}

@@ -25,26 +25,26 @@ class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenProper
   "Getting a schema" when {
     "a tax year is valid" must {
       "use Def1 for tax year 2023-24" in {
-          val taxYear = TaxYear.fromMtd("2023-24")
-          RetrieveCalculationSchema.schemaFor(taxYear.asMtd) shouldBe RetrieveCalculationSchema.Def1
+        val taxYear = TaxYear.fromMtd("2023-24")
+        RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def1)
       }
 
       "use Def2 for tax years from 2024-25" in {
         forTaxYearsFrom(TaxYear.fromMtd("2024-25")) { taxYear =>
-          RetrieveCalculationSchema.schemaFor(taxYear.asMtd) shouldBe RetrieveCalculationSchema.Def2
+          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def2)
         }
       }
 
       "use Def1 for pre-TYS tax years" in {
         forPreTysTaxYears { taxYear =>
-          RetrieveCalculationSchema.schemaFor(taxYear.asMtd) shouldBe RetrieveCalculationSchema.Def1
+          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def1)
         }
       }
     }
 
     "the tax year is not valid" must {
       "use a default of Def2 (where tax year validation will fail)" in {
-        RetrieveCalculationSchema.schemaFor("NotATaxYear") shouldBe RetrieveCalculationSchema.Def2
+        RetrieveCalculationSchema.schemaFor("NotATaxYear").shouldBe(RetrieveCalculationSchema.Def2)
       }
     }
   }

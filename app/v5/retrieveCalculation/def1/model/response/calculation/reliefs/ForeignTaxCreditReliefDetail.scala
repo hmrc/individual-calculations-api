@@ -21,15 +21,15 @@ import v5.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
 case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[IncomeSourceType],
-                                             incomeSourceId: Option[String],
-                                             countryCode: String,
-                                             foreignIncome: BigDecimal,
-                                             foreignTax: Option[BigDecimal],
-                                             dtaRate: Option[BigDecimal],
-                                             dtaAmount: Option[BigDecimal],
-                                             ukLiabilityOnIncome: Option[BigDecimal],
-                                             foreignTaxCredit: BigDecimal,
-                                             employmentLumpSum: Option[Boolean])
+                                        incomeSourceId: Option[String],
+                                        countryCode: String,
+                                        foreignIncome: BigDecimal,
+                                        foreignTax: Option[BigDecimal],
+                                        dtaRate: Option[BigDecimal],
+                                        dtaAmount: Option[BigDecimal],
+                                        ukLiabilityOnIncome: Option[BigDecimal],
+                                        foreignTaxCredit: BigDecimal,
+                                        employmentLumpSum: Option[Boolean])
 
 object ForeignTaxCreditReliefDetail {
 

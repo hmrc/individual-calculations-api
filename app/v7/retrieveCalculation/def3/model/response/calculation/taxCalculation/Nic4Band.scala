@@ -19,12 +19,12 @@ package v7.retrieveCalculation.def3.model.response.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class Nic4Band(
-                          name: Nic4BandName,
-                          rate: BigDecimal,
-                          threshold: Option[BigInt],
-                          apportionedThreshold: Option[BigInt],
-                          income: BigInt,
-                          amount: BigDecimal
+    name: Nic4BandName,
+    rate: BigDecimal,
+    threshold: Option[BigInt],
+    apportionedThreshold: Option[BigInt],
+    income: BigInt,
+    amount: BigDecimal
 )
 
 object Nic4Band {

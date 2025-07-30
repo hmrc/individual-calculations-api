@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,8 @@
 package api.nrs
 
 import config.CalculationsConfig
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
+import play.api.libs.ws._
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
@@ -32,9 +33,8 @@ class NrsProxyConnector @Inject() (http: HttpClientV2, calculationsConfig: Calcu
 
     http
       .post(url"${calculationsConfig.mtdNrsProxyBaseUrl}/mtd-api-nrs-proxy/$nino/$notableEvent")
-      .withBody(Json.toJson(body))
+      .withBody(body)
       .execute[Either[UpstreamErrorResponse, Unit]]
-
   }
 
 }

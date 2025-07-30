@@ -47,11 +47,11 @@ trait RulesValidator[PARSED] {
     * @return
     *   A combined validation result.
     */
-  protected def combine(results: Validated[Seq[MtdError], _]*): Validated[Seq[MtdError], Unit] =
+  protected def combine(results: Validated[Seq[MtdError], ?]*): Validated[Seq[MtdError], Unit] =
     results.traverse_(identity)
 
   /** Provides utility operations for working with validation results. */
-  implicit protected class ResultOps(result: Validated[Seq[MtdError], _]) {
+  implicit protected class ResultOps(result: Validated[Seq[MtdError], ?]) {
 
     /** Converts the validation result to a result containing the given parsed data.
       *

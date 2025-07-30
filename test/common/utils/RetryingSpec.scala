@@ -59,7 +59,8 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
       "return the result" in {
         retrying
           .retry[String](noDelayRetries(5), !_.isSuccess)(succeedAfter(0))
-          .futureValue shouldBe "Attempt 0"
+          .futureValue
+          .shouldBe("Attempt 0")
       }
     }
 
@@ -68,14 +69,16 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
       "retry successfully" in {
         retrying
           .retry[String](noDelayRetries(numRetries), !_.isSuccess)(succeedAfter(numRetries))
-          .futureValue shouldBe s"Attempt $numRetries"
+          .futureValue
+          .shouldBe(s"Attempt $numRetries")
       }
 
       "fail with last failed future when no more retries" in {
         retrying
           .retry[String](noDelayRetries(numRetries), !_.isSuccess)(succeedAfter(numRetries + 1))
           .failed
-          .futureValue shouldBe exception
+          .futureValue
+          .shouldBe(exception)
       }
     }
 
@@ -97,7 +100,8 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
             if (i == 2) Future.failed(timeoutException) else Future.failed(exception)
           }
           .failed
-          .futureValue shouldBe timeoutException
+          .futureValue
+          .shouldBe(timeoutException)
       }
     }
 
@@ -105,7 +109,7 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
       val numRetries = 5
 
       val retryUnlessOk: Try[String] => Boolean = {
-        case Success(s) => !(s startsWith "Ok")
+        case Success(s) => !s.startsWith("Ok")
         case Failure(e) => true
       }
 
@@ -116,13 +120,15 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
       "retry successfully" in {
         retrying
           .retry[String](noDelayRetries(numRetries), retryUnlessOk)(okAfter(numRetries))
-          .futureValue shouldBe s"Ok $numRetries"
+          .futureValue
+          .shouldBe(s"Ok $numRetries")
       }
 
       "fail with last future when no more retries" in {
         retrying
           .retry[String](noDelayRetries(numRetries), retryUnlessOk)(okAfter(numRetries + 1))
-          .futureValue shouldBe s"Attempt $numRetries"
+          .futureValue
+          .shouldBe(s"Attempt $numRetries")
       }
     }
 
@@ -136,7 +142,7 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
             .retry[String](List(delay), !_.isSuccess)(succeedAfter(1)))(delay * 2) shouldBe s"Attempt 1"
 
         stopwatch.stop()
-        stopwatch.elapsed(TimeUnit.MILLISECONDS) shouldBe >(delay.toMillis)
+        stopwatch.elapsed(TimeUnit.MILLISECONDS).shouldBe(>(delay.toMillis))
       }
 
       "not delay when no retry is necessary" in {
@@ -148,7 +154,7 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
             .retry[String](List(delay), !_.isSuccess)(succeedAfter(0)))(delay * 2) shouldBe s"Attempt 0"
 
         stopwatch.stop()
-        stopwatch.elapsed(TimeUnit.MILLISECONDS) shouldBe <(delay.toMillis)
+        stopwatch.elapsed(TimeUnit.MILLISECONDS).shouldBe(<(delay.toMillis))
       }
     }
 
@@ -159,12 +165,9 @@ class RetryingSpec extends UnitSpec with ScalaFutures with GuiceOneAppPerSuite w
       }
 
       "must allow to be scaled by a factor" in {
-        Retrying.fibonacciDelays(500.milliseconds, 5) shouldBe Seq(
-          500.milliseconds,
-          500.milliseconds,
-          1000.milliseconds,
-          1500.milliseconds,
-          2500.milliseconds)
+        Retrying
+          .fibonacciDelays(500.milliseconds, 5)
+          .shouldBe(Seq(500.milliseconds, 500.milliseconds, 1000.milliseconds, 1500.milliseconds, 2500.milliseconds))
       }
     }
   }

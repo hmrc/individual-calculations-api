@@ -28,15 +28,15 @@ object Def1_SubmitFinalDeclarationRulesValidator extends RulesValidator[Def1_Sub
 
   def validateBusinessRules(parsed: Def1_SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Def1_SubmitFinalDeclarationRequestData] = {
 
-    def validatedCalculationType(request: Def1_SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Unit] ={
+    def validatedCalculationType(request: Def1_SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Unit] = {
       request.calculationType match {
         case `confirm-amendment` if request.taxYear.year < 2026 => Invalid(Seq(RuleSubmissionFailedError))
-        case _ => valid
+        case _                                                  => valid
       }
     }
 
     combine(
-      validatedCalculationType(parsed),
+      validatedCalculationType(parsed)
     ).onSuccess(parsed)
   }
 

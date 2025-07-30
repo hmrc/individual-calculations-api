@@ -121,7 +121,7 @@ class TriggerCalculationControllerSpec
 
   private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
 
-    lazy val controller = new TriggerCalculationController(
+    val controller: TriggerCalculationController = new TriggerCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       validatorFactory = mockTriggerCalculationValidatorFactory,

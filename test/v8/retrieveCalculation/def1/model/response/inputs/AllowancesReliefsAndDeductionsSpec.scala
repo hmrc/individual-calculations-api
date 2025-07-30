@@ -37,4 +37,5 @@ class AllowancesReliefsAndDeductionsTypeSpec extends UnitSpec with EnumJsonSpecS
     `other-deductions`   -> "other-deductions",
     `foreign-reliefs`    -> "foreign-reliefs"
   )
+
 }

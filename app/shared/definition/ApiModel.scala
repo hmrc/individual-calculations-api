@@ -20,18 +20,6 @@ import play.api.libs.json.{Json, OFormat}
 
 case class PublishingException(message: String) extends Exception(message)
 
-case class Access(`type`: String, whitelistedApplicationIds: Seq[String])
-
-object Access {
-  implicit val formatAccess: OFormat[Access] = Json.format[Access]
-}
-
-case class Parameter(name: String, required: Boolean = false)
-
-object Parameter {
-  implicit val formatParameter: OFormat[Parameter] = Json.format[Parameter]
-}
-
 case class Definition(api: APIDefinition)
 
 object Definition {

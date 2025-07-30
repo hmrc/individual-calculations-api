@@ -19,11 +19,11 @@ package v5.retrieveCalculation.def2.model.response.calculation.pensionSavingsTax
 import play.api.libs.json.{Json, OFormat}
 
 case class ShortServiceRefundBands(name: String,
-                                        rate: BigDecimal,
-                                        bandLimit: BigInt,
-                                        apportionedBandLimit: BigInt,
-                                        shortServiceRefundAmount: BigDecimal,
-                                        shortServiceRefundCharge: BigDecimal)
+                                   rate: BigDecimal,
+                                   bandLimit: BigInt,
+                                   apportionedBandLimit: BigInt,
+                                   shortServiceRefundAmount: BigDecimal,
+                                   shortServiceRefundCharge: BigDecimal)
 
 object ShortServiceRefundBands {
   implicit val format: OFormat[ShortServiceRefundBands] = Json.format[ShortServiceRefundBands]

@@ -16,15 +16,14 @@
 
 package v6.common.model.response
 
-import common.utils.enums.Enums
-import play.api.libs.json.Format
+import play.api.libs.json._
+import shared.utils.enums.Enums
 
-sealed trait Source
+enum Source {
+  case `customer`
+  case `HMRC HELD`
+}
 
 object Source {
-
-  case object `customer`  extends Source
-  case object `HMRC HELD` extends Source
-
-  implicit val format: Format[Source] = Enums.format[Source]
+  given Format[Source] = Enums.format(values)
 }

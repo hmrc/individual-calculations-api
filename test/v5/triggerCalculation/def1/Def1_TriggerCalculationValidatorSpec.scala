@@ -41,12 +41,12 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
     "return the parsed domain object" when {
       "a valid request is supplied with some finalDeclaration value" in {
         val result = validator(validNino, validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, parsedFinalDeclaration))
+        result.shouldBe(Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, parsedFinalDeclaration)))
       }
 
       "a valid request is supplied without a finalDeclaration value" in {
         val result = validator(validNino, validTaxYear, None).validateAndWrapResult()
-        result shouldBe Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, false))
+        result.shouldBe(Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, false)))
       }
 
     }
@@ -54,54 +54,42 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
         val result = validator("A12344A", validTaxYear, Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, NinoFormatError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, NinoFormatError)))
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, "20178", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, TaxYearFormatError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, TaxYearFormatError)))
       }
     }
 
     "return RuleTaxYearRangeInvalid error" when {
       "a tax year with a range higher than 1 is supplied" in {
         val result = validator(validNino, "2019-21", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)))
       }
     }
 
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
         val result = validator(validNino, "2016-17", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)))
       }
     }
 
     "return RuleTaxYearForVersionNotSupportedError error" when {
       "a tax year after 2024-25 is supplied" in {
         val result = validator(validNino, "2025-26", Some(validFinalDeclaration)).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, RuleTaxYearForVersionNotSupportedError)))
       }
     }
 
     "return FinalDeclarationFormatError error" when {
       "an invalid final declaration is supplied" in {
         val result = validator(validNino, validTaxYear, Some("error")).validateAndWrapResult()
-        result shouldBe Left(
-          ErrorWrapper(correlationId, FinalDeclarationFormatError)
-        )
+        result.shouldBe(Left(ErrorWrapper(correlationId, FinalDeclarationFormatError)))
       }
     }
 
@@ -109,13 +97,10 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
       "multiple invalid parameters are provided" in {
         val result = validator("not-a-nino", validTaxYear, Some("error")).validateAndWrapResult()
 
-        result shouldBe Left(
-          ErrorWrapper(
-            correlationId,
-            BadRequestError,
-            Some(List(FinalDeclarationFormatError, NinoFormatError))
-          )
-        )
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, BadRequestError, Some(List(FinalDeclarationFormatError, NinoFormatError)))
+          ))
       }
     }
   }

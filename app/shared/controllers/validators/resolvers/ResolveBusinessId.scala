@@ -25,7 +25,7 @@ object ResolveBusinessId extends ResolverSupport {
   private val businessIdRegex = "^X[A-Z0-9]{1}IS[0-9]{11}$".r
 
   val resolver: Resolver[String, BusinessId] =
-    ResolveStringPattern(businessIdRegex, BusinessIdFormatError).resolver.map(BusinessId)
+    ResolveStringPattern(businessIdRegex, BusinessIdFormatError).resolver.map(BusinessId.apply)
 
   def apply(value: String): Validated[Seq[MtdError], BusinessId] = resolver(value)
 

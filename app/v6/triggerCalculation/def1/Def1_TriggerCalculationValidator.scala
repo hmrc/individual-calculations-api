@@ -28,9 +28,10 @@ import v6.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, 
 
 object Def1_TriggerCalculationValidator {
 
-  private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val triggerCalculationMinimumTaxYear          = TaxYear.fromMtd("2017-18")
   private val triggerCalculationMaximumSupportedTaxYear = TaxYear.fromMtd("2024-25")
-  private val resolveTaxYear                     = ResolveTaxYearMinMax(
+
+  private val resolveTaxYear = ResolveTaxYearMinMax(
     (triggerCalculationMinimumTaxYear, triggerCalculationMaximumSupportedTaxYear),
     RuleTaxYearNotSupportedError,
     RuleTaxYearForVersionNotSupportedError)
@@ -52,6 +53,6 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, finalDecla
         case Some(finalDeclaration) => resolveFinalDeclaration(finalDeclaration)
         case None                   => Valid(false)
       }
-    ).mapN(Def1_TriggerCalculationRequestData)
+    ).mapN(Def1_TriggerCalculationRequestData.apply)
 
 }

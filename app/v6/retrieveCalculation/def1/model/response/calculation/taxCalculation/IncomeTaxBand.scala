@@ -19,12 +19,12 @@ package v6.retrieveCalculation.def1.model.response.calculation.taxCalculation
 import play.api.libs.json.{Format, Json}
 
 case class IncomeTaxBand(
-                               name: IncomeTaxBandName,
-                               rate: BigDecimal,
-                               bandLimit: BigInt,
-                               apportionedBandLimit: BigInt,
-                               income: BigInt,
-                               taxAmount: BigDecimal
+    name: IncomeTaxBandName,
+    rate: BigDecimal,
+    bandLimit: BigInt,
+    apportionedBandLimit: BigInt,
+    income: BigInt,
+    taxAmount: BigDecimal
 )
 
 object IncomeTaxBand {

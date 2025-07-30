@@ -19,8 +19,8 @@ package v8.retrieveCalculation.def3.model.response.calculation.employmentAndPens
 import play.api.libs.json.{Format, Json}
 
 case class RedundancyCompensationPaymentsOverExemption(amount: Option[BigDecimal],
-                                                            taxPaid: Option[BigDecimal],
-                                                            taxTakenOffInEmployment: Option[Boolean])
+                                                       taxPaid: Option[BigDecimal],
+                                                       taxTakenOffInEmployment: Option[Boolean])
 
 object RedundancyCompensationPaymentsOverExemption {
 

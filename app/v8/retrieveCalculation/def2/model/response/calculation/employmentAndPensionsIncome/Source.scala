@@ -29,7 +29,7 @@ object Source {
   implicit val writes: Writes[Source] = Enums.writes[Source]
 
   implicit val reads: Reads[Source] = Enums.readsUsing[Source] {
-    case "customer" => `customer`
+    case "customer"  => `customer`
     case "HMRC HELD" => `hmrc-held`
   }
 

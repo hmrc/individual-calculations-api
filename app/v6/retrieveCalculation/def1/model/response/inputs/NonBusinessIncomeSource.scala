@@ -21,13 +21,13 @@ import v6.common.model.response.IncomeSourceType
 import IncomeSourceType._
 
 case class NonBusinessIncomeSource(incomeSourceId: Option[String],
-                                        incomeSourceType: IncomeSourceType,
-                                        incomeSourceName: Option[String],
-                                        startDate: String,
-                                        endDate: Option[String],
-                                        source: String,
-                                        periodId: Option[String],
-                                        latestReceivedDateTime: Option[String])
+                                   incomeSourceType: IncomeSourceType,
+                                   incomeSourceName: Option[String],
+                                   startDate: String,
+                                   endDate: Option[String],
+                                   source: String,
+                                   periodId: Option[String],
+                                   latestReceivedDateTime: Option[String])
 
 case object NonBusinessIncomeSource {
 

@@ -28,8 +28,8 @@ object ShareSchemeDetailType {
   implicit val writes: Writes[ShareSchemeDetailType] = Enums.writes[ShareSchemeDetailType]
 
   implicit val reads: Reads[ShareSchemeDetailType] = Enums.readsUsing {
-    case "shareOption"              => `share-option`
-    case "sharesAwardedOrReceived"  => `shares-awarded-or-received`
+    case "shareOption"             => `share-option`
+    case "sharesAwardedOrReceived" => `shares-awarded-or-received`
   }
 
 }
