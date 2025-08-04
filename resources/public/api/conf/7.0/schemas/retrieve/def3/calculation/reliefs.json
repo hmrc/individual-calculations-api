@@ -176,7 +176,9 @@
               "eis-subscriptions",
               "community-investment",
               "seed-enterprise-investment",
+              {{#unless (enabled 'social-investment-fields-removal')}}
               "social-enterprise-investment",
+              {{/unless}}
               "maintenance-payments",
               "deficiency-relief",
               "non-deductible-loan-interest",
@@ -225,11 +227,13 @@
                   "type": "string",
                   "example": "EIS fund"
                 },
+                {{#unless (enabled 'social-investment-fields-removal')}}
                 "socialEnterpriseName": {
                   "description": "The name of the Social Enterprise Investment invested in.",
                   "type": "string",
                   "example": "SE Inc"
                 },
+                {{/unless}}
                 "companyName": {
                   "description": "The name of the Seed Enterprise Investment invested in.",
                   "type": "string",
