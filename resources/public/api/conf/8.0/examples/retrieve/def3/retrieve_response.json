@@ -208,7 +208,6 @@
               "amountClaimed": 5000.99,
               "uniqueInvestmentRef": "string",
               "name": "string",
-              "socialEnterpriseName": "string",
               "companyName": "string",
               "deficiencyReliefType": "lifeInsurance",
               "customerReference": "string"
