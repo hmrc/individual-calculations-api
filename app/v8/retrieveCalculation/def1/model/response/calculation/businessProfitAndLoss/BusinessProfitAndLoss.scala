@@ -43,7 +43,9 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                  totalBroughtForwardClass4Losses: Option[BigInt],
                                  broughtForwardClass4LossesUsed: Option[BigInt],
                                  carrySidewaysClass4LossesUsed: Option[BigInt],
-                                 totalClass4LossesCarriedForward: Option[BigInt])
+                                 totalClass4LossesCarriedForward: Option[BigInt],
+                                 adjustedProfit: Option[BigInt],
+                                 outstandingBusinessIncome: Option[BigInt])
 
 object BusinessProfitAndLoss {
 
@@ -80,6 +82,8 @@ object BusinessProfitAndLoss {
     broughtForwardClass4LossesUsed                 <- (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt]
     carrySidewaysClass4LossesUsed                  <- (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt]
     totalClass4LossesCarriedForward                <- (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
+    adjustedProfit                                 <- (JsPath \ "adjustedProfit").readNullable[BigInt]
+    outstandingBusinessIncome                      <- (JsPath \ "outstandingBusinessIncome").readNullable[BigInt]
 
   } yield {
     BusinessProfitAndLoss(
@@ -106,7 +110,9 @@ object BusinessProfitAndLoss {
       totalBroughtForwardClass4Losses = totalBroughtForwardClass4Losses,
       broughtForwardClass4LossesUsed = broughtForwardClass4LossesUsed,
       carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
-      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward
+      totalClass4LossesCarriedForward = totalClass4LossesCarriedForward,
+      adjustedProfit = adjustedProfit,
+      outstandingBusinessIncome = outstandingBusinessIncome
     )
   }
 
@@ -136,7 +142,9 @@ object BusinessProfitAndLoss {
         "totalBroughtForwardClass4Losses"                -> Json.toJson(o.totalBroughtForwardClass4Losses),
         "broughtForwardClass4LossesUsed"                 -> Json.toJson(o.broughtForwardClass4LossesUsed),
         "carrySidewaysClass4LossesUsed"                  -> Json.toJson(o.carrySidewaysClass4LossesUsed),
-        "totalClass4LossesCarriedForward"                -> Json.toJson(o.totalClass4LossesCarriedForward)
+        "totalClass4LossesCarriedForward"                -> Json.toJson(o.totalClass4LossesCarriedForward),
+        "adjustedProfit"                                 -> Json.toJson(o.adjustedProfit),
+        "outstandingBusinessIncome"                      -> Json.toJson(o.outstandingBusinessIncome)
       ).filterNot { case (_, value) =>
         value == JsNull
       }
