@@ -43,8 +43,8 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                  broughtForwardClass4LossesUsed: Option[BigInt],
                                  carrySidewaysClass4LossesUsed: Option[BigInt],
                                  totalClass4LossesCarriedForward: Option[BigInt],
-                                 adjustedProfit: Option[BigInt],
-                                 outstandingBusinessIncome: Option[BigInt])
+                                 adjustedProfit: Option[BigDecimal],
+                                 outstandingBusinessIncome: Option[BigDecimal])
 
 object BusinessProfitAndLoss {
 
@@ -78,8 +78,8 @@ object BusinessProfitAndLoss {
     broughtForwardClass4LossesUsed                 <- (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt]
     carrySidewaysClass4LossesUsed                  <- (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt]
     totalClass4LossesCarriedForward                <- (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
-    adjustedProfit                                 <- (JsPath \ "adjustedProfit").readNullable[BigInt]
-    outstandingBusinessIncome                      <- (JsPath \ "outstandingBusinessIncome").readNullable[BigInt]
+    adjustedProfit                                 <- (JsPath \ "adjustedProfit").readNullable[BigDecimal]
+    outstandingBusinessIncome                      <- (JsPath \ "outstandingBusinessIncome").readNullable[BigDecimal]
 
   } yield {
     BusinessProfitAndLoss(
