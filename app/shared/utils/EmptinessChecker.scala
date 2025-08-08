@@ -135,7 +135,7 @@ object EmptinessChecker {
     given [A](using a: => A): Lazy[A] = new Lazy(() => a)
   }
 
-  inline given derived[A](using m: Mirror.Of[A]): EmptinessChecker[A] =
+  inline given derived[A](using m: Mirror.ProductOf[A]): EmptinessChecker[A] =
     instance { a =>
       val elemLabels    = summonLabels[m.MirroredElemLabels]
       val elemInstances = summonAllInstances[m.MirroredElemTypes]

@@ -46,7 +46,9 @@ class BusinessProfitAndLossSpec extends UnitSpec {
        |  "totalBroughtForwardClass4Losses": 456,
        |  "broughtForwardClass4LossesUsed": 456,
        |  "carrySidewaysClass4LossesUsed": 456,
-       |  "totalClass4LossesCarriedForward": 456
+       |  "totalClass4LossesCarriedForward": 456,
+       |  "adjustedProfit": 456.00,
+       |  "outstandingBusinessIncome": 456.00
        |}
        |""".stripMargin)
 
@@ -74,7 +76,9 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       totalBroughtForwardClass4Losses = Some(BigInt(456)),
       broughtForwardClass4LossesUsed = Some(BigInt(456)),
       carrySidewaysClass4LossesUsed = Some(BigInt(456)),
-      totalClass4LossesCarriedForward = Some(BigInt(456))
+      totalClass4LossesCarriedForward = Some(BigInt(456)),
+      adjustedProfit = Some(BigDecimal(456.00)),
+      outstandingBusinessIncome = Some(BigDecimal(456.00))
     )
 
   def mtdJson(incomeSourceType: IncomeSourceType): JsValue = Json.parse(s"""
@@ -101,7 +105,9 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       | "totalBroughtForwardClass4Losses": 456,
       | "broughtForwardClass4LossesUsed": 456,
       | "carrySidewaysClass4LossesUsed": 456,
-      | "totalClass4LossesCarriedForward": 456
+      | "totalClass4LossesCarriedForward": 456,
+      | "adjustedProfit": 456.00,
+      | "outstandingBusinessIncome": 456.00
       |}
       |""".stripMargin)
 
