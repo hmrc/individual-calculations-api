@@ -208,7 +208,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "160.99"
       },
       "outstandingBusinessIncome": {
         "title": "outstandingBusinessIncome",
@@ -217,7 +217,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160"
+        "example": "160.99"
       }
     },
     "additionalProperties": false,
