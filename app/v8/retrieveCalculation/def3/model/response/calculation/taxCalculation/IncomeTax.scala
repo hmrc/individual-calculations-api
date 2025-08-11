@@ -16,7 +16,8 @@
 
 package v8.retrieveCalculation.def3.model.response.calculation.taxCalculation
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.*
 
 case class IncomeTax(
     totalIncomeReceivedFromAllSources: BigInt,
@@ -43,5 +44,30 @@ case class IncomeTax(
 )
 
 object IncomeTax {
-  implicit val format: Format[IncomeTax] = Json.format
+
+  given Reads[IncomeTax] = (
+    (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt] and
+      (JsPath \ "totalAllowancesAndDeductions").read[BigInt] and
+      (JsPath \ "totalTaxableIncome").read[BigInt] and
+      (JsPath \ "payPensionsProfit").readNullable[IncomeTaxItem] and
+      (JsPath \ "savingsAndGains").readNullable[IncomeTaxItem] and
+      (JsPath \ "dividends").readNullable[IncomeTaxItem] and
+      (JsPath \ "lumpSums").readNullable[IncomeTaxItem] and
+      (JsPath \ "gainsOnLifePolicies").readNullable[IncomeTaxItem] and
+      (JsPath \ "incomeTaxCharged").read[BigDecimal] and
+      (JsPath \ "totalReliefs").readNullable[BigDecimal] and
+      (JsPath \ "incomeTaxDueAfterReliefs").readNullable[BigDecimal] and
+      (JsPath \ "totalNotionalTax").readNullable[BigDecimal] and
+      (JsPath \ "marriageAllowanceRelief").readNullable[BigDecimal] and
+      (JsPath \ "incomeTaxDueAfterTaxReductions").readNullable[BigDecimal] and
+      (JsPath \ "incomeTaxDueAfterGiftAid").readNullable[BigDecimal] and
+      (JsPath \ "totalPensionSavingsTaxCharges").readNullable[BigDecimal] and
+      (JsPath \ "statePensionLumpSumCharges").readNullable[BigDecimal] and
+      (JsPath \ "payeUnderpaymentsCodedOut").readNullable[BigDecimal] and
+      (JsPath \ "totalIncomeTaxDue").readNullable[BigDecimal] and
+      (JsPath \ "giftAidTaxChargeWhereBasicRateDiffers").readNullable[BigDecimal] and
+      (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
+  )(IncomeTax.apply)
+
+  given OWrites[IncomeTax] = Json.writes[IncomeTax]
 }

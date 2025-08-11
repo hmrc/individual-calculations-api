@@ -94,7 +94,7 @@
     "statePensionLumpSumCharges": 5000.99,
     "payeUnderpaymentsCodedOut": 5000.99,
     "totalIncomeTaxDue": 5000.99,
-    "highIncomeBenefitCharge": 5000.99
+    "highIncomeChildBenefitCharge": 5000.99
   },
   "nics": {
     "class2Nics": {

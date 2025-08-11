@@ -16,7 +16,8 @@
 
 package v8.retrieveCalculation.def3.model.response.calculation.highIncomeChildBenefitCharge
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.*
 
 case class HighIncomeChildBenefitCharge(adjustedNetIncome: BigDecimal,
                                         amountOfChildBenefitReceived: BigDecimal,
@@ -26,5 +27,15 @@ case class HighIncomeChildBenefitCharge(adjustedNetIncome: BigDecimal,
                                         highIncomeBenefitCharge: BigDecimal)
 
 object HighIncomeChildBenefitCharge {
-  implicit val format: OFormat[HighIncomeChildBenefitCharge] = Json.format[HighIncomeChildBenefitCharge]
+
+  given Reads[HighIncomeChildBenefitCharge] = (
+    (JsPath \ "adjustedNetIncome").read[BigDecimal] and
+      (JsPath \ "amountOfChildBenefitReceived").read[BigDecimal] and
+      (JsPath \ "incomeThreshold").read[BigDecimal] and
+      (JsPath \ "childBenefitChargeTaper").read[BigDecimal] and
+      (JsPath \ "rate").read[BigDecimal] and
+      (JsPath \ "highIncomeChildBenefitCharge").read[BigDecimal]
+  )(HighIncomeChildBenefitCharge.apply)
+
+  given OWrites[HighIncomeChildBenefitCharge] = Json.writes[HighIncomeChildBenefitCharge]
 }
