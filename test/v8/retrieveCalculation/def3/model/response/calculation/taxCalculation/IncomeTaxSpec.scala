@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package v8.retrieveCalculation.def3.model.response.calculation.taxCalculation
 
-import play.api.libs.json.JsValue
+import play.api.libs.json.*
 import shared.models.utils.JsonErrorValidators
 import shared.utils.UnitSpec
 
 class IncomeTaxSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 
-  "have the correct fields optional" when {
+  "have the correct optional fields" when {
     val json = (taxCalculationDownstreamJson \ "incomeTax").as[JsValue]
 
     testAllOptionalJsonFieldsExcept[IncomeTax](json)(
@@ -30,6 +30,10 @@ class IncomeTaxSpec extends UnitSpec with JsonErrorValidators with TaxCalculatio
       "totalAllowancesAndDeductions",
       "totalTaxableIncome",
       "incomeTaxCharged")
+  }
+
+  "error when JSON is invalid" in {
+    JsObject.empty.validate[IncomeTax].isError shouldBe true
   }
 
 }
