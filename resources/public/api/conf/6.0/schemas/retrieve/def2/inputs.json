@@ -367,7 +367,9 @@
           },
           "contractorName": {
             "description": "The name of the contractor the subcontractor worked for.",
-            "pattern": "^[A-Za-z0-9 \\-,.&'/]{1,105}$",
+            "type": "string",
+            "minimum": 1,
+            "maximum": 105,
             "example": "Company-123 Ltd."
           },
           "periodData": {
