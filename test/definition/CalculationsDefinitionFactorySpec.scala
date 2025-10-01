@@ -23,12 +23,12 @@ import shared.config.MockAppConfig
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.definition.{APIDefinition, APIVersion, Definition}
 import shared.mocks.MockHttpClient
-import shared.routing.{Version5, Version6, Version7, Version8}
+import shared.routing.{Version6, Version7, Version8}
 import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 
-  private val validVersions = Seq(Version5, Version6, Version7, Version8)
+  private val validVersions = Seq(Version6, Version7, Version8)
 
   "CalculationsDefinitionFactory" when {
 
