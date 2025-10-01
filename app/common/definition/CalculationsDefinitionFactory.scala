@@ -17,8 +17,8 @@
 package common.definition
 
 import shared.config.AppConfig
-import shared.definition._
-import shared.routing.{Version5, Version6, Version7, Version8}
+import shared.definition.*
+import shared.routing.{Version6, Version7, Version8}
 
 import javax.inject.{Inject, Singleton}
 
@@ -33,11 +33,6 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         context = appConfig.apiGatewayContext,
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
-          APIVersion(
-            version = Version5,
-            status = buildAPIStatus(Version5),
-            endpointsEnabled = appConfig.endpointsEnabled(Version5)
-          ),
           APIVersion(
             version = Version6,
             status = buildAPIStatus(Version6),
