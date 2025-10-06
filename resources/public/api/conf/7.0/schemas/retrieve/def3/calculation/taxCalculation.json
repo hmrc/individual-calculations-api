@@ -77,12 +77,21 @@
       "$ref": "#/definitions/capitalGainsTax"
     },
     "totalIncomeTaxAndNicsAndCgt": {
+      {{#if (enabled 'api_1885_cgt_r18_docs')}}
+      "description": "Total income tax, NICS and CGT. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/monetary"
+        }
+      ]
+      {{else}}
       "description": "Total income tax, NICS and CGT. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "allOf": [
         {
           "$ref": "#/definitions/monetaryPos"
         }
       ]
+      {{/if}}
     }
   },
   "additionalProperties": false,
