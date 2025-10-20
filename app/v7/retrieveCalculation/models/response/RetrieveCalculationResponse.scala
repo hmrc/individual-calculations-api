@@ -66,9 +66,6 @@ case class Def1_RetrieveCalculationResponse(
     def updateModelR8b(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
       if (isR8bSpecificApiEnabled) response else response.withoutR8bSpecificUpdates
 
-    def updateModelAdditionalFields(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
-      if (isRetrieveSAAdditionalFieldsEnabled) response else response.withoutAdditionalFieldsUpdates
-
     def updateModelCl290(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
       if (isCl290Enabled) response else response.withoutTaxTakenOffTradingIncome
 
@@ -77,9 +74,8 @@ case class Def1_RetrieveCalculationResponse(
       else response.withoutBasicRateDivergenceUpdates
     }
 
-    val responseMaybeWithoutR8b              = updateModelR8b(this)
-    val responseMaybeWithoutAdditionalFields = updateModelAdditionalFields(responseMaybeWithoutR8b)
-    val responseMaybeWithoutCl290            = updateModelCl290(responseMaybeWithoutAdditionalFields)
+    val responseMaybeWithoutR8b   = updateModelR8b(this)
+    val responseMaybeWithoutCl290 = updateModelCl290(responseMaybeWithoutR8b)
     updateModelBasicRateDivergence(taxYear, responseMaybeWithoutCl290)
 
   }
@@ -112,25 +108,6 @@ case class Def1_RetrieveCalculationResponse(
 
   def withoutGiftAidTaxChargeWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
     Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
-
-  def withoutAdditionalFieldsUpdates: Def1_RetrieveCalculationResponse =
-    this.withoutCessationDate.withoutOtherIncome.withoutCommencementDate.withoutItsaStatus
-
-  def withoutCessationDate: Def1_RetrieveCalculationResponse = {
-    Def1_RetrieveCalculationResponse(metadata, inputs.withoutCessationDate, calculation, messages)
-  }
-
-  def withoutCommencementDate: Def1_RetrieveCalculationResponse = {
-    Def1_RetrieveCalculationResponse(metadata, inputs.withoutCommencementDate, calculation, messages)
-  }
-
-  def withoutOtherIncome: Def1_RetrieveCalculationResponse = {
-    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOtherIncome).filter(_.isDefined), messages)
-  }
-
-  def withoutItsaStatus: Def1_RetrieveCalculationResponse = {
-    Def1_RetrieveCalculationResponse(metadata, inputs.withoutItsaStatus, calculation, messages)
-  }
 
 }
 
