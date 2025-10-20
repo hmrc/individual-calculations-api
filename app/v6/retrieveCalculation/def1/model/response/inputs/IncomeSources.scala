@@ -23,26 +23,6 @@ case class IncomeSources(businessIncomeSources: Option[Seq[BusinessIncomeSource]
   val isDefined: Boolean =
     !(businessIncomeSources.isEmpty && nonBusinessIncomeSources.isEmpty)
 
-  def withoutCessationDate: IncomeSources =
-    businessIncomeSources match {
-      case Some(det) =>
-        val details = (for (d <- det) yield d.withoutCessationDate).filter(_.isDefined)
-        if (details.nonEmpty) { copy(businessIncomeSources = Some(details)) }
-        else { copy(businessIncomeSources = None) }
-      case None => copy(businessIncomeSources = None)
-    }
-
-  def withoutCommencementDate: IncomeSources = businessIncomeSources match {
-    case Some(det) =>
-      val details = (for (d <- det) yield d.withoutCommencementDate).filter(_.isDefined)
-      if (details.nonEmpty) {
-        copy(businessIncomeSources = Some(details))
-      } else {
-        copy(businessIncomeSources = None)
-      }
-    case None => copy(businessIncomeSources = None)
-  }
-
 }
 
 object IncomeSources {
