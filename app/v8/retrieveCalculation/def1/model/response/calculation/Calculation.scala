@@ -99,9 +99,6 @@ case class Calculation(
   def withoutTaxTakenOffTradingIncome: Calculation =
     copy(taxDeductedAtSource = taxDeductedAtSource.map(_.withoutTaxTakenOffTradingIncome))
 
-  def withoutOtherIncome: Calculation =
-    copy(otherIncome = None)
-
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&
       reliefs.isEmpty && taxDeductedAtSource.isEmpty &&
