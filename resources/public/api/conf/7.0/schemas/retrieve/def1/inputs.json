@@ -95,11 +95,23 @@
           "description": "The Unique Taxpayer Reference for the customer.",
           "type": "string",
           "example": "AGvHTfRUPO"
-        }
-        {{#if (enabled 'retrieveSAAdditionalFields')}}
-        ,"itsaStatus": {
-          "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The ITSA status for the tax year.",
+        },
+        "itsaStatus": {
           "type": "string",
+          {{#if (enabled 'api_1885_digitally_exempt_docs')}}
+          "description": "The ITSA Status for the Tax Year. The value `Non Digital` is deprecated and will no longer be supported from tax year 2026-27",
+          "enum": [
+            "No Status",
+            "MTD Mandated",
+            "MTD Voluntary",
+            "Annual",
+            "Non Digital",
+            "Digitally Exempt",
+            "Dormant",
+            "MTD Exempt"
+          ]
+          {{else}}
+          "description": "The ITSA Status for the Tax Year.",
           "enum": [
             "No Status",
             "MTD Mandated",
@@ -109,8 +121,8 @@
             "Dormant",
             "MTD Exempt"
           ]
+          {{/if}}
         }
-        {{/if}}
       },
       "additionalProperties": false,
       "required": [
@@ -624,9 +636,8 @@
               }
             ]
           },
-          {{#if (enabled 'retrieveSAAdditionalFields')}}
           "commencementDate": {
-            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source commenced.",
+            "description": "The date the income source commenced.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
@@ -634,14 +645,13 @@
             ]
           },
           "cessationDate": {
-            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source ceased.",
+            "description": "The date the income source ceased.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
               }
             ]
           },
-          {{/if}}
           "latestPeriodEndDate": {
             "description": "The end date of the period for which income has been submitted for the income source.",
             "allOf": [
