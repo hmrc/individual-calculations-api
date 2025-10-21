@@ -47,11 +47,9 @@ class RetrieveCalculationControllerSpec
 
   private val calculationId                                 = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val responseWithR8b                               = minimalCalculationR8bResponse
-  private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
   private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
   private val responseWithBasicRateDivergenceEnabled        = minimalCalculationBasicRateDivergenceEnabledResponse
   private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson
-  private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson
 
