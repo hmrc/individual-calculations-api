@@ -37,11 +37,10 @@ class FeatureSwitchesSpec extends UnitSpec {
 
       "enabled" in {
         val configuration = Configuration(
-          "r8b-api.enabled"                    -> true,
-          "retrieveSAAdditionalFields.enabled" -> true,
-          "cl290.enabled"                      -> true,
-          "basicRateDivergence.enabled"        -> true,
-          "desIf_Migration.enabled"            -> true
+          "r8b-api.enabled"             -> true,
+          "cl290.enabled"               -> true,
+          "basicRateDivergence.enabled" -> true,
+          "desIf_Migration.enabled"     -> true
         )
         val featureSwitches = CalculationsFeatureSwitches(configuration)
 
@@ -55,11 +54,10 @@ class FeatureSwitchesSpec extends UnitSpec {
     "be false" when {
       "disabled" in {
         val configuration = Configuration(
-          "r8b-api.enabled"                    -> false,
-          "retrieveSAAdditionalFields.enabled" -> false,
-          "cl290.enabled"                      -> false,
-          "basicRateDivergence.enabled"        -> false,
-          "desIf_Migration.enabled"            -> false
+          "r8b-api.enabled"             -> false,
+          "cl290.enabled"               -> false,
+          "basicRateDivergence.enabled" -> false,
+          "desIf_Migration.enabled"     -> false
         )
 
         val featureSwitches = CalculationsFeatureSwitches(configuration)
