@@ -374,13 +374,6 @@ trait Def1_CalculationFixture {
     messages = None
   )
 
-  val minimalCalculationAdditionalFieldsResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadata,
-    inputs = inputsWithAdditionalFields,
-    calculation = Some(calculationWithAdditionalFields),
-    messages = None
-  )
-
   val minimalCalculationCl290EnabledResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,
@@ -545,73 +538,6 @@ trait Def1_CalculationFixture {
         |  }
         |}
     """.stripMargin
-    )
-    .as[JsObject]
-
-  val responseAdditionalFieldsEnabledJson: JsObject = Json
-    .parse(
-      """
-    {
-      "metadata": {
-        "calculationId": "",
-        "taxYear": "2017-18",
-        "requestedBy": "",
-        "calculationReason": "",
-        "calculationType": "inYear",
-        "intentToSubmitFinalDeclaration": false,
-        "finalDeclaration": false,
-        "periodFrom": "",
-        "periodTo": ""
-      },
-      "inputs": {
-        "personalInformation": {
-          "identifier": "",
-          "taxRegime": "UK",
-          "itsaStatus": "No Status"
-        },
-        "incomeSources": {
-          "businessIncomeSources": [
-            {
-              "incomeSourceId": "000000000000210",
-              "incomeSourceType": "self-employment",
-              "incomeSourceName": "string",
-              "accountingPeriodStartDate": "2018-04-06",
-              "accountingPeriodEndDate": "2019-04-05",
-              "commencementDate": "2018-04-06",
-              "cessationDate": "2019-04-05",
-              "source": "MTD-SA",
-              "latestPeriodEndDate": "2021-12-02",
-              "latestReceivedDateTime": "2021-12-02T15:25:48Z",
-              "finalised": true,
-              "finalisationTimestamp": "2019-02-15T09:35:15.094Z",
-              "submissionPeriods": [
-                {
-                  "periodId": "001",
-                  "startDate": "2018-04-06",
-                  "endDate": "2019-04-05",
-                  "receivedDateTime": "2019-02-15T09:35:04.843Z"
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "calculation": {
-        "otherIncome": {
-          "totalOtherIncome": 2000.00,
-          "postCessationIncome": {
-            "totalPostCessationReceipts": 2000.00,
-            "postCessationReceipts": [
-              {
-                "amount": 100.00,
-                "taxYearIncomeToBeTaxed": "2019-20"
-              }
-            ]
-          }
-        }
-      }
-    }
-    """
     )
     .as[JsObject]
 

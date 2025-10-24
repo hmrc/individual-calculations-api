@@ -27,13 +27,7 @@ case class Inputs(personalInformation: PersonalInformation,
                   constructionIndustryScheme: Option[Seq[ConstructionIndustryScheme]], // This field name has been changed from downstream.
                   allowancesReliefsAndDeductions: Option[Seq[AllowancesReliefsAndDeductions]],
                   pensionContributionAndCharges: Option[Seq[PensionContributionAndCharges]],
-                  other: Option[Seq[Other]]) {
-  def withoutCessationDate: Inputs = copy(incomeSources = incomeSources.withoutCessationDate)
-
-  def withoutCommencementDate: Inputs = copy(incomeSources = incomeSources.withoutCommencementDate)
-
-  def withoutItsaStatus: Inputs = copy(personalInformation = personalInformation.withoutItsaStatus)
-}
+                  other: Option[Seq[Other]])
 
 object Inputs {
   implicit val writes: OWrites[Inputs] = Json.writes[Inputs]

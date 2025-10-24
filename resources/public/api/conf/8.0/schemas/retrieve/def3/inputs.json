@@ -97,8 +97,20 @@
           "example": "AGvHTfRUPO"
         },
         "itsaStatus": {
-          "description": "The ITSA status for the tax year.",
           "type": "string",
+          "description": "The ITSA Status for the Tax Year.",
+          {{#if (enabled 'api_1885_digitally_exempt_docs')}}
+          "enum": [
+            "No Status",
+            "MTD Mandated",
+            "MTD Voluntary",
+            "Annual",
+            "Non Digital",
+            "Digitally Exempt",
+            "Dormant",
+            "MTD Exempt"
+          ]
+          {{else}}
           "enum": [
             "No Status",
             "MTD Mandated",
@@ -108,6 +120,7 @@
             "Dormant",
             "MTD Exempt"
           ]
+          {{/if}}
         }
       },
       "additionalProperties": false,

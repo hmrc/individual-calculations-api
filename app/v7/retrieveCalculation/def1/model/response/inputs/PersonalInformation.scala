@@ -26,9 +26,7 @@ case class PersonalInformation(identifier: String,
                                class2VoluntaryContributions: Option[Boolean],
                                marriageAllowance: Option[String],
                                uniqueTaxpayerReference: Option[String],
-                               itsaStatus: Option[String]) {
-  def withoutItsaStatus: PersonalInformation = copy(itsaStatus = None)
-}
+                               itsaStatus: Option[String])
 
 object PersonalInformation {
   implicit val format: OFormat[PersonalInformation] = Json.format[PersonalInformation]

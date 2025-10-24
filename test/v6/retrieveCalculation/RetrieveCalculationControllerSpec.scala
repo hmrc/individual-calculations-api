@@ -47,11 +47,9 @@ class RetrieveCalculationControllerSpec
 
   private val calculationId                                 = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val responseWithR8b                               = minimalCalculationR8bResponse
-  private val responseWithAdditionalFields                  = minimalCalculationAdditionalFieldsResponse
   private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
   private val responseWithBasicRateDivergenceEnabled        = minimalCalculationBasicRateDivergenceEnabledResponse
   private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson
-  private val mtdResponseWithAdditionalFieldsJson           = responseAdditionalFieldsEnabledJson
   private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson
   private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson
 
@@ -67,10 +65,9 @@ class RetrieveCalculationControllerSpec
         MockedAppConfig.featureSwitchConfig
           .returns(
             Configuration(
-              "r8b-api.enabled"                    -> true,
-              "retrieveSAAdditionalFields.enabled" -> false,
-              "cl290.enabled"                      -> false,
-              "basicRateDivergence.enabled"        -> false
+              "r8b-api.enabled"             -> true,
+              "cl290.enabled"               -> false,
+              "basicRateDivergence.enabled" -> false
             ))
           .anyNumberOfTimes()
 
@@ -78,29 +75,6 @@ class RetrieveCalculationControllerSpec
           expectedStatus = OK,
           maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
           maybeAuditResponseBody = Some(mtdResponseWithR8BJson)
-        )
-      }
-
-      "happy path with Additional Fields feature switch enabled" in new NonTysTest {
-        willUseValidator(returningSuccess(requestData))
-
-        MockRetrieveCalculationService
-          .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithAdditionalFields))))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(
-            Configuration(
-              "r8b-api.enabled"                    -> false,
-              "retrieveSAAdditionalFields.enabled" -> true,
-              "cl290.enabled"                      -> false,
-              "basicRateDivergence.enabled"        -> false))
-          .anyNumberOfTimes()
-
-        runOkTestWithAudit(
-          expectedStatus = OK,
-          maybeExpectedResponseBody = Some(mtdResponseWithAdditionalFieldsJson),
-          maybeAuditResponseBody = Some(mtdResponseWithAdditionalFieldsJson)
         )
       }
 
@@ -112,12 +86,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
 
         MockedAppConfig.featureSwitchConfig
-          .returns(
-            Configuration(
-              "r8b-api.enabled"                    -> false,
-              "retrieveSAAdditionalFields.enabled" -> false,
-              "cl290.enabled"                      -> true,
-              "basicRateDivergence.enabled"        -> false))
+          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> true, "basicRateDivergence.enabled" -> false))
           .anyNumberOfTimes()
 
         runOkTestWithAudit(
@@ -135,12 +104,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithBasicRateDivergenceEnabled))))
 
         MockedAppConfig.featureSwitchConfig
-          .returns(
-            Configuration(
-              "r8b-api.enabled"                    -> false,
-              "retrieveSAAdditionalFields.enabled" -> false,
-              "cl290.enabled"                      -> false,
-              "basicRateDivergence.enabled"        -> true))
+          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> false, "basicRateDivergence.enabled" -> true))
           .anyNumberOfTimes()
 
         runOkTestWithAudit(
@@ -150,7 +114,7 @@ class RetrieveCalculationControllerSpec
         )
       }
 
-      "happy path with R8B; additional fields; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
+      "happy path with R8B; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
         val updatedMtdResponse: JsObject = minimumCalculationResponseWithSwitchesDisabledJson
         willUseValidator(returningSuccess(requestData))
 
@@ -159,12 +123,7 @@ class RetrieveCalculationControllerSpec
           .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
 
         MockedAppConfig.featureSwitchConfig
-          .returns(
-            Configuration(
-              "r8b-api.enabled"                    -> false,
-              "retrieveSAAdditionalFields.enabled" -> false,
-              "cl290.enabled"                      -> false,
-              "basicRateDivergence.enabled"        -> false))
+          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> false, "basicRateDivergence.enabled" -> false))
           .anyNumberOfTimes()
 
         runOkTestWithAudit(

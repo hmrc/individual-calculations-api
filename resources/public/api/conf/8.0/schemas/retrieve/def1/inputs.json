@@ -96,10 +96,9 @@
           "type": "string",
           "example": "AGvHTfRUPO"
         }
-        {{#if (enabled 'retrieveSAAdditionalFields')}}
         ,"itsaStatus": {
-          "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The ITSA status for the tax year.",
           "type": "string",
+          "description": "The ITSA Status for the Tax Year.",
           "enum": [
             "No Status",
             "MTD Mandated",
@@ -110,7 +109,6 @@
             "MTD Exempt"
           ]
         }
-        {{/if}}
       },
       "additionalProperties": false,
       "required": [
@@ -624,9 +622,8 @@
               }
             ]
           },
-          {{#if (enabled 'retrieveSAAdditionalFields')}}
           "commencementDate": {
-            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source commenced.",
+            "description": "The date the income source commenced.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
@@ -634,14 +631,13 @@
             ]
           },
           "cessationDate": {
-            "description": "{{#unless (releasedInProduction 'retrieveSAAdditionalFields')}}[Test only] {{/unless}}The date the income source ceased.",
+            "description": "The date the income source ceased.",
             "allOf": [
               {
                 "$ref": "#/definitions/date"
               }
             ]
           },
-          {{/if}}
           "latestPeriodEndDate": {
             "description": "The end date of the period for which income has been submitted for the income source.",
             "allOf": [

@@ -23,11 +23,10 @@ import javax.inject.Inject
 
 case class CalculationsFeatureSwitches @Inject() (protected val featureSwitchConfig: Configuration) extends FeatureSwitches {
 
-  val isR8bSpecificApiEnabled: Boolean             = isEnabled("r8b-api")
-  val isRetrieveSAAdditionalFieldsEnabled: Boolean = isEnabled("retrieveSAAdditionalFields")
-  val isCl290Enabled: Boolean                      = isEnabled("cl290")
-  val isBasicRateDivergenceEnabled: Boolean        = isEnabled("basicRateDivergence")
-  val isDesIf_MigrationEnabled: Boolean            = isEnabled("desIf_Migration")
+  val isR8bSpecificApiEnabled: Boolean      = isEnabled("r8b-api")
+  val isCl290Enabled: Boolean               = isEnabled("cl290")
+  val isBasicRateDivergenceEnabled: Boolean = isEnabled("basicRateDivergence")
+  val isDesIf_MigrationEnabled: Boolean     = isEnabled("desIf_Migration")
 }
 
 object CalculationsFeatureSwitches {

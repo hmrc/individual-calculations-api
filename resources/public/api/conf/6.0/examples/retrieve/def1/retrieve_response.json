@@ -26,10 +26,8 @@
       ],
       "class2VoluntaryContributions": true,
       "marriageAllowance": "transferor",
-      "uniqueTaxpayerReference": "AGvHTfRUPO"
-      {{#if (enabled "retrieveSAAdditionalFields")}}
-      ,"itsaStatus": "No Status"
-      {{/if}}
+      "uniqueTaxpayerReference": "AGvHTfRUPO",
+      "itsaStatus": "No Status"
     },
     "incomeSources": {
       "businessIncomeSources": [
@@ -40,10 +38,8 @@
           "accountingPeriodStartDate": "2021-04-06",
           "accountingPeriodEndDate": "2022-04-05",
           "source": "MTD-SA",
-          {{#if (enabled "retrieveSAAdditionalFields")}}
           "cessationDate":"2021-04-06",
           "commencementDate":"2022-04-05",
-          {{/if}}
           "latestPeriodEndDate": "2022-04-05",
           "latestReceivedDateTime": "2022-12-02T15:25:48.475Z",
           "finalised": true,
@@ -738,7 +734,6 @@
         }
       ]
     },
-    {{#if (enabled "retrieveSAAdditionalFields")}}
     "otherIncome": {
       "totalOtherIncome": 2000.00,
       "postCessationIncome": {
@@ -751,7 +746,6 @@
         ]
       }
     },
-    {{/if}}
     "dividendsIncome": {
       "totalChargeableDividends": 12500,
       "totalUkDividends": 12500,

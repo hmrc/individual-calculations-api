@@ -97,8 +97,8 @@
           "example": "AGvHTfRUPO"
         },
         "itsaStatus": {
-          "description": "The ITSA status for the tax year.",
           "type": "string",
+          "description": "The ITSA Status for the Tax Year.",
           "enum": [
             "No Status",
             "MTD Mandated",
