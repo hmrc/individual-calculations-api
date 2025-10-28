@@ -55,11 +55,11 @@ object FormatCalculationTypeError
       BAD_REQUEST
     )
 
-object RuleIncomeSourcesInvalidError
+class RuleIncomeSourcesInvalidError(status: Int)
     extends MtdError(
       code = "RULE_INCOME_SOURCES_INVALID",
       message = "No valid income sources could be found",
-      BAD_REQUEST
+      httpStatus = status
     )
 
 object RuleNoIncomeSubmissionsExistError

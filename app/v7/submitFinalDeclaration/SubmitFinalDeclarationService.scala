@@ -16,9 +16,10 @@
 
 package v7.submitFinalDeclaration
 
-import api.errors._
+import api.errors.*
+import play.api.http.Status.BAD_REQUEST
 import shared.controllers.RequestContext
-import shared.models.errors._
+import shared.models.errors.*
 import shared.services.{BaseService, ServiceOutcome}
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
@@ -52,7 +53,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
       "RECENT_SUBMISSIONS_EXIST"                -> RuleRecentSubmissionsExistError,
       "RESIDENCY_CHANGED"                       -> RuleResidencyChangedError,
       "FINAL_DECLARATION_RECEIVED"              -> RuleFinalDeclarationReceivedError,
-      "INVALID_INCOME_SOURCES"                  -> RuleIncomeSourcesInvalidError,
+      "INVALID_INCOME_SOURCES"                  -> RuleIncomeSourcesInvalidError(BAD_REQUEST),
       "INCOME_SUBMISSIONS_NOT_EXIST"            -> RuleNoIncomeSubmissionsExistError,
       "BUSINESS_VALIDATION"                     -> RuleSubmissionFailedError,
       "CRYSTALLISATION_TAX_YEAR_ERROR"          -> RuleFinalDeclarationTaxYearError,

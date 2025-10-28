@@ -81,7 +81,7 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
         val extraTysErrors = List(
           ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
           ("INVALID_CRYSTALLISE", FinalDeclarationFormatError),
-          ("NO_VALID_INCOME_SOURCES", InternalError),
+          ("NO_VALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError(UNPROCESSABLE_ENTITY)),
           ("NO_SUBMISSIONS_EXIST", RuleNoIncomeSubmissionsExistError),
           ("INVALID_CALCULATION_ID", InternalError),
           ("CHANGED_INCOME_SOURCES", RuleIncomeSourcesChangedError),

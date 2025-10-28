@@ -16,9 +16,9 @@
 
 package v6.submitFinalDeclaration
 
-import api.errors._
+import api.errors.*
 import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v6.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
@@ -92,7 +92,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
         ("RESIDENCY_CHANGED", RuleResidencyChangedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
-        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError),
+        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError(BAD_REQUEST)),
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("CRYSTALLISATION_TAX_YEAR_ERROR", RuleFinalDeclarationTaxYearError),

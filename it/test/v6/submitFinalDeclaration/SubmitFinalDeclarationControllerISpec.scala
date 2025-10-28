@@ -116,7 +116,7 @@ class SubmitFinalDeclarationControllerISpec extends IntegrationBaseSpec {
           (CONFLICT, "RECENT_SUBMISSIONS_EXIST", BAD_REQUEST, RuleRecentSubmissionsExistError),
           (CONFLICT, "RESIDENCY_CHANGED", BAD_REQUEST, RuleResidencyChangedError),
           (CONFLICT, "FINAL_DECLARATION_RECEIVED", BAD_REQUEST, RuleFinalDeclarationReceivedError),
-          (UNPROCESSABLE_ENTITY, "INVALID_INCOME_SOURCES", BAD_REQUEST, RuleIncomeSourcesInvalidError),
+          (UNPROCESSABLE_ENTITY, "INVALID_INCOME_SOURCES", BAD_REQUEST, RuleIncomeSourcesInvalidError(BAD_REQUEST)),
           (UNPROCESSABLE_ENTITY, "INCOME_SUBMISSIONS_NOT_EXIST", BAD_REQUEST, RuleNoIncomeSubmissionsExistError),
           (UNPROCESSABLE_ENTITY, "BUSINESS_VALIDATION", BAD_REQUEST, RuleSubmissionFailedError),
           (UNPROCESSABLE_ENTITY, "CRYSTALLISATION_TAX_YEAR_ERROR", BAD_REQUEST, RuleFinalDeclarationTaxYearError),
