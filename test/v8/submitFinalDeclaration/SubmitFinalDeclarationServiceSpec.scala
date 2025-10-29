@@ -16,9 +16,9 @@
 
 package v8.submitFinalDeclaration
 
-import api.errors._
+import api.errors.*
 import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.models.outcomes.ResponseWrapper
 import shared.services.ServiceSpec
 import v8.common.model.domain.{CalculationType, `final-declaration`}

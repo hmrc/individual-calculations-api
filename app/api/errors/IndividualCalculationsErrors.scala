@@ -16,7 +16,7 @@
 
 package api.errors
 
-import play.api.http.Status.BAD_REQUEST
+import play.api.http.Status.{BAD_REQUEST, UNPROCESSABLE_ENTITY}
 import shared.models.errors.MtdError
 
 object RuleFinalDeclarationReceivedError
@@ -60,7 +60,11 @@ object RuleIncomeSourcesInvalidError
       code = "RULE_INCOME_SOURCES_INVALID",
       message = "No valid income sources could be found",
       BAD_REQUEST
-    )
+    ) {
+
+  def withStatus422: MtdError = copy(httpStatus = UNPROCESSABLE_ENTITY)
+
+}
 
 object RuleNoIncomeSubmissionsExistError
     extends MtdError(

@@ -16,9 +16,9 @@
 
 package v7.submitFinalDeclaration
 
-import api.errors._
+import api.errors.*
 import shared.controllers.RequestContext
-import shared.models.errors._
+import shared.models.errors.*
 import shared.services.{BaseService, ServiceOutcome}
 import v7.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 

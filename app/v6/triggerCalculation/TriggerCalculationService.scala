@@ -17,10 +17,10 @@
 package v6.triggerCalculation
 
 import shared.controllers.RequestContext
-import shared.models.errors._
-import api.errors._
+import shared.models.errors.*
+import api.errors.*
 import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
+import cats.implicits.*
 import v6.triggerCalculation.model.request.TriggerCalculationRequestData
 import v6.triggerCalculation.model.response.TriggerCalculationResponse
 
@@ -53,7 +53,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
     val extraTysErrors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
-      "NO_VALID_INCOME_SOURCES"   -> InternalError,
+      "NO_VALID_INCOME_SOURCES"   -> RuleIncomeSourcesInvalidError.withStatus422,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
       "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,
       "OUTDATED_SUBMISSION"       -> RuleRecentSubmissionsExistError,
