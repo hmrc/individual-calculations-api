@@ -96,7 +96,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
         ("RESIDENCY_CHANGED", RuleResidencyChangedError),
         ("FINAL_DECLARATION_RECEIVED", RuleFinalDeclarationReceivedError),
-        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError(BAD_REQUEST)),
+        ("INVALID_INCOME_SOURCES", RuleIncomeSourcesInvalidError),
         ("INCOME_SUBMISSIONS_NOT_EXIST", RuleNoIncomeSubmissionsExistError),
         ("BUSINESS_VALIDATION", RuleSubmissionFailedError),
         ("CRYSTALLISATION_TAX_YEAR_ERROR", RuleFinalDeclarationTaxYearError),

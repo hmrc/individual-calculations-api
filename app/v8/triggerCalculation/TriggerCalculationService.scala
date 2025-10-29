@@ -18,7 +18,6 @@ package v8.triggerCalculation
 
 import api.errors.*
 import cats.implicits.*
-import play.api.http.Status.UNPROCESSABLE_ENTITY
 import shared.controllers.RequestContext
 import shared.models.errors.*
 import shared.services.{BaseService, ServiceOutcome}
@@ -58,7 +57,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_TAX_YEAR"          -> TaxYearFormatError,
       "INVALID_CRYSTALLISE"       -> FinalDeclarationFormatError,
-      "NO_VALID_INCOME_SOURCES"   -> RuleIncomeSourcesInvalidError(UNPROCESSABLE_ENTITY),
+      "NO_VALID_INCOME_SOURCES"   -> RuleIncomeSourcesInvalidError.withStatus422,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
       "CHANGED_INCOME_SOURCES"    -> RuleIncomeSourcesChangedError,
       "OUTDATED_SUBMISSION"       -> RuleRecentSubmissionsExistError,
@@ -78,7 +77,7 @@ class TriggerCalculationService @Inject() (connector: TriggerCalculationConnecto
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
       "INVALID_TAX_YEAR"          -> TaxYearFormatError,
       "INVALID_CALCULATION_TYPE"  -> InternalError,
-      "NO_VALID_INCOME_SOURCES"   -> RuleIncomeSourcesInvalidError(UNPROCESSABLE_ENTITY),
+      "NO_VALID_INCOME_SOURCES"   -> RuleIncomeSourcesInvalidError.withStatus422,
       "NO_SUBMISSIONS_EXIST"      -> RuleNoIncomeSubmissionsExistError,
       "ALREADY_DECLARED"          -> RuleFinalDeclarationReceivedError,
       "PREMATURE_FINALISATION"    -> RulePrematureFinalisationError,
