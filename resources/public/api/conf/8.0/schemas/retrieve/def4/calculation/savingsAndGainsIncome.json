@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about savings and gains income in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalChargeableSavingsAndGains": {
+      "description": "The total chargeable savings and gains. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5055"
+    },
+    "totalUkSavingsAndGains": {
+      "description": "The total UK savings and gains. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "6400"
+    },
+    "ukSavingsAndGainsIncome": {
+      "description": "Array detailing UK savings and gains income.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]{15}$",
+            "example": "000000000000210"
+          },
+          "incomeSourceType": {
+            "description": "The income source type for the UK savings and gains.",
+            "type": "string",
+            "enum": [
+              "uk-savings-and-gains",
+              "uk-securities"
+            ]
+          },
+          "incomeSourceName": {
+            "description": "The name of the income source.",
+            "type": "string",
+            "example": "Savings Account 1"
+          },
+          "grossIncome": {
+            "description": "The amount of gross income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "180.00"
+          },
+          "netIncome": {
+            "description": "The amount of net income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "181.01"
+          },
+          "taxDeducted": {
+            "description": "The amount of tax deducted. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "182.02"
+          }
+        },
+        "required": [
+          "incomeSourceType",
+          "grossIncome"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "chargeableForeignSavingsAndGains": {
+      "description": "The amount of chargeable foreign savings and gains. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "foreignSavingsAndGainsIncome": {
+      "description": "Array detailing foreign savings and gains income.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceType": {
+            "description": "The income source type for the foreign savings and gains.",
+            "type": "string",
+            "enum": [
+              "foreign-savings-and-gains"
+            ]
+          },
+          "countryCode": {
+            "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+            "type": "string",
+            "example": "FRA"
+          },
+          "grossIncome": {
+            "description": "Foreign savings and gains gross income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "182.02"
+          },
+          "netIncome": {
+            "description": "Foreign savings and gains net income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "183.03"
+          },
+          "taxDeducted": {
+            "description": "Foreign savings and gains tax deducted. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "184.04"
+          },
+          "foreignTaxCreditRelief": {
+            "description": "A boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed. This value must be true or false.",
+            "type": "boolean",
+            "example": "false"
+          }
+        },
+        "required": [
+          "incomeSourceType"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
