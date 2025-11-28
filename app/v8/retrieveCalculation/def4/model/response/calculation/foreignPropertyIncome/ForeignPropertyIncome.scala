@@ -29,8 +29,12 @@ case class ForeignPropertyIncome(incomeSourceId: String,
                                  netLoss: Option[BigDecimal],
                                  totalAdditions: Option[BigDecimal],
                                  totalDeductions: Option[BigDecimal],
+                                 adjustedProfit: Option[BigDecimal],
+                                 adjustedLoss: Option[BigDecimal],
+                                 foreignTaxPaid: Option[BigDecimal],
                                  taxableProfit: Option[BigDecimal],
-                                 adjustedIncomeTaxLoss: Option[BigDecimal])
+                                 adjustedIncomeTaxLoss: Option[BigDecimal],
+                                 propertyLevelDetail: Option[Seq[PropertyLevelDetail]])
 
 object ForeignPropertyIncome {
   implicit val incomeSourceTypeFormat: Format[IncomeSourceType] = IncomeSourceType.formatRestricted(`foreign-property`)
