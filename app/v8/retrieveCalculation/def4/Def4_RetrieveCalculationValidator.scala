@@ -25,7 +25,7 @@ import shared.models.errors.MtdError
 import v8.retrieveCalculation.models.request.{Def4_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def4_RetrieveCalculationValidator {
-  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2025-26")
+  private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2026-27")
   private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
 }
 

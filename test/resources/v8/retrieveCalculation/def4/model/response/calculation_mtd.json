@@ -1,7 +1,7 @@
 {
   "metadata": {
     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    "taxYear": "2025-26",
+    "taxYear": "2026-27",
     "requestedBy": "customer",
     "requestedTimestamp": "2025-04-15T09:35:15.000Z",
     "calculationReason": "customer-request",
@@ -386,8 +386,28 @@
         "netLoss": 5004.99,
         "totalAdditions": 5005.99,
         "totalDeductions": 5006.99,
+        "adjustedProfit": 5000.99,
+        "adjustedLoss": 5000.99,
+        "foreignTaxPaid": 5000.99,
         "taxableProfit": 5007.99,
-        "adjustedIncomeTaxLoss": 5008.99
+        "adjustedIncomeTaxLoss": 5008.99,
+        "propertyLevelDetail": [
+          {
+            "propertyId": "8e8b8450-dc1b-4360-8109-7067337b42cb",
+            "totalIncome": 5000.99,
+            "totalExpenses": -99999999999.99,
+            "netProfit": 5000.99,
+            "netLoss": 5000.99,
+            "totalAdditions": 5000.99,
+            "totalDeductions": 5000.99,
+            "adjustedProfit": 5000.99,
+            "adjustedLoss": 5000.99,
+            "foreignTaxPaid": 5000.99,
+            "foreignTaxCreditRelief": true,
+            "taxableProfit": 5000.99,
+            "adjustedIncomeTaxLoss": 5000.99
+          }
+        ]
       }
     ],
     "businessProfitAndLoss": [

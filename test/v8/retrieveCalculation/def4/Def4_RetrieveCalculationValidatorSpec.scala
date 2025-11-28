@@ -26,7 +26,7 @@ class Def4_RetrieveCalculationValidatorSpec extends UnitSpec {
   private implicit val correlationId: String = "1234"
 
   private val validNino          = "ZG903729C"
-  private val validTaxYear       = "2025-26"
+  private val validTaxYear       = "2026-27"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   private val parsedNino          = Nino(validNino)
