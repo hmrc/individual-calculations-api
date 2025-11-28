@@ -37,3 +37,7 @@ case class Def2_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, cal
 case class Def3_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData {
   override val schema: RetrieveCalculationSchema = RetrieveCalculationSchema.Def3
 }
+
+case class Def4_RetrieveCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId) extends RetrieveCalculationRequestData {
+  override val schema: RetrieveCalculationSchema = RetrieveCalculationSchema.Def4
+}

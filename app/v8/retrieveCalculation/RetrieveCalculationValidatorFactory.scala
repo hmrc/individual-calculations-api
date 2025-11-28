@@ -20,6 +20,7 @@ import shared.controllers.validators.Validator
 import v8.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v8.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v8.retrieveCalculation.def3.Def3_RetrieveCalculationValidator
+import v8.retrieveCalculation.def4.Def4_RetrieveCalculationValidator
 import v8.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
@@ -33,6 +34,7 @@ class RetrieveCalculationValidatorFactory {
       case RetrieveCalculationSchema.Def1 => new Def1_RetrieveCalculationValidator(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def2 => new Def2_RetrieveCalculationValidator(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def3 => new Def3_RetrieveCalculationValidator(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def4 => new Def4_RetrieveCalculationValidator(nino, taxYear, calculationId)
     }
 
 }

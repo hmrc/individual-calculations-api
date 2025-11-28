@@ -38,6 +38,7 @@ object RetrieveCalculationResponse {
     case def1: Def1_RetrieveCalculationResponse => Json.toJsObject(def1)
     case def2: Def2_RetrieveCalculationResponse => Json.toJsObject(def2)
     case def3: Def3_RetrieveCalculationResponse => Json.toJsObject(def3)
+    case def4: Def4_RetrieveCalculationResponse => Json.toJsObject(def4)
   }
 
 }
@@ -187,5 +188,33 @@ object Def3_RetrieveCalculationResponse {
   implicit val reads: Reads[Def3_RetrieveCalculationResponse] = Json.reads[Def3_RetrieveCalculationResponse]
 
   implicit val writes: OWrites[Def3_RetrieveCalculationResponse] = Json.writes[Def3_RetrieveCalculationResponse]
+
+}
+
+case class Def4_RetrieveCalculationResponse(
+    metadata: def4.model.response.metadata.Metadata,
+    inputs: def4.model.response.inputs.Inputs,
+    calculation: Option[def4.model.response.calculation.Calculation],
+    messages: Option[def4.model.response.messages.Messages]
+) extends RetrieveCalculationResponse {
+
+  override def intentToSubmitFinalDeclaration: Boolean = false
+
+  override def finalDeclaration: Boolean = false
+
+  override def hasErrors: Boolean = {
+    for {
+      messages <- messages
+      errors   <- messages.errors
+    } yield errors.nonEmpty
+  }.getOrElse(false)
+
+}
+
+object Def4_RetrieveCalculationResponse {
+
+  implicit val reads: Reads[Def4_RetrieveCalculationResponse] = Json.reads[Def4_RetrieveCalculationResponse]
+
+  implicit val writes: OWrites[Def4_RetrieveCalculationResponse] = Json.writes[Def4_RetrieveCalculationResponse]
 
 }

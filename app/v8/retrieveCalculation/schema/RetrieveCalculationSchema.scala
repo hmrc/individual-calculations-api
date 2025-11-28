@@ -24,6 +24,7 @@ import v8.retrieveCalculation.models.response.{
   Def1_RetrieveCalculationResponse,
   Def2_RetrieveCalculationResponse,
   Def3_RetrieveCalculationResponse,
+  Def4_RetrieveCalculationResponse,
   RetrieveCalculationResponse
 }
 
@@ -48,6 +49,11 @@ object RetrieveCalculationSchema {
     val connectorReads: Reads[DownstreamResp] = Def3_RetrieveCalculationResponse.reads
   }
 
+  case object Def4 extends RetrieveCalculationSchema {
+    type DownstreamResp = Def4_RetrieveCalculationResponse
+    val connectorReads: Reads[DownstreamResp] = Def4_RetrieveCalculationResponse.reads
+  }
+
   private val latestSchema = Def3
 
   def schemaFor(taxYear: String): RetrieveCalculationSchema =
@@ -59,6 +65,7 @@ object RetrieveCalculationSchema {
     if (taxYear <= TaxYear.starting(2023)) Def1
     else if (taxYear == TaxYear.starting(2024)) Def2
     else if (taxYear == TaxYear.starting(2025)) Def3
+    else if (taxYear >= TaxYear.starting(2026)) Def4
     else latestSchema
   }
 

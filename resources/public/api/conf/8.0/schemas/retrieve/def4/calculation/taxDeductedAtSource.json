@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object representing amounts that have been deducted for tax at source in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "bbsi": {
+      "description": "Amount of Bank and Building Society Interest (BBSI). This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2000.58"
+    },
+    "ukLandAndProperty": {
+      "description": "Amount of UK Land & Property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2001.59"
+    },
+    "cis": {
+      "description": "Amount of Construction Industry Scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2002.60"
+    },
+    "securities": {
+      "description": "Amount of securities. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2003.61"
+    },
+    "voidedIsa": {
+      "description": "Amount of voided Individual Savings Account (ISA). This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2004.62"
+    },
+    "payeEmployments": {
+      "description": "Amount of Pay As You Earn (PAYE) employments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2005.63"
+    },
+    "occupationalPensions": {
+      "description": "Amount of occupational pensions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2006.64"
+    },
+    "stateBenefits": {
+      "description": "Amount of state benefits. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2007.65"
+    },
+    "specialWithholdingTaxOrUkTaxPaid": {
+      "description": "Amount of Special Withholding Tax or UK Tax Paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2008.66"
+    },
+    "inYearAdjustmentCodedInLaterTaxYear": {
+      "description": "Amount of in-year adjustment coded in later tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2009.67"
+    },
+    "taxTakenOffTradingIncome": {
+      "description": "Other tax taken off trading income apart from CIS deductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "2000.58"
+    }
+  },
+  "additionalProperties": false
+}
