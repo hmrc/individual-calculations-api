@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def4.model.response.calculation.businessProfitAndLoss
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType._
+import v8.common.model.response.IncomeSourceType.*
 
 case class BusinessProfitAndLoss(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,
@@ -44,6 +44,8 @@ case class BusinessProfitAndLoss(incomeSourceId: String,
                                  carrySidewaysClass4LossesUsed: Option[BigInt],
                                  totalClass4LossesCarriedForward: Option[BigInt],
                                  adjustedProfit: Option[BigDecimal],
+                                 adjustedLoss: Option[BigDecimal],
+                                 foreignTaxPaid: Option[BigDecimal],
                                  outstandingBusinessIncome: Option[BigDecimal])
 
 object BusinessProfitAndLoss {
@@ -79,6 +81,8 @@ object BusinessProfitAndLoss {
     carrySidewaysClass4LossesUsed                  <- (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt]
     totalClass4LossesCarriedForward                <- (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
     adjustedProfit                                 <- (JsPath \ "adjustedProfit").readNullable[BigDecimal]
+    adjustedLoss                                   <- (JsPath \ "adjustedLoss").readNullable[BigDecimal]
+    foreignTaxPaid                                 <- (JsPath \ "foreignTaxPaid").readNullable[BigDecimal]
     outstandingBusinessIncome                      <- (JsPath \ "outstandingBusinessIncome").readNullable[BigDecimal]
 
   } yield {
@@ -107,6 +111,8 @@ object BusinessProfitAndLoss {
       carrySidewaysClass4LossesUsed = carrySidewaysClass4LossesUsed,
       totalClass4LossesCarriedForward = totalClass4LossesCarriedForward,
       adjustedProfit = adjustedProfit,
+      adjustedLoss = adjustedLoss,
+      foreignTaxPaid = foreignTaxPaid,
       outstandingBusinessIncome = outstandingBusinessIncome
     )
   }
@@ -138,6 +144,8 @@ object BusinessProfitAndLoss {
         "carrySidewaysClass4LossesUsed"                  -> Json.toJson(o.carrySidewaysClass4LossesUsed),
         "totalClass4LossesCarriedForward"                -> Json.toJson(o.totalClass4LossesCarriedForward),
         "adjustedProfit"                                 -> Json.toJson(o.adjustedProfit),
+        "adjustedLoss"                                   -> Json.toJson(o.adjustedLoss),
+        "foreignTaxPaid"                                 -> Json.toJson(o.foreignTaxPaid),
         "outstandingBusinessIncome"                      -> Json.toJson(o.outstandingBusinessIncome)
       ).filterNot { case (_, value) =>
         value == JsNull

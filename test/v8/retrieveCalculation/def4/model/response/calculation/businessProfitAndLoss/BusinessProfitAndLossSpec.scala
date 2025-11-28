@@ -48,6 +48,8 @@ class BusinessProfitAndLossSpec extends UnitSpec {
        |  "carrySidewaysClass4LossesUsed": 456,
        |  "totalClass4LossesCarriedForward": 456,
        |  "adjustedProfit": 456.00,
+       |  "adjustedLoss": 456.00,
+       |  "foreignTaxPaid": 456.00,
        |  "outstandingBusinessIncome": 456.00
        |}
        |""".stripMargin)
@@ -78,6 +80,8 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       carrySidewaysClass4LossesUsed = Some(BigInt(456)),
       totalClass4LossesCarriedForward = Some(BigInt(456)),
       adjustedProfit = Some(BigDecimal(456.00)),
+      adjustedLoss = Some(BigDecimal(456.00)),
+      foreignTaxPaid = Some(BigDecimal(456.00)),
       outstandingBusinessIncome = Some(BigDecimal(456.00))
     )
 
@@ -107,6 +111,8 @@ class BusinessProfitAndLossSpec extends UnitSpec {
       | "carrySidewaysClass4LossesUsed": 456,
       | "totalClass4LossesCarriedForward": 456,
       | "adjustedProfit": 456.00,
+      | "adjustedLoss": 456.00,
+      | "foreignTaxPaid": 456.00,
       | "outstandingBusinessIncome": 456.00
       |}
       |""".stripMargin)
