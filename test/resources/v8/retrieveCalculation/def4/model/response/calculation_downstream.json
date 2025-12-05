@@ -435,7 +435,10 @@
         "totalBroughtForwardClass4Losses": 12511,
         "broughtForwardClass4LossesUsed": 12512,
         "carrySidewaysClass4LossesUsed": 12513,
-        "totalClass4LossesCarriedForward": 12514
+        "totalClass4LossesCarriedForward": 12514,
+        "adjustedProfit": 5000.99,
+        "adjustedLoss": 5000.99,
+        "foreignTaxPaid": 5000.99
       }
     ],
     "employmentAndPensionsIncome": {
