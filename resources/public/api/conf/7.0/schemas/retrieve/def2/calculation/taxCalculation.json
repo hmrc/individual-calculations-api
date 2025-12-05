@@ -142,6 +142,22 @@
             }
           ]
         },
+        "incomeTaxChargedOnTransitionProfits": {
+          "description": "Income tax charged on transition profits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
+        "incomeTaxChargedAfterTransitionProfits": {
+          "description": "Income tax charged after transition profits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
         "totalReliefs": {
           "description": "Total reliefs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [

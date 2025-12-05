@@ -16,7 +16,6 @@
 
 package v8.retrieveCalculation.def4.model.response.calculation.taxCalculation
 
-import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.*
 
 case class IncomeTax(
@@ -29,6 +28,8 @@ case class IncomeTax(
     lumpSums: Option[IncomeTaxItem],
     gainsOnLifePolicies: Option[IncomeTaxItem],
     incomeTaxCharged: BigDecimal,
+    incomeTaxChargedOnTransitionProfits: Option[BigDecimal],
+    incomeTaxChargedAfterTransitionProfits: Option[BigDecimal],
     totalReliefs: Option[BigDecimal],
     incomeTaxDueAfterReliefs: Option[BigDecimal],
     totalNotionalTax: Option[BigDecimal],
@@ -45,29 +46,55 @@ case class IncomeTax(
 
 object IncomeTax {
 
-  given Reads[IncomeTax] = (
-    (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt] and
-      (JsPath \ "totalAllowancesAndDeductions").read[BigInt] and
-      (JsPath \ "totalTaxableIncome").read[BigInt] and
-      (JsPath \ "payPensionsProfit").readNullable[IncomeTaxItem] and
-      (JsPath \ "savingsAndGains").readNullable[IncomeTaxItem] and
-      (JsPath \ "dividends").readNullable[IncomeTaxItem] and
-      (JsPath \ "lumpSums").readNullable[IncomeTaxItem] and
-      (JsPath \ "gainsOnLifePolicies").readNullable[IncomeTaxItem] and
-      (JsPath \ "incomeTaxCharged").read[BigDecimal] and
-      (JsPath \ "totalReliefs").readNullable[BigDecimal] and
-      (JsPath \ "incomeTaxDueAfterReliefs").readNullable[BigDecimal] and
-      (JsPath \ "totalNotionalTax").readNullable[BigDecimal] and
-      (JsPath \ "marriageAllowanceRelief").readNullable[BigDecimal] and
-      (JsPath \ "incomeTaxDueAfterTaxReductions").readNullable[BigDecimal] and
-      (JsPath \ "incomeTaxDueAfterGiftAid").readNullable[BigDecimal] and
-      (JsPath \ "totalPensionSavingsTaxCharges").readNullable[BigDecimal] and
-      (JsPath \ "statePensionLumpSumCharges").readNullable[BigDecimal] and
-      (JsPath \ "payeUnderpaymentsCodedOut").readNullable[BigDecimal] and
-      (JsPath \ "totalIncomeTaxDue").readNullable[BigDecimal] and
-      (JsPath \ "giftAidTaxChargeWhereBasicRateDiffers").readNullable[BigDecimal] and
-      (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
-  )(IncomeTax.apply)
+  given Reads[IncomeTax] = for {
+    totalIncomeReceivedFromAllSources      <- (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt]
+    totalAllowancesAndDeductions           <- (JsPath \ "totalAllowancesAndDeductions").read[BigInt]
+    totalTaxableIncome                     <- (JsPath \ "totalTaxableIncome").read[BigInt]
+    payPensionsProfit                      <- (JsPath \ "payPensionsProfit").readNullable[IncomeTaxItem]
+    savingsAndGains                        <- (JsPath \ "savingsAndGains").readNullable[IncomeTaxItem]
+    dividends                              <- (JsPath \ "dividends").readNullable[IncomeTaxItem]
+    lumpSums                               <- (JsPath \ "lumpSums").readNullable[IncomeTaxItem]
+    gainsOnLifePolicies                    <- (JsPath \ "gainsOnLifePolicies").readNullable[IncomeTaxItem]
+    incomeTaxCharged                       <- (JsPath \ "incomeTaxCharged").read[BigDecimal]
+    incomeTaxChargedOnTransitionProfits    <- (JsPath \ "incomeTaxChargedOnTransitionProfits").readNullable[BigDecimal]
+    incomeTaxChargedAfterTransitionProfits <- (JsPath \ "incomeTaxChargedAfterTransitionProfits").readNullable[BigDecimal]
+    totalReliefs                           <- (JsPath \ "totalReliefs").readNullable[BigDecimal]
+    incomeTaxDueAfterReliefs               <- (JsPath \ "incomeTaxDueAfterReliefs").readNullable[BigDecimal]
+    totalNotionalTax                       <- (JsPath \ "totalNotionalTax").readNullable[BigDecimal]
+    marriageAllowanceRelief                <- (JsPath \ "marriageAllowanceRelief").readNullable[BigDecimal]
+    incomeTaxDueAfterTaxReductions         <- (JsPath \ "incomeTaxDueAfterTaxReductions").readNullable[BigDecimal]
+    incomeTaxDueAfterGiftAid               <- (JsPath \ "incomeTaxDueAfterGiftAid").readNullable[BigDecimal]
+    totalPensionSavingsTaxCharges          <- (JsPath \ "totalPensionSavingsTaxCharges").readNullable[BigDecimal]
+    statePensionLumpSumCharges             <- (JsPath \ "statePensionLumpSumCharges").readNullable[BigDecimal]
+    payeUnderpaymentsCodedOut              <- (JsPath \ "payeUnderpaymentsCodedOut").readNullable[BigDecimal]
+    totalIncomeTaxDue                      <- (JsPath \ "totalIncomeTaxDue").readNullable[BigDecimal]
+    giftAidTaxChargeWhereBasicRateDiffers  <- (JsPath \ "giftAidTaxChargeWhereBasicRateDiffers").readNullable[BigDecimal]
+    highIncomeBenefitCharge                <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
+  } yield IncomeTax(
+    totalIncomeReceivedFromAllSources,
+    totalAllowancesAndDeductions,
+    totalTaxableIncome,
+    payPensionsProfit,
+    savingsAndGains,
+    dividends,
+    lumpSums,
+    gainsOnLifePolicies,
+    incomeTaxCharged,
+    incomeTaxChargedOnTransitionProfits,
+    incomeTaxChargedAfterTransitionProfits,
+    totalReliefs,
+    incomeTaxDueAfterReliefs,
+    totalNotionalTax,
+    marriageAllowanceRelief,
+    incomeTaxDueAfterTaxReductions,
+    incomeTaxDueAfterGiftAid,
+    totalPensionSavingsTaxCharges,
+    statePensionLumpSumCharges,
+    payeUnderpaymentsCodedOut,
+    totalIncomeTaxDue,
+    giftAidTaxChargeWhereBasicRateDiffers,
+    highIncomeBenefitCharge
+  )
 
   given OWrites[IncomeTax] = Json.writes[IncomeTax]
 }
