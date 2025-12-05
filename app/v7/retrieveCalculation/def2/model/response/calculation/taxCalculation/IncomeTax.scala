@@ -28,6 +28,8 @@ case class IncomeTax(
     lumpSums: Option[IncomeTaxItem],
     gainsOnLifePolicies: Option[IncomeTaxItem],
     incomeTaxCharged: BigDecimal,
+    incomeTaxChargedOnTransitionProfits: Option[BigDecimal],
+    incomeTaxChargedAfterTransitionProfits: Option[BigDecimal],
     totalReliefs: Option[BigDecimal],
     incomeTaxDueAfterReliefs: Option[BigDecimal],
     totalNotionalTax: Option[BigDecimal],
