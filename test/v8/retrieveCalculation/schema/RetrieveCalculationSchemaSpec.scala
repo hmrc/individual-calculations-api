@@ -34,9 +34,14 @@ class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenProper
         RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def2)
       }
 
-      "use Def3 for tax years from 2025-26" in {
-        forTaxYearsFrom(TaxYear.fromMtd("2025-26")) { taxYear =>
-          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def3)
+      "use Def3 for tax year 2025-26" in {
+        val taxYear = TaxYear.fromMtd("2025-26")
+        RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def3)
+      }
+
+      "use Def4 for tax years from 2026-27" in {
+        forTaxYearsFrom(TaxYear.fromMtd("2026-27")) { taxYear =>
+          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def4)
         }
       }
 

@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Array containing a breakdown of the income received for foreign property by country code for the retrieved tax calculation.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "incomeSourceId": {
+        "title": "incomeSourceId",
+        "description": "The unique identifier of the income source.",
+        "type": "string",
+        "pattern": "^[A-Za-z0-9]{15}$",
+        "example": "XAIS12345678910"
+      },
+      "incomeSourceType": {
+        "title": "incomeSourceType",
+        "description": "The income source type.",
+        "type": "string",
+        "enum": [
+          "foreign-property"
+        ]
+      },
+      "countryCode": {
+        "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+        "type": "string",
+        "example": "FRA"
+      },
+      "totalIncome": {
+        "description": "The total income for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalExpenses": {
+        "description": "The total expenses for foreign property. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": -99999999999.99,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "netProfit": {
+        "description": "The net profit for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "netLoss": {
+        "description": "The net loss for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalAdditions": {
+        "description": "The total additions to the net profit (or deductions from the net loss) for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "totalDeductions": {
+        "description": "The total deductions from the net loss (or additions to the net profit) for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "adjustedProfit": {
+        "description": "The adjusted profit for the year for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "5000.99"
+      },
+      "adjustedLoss": {
+        "description": "The adjusted loss for the year for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "5000.99"
+      },
+      "foreignTaxPaid": {
+        "description": "The amount of foreign tax paid in pounds sterling for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "5000.99"
+      },
+      "taxableProfit": {
+        "description": "The taxable profit after all additions and deductions have been applied for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "adjustedIncomeTaxLoss": {
+        "description": "The adjusted Income Tax loss after all additions and deductions have been applied for the foreign property business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": "2000.98"
+      },
+      "propertyLevelDetail": {
+        "description": "Array containing a breakdown by individual foreign property.",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "propertyId": {
+              "description": "A unique identifier for each foreign property.",
+              "type": "string",
+              "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+              "example": "8e8b8450-dc1b-4360-8109-7067337b42cb"
+            },
+            "totalIncome": {
+              "description": "The total income for the income source. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "totalExpenses": {
+              "description": "The total expenses for the income source. The value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": -99999999999.99,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "netProfit": {
+              "description": "The net profit for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "netLoss": {
+              "description": "The net loss for foreign property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "totalAdditions": {
+              "description": "The total additions to net profit (or deduction to net loss). The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "totalDeductions": {
+              "description": "The total deductions to net loss (or addition to net profit). The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "adjustedProfit": {
+              "description": "The adjusted profit for the year for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "adjustedLoss": {
+              "description": "The adjusted loss for the year for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "foreignTaxPaid": {
+              "description": "The amount of foreign tax paid in pounds sterling for the foreign property business. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "foreignTaxCreditRelief": {
+              "description": "A boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed.",
+              "type": "boolean",
+              "example": true
+            },
+            "taxableProfit": {
+              "description": "Amount of taxable net profit. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            },
+            "adjustedIncomeTaxLoss": {
+              "description": "Amount of taxable net loss. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 99999999999.99,
+              "example": "5000.99"
+            }
+          },
+          "required": [
+            "propertyId"
+          ]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "incomeSourceId",
+      "incomeSourceType",
+      "countryCode"
+    ]
+  }
+}

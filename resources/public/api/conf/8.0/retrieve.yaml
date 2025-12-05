@@ -57,6 +57,9 @@ get:
               - $ref: ./schemas/retrieve/def1/retrieve_response.json
               - $ref: ./schemas/retrieve/def2/retrieve_response.json
               - $ref: ./schemas/retrieve/def3/retrieve_response.json
+              {{#if (enabled '1885_r19_property_level_detail')}}
+              - $ref: ./schemas/retrieve/def4/retrieve_response.json
+              {{/if}}
           examples:
             "Example response for TY 2023-24 and before":
               value:
@@ -64,9 +67,18 @@ get:
             "Example response for TY 2024-25":
               value:
                 $ref: ./examples/retrieve/def2/retrieve_response.json
+            {{#if (enabled '1885_r19_property_level_detail')}}
+            "Example response for TY 2025-26":
+            {{else}}
             "Example response for TY 2025-26 onwards":
+            {{/if}}
               value:
                 $ref: ./examples/retrieve/def3/retrieve_response.json
+            {{#if (enabled '1885_r19_property_level_detail')}}
+            "Example response for TY 2026-27 onwards":
+              value:
+                $ref: ./examples/retrieve/def4/retrieve_response.json
+            {{/if}}
 
     400:
       description: Bad request

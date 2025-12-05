@@ -23,6 +23,7 @@ import v8.retrieveCalculation.models.request.{
   Def1_RetrieveCalculationRequestData,
   Def2_RetrieveCalculationRequestData,
   Def3_RetrieveCalculationRequestData,
+  Def4_RetrieveCalculationRequestData,
   RetrieveCalculationRequestData
 }
 import v8.retrieveCalculation.schema.RetrieveCalculationSchema
@@ -39,6 +40,7 @@ sealed trait SubmitFinalDeclarationRequestData {
       case RetrieveCalculationSchema.Def1 => Def1_RetrieveCalculationRequestData(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def2 => Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def3 => Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def4 => Def4_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     }
 
 }

@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing the tax calculation result.",
+  "type": "object",
+  "properties": {
+    "allowancesAndDeductions": {
+      "$ref": "calculation/allowancesAndDeductions.json"
+    },
+    "reliefs": {
+      "$ref": "calculation/reliefs.json"
+    },
+    "taxDeductedAtSource": {
+      "$ref": "calculation/taxDeductedAtSource.json"
+    },
+    "giftAid": {
+      "$ref": "calculation/giftAid.json"
+    },
+    "royaltyPayments": {
+      "$ref": "calculation/royaltyPayments.json"
+    },
+    "notionalTax": {
+      "$ref": "calculation/notionalTax.json"
+    },
+    "marriageAllowanceTransferredIn": {
+      "$ref": "calculation/marriageAllowanceTransferredIn.json"
+    },
+    "pensionContributionReliefs": {
+      "$ref": "calculation/pensionContributionReliefs.json"
+    },
+    "pensionSavingsTaxCharges": {
+      "$ref": "calculation/pensionSavingsTaxCharges.json"
+    },
+    "studentLoans": {
+      "$ref": "calculation/studentLoans.json"
+    },
+    "codedOutUnderpayments": {
+      "$ref": "calculation/codedOutUnderpayments.json"
+    },
+    "foreignPropertyIncome": {
+      "$ref": "calculation/foreignPropertyIncome.json"
+    },
+    "businessProfitAndLoss": {
+      "$ref": "calculation/businessProfitAndLoss.json"
+    },
+    "employmentAndPensionsIncome": {
+      "$ref": "calculation/employmentAndPensionsIncome.json"
+    },
+    "employmentExpenses": {
+      "$ref": "calculation/employmentExpenses.json"
+    },
+    "seafarersDeductions": {
+      "$ref": "calculation/seafarersDeductions.json"
+    },
+    "foreignTaxForFtcrNotClaimed": {
+      "$ref": "calculation/foreignTaxForFtcrNotClaimed.json"
+    },
+    "stateBenefitsIncome": {
+      "$ref": "calculation/stateBenefitsIncome.json"
+    },
+    "shareSchemesIncome": {
+      "$ref": "calculation/shareSchemesIncome.json"
+    },
+    "foreignIncome": {
+      "$ref": "calculation/foreignIncome.json"
+    },
+    "chargeableEventGainsIncome": {
+      "$ref": "calculation/chargeableEventGainsIncome.json"
+    },
+    "savingsAndGainsIncome": {
+      "$ref": "calculation/savingsAndGainsIncome.json"
+    },
+    "otherIncome": {
+      "$ref": "calculation/otherIncome.json"
+    },
+    "dividendsIncome": {
+      "$ref": "calculation/dividendsIncome.json"
+    },
+    "incomeSummaryTotals": {
+      "$ref": "calculation/incomeSummaryTotals.json"
+    },
+    "taxCalculation": {
+      "$ref": "calculation/taxCalculation.json"
+    },
+    "previousCalculation": {
+      "$ref": "calculation/previousCalculation.json"
+    },
+    "endOfYearEstimate": {
+      "$ref": "calculation/endOfYearEstimate.json"
+    },
+    "lossesAndClaims": {
+      "$ref": "calculation/lossesAndClaims.json"
+    },
+    "transitionProfit": {
+      "$ref": "calculation/transitionProfit.json"
+    },
+    "highIncomeChildBenefitCharge": {
+      "$ref": "calculation/highIncomeChildBenefitCharge.json"
+    }
+  },
+  "additionalProperties": false
+}
