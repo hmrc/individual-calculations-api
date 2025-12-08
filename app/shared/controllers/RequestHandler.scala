@@ -129,6 +129,7 @@ object RequestHandler {
             case _ => Nil
           }
         }
+
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
           val headers =

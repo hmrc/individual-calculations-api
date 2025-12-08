@@ -104,7 +104,7 @@ class AppConfigSpec extends UnitSpec {
             |        allow-request-cannot-be-fulfilled-header = false
             |      }
             |    }
-            |""".stripMargin
+          """.stripMargin
         )
 
         val result = appConfigWithDisabledVersion.endpointsEnabled("1.0")
@@ -130,7 +130,7 @@ class AppConfigSpec extends UnitSpec {
             |      }
             |    }
             |
-            |""".stripMargin
+          """.stripMargin
         )
         val result = appConfigWithEnabledVersion.endpointsEnabled("6.0")
         result shouldBe true
@@ -156,7 +156,7 @@ class AppConfigSpec extends UnitSpec {
             |        }
             |      }
             |    }
-            |""".stripMargin
+          """.stripMargin
         )
         val result = appConfigWithReleasedVersion.endpointReleasedInProduction("6.0", "create-something")
         result shouldBe true
@@ -180,7 +180,7 @@ class AppConfigSpec extends UnitSpec {
             |        }
             |      }
             |    }
-            |""".stripMargin
+          """.stripMargin
         )
         val result = appConfigWithDisabledEndpoint.endpointReleasedInProduction("6.0", "amend-something")
         result shouldBe false
@@ -205,7 +205,7 @@ class AppConfigSpec extends UnitSpec {
             |      }
             |    }
             |
-            |""".stripMargin
+          """.stripMargin
         )
         val result = appConfigWithUnspecifiedEndpointStatus.endpointReleasedInProduction("6.0", "delete-something")
         result shouldBe true
@@ -226,7 +226,7 @@ class AppConfigSpec extends UnitSpec {
             |        allow-request-cannot-be-fulfilled-header = false
             |      }
             |    }
-            |""".stripMargin
+          """.stripMargin
         )
         config.deprecationFor(Version1) shouldBe Valid(NotDeprecated)
       }
@@ -245,7 +245,7 @@ class AppConfigSpec extends UnitSpec {
               |        allow-request-cannot-be-fulfilled-header = false
               |      }
               |    }
-              |""".stripMargin
+            """.stripMargin
           )
           val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
           result shouldBe Invalid("deprecatedOn date is required for a deprecated version 1.0")
@@ -268,7 +268,7 @@ class AppConfigSpec extends UnitSpec {
                   |        allow-request-cannot-be-fulfilled-header = false
                   |      }
                   |    }
-                  """.stripMargin
+                """.stripMargin
               )
 
               val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
@@ -295,7 +295,7 @@ class AppConfigSpec extends UnitSpec {
                   |        allow-request-cannot-be-fulfilled-header = false
                   |      }
                   |    }
-                  """.stripMargin
+                """.stripMargin
               )
 
               val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
@@ -326,7 +326,7 @@ class AppConfigSpec extends UnitSpec {
                   |        allow-request-cannot-be-fulfilled-header = false
                   |      }
                   |    }
-                   """.stripMargin
+                """.stripMargin
               )
 
               val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
@@ -354,7 +354,7 @@ class AppConfigSpec extends UnitSpec {
                   |        allow-request-cannot-be-fulfilled-header = false
                   |      }
                   |    }
-                   """.stripMargin
+                """.stripMargin
               )
 
               val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
@@ -383,7 +383,7 @@ class AppConfigSpec extends UnitSpec {
                 |        allow-request-cannot-be-fulfilled-header = false
                 |      }
                 |    }
-                """.stripMargin
+              """.stripMargin
             )
 
             val result: Validated[String, Deprecation] = config.deprecationFor(Version1)
