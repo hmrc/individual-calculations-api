@@ -121,20 +121,32 @@ object RequestHandler {
         private def withDeprecationHeaders: List[(String, String)] = {
 
           appConfig.deprecationFor(apiVersion) match {
-            case Valid(Deprecated(deprecatedOn, Some(sunsetDate))) =>
-              List(
-                "Deprecation" -> longDateTimestampGmt(deprecatedOn),
-                "Sunset"      -> longDateTimestampGmt(sunsetDate),
-                "Link"        -> appConfig.apiDocumentationUrl
-              )
-            case Valid(Deprecated(deprecatedOn, None)) =>
+            case Valid(Deprecated(deprecatedOn, maybeSunsetDate)) =>
               List(
                 "Deprecation" -> longDateTimestampGmt(deprecatedOn),
                 "Link"        -> appConfig.apiDocumentationUrl
-              )
+              ) ++ maybeSunsetDate.map(sunsetDate => "Sunset" -> longDateTimestampGmt(sunsetDate))
             case _ => Nil
           }
         }
+
+//        private def withDeprecationHeaders: List[(String, String)] = {
+//
+//          appConfig.deprecationFor(apiVersion) match {
+//            case Valid(Deprecated(deprecatedOn, maybeSunsetDate)) =>
+//              List(
+//                "Deprecation" -> longDateTimestampGmt(deprecatedOn),
+//                //"Sunset"      -> longDateTimestampGmt(sunsetDate),
+//                "Link"        -> appConfig.apiDocumentationUrl
+//              )
+//            case Valid(Deprecated(deprecatedOn, None)) =>
+//              List(
+//                "Deprecation" -> longDateTimestampGmt(deprecatedOn),
+//                "Link"        -> appConfig.apiDocumentationUrl
+//              )
+//            case _ => Nil
+//          }
+//        }
 
         def withApiHeaders(correlationId: String, responseHeaders: (String, String)*): Result = {
 
