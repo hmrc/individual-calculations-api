@@ -857,6 +857,8 @@
           ]
         },
         "incomeTaxCharged": 5000.99,
+        "incomeTaxChargedOnTransitionProfits": 5000.99,
+        "incomeTaxChargedAfterTransitionProfits": 5000.99,
         "totalReliefs": 5000.99,
         "incomeTaxDueAfterReliefs": -99999999999.99,
         "totalNotionalTax": 5000.99,
