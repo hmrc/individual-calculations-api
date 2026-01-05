@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec with MockAppConfig {
 
         MockedEnrolmentsAuthService
           .authoriseAgent(mtdId)
-          .returns(Future.successful(Right(UserDetails("", "Agent", Some("arn")))))
+          .returns(Future.successful(Right(UserDetails(mtdId, "Agent", Some("arn")))))
 
         val result: Future[Result] = controller.action(nino)(fakeGetRequest)
         status(result) shouldBe OK
@@ -71,7 +71,7 @@ class AuthorisedControllerSpec extends ControllerBaseSpec with MockAppConfig {
 
         MockedEnrolmentsAuthService
           .authoriseAgent(mtdId, supportingAgentAccessAllowed = true)
-          .returns(Future.successful(Right(UserDetails("", "Agent", Some("arn")))))
+          .returns(Future.successful(Right(UserDetails(mtdId, "Agent", Some("arn")))))
 
         val result: Future[Result] = controller.action(nino)(fakeGetRequest)
         status(result) shouldBe OK

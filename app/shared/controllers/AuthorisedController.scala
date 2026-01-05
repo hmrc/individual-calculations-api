@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ abstract class AuthorisedController(
 
       authService.authorised(mtdId, endpointAllowsSupportingAgents).flatMap[Result] {
         case Right(userDetails) =>
-          block(UserRequest(userDetails.copy(mtdId = mtdId), request))
+          block(UserRequest(userDetails, request))
         case Left(mtdError) =>
           errorResponse(mtdError)
       }
