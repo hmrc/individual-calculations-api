@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,13 @@ import shared.config.AppConfig
 import shared.models.auth.UserDetails
 import shared.models.errors.{InternalError, _}
 import shared.models.outcomes.AuthOutcome
-import shared.services.EnrolmentsAuthService.{
-  authorisationDisabledPredicate,
-  authorisationEnabledPredicate,
-  mtdEnrolmentPredicate,
-  supportingAgentAuthPredicate
-}
 import shared.utils.Logging
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{affinityGroup, authorisedEnrolments}
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, ConfidenceLevel, Enrolment, Enrolments}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,70 +41,58 @@ class EnrolmentsAuthService @Inject() (val connector: AuthConnector, val appConf
   }
 
   private def initialPredicate(mtdId: String): Predicate =
-    if (authorisationEnabled)
-      authorisationEnabledPredicate(mtdId)
-    else
-      authorisationDisabledPredicate(mtdId)
+    if (authorisationEnabled) {
+      EnrolmentsAuthService.authorisationEnabledPredicate(mtdId)
+    } else {
+      EnrolmentsAuthService.authorisationDisabledPredicate(mtdId)
+    }
 
-  def authorised(
-      mtdId: String,
-      endpointAllowsSupportingAgents: Boolean = false
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuthOutcome] = {
-
+  def authorised(mtdId: String, endpointAllowsSupportingAgents: Boolean = false)(implicit
+      hc: HeaderCarrier,
+      ec: ExecutionContext): Future[AuthOutcome] =
     authFunction
       .authorised(initialPredicate(mtdId))
       .retrieve(affinityGroup and authorisedEnrolments) {
         case Some(Individual) ~ _ =>
-          Future.successful(Right(UserDetails("", "Individual", None)))
+          Future.successful(Right(UserDetails(mtdId, "Individual", None)))
 
         case Some(Organisation) ~ _ =>
-          Future.successful(Right(UserDetails("", "Organisation", None)))
+          Future.successful(Right(UserDetails(mtdId, "Organisation", None)))
 
         case Some(Agent) ~ authorisedEnrolments =>
           authFunction
-            .authorised(mtdEnrolmentPredicate(mtdId)) {
-              Future.successful(agentDetails(authorisedEnrolments))
+            .authorised(EnrolmentsAuthService.mtdEnrolmentPredicate(mtdId)) {
+              Future.successful(agentDetails(mtdId, authorisedEnrolments, "Agent"))
             }
-            .recoverWith { case _: AuthorisationException =>
-              if (endpointAllowsSupportingAgents) {
+            .recoverWith {
+              case _: AuthorisationException if endpointAllowsSupportingAgents =>
                 authFunction
-                  .authorised(supportingAgentAuthPredicate(mtdId)) {
-                    Future.successful(agentDetails(authorisedEnrolments))
+                  .authorised(EnrolmentsAuthService.supportingAgentAuthPredicate(mtdId)) {
+                    Future.successful(agentDetails(mtdId, authorisedEnrolments, "Supporting Agent"))
                   }
-              } else {
-                Future.successful(Left(ClientOrAgentNotAuthorisedError))
-              }
-                .recoverWith { case _: AuthorisationException =>
-                  Future.successful(Left(ClientOrAgentNotAuthorisedError))
-                }
             }
-
         case _ =>
           logger.warn(s"[EnrolmentsAuthService][authorised] Invalid AffinityGroup.")
           Future.successful(Left(ClientOrAgentNotAuthorisedError))
       }
       .recoverWith {
-        case _: MissingBearerToken =>
-          Future.successful(Left(ClientOrAgentNotAuthorisedError))
         case _: AuthorisationException =>
           Future.successful(Left(ClientOrAgentNotAuthorisedError))
         case error =>
           logger.warn(s"[EnrolmentsAuthService][authorised] An unexpected error occurred: $error")
           Future.successful(Left(InternalError))
       }
-  }
 
-  private def agentDetails(authorisedEnrolments: Enrolments): Either[MtdError, UserDetails] =
-    (
-      for {
-        enrolment  <- authorisedEnrolments.getEnrolment("HMRC-AS-AGENT")
-        identifier <- enrolment.getIdentifier("AgentReferenceNumber")
-        arn = identifier.value
-      } yield UserDetails("", "Agent", Some(arn))
-    ).toRight(left = {
-      logger.warn(s"[EnrolmentsAuthService][authorised] No AgentReferenceNumber defined on agent enrolment.")
-      InternalError
-    })
+  private def agentDetails(mtdId: String, enrolments: Enrolments, agentType: String): Either[MtdError, UserDetails] = {
+    (for {
+      enrolment  <- enrolments.getEnrolment("HMRC-AS-AGENT")
+      identifier <- enrolment.getIdentifier("AgentReferenceNumber")
+    } yield UserDetails(mtdId, agentType, Some(identifier.value)))
+      .toRight {
+        logger.warn("[EnrolmentsAuthService][authorised] No AgentReferenceNumber defined on agent enrolment.")
+        InternalError
+      }
+  }
 
 }
 
