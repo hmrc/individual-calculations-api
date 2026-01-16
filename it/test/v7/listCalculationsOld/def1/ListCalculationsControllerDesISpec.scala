@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,6 @@ import shared.support.IntegrationBaseSpec
 import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
 class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
-
-  override def servicesConfig: Map[String, Any] =
-    Map("feature-switch.des_hip_migration_1404.enabled" -> false) ++ super.servicesConfig
 
   private trait Test {
 
@@ -73,12 +70,6 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
 
   }
 
-  private trait NonTysTest extends Test {
-    def taxYear: Option[String] = Some("2018-19")
-
-    override def downstreamUri: String = s"/income-tax/list-of-calculation-results/$nino"
-  }
-
   private trait TysTest extends Test {
     def mtdTaxYear: String                = currentTaxYear.asMtd
     private val downstreamTaxYear: String = TaxYear.fromMtd(mtdTaxYear).asTysDownstream
@@ -94,21 +85,6 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
 
   "Calling the list calculations endpoint" should {
     "return a 200 status code" when {
-      "valid Non-TYS request is made with a tax year" in new NonTysTest {
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map("taxYear" -> "2019"), OK, listCalculationsDownstreamJson)
-        }
-
-        val response: WSResponse = await(request.get())
-        response.status shouldBe OK
-        response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe listCalculationsMtdJson
-      }
-
       "valid request is made without a tax year" in new TysTest {
         override def taxYear: Option[String] = None
 
@@ -147,7 +123,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
     "return error according to spec" when {
       "validation error" when {
         def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"validation fails with ${expectedBody.code} error" in new NonTysTest {
+          s"validation fails with ${expectedBody.code} error" in new TysTest {
             override val nino: String            = requestNino
             override val taxYear: Option[String] = Some(requestTaxYear)
 
@@ -176,7 +152,7 @@ class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_L
 
       "downstream returns a service error" when {
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $downstreamStatus error and status $downstreamCode" in new NonTysTest {
+          s"backend returns an $downstreamStatus error and status $downstreamCode" in new TysTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()

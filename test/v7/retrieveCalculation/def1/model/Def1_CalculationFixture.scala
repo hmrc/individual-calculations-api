@@ -44,8 +44,8 @@ trait Def1_CalculationFixture {
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
-  val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_downstream.json"))
+  val calculationDownstreamJson: JsObject =
+    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_downstream.json")).as[JsObject]
 
   val reliefs: Reliefs = Reliefs(
     basicRateExtension =

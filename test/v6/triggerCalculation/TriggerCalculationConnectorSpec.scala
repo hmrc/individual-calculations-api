@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package v6.triggerCalculation
 
-import config.CalculationsFeatureSwitches
-import play.api.Configuration
 import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
@@ -34,73 +32,41 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   val nino: Nino                           = Nino(ninoString)
   val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
 
-  trait Test { self: ConnectorTest =>
+  trait Test {
+    self: ConnectorTest =>
 
-    val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
-      new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))
-
+    val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)
   }
 
   "connector" when {
     "triggering an in year calculation" must {
-      makeRequestWith(finalDeclaration = false, "false")
-    }
 
-    "triggering an in year calculation with ifs feature enabled" must {
-      makeRequestWithIfsEnabled(finalDeclaration = false, "false")
-    }
+      "send a request with crystallise is false and return the calculation id" in new IfsTest with Test {
 
-    "triggering for a final declaration" must {
-      makeRequestWith(finalDeclaration = true, "true")
-    }
-
-    def makeRequestWith(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
-      s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalDesTest with Test {
-
-        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
+        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), false)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
-          url = url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          url = url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=false",
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
         await(connector.triggerCalculation(request)) shouldBe outcome
       }
 
-    def makeRequestWithIfsEnabled(finalDeclaration: Boolean, expectedCrystalliseParam: String): Unit =
-      s"send a request with crystallise='$expectedCrystalliseParam' and return the calculation id" in new CrystalIfsTest with Test {
-
-        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), finalDeclaration)
+      "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new IfsTest with Test {
+        val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
         val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
-          url = url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$expectedCrystalliseParam",
+          url = url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
           body = Json.parse("{}")
         ).returns(Future.successful(outcome))
 
         await(connector.triggerCalculation(request)) shouldBe outcome
       }
-
-    "send a request and return the calculation id for a Tax Year Specific (TYS) tax year" in new CrystalIfsTest with Test {
-      val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), finalDeclaration = false)
-      val outcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
-
-      willPost(
-        url = url"$baseUrl/income-tax/calculation/23-24/$ninoString?crystallise=false",
-        body = Json.parse("{}")
-      ).returns(Future.successful(outcome))
-
-      await(connector.triggerCalculation(request)) shouldBe outcome
     }
-  }
 
-  trait CrystalDesTest extends DesTest {
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
-  }
-
-  trait CrystalIfsTest extends IfsTest {
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 
 }

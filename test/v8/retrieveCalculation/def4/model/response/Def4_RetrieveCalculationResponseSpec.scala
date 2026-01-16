@@ -36,6 +36,28 @@ class Def4_RetrieveCalculationResponseSpec extends UnitSpec with Def4_Calculatio
     "have the correct fields optional" when {
       testAllOptionalJsonFieldsExcept[Def4_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
+
+    "return hasErrors is false when messages.errors is empty" in {
+      val model = calculationDownstreamJson
+        .deepMerge(
+          Json.obj(
+            "messages" -> Json.obj(
+              "errors" -> Json.arr()
+            )
+          ))
+        .as[Def4_RetrieveCalculationResponse]
+
+      model.hasErrors shouldBe false
+    }
+
+    "allow messages to be missing" in {
+      val jsonWithoutMessages =
+        calculationDownstreamJson - "messages"
+
+      val model = jsonWithoutMessages.as[Def4_RetrieveCalculationResponse]
+      model.messages shouldBe None
+      model.hasErrors shouldBe false
+    }
   }
 
 }

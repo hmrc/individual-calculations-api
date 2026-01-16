@@ -43,8 +43,8 @@ trait Def1_CalculationFixture {
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
-  val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def1/model/response/calculation_downstream.json"))
+  val calculationDownstreamJson: JsObject =
+    Json.parse(getClass.getResourceAsStream("/v6/retrieveCalculation/def1/model/response/calculation_downstream.json")).as[JsObject]
 
   val reliefs: Reliefs = Reliefs(
     basicRateExtension =
@@ -479,6 +479,65 @@ trait Def1_CalculationFixture {
         |  }
         |}
   """.stripMargin
+    )
+    .as[JsObject]
+
+  val responseJson: JsObject = Json
+    .parse(
+      """
+        |{
+        |  "metadata" : {
+        |    "calculationId": "",
+        |    "taxYear": "2017-18",
+        |    "requestedBy": "",
+        |    "calculationReason": "",
+        |    "calculationType": "inYear",
+        |    "intentToSubmitFinalDeclaration": false,
+        |    "finalDeclaration": false,
+        |    "periodFrom": "",
+        |    "periodTo": ""
+        |  },
+        |  "inputs" : {
+        |    "personalInformation": {
+        |       "identifier": "",
+        |       "taxRegime": "UK"
+        |    },
+        |    "incomeSources": {}
+        |  },
+        |    "calculation": {
+        |    "taxCalculation": {
+        |      "incomeTax": {
+        |        "totalIncomeReceivedFromAllSources": 50,
+        |        "totalAllowancesAndDeductions": 50,
+        |        "totalTaxableIncome": 50,
+        |        "incomeTaxCharged": 50
+        |      },
+        |      "nics": {
+        |        "class2Nics": {
+        |          "underSmallProfitThreshold": true,
+        |          "underLowerProfitThreshold": true
+        |        }
+        |      },
+        |      "totalIncomeTaxAndNicsDue": 50
+        |    },
+        |    "employmentAndPensionsIncome": {
+        |      "employmentAndPensionsIncomeDetail": [
+        |        {
+        |          "offPayrollWorker": true
+        |        }
+        |      ]
+        |    },
+        |    "reliefs": {
+        |      "basicRateExtension": {
+        |        "totalBasicRateExtension": 2000
+        |      }
+        |    },
+        |    "endOfYearEstimate": {
+        |      "totalAllowancesAndDeductions": 100
+        |    }
+        |  }
+        |}
+      """.stripMargin
     )
     .as[JsObject]
 

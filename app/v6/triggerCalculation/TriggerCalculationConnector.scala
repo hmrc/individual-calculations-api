@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package v6.triggerCalculation
 
-import config.CalculationsFeatureSwitches
-import shared.connectors.DownstreamUri.{DesUri, IfsUri}
+import shared.connectors.DownstreamUri.IfsUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import shared.config.AppConfig
@@ -32,8 +31,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
-    extends BaseDownstreamConnector {
+class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
       hc: HeaderCarrier,
@@ -50,14 +48,10 @@ class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConf
       val downstreamUri =
         IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$finalDeclaration")
       post(JsObject.empty, downstreamUri)
-    } else if (featureSwitches.isDesIf_MigrationEnabled) {
+    } else {
       val downstreamUri = IfsUri[DownstreamResp](path)
       post(JsObject.empty, downstreamUri)
-    } else {
-      val downstreamUri = DesUri[DownstreamResp](path)
-      post(JsObject.empty, downstreamUri)
     }
-
   }
 
 }

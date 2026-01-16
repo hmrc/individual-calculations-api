@@ -221,9 +221,8 @@
               "$ref": "#/definitions/monetaryPos"
             }
           ]
-        }
-        {{#if (enabled "basicRateDivergence")}}
-        ,"giftAidTaxChargeWhereBasicRateDiffers": {
+        },
+        "giftAidTaxChargeWhereBasicRateDiffers": {
           "description": "Gift Aid tax charge where Basic Rate differs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
             {
@@ -231,7 +230,6 @@
             }
           ]
         }
-        {{/if}}
       },
       "additionalProperties": false,
       "required": [

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package v6.listCalculations
 
-import play.api.Configuration
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
@@ -60,18 +59,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         await(connector.list(request)) shouldBe outcome
       }
 
-      "a valid request with a TYS tax year is supplied and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
-        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
-
-        willGet(
-          url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
-        ).returns(Future.successful(outcome))
-
-        await(connector.list(tysRequest)) shouldBe outcome
-      }
-
-      "a valid request with a TYS tax year is supplied and feature switch is enabled (HIP enabled)" in new HipTest with Test {
-        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
+      "a valid request with a TYS tax year is supplied" in new HipTest with Test {
 
         willGet(
           url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"
@@ -93,18 +81,7 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
         await(connector.list(request)) shouldBe outcome
       }
 
-      "downstream returns an error for a request with a TYS tax year and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
-        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> false)
-
-        willGet(
-          url"$baseUrl/income-tax/view/calculations/liability/${tysTaxYear.asTysDownstream}/${nino.nino}"
-        ).returns(Future.successful(outcome))
-
-        await(connector.list(tysRequest)) shouldBe outcome
-      }
-
-      "downstream returns an error for a request with a TYS tax year and feature switch is enabled (HIP enabled)" in new HipTest with Test {
-        MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1896.enabled" -> true)
+      "downstream returns an error for a request with a TYS tax year" in new HipTest with Test {
 
         willGet(
           url"$baseUrl/itsa/income-tax/v1/${tysTaxYear.asTysDownstream}/view/calculations/liability/$nino"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package v6.retrieveCalculation
 
 import org.scalamock.handlers.CallHandler
-import play.api.Configuration
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
@@ -50,17 +49,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
         await(connector.retrieveCalculation(request)).shouldBe(outcome)
       }
 
-      "a valid request with a TYS tax year is supplied and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
-        def taxYear: TaxYear = tysTaxYear
-        val outcome: Right[Nothing, ResponseWrapper[RetrieveCalculationResponse]] =
-          Right(ResponseWrapper(correlationId, minimalCalculationR8bResponse))
-
-        stubTysHttpResponse(isHipEnabled = false, outcome = outcome)
-
-        await(connector.retrieveCalculation(request)).shouldBe(outcome)
-      }
-
-      "a valid request with a TYS tax year is supplied and feature switch is enabled (HIP enabled)" in new HipTest with Test {
+      "a valid request with a TYS tax year is supplied" in new HipTest with Test {
         def taxYear: TaxYear = tysTaxYear
         val outcome: Right[Nothing, ResponseWrapper[RetrieveCalculationResponse]] =
           Right(ResponseWrapper(correlationId, minimalCalculationR8bResponse))
@@ -85,16 +74,7 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
         result.shouldBe(outcome)
       }
 
-      "downstream returns an error for a request with a TYS tax year and feature switch is disabled (IFS enabled)" in new IfsTest with Test {
-        def taxYear: TaxYear = tysTaxYear
-        stubTysHttpResponse(isHipEnabled = false, outcome = outcome)
-
-        val result: DownstreamOutcome[RetrieveCalculationResponse] =
-          await(connector.retrieveCalculation(request))
-        result.shouldBe(outcome)
-      }
-
-      "downstream returns an error for a request with a TYS tax year and feature switch is enabled (HIP enabled)" in new HipTest with Test {
+      "downstream returns an error for a request with a TYS tax year" in new HipTest with Test {
         def taxYear: TaxYear = tysTaxYear
         stubTysHttpResponse(isHipEnabled = true, outcome = outcome)
 
@@ -127,14 +107,8 @@ class RetrieveCalculationConnectorSpec extends ConnectorSpec with Def1_Calculati
         isHipEnabled: Boolean,
         outcome: DownstreamOutcome[RetrieveCalculationResponse]): CallHandler[Future[DownstreamOutcome[RetrieveCalculationResponse]]]#Derived = {
 
-      val url: URL = if (isHipEnabled) {
+      val url: URL =
         url"$baseUrl/itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"
-      } else {
-        url"$baseUrl/income-tax/view/calculations/liability/${taxYear.asTysDownstream}/${nino.nino}/$calculationId"
-      }
-
-      MockedAppConfig.featureSwitchConfig returns Configuration("ifs_hip_migration_1885.enabled" -> isHipEnabled)
-
       willGet(url = url).returns(Future.successful(outcome))
     }
 
