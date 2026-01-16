@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,8 @@
 
 package v7.retrieveCalculation.models.response
 
-//import config.CalculationsFeatureSwitches
 import play.api.libs.json.{Json, OWrites, Reads}
-//import shared.models.domain.TaxYear
 import v7.retrieveCalculation._
-
-//import scala.math.Ordered.orderingToOrdered
 
 sealed trait RetrieveCalculationResponse {
 
@@ -60,56 +56,6 @@ case class Def1_RetrieveCalculationResponse(
     } yield errors.nonEmpty
   }.getOrElse(false)
 
-//  def adjustFields(taxYear: String): Def1_RetrieveCalculationResponse = {
-//    // import featureSwitches._
-//
-//    def updateModelR8b(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
-//      response
-//
-//    def updateModelCl290(response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse =
-//      response
-//
-//    def updateModelBasicRateDivergence(taxYear: String, response: Def1_RetrieveCalculationResponse): Def1_RetrieveCalculationResponse = {
-//      //if (TaxYear.fromMtd(taxYear) >= TaxYear.fromMtd("2024-25"))
-//        response
-//
-//    }
-//
-//    val responseMaybeWithoutR8b   = updateModelR8b(this)
-//    val responseMaybeWithoutCl290 = updateModelCl290(responseMaybeWithoutR8b)
-//    updateModelBasicRateDivergence(taxYear, responseMaybeWithoutCl290)
-//
-//  }
-
-//  def withoutR8bSpecificUpdates: Def1_RetrieveCalculationResponse =
-//    this.withoutBasicExtension.withoutOffPayrollWorker.withoutTotalAllowanceAndDeductions
-//
-//  def withoutBasicExtension: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutBasicExtension), messages)
-//
-//  def withoutOffPayrollWorker: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutOffPayrollWorker), messages)
-//
-//  def withoutTotalAllowanceAndDeductions: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTotalAllowanceAndDeductions), messages)
-//
-//  // find where its used
-//  def withoutUnderLowerProfitThreshold: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutUnderLowerProfitThreshold), messages)
-//
-//  def withoutTaxTakenOffTradingIncome: Def1_RetrieveCalculationResponse = {
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutTaxTakenOffTradingIncome).filter(_.isDefined), messages)
-//  }
-
-//  def withoutBasicRateDivergenceUpdates: Def1_RetrieveCalculationResponse =
-//    this.withoutGiftAidTaxReductionWhereBasicRateDiffers.withoutGiftAidTaxChargeWhereBasicRateDiffers
-//
-//  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers), messages)
-//
-//  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Def1_RetrieveCalculationResponse =
-//    Def1_RetrieveCalculationResponse(metadata, inputs, calculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers), messages)
-//
 }
 
 object Def1_RetrieveCalculationResponse {
