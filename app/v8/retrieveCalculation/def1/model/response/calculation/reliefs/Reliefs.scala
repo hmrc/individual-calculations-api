@@ -22,15 +22,12 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
                    topSlicingRelief: Option[TopSlicingRelief],
-                   basicRateExtension: Option[BasicRateExtension],
-                   giftAidTaxReductionWhereBasicRateDiffers: Option[GiftAidTaxReductionWhereBasicRateDiffers]) {
+                   basicRateExtension: Option[BasicRateExtension]) {
 
   val isDefined: Boolean =
-    !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty && giftAidTaxReductionWhereBasicRateDiffers.isEmpty)
+    !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty)
 
   def withoutBasicExtension: Reliefs = copy(basicRateExtension = None)
-
-  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Reliefs = copy(giftAidTaxReductionWhereBasicRateDiffers = None)
 
 }
 

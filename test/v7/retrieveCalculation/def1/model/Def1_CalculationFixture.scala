@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensi
 }
 import v7.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
 import v7.retrieveCalculation.def1.model.response.calculation.otherIncome.{OtherIncome, PostCessationIncome, PostCessationReceipt}
-import v7.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
+import v7.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, Reliefs}
 import v7.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v7.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
 import v7.retrieveCalculation.def1.model.response.inputs._
@@ -53,12 +53,11 @@ trait Def1_CalculationFixture {
     residentialFinanceCosts = None,
     foreignTaxCreditRelief = None,
     topSlicingRelief = None,
-    reliefsClaimed = None,
-    giftAidTaxReductionWhereBasicRateDiffers = None
+    reliefsClaimed = None
   )
 
   val reliefsWithBasicRateDivergenceData: Reliefs =
-    reliefs.copy(basicRateExtension = None, giftAidTaxReductionWhereBasicRateDiffers = Some(GiftAidTaxReductionWhereBasicRateDiffers(Some(2000.25))))
+    reliefs.copy(basicRateExtension = None)
 
   val class2Nics: Class2Nics = Class2Nics(
     amount = None,
@@ -95,11 +94,8 @@ trait Def1_CalculationFixture {
     totalPensionSavingsTaxCharges = None,
     statePensionLumpSumCharges = None,
     payeUnderpaymentsCodedOut = None,
-    totalIncomeTaxDue = None,
-    giftAidTaxChargeWhereBasicRateDiffers = None
+    totalIncomeTaxDue = None
   )
-
-  val incomeTaxWithBasicRateDivergenceData: IncomeTax = incomeTax.copy(giftAidTaxChargeWhereBasicRateDiffers = Some(2000.25))
 
   val taxCalculation: TaxCalculation = TaxCalculation(
     incomeTax = Some(incomeTax),
@@ -115,8 +111,6 @@ trait Def1_CalculationFixture {
     capitalGainsTax = None,
     totalIncomeTaxAndNicsAndCgt = None
   )
-
-  val taxCalculationWithBasicRateDivergenceData: TaxCalculation = taxCalculation.copy(incomeTax = Some(incomeTaxWithBasicRateDivergenceData))
 
   val taxCalculationWithoutUnderLowerProfitThreshold: TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
 
@@ -275,38 +269,6 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithBasicRateDivergenceEnabled: Calculation = Calculation(
-    reliefs = Some(reliefsWithBasicRateDivergenceData),
-    allowancesAndDeductions = None,
-    taxDeductedAtSource = None,
-    giftAid = None,
-    royaltyPayments = None,
-    notionalTax = None,
-    marriageAllowanceTransferredIn = None,
-    pensionContributionReliefs = None,
-    pensionSavingsTaxCharges = None,
-    studentLoans = None,
-    codedOutUnderpayments = None,
-    foreignPropertyIncome = None,
-    businessProfitAndLoss = None,
-    employmentAndPensionsIncome = None,
-    employmentExpenses = None,
-    seafarersDeductions = None,
-    foreignTaxForFtcrNotClaimed = None,
-    stateBenefitsIncome = None,
-    shareSchemesIncome = None,
-    foreignIncome = None,
-    chargeableEventGainsIncome = None,
-    savingsAndGainsIncome = None,
-    otherIncome = None,
-    dividendsIncome = None,
-    incomeSummaryTotals = None,
-    taxCalculation = Some(taxCalculationWithBasicRateDivergenceData),
-    previousCalculation = None,
-    endOfYearEstimate = None,
-    lossesAndClaims = None
-  )
-
   val calculationWithR8BDisabled: Calculation =
     calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
 
@@ -379,14 +341,7 @@ trait Def1_CalculationFixture {
     calculation = Some(calculationWithCl290Enabled),
     messages = None
   )
-
-  val minimalCalculationBasicRateDivergenceEnabledResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadataWithBasicRateDivergenceData,
-    inputs = inputs,
-    calculation = Some(calculationWithBasicRateDivergenceEnabled),
-    messages = None
-  )
-
+  
   // @formatter:off
   val emptyCalculation: Calculation = Calculation(
     None, None, None, None, None, None,

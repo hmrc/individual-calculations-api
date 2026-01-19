@@ -92,12 +92,10 @@
     },
     "transitionProfit": {
       "$ref": "calculation/transitionProfit.json"
-    }
-    {{#if (enabled 'high-income-child-benefit-charge-fields')}}
-      ,"highIncomeChildBenefitCharge": {
+    },
+    "highIncomeChildBenefitCharge": {
         "$ref": "calculation/highIncomeChildBenefitCharge.json"
       }
-    {{/if}}
   },
   "additionalProperties": false
 }

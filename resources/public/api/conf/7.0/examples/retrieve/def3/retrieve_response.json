@@ -877,10 +877,8 @@
         "totalPensionSavingsTaxCharges": 5000.99,
         "statePensionLumpSumCharges": 5000.99,
         "payeUnderpaymentsCodedOut": 5000.99,
-        "totalIncomeTaxDue": 5000.99
-        {{#if (enabled "high-income-child-benefit-charge-fields")}}
-          ,"highIncomeBenefitCharge": 5000.99
-        {{/if}}
+        "totalIncomeTaxDue": 5000.99,
+        "highIncomeBenefitCharge": 5000.99
       },
       "nics": {
         "class2Nics": {
@@ -1090,9 +1088,8 @@
           "transitionProfitsAfterIncomeTaxLossDeductions": 3000
         }
       ]
-    }
-    {{#if (enabled "high-income-child-benefit-charge-fields")}}
-      ,"highIncomeChildBenefitCharge": {
+    },
+    "highIncomeChildBenefitCharge": {
         "adjustedNetIncome": 2000.01,
         "amountOfChildBenefitReceived": 2000.01,
         "incomeThreshold": 60000,
@@ -1100,7 +1097,6 @@
         "rate": 10.25,
         "highIncomeBenefitCharge": 32000.01
       }
-    {{/if}}
   },
   "messages": {
     "info": [

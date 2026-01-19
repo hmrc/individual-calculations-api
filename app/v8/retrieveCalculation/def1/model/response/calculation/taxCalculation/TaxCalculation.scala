@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,6 @@ case class TaxCalculation(
 
   def withoutUnderLowerProfitThreshold: TaxCalculation =
     copy(nics = nics.map(_.withoutUnderLowerProfitThreshold).filter(_.isDefined))
-
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: TaxCalculation =
-    copy(incomeTax = incomeTax.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers))
 
 }
 
