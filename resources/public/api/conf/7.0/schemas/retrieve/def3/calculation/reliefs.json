@@ -169,14 +169,13 @@
         "type": "object",
         "properties": {
           "type": {
-            "description": "The type of relief claimed. `social-enterprise-investment` is deprecated and will be removed in a future release.",
+            "description": "The type of relief claimed.",
             "type": "string",
             "enum": [
               "vct-subscriptions",
               "eis-subscriptions",
               "community-investment",
               "seed-enterprise-investment",
-              "social-enterprise-investment",
               "maintenance-payments",
               "deficiency-relief",
               "non-deductible-loan-interest",
@@ -225,12 +224,6 @@
                   "type": "string",
                   "example": "EIS fund"
                 },
-                  "socialEnterpriseName": {
-                    "description": "The name of the Social Enterprise Investment invested in. This field is deprecated and will be removed in a future release.",
-                    "type": "string",
-                    "example": "SE Inc",
-                    "deprecated": true
-                  },
                 "companyName": {
                   "description": "The name of the Seed Enterprise Investment invested in.",
                   "type": "string",

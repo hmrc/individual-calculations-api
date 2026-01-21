@@ -31,12 +31,7 @@ case class TaxCalculation(
     totalIncomeTaxAndNicsDue: Option[BigDecimal],
     capitalGainsTax: Option[CapitalGainsTax],
     totalIncomeTaxAndNicsAndCgt: Option[BigDecimal]
-) {
-
-  def withoutUnderLowerProfitThreshold: TaxCalculation =
-    copy(nics = nics.map(_.withoutUnderLowerProfitThreshold).filter(_.isDefined))
-
-}
+)
 
 object TaxCalculation {
   implicit val format: Format[TaxCalculation] = Json.format

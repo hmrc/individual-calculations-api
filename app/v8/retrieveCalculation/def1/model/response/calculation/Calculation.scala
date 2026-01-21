@@ -81,9 +81,6 @@ case class Calculation(
 
   def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
 
-  def withoutUnderLowerProfitThreshold: Calculation =
-    copy(taxCalculation = taxCalculation.map(_.withoutUnderLowerProfitThreshold))
-
   def withoutOffPayrollWorker: Calculation =
     copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker).filter(_.isDefined))
 
