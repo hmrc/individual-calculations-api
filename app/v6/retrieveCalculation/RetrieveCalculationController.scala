@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,12 @@
 
 package v6.retrieveCalculation
 
-import config.CalculationsFeatureSwitches
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import shared.config.AppConfig
 import shared.controllers._
 import shared.routing.Version
 import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import shared.utils.{IdGenerator, Logging}
-import v6.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 import v6.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Inject
@@ -70,10 +68,6 @@ class RetrieveCalculationController @Inject() (val authService: EnrolmentsAuthSe
             params = Map("nino" -> nino, "calculationId" -> calculationId, "taxYear" -> taxYear),
             includeResponse = true
           ))
-          .withResponseModifier {
-            case r: Def1_RetrieveCalculationResponse => r.adjustFields(CalculationsFeatureSwitches()(appConfig), taxYear)
-            case response                            => response
-          }
           .withPlainJsonResult()
 
       requestHandler.handleRequest()

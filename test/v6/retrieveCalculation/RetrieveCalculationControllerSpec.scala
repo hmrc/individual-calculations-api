@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,8 @@
 package v6.retrieveCalculation
 
 import play.api.Configuration
-import play.api.libs.json.{JsObject, JsValue}
+import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import shared.config.MockAppConfig
 import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import shared.models.domain.{CalculationId, Nino, TaxYear}
@@ -42,118 +41,48 @@ class RetrieveCalculationControllerSpec
     with MockRetrieveCalculationService
     with MockAuditService
     with MockIdGenerator
-    with MockAppConfig
     with Def1_CalculationFixture {
 
-  private val calculationId                                 = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val responseWithR8b                               = minimalCalculationR8bResponse
-  private val responseWithCl290Enabled                      = minimalCalculationCl290EnabledResponse
-  private val responseWithBasicRateDivergenceEnabled        = minimalCalculationBasicRateDivergenceEnabledResponse
-  private val mtdResponseWithR8BJson                        = minimumCalculationResponseR8BEnabledJson
-  private val mtdResponseWithCl290EnabledJson               = minimumResponseCl290EnabledJson
-  private val mtdResponseWithBasicRateDivergenceEnabledJson = minimumCalculationResponseBasicRateDivergenceEnabledJson
+  private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
   "handleRequest" should {
-    "return OK with the calculation" when {
-      "happy path with R8B feature switch enabled" in new NonTysTest {
-        willUseValidator(returningSuccess(requestData))
 
-        MockRetrieveCalculationService
-          .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
+    "return OK with the calculation" in new Test {
+      willUseValidator(returningSuccess(requestData))
 
-        MockedAppConfig.featureSwitchConfig
-          .returns(
-            Configuration(
-              "r8b-api.enabled"             -> true,
-              "cl290.enabled"               -> false,
-              "basicRateDivergence.enabled" -> false
-            ))
-          .anyNumberOfTimes()
+      MockRetrieveCalculationService
+        .retrieveCalculation(requestData)
+        .returns(Future.successful(Right(ResponseWrapper(correlationId, minimalCalculationResponse))))
 
-        runOkTestWithAudit(
-          expectedStatus = OK,
-          maybeExpectedResponseBody = Some(mtdResponseWithR8BJson),
-          maybeAuditResponseBody = Some(mtdResponseWithR8BJson)
-        )
-      }
-
-      "happy path with cl290 feature switch enabled" in new NonTysTest {
-        willUseValidator(returningSuccess(requestData))
-
-        MockRetrieveCalculationService
-          .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithCl290Enabled))))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> true, "basicRateDivergence.enabled" -> false))
-          .anyNumberOfTimes()
-
-        runOkTestWithAudit(
-          expectedStatus = OK,
-          maybeExpectedResponseBody = Some(mtdResponseWithCl290EnabledJson),
-          maybeAuditResponseBody = Some(mtdResponseWithCl290EnabledJson)
-        )
-      }
-
-      "happy path with BasicRateDivergence feature switch enabled and TYS (2025)" in new TysTest {
-        willUseValidator(returningSuccess(requestData))
-
-        MockRetrieveCalculationService
-          .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithBasicRateDivergenceEnabled))))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> false, "basicRateDivergence.enabled" -> true))
-          .anyNumberOfTimes()
-
-        runOkTestWithAudit(
-          expectedStatus = OK,
-          maybeExpectedResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson),
-          maybeAuditResponseBody = Some(mtdResponseWithBasicRateDivergenceEnabledJson)
-        )
-      }
-
-      "happy path with R8B; cl290 and basicRateDivergence feature switches disabled" in new NonTysTest {
-        val updatedMtdResponse: JsObject = minimumCalculationResponseWithSwitchesDisabledJson
-        willUseValidator(returningSuccess(requestData))
-
-        MockRetrieveCalculationService
-          .retrieveCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseWithR8b))))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> false, "cl290.enabled" -> false, "basicRateDivergence.enabled" -> false))
-          .anyNumberOfTimes()
-
-        runOkTestWithAudit(
-          expectedStatus = OK,
-          maybeExpectedResponseBody = Some(updatedMtdResponse),
-          maybeAuditResponseBody = Some(updatedMtdResponse)
-        )
-      }
-
+      runOkTestWithAudit(
+        expectedStatus = OK,
+        maybeExpectedResponseBody = Some(minimumCalculationResponseR8BEnabledJson),
+        maybeAuditResponseBody = Some(minimumCalculationResponseR8BEnabledJson)
+      )
     }
 
     "return the error as per spec" when {
-      "the parser validation fails" in new NonTysTest {
-
+      "the parser validation fails" in new Test {
         willUseValidator(returning(NinoFormatError))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> true))
-          .anyNumberOfTimes()
-
         runErrorTest(NinoFormatError)
       }
 
-      "the service returns an error" in new NonTysTest {
+      "return RuleTaxYearNotSupportedError when tax year is outside supported range" in new Test {
 
+        willUseValidator(returning(RuleTaxYearNotSupportedError))
+        runErrorTest(RuleTaxYearNotSupportedError)
+      }
+
+      "return error when calculationId is invalid" in new Test {
+        willUseValidator(
+          returning(
+            shared.models.errors.CalculationIdFormatError
+          ))
+        runErrorTest(shared.models.errors.CalculationIdFormatError)
+      }
+
+      "the service returns an error" in new Test {
         willUseValidator(returningSuccess(requestData))
-
-        MockedAppConfig.featureSwitchConfig
-          .returns(Configuration("r8b-api.enabled" -> true))
-          .anyNumberOfTimes()
 
         MockRetrieveCalculationService
           .retrieveCalculation(requestData)
@@ -165,7 +94,12 @@ class RetrieveCalculationControllerSpec
   }
 
   trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
-    def taxYear: String
+
+    def taxYear: String = "2017-18"
+
+    MockedAppConfig.featureSwitchConfig
+      .returns(Configuration.empty)
+      .anyNumberOfTimes()
 
     def requestData: RetrieveCalculationRequestData =
       Def1_RetrieveCalculationRequestData(Nino(validNino), TaxYear.fromMtd(taxYear), CalculationId(calculationId))
@@ -200,14 +134,6 @@ class RetrieveCalculationControllerSpec
         )
       )
 
-  }
-
-  trait NonTysTest extends Test {
-    def taxYear: String = "2017-18"
-  }
-
-  trait TysTest extends Test {
-    def taxYear: String = "2024-25"
   }
 
 }

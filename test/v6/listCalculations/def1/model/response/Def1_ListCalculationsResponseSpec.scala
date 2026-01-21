@@ -16,7 +16,7 @@
 
 package v6.listCalculations.def1.model.response
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import shared.utils.UnitSpec
 import v6.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v6.listCalculations.model.response.Def1_ListCalculationsResponse
@@ -35,6 +35,42 @@ class Def1_ListCalculationsResponseSpec extends UnitSpec with Def1_ListCalculati
         Json.toJson(listCalculationsResponseModel) shouldBe listCalculationsMtdJson
       }
     }
+
+    "fail to read when JSON is not an array" in {
+      val invalidJson = Json.obj("calculations" -> Json.arr())
+
+      invalidJson.validate[Def1_ListCalculationsResponse[Def1_Calculation]].isError shouldBe true
+    }
+
+    "mapItems" must {
+
+      "apply the mapping function to every calculation" in {
+        val mapped =
+          listCalculationsResponseModel.mapItems(_.calculationId)
+
+        val originalIds =
+          (Json.toJson(listCalculationsResponseModel) \ "calculations")
+            .as[JsArray]
+            .value
+            .map(_("calculationId"))
+
+        val mappedIds =
+          (Json.toJson(mapped) \ "calculations")
+            .as[JsArray]
+            .value
+
+        mappedIds shouldBe originalIds
+      }
+
+      "return an empty response when calculations are empty" in {
+        val emptyResponse =
+          Def1_ListCalculationsResponse[Def1_Calculation](Seq.empty)
+
+        emptyResponse.mapItems(_.calculationId) shouldBe
+          Def1_ListCalculationsResponse(Seq.empty)
+      }
+    }
+
   }
 
 }

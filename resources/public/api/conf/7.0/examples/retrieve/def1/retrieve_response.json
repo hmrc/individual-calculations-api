@@ -248,12 +248,10 @@
         "totalBasicRateExtension": 2010.58,
         "giftAidRelief": 3000,
         "pensionContributionReliefs": 5000.58
-      }
-      {{#if (enabled "basicRateDivergence")}}
-      ,"giftAidTaxReductionWhereBasicRateDiffers": {
+      },
+      "giftAidTaxReductionWhereBasicRateDiffers": {
         "amount": 2000.58
       }
-      {{/if}}
     },
     "taxDeductedAtSource": {
       "bbsi": 5000.99,
@@ -265,10 +263,8 @@
       "occupationalPensions": 5000.99,
       "stateBenefits": -99999999999.99,
       "specialWithholdingTaxOrUkTaxPaid": 5000.99,
-      "inYearAdjustmentCodedInLaterTaxYear": 5000.99
-      {{#if (enabled "cl290")}}
-      ,"taxTakenOffTradingIncome": 5000.99
-      {{/if}}
+      "inYearAdjustmentCodedInLaterTaxYear": 5000.99,
+      "taxTakenOffTradingIncome": 5000.99
     },
     "giftAid": {
       "grossGiftAidPayments": 12500,
@@ -886,10 +882,8 @@
         "totalPensionSavingsTaxCharges": 5000.99,
         "statePensionLumpSumCharges": 5000.99,
         "payeUnderpaymentsCodedOut": 5000.99,
-        "totalIncomeTaxDue": 5000.99
-        {{#if (enabled "basicRateDivergence")}}
-        ,"giftAidTaxChargeWhereBasicRateDiffers": 2000.58
-        {{/if}}
+        "totalIncomeTaxDue": 5000.99,
+        "giftAidTaxChargeWhereBasicRateDiffers": 2000.58
       },
       "nics": {
         "class2Nics": {

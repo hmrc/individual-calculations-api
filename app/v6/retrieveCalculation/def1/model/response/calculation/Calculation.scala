@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,26 +78,6 @@ case class Calculation(
     endOfYearEstimate: Option[EndOfYearEstimate],
     lossesAndClaims: Option[LossesAndClaims]
 ) {
-
-  def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
-
-  def withoutGiftAidTaxReductionWhereBasicRateDiffers: Calculation =
-    copy(reliefs = reliefs.map(_.withoutGiftAidTaxReductionWhereBasicRateDiffers).filter(_.isDefined))
-
-  def withoutGiftAidTaxChargeWhereBasicRateDiffers: Calculation =
-    copy(taxCalculation = taxCalculation.map(_.withoutGiftAidTaxChargeWhereBasicRateDiffers))
-
-  def withoutUnderLowerProfitThreshold: Calculation =
-    copy(taxCalculation = taxCalculation.map(_.withoutUnderLowerProfitThreshold))
-
-  def withoutOffPayrollWorker: Calculation =
-    copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker).filter(_.isDefined))
-
-  def withoutTotalAllowanceAndDeductions: Calculation =
-    copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
-
-  def withoutTaxTakenOffTradingIncome: Calculation =
-    copy(taxDeductedAtSource = taxDeductedAtSource.map(_.withoutTaxTakenOffTradingIncome))
 
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&

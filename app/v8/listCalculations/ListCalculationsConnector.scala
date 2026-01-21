@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package v8.listCalculations
 
-import shared.config.{AppConfig, ConfigFeatureSwitches}
-import shared.connectors.DownstreamUri.{DesUri, HipUri, IfsUri}
+import shared.config.AppConfig
+import shared.connectors.DownstreamUri.{HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -47,11 +47,7 @@ class ListCalculationsConnector @Inject() (val http: HttpClientV2, val appConfig
 
     // API1404
     lazy val downstreamUri1404: DownstreamUri[DownstreamResp] =
-      if (ConfigFeatureSwitches().isEnabled("des_hip_migration_1404")) {
-        HipUri(s"itsd/calculations/liability/$nino?taxYear=${taxYear.asDownstream}")
-      } else {
-        DesUri(s"income-tax/list-of-calculation-results/$nino?taxYear=${taxYear.asDownstream}")
-      }
+      HipUri(s"itsd/calculations/liability/$nino?taxYear=${taxYear.asDownstream}")
     // API2150
     lazy val downstreamUri2150: DownstreamUri[DownstreamResp] =
       IfsUri(s"income-tax/${taxYear.asTysDownstream}/view/calculations-summary/$nino")

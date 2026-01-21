@@ -99,7 +99,6 @@
         "itsaStatus": {
           "type": "string",
           "description": "The ITSA Status for the Tax Year.",
-          {{#if (enabled 'api_1885_digitally_exempt_docs')}}
           "enum": [
             "No Status",
             "MTD Mandated",
@@ -110,17 +109,6 @@
             "Dormant",
             "MTD Exempt"
           ]
-          {{else}}
-          "enum": [
-            "No Status",
-            "MTD Mandated",
-            "MTD Voluntary",
-            "Annual",
-            "Non Digital",
-            "Dormant",
-            "MTD Exempt"
-          ]
-          {{/if}}
         }
       },
       "additionalProperties": false,

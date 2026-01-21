@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package v7.triggerCalculation
 
-import config.CalculationsFeatureSwitches
 import play.api.http.Status
 import play.api.libs.json.JsObject
 import shared.config.AppConfig
-import shared.connectors.DownstreamUri.{DesUri, IfsUri}
+import shared.connectors.DownstreamUri.IfsUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -34,8 +33,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig)(featureSwitches: CalculationsFeatureSwitches)
-    extends BaseDownstreamConnector {
+class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConfig: AppConfig) extends BaseDownstreamConnector {
 
   def triggerCalculation(request: TriggerCalculationRequestData)(implicit
       hc: HeaderCarrier,
@@ -50,11 +48,8 @@ class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConf
       case Pre24Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.OK)
         val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$crystallisationFlag"
-        val downstreamUrl = if (featureSwitches.isDesIf_MigrationEnabled) {
+        val downstreamUrl =
           IfsUri[DownstreamResp](path)
-        } else {
-          DesUri[DownstreamResp](path)
-        }
         post(JsObject.empty, downstreamUrl)
       case Either24or25Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)

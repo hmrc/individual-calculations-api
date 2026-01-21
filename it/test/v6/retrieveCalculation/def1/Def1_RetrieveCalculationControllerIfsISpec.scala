@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,6 @@ import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 
 class Def1_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec {
-
-  override def servicesConfig: Map[String, Any] =
-    Map("feature-switch.ifs_hip_migration_1885.enabled" -> false) ++ super.servicesConfig
 
   private trait Test {
     val nino: String          = "ZG903729C"
@@ -139,14 +136,6 @@ class Def1_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec {
     override def downstreamUri: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
   }
 
-  private trait TysTest extends Test {
-    def taxYear: String = "2023-24"
-
-    override def downstreamUri: String = s"/income-tax/view/calculations/liability/$downstreamTaxYear/$nino/$calculationId"
-
-    def downstreamTaxYear: String = "23-24"
-  }
-
   "Calling the retrieveCalculation endpoint" when {
     "the response can be finalised" should {
       "return a 200 status code" when {
@@ -164,35 +153,7 @@ class Def1_RetrieveCalculationControllerIfsISpec extends IntegrationBaseSpec {
           response.json shouldBe responseBody(canBeFinalised = false)
         }
 
-        "a valid request is made with a Tax Year Specific tax year" in new TysTest {
-          override def setupStubs(): StubMapping = {
-            AuditStub.audit()
-            AuthStub.authorised()
-            MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = false))
-          }
-
-          val response: WSResponse = await(request.get())
-          response.status shouldBe OK
-          response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = false)
-        }
-
         "a valid request is made and the response can be finalised" in new NonTysTest {
-          override def setupStubs(): StubMapping = {
-            AuditStub.audit()
-            AuthStub.authorised()
-            MtdIdLookupStub.ninoFound(nino)
-            DownstreamStub.onSuccess(DownstreamStub.GET, downstreamUri, Map(), OK, downstreamResponseBody(canBeFinalised = true))
-          }
-
-          val response: WSResponse = await(request.get())
-          response.status shouldBe OK
-          response.header("Content-Type") shouldBe Some("application/json")
-          response.json shouldBe responseBody(canBeFinalised = true)
-        }
-
-        "a valid request is made and the response can be finalised with a Tax Year Specific tax year" in new TysTest {
           override def setupStubs(): StubMapping = {
             AuditStub.audit()
             AuthStub.authorised()

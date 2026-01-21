@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package v8.listCalculations.def2.model.response
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import shared.utils.UnitSpec
 import v8.listCalculations.def2.model.Def2_ListCalculationsFixture
 import v8.listCalculations.model.response.Def2_ListCalculationsResponse
@@ -33,6 +33,41 @@ class Def2_ListCalculationsResponseSpec extends UnitSpec with Def2_ListCalculati
     "written to MTD JSON" must {
       "produce the expected JSON body" in {
         Json.toJson(listCalculationsResponseModel) shouldBe listCalculationsMtdJson
+      }
+    }
+
+    "fail to read when JSON is not an array" in {
+      val invalidJson = Json.obj("calculations" -> Json.arr())
+
+      invalidJson.validate[Def2_ListCalculationsResponse[Def2_Calculation]].isError shouldBe true
+    }
+
+    "mapItems" must {
+
+      "apply the mapping function to every calculation" in {
+        val mapped =
+          listCalculationsResponseModel.mapItems(_.calculationId)
+
+        val originalIds =
+          (Json.toJson(listCalculationsResponseModel) \ "calculations")
+            .as[JsArray]
+            .value
+            .map(_("calculationId"))
+
+        val mappedIds =
+          (Json.toJson(mapped) \ "calculations")
+            .as[JsArray]
+            .value
+
+        mappedIds shouldBe originalIds
+      }
+
+      "return an empty response when calculations are empty" in {
+        val emptyResponse =
+          Def2_ListCalculationsResponse[Def2_Calculation](Seq.empty)
+
+        emptyResponse.mapItems(_.calculationId) shouldBe
+          Def2_ListCalculationsResponse(Seq.empty)
       }
     }
   }

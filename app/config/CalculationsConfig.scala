@@ -18,7 +18,6 @@ package config
 
 import common.utils.Retrying
 import play.api.Configuration
-import shared.config.FeatureSwitches
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
@@ -27,8 +26,6 @@ import scala.concurrent.duration.{Duration, FiniteDuration}
 @Singleton
 class CalculationsConfig @Inject() (config: ServicesConfig, configuration: Configuration) {
   def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
-
-  def featureSwitches: FeatureSwitches = CalculationsFeatureSwitches(featureSwitchConfig)
 
   // NRS Config
   def mtdNrsProxyBaseUrl: String = config.baseUrl("mtd-api-nrs-proxy")

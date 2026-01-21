@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package v7.listCalculationsOld
 
-import play.api.Configuration
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
@@ -50,25 +49,9 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
 
   "ListCalculationsConnector" should {
     "return successful response" when {
-      "Non-TYS tax year query param is passed and feature switch is disabled (DES enabled)" in new DesTest with Test {
+      "Non-TYS tax year query param is passed" in new HipTest with Test {
         val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
           Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
-
-        MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
-
-        willGet(
-          url"$baseUrl/income-tax/list-of-calculation-results/$nino?taxYear=2019"
-        )
-          .returns(Future.successful(outcome))
-
-        await(connector.list(request(taxYear2019))).shouldBe(outcome)
-      }
-
-      "Non-TYS tax year query param is passed and feature switch is enabled (HIP  enabled)" in new HipTest with Test {
-        val outcome: Right[Nothing, ResponseWrapper[ListCalculationsResponse[Calculation]]] =
-          Right(ResponseWrapper(correlationId, listCalculationsResponseModel))
-
-        MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 
         willGet(
           url"$baseUrl/itsd/calculations/liability/$nino?taxYear=2019"
@@ -116,26 +99,9 @@ class ListCalculationsConnectorSpec extends ConnectorSpec with Def1_ListCalculat
     }
 
     "return the expected result" when {
-      "an error is received and feature switch disabled (DES enabled)" in new DesTest with Test {
+      "an error is received" in new HipTest with Test {
         val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
           Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
-
-        MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> false)
-
-        willGet(
-          url"$baseUrl/income-tax/list-of-calculation-results/${nino.nino}?taxYear=2019"
-        )
-          .returns(Future.successful(outcome))
-
-        private val result: DownstreamOutcome[ListCalculationsResponse[Calculation]] = await(connector.list(request(taxYear2019)))
-        result.shouldBe(outcome)
-      }
-
-      "an error is received and feature switch enabled (HIP enabled)" in new HipTest with Test {
-        val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
-          Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("ERROR_CODE"))))
-
-        MockedAppConfig.featureSwitchConfig returns Configuration("des_hip_migration_1404.enabled" -> true)
 
         willGet(
           url"$baseUrl/itsd/calculations/liability/${nino.nino}?taxYear=2019"

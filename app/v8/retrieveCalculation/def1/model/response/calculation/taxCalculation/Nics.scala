@@ -34,9 +34,6 @@ case class Nics(
       totalNic.isEmpty
   )
 
-  def withoutUnderLowerProfitThreshold: Nics =
-    copy(class2Nics = class2Nics.map(_.withoutUnderLowerProfitThreshold))
-
 }
 
 object Nics {

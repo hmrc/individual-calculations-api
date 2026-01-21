@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package v7.retrieveCalculation
 import shared.connectors.DownstreamUri.{HipUri, IfsUri}
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import shared.config.{AppConfig, ConfigFeatureSwitches}
+import shared.config.AppConfig
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
 import v7.retrieveCalculation.models.request.RetrieveCalculationRequestData
@@ -40,13 +40,9 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClientV2, val appCon
     import schema._
 
     lazy val downstreamUri1885: DownstreamUri[DownstreamResp] =
-      if (ConfigFeatureSwitches().isEnabled("ifs_hip_migration_1885")) {
-        HipUri(
-          s"itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"
-        )
-      } else {
-        IfsUri(s"income-tax/view/calculations/liability/${taxYear.asTysDownstream}/$nino/$calculationId")
-      }
+      HipUri(
+        s"itsa/income-tax/v1/${taxYear.asTysDownstream}/view/calculations/liability/$nino/$calculationId"
+      )
 
     lazy val downstreamUri1523: DownstreamUri[DownstreamResp] =
       IfsUri(s"income-tax/view/calculations/liability/$nino/$calculationId")

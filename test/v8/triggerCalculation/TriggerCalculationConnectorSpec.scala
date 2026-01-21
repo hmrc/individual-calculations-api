@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package v8.triggerCalculation
 
-import config.CalculationsFeatureSwitches
-import play.api.Configuration
 import play.api.libs.json.Json
 import shared.connectors.ConnectorSpec
 import shared.models.domain.{Nino, TaxYear}
@@ -47,22 +45,10 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   trait Test { self: ConnectorTest =>
 
-    val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)(
-      new CalculationsFeatureSwitches(mockAppConfig.featureSwitchConfig))
-
+    val connector: TriggerCalculationConnector = new TriggerCalculationConnector(http = mockHttpClient, appConfig = mockAppConfig)
   }
 
   "connector" when {
-    "triggering an in-year calculation in a pre 23-24 tax year" must {
-      val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
-      makeRequestWithDESEnabled(request, api1426Url("false"))
-    }
-    "triggering an intent-to-finalise calculation in a pre 23-24 tax year" must {
-      val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `intent-to-finalise`, Pre24Downstream)
-      makeRequestWithDESEnabled(request, api1426Url("true"))
-    }
     "triggering an in-year calculation in a 2024 or 2025 tax year" must {
       val request: TriggerCalculationRequestData =
         Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `in-year`, Either24or25Downstream)
@@ -90,7 +76,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     }
 
     "triggering a calculation for Pre24Downstream when migration is enabled" must {
-      "use IfsUri" in new IfsEnabledTest with Test {
+      "use IfsUri" in new IfsTest with Test {
         val request: Def1_TriggerCalculationRequestData =
           Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
 
@@ -104,7 +90,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
     }
 
     def makeRequestWithIFSEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
-      s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsEnabledTest with Test {
+      s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new IfsTest with Test {
         val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
 
         willPost(
@@ -114,26 +100,6 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
         await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
       }
-
-    def makeRequestWithDESEnabled(request: TriggerCalculationRequestData, downstreamUrl: URL): Unit =
-      s"send a request for a calculation type of ${request.calculationType} and return a calc ID" in new DesEnabledTest with Test {
-        val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))
-
-        willPost(
-          url = downstreamUrl,
-          body = Json.parse("{}")
-        ).returns(Future.successful(expectedOutcome))
-
-        await(connector.triggerCalculation(request)).shouldBe(expectedOutcome)
-      }
-  }
-
-  trait DesEnabledTest extends DesTest {
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> false)
-  }
-
-  trait IfsEnabledTest extends IfsTest {
-    MockedAppConfig.featureSwitchConfig returns Configuration("desIf_Migration.enabled" -> true)
   }
 
 }

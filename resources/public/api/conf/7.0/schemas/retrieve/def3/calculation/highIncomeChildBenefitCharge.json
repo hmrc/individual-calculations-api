@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "{{#unless (releasedInProduction 'high-income-child-benefit-charge-fields')}}[Test only] {{/unless}}The tax charge for high income child benefit earners.",
+  "description": "The tax charge for high income child benefit earners.",
   "type": "object",
   "properties": {
     "adjustedNetIncome": {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import v7.retrieveCalculation.def1.model.response.calculation.employmentAndPensi
 }
 import v7.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.EndOfYearEstimate
 import v7.retrieveCalculation.def1.model.response.calculation.otherIncome.{OtherIncome, PostCessationIncome, PostCessationReceipt}
-import v7.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, GiftAidTaxReductionWhereBasicRateDiffers, Reliefs}
+import v7.retrieveCalculation.def1.model.response.calculation.reliefs.{BasicRateExtension, Reliefs}
 import v7.retrieveCalculation.def1.model.response.calculation.taxCalculation.{Class2Nics, IncomeTax, Nics, TaxCalculation}
 import v7.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
 import v7.retrieveCalculation.def1.model.response.inputs._
@@ -44,8 +44,8 @@ trait Def1_CalculationFixture {
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_mtd.json"))
 
-  val calculationDownstreamJson: JsValue =
-    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_downstream.json"))
+  val calculationDownstreamJson: JsObject =
+    Json.parse(getClass.getResourceAsStream("/v7/retrieveCalculation/def1/model/response/calculation_downstream.json")).as[JsObject]
 
   val reliefs: Reliefs = Reliefs(
     basicRateExtension =
@@ -53,12 +53,11 @@ trait Def1_CalculationFixture {
     residentialFinanceCosts = None,
     foreignTaxCreditRelief = None,
     topSlicingRelief = None,
-    reliefsClaimed = None,
-    giftAidTaxReductionWhereBasicRateDiffers = None
+    reliefsClaimed = None
   )
 
   val reliefsWithBasicRateDivergenceData: Reliefs =
-    reliefs.copy(basicRateExtension = None, giftAidTaxReductionWhereBasicRateDiffers = Some(GiftAidTaxReductionWhereBasicRateDiffers(Some(2000.25))))
+    reliefs.copy(basicRateExtension = None)
 
   val class2Nics: Class2Nics = Class2Nics(
     amount = None,
@@ -71,10 +70,7 @@ trait Def1_CalculationFixture {
     actualClass2Nic = None
   )
 
-  val class2NicsWithoutUnderLowerProfitThreshold: Class2Nics = class2Nics.copy(underLowerProfitThreshold = None)
-
   val nics: Nics = Nics(class2Nics = Some(class2Nics), class4Nics = None, nic2NetOfDeductions = None, nic4NetOfDeductions = None, totalNic = None)
-  val nicsWithoutUnderLowerProfitThreshold: Nics = nics.copy(class2Nics = Some(class2NicsWithoutUnderLowerProfitThreshold))
 
   val incomeTax: IncomeTax = IncomeTax(
     totalIncomeReceivedFromAllSources = incomeTaxValue,
@@ -95,11 +91,8 @@ trait Def1_CalculationFixture {
     totalPensionSavingsTaxCharges = None,
     statePensionLumpSumCharges = None,
     payeUnderpaymentsCodedOut = None,
-    totalIncomeTaxDue = None,
-    giftAidTaxChargeWhereBasicRateDiffers = None
+    totalIncomeTaxDue = None
   )
-
-  val incomeTaxWithBasicRateDivergenceData: IncomeTax = incomeTax.copy(giftAidTaxChargeWhereBasicRateDiffers = Some(2000.25))
 
   val taxCalculation: TaxCalculation = TaxCalculation(
     incomeTax = Some(incomeTax),
@@ -115,10 +108,6 @@ trait Def1_CalculationFixture {
     capitalGainsTax = None,
     totalIncomeTaxAndNicsAndCgt = None
   )
-
-  val taxCalculationWithBasicRateDivergenceData: TaxCalculation = taxCalculation.copy(incomeTax = Some(incomeTaxWithBasicRateDivergenceData))
-
-  val taxCalculationWithoutUnderLowerProfitThreshold: TaxCalculation = taxCalculation.copy(nics = Some(nicsWithoutUnderLowerProfitThreshold))
 
   val employmentAndPensionsIncomeDetails: EmploymentAndPensionsIncomeDetail = EmploymentAndPensionsIncomeDetail(
     incomeSourceId = None,
@@ -243,73 +232,6 @@ trait Def1_CalculationFixture {
     lossesAndClaims = None
   )
 
-  val calculationWithCl290Enabled: Calculation = Calculation(
-    reliefs = None,
-    allowancesAndDeductions = None,
-    taxDeductedAtSource = Some(taxDeductedAtSource),
-    giftAid = None,
-    royaltyPayments = None,
-    notionalTax = None,
-    marriageAllowanceTransferredIn = None,
-    pensionContributionReliefs = None,
-    pensionSavingsTaxCharges = None,
-    studentLoans = None,
-    codedOutUnderpayments = None,
-    foreignPropertyIncome = None,
-    businessProfitAndLoss = None,
-    employmentAndPensionsIncome = None,
-    employmentExpenses = None,
-    seafarersDeductions = None,
-    foreignTaxForFtcrNotClaimed = None,
-    stateBenefitsIncome = None,
-    shareSchemesIncome = None,
-    foreignIncome = None,
-    chargeableEventGainsIncome = None,
-    savingsAndGainsIncome = None,
-    otherIncome = None,
-    dividendsIncome = None,
-    incomeSummaryTotals = None,
-    taxCalculation = None,
-    previousCalculation = None,
-    endOfYearEstimate = None,
-    lossesAndClaims = None
-  )
-
-  val calculationWithBasicRateDivergenceEnabled: Calculation = Calculation(
-    reliefs = Some(reliefsWithBasicRateDivergenceData),
-    allowancesAndDeductions = None,
-    taxDeductedAtSource = None,
-    giftAid = None,
-    royaltyPayments = None,
-    notionalTax = None,
-    marriageAllowanceTransferredIn = None,
-    pensionContributionReliefs = None,
-    pensionSavingsTaxCharges = None,
-    studentLoans = None,
-    codedOutUnderpayments = None,
-    foreignPropertyIncome = None,
-    businessProfitAndLoss = None,
-    employmentAndPensionsIncome = None,
-    employmentExpenses = None,
-    seafarersDeductions = None,
-    foreignTaxForFtcrNotClaimed = None,
-    stateBenefitsIncome = None,
-    shareSchemesIncome = None,
-    foreignIncome = None,
-    chargeableEventGainsIncome = None,
-    savingsAndGainsIncome = None,
-    otherIncome = None,
-    dividendsIncome = None,
-    incomeSummaryTotals = None,
-    taxCalculation = Some(taxCalculationWithBasicRateDivergenceData),
-    previousCalculation = None,
-    endOfYearEstimate = None,
-    lossesAndClaims = None
-  )
-
-  val calculationWithR8BDisabled: Calculation =
-    calculationWithR8BData.copy(employmentAndPensionsIncome = None, endOfYearEstimate = None, reliefs = None)
-
   val metadata: Metadata = Metadata(
     calculationId = "",
     taxYear = TaxYear.fromDownstream("2018"),
@@ -324,8 +246,6 @@ trait Def1_CalculationFixture {
     periodFrom = "",
     periodTo = ""
   )
-
-  val metadataWithBasicRateDivergenceData: Metadata = metadata.copy(taxYear = TaxYear.fromDownstream("2025"))
 
   val inputs: Inputs = Inputs(
     PersonalInformation("", None, TaxRegime.`uk`, None, None, None, None, None, None),
@@ -373,112 +293,12 @@ trait Def1_CalculationFixture {
     messages = None
   )
 
-  val minimalCalculationCl290EnabledResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadata,
-    inputs = inputs,
-    calculation = Some(calculationWithCl290Enabled),
-    messages = None
-  )
-
-  val minimalCalculationBasicRateDivergenceEnabledResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadataWithBasicRateDivergenceData,
-    inputs = inputs,
-    calculation = Some(calculationWithBasicRateDivergenceEnabled),
-    messages = None
-  )
-
-  // @formatter:off
-  val emptyCalculation: Calculation = Calculation(
-    None, None, None, None, None, None,
-    None, None, None, None, None, None,
-    None, None, None, None, None, None,
-    None, None, None, None, None, None,
-    None, None, None, None, None)
-
-  val calcWithoutEndOfYearEstimate: Calculation = emptyCalculation.copy(reliefs= Some(reliefs),employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
-
-
-  val calcWithoutBasicExtension: Calculation = emptyCalculation.copy(
-    endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome), taxCalculation = Some(taxCalculation))
-
-  val calcWithoutOffPayrollWorker: Calculation = emptyCalculation.copy(
-    reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), taxCalculation = Some(taxCalculation))
-  val calcWithoutUnderLowerProfitThreshold: Calculation = emptyCalculation.copy(
-    taxCalculation=Some(taxCalculationWithoutUnderLowerProfitThreshold),  reliefs= Some(reliefs),endOfYearEstimate =  Some(eoyEstimates), employmentAndPensionsIncome = Some(employmentAndPensionsIncome))
-  // @formatter:on
-
   val minimalCalculationResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,
     calculation = Some(calculationWithR8BData),
     messages = None
   )
-
-  val minimalCalculationResponseWithoutR8BData: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadata,
-    inputs = inputs,
-    calculation = None,
-    messages = None
-  )
-
-  val minimumCalculationResponseMtdJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  },
-        |  "calculation": {
-        |    "taxCalculation": {
-        |      "incomeTax": {
-        |        "totalIncomeReceivedFromAllSources": 50,
-        |        "totalAllowancesAndDeductions": 50,
-        |        "totalTaxableIncome": 50,
-        |        "incomeTaxCharged": 50
-        |      },
-        |      "totalIncomeTaxAndNicsDue": 50,
-        |      "nics": {
-        |        "class2Nics": {
-        |          "underSmallProfitThreshold": true,
-        |          "underLowerProfitThreshold": true
-        |        }
-        |      }
-        |    },
-        |    "employmentAndPensionsIncome": {
-        |      "employmentAndPensionsIncomeDetail": [
-        |        {
-        |          "offPayrollWorker": true
-        |        }
-        |      ]
-        |    },
-        |    "reliefs": {
-        |      "basicRateExtension": {
-        |        "totalBasicRateExtension": 2000
-        |      }
-        |    },
-        |    "endOfYearEstimate": {
-        |      "totalAllowancesAndDeductions": 100
-        |    }
-        |  }
-        |}
-  """.stripMargin
-    )
-    .as[JsObject]
 
   val minimumCalculationResponseR8BEnabledJson: JsObject = Json
     .parse(
@@ -536,269 +356,6 @@ trait Def1_CalculationFixture {
         |  }
         |}
     """.stripMargin
-    )
-    .as[JsObject]
-
-  val minimumResponseCl290EnabledJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |   "metadata":{
-        |      "calculationId":"",
-        |      "taxYear":"2017-18",
-        |      "requestedBy":"",
-        |      "calculationReason":"customer-request",
-        |      "calculationType":"in-year",
-        |      "intentToSubmitFinalDeclaration":false,
-        |      "finalDeclaration":false,
-        |      "periodFrom":"",
-        |      "periodTo":""
-        |   },
-        |   "inputs":{
-        |      "personalInformation":{
-        |         "identifier":"",
-        |         "taxRegime":"uk"
-        |      },
-        |      "incomeSources":{
-        |
-        |      }
-        |   },
-        |   "calculation":{
-        |      "taxDeductedAtSource":{
-        |         "taxTakenOffTradingIncome":2000.00
-        |      }
-        |   }
-        |}
-    """.stripMargin
-    )
-    .as[JsObject]
-
-  val minimumCalculationResponseBasicRateDivergenceEnabledJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2024-25",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  },
-        |  "calculation": {
-        |    "taxCalculation": {
-        |      "incomeTax": {
-        |        "totalIncomeReceivedFromAllSources": 50,
-        |        "totalAllowancesAndDeductions": 50,
-        |        "totalTaxableIncome": 50,
-        |        "incomeTaxCharged": 50,
-        |        "giftAidTaxChargeWhereBasicRateDiffers":2000.25
-        |      },
-        |      "nics": {
-        |        "class2Nics": {
-        |          "underSmallProfitThreshold": true,
-        |          "underLowerProfitThreshold": true
-        |        }
-        |      },
-        |      "totalIncomeTaxAndNicsDue": 50
-        |    },
-        |    "reliefs": {
-        |      "giftAidTaxReductionWhereBasicRateDiffers": {
-        |         "amount": 2000.25
-        |      }
-        |    }
-        |  }
-        |}
-""".stripMargin
-    )
-    .as[JsObject]
-
-  val minimumCalculationResponseWithSwitchesDisabledJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  },
-        |  "calculation": {
-        |  "taxCalculation":{
-        |    "incomeTax":{
-        |       "totalIncomeReceivedFromAllSources":50,
-        |       "totalAllowancesAndDeductions":50,
-        |       "totalTaxableIncome":50,
-        |       "incomeTaxCharged":50
-        |    },
-        |    "nics":{
-        |       "class2Nics":{
-        |          "underSmallProfitThreshold":true,
-        |          "underLowerProfitThreshold":true
-        |          }
-        |        },
-        |    "totalIncomeTaxAndNicsDue":50
-        |   }
-        |  }
-        |}
-    """.stripMargin
-    )
-    .as[JsObject]
-
-  val emptyCalculationResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
-    metadata = metadata,
-    inputs = inputs,
-    calculation = Some(emptyCalculation),
-    messages = None
-  )
-
-  val minimumCalculationResponseJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  }
-        |}
-    """.stripMargin
-    )
-    .as[JsObject]
-
-  val emptyCalculationResponseMtdJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  },
-        |  "calculation" : {
-        |   "endOfYearEstimate": {
-        |   }
-        |  }
-        |}
-   """.stripMargin
-    )
-    .as[JsObject]
-
-  val noEOYCalculationResponseMtdJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  }
-        |}
-   """.stripMargin
-    )
-    .as[JsObject]
-
-  val noUnderLowerProfitThresholdCalculationResponseMtdJson: JsObject = Json
-    .parse(
-      """
-        |{
-        |  "metadata" : {
-        |    "calculationId": "",
-        |    "taxYear": "2017-18",
-        |    "requestedBy": "",
-        |    "calculationReason": "customer-request",
-        |    "calculationType": "in-year",
-        |    "intentToSubmitFinalDeclaration": false,
-        |    "finalDeclaration": false,
-        |    "periodFrom": "",
-        |    "periodTo": ""
-        |  },
-        |  "inputs" : {
-        |    "personalInformation": {
-        |       "identifier": "",
-        |       "taxRegime": "uk"
-        |    },
-        |    "incomeSources": {}
-        |  },
-        |  "calculation": {
-        |    "taxCalculation":{
-        |      "incomeTax":{
-        |       "totalIncomeReceivedFromAllSources":50,
-        |       "totalAllowancesAndDeductions":50,
-        |       "totalTaxableIncome":50,
-        |       "incomeTaxCharged":50
-        |    },
-        |    "nics":{
-        |       "class2Nics":{
-        |          "underSmallProfitThreshold":true
-        |          }
-        |    },
-        |    "totalIncomeTaxAndNicsDue":50
-        |    }
-        |   }
-        |}
-   """.stripMargin
     )
     .as[JsObject]
 
