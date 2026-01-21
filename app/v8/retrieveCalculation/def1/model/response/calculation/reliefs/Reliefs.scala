@@ -27,8 +27,6 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
   val isDefined: Boolean =
     !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty)
 
-  def withoutBasicExtension: Reliefs = copy(basicRateExtension = None)
-
 }
 
 object Reliefs {

@@ -78,18 +78,7 @@ case class Calculation(
     endOfYearEstimate: Option[EndOfYearEstimate],
     lossesAndClaims: Option[LossesAndClaims]
 ) {
-
-  def withoutBasicExtension: Calculation = copy(reliefs = reliefs.map(_.withoutBasicExtension).filter(_.isDefined))
-
-  def withoutOffPayrollWorker: Calculation =
-    copy(employmentAndPensionsIncome = employmentAndPensionsIncome.map(_.withoutOffPayrollWorker).filter(_.isDefined))
-
-  def withoutTotalAllowanceAndDeductions: Calculation =
-    copy(endOfYearEstimate = endOfYearEstimate.map(_.withoutTotalAllowanceAndDeductions).filter(_.isDefined))
-
-  def withoutTaxTakenOffTradingIncome: Calculation =
-    copy(taxDeductedAtSource = taxDeductedAtSource.map(_.withoutTaxTakenOffTradingIncome))
-
+  
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&
       reliefs.isEmpty && taxDeductedAtSource.isEmpty &&
