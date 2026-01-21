@@ -78,7 +78,7 @@ case class Calculation(
     endOfYearEstimate: Option[EndOfYearEstimate],
     lossesAndClaims: Option[LossesAndClaims]
 ) {
-  
+
   val isDefined: Boolean =
     !(allowancesAndDeductions.isEmpty &&
       reliefs.isEmpty && taxDeductedAtSource.isEmpty &&

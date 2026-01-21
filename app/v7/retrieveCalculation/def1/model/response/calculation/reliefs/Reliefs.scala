@@ -26,7 +26,7 @@ case class Reliefs(residentialFinanceCosts: Option[ResidentialFinanceCosts],
 
   val isDefined: Boolean =
     !(residentialFinanceCosts.isEmpty && reliefsClaimed.isEmpty && foreignTaxCreditRelief.isEmpty && topSlicingRelief.isEmpty && basicRateExtension.isEmpty)
-  
+
 }
 
 object Reliefs {
