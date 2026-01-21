@@ -28,12 +28,7 @@ case class TaxDeductedAtSource(bbsi: Option[BigDecimal],
                                stateBenefits: Option[BigDecimal],
                                specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal],
                                inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal],
-                               taxTakenOffTradingIncome: Option[BigDecimal]) {
-
-  def withoutTaxTakenOffTradingIncome: TaxDeductedAtSource =
-    copy(taxTakenOffTradingIncome = None)
-
-}
+                               taxTakenOffTradingIncome: Option[BigDecimal])
 
 object TaxDeductedAtSource {
   implicit val format: OFormat[TaxDeductedAtSource] = Json.format[TaxDeductedAtSource]

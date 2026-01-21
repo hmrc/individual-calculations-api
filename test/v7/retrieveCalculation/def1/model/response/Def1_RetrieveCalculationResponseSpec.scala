@@ -36,10 +36,6 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
       testAllOptionalJsonFieldsExcept[Def1_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
-    "return the correct TaxDeductedAtSource" in {
-      taxDeductedAtSource.withoutTaxTakenOffTradingIncome shouldBe taxDeductedAtSource.copy(taxTakenOffTradingIncome = None)
-    }
-
     "return hasErrors is false when messages.errors is empty" in {
       val model = calculationDownstreamJson
         .deepMerge(
