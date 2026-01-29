@@ -27,6 +27,7 @@ object StudentLoanPlanType {
   case object `plan2`        extends StudentLoanPlanType
   case object `postgraduate` extends StudentLoanPlanType
   case object `plan4`        extends StudentLoanPlanType
+  case object `plan5`        extends StudentLoanPlanType
 
   implicit val writes: Writes[StudentLoanPlanType] = Enums.writes[StudentLoanPlanType]
 
@@ -35,6 +36,7 @@ object StudentLoanPlanType {
     case "02" => `plan2`
     case "03" => `postgraduate`
     case "04" => `plan4`
+    case "05" => `plan5`
   }
 
 }
