@@ -284,7 +284,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         .anyNumberOfTimes()
         .returns(
           ConfidenceLevelConfig(
-            confidenceLevel = ConfidenceLevel.L200,
+            confidenceLevel = ConfidenceLevel.L250,
             definitionEnabled = true,
             authValidationEnabled = authValidationEnabled
           )
