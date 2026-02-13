@@ -99,8 +99,8 @@ class EnrolmentsAuthService @Inject() (val connector: AuthConnector, val appConf
 object EnrolmentsAuthService {
 
   private[services] def authorisationEnabledPredicate(mtdId: String): Predicate =
-    (Individual and ConfidenceLevel.L200 and mtdEnrolmentPredicate(mtdId)) or
-      (Organisation and mtdEnrolmentPredicate(mtdId)) or
+    (Individual and ConfidenceLevel.L250 and mtdEnrolmentPredicate(mtdId)) or
+      (Organisation and ConfidenceLevel.L250 and mtdEnrolmentPredicate(mtdId)) or
       (Agent and Enrolment("HMRC-AS-AGENT"))
 
   private[services] def authorisationDisabledPredicate(mtdId: String): Predicate =

@@ -119,7 +119,7 @@ object AuthStub extends WireMockMethods {
       |		                "affinityGroup": "Individual"
       |		            },
       |		            {
-      |		                "confidenceLevel": 200
+      |		                "confidenceLevel": 250
       |		            },
       |		            {
       |		                "identifiers":
@@ -137,6 +137,9 @@ object AuthStub extends WireMockMethods {
       |		        [
       |		            {
       |		                "affinityGroup": "Organisation"
+      |		            },
+      |		            {
+      |		                "confidenceLevel": 250
       |		            },
       |		            {
       |		                "identifiers":
