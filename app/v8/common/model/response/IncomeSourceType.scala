@@ -37,6 +37,7 @@ object IncomeSourceType {
   case object `state-benefits`            extends IncomeSourceType
   case object `gains-on-life-policies`    extends IncomeSourceType
   case object `share-schemes`             extends IncomeSourceType
+  case object `partner-income`            extends IncomeSourceType
   case object `foreign-property`          extends IncomeSourceType
   case object `foreign-savings-and-gains` extends IncomeSourceType
   case object `other-dividends`           extends IncomeSourceType
@@ -62,6 +63,7 @@ object IncomeSourceType {
     case "11" => `state-benefits`
     case "12" => `gains-on-life-policies`
     case "13" => `share-schemes`
+    case "14" => `partner-income`
     case "15" => `foreign-property`
     case "16" => `foreign-savings-and-gains`
     case "17" => `other-dividends`

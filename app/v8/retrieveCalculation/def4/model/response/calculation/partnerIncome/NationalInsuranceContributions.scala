@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def4.model.response.calculation.taxCalculation
+package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Json, OFormat}
 
-case class Class4Nics(
-    totalIncomeLiableToClass4Charge: Option[BigInt],
-    totalIncomeChargeableToClass4: Option[BigInt],
-    totalAmount: BigDecimal,
-    nic4Bands: Seq[Nic4Band],
-    adjustmentToProfitsForClass4: Option[BigInt]
+case class NationalInsuranceContributions(
+    voluntaryClass2Nics: Option[Boolean],
+    class4Exemption: Option[Boolean],
+    adjustmentToProfitsForClass4: Option[BigDecimal]
 )
 
-object Class4Nics {
-  implicit val format: Format[Class4Nics] = Json.format
+object NationalInsuranceContributions {
+
+  implicit val format: OFormat[NationalInsuranceContributions] =
+    Json.format[NationalInsuranceContributions]
+
 }

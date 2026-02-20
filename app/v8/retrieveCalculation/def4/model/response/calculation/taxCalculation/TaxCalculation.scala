@@ -30,7 +30,9 @@ case class TaxCalculation(
     totalTaxDeducted: Option[BigDecimal],
     totalIncomeTaxAndNicsDue: Option[BigDecimal],
     capitalGainsTax: Option[CapitalGainsTax],
-    totalIncomeTaxAndNicsAndCgt: Option[BigDecimal]
+    totalIncomeTaxAndNicsAndCgt: Option[BigDecimal],
+    nic2Amount: Option[BigDecimal],
+    nic4Amount: Option[BigDecimal]
 )
 
 object TaxCalculation {

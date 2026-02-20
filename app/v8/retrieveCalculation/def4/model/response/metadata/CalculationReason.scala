@@ -24,10 +24,6 @@ sealed trait CalculationReason
 object CalculationReason {
   case object `customer-request`                extends CalculationReason
   case object `class2-nic-event`                extends CalculationReason
-  case object `new-loss-event`                  extends CalculationReason
-  case object `updated-loss-event`              extends CalculationReason
-  case object `new-claim-event`                 extends CalculationReason
-  case object `updated-claim-event`             extends CalculationReason
   case object `new-annual-adjustment-event`     extends CalculationReason
   case object `updated-annual-adjustment-event` extends CalculationReason
   case object `unattended-calculation`          extends CalculationReason
@@ -37,10 +33,6 @@ object CalculationReason {
   implicit val reads: Reads[CalculationReason] = Enums.readsUsing {
     case "customerRequest"              => `customer-request`
     case "class2NICEvent"               => `class2-nic-event`
-    case "newLossEvent"                 => `new-loss-event`
-    case "updatedLossEvent"             => `updated-loss-event`
-    case "newClaimEvent"                => `new-claim-event`
-    case "updatedClaimEvent"            => `updated-claim-event`
     case "newAnnualAdjustmentEvent"     => `new-annual-adjustment-event`
     case "updatedAnnualAdjustmentEvent" => `updated-annual-adjustment-event`
     case "unattendedCalculation"        => `unattended-calculation`

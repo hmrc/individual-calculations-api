@@ -31,7 +31,6 @@ import v8.retrieveCalculation.def4.model.response.calculation.foreignTaxForFtcrN
 import v8.retrieveCalculation.def4.model.response.calculation.giftAid.GiftAid
 import v8.retrieveCalculation.def4.model.response.calculation.highIncomeChildBenefitCharge.HighIncomeChildBenefitCharge
 import v8.retrieveCalculation.def4.model.response.calculation.incomeSummaryTotals.IncomeSummaryTotals
-import v8.retrieveCalculation.def4.model.response.calculation.lossesAndClaims.LossesAndClaims
 import v8.retrieveCalculation.def4.model.response.calculation.marriageAllowanceTransferredIn.MarriageAllowanceTransferredIn
 import v8.retrieveCalculation.def4.model.response.calculation.notionalTax.NotionalTax
 import v8.retrieveCalculation.def4.model.response.calculation.otherIncome.OtherIncome
@@ -48,6 +47,7 @@ import v8.retrieveCalculation.def4.model.response.calculation.studentLoans.Stude
 import v8.retrieveCalculation.def4.model.response.calculation.taxCalculation.TaxCalculation
 import v8.retrieveCalculation.def4.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
 import v8.retrieveCalculation.def4.model.response.calculation.transitionProfit.TransitionProfit
+import v8.retrieveCalculation.def4.model.response.calculation.partnerIncome.PartnerIncome
 
 case class Calculation(
     allowancesAndDeductions: Option[AllowancesAndDeductions],
@@ -73,12 +73,12 @@ case class Calculation(
     chargeableEventGainsIncome: Option[ChargeableEventGainsIncome],
     savingsAndGainsIncome: Option[SavingsAndGainsIncome],
     otherIncome: Option[OtherIncome],
+    partnerIncome: Option[PartnerIncome],
     dividendsIncome: Option[DividendsIncome],
     incomeSummaryTotals: Option[IncomeSummaryTotals],
     taxCalculation: Option[TaxCalculation],
     previousCalculation: Option[PreviousCalculation],
     endOfYearEstimate: Option[EndOfYearEstimate],
-    lossesAndClaims: Option[LossesAndClaims],
     transitionProfit: Option[TransitionProfit],
     highIncomeChildBenefitCharge: Option[HighIncomeChildBenefitCharge]
 )
@@ -109,12 +109,11 @@ object Calculation {
     chargeableEventGainsIncome     <- (JsPath \ "chargeableEventGainsIncome").readNullable[ChargeableEventGainsIncome]
     savingsAndGainsIncome          <- (JsPath \ "savingsAndGainsIncome").readNullable[SavingsAndGainsIncome]
     otherIncome                    <- (JsPath \ "otherIncome").readNullable[OtherIncome]
+    partnerIncome                  <- (JsPath \ "otherIncome").readNullable[PartnerIncome]
     dividendsIncome                <- (JsPath \ "dividendsIncome").readNullable[DividendsIncome]
     incomeSummaryTotals            <- (JsPath \ "incomeSummaryTotals").readNullable[IncomeSummaryTotals]
     taxCalculation                 <- (JsPath \ "taxCalculation").readNullable[TaxCalculation]
     previousCalculation            <- (JsPath \ "previousCalculation").readNullable[PreviousCalculation]
-    endOfYearEstimate              <- (JsPath \ "endOfYearEstimate").readNullable[EndOfYearEstimate]
-    lossesAndClaims                <- (JsPath \ "lossesAndClaims").readNullable[LossesAndClaims]
     transitionProfit               <- (JsPath \ "transitionProfit").readNullable[TransitionProfit]
     highIncomeChildBenefitCharge   <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[HighIncomeChildBenefitCharge]
   } yield {
@@ -142,12 +141,12 @@ object Calculation {
       chargeableEventGainsIncome = chargeableEventGainsIncome,
       savingsAndGainsIncome = savingsAndGainsIncome,
       otherIncome = otherIncome,
+      partnerIncome = partnerIncome,
       dividendsIncome = dividendsIncome,
       incomeSummaryTotals = incomeSummaryTotals,
       taxCalculation = taxCalculation,
       previousCalculation = previousCalculation,
       endOfYearEstimate = endOfYearEstimate,
-      lossesAndClaims = lossesAndClaims,
       transitionProfit = transitionProfit,
       highIncomeChildBenefitCharge = highIncomeChildBenefitCharge
     )
@@ -179,12 +178,12 @@ object Calculation {
         "chargeableEventGainsIncome"     -> Json.toJson(o.chargeableEventGainsIncome),
         "savingsAndGainsIncome"          -> Json.toJson(o.savingsAndGainsIncome),
         "otherIncome"                    -> Json.toJson(o.otherIncome),
+        "partnerIncome"                  -> Json.toJson(o.partnerIncome),
         "dividendsIncome"                -> Json.toJson(o.dividendsIncome),
         "incomeSummaryTotals"            -> Json.toJson(o.incomeSummaryTotals),
         "taxCalculation"                 -> Json.toJson(o.taxCalculation),
         "previousCalculation"            -> Json.toJson(o.previousCalculation),
         "endOfYearEstimate"              -> Json.toJson(o.endOfYearEstimate),
-        "lossesAndClaims"                -> Json.toJson(o.lossesAndClaims),
         "transitionProfit"               -> Json.toJson(o.transitionProfit),
         "highIncomeChildBenefitCharge"   -> Json.toJson(o.highIncomeChildBenefitCharge)
       ).filterNot { case (_, value) =>
