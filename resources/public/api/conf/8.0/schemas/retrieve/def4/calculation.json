@@ -87,9 +87,14 @@
     "endOfYearEstimate": {
       "$ref": "calculation/endOfYearEstimate.json"
     },
-    "lossesAndClaims": {
-      "$ref": "calculation/lossesAndClaims.json"
+    "partnerIncome": {
+      "$ref": "calculation/partnerIncome.json"
     },
+    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "lossesAndClaims": {
+        "$ref": "calculation/lossesAndClaims.json"
+      },
+    {{/unless}}
     "transitionProfit": {
       "$ref": "calculation/transitionProfit.json"
     },

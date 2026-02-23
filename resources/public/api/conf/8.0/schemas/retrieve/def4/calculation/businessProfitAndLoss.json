@@ -129,60 +129,72 @@
         "maximum": 99999999999,
         "example": "160"
       },
-      "carrySidewaysIncomeTaxLossesUsed": {
-        "title": "carrySidewaysIncomeTaxLossesUsed",
-        "description": "The Income Tax losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
-        "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
-        "description": "The total sum of the carry sideways losses for the business brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "totalIncomeTaxLossesCarriedForward": {
-        "title": "totalIncomeTaxLossesCarriedForward",
-        "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "class4Loss": {
-        "title": "class4Loss",
-        "description": "The Class 4 National Insurance Contributions loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "totalBroughtForwardClass4Losses": {
-        "title": "totalBroughtForwardClass4Losses",
-        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "broughtForwardClass4LossesUsed": {
-        "title": "broughtForwardClass4LossesUsed",
-        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "carrySidewaysIncomeTaxLossesUsed": {
+          "title": "carrySidewaysIncomeTaxLossesUsed",
+          "description": "The Income Tax losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
+          "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
+          "description": "The total sum of the carry sideways losses for the business brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "totalIncomeTaxLossesCarriedForward": {
+          "title": "totalIncomeTaxLossesCarriedForward",
+          "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "class4Loss": {
+          "title": "class4Loss",
+          "description": "The Class 4 National Insurance Contributions loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "totalBroughtForwardClass4Losses": {
+          "title": "totalBroughtForwardClass4Losses",
+          "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "broughtForwardClass4LossesUsed": {
+          "title": "broughtForwardClass4LossesUsed",
+          "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
       "carrySidewaysClass4LossesUsed": {
         "title": "carrySidewaysClass4LossesUsed",
         "description": "The Class 4 National Insurance Contributions losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
@@ -192,15 +204,17 @@
         "maximum": 99999999999,
         "example": "160"
       },
-      "totalClass4LossesCarriedForward": {
-        "title": "totalClass4LossesCarriedForward",
-        "description": "The total sum of Class 4 National Insurance Contributions losses to be carried forward that have not been used against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "totalClass4LossesCarriedForward": {
+          "title": "totalClass4LossesCarriedForward",
+          "description": "The total sum of Class 4 National Insurance Contributions losses to be carried forward that have not been used against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": "160"
+        },
+      {{/unless}}
       "adjustedProfit": {
         "title": "adjustedProfit",
         "description": "Profit including disallowable expenses and deducting non‑taxable income, before claiming capital allowances or making any further tax adjustments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",

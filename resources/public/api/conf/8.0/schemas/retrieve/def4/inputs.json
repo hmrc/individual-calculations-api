@@ -17,12 +17,16 @@
     "annualAdjustments": {
       "$ref": "#/definitions/annualAdjustments"
     },
-    "lossesBroughtForward": {
-      "$ref": "#/definitions/lossesBroughtForward"
-    },
-    "claims": {
-      "$ref": "#/definitions/claims"
-    },
+    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "lossesBroughtForward": {
+        "$ref": "#/definitions/lossesBroughtForward"
+      },
+    {{/unless}}
+    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "claims": {
+        "$ref": "#/definitions/claims"
+      },
+    {{/unless}}
     "constructionIndustryScheme": {
       "$ref": "#/definitions/constructionIndustryScheme"
     },
@@ -802,7 +806,8 @@
         "foreign-pension",
         "non-paye-income",
         "capital-gains-tax",
-        "charitable-giving"
+        "charitable-giving",
+        "partner-income"
       ]
     },
     "lossId": {
