@@ -50,7 +50,8 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
           Some(1001.99),
           Some(1001.99),
           Some(1001.99)
-        ))
+        )),
+      Some(1001.99)
     )
 
   val mtdJson: JsValue = Json.parse("""
@@ -78,7 +79,8 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |        "retirementAnnuityPayments": 1001.99,
       |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
       |        "overseasPensionSchemeContributions": 1001.99
-      |      }
+      |      },
+      |     "totalPartnershipLossesBroughtForward": 1001.99
       |}
       |""".stripMargin)
 
@@ -107,7 +109,8 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |        "retirementAnnuityPayments": 1001.99,
       |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
       |        "overseasPensionSchemeContributions": 1001.99
-      |      }
+      |      },
+      |      "totalPartnershipLossesBroughtForward": 1001.99
       |}
       |""".stripMargin)
 

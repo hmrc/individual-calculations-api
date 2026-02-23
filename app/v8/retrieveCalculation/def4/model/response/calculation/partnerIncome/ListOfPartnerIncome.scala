@@ -17,11 +17,11 @@
 package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OFormat, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class ListOfPartnerIncome(
     partnershipUtr: String,
-    partnershipTrades: Option[Seq[PartnershipTrade]],
+    partnershipTrades: Option[Seq[PartnershipTrades]],
     nationalInsuranceContributions: Option[NationalInsuranceContributions],
     untaxedSavings: Option[BigDecimal],
     taxedSavings: Option[BigDecimal],
@@ -34,7 +34,7 @@ object ListOfPartnerIncome {
 
   implicit val reads: Reads[ListOfPartnerIncome] = (
     (JsPath \ "partnershipUTR").read[String] and
-      (JsPath \ "partnershipTrades").readNullable[Seq[PartnershipTrade]] and
+      (JsPath \ "partnershipTrades").readNullable[Seq[PartnershipTrades]] and
       (JsPath \ "nationalInsuranceContributions").readNullable[NationalInsuranceContributions] and
       (JsPath \ "untaxedSavings").readNullable[BigDecimal] and
       (JsPath \ "taxedSavings").readNullable[BigDecimal] and

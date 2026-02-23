@@ -109,11 +109,12 @@ object Calculation {
     chargeableEventGainsIncome     <- (JsPath \ "chargeableEventGainsIncome").readNullable[ChargeableEventGainsIncome]
     savingsAndGainsIncome          <- (JsPath \ "savingsAndGainsIncome").readNullable[SavingsAndGainsIncome]
     otherIncome                    <- (JsPath \ "otherIncome").readNullable[OtherIncome]
-    partnerIncome                  <- (JsPath \ "otherIncome").readNullable[PartnerIncome]
+    partnerIncome                  <- (JsPath \ "partnerIncome").readNullable[PartnerIncome]
     dividendsIncome                <- (JsPath \ "dividendsIncome").readNullable[DividendsIncome]
     incomeSummaryTotals            <- (JsPath \ "incomeSummaryTotals").readNullable[IncomeSummaryTotals]
     taxCalculation                 <- (JsPath \ "taxCalculation").readNullable[TaxCalculation]
     previousCalculation            <- (JsPath \ "previousCalculation").readNullable[PreviousCalculation]
+    endOfYearEstimate              <- (JsPath \ "endOfYearEstimate").readNullable[EndOfYearEstimate]
     transitionProfit               <- (JsPath \ "transitionProfit").readNullable[TransitionProfit]
     highIncomeChildBenefitCharge   <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[HighIncomeChildBenefitCharge]
   } yield {

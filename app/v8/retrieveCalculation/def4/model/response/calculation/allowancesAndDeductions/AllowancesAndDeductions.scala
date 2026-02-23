@@ -33,7 +33,7 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    annuityPayments: Option[AnnuityPayments],
                                    pensionContributions: Option[BigDecimal],
                                    pensionContributionsDetail: Option[PensionContributionsDetail],
-                                   totalPartnershipLossesBroughtForward: Option[BigInt])
+                                   totalPartnershipLossesBroughtForward: Option[BigDecimal])
 
 object AllowancesAndDeductions {
 
@@ -52,7 +52,7 @@ object AllowancesAndDeductions {
       (JsPath \ "annuityPayments").readNullable[AnnuityPayments] and
       (JsPath \ "pensionContributions").readNullable[BigDecimal] and
       (JsPath \ "pensionContributionsDetail").readNullable[PensionContributionsDetail] and
-      (JsPath \ "totalPartnershipLossesBroughtForward").readNullable[BigInt]
+      (JsPath \ "totalPartnershipLossesBroughtForward").readNullable[BigDecimal]
   )(AllowancesAndDeductions.apply)
 
   implicit val writes: Writes[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]

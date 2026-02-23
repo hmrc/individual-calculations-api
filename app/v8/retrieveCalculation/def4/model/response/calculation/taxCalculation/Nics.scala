@@ -21,6 +21,8 @@ import play.api.libs.json.{Format, Json}
 case class Nics(
     class2Nics: Option[Class2Nics],
     class4Nics: Option[Class4Nics],
+    nic2Amount: Option[BigDecimal],
+    nic4Amount: Option[BigDecimal],
     totalNic: Option[BigDecimal]
 )
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
+package v8.retrieveCalculation.def4.model.response.calculation.reliefs.partnerIncome
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PartnershipTrade(
-    lossesBroughtForwardAdjustedProfit: Option[BigDecimal],
-    shareOfTaxableProfit: BigDecimal,
-    adjustedLoss: Option[BigDecimal],
-    currentYearLossAppliedToGeneralIncome: Option[BigDecimal],
-    transitionProfitArisingThisYear: Option[BigDecimal],
-    lossesBroughtForwardTransitionProfit: Option[BigDecimal]
-)
+case class UkProperty(amountClaimed: BigDecimal, allowableAmount: BigDecimal, carryForwardAmount: Option[BigDecimal])
 
-object PartnershipTrade {
-  implicit val format: OFormat[PartnershipTrade] = Json.format[PartnershipTrade]
+object UkProperty {
+  implicit val format: OFormat[UkProperty] = Json.format[UkProperty]
 }
