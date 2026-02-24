@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "description": "An object containing details of the individual's share of income from partnerships in the retrieved tax calculation.",
   "type": "object",
+  "required": ["totalPartnerIncome"],
   "properties": {
     "totalPartnerIncome": {
       "description": "The individual’s total income from partnership. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
