@@ -122,8 +122,8 @@
         }
       ]
     },
-    "nic2Amount": -99999999999.99,
-    "nic4Amount": -99999999999.99,
+    "nic2Amount": 5000.99,
+    "nic4Amount": 5000.99,
     "totalNic": -99999999999.99
   },
   "totalTaxDeductedBeforeCodingOut": 5000.99,

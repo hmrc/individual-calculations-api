@@ -84,7 +84,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |}
       |""".stripMargin)
 
-  val ifsJson: JsValue = Json.parse("""
+  val downstreamJson: JsValue = Json.parse("""
       |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
@@ -117,7 +117,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe ifsJson.as[AllowancesAndDeductions]
+        model shouldBe downstreamJson.as[AllowancesAndDeductions]
       }
     }
   }

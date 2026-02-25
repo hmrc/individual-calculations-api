@@ -42,6 +42,7 @@ case object NonBusinessIncomeSource {
     `other-dividends`,
     `uk-securities`,
     `other-income`,
+    `partner-income`,
     `foreign-pension`,
     `non-paye-income`,
     `capital-gains-tax`,

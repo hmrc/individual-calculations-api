@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, Reads, OWrites}
 
 case class ListOfPartnerIncome(
     partnershipUtr: String,
@@ -43,6 +43,6 @@ object ListOfPartnerIncome {
       (JsPath \ "taxedAndUntaxedIncome").readNullable[BigDecimal]
   )(ListOfPartnerIncome.apply)
 
-  implicit val writes: Writes[ListOfPartnerIncome] = Json.writes[ListOfPartnerIncome]
+  implicit val writes: OWrites[ListOfPartnerIncome] = Json.writes[ListOfPartnerIncome]
 
 }

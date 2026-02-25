@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def4.model.response.calculation.reliefs.partnerIncome
 
 import play.api.libs.functional.syntax.*
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, Reads, OWrites}
 
 case class PartnerIncomeRfcDetail(partnershipUtr: String,
                                   totalAllowableAmount: BigDecimal,
@@ -33,6 +33,6 @@ object PartnerIncomeRfcDetail {
       (JsPath \ "untaxedForeignIncome").readNullable[UntaxedForeignIncome]
   )(PartnerIncomeRfcDetail.apply)
 
-  implicit val writes: Writes[PartnerIncomeRfcDetail] = Json.writes[PartnerIncomeRfcDetail]
+  implicit val writes: OWrites[PartnerIncomeRfcDetail] = Json.writes[PartnerIncomeRfcDetail]
 
 }
