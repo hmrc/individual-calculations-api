@@ -12,115 +12,125 @@
     "listOfPartnerIncome": {
       "description": "An array containing details of the individual's share of income from each partnership.",
       "type": "array",
-      "properties": {
-        "partnershipUtr": {
-          "description": "A Unique Taxpayer Reference (UTR) for the partnership.\n\nMust conform to the regular expression ^[0-9]{10}$",
-          "type": "string",
-          "example": "4564564564"
-        }
-      }
-    },
-    "partnershipTrades": {
-      "description": "An array containing details of the partnership's trades.",
-      "type": "array",
-      "properties": {
-        "lossesBroughtForwardAdjustedProfit": {
-          "description": "The amount of losses brought forward from earlier years set off against the tax year's adjusted profit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "shareOfTaxableProfit": {
-          "description": "The individual's share of total taxable profit from the partnership's business for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "adjustedLoss": {
-          "description": "The individual's share of the partnership's loss of the year, after all statutory adjustments (basis, accounting, averaging and foreign tax) have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "currentYearLossAppliedToGeneralIncome": {
-          "description": "The amount of the current tax year's loss set off against the individual's other income for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "transitionProfitArisingThisYear": {
-          "description": "The amount of transition profit treated as arising in the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "lossesBroughtForwardTransitionProfit": {
-          "description": "The amount of losses brought forward from earlier years set off against the tax year's amount of transition profit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
+      "items": {
+        "type": "object",
+        "required": ["partnershipUtr"],
+        "properties": {
+          "partnershipUtr": {
+            "description": "A Unique Taxpayer Reference (UTR) for the partnership.\n\nMust conform to the regular expression ^[0-9]{10}$",
+            "type": "string",
+            "example": "4564564564"
+          },
+          "partnershipTrades": {
+            "description": "An array containing details of the partnership's trades.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lossesBroughtForwardAdjustedProfit": {
+                  "description": "The amount of losses brought forward from earlier years set off against the tax year's adjusted profit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+                "shareOfTaxableProfit": {
+                  "description": "The individual's share of total taxable profit from the partnership's business for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+                "adjustedLoss": {
+                  "description": "The individual's share of the partnership's loss of the year, after all statutory adjustments (basis, accounting, averaging and foreign tax) have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+                "currentYearLossAppliedToGeneralIncome": {
+                  "description": "The amount of the current tax year's loss set off against the individual's other income for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+                "transitionProfitArisingThisYear": {
+                  "description": "The amount of transition profit treated as arising in the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+                "lossesBroughtForwardTransitionProfit": {
+                  "description": "The amount of losses brought forward from earlier years set off against the tax year's amount of transition profit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "5000.99"
+                },
+              },
+              "required": [
+                "shareOfTaxableProfit"
+              ]
+            },
+            "additionalProperties": false
+          },
+          "nationalInsuranceContributions": {
+            "description": "Object containing details of Class 2 and Class 4 National Insurance contributions (NICs).",
+            "type": "object",
+            "properties": {
+              "voluntaryClass2Nics": {
+                "description": "Indicate whether the individual wants to pay Class 2 NICs voluntarily to protect entitlement to certain benefits if profits are below the Small Profits Threshold.",
+                "type": "boolean",
+                "example": "true"
+              },
+              "class4Exemption": {
+                "description": "Indicate whether the individual is exempt from paying Class 4 NICs.",
+                "type": "boolen",
+                "example": "true"
+              },
+              "adjustmentToProfitsForClass4": {
+                "description": "The adjustment to the individual's profits specifically used to calculate Class 4 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5000.99"
+              }
+            },
+            "additionalProperties": false
+          },
+          "untaxedSavings": {
+            "description": "The total amount of untaxed savings income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "taxedSavings": {
+            "description": "The total amount of taxed savings income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "dividendIncome": {
+            "description": "The total amount of dividend income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          },
+          "ukPropertyIncome": {
+            "description": "Object containing details of the individual's share of the partnership's UK property income and related adjustments.",
+            "type": "object",
+            "properties": {
+              "shareOfProfitOrLoss": {
+                "description": "The individual's share of the partnership's UK property profit or loss. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5000.99"
+              },
+              "profitOrLossAdjustment": {
+                "description": "The adjustment to UK property profit or loss, including any adjustment for the tax year. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+                "type": "number"
+              },
+              "currentYearLossAppliedToGeneralIncome": {
+                "description": "The amount of the current tax year's UK property loss set off against the individual's other income for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "5000.99"
+              }
+            },
+            "additionalProperties": false
+          },
+          "taxedAndUntaxedIncome": {
+            "description": "The total amount of taxed and untaxed income from the partnership. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "5000.99"
+          }
         }
       },
       "additionalProperties": false
-    },
-    "nationalInsuranceContributions": {
-      "description": "Object containing details of Class 2 and Class 4 National Insurance contributions (NICs).",
-      "type": "object",
-      "properties": {
-        "voluntaryClass2Nics": {
-          "description": "Indicate whether the individual wants to pay Class 2 NICs voluntarily to protect entitlement to certain benefits if profits are below the Small Profits Threshold.",
-          "type": "boolean",
-          "example": "true"
-        },
-        "class4Exemption": {
-          "description": "Indicate whether the individual is exempt from paying Class 4 NICs.",
-          "type": "boolen",
-          "example": "true"
-        },
-        "adjustmentToProfitsForClass4": {
-          "description": "The adjustment to the individual's profits specifically used to calculate Class 4 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        }
-      },
-      "additionalProperties": false
-    },
-    "untaxedSavings": {
-      "description": "The total amount of untaxed savings income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-      "type": "number",
-      "example": "5000.99"
-    },
-    "taxedSavings": {
-      "description": "The total amount of taxed savings income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-      "type": "number",
-      "example": "5000.99"
-    },
-    "dividendIncome": {
-      "description": "The total amount of dividend income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-      "type": "number",
-      "example": "5000.99"
-    },
-    "ukPropertyIncome": {
-      "description": "Object containing details of the individual's share of the partnership's UK property income and related adjustments.",
-      "type": "object",
-      "properties": {
-        "shareOfProfitOrLoss": {
-          "description": "The individual's share of the partnership's UK property profit or loss. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        },
-        "profitOrLossAdjustment": {
-          "description": "The adjustment to UK property profit or loss, including any adjustment for the tax year. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
-          "type": "number"
-        },
-        "currentYearLossAppliedToGeneralIncome": {
-          "description": "The amount of the current tax year's UK property loss set off against the individual's other income for the tax year. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "type": "number",
-          "example": "5000.99"
-        }
-      },
-      "additionalProperties": false
-    },
-    "taxedAndUntaxedIncome": {
-      "description": "The total amount of taxed and untaxed income from the partnership. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-      "type": "number",
-      "example": "5000.99"
     }
-
   },
   "additionalProperties": false
 }
