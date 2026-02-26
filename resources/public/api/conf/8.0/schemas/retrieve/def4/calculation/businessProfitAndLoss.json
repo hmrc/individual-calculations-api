@@ -28,7 +28,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "totalExpenses": {
         "title": "totalExpenses",
@@ -37,7 +37,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "netProfit": {
         "title": "netProfit",
@@ -46,7 +46,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "netLoss": {
         "title": "netLoss",
@@ -55,7 +55,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "totalAdditions": {
         "title": "totalAdditions",
@@ -64,7 +64,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "totalDeductions": {
         "title": "totalDeductions",
@@ -73,7 +73,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "accountingAdjustments": {
         "title": "accountingAdjustments",
@@ -82,7 +82,7 @@
         "multipleOf": 0.01,
         "minimum": -99999999999.99,
         "maximum": 99999999999.99,
-        "example": "5000.99"
+        "example": 5000.99
       },
       "taxableProfit": {
         "title": "taxableProfit",
@@ -91,7 +91,7 @@
         "multipleOf": 1,
         "minimum": 0,
         "maximum": 99999999999,
-        "example": "160"
+        "example": 160
       },
       "adjustedIncomeTaxLoss": {
         "title": "adjustedIncomeTaxLoss",
@@ -100,7 +100,7 @@
         "multipleOf": 1,
         "minimum": 0,
         "maximum": 99999999999,
-        "example": "160"
+        "example": 160
       },
       "totalBroughtForwardIncomeTaxLosses": {
         "title": "totalBroughtForwardIncomeTaxLosses",
@@ -109,7 +109,7 @@
         "multipleOf": 1,
         "minimum": 0,
         "maximum": 99999999999,
-        "example": "160"
+        "example": 160
       },
       "broughtForwardIncomeTaxLossesUsed": {
         "title": "broughtForwardIncomeTaxLossesUsed",
@@ -118,7 +118,7 @@
         "multipleOf": 1,
         "minimum": 0,
         "maximum": 99999999999,
-        "example": "160"
+        "example": 160
       },
       "taxableProfitAfterIncomeTaxLossesDeduction": {
         "title": "taxableProfitAfterIncomeTaxLossesDeduction",
@@ -127,80 +127,82 @@
         "multipleOf": 1,
         "minimum": 0,
         "maximum": 99999999999,
-        "example": "160"
+        "example": 160
       },
-      "carrySidewaysIncomeTaxLossesUsed": {
-        "title": "carrySidewaysIncomeTaxLossesUsed",
-        "description": "The Income Tax losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
-        "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
-        "description": "The total sum of the carry sideways losses for the business brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "totalIncomeTaxLossesCarriedForward": {
-        "title": "totalIncomeTaxLossesCarriedForward",
-        "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "class4Loss": {
-        "title": "class4Loss",
-        "description": "The Class 4 National Insurance Contributions loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "totalBroughtForwardClass4Losses": {
-        "title": "totalBroughtForwardClass4Losses",
-        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "broughtForwardClass4LossesUsed": {
-        "title": "broughtForwardClass4LossesUsed",
-        "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "carrySidewaysClass4LossesUsed": {
-        "title": "carrySidewaysClass4LossesUsed",
-        "description": "The Class 4 National Insurance Contributions losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
-      "totalClass4LossesCarriedForward": {
-        "title": "totalClass4LossesCarriedForward",
-        "description": "The total sum of Class 4 National Insurance Contributions losses to be carried forward that have not been used against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
-        "type": "integer",
-        "multipleOf": 1,
-        "minimum": 0,
-        "maximum": 99999999999,
-        "example": "160"
-      },
+      {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        "carrySidewaysIncomeTaxLossesUsed": {
+          "title": "carrySidewaysIncomeTaxLossesUsed",
+          "description": "The Income Tax losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": {
+          "title": "broughtForwardCarrySidewaysIncomeTaxLossesUsed",
+          "description": "The total sum of the carry sideways losses for the business brought forward from previous tax years. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "totalIncomeTaxLossesCarriedForward": {
+          "title": "totalIncomeTaxLossesCarriedForward",
+          "description": "The total sum of Income Tax losses to be carried forward that have not been utilised against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "class4Loss": {
+          "title": "class4Loss",
+          "description": "The Class 4 National Insurance Contributions loss for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "totalBroughtForwardClass4Losses": {
+          "title": "totalBroughtForwardClass4Losses",
+          "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years for the business. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "broughtForwardClass4LossesUsed": {
+          "title": "broughtForwardClass4LossesUsed",
+          "description": "The total sum of Class 4 National Insurance Contributions losses brought forward from earlier years that have been used against the Class 4 National Insurance Contributions for the business for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "carrySidewaysClass4LossesUsed": {
+          "title": "carrySidewaysClass4LossesUsed",
+          "description": "The Class 4 National Insurance Contributions losses for the business that have been carried sideways in this calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+        "totalClass4LossesCarriedForward": {
+          "title": "totalClass4LossesCarriedForward",
+          "description": "The total sum of Class 4 National Insurance Contributions losses to be carried forward that have not been used against the business profits for the tax year of the calculation. This value must be between 0 and 99999999999. No decimals.",
+          "type": "integer",
+          "multipleOf": 1,
+          "minimum": 0,
+          "maximum": 99999999999,
+          "example": 160
+        },
+      {{/unless}}
       "adjustedProfit": {
         "title": "adjustedProfit",
         "description": "Profit including disallowable expenses and deducting non‑taxable income, before claiming capital allowances or making any further tax adjustments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -208,7 +210,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160.99"
+        "example": 160.99
       },
       "adjustedLoss": {
         "title": "adjustedLoss",
@@ -217,7 +219,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160.99"
+        "example": 160.99
       },
       "foreignTaxPaid": {
         "title": "foreignTaxPaid",
@@ -226,7 +228,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160.99"
+        "example": 160.99
       },
       "outstandingBusinessIncome": {
         "title": "outstandingBusinessIncome",
@@ -235,7 +237,7 @@
         "multipleOf": 0.01,
         "minimum": 0,
         "maximum": 99999999999.99,
-        "example": "160.99"
+        "example": 160.99
       }
     },
     "additionalProperties": false,
