@@ -6,7 +6,10 @@
     "personalAllowance": {
       "description": "The personal allowance available for the tax year. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5000"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "marriageAllowanceTransferOut": {
       "description": "Object containing details about marriage allowance transferred out.",
@@ -15,12 +18,18 @@
         "personalAllowanceBeforeTransferOut": {
           "description": "The amount of the personal allowance before transferring out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "5000.12"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         },
         "transferredOutAmount": {
           "description": "The amount of the personal allowance that has been transferred out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "5000.13"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         }
       },
       "additionalProperties": false,
@@ -32,47 +41,74 @@
     "reducedPersonalAllowance": {
       "description": "The amount that the personal allowance has been reduced to. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5001"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "giftOfInvestmentsAndPropertyToCharity": {
       "description": "Investments or property gifts made to charity. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5002"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "blindPersonsAllowance": {
       "description": "Blind Person's Allowance. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5003"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "lossesAppliedToGeneralIncome": {
       "description": "Losses that have been applied to general income. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5004"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "cgtLossSetAgainstInYearGeneralIncome": {
       "description": "CGT losses that have been applied to general income. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "5005"
+      "multipleOf": 1,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": 5000
     },
     "qualifyingLoanInterestFromInvestments": {
       "description": "Qualifying loan interest payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "5006.06"
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 2000.58
     },
     "postCessationTradeReceipts": {
       "description": "Trade reliefs and other losses post cessation of a business. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "5007.77"
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 2000.58
     },
     "paymentsToTradeUnionsForDeathBenefits": {
       "description": "Payments made to a trade union or friendly society for death benefits. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "5008.88"
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 2000.58
     },
     "grossAnnuityPayments": {
       "description": "The gross value of annuity payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "5009.99"
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 2000.58
     },
     "annuityPayments": {
       "description": "Object containing details about annuity payments.",
@@ -81,12 +117,18 @@
         "reliefClaimed": {
           "description": "The value of annual payments made. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2000.58"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         },
         "rate": {
           "description": "The tax rate used in the calculation. This value must be between 0 and 99.99 up to 2 decimal places.",
           "type": "number",
-          "example": "10.25"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99.99,
+          "example": 10.25
         }
       },
       "additionalProperties": false
@@ -94,7 +136,10 @@
     "pensionContributions": {
       "description": "Total of 'Retirement Annuity Payments', 'Payment To Employers Scheme No Tax Relief' and 'Overseas Pension Scheme Contributions'. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "2001.59"
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 2000.58
     },
     "pensionContributionsDetail": {
       "description": "Object containing details of any pension contributions made.",
@@ -103,25 +148,39 @@
         "retirementAnnuityPayments": {
           "description": "The value of retirement annuity payments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2002.60"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         },
         "paymentToEmployersSchemeNoTaxRelief": {
           "description": "Payments to employer's pension scheme with no tax relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2003.61"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         },
         "overseasPensionSchemeContributions": {
           "description": "The value of contributions to an overseas pension scheme. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2004.62"
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 2000.58
         }
       }
-    },
-    "totalPartnershipLossesBroughtForward": {
-      "description": "The total amount of partnership losses brought forward from earlier tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-      "type": "number",
-      "example": "2000.58"
     }
+    {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      ,"totalPartnershipLossesBroughtForward": {
+        "description": "{{#unless (releasedInProduction '1885_r20_losses_claims_partner_income_docs')}}[Test only] {{/unless}}The total amount of partnership losses brought forward from earlier tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+        "type": "number",
+        "multipleOf": 0.01,
+        "minimum": 0,
+        "maximum": 99999999999.99,
+        "example": 2000.58
+      }
+    {{/if}}
   },
   "additionalProperties": false
 }

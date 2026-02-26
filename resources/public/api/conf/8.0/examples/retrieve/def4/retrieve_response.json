@@ -71,30 +71,32 @@
         "applied": true
       }
     ],
-    "lossesBroughtForward": [
-      {
-        "lossId": "0yriP9QrW2jTa6n",
-        "incomeSourceId": "000000000000210",
-        "incomeSourceType": "uk-property",
-        "submissionTimestamp": "2025-04-06T09:35:15.094Z",
-        "lossType": "income",
-        "taxYearLossIncurred": "2025-26",
-        "currentLossValue": 12500,
-        "mtdLoss": false
-      }
-    ],
-    "claims": [
-      {
-        "claimId": "0vayS9JrW2jTa6n",
-        "originatingClaimId": "0vayS9JrW2jTa6n",
-        "incomeSourceId": "000000000000210",
-        "incomeSourceType": "self-employment",
-        "submissionTimestamp": "2025-04-06T09:35:15.094Z",
-        "taxYearClaimMade": "2025-26",
-        "claimType": "carry-forward",
-        "sequence": 1
-      }
-    ],
+    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "lossesBroughtForward": [
+        {
+          "lossId": "0yriP9QrW2jTa6n",
+          "incomeSourceId": "000000000000210",
+          "incomeSourceType": "uk-property",
+          "submissionTimestamp": "2025-04-06T09:35:15.094Z",
+          "lossType": "income",
+          "taxYearLossIncurred": "2025-26",
+          "currentLossValue": 12500,
+          "mtdLoss": false
+        }
+      ],
+      "claims": [
+        {
+          "claimId": "0vayS9JrW2jTa6n",
+          "originatingClaimId": "0vayS9JrW2jTa6n",
+          "incomeSourceId": "000000000000210",
+          "incomeSourceType": "self-employment",
+          "submissionTimestamp": "2025-04-06T09:35:15.094Z",
+          "taxYearClaimMade": "2025-26",
+          "claimType": "carry-forward",
+          "sequence": 1
+        }
+      ],
+    {{/unless}}
     "constructionIndustryScheme": [
       {
         "employerRef": "123/AA12345",
@@ -161,6 +163,9 @@
         "paymentToEmployersSchemeNoTaxRelief": 5000.99,
         "overseasPensionSchemeContributions": 5000.99
       }
+      {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        ,"totalPartnershipLossesBroughtForward": 5000.99
+      {{/if}}
     },
     "reliefs": {
       "residentialFinanceCosts": {
@@ -195,6 +200,26 @@
             }
           ]
         }
+        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+          ,"partnerIncome": {
+            "partnerIncomeRfcDetail": [
+              {
+                "partnershipUtr": "4564564564",
+                "totalAllowableAmount": 5000.99,
+                "ukProperty": {
+                  "amountClaimed": 5000.99,
+                  "allowableAmount": 5000.99,
+                  "carryForwardAmount": 5000.99
+                },
+                "untaxedForeignIncome": {
+                  "amountClaimed": 5000.99,
+                  "allowableAmount": 5000.99,
+                  "carryForwardAmount": 5000.99
+                }
+              }
+            ]
+          }
+        {{/if}}
       },
       "reliefsClaimed": [
         {
@@ -261,6 +286,9 @@
       "specialWithholdingTaxOrUkTaxPaid": 5000.99,
       "inYearAdjustmentCodedInLaterTaxYear": 5000.99,
       "taxTakenOffTradingIncome": 5000.99
+      {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+        ,"taxTakenOffPartnerIncome": 5000.99
+      {{/if}}
     },
     "giftAid": {
       "grossGiftAidPayments": 12500,
@@ -454,14 +482,16 @@
         "totalBroughtForwardIncomeTaxLosses": 12500,
         "broughtForwardIncomeTaxLossesUsed": 12500,
         "taxableProfitAfterIncomeTaxLossesDeduction": 12500,
-        "carrySidewaysIncomeTaxLossesUsed": 12500,
-        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 12500,
-        "totalIncomeTaxLossesCarriedForward": 12500,
-        "class4Loss": 12500,
-        "totalBroughtForwardClass4Losses": 12500,
-        "broughtForwardClass4LossesUsed": 12500,
-        "carrySidewaysClass4LossesUsed": 12500,
-        "totalClass4LossesCarriedForward": 12500,
+        {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+          "carrySidewaysIncomeTaxLossesUsed": 12500,
+          "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 12500,
+          "totalIncomeTaxLossesCarriedForward": 12500,
+          "class4Loss": 12500,
+          "totalBroughtForwardClass4Losses": 12500,
+          "broughtForwardClass4LossesUsed": 12500,
+          "carrySidewaysClass4LossesUsed": 12500,
+          "totalClass4LossesCarriedForward": 12500,
+        {{/unless}}
         "adjustedProfit": 2100.99,
         "adjustedLoss": 2100.99,
         "foreignTaxPaid": 2100.99,
@@ -798,6 +828,40 @@
         ]
       }
     },
+    {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "partnerIncome": {
+        "totalPartnerIncome": 5000.99,
+        "listOfPartnerIncome": [
+          {
+            "partnershipUtr": "4564564564",
+            "partnershipTrades": [
+              {
+                "lossesBroughtForwardAdjustedProfit": 5000.99,
+                "shareOfTaxableProfit": 5000.99,
+                "adjustedLoss": 5000.99,
+                "currentYearLossAppliedToGeneralIncome": 5000.99,
+                "transitionProfitArisingThisYear": 5000.99,
+                "lossesBroughtForwardTransitionProfit": 5000.99
+              }
+            ],
+            "nationalInsuranceContributions": {
+              "voluntaryClass2Nics": true,
+              "class4Exemption": true,
+              "adjustmentToProfitsForClass4": 5000.99
+            },
+            "untaxedSavings": 5000.99,
+            "taxedSavings": 5000.99,
+            "dividendIncome": 5000.99,
+            "ukPropertyIncome": {
+              "shareOfProfitOrLoss": -99999999999.99,
+              "profitOrLossAdjustment": -99999999999.99,
+              "currentYearLossAppliedToGeneralIncome": 5000.99
+            },
+            "taxedAndUntaxedIncome": 5000.99
+          }
+        ]
+      },
+    {{/if}}
     "incomeSummaryTotals": {
       "totalSelfEmploymentProfit": 12500,
       "totalUKPropertyProfit": 12500,
@@ -917,11 +981,16 @@
         },
         "class4Nics": {
           "totalIncomeLiableToClass4Charge": 12500,
-          "totalClass4LossesAvailable": 12500,
-          "totalClass4LossesUsed": 12500,
-          "totalClass4LossesCarriedForward": 12500,
+          {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+            "totalClass4LossesAvailable": 12500,
+            "totalClass4LossesUsed": 12500,
+            "totalClass4LossesCarriedForward": 12500,
+          {{/unless}}
           "totalIncomeChargeableToClass4": 12500,
           "totalAmount": 5000.99,
+          {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+            "adjustmentToProfitsForClass4": 5000.99,
+          {{/if}}
           "nic4Bands": [
             {
               "name": "zero-rate",
@@ -933,8 +1002,13 @@
             }
           ]
         },
-        "nic2NetOfDeductions": -99999999999.99,
-        "nic4NetOfDeductions": -99999999999.99,
+        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+          "nic2Amount": 5000.99,
+          "nic4Amount": 5000.99,
+        {{else}}
+          "nic2NetOfDeductions": -99999999999.99,
+          "nic4NetOfDeductions": -99999999999.99,
+        {{/if}}
         "totalNic": -99999999999.99
       },
       "totalTaxDeductedBeforeCodingOut": 99999999999.99,
@@ -1042,62 +1116,64 @@
       "cgtAmount": 5000.99,
       "incomeTaxNicAndCgtAmount": 5000.99
     },
-    "lossesAndClaims": {
-      "resultOfClaimsApplied": [
-        {
-          "claimId": "0vayS9JrW2jTa6n",
-          "originatingClaimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-employment",
-          "taxYearClaimMade": "2025-26",
-          "claimType": "CF",
-          "mtdLoss": true,
-          "taxYearLossIncurred": "2024-25",
-          "lossAmountUsed": 12500,
-          "remainingLossValue": 12500,
-          "lossType": "income"
-        }
-      ],
-      "unclaimedLosses": [
-        {
-          "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": "2025-26",
-          "currentLossValue": 12500,
-          "lossType": "income"
-        }
-      ],
-      "carriedForwardLosses": [
-        {
-          "claimId": "0vayS9JrW2jTa6n",
-          "originatingClaimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-employment",
-          "claimType": "carry-forward",
-          "taxYearClaimMade": "2025-26",
-          "taxYearLossIncurred": "2020-21",
-          "currentLossValue": 12500,
-          "lossType": "income"
-        }
-      ],
-      "defaultCarriedForwardLosses": [
-        {
-          "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-employment",
-          "taxYearLossIncurred": "2025-26",
-          "currentLossValue": 12500
-        }
-      ],
-      "claimsNotApplied": [
-        {
-          "claimId": "0vayS9JrW2jTa6n",
-          "incomeSourceId": "000000000000210",
-          "incomeSourceType": "self-employment",
-          "taxYearClaimMade": "2025-26",
-          "claimType": "carry-forward"
-        }
-      ]
-    },
+    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
+      "lossesAndClaims": {
+        "resultOfClaimsApplied": [
+          {
+            "claimId": "0vayS9JrW2jTa6n",
+            "originatingClaimId": "0vayS9JrW2jTa6n",
+            "incomeSourceId": "000000000000210",
+            "incomeSourceType": "self-employment",
+            "taxYearClaimMade": "2025-26",
+            "claimType": "CF",
+            "mtdLoss": true,
+            "taxYearLossIncurred": "2024-25",
+            "lossAmountUsed": 12500,
+            "remainingLossValue": 12500,
+            "lossType": "income"
+          }
+        ],
+        "unclaimedLosses": [
+          {
+            "incomeSourceId": "000000000000210",
+            "incomeSourceType": "self-employment",
+            "taxYearLossIncurred": "2025-26",
+            "currentLossValue": 12500,
+            "lossType": "income"
+          }
+        ],
+        "carriedForwardLosses": [
+          {
+            "claimId": "0vayS9JrW2jTa6n",
+            "originatingClaimId": "0vayS9JrW2jTa6n",
+            "incomeSourceId": "000000000000210",
+            "incomeSourceType": "self-employment",
+            "claimType": "carry-forward",
+            "taxYearClaimMade": "2025-26",
+            "taxYearLossIncurred": "2020-21",
+            "currentLossValue": 12500,
+            "lossType": "income"
+          }
+        ],
+        "defaultCarriedForwardLosses": [
+          {
+            "incomeSourceId": "000000000000210",
+            "incomeSourceType": "self-employment",
+            "taxYearLossIncurred": "2025-26",
+            "currentLossValue": 12500
+          }
+        ],
+        "claimsNotApplied": [
+          {
+            "claimId": "0vayS9JrW2jTa6n",
+            "incomeSourceId": "000000000000210",
+            "incomeSourceType": "self-employment",
+            "taxYearClaimMade": "2025-26",
+            "claimType": "carry-forward"
+          }
+        ]
+      },
+    {{/unless}}
     "transitionProfit": {
       "totalTaxableTransitionProfit": 12500,
       "transitionProfitDetail": [

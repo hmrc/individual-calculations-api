@@ -21,8 +21,6 @@
       "lossesBroughtForward": {
         "$ref": "#/definitions/lossesBroughtForward"
       },
-    {{/unless}}
-    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
       "claims": {
         "$ref": "#/definitions/claims"
       },
@@ -85,7 +83,7 @@
         "class2VoluntaryContributions": {
           "description": "A boolean to identify the Class 2 Voluntary Contributions. This value must be true.",
           "type": "boolean",
-          "example": "true"
+          "example": true
         },
         "marriageAllowance": {
           "description": "Indicates whether the customer has transferred out their allowance or received an allowance.",
@@ -189,7 +187,7 @@
           "applied": {
             "description": "A boolean to identify whether the adjustment has been applied to this calculation. This value must be true or false.",
             "type": "boolean",
-            "example": "true"
+            "example": true
           }
         },
         "additionalProperties": false,
@@ -267,7 +265,7 @@
           "mtdLoss": {
             "description": "A boolean to identify whether the loss was registered by the taxpayer on joining MTD. Only returned when false.",
             "type": "boolean",
-            "example": "false"
+            "example": false
           }
         },
         "additionalProperties": false,
@@ -346,7 +344,7 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 99,
-            "example": "1"
+            "example": 1
           }
         },
         "additionalProperties": false,
@@ -799,6 +797,9 @@
         "uk-dividends",
         "state-benefits",
         "gains-on-life-policies",
+        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
+          "partner-income",
+        {{/if}}
         "foreign-savings-and-gains",
         "other-dividends",
         "uk-securities",
@@ -806,8 +807,7 @@
         "foreign-pension",
         "non-paye-income",
         "capital-gains-tax",
-        "charitable-giving",
-        "partner-income"
+        "charitable-giving"
       ]
     },
     "lossId": {
@@ -851,13 +851,13 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
-      "example": "5000"
+      "example": 5000
     },
     "monetaryPos": {
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": "5000.99"
+      "example": 5000.99
     }
   }
 }
