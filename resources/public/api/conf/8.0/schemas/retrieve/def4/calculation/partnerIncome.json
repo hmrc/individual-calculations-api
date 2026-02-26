@@ -78,7 +78,7 @@
                   "minimum": 0,
                   "maximum": 99999999999.99,
                   "example": 5000.99
-                },
+                }
               },
               "required": ["shareOfTaxableProfit"],
               "additionalProperties": false
