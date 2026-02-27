@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def4.model.response.calculation.lossesAndClaims
+package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import play.api.libs.json.{Json, OFormat}
 
-sealed trait LossType
+case class PartnerIncome(
+    totalPartnerIncome: BigDecimal,
+    listOfPartnerIncome: Option[Seq[ListOfPartnerIncome]]
+)
 
-object LossType {
-  case object `income`      extends LossType
-  case object `class4-nics` extends LossType
-
-  implicit val writes: Writes[LossType] = Enums.writes[LossType]
-
-  implicit val reads: Reads[LossType] = Enums.readsUsing {
-    case "income"     => `income`
-    case "class4nics" => `class4-nics`
-  }
-
+object PartnerIncome {
+  implicit val format: OFormat[PartnerIncome] = Json.format[PartnerIncome]
 }

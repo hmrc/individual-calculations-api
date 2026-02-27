@@ -50,7 +50,8 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
           Some(1001.99),
           Some(1001.99),
           Some(1001.99)
-        ))
+        )),
+      Some(1001.99)
     )
 
   val mtdJson: JsValue = Json.parse("""
@@ -78,11 +79,12 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |        "retirementAnnuityPayments": 1001.99,
       |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
       |        "overseasPensionSchemeContributions": 1001.99
-      |      }
+      |      },
+      |     "totalPartnershipLossesBroughtForward": 1001.99
       |}
       |""".stripMargin)
 
-  val ifsJson: JsValue = Json.parse("""
+  val downstreamJson: JsValue = Json.parse("""
       |{
       |      "personalAllowance": 12500,
       |      "marriageAllowanceTransferOut": {
@@ -107,14 +109,15 @@ class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
       |        "retirementAnnuityPayments": 1001.99,
       |        "paymentToEmployersSchemeNoTaxRelief": 1001.99,
       |        "overseasPensionSchemeContributions": 1001.99
-      |      }
+      |      },
+      |      "totalPartnershipLossesBroughtForward": 1001.99
       |}
       |""".stripMargin)
 
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        model shouldBe ifsJson.as[AllowancesAndDeductions]
+        model shouldBe downstreamJson.as[AllowancesAndDeductions]
       }
     }
   }

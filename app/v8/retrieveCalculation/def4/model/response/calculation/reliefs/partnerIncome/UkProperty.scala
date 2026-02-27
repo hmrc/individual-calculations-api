@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def4.model.response.calculation.lossesAndClaims
+package v8.retrieveCalculation.def4.model.response.calculation.reliefs.partnerIncome
 
 import play.api.libs.json.{Json, OFormat}
 
-case class LossesAndClaims(
-    resultOfClaimsApplied: Option[Seq[ResultOfClaimsApplied]],
-    unclaimedLosses: Option[Seq[UnclaimedLoss]],
-    carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
-    defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
-    claimsNotApplied: Option[Seq[ClaimNotApplied]]
-)
+case class UkProperty(amountClaimed: BigDecimal, allowableAmount: BigDecimal, carryForwardAmount: Option[BigDecimal])
 
-object LossesAndClaims {
-  implicit val format: OFormat[LossesAndClaims] = Json.format
+object UkProperty {
+  implicit val format: OFormat[UkProperty] = Json.format[UkProperty]
 }

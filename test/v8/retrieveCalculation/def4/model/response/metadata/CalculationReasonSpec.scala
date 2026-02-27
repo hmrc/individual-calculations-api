@@ -25,10 +25,6 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
   testReads[CalculationReason](
     "customerRequest"              -> `customer-request`,
     "class2NICEvent"               -> `class2-nic-event`,
-    "newLossEvent"                 -> `new-loss-event`,
-    "updatedLossEvent"             -> `updated-loss-event`,
-    "newClaimEvent"                -> `new-claim-event`,
-    "updatedClaimEvent"            -> `updated-claim-event`,
     "newAnnualAdjustmentEvent"     -> `new-annual-adjustment-event`,
     "updatedAnnualAdjustmentEvent" -> `updated-annual-adjustment-event`,
     "unattendedCalculation"        -> `unattended-calculation`
@@ -37,10 +33,6 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
   testWrites[CalculationReason](
     `customer-request`                -> "customer-request",
     `class2-nic-event`                -> "class2-nic-event",
-    `new-loss-event`                  -> "new-loss-event",
-    `updated-loss-event`              -> "updated-loss-event",
-    `new-claim-event`                 -> "new-claim-event",
-    `updated-claim-event`             -> "updated-claim-event",
     `new-annual-adjustment-event`     -> "new-annual-adjustment-event",
     `updated-annual-adjustment-event` -> "updated-annual-adjustment-event",
     `unattended-calculation`          -> "unattended-calculation"

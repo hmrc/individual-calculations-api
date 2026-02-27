@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def4.model.response.calculation.lossesAndClaims
+package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
-import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.retrieveCalculation.def4.model.response.calculation.lossesAndClaims.LossType.*
+import play.api.libs.json.{Json, OFormat}
 
-class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+case class NationalInsuranceContributions(
+    voluntaryClass2Nics: Option[Boolean],
+    class4Exemption: Option[Boolean],
+    adjustmentToProfitsForClass4: Option[BigDecimal]
+)
 
-  testReads[LossType](
-    "income"     -> `income`,
-    "class4nics" -> `class4-nics`
-  )
+object NationalInsuranceContributions {
 
-  testWrites[LossType](
-    `income`      -> "income",
-    `class4-nics` -> "class4-nics"
-  )
+  implicit val format: OFormat[NationalInsuranceContributions] =
+    Json.format[NationalInsuranceContributions]
 
 }
