@@ -103,13 +103,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("UNMATCHED_STUB_ERROR", RuleIncorrectGovTestScenarioError)
       )
 
-      val extraDesErrors = List(
-        ("INVALID_IDTYPE", InternalError),
-        ("INVALID_IDVALUE", NinoFormatError),
-        ("INVALID_TAXYEAR", TaxYearFormatError)
-      )
-
-      (errors ++ extraDesErrors).foreach(args => serviceError.tupled(args))
+      errors.foreach(args => serviceError.tupled(args))
     }
   }
 

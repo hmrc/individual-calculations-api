@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,13 +110,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError)
       )
 
-      val extraDesErrors = List(
-        ("INVALID_IDTYPE", InternalError),
-        ("INVALID_IDVALUE", NinoFormatError),
-        ("INVALID_TAXYEAR", TaxYearFormatError)
-      )
-
-      (errors ++ extraDesErrors).foreach(args => serviceError.tupled(args))
+      errors.foreach(args => serviceError.tupled(args))
     }
   }
 

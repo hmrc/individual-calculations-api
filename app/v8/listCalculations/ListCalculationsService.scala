@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,29 +39,24 @@ class ListCalculationsService @Inject() (connector: ListCalculationsConnector) e
   }
 
   private val downstreamErrorMap: Map[String, MtdError] = {
-    val desErrors = Map(
+    val ifsErrors = Map(
       "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-      "INVALID_TAXYEAR"           -> TaxYearFormatError,
       "NOT_FOUND"                 -> NotFoundError,
       "SERVER_ERROR"              -> models.errors.InternalError,
       "SERVICE_UNAVAILABLE"       -> models.errors.InternalError,
-      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError
+      "UNMATCHED_STUB_ERROR"      -> RuleIncorrectGovTestScenarioError,
+      "NO_DATA_FOUND"             -> NotFoundError,
+      "INVALID_TAX_YEAR"          -> TaxYearFormatError,
+      "INVALID_CORRELATION_ID"    -> models.errors.InternalError,
+      "TAX_YEAR_NOT_SUPPORTED"    -> RuleTaxYearNotSupportedError
     )
-
-    val extraTysDesErrors = Map(
-      "NO_DATA_FOUND"          -> NotFoundError,
-      "INVALID_TAX_YEAR"       -> TaxYearFormatError,
-      "INVALID_CORRELATION_ID" -> models.errors.InternalError,
-      "TAX_YEAR_NOT_SUPPORTED" -> RuleTaxYearNotSupportedError
-    )
-
     val hipErrors = Map(
       "1215" -> NinoFormatError,
       "1117" -> TaxYearFormatError,
       "5010" -> NotFoundError
     )
 
-    desErrors ++ extraTysDesErrors ++ hipErrors
+    ifsErrors ++ hipErrors
   }
 
 }

@@ -120,12 +120,6 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     protected final val config: DownstreamConfig = DownstreamConfig(this.baseUrl, environment, token, Some(allowedHeaders))
   }
 
-  protected trait DesTest extends StandardConnectorTest {
-    val name = "des"
-
-    MockedAppConfig.desDownstreamConfig.anyNumberOfTimes() returns config
-  }
-
   protected trait IfsTest extends StandardConnectorTest {
     override val name = "ifs"
 
