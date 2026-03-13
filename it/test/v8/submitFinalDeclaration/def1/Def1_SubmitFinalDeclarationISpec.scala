@@ -165,13 +165,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
           (NOT_FOUND, "UNMATCHED_STUB_ERROR", BAD_REQUEST, RuleIncorrectGovTestScenarioError)
         )
 
-        val extraDesErrors = Seq(
-          (BAD_REQUEST, "INVALID_IDTYPE", INTERNAL_SERVER_ERROR, InternalError),
-          (BAD_REQUEST, "INVALID_IDVALUE", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError)
-        )
-
-        (errors ++ extraDesErrors).foreach(args => serviceErrorTest.tupled(args))
+        errors.foreach(args => serviceErrorTest.tupled(args))
       }
     }
   }

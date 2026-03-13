@@ -29,7 +29,7 @@ import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
 import v7.listCalculationsOld.def1.model.Def1_ListCalculationsFixture
 
-class ListCalculationsControllerDesISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
+class ListCalculationsControllerIfsISpec extends IntegrationBaseSpec with Def1_ListCalculationsFixture {
 
   private trait Test {
 
