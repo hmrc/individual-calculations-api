@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,13 @@ package endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import shared.models.domain.TaxYear
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v6.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
 
@@ -32,8 +33,10 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
     val nino: String  = "ZG903729C"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def uri: String        = s"/$nino/self-assessment/2017-18/$calculationId"
-    def backendUrl: String = s"/income-tax/view/calculations/liability/$nino/$calculationId"
+    def taxYear            = "2026-27"
+    def downstreamTaxYear  = TaxYear.fromMtd(taxYear)
+    def uri: String        = s"/$nino/self-assessment/$taxYear/$calculationId"
+    def backendUrl: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
 
     def setupStubs(): StubMapping
 
@@ -41,7 +44,7 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.6.0+json"),
+          (ACCEPT, "application/vnd.hmrc.8.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
@@ -65,7 +68,7 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
+    "an MTD ID is successfully retrieved from the NINO and the user is authorised" should {
 
       "return 200" in new Test {
         override def setupStubs(): StubMapping = {
@@ -80,7 +83,7 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is NOT logged in" should {
+    "an MTD ID is successfully retrieved from the NINO and the user is NOT logged in" should {
 
       "return 403" in new Test {
         override val nino: String = "ZG903729C"
@@ -96,7 +99,7 @@ class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
       }
     }
 
-    "an MTD ID is successfully retrieve from the NINO and the user is NOT authorised" should {
+    "an MTD ID is successfully retrieved from the NINO and the user is NOT authorised" should {
 
       "return 403" in new Test {
         override val nino: String = "ZG903729C"
