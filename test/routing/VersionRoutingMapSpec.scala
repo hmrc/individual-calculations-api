@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,29 +18,23 @@ package routing
 
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.routing.Router
-import shared.routing.{Version6, Version7, Version8}
+import shared.routing.*
 import shared.utils.UnitSpec
 
 class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   val defaultRouter: Router = mock[Router]
-  val v6Routes: v6.Routes   = app.injector.instanceOf[v6.Routes]
   val v7Routes: v7.Routes   = app.injector.instanceOf[v7.Routes]
   val v8Routes: v8.Routes   = app.injector.instanceOf[v8.Routes]
 
   "map" when {
-    "routing to v4, v5, v6, v7 or v8" should {
+    "routing to v7 or v8" should {
 
       val versionRoutingMap: CalculationsVersionRoutingMap = CalculationsVersionRoutingMap(
         defaultRouter = defaultRouter,
-        v6Router = v6Routes,
         v7Router = v7Routes,
         v8Router = v8Routes
       )
-
-      s"route to ${v6Routes.toString}" in {
-        versionRoutingMap.map(Version6) shouldBe v6Routes
-      }
 
       s"route to ${v7Routes.toString}" in {
         versionRoutingMap.map(Version7) shouldBe v7Routes
