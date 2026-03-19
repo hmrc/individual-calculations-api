@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ import shared.config.MockAppConfig
 import shared.definition.APIStatus.{ALPHA, BETA}
 import shared.definition.{APIDefinition, APIVersion, Definition}
 import shared.mocks.MockHttpClient
-import shared.routing.{Version6, Version7, Version8}
+import shared.routing.*
 import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 
-  private val validVersions = Seq(Version6, Version7, Version8)
+  private val validVersions = Seq(Version7, Version8)
 
   "CalculationsDefinitionFactory" when {
 
@@ -63,7 +63,7 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
       }
 
       "default to ALPHA status when an invalid apiStatus is configured" in {
-        val faultyVersion = Version6
+        val faultyVersion = Version8
 
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
 

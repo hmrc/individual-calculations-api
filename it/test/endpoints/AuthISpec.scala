@@ -25,16 +25,16 @@ import play.api.test.Helpers.AUTHORIZATION
 import shared.models.domain.TaxYear
 import shared.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import shared.support.IntegrationBaseSpec
-import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
 
-class AuthISpec extends IntegrationBaseSpec with Def1_CalculationFixture {
+class AuthISpec extends IntegrationBaseSpec with Def4_CalculationFixture {
 
   private trait Test {
     val nino: String  = "ZG903729C"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
     def taxYear            = "2026-27"
-    def downstreamTaxYear  = TaxYear.fromMtd(taxYear)
+    def downstreamTaxYear  = TaxYear.fromMtd(taxYear).asTysDownstream
     def uri: String        = s"/$nino/self-assessment/$taxYear/$calculationId"
     def backendUrl: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
 
