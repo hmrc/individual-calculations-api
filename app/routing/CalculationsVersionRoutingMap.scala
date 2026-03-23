@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,15 @@
 package routing
 
 import play.api.routing.Router
-import shared.routing.{Version, Version6, Version7, Version8, VersionRoutingMap}
+import shared.routing.*
 
 import javax.inject.{Inject, Singleton}
 
 // Add routes corresponding to available versions...
 @Singleton
-case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v6Router: v6.Routes, v7Router: v7.Routes, v8Router: v8.Routes)
-    extends VersionRoutingMap {
+case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v7Router: v7.Routes, v8Router: v8.Routes) extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
-    Version6 -> v6Router,
     Version7 -> v7Router,
     Version8 -> v8Router
   )

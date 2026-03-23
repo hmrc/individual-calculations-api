@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import shared.auth.AuthSupportingAgentsAllowedISpec
 import shared.services.DownstreamStub
-import v6.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class CalculationsAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsAllowedISpec with Def1_CalculationFixture {
 
-  val callingApiVersion = "6.0"
+  val callingApiVersion = "8.0"
 
   val supportingAgentsAllowedEndpoint = "retrieve-calculation"
   val calculationId: String           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
