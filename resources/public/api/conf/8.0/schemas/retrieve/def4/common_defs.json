@@ -46,6 +46,12 @@
         "postgraduate",
         "plan4",
         "plan5"
+      ],
+      "enum": [
+        "plan1",
+        "plan2",
+        "postgraduate",
+        "plan4"
       ]
     }
   }
