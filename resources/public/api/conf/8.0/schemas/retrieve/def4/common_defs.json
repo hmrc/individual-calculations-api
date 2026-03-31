@@ -40,7 +40,6 @@
     "studentLoanPlanType": {
       "description": "Student Loan plan type.",
       "type": "string",
-      {{#if (enabled '1885_r20_student_loan_plan_docs')}}
       "enum": [
         "plan1",
         "plan2",
@@ -48,14 +47,6 @@
         "plan4",
         "plan5"
       ]
-      {{else}}
-      "enum": [
-        "plan1",
-        "plan2",
-        "postgraduate",
-        "plan4"
-      ]
-      {{/if}}
     }
   }
 }
