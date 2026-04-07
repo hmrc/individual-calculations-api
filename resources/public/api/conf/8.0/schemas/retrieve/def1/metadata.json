@@ -60,12 +60,12 @@
       "intentToSubmitFinalDeclaration": {
         "description": "A boolean to indicate whether the calculation can be used to make a final declaration. This value must be true or false.",
         "type": "boolean",
-        "example": "true"
+        "example": true
       },
       "finalDeclaration": {
         "description": "A boolean to indicate whether the calculation has been used to make a final declaration. This value must be true or false.",
         "type": "boolean",
-        "example": "false"
+        "example": false
       },
       "finalDeclarationTimestamp": {
         "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",

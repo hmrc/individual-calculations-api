@@ -851,13 +851,15 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 5000
+      "example": 5000,
+      "multipleOf": 1
     },
     "monetaryPos": {
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99
+      "example": 5000.99,
+      "multipleOf": 0.01
     }
   }
 }

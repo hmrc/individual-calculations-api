@@ -8,7 +8,8 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
-      "example": "2000"
+      "example": 2000,
+      "multipleOf": 1
     },
     "rate": {
       "description": "The rate of the royalty payment. This value must be between 0 and 99.99 up to 2 decimal places.",
@@ -16,14 +17,15 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99.99,
-      "example": "10.12"
+      "example": 10.12
     },
     "grossRoyaltyPayments": {
       "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
-      "example": "2000"
+      "example": 2000,
+      "multipleOf": 1
     }
   },
   "required": [

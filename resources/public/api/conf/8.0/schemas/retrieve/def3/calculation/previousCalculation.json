@@ -20,7 +20,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     },
     "cgtTaxDue": {
       "description": "The Capital Gains Tax (CGT) due in the previous calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -28,7 +28,7 @@
       "multipleOf": 0.01,
       "minimum": 0.00,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     },
     "totalIncomeTaxAndNicsAndCgtDue": {
       "description": "Total Income Tax, NICs and CGT due in the previous calculation. This is the sum of cgtTaxDue and totalIncomeTaxAndNicsDue. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
@@ -36,7 +36,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     },
     "incomeTaxNicDueThisPeriod": {
       "description": "The Income Tax and NICs due. The difference between this calculation and the previous calculation. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
@@ -44,7 +44,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     },
     "cgtDueThisPeriod": {
       "description": "The Capital Gains Tax due. The difference between this calculation and the previous calculation. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -52,7 +52,7 @@
       "multipleOf": 0.01,
       "minimum": 0.00,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     },
     "totalIncomeTaxAndNicsAndCgtDueThisPeriod": {
       "description": "Total Income Tax, NICS, and CGT due this period. This is the sum of cgtDueThisPeriod and incomeTaxNicDueThisPeriod. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
@@ -60,7 +60,7 @@
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": "2000.58"
+      "example": 2000.58
     }
   },
   "additionalProperties": false

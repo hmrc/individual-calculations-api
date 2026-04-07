@@ -54,7 +54,10 @@
           "liabilityAmount": {
             "description": "This is one of, 'totalIncomeTaxAndNicsDue' or 'totalIncomeTaxAndNicsAndCgt' if present, from the calculation output. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "1079.23"
+            "example": 1079.23,
+            "minimum": -99999999999.99,
+            "maximum": 99999999999.99,
+            "multipleOf": 0.01
           }
         },
         "additionalProperties": false,
