@@ -70,10 +70,9 @@ trait HttpParser extends Logging {
         .validateJson(multipleErrorReads)
         .map(errs => DownstreamErrors(errs))
 
-      lazy val multipleTopLevelErrorCodes =
-        wrappedResponse.validateJson(multipleTopLevelErrorCodesReads).map(errs => DownstreamErrors(errs))
-      lazy val multipleErrorCodesInResponse =
-        wrappedResponse.validateJson(multipleErrorCodesInResponseReads).map(errs => DownstreamErrors(errs))
+    lazy val multipleTopLevelErrorCodes = wrappedResponse.validateJson(multipleTopLevelErrorCodesReads).map(errs => DownstreamErrors(errs))
+
+    lazy val multipleErrorCodesInResponse = wrappedResponse.validateJson(multipleErrorCodesInResponseReads).map(errs => DownstreamErrors(errs))
 
     lazy val multipleFailureErrorTypes =
       wrappedResponse
@@ -90,7 +89,7 @@ trait HttpParser extends Logging {
       OutboundError(InternalError)
     }
 
-    singleError orElse 33multipleErrors orElse multipleTopLevelErrorCodes orElse multipleErrorCodesInResponse orElse
+    singleError orElse multipleErrors orElse multipleTopLevelErrorCodes orElse multipleErrorCodesInResponse orElse
       multipleFailureErrorTypes orElse bvrErrors getOrElse unableToParseJsonError
   }
 
