@@ -89,8 +89,12 @@ trait HttpParser extends Logging {
       OutboundError(InternalError)
     }
 
-    singleError orElse multipleErrors orElse multipleTopLevelErrorCodes orElse multipleErrorCodesInResponse orElse
-      multipleFailureErrorTypes orElse bvrErrors getOrElse unableToParseJsonError
+      singleError orElse
+      multipleErrors orElse
+      multipleTopLevelErrorCodes orElse
+      multipleErrorCodesInResponse orElse
+      multipleFailureErrorTypes orElse
+      bvrErrors getOrElse unableToParseJsonError
   }
 
 }
