@@ -20,8 +20,7 @@ import play.api.libs.json._
 import shared.models.errors._
 import shared.utils.Logging
 import uk.gov.hmrc.http.HttpResponse
-
-import scala.util.{Try}
+import scala.util.Try
 
 trait HttpParser extends Logging {
 
@@ -48,6 +47,12 @@ trait HttpParser extends Logging {
     (__ \ "bvrfailureResponseElement" \ "validationRuleFailures").read[Seq[DownstreamErrorCode]]
   }
 
+  private val multipleTopLevelErrorCodesReads: Reads[Seq[DownstreamErrorCode]] =
+    __.read[Seq[JsObject]].map(_.map(obj => DownstreamErrorCode((obj \ "errorCode").as[String])))
+
+  private val multipleErrorCodesInResponseReads: Reads[Seq[DownstreamErrorCode]] =
+    (__ \ "response").read[Seq[JsObject]].map(_.map(obj => DownstreamErrorCode((obj \ "errorCode").as[String])))
+
   private val multipleFailureErrorTypesReads: Reads[Seq[DownstreamErrorCode]] =
     (__ \ "response" \ "failures").read[Seq[JsObject]].map(_.map(obj => DownstreamErrorCode((obj \ "type").as[String])))
 
@@ -65,6 +70,11 @@ trait HttpParser extends Logging {
         .validateJson(multipleErrorReads)
         .map(errs => DownstreamErrors(errs))
 
+      lazy val multipleTopLevelErrorCodes =
+        wrappedResponse.validateJson(multipleTopLevelErrorCodesReads).map(errs => DownstreamErrors(errs))
+      lazy val multipleErrorCodesInResponse =
+        wrappedResponse.validateJson(multipleErrorCodesInResponseReads).map(errs => DownstreamErrors(errs))
+
     lazy val multipleFailureErrorTypes =
       wrappedResponse
         .validateJson(multipleFailureErrorTypesReads)
@@ -80,11 +90,8 @@ trait HttpParser extends Logging {
       OutboundError(InternalError)
     }
 
-    singleError orElse
-      multipleErrors orElse
-      multipleFailureErrorTypes orElse
-      bvrErrors getOrElse
-      unableToParseJsonError
+    singleError orElse multipleErrors orElse multipleTopLevelErrorCodes orElse multipleErrorCodesInResponse orElse
+      multipleFailureErrorTypes orElse bvrErrors getOrElse unableToParseJsonError
   }
 
 }
