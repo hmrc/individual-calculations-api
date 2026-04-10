@@ -6,32 +6,50 @@
     "grossGiftAidPayments": {
       "description": "The total amount of Gift Aid payments made for the tax year. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": "2000"
+      "example": 2000,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
     },
     "rate": {
       "description": "The basic rate of tax that applies to Gift Aid payments made. This value must be between 0 and 99.99 up to 2 decimal places.",
       "type": "number",
-      "example": "20.12"
+      "example": 20.12,
+      "minimum": 0,
+      "maximum": 99.99,
+      "multipleOf": 0.01
     },
     "giftAidTax": {
       "description": "The amount of Gift Aid tax charged if no reliefs or deductions apply. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "100.12"
+      "example": 100.12,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
     },
     "giftAidTaxReductions": {
       "description": "The amount of Gift Aid tax reductions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "101.13"
+      "example": 101.13,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
     },
     "incomeTaxChargedAfterGiftAidTaxReductions": {
       "description": "The income tax charged after Gift Aid tax reductions have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "102.14"
+      "example": 102.14,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
     },
     "giftAidCharge": {
       "description": "The amount of Gift Aid tax charged after appropriate reliefs and deductions have been applied. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "103.15"
+      "example": 103.15,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
     }
   },
   "required": [

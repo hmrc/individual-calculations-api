@@ -9,7 +9,7 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": "2000.98"
+      "example": 2000.98
     }
   },
   "additionalProperties": false,

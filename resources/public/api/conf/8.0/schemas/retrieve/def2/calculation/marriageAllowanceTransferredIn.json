@@ -6,12 +6,18 @@
     "amount": {
       "description": "The amount of marriage allowance transferred in. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": "3000.00"
+      "example": 3000.00,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "multipleOf": 0.01
     },
     "rate": {
       "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to 2 decimal places.",
       "type": "number",
-      "example": "10.52"
+      "example": 10.52,
+      "minimum": 0,
+      "maximum": 99.99,
+      "multipleOf": 0.01
     }
   },
   "additionalProperties": false
