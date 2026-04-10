@@ -19,6 +19,7 @@
           "calculationTimestamp": {
             "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ if BVRs do not fail or populated from requestTimestamp if BVRs fail.",
             "type": "string",
+            "format": "date-time",
             "example": "2019-07-13T07:51:43.112Z"
           },
           "calculationType": {
@@ -65,6 +66,7 @@
           "finalDeclarationTimestamp": {
             "description": "The timestamp of when the final calculation was performed, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
             "type": "string",
+            "format": "date-time",
             "example": "2019-07-13T07:51:43.112Z"
           }
         },

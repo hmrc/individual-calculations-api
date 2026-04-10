@@ -494,7 +494,7 @@
           "multipleOf": 0.01
         },
         "giftAidRelief": {
-          "type": "number",
+          "type": "integer",
           "description": "The amount of Gift Aid Relief received, \nThis value must be between 0 and 99999999999. No decimal places.",
           "example": 3000,
           "minimum": 0,

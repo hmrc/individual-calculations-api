@@ -6,6 +6,7 @@
     "calculationTimestamp": {
       "description": "The timestamp of the previous calculation, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
       "type": "string",
+      "format": "date-time",
       "example": "2019-06-17T09:22:59.094Z"
     },
     "calculationId": {

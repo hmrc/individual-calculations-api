@@ -193,7 +193,7 @@
     },
     "totalAllowancesAndDeductions": {
       "description": "Total Allowances and Deductions. This value must be between 0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "multipleOf": 1,
       "minimum": 0,
       "maximum": 99999999999,

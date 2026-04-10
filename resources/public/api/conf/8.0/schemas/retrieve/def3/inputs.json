@@ -370,8 +370,7 @@
           "contractorName": {
             "description": "The name of the contractor the subcontractor worked for.",
             "type": "string",
-            "minimum": 1,
-            "maximum": 105,
+            "pattern": "^.{1,105}$",
             "example": "Company-123 Ltd."
           },
           "periodData": {
@@ -832,10 +831,12 @@
     "date": {
       "id": "full-date",
       "type": "string",
+      "format": "date",
       "example": "2020-01-01"
     },
     "timestamp": {
       "type": "string",
+      "format": "date-time",
       "example": "2019-02-15T09:35:15.094Z"
     },
     "taxYear": {
@@ -847,12 +848,14 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
+      "multipleOf": 1,
       "example": 5000
     },
     "monetaryPos": {
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
+      "multipleOf": 0.01,
       "example": 5000.99
     }
   }

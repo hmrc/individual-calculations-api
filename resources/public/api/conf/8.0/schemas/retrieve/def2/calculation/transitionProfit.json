@@ -6,6 +6,7 @@
     "totalTaxableTransitionProfit": {
       "description": "Total taxable transition profit from all income sources after application of any losses brought forward. This value must be between  0 and 99999999999. No decimals.",
       "type": "number",
+      "multipleOf": 1,
       "example": 12500,
       "minimum": 0,
       "maximum": 99999999999
@@ -44,7 +45,7 @@
           },
           "totalTransitionProfit": {
             "description": "Total of Transition Profit Amount and Transition Profit Acceleration Amount for this income source. This value must be between  0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": 12500,
             "minimum": 0,
             "maximum": 99999999999,
@@ -52,7 +53,7 @@
           },
           "remainingBroughtForwardIncomeTaxLosses": {
             "description": "Income tax brought forward losses remaining following application to taxable profit of this income source; to be applied to Total Transition Profit. This value must be between  0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": 12500,
             "minimum": 0,
             "maximum": 99999999999,
@@ -60,7 +61,7 @@
           },
           "broughtForwardIncomeTaxLossesUsed": {
             "description": "Income tax brought forward losses applied to Total Transition Profit for this income source. This value must be between  0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": 12500,
             "minimum": 0,
             "maximum": 99999999999,
@@ -68,7 +69,7 @@
           },
           "transitionProfitsAfterIncomeTaxLossDeductions": {
             "description": "Remaining transition profits after application of brought forward losses for this income source. This value must be between  0 and 99999999999. No decimals.",
-            "type": "number",
+            "type": "integer",
             "example": 12500,
             "minimum": 0,
             "maximum": 99999999999,
