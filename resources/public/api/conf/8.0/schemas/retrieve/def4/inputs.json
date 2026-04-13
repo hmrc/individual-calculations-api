@@ -372,7 +372,7 @@
           "contractorName": {
             "description": "The name of the contractor the subcontractor worked for.",
             "type": "string",
-            "pattern": "^.{1,105}$"
+            "pattern": "^.{1,105}$",
             "example": "Company-123 Ltd."
           },
           "periodData": {
