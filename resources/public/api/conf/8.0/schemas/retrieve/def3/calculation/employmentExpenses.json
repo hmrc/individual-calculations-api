@@ -9,7 +9,7 @@
       "multipleOf": 0.01,
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": "2000.98"
+      "example": 2000.98
     },
     "employmentExpensesDetail": {
       "description": "Object detailing employment related expenses.",
@@ -21,7 +21,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "jobExpenses": {
           "description": "Total job expenses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -29,7 +29,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "flatRateJobExpenses": {
           "description": "Total flat rate job expenses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -37,7 +37,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "professionalSubscriptions": {
           "description": "Total professional subscriptions. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -45,7 +45,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "hotelAndMealExpenses": {
           "description": "Total hotel and meal expenses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -53,7 +53,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "otherAndCapitalAllowances": {
           "description": "Total other and capital allowances. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -61,7 +61,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "vehicleExpenses": {
           "description": "Total vehicle expenses. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -69,7 +69,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         },
         "mileageAllowanceRelief": {
           "description": "Total Mileage Allowance Relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
@@ -77,7 +77,7 @@
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": "2000.98"
+          "example": 2000.98
         }
       },
       "additionalProperties": false

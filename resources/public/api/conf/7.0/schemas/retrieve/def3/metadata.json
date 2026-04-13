@@ -27,6 +27,7 @@
       "requestedTimestamp": {
         "description": "The timestamp of when the calculation was requested in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
+        "format": "date-time",
         "example": "2019-02-15T09:35:15.094Z"
       },
       "calculationReason": {
@@ -47,6 +48,7 @@
       "calculationTimestamp": {
         "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
+        "format": "date-time",
         "example": "2019-02-15T09:35:15.094Z"
       },
       "calculationType": {
@@ -63,23 +65,27 @@
       "finalisationTimestamp": {
         "description": "The timestamp when the finalisation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
+        "format": "date-time",
         "example": "2025-04-15T09:35:15.094Z"
       },
       "confirmationTimestamp": {
         "description": "The timestamp when the confirmation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
         "type": "string",
+        "format": "date-time",
         "example": "2025-05-15T09:35:15.094Z"
       },
       "periodFrom": {
         "id": "full-date",
         "description": "This defines the earliest date from which the calculation was performed. This will be the accounting period start date (for self-employments) or the tax year start date, whichever occurs first for the income sources supplied.",
         "type": "string",
+        "format": "date",
         "example": "2020-01-01"
       },
       "periodTo": {
         "id": "full-date",
         "description": "This defines the latest date to which the calculation was performed and will be the point in the year to which income has been submitted.",
         "type": "string",
+        "format": "date",
         "example": "2020-01-01"
       }
     },
