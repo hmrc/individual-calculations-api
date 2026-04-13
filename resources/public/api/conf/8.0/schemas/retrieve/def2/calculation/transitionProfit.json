@@ -5,7 +5,7 @@
   "properties": {
     "totalTaxableTransitionProfit": {
       "description": "Total taxable transition profit from all income sources after application of any losses brought forward. This value must be between  0 and 99999999999. No decimals.",
-      "type": "number",
+      "type": "integer",
       "multipleOf": 1,
       "example": 12500,
       "minimum": 0,
