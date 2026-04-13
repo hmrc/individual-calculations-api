@@ -1,0 +1,29 @@
+components:
+  parameters:
+    taxYearTys:
+      name: taxYear
+      in: query
+      description: |
+        The tax year to which the data applies in the format YYYY-YY.
+        
+        The minimum tax year is 2017-18. 
+        No gaps are allowed. 
+        For example, 2020-22 is not valid.
+        
+        > <strong> Note: Tax years up to 2024-25 are supported. For 2025-26 onwards use version 7.0. </strong>
+        
+        <p style="font-weight:bold">For periodIds for tax years 2023-24 and onwards, taxYear is mandatory and a 404 is returned if not provided. It must not be provided for a periodId relating to an earlier tax year.</p>
+      schema:
+        type: string
+        example: "2023-24"
+      required: false
+
+    finalDeclaration:
+      name: finalDeclaration
+      in: query
+      description: |
+        Must be sent as "true" when the user is ready to submit a final declaration. 
+        Acceptable values are "true" and "false".
+      schema:
+        type: boolean
+      required: false

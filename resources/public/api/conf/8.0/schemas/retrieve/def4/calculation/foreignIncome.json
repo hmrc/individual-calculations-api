@@ -6,10 +6,7 @@
     "chargeableOverseasPensionsStateBenefitsRoyalties": {
       "description": "Chargeable overseas pensions and state benefits royalties income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": 500.99,
-      "minimum": 0,
-      "maximum": 99999999999.99,
-      "multipleOf": 0.01
+      "example": "500.99"
     },
     "overseasPensionsStateBenefitsRoyaltiesDetail": {
       "description": "Array containing information about income from overseas pensions, state benefits, and royalties.",
@@ -25,31 +22,22 @@
           "grossIncome": {
             "description": "Gross income for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 501.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "501.99"
           },
           "netIncome": {
             "description": "Net income for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 502.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "502.99"
           },
           "taxDeducted": {
             "description": "Tax deducted for overseas pensions, state benefits and royalties. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 503.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "503.99"
           },
           "foreignTaxCreditRelief": {
             "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. This value must be true or false.",
             "type": "boolean",
-            "example": true
+            "example": "true"
           }
         },
         "required": [
@@ -61,10 +49,7 @@
     "chargeableAllOtherIncomeReceivedWhilstAbroad": {
       "description": "Chargeable income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": 504.99,
-      "minimum": 0,
-      "maximum": 99999999999.99,
-      "multipleOf": 0.01
+      "example": "504.99"
     },
     "allOtherIncomeReceivedWhilstAbroadDetail": {
       "description": "Array detailing all other income received whilst abroad.",
@@ -80,31 +65,22 @@
           "grossIncome": {
             "description": "Gross income from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 502.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "502.99"
           },
           "netIncome": {
             "description": "Net income from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 503.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "503.99"
           },
           "taxDeducted": {
             "description": "Tax deducted from all other income received whilst abroad. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 504.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "504.99"
           },
           "foreignTaxCreditRelief": {
             "description": "A boolean indicating whether it's a Foreign Tax Credit Relief. This value must be true or false.",
             "type": "boolean",
-            "example": true
+            "example": "true"
           }
         },
         "required": [
@@ -120,10 +96,7 @@
         "gainAmount": {
           "description": "Gain from overseas income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 506.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "506.99"
         }
       },
       "required": [
@@ -134,10 +107,7 @@
     "totalForeignBenefitsAndGifts": {
       "description": "Total foreign benefits and gifts. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
-      "example": 507.99,
-      "minimum": 0,
-      "maximum": 99999999999.99,
-      "multipleOf": 0.01
+      "example": "507.99"
     },
     "chargeableForeignBenefitsAndGiftsDetail": {
       "description": "Object detailing chargeable foreign benefits and gifts.",
@@ -146,42 +116,27 @@
         "transactionBenefit": {
           "description": "Amount of transaction benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 508.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "508.99"
         },
         "protectedForeignIncomeSourceBenefit": {
           "description": "Amount of protected foreign income source benefit. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 509.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "509.99"
         },
         "protectedForeignIncomeOnwardGift": {
           "description": "Amount of protected foreign income onward gift. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 510.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "510.99"
         },
         "benefitReceivedAsASettler": {
           "description": "Amount of benefit received as a settler. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 511.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "511.99"
         },
         "onwardGiftReceivedAsASettler": {
           "description": "Amount of onward gift received as a settler. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": 512.99,
-          "minimum": 0,
-          "maximum": 99999999999.99,
-          "multipleOf": 0.01
+          "example": "512.99"
         }
       },
       "additionalProperties": false

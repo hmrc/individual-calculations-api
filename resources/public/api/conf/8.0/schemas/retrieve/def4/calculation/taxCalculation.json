@@ -582,7 +582,6 @@
         "weeks": {
           "description": "Number of weeks.",
           "type": "integer",
-          "multipleOf": 1,
           "example": 12
         },
         "limit": {

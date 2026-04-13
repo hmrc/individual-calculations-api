@@ -8,24 +8,21 @@
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 160.99,
-      "multipleOf": 0.01
+      "example": "160.99"
     },
     "totalTaxPaid": {
       "description": "Total tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 160.99,
-      "multipleOf": 0.01
+      "example": "160.99"
     },
     "totalPensionChargesDue": {
       "description": "Total pension charges due after tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 130.00,
-      "multipleOf": 0.01
+      "example": "130.00"
     },
     "pensionSavingsTaxChargesDetail": {
       "$ref": "#/definitions/pensionSavingsTaxChargesDetail"
@@ -61,16 +58,14 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.00,
-          "multipleOf": 0.01
+          "example": "160.00"
         },
         "totalTaxPaid": {
           "type": "number",
           "description": "Total tax paid for pension scheme unauthorised payments surcharge and pension scheme unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "pensionSchemeUnauthorisedPaymentsSurcharge": {
           "$ref": "#/definitions/pensionSchemeUnauthorisedPaymentsSurcharge"
@@ -90,32 +85,28 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.00,
-          "multipleOf": 0.01
+          "example": "160.00"
         },
         "taxPaid": {
           "type": "number",
           "description": "Tax paid on unauthorised payments surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "rate": {
           "description": "The percentage rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": 20.50,
-          "multipleOf": 0.01
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on unauthorised payments surcharges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         }
       },
       "additionalProperties": false
@@ -129,32 +120,28 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.00,
-          "multipleOf": 0.01
+          "example": "160.00"
         },
         "taxPaid": {
           "type": "number",
           "description": "Tax paid on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "rate": {
           "description": "The percentage rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": 20.50,
-          "multipleOf": 0.01
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on unauthorised payments non surcharge. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         }
       },
       "additionalProperties": false
@@ -168,32 +155,28 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.00,
-          "multipleOf": 0.01
+          "example": "160.00"
         },
         "transferChargeTaxPaid": {
           "type": "number",
           "description": "Tax paid on overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "rate": {
           "description": "The percentage rate used to determine the amount chargeable. This value must be between 0 and 99.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99.99,
-          "example": 20.50,
-          "multipleOf": 0.01
+          "example": "20.50"
         },
         "chargeableAmount": {
           "description": "The amount chargeable on overseas pension scheme transfer charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         }
       },
       "additionalProperties": false
@@ -207,32 +190,28 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         },
         "totalPensionCharge": {
           "description": "The total amount of pension charges on contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         },
         "annualAllowanceTaxPaid": {
           "description": "The amount of annual allowance tax paid on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         },
         "totalPensionChargeDue": {
           "description": "The amount chargeable on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         },
         "pensionBands": {
           "$ref": "#/definitions/pensionBands"
@@ -267,40 +246,35 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99.99,
-            "example": 20.50,
-            "multipleOf": 0.01
+            "example": "20.50"
           },
           "bandLimit": {
             "description": "The tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999999,
-            "example": 2000,
-            "multipleOf": 1
+            "example": "2000"
           },
           "apportionedBandLimit": {
             "description": "The apportioned tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999999,
-            "example": 2000,
-            "multipleOf": 1
+            "example": "2000"
           },
           "contributionAmount": {
             "type": "number",
             "description": "The amount of pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 100.50,
-            "multipleOf": 0.01
+            "example": "100.50"
           },
           "pensionCharge": {
             "type": "number",
             "description": "The amount chargeable on pension contributions in excess of the annual allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 100.50,
-            "multipleOf": 0.01
+            "example": "100.50"
           }
         },
         "additionalProperties": false,
@@ -323,32 +297,28 @@
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.00,
-          "multipleOf": 0.01
+          "example": "160.00"
         },
         "totalShortServiceRefundCharge": {
           "type": "number",
           "description": "The total amount of charges due on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "shortServiceRefundTaxPaid": {
           "type": "number",
           "description": "The amount of tax paid on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 100.50,
-          "multipleOf": 0.01
+          "example": "100.50"
         },
         "totalShortServiceRefundChargeDue": {
           "description": "The amount chargeable on short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
           "minimum": 0,
           "maximum": 99999999999.99,
-          "example": 160.12,
-          "multipleOf": 0.01
+          "example": "160.12"
         },
         "shortServiceRefundBands": {
           "$ref": "#/definitions/shortServiceRefundBands"
@@ -380,40 +350,35 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99.99,
-            "example": 20.50,
-            "multipleOf": 0.01
+            "example": "20.50"
           },
           "bandLimit": {
             "description": "The tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999999,
-            "example": 2000,
-            "multipleOf": 1
+            "example": "2000"
           },
           "apportionedBandLimit": {
             "description": "The apportioned tax band limit. This value must be between 0 and 99999999999. No decimals.",
             "type": "integer",
             "minimum": 0,
             "maximum": 99999999999,
-            "example": 2000,
-            "multipleOf": 1
+            "example": "2000"
           },
           "shortServiceRefundAmount": {
             "type": "number",
             "description": "The amount of short service refunds. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 100.50,
-            "multipleOf": 0.01
+            "example": "100.50"
           },
           "shortServiceRefundCharge": {
             "type": "number",
             "description": "The amount chargeable. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 100.50,
-            "multipleOf": 0.01
+            "example": "100.50"
           }
         },
         "additionalProperties": false,

@@ -6,18 +6,12 @@
     "totalChargeableSavingsAndGains": {
       "description": "The total chargeable savings and gains. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5055,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5055"
     },
     "totalUkSavingsAndGains": {
       "description": "The total UK savings and gains. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 6400,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "6400"
     },
     "ukSavingsAndGainsIncome": {
       "description": "Array detailing UK savings and gains income.",
@@ -47,26 +41,17 @@
           "grossIncome": {
             "description": "The amount of gross income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 180.00,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "180.00"
           },
           "netIncome": {
             "description": "The amount of net income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 181.01,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "181.01"
           },
           "taxDeducted": {
             "description": "The amount of tax deducted. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 182.02,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "182.02"
           }
         },
         "required": [
@@ -79,10 +64,7 @@
     "chargeableForeignSavingsAndGains": {
       "description": "The amount of chargeable foreign savings and gains. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5000,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5000"
     },
     "foreignSavingsAndGainsIncome": {
       "description": "Array detailing foreign savings and gains income.",
@@ -105,31 +87,22 @@
           "grossIncome": {
             "description": "Foreign savings and gains gross income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 182.02,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "182.02"
           },
           "netIncome": {
             "description": "Foreign savings and gains net income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 183.03,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "183.03"
           },
           "taxDeducted": {
             "description": "Foreign savings and gains tax deducted. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 184.04,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "184.04"
           },
           "foreignTaxCreditRelief": {
             "description": "A boolean indicating whether Foreign Tax Credit Relief (FTCR) has been claimed. This value must be true or false.",
             "type": "boolean",
-            "example": false
+            "example": "false"
           }
         },
         "required": [

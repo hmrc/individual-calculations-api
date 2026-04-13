@@ -555,8 +555,7 @@
         "weeks": {
           "description": "Number of weeks.",
           "type": "integer",
-          "multipleOf": 1,
-          "example": 12
+          "example": "12"
         },
         "limit": {
           "description": "Class 2 NICs limit. This value must be between 0 and 99999999999. No decimals.",
@@ -577,17 +576,17 @@
         "underSmallProfitThreshold": {
           "description": "Indicates whether small profits threshold is exceeded. This value must be true or false.",
           "type": "boolean",
-          "example": false
+          "example": "false"
         },
         "actualClass2Nic": {
           "description": "Indicates whether the Class 2 NIC charge is an actual charge (true) or else an estimated charge (false).",
           "type": "boolean",
-          "example": true
+          "example": "true"
         },
         "underLowerProfitThreshold": {
           "type": "boolean",
           "description": "Indicates whether the lower profits threshold is exceeded. This value must be true or false.",
-          "example": false
+          "example": "false"
         }
       },
       "additionalProperties": false,
@@ -1306,29 +1305,25 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 99999999999,
-      "example": 5000,
-      "multipleOf": 1
+      "example": "5000"
     },
     "monetary": {
       "type": "number",
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "monetaryPos": {
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "percent": {
       "type": "number",
       "minimum": 0,
       "maximum": 99.99,
-      "example": 2.99,
-      "multipleOf": 0.01
+      "example": "2.99"
     }
   }
 }

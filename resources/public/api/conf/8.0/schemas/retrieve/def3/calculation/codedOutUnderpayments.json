@@ -8,8 +8,7 @@
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "payeUnderpaymentsDetail": {
       "$ref": "#/definitions/payeUnderpaymentsDetail"
@@ -19,24 +18,21 @@
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "totalCollectedSelfAssessmentUnderpayments": {
       "description": "The total amount collected for Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "totalUncollectedSelfAssessmentUnderpayments": {
       "description": "The total amount of uncollected Self Assessment underpayments. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "minimum": 0,
       "maximum": 99999999999.99,
-      "example": 5000.99,
-      "multipleOf": 0.01
+      "example": "5000.99"
     },
     "selfAssessmentUnderpaymentsDetail": {
       "$ref": "#/definitions/selfAssessmentUnderpaymentsDetail"
@@ -55,8 +51,7 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 5000.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           },
           "relatedTaxYear": {
             "description": "The tax year this underpayment relates to.",
@@ -86,8 +81,7 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 5000.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           },
           "relatedTaxYear": {
             "description": "The tax year this underpayment relates to.",
@@ -103,16 +97,14 @@
             "type": "number",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 5000.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           },
           "uncollectedAmount": {
             "description": "The outstanding amount you now need to pay. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
             "minimum": 0,
             "maximum": 99999999999.99,
-            "example": 5000.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           }
         },
         "additionalProperties": false,

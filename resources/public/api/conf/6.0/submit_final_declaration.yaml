@@ -1,0 +1,139 @@
+post:
+  tags:
+    - Final Declaration
+  summary: Submit a Self Assessment Final Declaration
+  description: |
+    This endpoint allows the developer to submit a final declaration for a tax year by agreeing to the HMRC's tax calculation. 
+    
+    A National Insurance number, tax year and calculation ID must be provided.
+    
+    > <strong> Note: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 7. </strong>
+    
+    ### Test data
+    Scenario simulations using `Gov-Test-Scenario` headers is only available in the sandbox environment.
+    
+    | Header Value (Gov-Test-Scenario)   | Scenario                                                                           |
+    |------------------------------------|------------------------------------------------------------------------------------|
+    | N/A - DEFAULT                      | Simulates success response.                                                        |
+    | FINAL_DECLARATION_IN_PROGRESS      | Simulates the scenario where there is a calculation in progress for the tax year.  |
+    | FINAL_DECLARATION_RECEIVED         | Simulates the scenario where a final declaration has already been received.        |
+    | FINAL_DECLARATION_TAX_YEAR         | Simulates the scenario where the final declaration cannot be submitted until after the end of the tax year. |
+    | INCOME_SOURCES_CHANGED             | Simulates the scenario where information relating to an income source has changed. |
+    | INCOME_SOURCES_INVALID             | Simulates the scenario where a valid income source cannot be found.                |
+    | NO_INCOME_SUBMISSIONS_EXIST        | Simulates the scenario where no income submissions exist.                          |
+    | RECENT_SUBMISSIONS_EXIST           | Simulates the scenario where more recent submissions exist.                        |
+    | RESIDENCY_CHANGED                  | Simulates the scenario where residency has changed.                                 |
+    | SUBMISSION_FAILED                  | Simulates the scenario where a submission has failed.                               |
+    | TAX_YEAR_NOT_SUPPORTED             | Simulates the scenario where the specified tax year is not supported.              |
+    | NOT_FOUND                          | Simulates the scenario where the supplied income source could not be found.        |
+
+
+  parameters:
+    - $ref: ./common/pathParameters.yaml#/components/parameters/nino
+    - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2018
+    - $ref: ./common/pathParameters.yaml#/components/parameters/calculationId
+    - $ref: ./common/headers.yaml#/components/parameters/acceptJson
+    - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
+    - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
+
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+  responses:
+    204:
+      description: Success
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+
+    400:
+      description: Bad request
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            FORMAT_NINO:
+              $ref: ./common/errors.yaml#/components/examples/formatNino
+            FORMAT_TAX_YEAR:
+              $ref: ./common/errors.yaml#/components/examples/formatTaxYear
+            RULE_TAX_YEAR_RANGE_INVALID:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid
+            RULE_TAX_YEAR_NOT_SUPPORTED:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearNotSupported
+            RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
+              $ref: ./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported
+            FORMAT_CALCULATION_ID:
+              $ref: ./common/errors.yaml#/components/examples/formatCalculationId
+            RULE_INCOME_SOURCES_CHANGED:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncomeSourcesChanged
+            RULE_RECENT_SUBMISSIONS_EXIST:
+              $ref: ./common/errors.yaml#/components/examples/ruleRecentSubmissionsExist
+            RULE_RESIDENCY_CHANGED:
+              $ref: ./common/errors.yaml#/components/examples/ruleResidencyChanged
+            RULE_FINAL_DECLARATION_RECEIVED:
+              $ref: ./common/errors.yaml#/components/examples/ruleFinalDeclarationReceived
+            RULE_INCOME_SOURCES_INVALID:
+              $ref: ./common/errors.yaml#/components/examples/ruleIncomeSourcesInvalid
+            RULE_NO_INCOME_SUBMISSIONS_EXIST:
+              $ref: ./common/errors.yaml#/components/examples/ruleNoIncomeSubmissionExists
+            RULE_SUBMISSION_FAILED:
+              $ref: ./common/errors.yaml#/components/examples/ruleSubmissionFailed
+            RULE_FINAL_DECLARATION_TAX_YEAR:
+              $ref: ./common/errors.yaml#/components/examples/ruleFinalDeclarationTaxYear
+            RULE_FINAL_DECLARATION_IN_PROGRESS:
+              $ref: ./common/errors.yaml#/components/examples/ruleFinalDeclarationInProgress
+
+    403:
+      description: Forbidden
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            CLIENT_OR_AGENT_NOT_AUTHORISED:
+              $ref: ./common/errors.yaml#/components/examples/clientOrAgentNotAuthorised
+
+    404:
+      description: Not Found
+      headers:
+        X-CorrelationId:
+          $ref: ./common/headers.yaml#/components/parameters/correlationId
+        Deprecation:
+          $ref: ./common/headers.yaml#/components/parameters/deprecationHeader
+        Sunset:
+          $ref: ./common/headers.yaml#/components/parameters/sunsetHeader
+        Link:
+          $ref: ./common/headers.yaml#/components/parameters/linkHeader
+      content:
+        application/json:
+          schema:
+            $ref: ./schemas/error-response.yaml
+          examples:
+            MATCHING_RESOURCE_NOT_FOUND:
+              $ref: ./common/errors.yaml#/components/examples/notFound

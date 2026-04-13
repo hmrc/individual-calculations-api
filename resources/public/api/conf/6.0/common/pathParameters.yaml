@@ -1,0 +1,37 @@
+components:
+  parameters:
+    nino:
+      name: nino
+      in: path
+      description: |
+        National Insurance number, in the format `AA999999A`
+      schema:
+        type: string
+        example: TC663795B
+      required: true
+
+    taxYearMinimum2018:
+      name: taxYear
+      in: path
+      description: |
+        The tax year the data applies to, for example, 2021-22. 
+        The start year and end year must not span two tax years. 
+        The minimum tax year is 2017-18. No gaps are allowed, for example, 2020-22 is not valid.
+        
+        > <strong> Note: Tax years up to 2024-25 are supported. For 2025-26 onwards use version 7.0. </strong>
+      schema:
+        type: string
+        example: "2021-22"
+      required: true
+
+    calculationId:
+      name: calculationId
+      in: path
+      description: |
+        The unique identifier of the calculation.
+        
+        Must conform to the regular expression: `^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`
+      schema:
+        type: string
+        example: "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+      required: true

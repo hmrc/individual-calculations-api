@@ -1,0 +1,422 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Details the reliefs used in the calculation.",
+  "type": "object",
+  "properties": {
+    "residentialFinanceCosts": {
+      "description": "Details the total residential finance cost reliefs used in the calculation.",
+      "type": "object",
+      "properties": {
+        "adjustedTotalIncome": {
+          "description": "The income (after losses and reliefs, and excluding savings and dividends income) that exceeds your personal allowance. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2000.58"
+        },
+        "totalAllowableAmount": {
+          "description": "The total allowable amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2001.58"
+        },
+        "relievableAmount": {
+          "description": "The lower of either Adjusted Total Income or Total Allowable Amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2002.58"
+        },
+        "rate": {
+          "description": "The tax rate used in the calculation. This value must be between 0 and 99.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "10.25"
+        },
+        "totalResidentialFinanceCostsRelief": {
+          "description": "The total value of residential finance costs relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2004.58"
+        },
+        "ukProperty": {
+          "description": "Details the residential finance costs for UK property.",
+          "type": "object",
+          "properties": {
+            "amountClaimed": {
+              "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999. No decimals.",
+              "type": "integer",
+              "example": "2000"
+            },
+            "allowableAmount": {
+              "description": "The total amount allowable for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "example": "2006.58"
+            },
+            "carryForwardAmount": {
+              "description": "The amount of residential finance costs that can be carried forward to future tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "example": "2007.58"
+            }
+          },
+          "required": [
+            "amountClaimed",
+            "allowableAmount"
+          ],
+          "additionalProperties": false
+        },
+        "foreignProperty": {
+          "description": "Details the residential finance costs for foreign property.",
+          "type": "object",
+          "properties": {
+            "totalForeignPropertyAllowableAmount": {
+              "description": "The total amount allowable for all foreign property residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "example": "2006.58"
+            },
+            "foreignPropertyRfcDetail": {
+              "description": "Details residential finance costs for foreign property broken down by country.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "countryCode": {
+                    "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+                    "type": "string",
+                    "example": "FRA"
+                  },
+                  "amountClaimed": {
+                    "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999. No decimals.",
+                    "type": "integer",
+                    "example": "2000"
+                  },
+                  "allowableAmount": {
+                    "description": "The total amount allowable for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "example": "2007.58"
+                  },
+                  "carryForwardAmount": {
+                    "description": "The amount of residential finance costs that can be carried forward to future tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "example": "2008.58"
+                  }
+                },
+                "required": [
+                  "countryCode",
+                  "amountClaimed",
+                  "allowableAmount"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "totalForeignPropertyAllowableAmount",
+            "foreignPropertyRfcDetail"
+          ],
+          "additionalProperties": false
+        },
+        "allOtherIncomeReceivedWhilstAbroad": {
+          "description": "Details the residential finance costs for other income received whilst abroad.",
+          "type": "object",
+          "properties": {
+            "totalOtherIncomeAllowableAmount": {
+              "description": "The total amount allowable for all other income received whilst abroad for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+              "type": "number",
+              "example": "2009.58"
+            },
+            "otherIncomeRfcDetail": {
+              "description": "Details residential finance costs for other income broken down by country.",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "countryCode": {
+                    "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+                    "type": "string",
+                    "example": "FRA"
+                  },
+                  "residentialFinancialCostAmount": {
+                    "description": "The total amount claimed for residential finance costs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "example": "2010.58"
+                  },
+                  "broughtFwdResidentialFinancialCostAmount": {
+                    "description": "The amount of residential financial costs brought forward from previous tax years. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                    "type": "number",
+                    "example": "2010.58"
+                  }
+                },
+                "required": [
+                  "countryCode"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "totalOtherIncomeAllowableAmount",
+            "otherIncomeRfcDetail"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "adjustedTotalIncome",
+        "relievableAmount",
+        "rate",
+        "totalResidentialFinanceCostsRelief"
+      ],
+      "additionalProperties": false
+    },
+    "reliefsClaimed": {
+      "description": "Details of investment and other reliefs used in the calculation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The type of relief claimed.",
+            "type": "string",
+            "enum": [
+              "vct-subscriptions",
+              "eis-subscriptions",
+              "community-investment",
+              "seed-enterprise-investment",
+              "social-enterprise-investment",
+              "maintenance-payments",
+              "deficiency-relief",
+              "non-deductible-loan-interest",
+              "qualifying-distribution-redemption-of-shares-and-securities"
+            ]
+          },
+          "amountClaimed": {
+            "description": "The amount of relief claimed. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2011.58"
+          },
+          "allowableAmount": {
+            "description": "The amount of allowable relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2012.58"
+          },
+          "amountUsed": {
+            "description": "The amount of relief used. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2013.58"
+          },
+          "rate": {
+            "description": "The rate associated with the relief claimed. This value must be between 0 and 99.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "20.99"
+          },
+          "reliefsClaimedDetail": {
+            "description": "An array containing details about reliefs claimed.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "amountClaimed": {
+                  "description": "The amount of relief claimed. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                  "type": "number",
+                  "example": "2014.58"
+                },
+                "uniqueInvestmentRef": {
+                  "description": "Unique identifier of the entity investment reference.",
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+                  "example": "BAO123456A"
+                },
+                "name": {
+                  "description": "The name of the entity invested in. Populated for Venture Capital Trust (VCT), Enterprise Investment Scheme (EIS) and Community Investments.",
+                  "type": "string",
+                  "example": "EIS fund"
+                },
+                "socialEnterpriseName": {
+                  "description": "The name of the Social Enterprise Investment invested in.",
+                  "type": "string",
+                  "example": "SE Inc"
+                },
+                "companyName": {
+                  "description": "The name of the Seed Enterprise Investment invested in.",
+                  "type": "string",
+                  "example": "Company Ltd"
+                },
+                "deficiencyReliefType": {
+                  "description": "The type of relief. Populated only for deficiency relief.",
+                  "type": "string",
+                  "enum": [
+                    "lifeInsurance",
+                    "lifeAnnuity",
+                    "capitalRedemption"
+                  ]
+                },
+                "customerReference": {
+                  "description": "Unique reference or friendly name used by the customer.",
+                  "type": "string",
+                  "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
+                  "example": "INPOLY123A"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "foreignTaxCreditRelief": {
+      "description": "Details the foreign tax credit relief (FTCR) used in the calculation.",
+      "type": "object",
+      "properties": {
+        "customerCalculatedRelief": {
+          "description": "When this field is true, it means the customer has calculated their own relief. When it is false it means HMRC determined the relief.",
+          "type": "boolean",
+          "example": "true"
+        },
+        "totalForeignTaxCreditRelief": {
+          "description": "The total value of foreign tax credit relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2015.58"
+        },
+        "foreignTaxCreditReliefOnProperty": {
+          "description": "The value of foreign tax credit relief on property. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2016.58"
+        },
+        "foreignTaxCreditReliefOnDividends": {
+          "description": "The value of foreign tax credit relief on dividends. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2017.58"
+        },
+        "foreignTaxCreditReliefOnSavings": {
+          "description": "The value of foreign tax credit relief on savings. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2018.58"
+        },
+        "foreignTaxCreditReliefOnForeignIncome": {
+          "description": "The value of foreign tax credit relief on foreign income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2019.58"
+        },
+        "foreignTaxCreditReliefDetail": {
+          "description": "An array containing details about foreign tax credit relief used in the retrieved tax calculation.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "incomeSourceType": {
+                "description": "A list of income source types for foreign tax credit.",
+                "type": "string",
+                "enum": [
+                  "foreign-dividends",
+                  "foreign-property",
+                  "foreign-savings-and-gains",
+                  "other-income",
+                  "foreign-pension"
+                ]
+              },
+              "incomeSourceId": {
+                "description": "An identifier for the business, unique to the customer.",
+                "type": "string",
+                "pattern": "^[A-Za-z0-9]{15}$",
+                "example": "XAIS12345678910"
+              },
+              "countryCode": {
+                "description": "A three-letter code that represents a country name. This value must in ISO 3166-1 Alpha-3 format.",
+                "type": "string",
+                "example": "FRA"
+              },
+              "foreignIncome": {
+                "description": "The value of foreign income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "2016.58"
+              },
+              "foreignTax": {
+                "description": "The amount of foreign tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "2017.58"
+              },
+              "dtaRate": {
+                "description": "Defines a percentage rate for Double Tax Agreement. This value must be between 0 and 100.00 up to 2 decimal places.",
+                "type": "number",
+                "example": "20.99"
+              },
+              "dtaAmount": {
+                "description": "Amount for Double Tax Agreement. This value must be between 0 and 99999999999 up to 2 decimal places.",
+                "type": "number",
+                "example": "2000.77"
+              },
+              "ukLiabilityOnIncome": {
+                "description": "The amount of UK Liability on income. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "2001.77"
+              },
+              "foreignTaxCredit": {
+                "description": "The amount of foreign tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "type": "number",
+                "example": "2002.77"
+              },
+              "employmentLumpSum": {
+                "description": "A boolean to identify whether or not the income type was an employment lump sum. This value must be true or false.",
+                "type": "boolean",
+                "example": "true"
+              }
+            },
+            "required": [
+              "countryCode",
+              "foreignIncome",
+              "foreignTaxCredit"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "totalForeignTaxCreditRelief"
+      ],
+      "additionalProperties": false
+    },
+    "topSlicingRelief": {
+      "description": "Details the top slicing reliefs used in the calculation.",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "The amount of top slicing relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "example": "2000.58"
+        }
+      },
+      "additionalProperties": false
+    },
+    "basicRateExtension": {
+      "type": "object",
+      "description": "Basic rate extension.",
+      "properties": {
+        "totalBasicRateExtension": {
+          "type": "number",
+          "description": "The monetary value of the total basic rate extension. \nThis value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "example": "2010.58"
+        },
+        "giftAidRelief": {
+          "type": "number",
+          "description": "The amount of Gift Aid Relief received, \nThis value must be between 0 and 99999999999. No decimal places.",
+          "example": "3000"
+        },
+        "pensionContributionReliefs": {
+          "type": "number",
+          "description": "The monetary value of the pension contribution reliefs.\nThis value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "example": "5000.58"
+        }
+      }
+    },
+    "giftAidTaxReductionWhereBasicRateDiffers": {
+      "type": "object",
+      "description": "Gift Aid tax reduction because Scottish or Welsh Basic Rate is above the Basic Rate at which charities have obtained relief.",
+      "properties": {
+        "amount": {
+          "type": "number",
+          "descripton": "The monetary value of the Gift Aid tax reduction. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "example": "2000.58"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

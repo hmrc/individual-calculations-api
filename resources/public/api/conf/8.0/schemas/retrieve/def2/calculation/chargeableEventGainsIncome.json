@@ -6,18 +6,12 @@
     "totalOfAllGains": {
       "description": "Total gains for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5000,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5000"
     },
     "totalGainsWithTaxPaid": {
       "description": "Total gains with tax paid for chargeable event gains income. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5002,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5002"
     },
     "gainsWithTaxPaidDetail": {
       "description": "Array detailing gains with tax paid.",
@@ -43,26 +37,17 @@
           "gainAmount": {
             "description": "Gain amount for gains with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 180.00,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "180.00"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 50,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "50"
           },
           "yearsHeldSinceLastGain": {
             "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 35,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "35"
           }
         },
         "required": [
@@ -74,10 +59,7 @@
     "totalGainsWithNoTaxPaidAndVoidedIsa": {
       "description": "Total of gains with no tax paid and voided ISA. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5000,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5000"
     },
     "gainsWithNoTaxPaidAndVoidedIsaDetail": {
       "description": "Array detailing gains with no tax paid and voided Isa.",
@@ -104,34 +86,22 @@
           "gainAmount": {
             "description": "Gain amount for gains with no tax paid and voided ISA. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 180.00,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "180.00"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 50,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "50"
           },
           "yearsHeldSinceLastGain": {
             "description": "Years held since last gain. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 83,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "83"
           },
           "voidedIsaTaxPaid": {
             "description": "Voided ISA tax paid amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 180.55,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "180.55"
           }
         },
         "required": [
@@ -143,10 +113,7 @@
     "totalForeignGainsOnLifePoliciesTaxPaid": {
       "description": "Total of foreign gains on life policies with tax paid. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 5000,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "5000"
     },
     "foreignGainsOnLifePoliciesTaxPaidDetail": {
       "description": "Array detailing foreign gains on life policies with tax paid.",
@@ -163,26 +130,17 @@
           "gainAmount": {
             "description": "Gain amount for foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 5000.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           },
           "taxPaidAmount": {
             "description": "Foreign gains on life policies with tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 3500.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "3500.99"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 50,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "5"
           }
         },
         "additionalProperties": false
@@ -191,10 +149,7 @@
     "totalForeignGainsOnLifePoliciesNoTaxPaid": {
       "description": "Total of foreign gains on life policies with no tax paid. This value must be between 0 and 99999999999. No decimals.",
       "type": "integer",
-      "example": 3100,
-      "minimum": 0,
-      "maximum": 99999999999,
-      "multipleOf": 1
+      "example": "3100"
     },
     "foreignGainsOnLifePoliciesNoTaxPaidDetail": {
       "description": "Array detailing foreign gains on life policies with no tax paid.",
@@ -211,18 +166,12 @@
           "gainAmount": {
             "description": "Foreign gain on life policies with no tax paid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": 5000.99,
-            "minimum": 0,
-            "maximum": 99999999999.99,
-            "multipleOf": 0.01
+            "example": "5000.99"
           },
           "yearsHeld": {
             "description": "Years held. This value must be between 0 and 99. No decimals.",
             "type": "integer",
-            "example": 62,
-            "minimum": 0,
-            "maximum": 99,
-            "multipleOf": 1
+            "example": "62"
           }
         },
         "additionalProperties": false
