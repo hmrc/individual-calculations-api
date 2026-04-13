@@ -13,7 +13,6 @@
         "id": "tax-year",
         "description": "The tax year in which the calculation was performed.",
         "type": "string",
-        "format": "date",
         "example": "2022-23"
       },
       "requestedBy": {
