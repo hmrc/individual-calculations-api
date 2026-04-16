@@ -228,6 +228,13 @@ components:
         code: MATCHING_RESOURCE_NOT_FOUND
         message: Matching resource not found
 
+    notFoundNoId:
+      description: |
+        The calculation ID was not found.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: Matching resource not found
+
     notFoundList:
       description: |
         No tax calculations can be found for the supplied NINO and tax year.
