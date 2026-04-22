@@ -232,6 +232,14 @@
       },
       "topSlicingRelief": {
         "amount": 5000.99
+      },
+      "basicRateExtension": {
+        "totalBasicRateExtension": 5000.99,
+        "giftAidRelief": 12500,
+        "pensionContributionReliefs": 5000.99
+      },
+      "giftAidTaxReductionWhereBasicRateDiffers": {
+        "amount": 5000.99
       }
     },
     "taxDeductedAtSource": {
@@ -441,8 +449,9 @@
           "employerRef": "123/AA12345",
           "employerName": "string",
           "payrollId": "string",
-          "startDate": "2021-12-02",
-          "dateEmploymentEnded": "2021-12-02",
+          "offPayrollWorker": true,
+          "startDate": "2025-04-06",
+          "dateEmploymentEnded": "2025-04-24",
           "taxablePayToDate": 5000.99,
           "totalTaxToDate": -99999999999.99,
           "disguisedRemuneration": true,
@@ -745,38 +754,50 @@
         }
       ]
     },
-    "partnerIncome": {
-      "totalPartnerIncome": 5000.99,
-      "listOfPartnerIncome": [
-        {
-          "partnershipUtr": "4564564564",
-          "partnershipTrades": [
-            {
-              "lossesBroughtForwardAdjustedProfit": 5000.99,
-              "shareOfTaxableProfit": 5000.99,
-              "adjustedLoss": 5000.99,
-              "currentYearLossAppliedToGeneralIncome": 5000.99,
-              "transitionProfitArisingThisYear": 5000.99,
-              "lossesBroughtForwardTransitionProfit": 5000.99
-            }
-          ],
-          "nationalInsuranceContributions": {
-            "voluntaryClass2Nics": true,
-            "class4Exemption": true,
-            "adjustmentToProfitsForClass4": 5000.99
-          },
-          "untaxedSavings": 5000.99,
-          "taxedSavings": 5000.99,
-          "dividendIncome": 5000.99,
-          "ukPropertyIncome": {
-            "shareOfProfitOrLoss": -99999999999.99,
-            "profitOrLossAdjustment": -99999999999.99,
-            "currentYearLossAppliedToGeneralIncome": 5000.99
-          },
-          "taxedAndUntaxedIncome": 5000.99
-        }
-      ]
+    "otherIncome": {
+      "totalOtherIncome": 5000.99,
+      "postCessationIncome": {
+        "totalPostCessationReceipts": 5000.00,
+        "postCessationReceipts": [
+          {
+            "amount": 5000.99,
+            "taxYearIncomeToBeTaxed": "2023-24"
+          }
+        ]
+      }
     },
+      "partnerIncome": {
+        "totalPartnerIncome": 5000.99,
+        "listOfPartnerIncome": [
+          {
+            "partnershipUtr": "4564564564",
+            "partnershipTrades": [
+              {
+                "lossesBroughtForwardAdjustedProfit": 5000.99,
+                "shareOfTaxableProfit": 5000.99,
+                "adjustedLoss": 5000.99,
+                "currentYearLossAppliedToGeneralIncome": 5000.99,
+                "transitionProfitArisingThisYear": 5000.99,
+                "lossesBroughtForwardTransitionProfit": 5000.99
+              }
+            ],
+            "nationalInsuranceContributions": {
+              "voluntaryClass2Nics": true,
+              "class4Exemption": true,
+              "adjustmentToProfitsForClass4": 5000.99
+            },
+            "untaxedSavings": 5000.99,
+            "taxedSavings": 5000.99,
+            "dividendIncome": 5000.99,
+            "ukPropertyIncome": {
+              "shareOfProfitOrLoss": -99999999999.99,
+              "profitOrLossAdjustment": -99999999999.99,
+              "currentYearLossAppliedToGeneralIncome": 5000.99
+            },
+            "taxedAndUntaxedIncome": 5000.99
+          }
+        ]
+      },
     "incomeSummaryTotals": {
       "totalSelfEmploymentProfit": 12500,
       "totalPropertyProfit": 12500,
@@ -892,6 +913,7 @@
           "limit": 12500,
           "apportionedLimit": 12500,
           "underSmallProfitThreshold": true,
+          "underLowerProfitThreshold": true,
           "actualClass2Nic": true
         },
         "class4Nics": {
@@ -1003,6 +1025,7 @@
         }
       ],
       "totalEstimatedIncome": 12500,
+      "totalAllowancesAndDeductions": 12500,
       "totalTaxableIncome": 12500,
       "incomeTaxAmount": 5000.99,
       "nic2": 5000.99,

@@ -46,6 +46,15 @@ class MtdErrorSpec extends UnitSpec {
     }
   }
 
+  "maybeWithPath" should {
+    "add an path to the error" when {
+      "a path is provided" in {
+        val result = error.maybeWithPath(Some("path")).paths
+        result shouldBe Some(List("path"))
+      }
+    }
+  }
+
   "withExtraPath" when {
     "paths are undefined" should {
       "create a new error with paths" in {

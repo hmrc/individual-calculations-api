@@ -22,7 +22,8 @@ import v8.common.model.domain.`final-declaration`
 import v8.retrieveCalculation.models.request.{
   Def1_RetrieveCalculationRequestData,
   Def2_RetrieveCalculationRequestData,
-  Def3_RetrieveCalculationRequestData
+  Def3_RetrieveCalculationRequestData,
+  Def4_RetrieveCalculationRequestData
 }
 
 class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
@@ -49,10 +50,18 @@ class SubmitFinalDeclarationRequestDataSpec extends UnitSpec {
         }
 
         "retrieve uses schema Def3" must {
-          "return a Def2_RetrieveCalculationRequestData" in {
+          "return a Def3_RetrieveCalculationRequestData" in {
             val taxYear = TaxYear.fromMtd("2025-26")
             Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId, calculationType).toRetrieveRequestData shouldBe
               Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+          }
+        }
+
+        "retrieve uses schema Def4" must {
+          "return a Def4_RetrieveCalculationRequestData" in {
+            val taxYear = TaxYear.fromMtd("2026-27")
+            Def1_SubmitFinalDeclarationRequestData(nino, taxYear, calculationId, calculationType).toRetrieveRequestData shouldBe
+              Def4_RetrieveCalculationRequestData(nino, taxYear, calculationId)
           }
         }
       }
