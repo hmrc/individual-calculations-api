@@ -28,7 +28,7 @@ import shared.services.EnrolmentsAuthService.{
   supportingAgentAuthPredicate
 }
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual, Organisation}
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.{affinityGroup, authorisedEnrolments}
 import uk.gov.hmrc.auth.core.retrieve.{EmptyRetrieval, Retrieval, ~}
@@ -61,11 +61,11 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
     }
 
     def authService(
-        authValidationEnabled: Boolean,
-        initialPredicate: Predicate,
-        primaryAgentPredicate: Predicate,
-        supportingAgentPredicate: Predicate
-    ): Unit = {
+                     authValidationEnabled: Boolean,
+                     initialPredicate: Predicate,
+                     primaryAgentPredicate: Predicate,
+                     supportingAgentPredicate: Predicate
+                   ): Unit = {
       behave like authorisedIndividual(authValidationEnabled, initialPredicate)
       behave like authorisedOrganisation(authValidationEnabled, initialPredicate)
 
@@ -74,9 +74,11 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       behave like authorisedSupportingAgent(authValidationEnabled, initialPredicate, primaryAgentPredicate, supportingAgentPredicate)
 
       behave like disallowSupportingAgentForPrimaryOnlyEndpoint(authValidationEnabled, initialPredicate, primaryAgentPredicate)
+      behave like disallowInvalidAffinityGroup(authValidationEnabled, initialPredicate)
 
       behave like disallowUsersWithoutEnrolments(authValidationEnabled, initialPredicate)
       behave like disallowWhenNoBearerToken(authValidationEnabled, initialPredicate)
+      behave like handleUnexpectedError(authValidationEnabled, initialPredicate)
     }
 
     def authorisedIndividual(authValidationEnabled: Boolean, initialPredicate: Predicate): Unit =
@@ -130,10 +132,10 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
     }
 
     def authorisedPrimaryAgent(
-        authValidationEnabled: Boolean,
-        initialPredicate: Predicate,
-        primaryAgentPredicate: Predicate
-    ): Unit =
+                                authValidationEnabled: Boolean,
+                                initialPredicate: Predicate,
+                                primaryAgentPredicate: Predicate
+                              ): Unit =
       "allow authorised Primary agents with ARN" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
@@ -164,11 +166,11 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       }
 
     def authorisedSupportingAgent(
-        authValidationEnabled: Boolean,
-        initialPredicate: Predicate,
-        primaryAgentPredicate: Predicate,
-        supportingAgentPredicate: Predicate
-    ): Unit =
+                                   authValidationEnabled: Boolean,
+                                   initialPredicate: Predicate,
+                                   primaryAgentPredicate: Predicate,
+                                   supportingAgentPredicate: Predicate
+                                 ): Unit =
       "allow authorised Supporting agents with ARN" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
@@ -204,10 +206,10 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       }
 
     def disallowSupportingAgentForPrimaryOnlyEndpoint(
-        authValidationEnabled: Boolean,
-        initialPredicate: Predicate,
-        primaryAgentPredicate: Predicate
-    ): Unit =
+                                                       authValidationEnabled: Boolean,
+                                                       initialPredicate: Predicate,
+                                                       primaryAgentPredicate: Predicate
+                                                     ): Unit =
       "disallow Supporting agents for a primary-only endpoint" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
@@ -232,6 +234,21 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
           .returns(Future.failed(InsufficientEnrolments()))
 
         mockConfidenceLevelCheckConfig(authValidationEnabled = authValidationEnabled)
+
+        val result: AuthOutcome = await(enrolmentsAuthService.authorised(mtdId))
+        result shouldBe Left(ClientOrAgentNotAuthorisedError)
+      }
+
+    def disallowInvalidAffinityGroup(authValidationEnabled: Boolean, initialPredicate: Predicate): Unit =
+      "disallow users with an invalid affinity group" in new Test {
+        mockConfidenceLevelCheckConfig(authValidationEnabled = authValidationEnabled)
+
+        val retrievalsResult = new ~(None, Enrolments(Set.empty))
+
+        MockedAuthConnector
+          .authorised(initialPredicate, affinityGroup and authorisedEnrolments)
+          .once()
+          .returns(Future.successful(retrievalsResult))
 
         val result: AuthOutcome = await(enrolmentsAuthService.authorised(mtdId))
         result shouldBe Left(ClientOrAgentNotAuthorisedError)
@@ -262,6 +279,22 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         val result: AuthOutcome = await(enrolmentsAuthService.authorised(mtdId))
         result shouldBe Left(ClientOrAgentNotAuthorisedError)
       }
+
+    def handleUnexpectedError(authValidationEnabled: Boolean, initialPredicate: Predicate): Unit =
+      "return InternalError on unexpected error" in new Test {
+        val exception = new RuntimeException("Unexpected error")
+
+        mockConfidenceLevelCheckConfig(authValidationEnabled = authValidationEnabled)
+
+        MockedAuthConnector
+          .authorised(initialPredicate, affinityGroup and authorisedEnrolments)
+          .once()
+          .returns(Future.failed(exception))
+
+        val result: AuthOutcome = await(enrolmentsAuthService.authorised(mtdId))
+        result shouldBe Left(InternalError)
+
+      }
   }
 
   trait Test {
@@ -284,7 +317,7 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
         .anyNumberOfTimes()
         .returns(
           ConfidenceLevelConfig(
-            confidenceLevel = ConfidenceLevel.L250,
+            confidenceLevel = ConfidenceLevel.L200,
             definitionEnabled = true,
             authValidationEnabled = authValidationEnabled
           )
