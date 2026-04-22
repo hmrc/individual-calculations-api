@@ -61,11 +61,11 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
     }
 
     def authService(
-                     authValidationEnabled: Boolean,
-                     initialPredicate: Predicate,
-                     primaryAgentPredicate: Predicate,
-                     supportingAgentPredicate: Predicate
-                   ): Unit = {
+        authValidationEnabled: Boolean,
+        initialPredicate: Predicate,
+        primaryAgentPredicate: Predicate,
+        supportingAgentPredicate: Predicate
+    ): Unit = {
       behave like authorisedIndividual(authValidationEnabled, initialPredicate)
       behave like authorisedOrganisation(authValidationEnabled, initialPredicate)
 
@@ -132,10 +132,10 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
     }
 
     def authorisedPrimaryAgent(
-                                authValidationEnabled: Boolean,
-                                initialPredicate: Predicate,
-                                primaryAgentPredicate: Predicate
-                              ): Unit =
+        authValidationEnabled: Boolean,
+        initialPredicate: Predicate,
+        primaryAgentPredicate: Predicate
+    ): Unit =
       "allow authorised Primary agents with ARN" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
@@ -166,11 +166,11 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       }
 
     def authorisedSupportingAgent(
-                                   authValidationEnabled: Boolean,
-                                   initialPredicate: Predicate,
-                                   primaryAgentPredicate: Predicate,
-                                   supportingAgentPredicate: Predicate
-                                 ): Unit =
+        authValidationEnabled: Boolean,
+        initialPredicate: Predicate,
+        primaryAgentPredicate: Predicate,
+        supportingAgentPredicate: Predicate
+    ): Unit =
       "allow authorised Supporting agents with ARN" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
@@ -206,10 +206,10 @@ class EnrolmentsAuthServiceSpec extends ServiceSpec with MockAppConfig {
       }
 
     def disallowSupportingAgentForPrimaryOnlyEndpoint(
-                                                       authValidationEnabled: Boolean,
-                                                       initialPredicate: Predicate,
-                                                       primaryAgentPredicate: Predicate
-                                                     ): Unit =
+        authValidationEnabled: Boolean,
+        initialPredicate: Predicate,
+        primaryAgentPredicate: Predicate
+    ): Unit =
       "disallow Supporting agents for a primary-only endpoint" in new Test {
         val arn = "123567890"
         val enrolments: Enrolments = Enrolments(
