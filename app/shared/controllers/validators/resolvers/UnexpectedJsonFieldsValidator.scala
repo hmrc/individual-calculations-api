@@ -75,7 +75,7 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
   sealed trait SchemaStructure
 
-  private[UnexpectedJsonFieldsValidator] object SchemaStructure {
+  object SchemaStructure {
 
     case class Obj(fields: List[(String, SchemaStructure)]) extends SchemaStructure {
       def keys: Set[String] = fields.map(_._1).toSet

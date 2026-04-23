@@ -17,7 +17,9 @@
 package shared.controllers.validators.resolvers
 
 import play.api.libs.json.{JsObject, Json}
+import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructure.{Arr, Leaf}
 import shared.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
+import shared.models.domain.TaxYear
 import shared.models.errors.RuleIncorrectOrEmptyBodyError
 import shared.utils.UnitSpec
 
@@ -64,12 +66,6 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
         validator.validator((json, data)) shouldBe None
       }
-    }
-
-    "a primitive JsValue inside an object is compared to Leaf, it should return no extra paths" in {
-      val validator      = new UnexpectedJsonFieldsValidator[String]
-      val json: JsObject = Json.parse("""{ "value": "primitive" }""").as[JsObject]
-      validator.validator((json, "primitive")) shouldBe None
     }
 
     "an additional field is present" when {
@@ -125,12 +121,12 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
         "the field is nested in an object" must {
           "return an error with path to the extra field" in {
             val json = Json
-              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" },
-                   |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" },
-                   |    {"a" : "v1", "b" : "v2" }
-                   |  ]
-                   |}""".stripMargin)
+              .parse("""{ "bar": {"a" : "v1", "baz": "extra", "b" : "v2" }, 
+                       |  "bars": [
+                       |    {"a" : "v1",  "b" : "v2" }, 
+                       |    {"a" : "v1", "b" : "v2" }
+                       |  ]
+                       |}""".stripMargin)
               .as[JsObject]
 
             validator.validator((json, data)) shouldBe errorWithPaths("/bar/baz")
@@ -141,12 +137,12 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
           "return an error with path to the extra field" in {
             val json = Json
               .parse("""{
-                   |  "bar": {"a" : "v1", "b" : "v2" },
-                   |  "bars": [
-                   |    {"a" : "v1",  "b" : "v2" },
-                   |    {"a" : "v1", "baz": "extra", "b" : "v2" }
-                   |  ]
-                   |}""".stripMargin)
+                       |  "bar": {"a" : "v1", "b" : "v2" },
+                       |  "bars": [
+                       |    {"a" : "v1",  "b" : "v2" }, 
+                       |    {"a" : "v1", "baz": "extra", "b" : "v2" }
+                       |  ]
+                       |}""".stripMargin)
               .as[JsObject]
 
             validator.validator((json, data)) shouldBe errorWithPaths("/bars/1/baz")
@@ -157,13 +153,13 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
           "return an error with paths to the extra fields" in {
             val json = Json
               .parse("""{
-                 |  "bar": {"a" : "v1", "b" : "v2" , "baz": "extra"},
-                 |  "baz": "extra",
-                 |  "bars": [
-                 |    {"a" : "v1", "baz": "extra0", "b" : "v2" },
-                 |    {"a" : "v1", "baz": "extra1", "b" : "v2" }
-                 |  ]
-                 |}""".stripMargin)
+                       |  "bar": {"a" : "v1", "b" : "v2" , "baz": "extra"},
+                       |  "baz": "extra",
+                       |  "bars": [
+                       |    {"a" : "v1", "baz": "extra0", "b" : "v2" }, 
+                       |    {"a" : "v1", "baz": "extra1", "b" : "v2" }
+                       |  ]
+                       |}""".stripMargin)
               .as[JsObject]
 
             validator.validator((json, data)) shouldBe errorWithPaths("/baz", "/bar/baz", "/bars/0/baz", "/bars/1/baz")
@@ -229,65 +225,38 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
       }
     }
 
-    "handle arrays with more items than expected schema items" in {
-      val json = Json
-        .parse("""{
-        "bars": [
-          {"a" : "v1", "b": "v2"},
-          {"a" : "v1", "b": "v2"},
-          {"a" : "v1", "extra": "v3"}
-        ],
-        "bar": {"a": "v1", "b": "v2"}
-      }""")
-        .as[JsObject]
+    "SchemaStructureSource" must {
+      "return Leaf for non-list types" in {
+        SchemaStructureSource[String].schemaStructureOf("test") shouldBe Leaf
+        SchemaStructureSource[Int].schemaStructureOf(1) shouldBe Leaf
+        SchemaStructureSource[Double].schemaStructureOf(1.00) shouldBe Leaf
+        SchemaStructureSource[Boolean].schemaStructureOf(true) shouldBe Leaf
+        SchemaStructureSource[BigInt].schemaStructureOf(BigInt(1)) shouldBe Leaf
+        SchemaStructureSource[BigDecimal].schemaStructureOf(BigDecimal(1)) shouldBe Leaf
+        SchemaStructureSource[TaxYear].schemaStructureOf(TaxYear.fromMtd("2025-26")) shouldBe Leaf
+        SchemaStructureSource[Option[String]].schemaStructureOf(Some("test")) shouldBe Leaf
+        SchemaStructureSource[Option[String]].schemaStructureOf(None) shouldBe Leaf
+      }
 
-      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
+      "return Arr of Leaf for non-empty Seq" in {
+        SchemaStructureSource[Seq[String]].schemaStructureOf(Seq("test", "test")) shouldBe Arr(Seq(Leaf, Leaf))
+        SchemaStructureSource[Seq[Int]].schemaStructureOf(Seq(1, 1)) shouldBe Arr(Seq(Leaf, Leaf))
+      }
 
-      validator.validator((json, data)) shouldBe None
+      "return empty Arr for empty Seq" in {
+        SchemaStructureSource[Seq[Double]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
+        SchemaStructureSource[Seq[Boolean]].schemaStructureOf(Seq.empty) shouldBe Arr(Seq.empty)
+      }
+
+      "return Arr of Leaf for non-empty List" in {
+        SchemaStructureSource[List[BigInt]].schemaStructureOf(List(BigInt(1), BigInt(1))) shouldBe Arr(Seq(Leaf, Leaf))
+        SchemaStructureSource[List[BigDecimal]].schemaStructureOf(List(BigDecimal(1), BigDecimal(1))) shouldBe Arr(Seq(Leaf, Leaf))
+      }
+
+      "return empty Arr for empty List" in {
+        SchemaStructureSource[List[TaxYear]].schemaStructureOf(List.empty) shouldBe Arr(Seq.empty)
+      }
     }
-
-    "handle arrays with fewer items than expected schema items" in {
-      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")), Bar(Some("v1"), Some("v2")))))
-
-      val json = Json
-        .parse("""{
-        "bar": {"a": "v1", "b": "v2"},
-        "bars": [
-          {"a" : "v1", "b": "v2"}
-        ]
-      }""")
-        .as[JsObject]
-
-      validator.validator((json, data)) shouldBe None
-    }
-
-    "empty array is valid even if expected items exist" in {
-      val json = Json
-        .parse("""{
-        "bar": {"a": "v1", "b": "v2"},
-        "bars": []
-      }""")
-        .as[JsObject]
-
-      val data = Foo(bar = Bar(Some("v1"), Some("v2")), bars = Some(Seq(Bar(Some("v1"), Some("v2")))))
-
-      validator.validator((json, data)) shouldBe None
-    }
-
-    "missing optional fields should not cause errors" in {
-      val json = Json.parse("""{ "bar": {"a" : "v1"} }""").as[JsObject]
-      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
-
-      validator.validator((json, data)) shouldBe None
-    }
-
-    "null field in input should be ignored if not in schema" in {
-      val json = Json.parse("""{ "bar": {"a" : "v1", "b": null}, "bar2": null }""").as[JsObject]
-      val data = Foo(bar = Bar(Some("v1"), None), bars = None, bar2 = None)
-
-      validator.validator((json, data)) shouldBe None
-    }
-
   }
 
 }

@@ -22,10 +22,10 @@ import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, RequestHeader, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
-import shared.models.errors._
+import play.api.test.Helpers.*
+import shared.models.errors.*
 import uk.gov.hmrc.auth.core.InsufficientEnrolments
-import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, NotFoundException}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpException, JsValidationException, NotFoundException, UpstreamErrorResponse}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
@@ -137,6 +137,35 @@ class ErrorHandlerSpec extends UnitSpec with GuiceOneAppPerSuite {
     "return 500 with error body" when {
       "other exception thrown" in new Test {
         val result: Future[Result] = handler.onServerError(requestHeader, new Exception with NoStackTrace)
+        status(result).shouldBe(INTERNAL_SERVER_ERROR)
+
+        contentAsJson(result).shouldBe(InternalError.asJson)
+      }
+    }
+
+    "return HttpException with error body" when {
+      "other exception thrown" in new Test {
+        val result: Future[Result] = handler.onServerError(requestHeader, new HttpException("test", 500))
+        status(result).shouldBe(BAD_REQUEST)
+
+        contentAsJson(result).shouldBe(BadRequestError.asJson)
+      }
+    }
+
+    "return UpstreamErrorResponse 400 with error body" when {
+      "other exception thrown" in new Test {
+        val result: Future[Result] =
+          handler.onServerError(requestHeader, new UpstreamErrorResponse("test", 400, 400, Map("ACCEPT" -> List("application/vnd.hmrc.1.0+json"))))
+        status(result).shouldBe(BAD_REQUEST)
+
+        contentAsJson(result).shouldBe(BadRequestError.asJson)
+      }
+    }
+
+    "return UpstreamErrorResponse 500 with error body" when {
+      "other exception thrown" in new Test {
+        val result: Future[Result] =
+          handler.onServerError(requestHeader, new UpstreamErrorResponse("test", 500, 500, Map("ACCEPT" -> List("application/vnd.hmrc.1.0+json"))))
         status(result).shouldBe(INTERNAL_SERVER_ERROR)
 
         contentAsJson(result).shouldBe(InternalError.asJson)
