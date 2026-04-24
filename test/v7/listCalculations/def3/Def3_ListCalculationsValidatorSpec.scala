@@ -17,7 +17,7 @@
 package v7.listCalculations.def3
 
 import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
+import shared.models.errors.*
 import shared.utils.UnitSpec
 import v7.common.model.domain.*
 import v7.listCalculations.model.request.Def3_ListCalculationsRequestData
@@ -36,8 +36,8 @@ class Def3_ListCalculationsValidatorSpec extends UnitSpec {
   private val calcTypes: Seq[(Option[String], Option[CalculationType])] = Seq(
     (Some("in-year"), Some(`in-year`)),
     (Some("intent-to-finalise"), Some(`intent-to-finalise`)),
-    (Some("intent-to-amend"), Some(`intent-to-amend`)),
     (Some("final-declaration"), Some(`final-declaration`)),
+    (Some("intent-to-amend"), Some(`intent-to-amend`)),
     (Some("confirm-amendment"), Some(`confirm-amendment`))
   )
 
@@ -46,6 +46,7 @@ class Def3_ListCalculationsValidatorSpec extends UnitSpec {
 
   "validator" should {
     "return the parsed domain object" when {
+
       calcTypes.foreach { case (calcTypeStr, calcTypeEnum) =>
         s"a valid request is supplied with a tax year and $calcTypeStr" in {
           val result = validator(validNino, validTaxYear, calcTypeStr).validateAndWrapResult()

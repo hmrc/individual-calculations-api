@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,53 +14,54 @@
  * limitations under the License.
  */
 
-package v7.retrieveCalculation.def1.model.response.calculation.savingsAndGainsIncome
+package v7.retrieveCalculation.def1.model.response.calculation.otherIncome
 
 import play.api.libs.json.{JsValue, Json}
 import shared.utils.UnitSpec
-import v7.common.model.response.IncomeSourceType.`foreign-savings-and-gains`
+import v7.retrieveCalculation.def1.model.Def1_CalculationFixture
 
-class ForeignSavingsAndGainsIncomeSpec extends UnitSpec {
+class OtherIncomeSpec extends UnitSpec with Def1_CalculationFixture {
 
-  val model: ForeignSavingsAndGainsIncome = ForeignSavingsAndGainsIncome(
-    `foreign-savings-and-gains`,
-    Some("GER"),
-    Some(5000.99),
-    Some(5000.99),
-    Some(5000.99),
-    Some(true)
-  )
+  val model: OtherIncome = otherIncome
 
   val downstreamJson: JsValue = Json.parse(
     """
       |{
-      |  "incomeSourceType": "16",
-      |  "countryCode": "GER",
-      |  "grossIncome": 5000.99,
-      |  "netIncome": 5000.99,
-      |  "taxDeducted": 5000.99,
-      |  "foreignTaxCreditRelief": true
-      |}
+      |      "totalOtherIncome": 2000.00,
+      |      "postCessationIncome": {
+      |        "totalPostCessationReceipts": 2000.00,
+      |        "postCessationReceipts": [
+      |          {
+      |            "amount": 100.00,
+      |            "taxYearIncomeToBeTaxed": "2019-20"
+      |          }
+      |        ]
+      |      }
+      |    }
       |""".stripMargin
   )
 
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |  "incomeSourceType": "foreign-savings-and-gains",
-      |  "countryCode": "GER",
-      |  "grossIncome": 5000.99,
-      |  "netIncome": 5000.99,
-      |  "taxDeducted": 5000.99,
-      |  "foreignTaxCreditRelief": true
-      |}
+      |      "totalOtherIncome": 2000.00,
+      |      "postCessationIncome": {
+      |        "totalPostCessationReceipts": 2000.00,
+      |        "postCessationReceipts": [
+      |          {
+      |            "amount": 100.00,
+      |            "taxYearIncomeToBeTaxed": "2019-20"
+      |          }
+      |        ]
+      |      }
+      |    }
       |""".stripMargin
   )
 
   "reads" when {
     "passed valid JSON" should {
       "return a valid model" in {
-        downstreamJson.as[ForeignSavingsAndGainsIncome] shouldBe model
+        downstreamJson.as[OtherIncome] shouldBe model
       }
     }
   }

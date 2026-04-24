@@ -20,7 +20,7 @@ import api.errors._
 import shared.models.domain.{Nino, TaxYear}
 import shared.models.errors._
 import shared.utils.UnitSpec
-import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `in-year`}
+import v8.common.model.domain.*
 import v8.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 
 class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
@@ -33,6 +33,12 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
 
   private val parsedNino    = Nino(validNino)
   private val parsedTaxYear = TaxYear.fromMtd(validTaxYear)
+
+  private val calcTypes: Seq[(String, CalculationType)] = Seq(
+    ("in-year", `in-year`),
+    ("intent-to-finalise", `intent-to-finalise`),
+    ("intent-to-amend", `intent-to-amend`)
+  )
 
   private def validator(nino: String, taxYear: String, calculationType: String) =
     new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
@@ -65,14 +71,16 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
         ))
     }
 
-    "a valid request is supplied with tax year >= 2026" in {
-      val taxYearStr    = "2026-27"
-      val parsedTaxYear = TaxYear.fromMtd(taxYearStr)
-      val result        = validator(validNino, taxYearStr, validCalculationType).validateAndWrapResult()
-      result.shouldBe(
-        Right(
-          Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Post26Downstream)
-        ))
+    calcTypes.foreach { case (calcTypeStr, calcType) =>
+      s"a valid request is supplied with tax year >= 2026 and $calcTypeStr" in {
+        val taxYearStr    = "2026-27"
+        val parsedTaxYear = TaxYear.fromMtd(taxYearStr)
+        val result        = validator(validNino, taxYearStr, calcTypeStr).validateAndWrapResult()
+        result.shouldBe(
+          Right(
+            Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, calcType, Post26Downstream)
+          ))
+      }
     }
 
     "return NinoFormatError error" when {
