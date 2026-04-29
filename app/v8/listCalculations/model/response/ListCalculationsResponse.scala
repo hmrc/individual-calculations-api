@@ -16,7 +16,6 @@
 
 package v8.listCalculations.model.response
 
-import cats.Functor
 import play.api.libs.json._
 
 sealed trait ListCalculationsResponse[+I] {
@@ -32,13 +31,6 @@ object ListCalculationsResponse {
       Json.toJsObject(def2.asInstanceOf[Def2_ListCalculationsResponse[I]])
     case def3: Def3_ListCalculationsResponse[?] =>
       Json.toJsObject(def3.asInstanceOf[Def3_ListCalculationsResponse[I]])
-  }
-
-  implicit object ResponseFunctor extends Functor[ListCalculationsResponse] {
-
-    override def map[A, B](fa: ListCalculationsResponse[A])(f: A => B): ListCalculationsResponse[B] =
-      fa.mapItems(f)
-
   }
 
 }

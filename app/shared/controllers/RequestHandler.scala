@@ -56,8 +56,7 @@ object RequestHandler {
       service: Input => Future[ServiceOutcome[Output]],
       errorHandling: ErrorHandling = ErrorHandling.Default,
       resultCreator: ResultCreator[Input, Output] = ResultCreator.noContent[Input, Output](),
-      auditHandler: Option[AuditHandler] = None,
-      responseModifier: Option[Output => Output] = None
+      auditHandler: Option[AuditHandler] = None
   ) extends RequestHandler {
 
     def handleRequest()(implicit ctx: RequestContext, request: UserRequest[?], ec: ExecutionContext, appConfig: AppConfig): Future[Result] =
@@ -68,9 +67,6 @@ object RequestHandler {
 
     def withAuditing(auditHandler: AuditHandler): RequestHandlerBuilder[Input, Output] =
       copy(auditHandler = Some(auditHandler))
-
-    def withResponseModifier(responseModifier: Output => Output): RequestHandlerBuilder[Input, Output] =
-      copy(responseModifier = Option(responseModifier))
 
     /** Shorthand for
       * {{{
@@ -142,12 +138,7 @@ object RequestHandler {
               parsedRequest   <- EitherT.fromEither[Future](validator.validateAndWrapResult())
               serviceResponse <- EitherT(service(parsedRequest))
             } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-              responseModifier match {
-                case Some(modifier) =>
-                  handleSuccess(parsedRequest, serviceResponse.copy(responseData = modifier(serviceResponse.responseData)))
-                case None =>
-                  handleSuccess(parsedRequest, serviceResponse)
-              }
+              handleSuccess(parsedRequest, serviceResponse)
             }
           }
 

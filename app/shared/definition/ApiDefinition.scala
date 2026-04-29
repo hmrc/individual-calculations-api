@@ -18,7 +18,7 @@ package shared.definition
 
 import play.api.libs.json._
 import shared.routing.Version
-import shared.utils.enums.Enums
+import common.utils.enums.Enums
 
 enum APIStatus {
   case ALPHA, BETA, STABLE, DEPRECATED, RETIRED

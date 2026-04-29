@@ -716,6 +716,18 @@
         }
       ]
     },
+    "otherIncome": {
+      "totalOtherIncome": 2000.00,
+      "postCessationIncome": {
+        "totalPostCessationReceipts": 2000.99,
+        "postCessationReceipts": [
+          {
+            "amount": 2000.00,
+            "taxYearIncomeToBeTaxed": "2019-20"
+          }
+        ]
+      }
+    },
     "dividendsIncome": {
       "totalChargeableDividends": 12500,
       "totalUkDividends": 12500,

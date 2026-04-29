@@ -29,13 +29,6 @@ trait HttpParser extends Logging {
 
     def validateJson[T](implicit reads: Reads[T]): Option[T] = jsonOpt.flatMap(_.asOpt)
 
-    def parseResult[T](json: JsValue)(implicit reads: Reads[T]): Option[T] = json.validate[T] match {
-      case JsSuccess(value, _) => Some(value)
-      case JsError(error) =>
-        logger.warn(s"[KnownJsonResponse][validateJson] Unable to parse JSON: $error")
-        None
-    }
-
   }
 
   def retrieveCorrelationId(response: HttpResponse): String = response.header("CorrelationId").getOrElse("")

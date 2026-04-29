@@ -18,8 +18,8 @@ package v8.listCalculations.def1.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
 import shared.utils.UnitSpec
-import v7.listCalculations.model.response.ListCalculationType
-import v7.listCalculations.model.response.ListCalculationType.*
+import v8.listCalculations.model.response.ListCalculationType
+import v8.listCalculations.model.response.ListCalculationType.*
 
 class ListCalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

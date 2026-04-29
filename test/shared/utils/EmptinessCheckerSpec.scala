@@ -100,4 +100,19 @@ class EmptinessCheckerSpec extends UnitSpec {
     }
   }
 
+  "given primitives, Options, Seq and List with no emptiness" must {
+    "return NoEmptyPaths" in {
+      EmptinessChecker[String].findEmptyPaths("test") shouldBe NoEmptyPaths
+      EmptinessChecker[Int].findEmptyPaths(1) shouldBe NoEmptyPaths
+      EmptinessChecker[Double].findEmptyPaths(1.00) shouldBe NoEmptyPaths
+      EmptinessChecker[Boolean].findEmptyPaths(true) shouldBe NoEmptyPaths
+      EmptinessChecker[BigInt].findEmptyPaths(BigInt(1)) shouldBe NoEmptyPaths
+      EmptinessChecker[BigDecimal].findEmptyPaths(BigDecimal(1)) shouldBe NoEmptyPaths
+      EmptinessChecker[Option[String]].findEmptyPaths(Some("test")) shouldBe NoEmptyPaths
+      EmptinessChecker[Option[String]].findEmptyPaths(None) shouldBe NoEmptyPaths
+      EmptinessChecker[List[Int]].findEmptyPaths(List(1, 2)) shouldBe NoEmptyPaths
+      EmptinessChecker[Seq[String]].findEmptyPaths(Vector("test", "test")) shouldBe NoEmptyPaths
+    }
+  }
+
 }

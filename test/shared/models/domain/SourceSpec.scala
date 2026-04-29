@@ -18,7 +18,7 @@ package shared.models.domain
 
 import shared.models.domain.Source.`MTD-SA`
 import shared.utils.UnitSpec
-import shared.utils.enums.EnumJsonSpecSupport
+import common.utils.enums.EnumJsonSpecSupport
 
 class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
 
