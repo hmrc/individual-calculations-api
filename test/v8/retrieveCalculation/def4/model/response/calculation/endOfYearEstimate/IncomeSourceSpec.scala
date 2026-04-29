@@ -35,6 +35,7 @@ class IncomeSourceSpec extends UnitSpec {
         ("11", `state-benefits`),
         ("12", `gains-on-life-policies`),
         ("13", `share-schemes`),
+        ("14", `partner-income`),
         ("15", `foreign-property`),
         ("16", `foreign-savings-and-gains`),
         ("17", `other-dividends`),
