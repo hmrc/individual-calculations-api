@@ -39,6 +39,7 @@ object IncomeSource {
     IncomeSourceType.`state-benefits`,
     IncomeSourceType.`gains-on-life-policies`,
     IncomeSourceType.`share-schemes`,
+    IncomeSourceType.`partner-income`,
     IncomeSourceType.`foreign-property`,
     IncomeSourceType.`foreign-savings-and-gains`,
     IncomeSourceType.`other-dividends`,

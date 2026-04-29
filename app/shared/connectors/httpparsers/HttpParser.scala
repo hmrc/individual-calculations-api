@@ -89,7 +89,7 @@ trait HttpParser extends Logging {
       OutboundError(InternalError)
     }
 
-      singleError orElse
+    singleError orElse
       multipleErrors orElse
       multipleTopLevelErrorCodes orElse
       multipleErrorCodesInResponse orElse
