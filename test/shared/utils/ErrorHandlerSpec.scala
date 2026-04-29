@@ -25,7 +25,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import shared.models.errors.*
 import uk.gov.hmrc.auth.core.InsufficientEnrolments
-import uk.gov.hmrc.http.{GatewayTimeoutException, HeaderCarrier, JsValidationException, NotFoundException, UpstreamErrorResponse}
+import uk.gov.hmrc.http.{GatewayTimeoutException, HeaderCarrier, JsValidationException, NotFoundException, UpstreamErrorResponse, HttpException}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import uk.gov.hmrc.play.audit.model.{DataEvent, TruncationLog}
