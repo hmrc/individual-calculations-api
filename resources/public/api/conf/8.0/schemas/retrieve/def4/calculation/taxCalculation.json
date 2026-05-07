@@ -206,6 +206,14 @@
             }
           ]
         },
+        "giftAidTaxChargeWhereBasicRateDiffers": {
+          "description": "Gift Aid tax charge where Basic Rate differs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
         "totalPensionSavingsTaxCharges": {
           "description": "Total pension savings tax charges. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
@@ -222,6 +230,14 @@
             }
           ]
         },
+        "highIncomeBenefitCharge": {
+          "description": "The tax charge for High income benefit earners. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
         "payeUnderpaymentsCodedOut": {
           "description": "PAYE underpayments coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
@@ -232,22 +248,6 @@
         },
         "totalIncomeTaxDue": {
           "description": "Total income tax due. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/monetaryPos"
-            }
-          ]
-        },
-        "giftAidTaxChargeWhereBasicRateDiffers": {
-          "description": "Gift Aid tax charge where Basic Rate differs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/monetaryPos"
-            }
-          ]
-        },
-        "highIncomeBenefitCharge": {
-          "description": "The tax charge for High income benefit earners. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
             {
               "$ref": "#/definitions/monetaryPos"
