@@ -84,17 +84,20 @@
       ]
     },
     "incomeTaxCharged": 5000.99,
+    "incomeTaxChargedOnTransitionProfits": 5000.99,
+    "incomeTaxChargedAfterTransitionProfits": 5000.99,
     "totalReliefs": 5000.99,
     "incomeTaxDueAfterReliefs": -99999999999.99,
     "totalNotionalTax": 5000.99,
     "marriageAllowanceRelief": 5000.99,
     "incomeTaxDueAfterTaxReductions": 5000.99,
     "incomeTaxDueAfterGiftAid": 5000.99,
+    "giftAidTaxChargeWhereBasicRateDiffers": 2000.58,
     "totalPensionSavingsTaxCharges": 5000.99,
     "statePensionLumpSumCharges": 5000.99,
+    "highIncomeChildBenefitCharge": 5000.99,
     "payeUnderpaymentsCodedOut": 5000.99,
-    "totalIncomeTaxDue": 5000.99,
-    "highIncomeChildBenefitCharge": 5000.99
+    "totalIncomeTaxDue": 5000.99
   },
   "nics": {
     "class2Nics": {

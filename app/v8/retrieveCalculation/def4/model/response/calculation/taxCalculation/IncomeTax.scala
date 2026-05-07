@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +36,12 @@ case class IncomeTax(
     marriageAllowanceRelief: Option[BigDecimal],
     incomeTaxDueAfterTaxReductions: Option[BigDecimal],
     incomeTaxDueAfterGiftAid: Option[BigDecimal],
+    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal],
     totalPensionSavingsTaxCharges: Option[BigDecimal],
     statePensionLumpSumCharges: Option[BigDecimal],
+    highIncomeBenefitCharge: Option[BigDecimal],
     payeUnderpaymentsCodedOut: Option[BigDecimal],
-    totalIncomeTaxDue: Option[BigDecimal],
-    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal],
-    highIncomeBenefitCharge: Option[BigDecimal]
+    totalIncomeTaxDue: Option[BigDecimal]
 )
 
 object IncomeTax {
@@ -64,36 +64,36 @@ object IncomeTax {
     marriageAllowanceRelief                <- (JsPath \ "marriageAllowanceRelief").readNullable[BigDecimal]
     incomeTaxDueAfterTaxReductions         <- (JsPath \ "incomeTaxDueAfterTaxReductions").readNullable[BigDecimal]
     incomeTaxDueAfterGiftAid               <- (JsPath \ "incomeTaxDueAfterGiftAid").readNullable[BigDecimal]
+    giftAidTaxChargeWhereBasicRateDiffers  <- (JsPath \ "giftAidTaxChargeWhereBasicRateDiffers").readNullable[BigDecimal]
     totalPensionSavingsTaxCharges          <- (JsPath \ "totalPensionSavingsTaxCharges").readNullable[BigDecimal]
     statePensionLumpSumCharges             <- (JsPath \ "statePensionLumpSumCharges").readNullable[BigDecimal]
+    highIncomeBenefitCharge                <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
     payeUnderpaymentsCodedOut              <- (JsPath \ "payeUnderpaymentsCodedOut").readNullable[BigDecimal]
     totalIncomeTaxDue                      <- (JsPath \ "totalIncomeTaxDue").readNullable[BigDecimal]
-    giftAidTaxChargeWhereBasicRateDiffers  <- (JsPath \ "giftAidTaxChargeWhereBasicRateDiffers").readNullable[BigDecimal]
-    highIncomeBenefitCharge                <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
   } yield IncomeTax(
-    totalIncomeReceivedFromAllSources,
-    totalAllowancesAndDeductions,
-    totalTaxableIncome,
-    payPensionsProfit,
-    savingsAndGains,
-    dividends,
-    lumpSums,
-    gainsOnLifePolicies,
-    incomeTaxCharged,
-    incomeTaxChargedOnTransitionProfits,
-    incomeTaxChargedAfterTransitionProfits,
-    totalReliefs,
-    incomeTaxDueAfterReliefs,
-    totalNotionalTax,
-    marriageAllowanceRelief,
-    incomeTaxDueAfterTaxReductions,
-    incomeTaxDueAfterGiftAid,
-    totalPensionSavingsTaxCharges,
-    statePensionLumpSumCharges,
-    payeUnderpaymentsCodedOut,
-    totalIncomeTaxDue,
-    giftAidTaxChargeWhereBasicRateDiffers,
-    highIncomeBenefitCharge
+    totalIncomeReceivedFromAllSources = totalIncomeReceivedFromAllSources,
+    totalAllowancesAndDeductions = totalAllowancesAndDeductions,
+    totalTaxableIncome = totalTaxableIncome,
+    payPensionsProfit = payPensionsProfit,
+    savingsAndGains = savingsAndGains,
+    dividends = dividends,
+    lumpSums = lumpSums,
+    gainsOnLifePolicies = gainsOnLifePolicies,
+    incomeTaxCharged = incomeTaxCharged,
+    incomeTaxChargedOnTransitionProfits = incomeTaxChargedOnTransitionProfits,
+    incomeTaxChargedAfterTransitionProfits = incomeTaxChargedAfterTransitionProfits,
+    totalReliefs = totalReliefs,
+    incomeTaxDueAfterReliefs = incomeTaxDueAfterReliefs,
+    totalNotionalTax = totalNotionalTax,
+    marriageAllowanceRelief = marriageAllowanceRelief,
+    incomeTaxDueAfterTaxReductions = incomeTaxDueAfterTaxReductions,
+    incomeTaxDueAfterGiftAid = incomeTaxDueAfterGiftAid,
+    giftAidTaxChargeWhereBasicRateDiffers = giftAidTaxChargeWhereBasicRateDiffers,
+    totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
+    statePensionLumpSumCharges = statePensionLumpSumCharges,
+    highIncomeBenefitCharge = highIncomeBenefitCharge,
+    payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut,
+    totalIncomeTaxDue = totalIncomeTaxDue
   )
 
   given OWrites[IncomeTax] = Json.writes[IncomeTax]

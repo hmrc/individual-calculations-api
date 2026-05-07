@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ case class IncomeTax(
     marriageAllowanceRelief: Option[BigDecimal],
     incomeTaxDueAfterTaxReductions: Option[BigDecimal],
     incomeTaxDueAfterGiftAid: Option[BigDecimal],
+    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal],
     totalPensionSavingsTaxCharges: Option[BigDecimal],
     statePensionLumpSumCharges: Option[BigDecimal],
     payeUnderpaymentsCodedOut: Option[BigDecimal],
-    totalIncomeTaxDue: Option[BigDecimal],
-    giftAidTaxChargeWhereBasicRateDiffers: Option[BigDecimal]
+    totalIncomeTaxDue: Option[BigDecimal]
 )
 
 object IncomeTax {
