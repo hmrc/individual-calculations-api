@@ -1,0 +1,199 @@
+{
+  "incomeTax": {
+    "totalIncomeReceivedFromAllSources": 12500,
+    "totalAllowancesAndDeductions": 12500,
+    "totalTaxableIncome": 12500,
+    "payPensionsProfit": {
+      "incomeReceived": 12500,
+      "allowancesAllocated": 12500,
+      "taxableIncome": 12500,
+      "incomeTaxAmount": 5000.99,
+      "taxBands": [
+        {
+          "name": "SSR",
+          "rate": 20,
+          "bandLimit": 12500,
+          "apportionedBandLimit": 12500,
+          "income": 12500,
+          "taxAmount": 5000.99
+        }
+      ]
+    },
+    "savingsAndGains": {
+      "incomeReceived": 12500,
+      "allowancesAllocated": 12500,
+      "taxableIncome": 12500,
+      "incomeTaxAmount": 5000.99,
+      "taxBands": [
+        {
+          "name": "SSR",
+          "rate": 20,
+          "bandLimit": 12500,
+          "apportionedBandLimit": 12500,
+          "income": 12500,
+          "taxAmount": 5000.99
+        }
+      ]
+    },
+    "dividends": {
+      "incomeReceived": 12500,
+      "allowancesAllocated": 12500,
+      "taxableIncome": 12500,
+      "incomeTaxAmount": 5000.99,
+      "taxBands": [
+        {
+          "name": "SSR",
+          "rate": 20,
+          "bandLimit": 12500,
+          "apportionedBandLimit": 12500,
+          "income": 12500,
+          "taxAmount": 5000.99
+        }
+      ]
+    },
+    "lumpSums": {
+      "incomeReceived": 12500,
+      "allowancesAllocated": 12500,
+      "taxableIncome": 12500,
+      "incomeTaxAmount": 5000.99,
+      "taxBands": [
+        {
+          "name": "SSR",
+          "rate": 20,
+          "bandLimit": 12500,
+          "apportionedBandLimit": 12500,
+          "income": 12500,
+          "taxAmount": 5000.99
+        }
+      ]
+    },
+    "gainsOnLifePolicies": {
+      "incomeReceived": 12500,
+      "allowancesAllocated": 12500,
+      "taxableIncome": 12500,
+      "incomeTaxAmount": 5000.99,
+      "taxBands": [
+        {
+          "name": "SSR",
+          "rate": 20,
+          "bandLimit": 12500,
+          "apportionedBandLimit": 12500,
+          "income": 12500,
+          "taxAmount": 5000.99
+        }
+      ]
+    },
+    "incomeTaxCharged": 5000.99,
+    "totalReliefs": 5000.99,
+    "incomeTaxDueAfterReliefs": -99999999999.99,
+    "totalNotionalTax": 5000.99,
+    "marriageAllowanceRelief": 5000.99,
+    "incomeTaxDueAfterTaxReductions": 5000.99,
+    "incomeTaxDueAfterGiftAid": 5000.99,
+    "totalPensionSavingsTaxCharges": 5000.99,
+    "statePensionLumpSumCharges": 5000.99,
+    "payeUnderpaymentsCodedOut": 5000.99,
+    "totalIncomeTaxDue": 5000.99,
+    "highIncomeChildBenefitCharge": 5000.99
+  },
+  "nics": {
+    "class2Nics": {
+      "amount": 5000.99,
+      "weeklyRate": 5000.99,
+      "weeks": 0,
+      "limit": 12500,
+      "apportionedLimit": 12500,
+      "underSmallProfitThreshold": true,
+      "actualClass2Nic": true
+    },
+    "class4Nics": {
+      "totalIncomeLiableToClass4Charge": 12500,
+      "totalClass4LossesAvailable": 12500,
+      "totalClass4LossesUsed": 12500,
+      "totalClass4LossesCarriedForward": 12500,
+      "totalIncomeChargeableToClass4": 12500,
+      "totalAmount": 5000.99,
+      "nic4Bands": [
+        {
+          "name": "ZRT",
+          "rate": 20,
+          "threshold": 12500,
+          "apportionedThreshold": 12500,
+          "income": 12500,
+          "amount": 5000.99
+        }
+      ]
+    },
+    "nic2NetOfDeductions": -99999999999.99,
+    "nic4NetOfDeductions": -99999999999.99,
+    "totalNic": -99999999999.99
+  },
+  "totalTaxDeductedBeforeCodingOut": 5000.99,
+  "saUnderpaymentsCodedOut": 5000.99,
+  "totalAnnuityPaymentsTaxCharged": 12500,
+  "totalRoyaltyPaymentsTaxCharged": 5000.99,
+  "totalIncomeTaxNicsCharged": -99999999999.99,
+  "totalStudentLoansRepaymentAmount": 5000.99,
+  "totalTaxDeducted": -99999999999.99,
+  "totalIncomeTaxAndNicsDue": -99999999999.99,
+  "capitalGainsTax": {
+    "totalCapitalGainsIncome": 5000.99,
+    "annualExemptionAmount": 5000.99,
+    "totalTaxableGains": 5000.99,
+    "businessAssetsDisposalsAndInvestorsRel": {
+      "gainsIncome": 5000.99,
+      "lossesBroughtForward": 5000.99,
+      "lossesArisingThisYear": 5000.99,
+      "gainsAfterLosses": 5000.99,
+      "annualExemptionAmount": 5000.99,
+      "taxableGains": 5000.99,
+      "rate": 20,
+      "taxAmount": 5000.99
+    },
+    "residentialPropertyAndCarriedInterest": {
+      "gainsIncome": 5000.99,
+      "lossesBroughtForward": 5000.99,
+      "lossesArisingThisYear": 5000.99,
+      "gainsAfterLosses": 5000.99,
+      "annualExemptionAmount": 5000.99,
+      "taxableGains": 5000.99,
+      "cgtTaxBands": [
+        {
+          "name": "lowerRate",
+          "rate": 20,
+          "income": 5000.99,
+          "taxAmount": 5000.99
+        }
+      ],
+      "totalTaxAmount": 5000.99
+    },
+    "otherGains": {
+      "gainsIncome": 5000.99,
+      "lossesBroughtForward": 5000.99,
+      "lossesArisingThisYear": 5000.99,
+      "gainsAfterLosses": 5000.99,
+      "attributedGains": 5000.99,
+      "netGains": 5000.99,
+      "annualExemptionAmount": 5000.99,
+      "taxableGains": 5000.99,
+      "cgtTaxBands": [
+        {
+          "name": "lowerRate",
+          "rate": 20,
+          "income": 5000.99,
+          "taxAmount": 5000.99
+        }
+      ],
+      "totalTaxAmount": 5000.99
+    },
+    "capitalGainsTaxAmount": 5000.99,
+    "adjustments": -99999999999.99,
+    "adjustedCapitalGainsTax": 5000.99,
+    "foreignTaxCreditRelief": 5000.99,
+    "capitalGainsTaxAfterFTCR": 5000.99,
+    "taxOnGainsAlreadyPaid": 5000.99,
+    "capitalGainsTaxDue": 5000.99,
+    "capitalGainsOverpaid": 5000.99
+  },
+  "totalIncomeTaxAndNicsAndCgt": 5000.99
+}

@@ -28,7 +28,7 @@ import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 
-  private val validVersions = Seq(Version8)
+  private val validVersions = Seq(Version7, Version8)
 
   "CalculationsDefinitionFactory" when {
 

@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing statement summarising any transition profit position(s) for self-employment business income sources.",
+  "type": "object",
+  "properties": {
+    "totalTaxableTransitionProfit": {
+      "description": "Total taxable transition profit from all income sources after application of any losses brought forward. This value must be between  0 and 99999999999. No decimals.",
+      "type": "number",
+      "example": "12500"
+    },
+    "transitionProfitDetail": {
+      "description": "Array containing details of transition profits on an income source level including any losses brought forward.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "incomeSourceId": {
+            "description": "The unique identifier of the income source.",
+            "type": "string",
+            "example": "SAVKB2UVwUTBQGJ",
+            "pattern": "^[A-Za-z0-9]{15}$"
+          },
+          "incomeSourceName": {
+            "description": "Name of the self-employment income source which generated the transition profit.",
+            "type": "string"
+          },
+          "transitionProfitAmount": {
+            "description": "Amount of transition profit arising in this tax year for this income source. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2000.99"
+          },
+          "transitionProfitAccelerationAmount": {
+            "description": "Additional amount of transition profit elected to be treated as arising in this tax year for this income source. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "2000.99"
+          },
+          "totalTransitionProfit": {
+            "description": "Total of Transition Profit Amount and Transition Profit Acceleration Amount for this income source. This value must be between  0 and 99999999999. No decimals.",
+            "type": "number",
+            "example": "12500"
+          },
+          "remainingBroughtForwardIncomeTaxLosses": {
+            "description": "Income tax brought forward losses remaining following application to taxable profit of this income source; to be applied to Total Transition Profit. This value must be between  0 and 99999999999. No decimals.",
+            "type": "number",
+            "example": "12500"
+          },
+          "broughtForwardIncomeTaxLossesUsed": {
+            "description": "Income tax brought forward losses applied to Total Transition Profit for this income source. This value must be between  0 and 99999999999. No decimals.",
+            "type": "number",
+            "example": "12500"
+          },
+          "transitionProfitsAfterIncomeTaxLossDeductions": {
+            "description": "Remaining transition profits after application of brought forward losses for this income source. This value must be between  0 and 99999999999. No decimals.",
+            "type": "number",
+            "example": "12500"
+          }
+        },
+        "required": [
+          "incomeSourceId",
+          "transitionProfitAmount"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
