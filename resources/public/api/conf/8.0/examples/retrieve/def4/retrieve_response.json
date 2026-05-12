@@ -966,6 +966,9 @@
         "totalPensionSavingsTaxCharges": 5000.99,
         "statePensionLumpSumCharges": 5000.99,
         "highIncomeBenefitCharge": 5000.99,
+        {{#if (enabled '1885_r21_winter_fuel_payment_docs')}}
+          "winterFuelPaymentCharge": 5000.99,
+        {{/if}}
         "payeUnderpaymentsCodedOut": 5000.99,
         "totalIncomeTaxDue": 5000.99
       },

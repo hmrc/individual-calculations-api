@@ -238,6 +238,16 @@
             }
           ]
         },
+        {{#if (enabled '1885_r21_winter_fuel_payment_docs')}}
+          "winterFuelPaymentCharge": {
+            "description": "{{#unless (releasedInProduction '1885_r21_winter_fuel_payment_docs')}}[Test only] {{/unless}}The income tax charge applied to recover the Winter Fuel Payment from individuals whose income exceeds the threshold. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/monetaryPos"
+              }
+            ]
+          },
+        {{/if}}
         "payeUnderpaymentsCodedOut": {
           "description": "PAYE underpayments coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
