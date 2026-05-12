@@ -40,6 +40,7 @@ case class IncomeTax(
     totalPensionSavingsTaxCharges: Option[BigDecimal],
     statePensionLumpSumCharges: Option[BigDecimal],
     highIncomeBenefitCharge: Option[BigDecimal],
+    winterFuelPaymentCharge: Option[BigDecimal],
     payeUnderpaymentsCodedOut: Option[BigDecimal],
     totalIncomeTaxDue: Option[BigDecimal]
 )
@@ -68,6 +69,7 @@ object IncomeTax {
     totalPensionSavingsTaxCharges          <- (JsPath \ "totalPensionSavingsTaxCharges").readNullable[BigDecimal]
     statePensionLumpSumCharges             <- (JsPath \ "statePensionLumpSumCharges").readNullable[BigDecimal]
     highIncomeBenefitCharge                <- (JsPath \ "highIncomeChildBenefitCharge").readNullable[BigDecimal]
+    winterFuelPaymentCharge                <- (JsPath \ "winterFuelPaymentCharge").readNullable[BigDecimal]
     payeUnderpaymentsCodedOut              <- (JsPath \ "payeUnderpaymentsCodedOut").readNullable[BigDecimal]
     totalIncomeTaxDue                      <- (JsPath \ "totalIncomeTaxDue").readNullable[BigDecimal]
   } yield IncomeTax(
@@ -92,6 +94,7 @@ object IncomeTax {
     totalPensionSavingsTaxCharges = totalPensionSavingsTaxCharges,
     statePensionLumpSumCharges = statePensionLumpSumCharges,
     highIncomeBenefitCharge = highIncomeBenefitCharge,
+    winterFuelPaymentCharge = winterFuelPaymentCharge,
     payeUnderpaymentsCodedOut = payeUnderpaymentsCodedOut,
     totalIncomeTaxDue = totalIncomeTaxDue
   )

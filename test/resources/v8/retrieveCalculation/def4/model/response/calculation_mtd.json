@@ -903,6 +903,7 @@
         "totalPensionSavingsTaxCharges": 5000.99,
         "statePensionLumpSumCharges": 5000.99,
         "highIncomeBenefitCharge": 5000.99,
+        "winterFuelPaymentCharge": 5000.99,
         "payeUnderpaymentsCodedOut": 5000.99,
         "totalIncomeTaxDue": 5000.99
       },
