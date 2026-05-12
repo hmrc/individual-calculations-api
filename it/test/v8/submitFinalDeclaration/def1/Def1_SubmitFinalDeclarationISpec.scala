@@ -188,7 +188,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(mtdUri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.7.0+json"),
+          (ACCEPT, "application/vnd.hmrc.8.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
@@ -212,7 +212,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
       setupStubs()
       buildRequest(mtdUri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.7.0+json"),
+          (ACCEPT, "application/vnd.hmrc.8.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
