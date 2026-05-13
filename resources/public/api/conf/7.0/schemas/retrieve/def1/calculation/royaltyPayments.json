@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object representing any royalty payments in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "royaltyPaymentsAmount": {
+      "description": "The total amount of tax charged on royalty payments. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "2000"
+    },
+    "rate": {
+      "description": "The rate of the royalty payment. This value must be between 0 and 99.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99.99,
+      "example": "10.12"
+    },
+    "grossRoyaltyPayments": {
+      "description": "The gross royalty payments. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999999,
+      "example": "2000"
+    }
+  },
+  "required": [
+    "royaltyPaymentsAmount",
+    "rate"
+  ],
+  "additionalProperties": false
+}

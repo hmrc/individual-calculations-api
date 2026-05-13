@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TY 2024-25",
+  "description": "Retrieve a Self Assessment Tax Calculation",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "$ref": "metadata.json"
+    },
+    "inputs": {
+      "$ref": "inputs.json"
+    },
+    "calculation": {
+      "$ref": "calculation.json"
+    },
+    "messages": {
+      "$ref": "messages.json"
+    }
+  },
+  "required": [
+    "metadata",
+    "inputs"
+  ],
+  "additionalProperties": false
+}

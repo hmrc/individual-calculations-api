@@ -16,7 +16,6 @@
 
 package api.controller
 
-import play.api.mvc.Results.Gone
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
@@ -25,8 +24,8 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class RetiredController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
 
-  val retired: Action[AnyContent] = Action {
-    Gone("Retired")
+  def retired(nino: String, taxYear: Option[String]): Action[AnyContent] = Action {
+    Ok("Retired")
   }
 
 }

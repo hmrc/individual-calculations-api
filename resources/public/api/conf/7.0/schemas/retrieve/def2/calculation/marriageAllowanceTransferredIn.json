@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object detailing marriage allowance transfer in for the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "amount": {
+      "description": "The amount of marriage allowance transferred in. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "3000.00"
+    },
+    "rate": {
+      "description": "The percentage of the relief applied. This value must be between 0 and 99.99 up to 2 decimal places.",
+      "type": "number",
+      "example": "10.52"
+    }
+  },
+  "additionalProperties": false
+}
