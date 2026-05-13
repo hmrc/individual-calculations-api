@@ -18,6 +18,7 @@ package common.definition
 
 import shared.config.AppConfig
 import shared.definition.*
+import shared.definition.APIStatus.RETIRED
 import shared.routing.*
 
 import javax.inject.{Inject, Singleton}
@@ -33,6 +34,11 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         context = appConfig.apiGatewayContext,
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
+          APIVersion(
+            version = Version7,
+            status = RETIRED,
+            endpointsEnabled = false
+          ),
           APIVersion(
             version = Version8,
             status = buildAPIStatus(Version8),
