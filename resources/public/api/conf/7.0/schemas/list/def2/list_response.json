@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TY 2023-24 and 2024-25",
+  "description": "List Self Assessment Tax Calculations",
+  "type": "object",
+  "properties": {
+    "calculations": {
+      "type": "array",
+      "description": "The array holding calculation details.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "calculationId": {
+            "description": "The unique identifier of the calculation.",
+            "type": "string",
+            "pattern": "^[0-9]{8}|[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "example": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+          },
+          "calculationTimestamp": {
+            "description": "The timestamp of when the calculation was performed in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ if BVRs do not fail or populated from requestTimestamp if BVRs fail.",
+            "type": "string",
+            "example": "2019-07-13T07:51:43.112Z"
+          },
+          "calculationType": {
+            "description": "The type of calculation performed.",
+            "type": "string",
+            "enum": [
+              "in-year",
+              "intent-to-finalise",
+              "final-declaration"
+            ]
+          },
+          "calculationTrigger": {
+            "description": "The trigger for the calculation: “cesaSAReturn” – Relates to CESA SA return notification recorded in ITSD \"attended\", \"class2NICEvent\", \"unattended\" – Relates to different MTD ITSA calculation triggers.",
+            "type": "string",
+            "enum": [
+              "attended",
+              "class2NICEvent",
+              "unattended",
+              "cesaSAReturn",
+              "newLossEvent",
+              "updatedLossEvent"
+            ]
+          },
+          "calculationOutcome": {
+            "description": "The outcome of the calculation request - 'processed' = success/BVR, 'error' = system error in running calculation, 'rejected' = request failed initial validation",
+            "type": "string",
+            "enum": [
+              "PROCESSED",
+              "ERROR",
+              "REJECTED"
+            ]
+          },
+          "liabilityAmount": {
+            "description": "This is one of, 'totalIncomeTaxAndNicsDue' or 'totalIncomeTaxAndNicsAndCgt' if present, from the calculation output. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+            "type": "number",
+            "example": "1079.23"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "calculationId",
+          "calculationTimestamp",
+          "calculationType",
+          "calculationTrigger",
+          "calculationOutcome"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "calculations"
+  ]
+}

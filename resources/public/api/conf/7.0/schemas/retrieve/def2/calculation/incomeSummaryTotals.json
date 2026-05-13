@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about income summary totals in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalSelfEmploymentProfit": {
+      "description": "Total self employment profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5000"
+    },
+    "totalPropertyProfit": {
+      "description": "Total property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5001"
+    },
+    "totalFHLPropertyProfit": {
+      "description": "Total furnished holiday lets property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5002"
+    },
+    "totalUKOtherPropertyProfit": {
+      "description": "Total UK other property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5003"
+    },
+    "totalForeignPropertyProfit": {
+      "description": "Total foreign property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5004"
+    },
+    "totalEeaFhlProfit": {
+      "description": "Total European Economic Area furnished holiday lets profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5005"
+    },
+    "totalEmploymentIncome": {
+      "description": "Total employment income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": "5007"
+    }
+  },
+  "additionalProperties": false
+}
