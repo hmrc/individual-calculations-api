@@ -44,7 +44,7 @@ class VersionRoutingRequestHandler @Inject() (versionRoutingMap: VersionRoutingM
   private val unsupportedVersionAction = action(Results.NotFound(UnsupportedVersionError.asJson))
 
   private val invalidAcceptHeaderError = action(Results.NotAcceptable(InvalidAcceptHeaderError.asJson))
-  
+
   override def routeRequest(request: RequestHeader): Option[Handler] = {
 
     def documentHandler: Option[Handler] = routeWith(versionRoutingMap.defaultRouter)(request)

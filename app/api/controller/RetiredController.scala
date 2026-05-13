@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package routing
+package api.controller
 
-import play.api.routing.Router
-import shared.routing.*
+import play.api.mvc.Results.Gone
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
 
-// Add routes corresponding to available versions...
 @Singleton
-case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v7Router: v7.Routes, v8Router: v8.Routes) extends VersionRoutingMap {
+class RetiredController @Inject() (cc: ControllerComponents) extends BackendController(cc) {
 
-  val map: Map[Version, Router] = Map(
-    Version7 -> v7Router,
-    Version8 -> v8Router
-  )
+  val retired: Action[AnyContent] = Action {
+    Gone("Retired")
+  }
 
 }
