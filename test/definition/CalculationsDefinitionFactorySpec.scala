@@ -20,7 +20,7 @@ import cats.implicits.catsSyntaxValidatedId
 import common.definition.CalculationsDefinitionFactory
 import shared.config.Deprecation.NotDeprecated
 import shared.config.MockAppConfig
-import shared.definition.APIStatus.{ALPHA, BETA}
+import shared.definition.APIStatus.{ALPHA, BETA, RETIRED}
 import shared.definition.{APIDefinition, APIVersion, Definition}
 import shared.mocks.MockHttpClient
 import shared.routing.*
@@ -28,19 +28,14 @@ import shared.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 
-  private val validVersions = Seq(Version8)
-
   "CalculationsDefinitionFactory" when {
 
     "definition is called" should {
       "return a valid Definition case class when all versions are configured correctly" in {
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
-
-        validVersions.foreach { version =>
-          MockedAppConfig.apiStatus(version) returns "BETA"
-          MockedAppConfig.endpointsEnabled(version) returns true
-          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
-        }
+        MockedAppConfig.apiStatus(Version8) returns "BETA"
+        MockedAppConfig.endpointsEnabled(Version8) returns true
+        MockedAppConfig.deprecationFor(Version8).returns(NotDeprecated.valid).anyNumberOfTimes()
 
         val factory = CalculationsDefinitionFactory(mockAppConfig)
 
@@ -50,13 +45,18 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
             description = "An API for providing individual calculations data",
             context = "api.gateway.context",
             categories = Seq("INCOME_TAX_MTD"),
-            versions = validVersions.map { version =>
+            versions = Seq(
               APIVersion(
-                version = version,
+                version = Version7,
+                status = RETIRED,
+                endpointsEnabled = false
+              ),
+              APIVersion(
+                version = Version8,
                 status = BETA,
                 endpointsEnabled = true
               )
-            },
+            ),
             requiresTrust = None
           )
         )
@@ -66,22 +66,15 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
         val faultyVersion = Version8
 
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
-
-        validVersions.foreach { version =>
-          val status = if (version == faultyVersion) "ALPHO" else "BETA"
-          MockedAppConfig.apiStatus(version) returns status
-          MockedAppConfig.endpointsEnabled(version) returns true
-          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
-        }
+        MockedAppConfig.apiStatus(Version8) returns "ALPHO"
+        MockedAppConfig.endpointsEnabled(Version8) returns true
+        MockedAppConfig.deprecationFor(Version8).returns(NotDeprecated.valid).anyNumberOfTimes()
 
         val factory = CalculationsDefinitionFactory(mockAppConfig)
 
         val resultVersions = factory.definition.api.versions
 
         resultVersions.find(_.version == faultyVersion).get.status shouldBe ALPHA
-        resultVersions.filterNot(_.version == faultyVersion).foreach { v =>
-          v.status shouldBe BETA
-        }
       }
     }
   }
