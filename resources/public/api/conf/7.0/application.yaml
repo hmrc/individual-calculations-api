@@ -1,0 +1,84 @@
+openapi: "3.0.3"
+
+info:
+  version: "7.0"
+  title: Individual Calculations (MTD)
+  description: |
+    Resources relating to generating, retrieving, and completing a final declaration for Self Assessment tax calculations.
+    
+    # Send fraud prevention data
+    HMRC monitors transactions to help protect your customers' confidential data from criminals and fraudsters. 
+    <div class="govuk-warning-text warning-icon-fix">
+      <span class="govuk-warning-text__icon warning-icon-ui-fix" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        You are required by law to submit header data for this API. This includes all associated APIs and endpoints.
+      </strong>
+    </div>
+    
+    [Check the data you need to send](/guides/fraud-prevention/). You can also use the [Test API](/api-documentation/docs/api/service/txm-fph-validator-api/1.0) 
+    during initial development and as part of your quality assurance checks.
+    
+    # Mapping APIs to Self Assessment tax return forms
+    Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping](https://github.com/hmrc/income-tax-mtd-changelog?tab=readme-ov-file#mapping-apis-to-self-assessment-tax-return-forms) on GitHub.
+
+    # Changelog
+    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) on GitHub.
+    
+    # Support
+    
+    * Direct reports of bugs or errors in Production or Sandbox code, or queries about HMRC business functionality (such as how a specific field is used by HMRC or why it is needed) to the [Software Development Support Team (SDST)](https://developer.service.hmrc.gov.uk/developer/support).
+    * Send queries or feedback related to the design of the APIs (including recommended changes) using the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/issues) GitHub page.
+    * <a href="/contact/report-technical-problem?newTab=true&service=api-documentation-frontend" target="_blank">Is this page not working properly? (opens in new tab)</a>
+servers:
+  - url: https://test-api.service.hmrc.gov.uk
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk
+    description: Production
+
+components:
+  securitySchemes:
+    User-Restricted:
+      type: oauth2
+      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            write:self-assessment: Grant write access
+            read:self-assessment: Grant read access
+
+tags:
+  - name: Tax Calculations
+    description: |
+      Here a developer can:
+        - list self-assessment tax calculations for a given National Insurance number (NINO) and tax year
+        - trigger a self-assessment tax calculation for a given tax year
+        - retrieve all the tax calculation data for a given NINO and Calculation ID
+  - name: Final Declaration
+    description: |
+      **Final declaration was previously called crystallisation.**
+      
+      This resource allows software packages to make a final declaration regarding a customer’s end of year position for a tax year.
+    
+      Before starting the final declaration journey the software package will need to ensure that, for the relevant tax year, the customer:
+        - has already provided their entire income e.g. interest, dividends, other SA schedules
+        - does not have any additional information to provide
+      
+      Here, the developer can:      
+        - submit final declaration for a tax year
+
+paths:
+
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/trigger/{calculationType}:
+    $ref: "./trigger.yaml"
+  /individuals/calculations/{nino}/self-assessment:
+    $ref: "./listOld.yaml"
+  /individuals/calculations/{nino}/self-assessment/{taxYear}:
+    $ref: "./list.yaml"
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
+    $ref: "./retrieve.yaml"
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/{calculationType}:
+    $ref: "./submit_final_declaration.yaml"
