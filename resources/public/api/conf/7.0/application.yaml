@@ -6,12 +6,6 @@ info:
   description: |
     This version of the API is retired
 
-servers:
-  - url: https://test-api.service.hmrc.gov.uk
-    description: Sandbox
-  - url: https://api.service.hmrc.gov.uk
-    description: Production
-
 components:
   securitySchemes:
     User-Restricted:
@@ -29,4 +23,15 @@ components:
 
 paths:
   /individuals/calculations/retired:
-    $ref: "./retired.yaml"
+    get:
+      summary: Retired
+      description: |
+        This version is retired and should not be used
+
+      security:
+        - User-Restricted:
+            - read:self-assessment
+
+      responses:
+        410:
+          description: Gone
