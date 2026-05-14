@@ -1,0 +1,12 @@
+get:
+  summary: Retired
+  description: |
+    This endpoint is retired and should not be used
+
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+  responses:
+    410:
+      description: Gone
