@@ -16,16 +16,29 @@
 
 package v8.submitFinalDeclaration.def1
 
-import api.errors._
+import api.errors.*
+import api.errors.{
+  FormatCalculationTypeError,
+  RuleFinalDeclarationInProgressError,
+  RuleFinalDeclarationReceivedError,
+  RuleFinalDeclarationTaxYearError,
+  RuleIncomeSourcesChangedError,
+  RuleIncomeSourcesInvalidError,
+  RuleNoIncomeSubmissionsExistError,
+  RuleOutsideAmendmentWindowError,
+  RuleRecentSubmissionsExistError,
+  RuleResidencyChangedError,
+  RuleSubmissionFailedError
+}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status._
-import play.api.libs.json._
-import play.api.libs.ws._
+import play.api.http.Status.*
+import play.api.libs.json.*
+import play.api.libs.ws.*
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
-import shared.models.domain.TaxYear
-import shared.models.errors._
-import shared.services._
-import shared.support.IntegrationBaseSpec
+import api.models.domain.TaxYear
+import api.models.errors.*
+import api.services.*
+import api.support.IntegrationBaseSpec
 import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 
 class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {

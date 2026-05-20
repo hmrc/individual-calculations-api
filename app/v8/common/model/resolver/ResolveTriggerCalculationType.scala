@@ -19,8 +19,8 @@ package v8.common.model.resolver
 import api.errors.FormatCalculationTypeError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
-import shared.controllers.validators.resolvers.ResolverSupport
-import shared.models.errors.MtdError
+import api.controllers.validators.resolvers.ResolverSupport
+import api.models.errors.MtdError
 import v8.common.model.domain._
 
 object ResolveTriggerCalculationType extends ResolverSupport {

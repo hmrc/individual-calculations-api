@@ -17,9 +17,9 @@
 package v8.listCalculations.schema
 
 import play.api.libs.json.Reads
-import shared.controllers.validators.resolvers.ResolveTaxYear
-import shared.models.domain.TaxYear
-import shared.schema.DownstreamReadable
+import api.controllers.validators.resolvers.ResolveTaxYear
+import api.models.domain.TaxYear
+import api.schema.DownstreamReadable
 import v8.listCalculations.def1.model.response.Def1_Calculation
 import v8.listCalculations.def2.model.response.Def2_Calculation
 import v8.listCalculations.def3.model.response.Def3_Calculation

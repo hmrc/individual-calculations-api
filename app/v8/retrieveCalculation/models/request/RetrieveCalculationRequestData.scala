@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.models.request
 
-import shared.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
 sealed trait RetrieveCalculationRequestData {

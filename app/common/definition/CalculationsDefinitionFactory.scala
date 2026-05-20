@@ -16,10 +16,10 @@
 
 package common.definition
 
-import shared.config.AppConfig
-import shared.definition.*
-import shared.definition.APIStatus.RETIRED
-import shared.routing.*
+import api.config.AppConfig
+import api.definition.*
+import api.definition.APIStatus.RETIRED
+import api.routing.*
 
 import javax.inject.{Inject, Singleton}
 

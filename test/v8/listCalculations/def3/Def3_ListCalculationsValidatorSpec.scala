@@ -16,9 +16,9 @@
 
 package v8.listCalculations.def3
 
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.utils.UnitSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v8.common.model.domain.*
 import v8.listCalculations.model.request.Def3_ListCalculationsRequestData
 

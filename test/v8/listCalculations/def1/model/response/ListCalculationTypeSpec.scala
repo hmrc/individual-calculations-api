@@ -17,7 +17,7 @@
 package v8.listCalculations.def1.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 import v8.listCalculations.model.response.ListCalculationType
 import v8.listCalculations.model.response.ListCalculationType.*
 

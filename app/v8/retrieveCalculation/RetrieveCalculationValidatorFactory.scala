@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation
 
-import shared.controllers.validators.Validator
+import api.controllers.validators.Validator
 import v8.retrieveCalculation.def1.Def1_RetrieveCalculationValidator
 import v8.retrieveCalculation.def2.Def2_RetrieveCalculationValidator
 import v8.retrieveCalculation.def3.Def3_RetrieveCalculationValidator

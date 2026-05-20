@@ -16,13 +16,13 @@
 
 package v8.triggerCalculation
 
-import shared.utils.{IdGenerator, Logging}
-import shared.controllers._
-import shared.models.audit.GenericAuditDetail
-import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import api.utils.{IdGenerator, Logging}
+import api.controllers._
+import api.models.audit.GenericAuditDetail
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
-import shared.routing.Version
+import api.routing.Version
 import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
                                               service: TriggerCalculationService,
                                               val idGenerator: IdGenerator,
                                               auditService: AuditService,
-                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
+                                              cc: ControllerComponents)(implicit ec: ExecutionContext, appConfig: api.config.AppConfig)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {

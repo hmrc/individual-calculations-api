@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 
 import common.TaxYearFormats
-import shared.models.domain.TaxYear
+import api.models.domain.TaxYear
 import play.api.libs.json.{Format, Json, OFormat}
 import v8.common.model.response.IncomeSourceType
 import v8.retrieveCalculation.def3.model.response.ClaimType

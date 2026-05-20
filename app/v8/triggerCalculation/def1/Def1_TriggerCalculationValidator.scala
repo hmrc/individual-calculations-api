@@ -19,11 +19,11 @@ package v8.triggerCalculation.def1
 import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
 import cats.implicits._
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.ResolverSupport._
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.ResolverSupport._
+import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}
 import v8.common.model.resolver.ResolveTriggerCalculationType
 import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}

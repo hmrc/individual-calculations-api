@@ -20,7 +20,7 @@ import config.CalculationsConfig
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import shared.config.{ConfidenceLevelConfig, MockAppConfig}
+import api.config.{ConfidenceLevelConfig, MockAppConfig}
 
 import scala.concurrent.duration.FiniteDuration
 

@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.schema
 
-import shared.controllers.validators.resolvers.ResolveTaxYear
-import shared.models.domain.TaxYear
-import shared.schema.DownstreamReadable
+import api.controllers.validators.resolvers.ResolveTaxYear
+import api.models.domain.TaxYear
+import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
 import v8.retrieveCalculation.models.response.{
   Def1_RetrieveCalculationResponse,

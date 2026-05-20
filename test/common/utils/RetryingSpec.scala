@@ -23,7 +23,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Injecting
 import play.api.{Application, Environment, Mode}
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration._

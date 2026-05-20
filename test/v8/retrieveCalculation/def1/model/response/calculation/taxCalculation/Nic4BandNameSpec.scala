@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def1.model.response.calculation.taxCalculation
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 import v8.retrieveCalculation.def1.model.response.calculation.taxCalculation.Nic4BandName._
 
 class Nic4BandNameSpec extends UnitSpec with EnumJsonSpecSupport {

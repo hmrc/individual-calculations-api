@@ -18,9 +18,9 @@ package v8.submitFinalDeclaration.def1
 
 import cats.data.Validated
 import cats.implicits._
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
-import shared.models.errors.MtdError
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
+import api.models.errors.MtdError
 import v8.common.model.resolver.ResolveFinalDeclarationCalculationType
 import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 

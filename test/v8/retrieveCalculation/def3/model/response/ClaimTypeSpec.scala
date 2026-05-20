@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def3.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 import v8.retrieveCalculation.def3.model.response.ClaimType._
 
 class ClaimTypeSpec extends UnitSpec with EnumJsonSpecSupport {

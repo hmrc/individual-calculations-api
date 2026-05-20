@@ -16,7 +16,7 @@
 
 package v8.listCalculations.model.request
 
-import shared.models.domain.{Nino, TaxYear}
+import api.models.domain.{Nino, TaxYear}
 import v8.common.model.domain.CalculationType
 import v8.listCalculations.schema.ListCalculationsSchema
 

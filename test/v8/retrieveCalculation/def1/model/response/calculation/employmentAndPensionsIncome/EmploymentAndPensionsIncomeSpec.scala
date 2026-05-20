@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome
 
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 
 class EmploymentAndPensionsIncomeSpec extends UnitSpec {
 

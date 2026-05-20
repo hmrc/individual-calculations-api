@@ -18,8 +18,8 @@ package v8.retrieveCalculation.def4.model.response
 
 import org.scalatest.Inside
 import play.api.libs.json.Json
-import shared.models.utils.JsonErrorValidators
-import shared.utils.UnitSpec
+import api.models.utils.JsonErrorValidators
+import api.utils.UnitSpec
 import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
 import v8.retrieveCalculation.models.response.Def4_RetrieveCalculationResponse
 

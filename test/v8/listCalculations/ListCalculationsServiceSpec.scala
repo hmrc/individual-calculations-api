@@ -16,10 +16,10 @@
 
 package v8.listCalculations
 
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 import v8.listCalculations.model.response.{Calculation, ListCalculationsResponse}

@@ -19,11 +19,11 @@ package v8.listCalculations.def1
 import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import shared.controllers.validators.resolvers.ResolverSupport._
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolverSupport._
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import v8.common.model.resolver.ResolveListCalculationType
 import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 

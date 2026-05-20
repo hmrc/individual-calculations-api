@@ -16,11 +16,22 @@
 
 package v8.submitFinalDeclaration
 
-import api.errors.*
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.*
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.errors.{
+  RuleFinalDeclarationInProgressError,
+  RuleFinalDeclarationReceivedError,
+  RuleFinalDeclarationTaxYearError,
+  RuleIncomeSourcesChangedError,
+  RuleIncomeSourcesInvalidError,
+  RuleNoIncomeSubmissionsExistError,
+  RuleOutsideAmendmentWindowError,
+  RuleRecentSubmissionsExistError,
+  RuleResidencyChangedError,
+  RuleSubmissionFailedError
+}
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import v8.common.model.domain.{CalculationType, `final-declaration`}
 import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
