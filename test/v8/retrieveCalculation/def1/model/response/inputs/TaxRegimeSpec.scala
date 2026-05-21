@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def1.model.response.inputs
 
 import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
-import v8.retrieveCalculation.def1.model.response.inputs.TaxRegime._
+import v8.retrieveCalculation.def1.model.response.inputs.TaxRegime.*
 
 class TaxRegimeSpec extends UnitSpec with EnumJsonSpecSupport {
 

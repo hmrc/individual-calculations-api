@@ -17,7 +17,7 @@
 package api.models.errors
 
 import play.api.http.Status.BAD_REQUEST
-import play.api.libs.json._
+import play.api.libs.json.*
 import api.utils.UnitSpec
 
 class MtdErrorSpec extends UnitSpec {

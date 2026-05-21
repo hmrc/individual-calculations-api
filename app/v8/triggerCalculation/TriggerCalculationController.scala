@@ -17,7 +17,7 @@
 package v8.triggerCalculation
 
 import api.utils.{IdGenerator, Logging}
-import api.controllers._
+import api.controllers.*
 import api.models.audit.GenericAuditDetail
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import play.api.libs.json.{JsValue, Json}

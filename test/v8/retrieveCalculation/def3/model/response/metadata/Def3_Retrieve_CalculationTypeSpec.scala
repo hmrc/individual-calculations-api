@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def3.model.response.metadata
 
 import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
-import v8.retrieveCalculation.def3.model.response.metadata.Def3_CalculationType._
+import v8.retrieveCalculation.def3.model.response.metadata.Def3_CalculationType.*
 
 class Def3_Retrieve_CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

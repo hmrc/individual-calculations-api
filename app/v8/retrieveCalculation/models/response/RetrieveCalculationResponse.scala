@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.models.response
 
 import play.api.libs.json.{Json, OWrites, Reads}
-import v8.retrieveCalculation._
+import v8.retrieveCalculation.*
 
 sealed trait RetrieveCalculationResponse {
 

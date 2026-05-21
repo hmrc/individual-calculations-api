@@ -17,8 +17,8 @@
 package v8.retrieveCalculation.def3.model.response.metadata
 
 import common.TaxYearFormats
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 import api.models.domain.TaxYear
 
 case class Metadata(calculationId: String,

@@ -17,7 +17,7 @@
 package v8.submitFinalDeclaration.def1
 
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
 import api.models.errors.MtdError

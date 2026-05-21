@@ -38,7 +38,7 @@ import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationReques
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 class SubmitFinalDeclarationControllerSpec
     extends ControllerBaseSpec

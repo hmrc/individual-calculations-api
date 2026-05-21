@@ -19,7 +19,7 @@ package api.controllers.validators.resolvers
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import api.models.domain.TaxYear
-import api.models.errors._
+import api.models.errors.*
 
 import java.time.Clock
 import scala.math.Ordering.Implicits.infixOrderingOps

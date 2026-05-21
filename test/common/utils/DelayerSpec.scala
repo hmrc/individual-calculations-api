@@ -20,7 +20,7 @@ import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 import api.utils.UnitSpec
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 class DelayerSpec extends UnitSpec {
 

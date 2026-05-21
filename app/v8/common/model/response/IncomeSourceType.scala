@@ -17,7 +17,7 @@
 package v8.common.model.response
 
 import common.utils.enums.Enums
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.reflect.ClassTag
 

@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def2
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors._
+import api.models.errors.*
 import api.utils.UnitSpec
 import v8.retrieveCalculation.models.request.Def2_RetrieveCalculationRequestData
 

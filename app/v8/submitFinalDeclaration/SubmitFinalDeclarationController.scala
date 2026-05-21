@@ -17,9 +17,9 @@
 package v8.submitFinalDeclaration
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import api.controllers._
+import api.controllers.*
 import api.routing.Version
-import api.services._
+import api.services.*
 import api.utils.{IdGenerator, Logging}
 
 import javax.inject.{Inject, Singleton}

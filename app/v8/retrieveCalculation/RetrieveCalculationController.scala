@@ -18,7 +18,7 @@ package v8.retrieveCalculation
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import api.config.AppConfig
-import api.controllers._
+import api.controllers.*
 import api.routing.Version
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.{IdGenerator, Logging}

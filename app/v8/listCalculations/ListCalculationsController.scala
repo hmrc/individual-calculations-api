@@ -17,7 +17,7 @@
 package v8.listCalculations
 
 import api.utils.{IdGenerator, Logging}
-import api.controllers._
+import api.controllers.*
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 

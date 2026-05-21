@@ -16,7 +16,7 @@
 
 package api.connectors.httpparsers
 
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.Reads
 import api.connectors.DownstreamOutcome
 import api.models.errors.{InternalError, OutboundError}

@@ -17,20 +17,6 @@
 package v8.triggerCalculation
 
 import api.errors.*
-import api.errors.{
-  FinalDeclarationFormatError,
-  RuleBusinessValidationFailureError,
-  RuleCalculationInProgressError,
-  RuleDeclarationNotReceivedError,
-  RuleFinalDeclarationReceivedError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleOutsideAmendmentWindowError,
-  RulePrematureFinalisationError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError
-}
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper

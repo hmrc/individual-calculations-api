@@ -16,7 +16,7 @@
 
 package api.controllers
 
-import play.api.mvc._
+import play.api.mvc.*
 import api.config.{AppConfig, ConfigFeatureSwitches}
 import api.models.auth.UserDetails
 import api.models.errors.MtdError

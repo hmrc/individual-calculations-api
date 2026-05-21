@@ -16,7 +16,7 @@
 
 package api.controllers
 
-import cats.syntax.either._
+import cats.syntax.either.*
 import play.api.libs.json.{JsValue, Writes}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.auth.UserDetails

@@ -22,9 +22,9 @@ import play.api.http.{DefaultFileMimeTypes, DefaultHttpErrorHandler, FileMimeTyp
 import play.api.mvc.Result
 import play.api.{Configuration, Environment}
 import api.config.rewriters.DocumentationRewriters.CheckAndRewrite
-import api.config.rewriters._
+import api.config.rewriters.*
 import api.config.{AppConfig, MockAppConfig, RealAppConfig}
-import api.definition._
+import api.definition.*
 import api.routing.{Version, Versions}
 import uk.gov.hmrc.http.HeaderCarrier
 

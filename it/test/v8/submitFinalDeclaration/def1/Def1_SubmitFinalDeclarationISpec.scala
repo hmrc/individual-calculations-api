@@ -17,19 +17,6 @@
 package v8.submitFinalDeclaration.def1
 
 import api.errors.*
-import api.errors.{
-  FormatCalculationTypeError,
-  RuleFinalDeclarationInProgressError,
-  RuleFinalDeclarationReceivedError,
-  RuleFinalDeclarationTaxYearError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleOutsideAmendmentWindowError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError,
-  RuleSubmissionFailedError
-}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.*
 import play.api.libs.json.*

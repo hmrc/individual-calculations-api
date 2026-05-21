@@ -17,7 +17,7 @@
 package v8.retrieveCalculation
 
 import api.connectors.DownstreamUri.{HipUri, IfsUri}
-import api.connectors.httpparsers.StandardDownstreamHttpParser._
+import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import api.config.AppConfig
 import uk.gov.hmrc.http.client.HttpClientV2

@@ -21,7 +21,7 @@ import play.api.libs.json.JsObject
 import play.api.mvc.{Action, AnyContent, Result}
 import api.config.MockAppConfig
 import api.models.auth.UserDetails
-import api.models.errors._
+import api.models.errors.*
 import api.services.{EnrolmentsAuthService, MockEnrolmentsAuthService, MockMtdIdLookupService, MtdIdLookupService}
 import uk.gov.hmrc.auth.core.Enrolment
 import uk.gov.hmrc.auth.core.authorise.Predicate

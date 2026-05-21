@@ -18,9 +18,9 @@ package v8.triggerCalculation.def1
 
 import api.errors.RuleCalculationTypeNotAllowed
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.ResolverSupport._
+import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError

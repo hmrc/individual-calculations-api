@@ -21,7 +21,7 @@ import api.config.Deprecation.NotDeprecated
 import api.config.{AppConfig, MockAppConfig}
 import api.definition.APIStatus.{ALPHA, BETA}
 import api.mocks.MockHttpClient
-import api.routing._
+import api.routing.*
 import api.utils.UnitSpec
 
 import scala.language.reflectiveCalls

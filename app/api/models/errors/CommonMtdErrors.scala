@@ -16,7 +16,7 @@
 
 package api.models.errors
 
-import play.api.http.Status._
+import play.api.http.Status.*
 
 // MtdError types that are common across MTD APIs.
 

@@ -17,7 +17,7 @@
 package common.utils.enums
 
 import cats.Show
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.reflect.ClassTag
 

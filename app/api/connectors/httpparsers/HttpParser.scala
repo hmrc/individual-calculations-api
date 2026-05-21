@@ -16,8 +16,8 @@
 
 package api.connectors.httpparsers
 
-import play.api.libs.json._
-import api.models.errors._
+import play.api.libs.json.*
+import api.models.errors.*
 import api.utils.Logging
 import uk.gov.hmrc.http.HttpResponse
 import scala.util.Try

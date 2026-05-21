@@ -17,21 +17,6 @@
 package v8.triggerCalculation
 
 import api.errors.*
-import api.errors.{
-  FinalDeclarationFormatError,
-  RuleBusinessValidationFailureError,
-  RuleCalculationInProgressError,
-  RuleCalculationTypeNotAllowed,
-  RuleDeclarationNotReceivedError,
-  RuleFinalDeclarationReceivedError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleOutsideAmendmentWindowError,
-  RulePrematureFinalisationError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError
-}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status.*

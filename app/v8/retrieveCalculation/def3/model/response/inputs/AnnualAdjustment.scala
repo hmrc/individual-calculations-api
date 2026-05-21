@@ -16,10 +16,10 @@
 
 package v8.retrieveCalculation.def3.model.response.inputs
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType._
+import IncomeSourceType.*
 
 case class AnnualAdjustment(incomeSourceId: String, incomeSourceType: IncomeSourceType, bsasId: String, receivedDateTime: String, applied: Boolean)
 

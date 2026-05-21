@@ -16,7 +16,7 @@
 
 package api.definition
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import api.routing.Version
 import common.utils.enums.Enums
 

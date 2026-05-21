@@ -18,7 +18,7 @@ package api.routing
 
 import org.scalamock.scalatest.MockFactory
 import play.api.http.HeaderNames.ACCEPT
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.{Headers, RequestHeader}
 import play.api.test.FakeRequest
 import api.routing.Version.VersionReads

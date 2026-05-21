@@ -16,10 +16,10 @@
 
 package v8.listCalculations
 
-import cats.implicits._
+import cats.implicits.*
 import api.controllers.RequestContext
 import api.models
-import api.models.errors._
+import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import v8.listCalculations.model.request.ListCalculationsRequestData
 import v8.listCalculations.model.response.{Calculation, ListCalculationsResponse}

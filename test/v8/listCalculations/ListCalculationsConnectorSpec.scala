@@ -21,7 +21,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v8.common.model.domain._
+import v8.common.model.domain.*
 import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v8.listCalculations.model.request.{
   Def1_ListCalculationsRequestData,

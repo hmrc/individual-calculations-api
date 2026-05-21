@@ -16,7 +16,7 @@
 
 package api.utils
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.annotation.tailrec
 import scala.concurrent.Future

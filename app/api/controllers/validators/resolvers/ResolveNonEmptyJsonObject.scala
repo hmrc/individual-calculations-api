@@ -20,7 +20,7 @@ import cats.data.Validated
 import play.api.libs.json.{JsValue, Reads}
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
-import api.utils.EmptyPathsResult._
+import api.utils.EmptyPathsResult.*
 import api.utils.{EmptinessChecker, Logging}
 
 class ResolveNonEmptyJsonObject[A: Reads: EmptinessChecker] extends ResolverSupport {

@@ -16,7 +16,7 @@
 
 package api.services
 
-import play.api.http.Status._
+import play.api.http.Status.*
 import api.connectors.MtdIdLookupConnector
 import api.controllers.validators.resolvers.ResolveNino
 import api.models.errors.{InvalidBearerTokenError, NinoFormatError, _}

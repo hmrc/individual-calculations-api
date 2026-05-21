@@ -19,7 +19,7 @@ package common.utils.enums
 import cats.Show
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
-import play.api.libs.json._
+import play.api.libs.json.*
 import api.utils.UnitSpec
 
 enum Enum {

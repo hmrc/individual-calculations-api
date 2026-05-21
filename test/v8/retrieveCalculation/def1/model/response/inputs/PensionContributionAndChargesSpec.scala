@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def1.model.response.inputs
 
 import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
-import v8.retrieveCalculation.def1.model.response.inputs.PensionContributionAndChargesType._
+import v8.retrieveCalculation.def1.model.response.inputs.PensionContributionAndChargesType.*
 
 class PensionContributionAndChargesSpec extends UnitSpec with EnumJsonSpecSupport {
 

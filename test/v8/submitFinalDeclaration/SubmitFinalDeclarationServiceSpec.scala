@@ -16,18 +16,7 @@
 
 package v8.submitFinalDeclaration
 
-import api.errors.{
-  RuleFinalDeclarationInProgressError,
-  RuleFinalDeclarationReceivedError,
-  RuleFinalDeclarationTaxYearError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleOutsideAmendmentWindowError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError,
-  RuleSubmissionFailedError
-}
+import api.errors.*
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper

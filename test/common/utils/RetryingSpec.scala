@@ -26,7 +26,7 @@ import play.api.{Application, Environment, Mode}
 import api.utils.UnitSpec
 
 import java.util.concurrent.TimeUnit
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.concurrent.{ExecutionContext, Future, TimeoutException}
 import scala.util.control.NoStackTrace
 import scala.util.{Failure, Success, Try}

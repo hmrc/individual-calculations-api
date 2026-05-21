@@ -21,7 +21,7 @@ import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, 
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
 import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def1_RetrieveCalculationValidator {

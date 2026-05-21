@@ -20,10 +20,10 @@ import org.apache.pekko.actor.ActorSystem
 import org.scalatest.Inside
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.{HttpConfiguration, HttpErrorHandler, HttpFilters}
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.routing.Router
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import api.config.MockAppConfig
 import api.models.errors.{InvalidAcceptHeaderError, UnsupportedVersionError}
 import api.utils.UnitSpec

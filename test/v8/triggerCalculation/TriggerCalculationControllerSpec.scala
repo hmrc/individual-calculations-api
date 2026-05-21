@@ -17,7 +17,7 @@
 package v8.triggerCalculation
 
 import play.api.Configuration
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.Result
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.GenericAuditDetailFixture.nino

@@ -21,7 +21,7 @@ import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import api.controllers.validators.resolvers.ResolverSupport._
+import api.controllers.validators.resolvers.ResolverSupport.*
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import v8.common.model.resolver.ResolveListCalculationType

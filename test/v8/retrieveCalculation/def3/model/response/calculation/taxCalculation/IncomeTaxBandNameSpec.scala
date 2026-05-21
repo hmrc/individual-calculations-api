@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def3.model.response.calculation.taxCalculation
 
 import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
-import v8.retrieveCalculation.def3.model.response.calculation.taxCalculation.IncomeTaxBandName._
+import v8.retrieveCalculation.def3.model.response.calculation.taxCalculation.IncomeTaxBandName.*
 
 class IncomeTaxBandNameSpec extends UnitSpec with EnumJsonSpecSupport {
 

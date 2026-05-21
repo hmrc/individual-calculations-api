@@ -19,8 +19,8 @@ package v8.retrieveCalculation.def2
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.test.Helpers._
-import api.models.errors._
+import play.api.test.Helpers.*
+import api.models.errors.*
 import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import api.support.IntegrationBaseSpec
 import v8.retrieveCalculation.def2.model.Def2_CalculationFixture

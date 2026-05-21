@@ -17,7 +17,7 @@
 package v8.retrieveCalculation
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors._
+import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier

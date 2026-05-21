@@ -16,7 +16,7 @@
 
 package api.models.audit
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, JsValue, OWrites}
 import api.controllers.{AuditHandler, RequestContext}
 import api.models.auth.UserDetails

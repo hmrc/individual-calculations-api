@@ -18,7 +18,7 @@ package v8.listCalculations
 
 import api.config.AppConfig
 import api.connectors.DownstreamUri.{HipUri, IfsUri}
-import api.connectors.httpparsers.StandardDownstreamHttpParser._
+import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
