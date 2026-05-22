@@ -16,8 +16,8 @@
 
 package v8.listCalculations.def3.model.response
 
-import play.api.libs.json.{JsArray, Json}
 import api.utils.UnitSpec
+import play.api.libs.json.{JsArray, Json}
 import v8.listCalculations.def3.model.Def3_ListCalculationsFixture
 import v8.listCalculations.model.response.Def3_ListCalculationsResponse
 

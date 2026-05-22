@@ -16,8 +16,8 @@
 
 package common.utils
 
-import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 import api.utils.UnitSpec
+import com.github.pjfanning.pekko.scheduler.mock.{MockScheduler, VirtualTime}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.*

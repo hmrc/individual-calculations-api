@@ -16,7 +16,11 @@
 
 package v8.submitFinalDeclaration
 
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, InternalError}
+import api.models.outcomes.ResponseWrapper
 import api.nrs.{MockNrsProxyConnector, NrsFixture}
+import api.services.ServiceSpec
 import mocks.MockCalculationsConfig
 import org.apache.pekko.actor.{ActorSystem, Scheduler}
 import org.scalamock.matchers.ArgCapture.CaptureOne
@@ -24,10 +28,6 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsValue, Json}
 import play.api.{Application, Environment, Mode}
-import api.models.domain.{CalculationId, Nino, TaxYear}
-import api.models.errors.{ErrorWrapper, InternalError}
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
 import v8.common.model.domain.{CalculationType, `final-declaration`}
 import v8.retrieveCalculation.MockRetrieveCalculationService
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture

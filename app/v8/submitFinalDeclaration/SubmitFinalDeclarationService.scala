@@ -16,19 +16,8 @@
 
 package v8.submitFinalDeclaration
 
-import api.errors.{
-  RuleFinalDeclarationInProgressError,
-  RuleFinalDeclarationReceivedError,
-  RuleFinalDeclarationTaxYearError,
-  RuleIncomeSourcesChangedError,
-  RuleIncomeSourcesInvalidError,
-  RuleNoIncomeSubmissionsExistError,
-  RuleOutsideAmendmentWindowError,
-  RuleRecentSubmissionsExistError,
-  RuleResidencyChangedError,
-  RuleSubmissionFailedError
-}
 import api.controllers.RequestContext
+import api.errors.*
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData

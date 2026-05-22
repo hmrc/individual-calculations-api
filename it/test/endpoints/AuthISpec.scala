@@ -16,15 +16,15 @@
 
 package endpoints
 
+import api.models.domain.TaxYear
+import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status.*
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import api.models.domain.TaxYear
-import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import api.support.IntegrationBaseSpec
 import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
 
 class AuthISpec extends IntegrationBaseSpec with Def4_CalculationFixture {

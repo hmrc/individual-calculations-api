@@ -16,16 +16,16 @@
 
 package api.controllers
 
+import api.config.rewriters.*
+import api.config.rewriters.DocumentationRewriters.CheckAndRewrite
+import api.config.{AppConfig, MockAppConfig, RealAppConfig}
+import api.definition.*
+import api.routing.{Version, Versions}
 import com.typesafe.config.ConfigFactory
 import controllers.{AssetsConfiguration, DefaultAssetsMetadata, RewriteableAssets}
 import play.api.http.{DefaultFileMimeTypes, DefaultHttpErrorHandler, FileMimeTypesConfiguration, HttpConfiguration}
 import play.api.mvc.Result
 import play.api.{Configuration, Environment}
-import api.config.rewriters.DocumentationRewriters.CheckAndRewrite
-import api.config.rewriters.*
-import api.config.{AppConfig, MockAppConfig, RealAppConfig}
-import api.definition.*
-import api.routing.{Version, Versions}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -16,8 +16,6 @@
 
 package v8.listCalculations
 
-import play.api.Configuration
-import play.api.mvc.Result
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.GenericAuditDetailFixture.nino
 import api.models.domain.{Nino, TaxYear}
@@ -25,6 +23,8 @@ import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupported
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.utils.MockIdGenerator
+import play.api.Configuration
+import play.api.mvc.Result
 import v8.listCalculations.def1.model.Def1_ListCalculationsFixture
 import v8.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
 

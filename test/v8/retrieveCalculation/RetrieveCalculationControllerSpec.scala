@@ -16,8 +16,6 @@
 
 package v8.retrieveCalculation
 
-import play.api.libs.json.{JsObject, JsValue}
-import play.api.mvc.Result
 import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
@@ -26,6 +24,8 @@ import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupported
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.utils.MockIdGenerator
+import play.api.libs.json.{JsObject, JsValue}
+import play.api.mvc.Result
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 

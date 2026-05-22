@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def3.model.response.calculation.dividendsIncome
 
 import play.api.libs.json.{Format, Json}
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType.`foreign-dividends`
+import v8.common.model.response.IncomeSourceType.`foreign-dividends`
 
 case class CommonForeignDividend(incomeSourceType: Option[IncomeSourceType],
                                  countryCode: String,

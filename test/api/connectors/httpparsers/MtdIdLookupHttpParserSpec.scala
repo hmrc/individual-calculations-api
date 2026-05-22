@@ -16,13 +16,13 @@
 
 package api.connectors.httpparsers
 
+import api.connectors.MtdIdLookupConnector
+import api.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
+import api.utils.UnitSpec
 import play.api.http.Status.IM_A_TEAPOT
 import play.api.libs.json.Writes.StringWrites
 import play.api.libs.json.{JsResultException, Json}
 import play.api.test.Helpers.OK
-import api.connectors.MtdIdLookupConnector
-import api.connectors.httpparsers.MtdIdLookupHttpParser.mtdIdLookupHttpReads
-import api.utils.UnitSpec
 import uk.gov.hmrc.http.HttpResponse
 
 class MtdIdLookupHttpParserSpec extends UnitSpec {

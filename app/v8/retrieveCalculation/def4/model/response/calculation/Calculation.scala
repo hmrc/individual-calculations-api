@@ -34,6 +34,7 @@ import v8.retrieveCalculation.def4.model.response.calculation.incomeSummaryTotal
 import v8.retrieveCalculation.def4.model.response.calculation.marriageAllowanceTransferredIn.MarriageAllowanceTransferredIn
 import v8.retrieveCalculation.def4.model.response.calculation.notionalTax.NotionalTax
 import v8.retrieveCalculation.def4.model.response.calculation.otherIncome.OtherIncome
+import v8.retrieveCalculation.def4.model.response.calculation.partnerIncome.PartnerIncome
 import v8.retrieveCalculation.def4.model.response.calculation.pensionContributionReliefs.PensionContributionReliefs
 import v8.retrieveCalculation.def4.model.response.calculation.pensionSavingsTaxCharges.PensionSavingsTaxCharges
 import v8.retrieveCalculation.def4.model.response.calculation.previousCalculation.PreviousCalculation
@@ -47,7 +48,6 @@ import v8.retrieveCalculation.def4.model.response.calculation.studentLoans.Stude
 import v8.retrieveCalculation.def4.model.response.calculation.taxCalculation.TaxCalculation
 import v8.retrieveCalculation.def4.model.response.calculation.taxDeductedAtSource.TaxDeductedAtSource
 import v8.retrieveCalculation.def4.model.response.calculation.transitionProfit.TransitionProfit
-import v8.retrieveCalculation.def4.model.response.calculation.partnerIncome.PartnerIncome
 
 case class Calculation(
     allowancesAndDeductions: Option[AllowancesAndDeductions],

@@ -16,8 +16,8 @@
 
 package api.models.domain
 
-import play.api.libs.json.{JsValue, Json}
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 
 class EmptyJsonBodySpec extends UnitSpec {
 

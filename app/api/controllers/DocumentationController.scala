@@ -16,11 +16,11 @@
 
 package api.controllers
 
+import api.config.rewriters.DocumentationRewriters
+import api.definition.ApiDefinitionFactory
 import controllers.RewriteableAssets
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import api.config.rewriters.DocumentationRewriters
-import api.definition.ApiDefinitionFactory
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}

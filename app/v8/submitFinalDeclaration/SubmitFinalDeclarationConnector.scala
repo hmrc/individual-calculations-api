@@ -16,13 +16,13 @@
 
 package v8.submitFinalDeclaration
 
+import api.config.AppConfig
 import api.connectors.DownstreamUri.IfsUri
 import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import api.models.domain.EmptyJsonBody
-import api.config.AppConfig
-import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import javax.inject.{Inject, Singleton}
@@ -36,7 +36,7 @@ class SubmitFinalDeclarationConnector @Inject() (val http: HttpClientV2, val app
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[Unit]] = {
 
-    import request._
+    import request.*
 
     val url = if (taxYear.year >= 2026) {
       IfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/$calculationId/${calculationType.toDownstream}/confirm")

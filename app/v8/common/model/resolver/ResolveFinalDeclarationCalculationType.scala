@@ -16,11 +16,11 @@
 
 package v8.common.model.resolver
 
+import api.controllers.validators.resolvers.ResolverSupport
 import api.errors.FormatCalculationTypeError
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
-import api.controllers.validators.resolvers.ResolverSupport
-import api.models.errors.MtdError
 import v8.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
 
 object ResolveFinalDeclarationCalculationType extends ResolverSupport {

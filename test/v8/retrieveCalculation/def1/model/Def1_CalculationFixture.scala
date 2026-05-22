@@ -16,10 +16,10 @@
 
 package v8.retrieveCalculation.def1.model
 
-import play.api.libs.json.{JsObject, JsValue, Json}
 import api.models.domain.TaxYear
-import v8.common.model.response.RetrieveCalculationType.`in-year`
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v8.common.model.response.IncomeSourceType
+import v8.common.model.response.RetrieveCalculationType.`in-year`
 import v8.retrieveCalculation.def1.model.response.calculation.Calculation
 import v8.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.*
 import v8.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.*
@@ -28,8 +28,8 @@ import v8.retrieveCalculation.def1.model.response.calculation.reliefs.*
 import v8.retrieveCalculation.def1.model.response.calculation.taxCalculation.*
 import v8.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.*
 import v8.retrieveCalculation.def1.model.response.inputs.*
-import v8.retrieveCalculation.def1.model.response.metadata.CalculationReason.*
 import v8.retrieveCalculation.def1.model.response.metadata.*
+import v8.retrieveCalculation.def1.model.response.metadata.CalculationReason.*
 import v8.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 trait Def1_CalculationFixture {
@@ -288,7 +288,7 @@ trait Def1_CalculationFixture {
     calculation = Some(calculationWithR8BData),
     messages = None
   )
-  
+
   // @formatter:off
   val emptyCalculation: Calculation = Calculation(
     None, None, None, None, None, None,
@@ -296,14 +296,14 @@ trait Def1_CalculationFixture {
     None, None, None, None, None, None,
     None, None, None, None, None, None,
     None, None, None, None, None)
-  
+
   val minimalCalculationResponse: Def1_RetrieveCalculationResponse = Def1_RetrieveCalculationResponse(
     metadata = metadata,
     inputs = inputs,
     calculation = Some(calculationWithR8BData),
     messages = None
   )
-  
+
   val minimumCalculationResponseR8BEnabledJson: JsObject = Json
     .parse(
       """
@@ -362,5 +362,5 @@ trait Def1_CalculationFixture {
     """.stripMargin
     )
     .as[JsObject]
-  
+
 }

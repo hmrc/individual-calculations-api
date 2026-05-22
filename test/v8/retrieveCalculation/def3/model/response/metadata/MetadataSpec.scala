@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def3.model.response.metadata
 
-import play.api.libs.json.{JsError, JsObject, Json}
 import api.models.domain.TaxYear
 import api.utils.UnitSpec
+import play.api.libs.json.{JsError, JsObject, Json}
 
 class MetadataSpec extends UnitSpec {
 

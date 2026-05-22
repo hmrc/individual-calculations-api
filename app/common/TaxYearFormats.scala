@@ -16,9 +16,9 @@
 
 package common
 
-import play.api.libs.json.{Format, Reads, Writes}
 import api.models.domain.TaxYear
 import api.models.domain.TaxYear.fromDownstreamInt
+import play.api.libs.json.{Format, Reads, Writes}
 
 object TaxYearFormats {
   private val writes: Writes[TaxYear]                = implicitly[Writes[String]].contramap(_.asMtd)

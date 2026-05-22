@@ -16,11 +16,11 @@
 
 package api.config.rewriters
 
-import controllers.Rewriter
-import play.api.Configuration
 import api.config.MockAppConfig
 import api.config.rewriters.DocumentationRewriters.CheckRewrite
 import api.utils.UnitSpec
+import controllers.Rewriter
+import play.api.Configuration
 
 class OasFeatureRewriterSpec extends UnitSpec with MockAppConfig {
 

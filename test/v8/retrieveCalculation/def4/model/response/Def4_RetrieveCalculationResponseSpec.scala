@@ -16,10 +16,10 @@
 
 package v8.retrieveCalculation.def4.model.response
 
-import org.scalatest.Inside
-import play.api.libs.json.Json
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
+import org.scalatest.Inside
+import play.api.libs.json.Json
 import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
 import v8.retrieveCalculation.models.response.Def4_RetrieveCalculationResponse
 

@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def4.model.response.calculation.savingsAndGainsIncome
 
-import play.api.libs.json.{JsValue, Json}
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 import v8.common.model.response.IncomeSourceType
 
 class UkSavingsAndGainsIncomeSpec extends UnitSpec with JsonErrorValidators {

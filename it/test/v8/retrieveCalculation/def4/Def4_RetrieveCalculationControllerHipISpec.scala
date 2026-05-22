@@ -16,13 +16,13 @@
 
 package v8.retrieveCalculation.def4
 
+import api.models.errors.*
+import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import api.models.errors.*
-import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
-import api.support.IntegrationBaseSpec
 import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
 
 class Def4_RetrieveCalculationControllerHipISpec extends IntegrationBaseSpec with Def4_CalculationFixture {

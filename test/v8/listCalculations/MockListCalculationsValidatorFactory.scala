@@ -16,8 +16,8 @@
 
 package v8.listCalculations
 
-import org.scalamock.handlers.CallHandler
 import api.controllers.validators.{MockValidatorFactory, Validator}
+import org.scalamock.handlers.CallHandler
 import v8.listCalculations.model.request.ListCalculationsRequestData
 
 trait MockListCalculationsValidatorFactory extends MockValidatorFactory[ListCalculationsRequestData] {

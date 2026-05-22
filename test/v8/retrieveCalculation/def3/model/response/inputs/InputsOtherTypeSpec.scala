@@ -16,8 +16,8 @@
 
 package v8.retrieveCalculation.def3.model.response.inputs
 
-import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
+import common.utils.enums.EnumJsonSpecSupport
 import v8.retrieveCalculation.def3.model.response.inputs.InputsOtherType.*
 
 class InputsOtherTypeSpec extends UnitSpec with EnumJsonSpecSupport {

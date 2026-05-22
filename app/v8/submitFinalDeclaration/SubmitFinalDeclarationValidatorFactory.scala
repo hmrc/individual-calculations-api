@@ -17,9 +17,9 @@
 package v8.submitFinalDeclaration
 
 import api.controllers.validators.Validator
+import v8.submitFinalDeclaration.SubmitFinalDeclarationSchema.Def1
 import v8.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
-import SubmitFinalDeclarationSchema.Def1
 
 import javax.inject.Singleton
 

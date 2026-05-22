@@ -16,6 +16,7 @@
 
 package common.utils
 
+import api.utils.UnitSpec
 import com.google.common.base.Stopwatch
 import org.apache.pekko.actor.{ActorSystem, Scheduler}
 import org.scalatest.concurrent.ScalaFutures
@@ -23,7 +24,6 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.Injecting
 import play.api.{Application, Environment, Mode}
-import api.utils.UnitSpec
 
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.*

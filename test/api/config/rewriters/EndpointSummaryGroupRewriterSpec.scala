@@ -16,9 +16,9 @@
 
 package api.config.rewriters
 
-import com.github.jknack.handlebars.HandlebarsException
 import api.config.MockAppConfig
 import api.utils.UnitSpec
+import com.github.jknack.handlebars.HandlebarsException
 
 class EndpointSummaryGroupRewriterSpec extends UnitSpec with MockAppConfig {
 

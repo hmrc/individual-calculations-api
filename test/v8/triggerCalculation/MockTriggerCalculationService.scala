@@ -16,12 +16,12 @@
 
 package v8.triggerCalculation
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import org.scalatest.TestSuite
 import api.controllers.RequestContext
 import api.models.errors.ErrorWrapper
 import api.models.outcomes.ResponseWrapper
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 import v8.triggerCalculation.model.response.TriggerCalculationResponse
 

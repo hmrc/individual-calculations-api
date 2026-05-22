@@ -16,9 +16,9 @@
 
 package api.models.errors
 
-import play.api.libs.json.Json
 import api.models.audit.AuditError
 import api.utils.UnitSpec
+import play.api.libs.json.Json
 
 class ErrorWrapperSpec extends UnitSpec {
 

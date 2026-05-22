@@ -16,11 +16,11 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.*
 import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
+import cats.data.Validated.{Invalid, Valid}
+import play.api.libs.json.*
 
 class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
 

@@ -16,9 +16,9 @@
 
 package api.services
 
+import api.support.WireMockMethods
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.NO_CONTENT
-import api.support.WireMockMethods
 
 object AuditStub extends WireMockMethods {
 

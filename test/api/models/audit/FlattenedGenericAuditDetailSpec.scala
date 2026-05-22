@@ -16,11 +16,11 @@
 
 package api.models.audit
 
-import play.api.libs.json.{JsValue, Json}
 import api.models.audit.AuditResponseFixture.{auditResponseModelWithBody, auditResponseModelWithErrors}
 import api.models.audit.FlattenedGenericAuditDetail.*
 import api.models.auth.UserDetails
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 
 class FlattenedGenericAuditDetailSpec extends UnitSpec {
 

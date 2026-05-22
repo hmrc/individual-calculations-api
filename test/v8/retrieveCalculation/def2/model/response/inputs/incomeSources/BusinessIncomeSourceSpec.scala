@@ -16,8 +16,8 @@
 
 package v8.retrieveCalculation.def2.model.response.inputs.incomeSources
 
-import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import api.utils.UnitSpec
+import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import v8.common.model.response.IncomeSourceType
 import v8.common.model.response.IncomeSourceType.*
 import v8.retrieveCalculation.def2.model.response.inputs.{BusinessIncomeSource, SubmissionPeriod}

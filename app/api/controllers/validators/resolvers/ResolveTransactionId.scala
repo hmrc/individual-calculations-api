@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated
 import api.models.domain.TransactionId
 import api.models.errors.{MtdError, TransactionIdFormatError}
+import cats.data.Validated
 
 object ResolveTransactionId extends ResolverSupport {
 

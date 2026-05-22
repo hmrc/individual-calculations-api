@@ -16,9 +16,9 @@
 
 package api.models.audit
 
-import play.api.libs.json.Json
 import api.models.audit.AuditResponseFixture.*
 import api.utils.UnitSpec
+import play.api.libs.json.Json
 
 class AuditResponseSpec extends UnitSpec {
 

@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
 import play.api.libs.functional.syntax.*
-import play.api.libs.json.{JsPath, Json, Reads, OWrites}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class ListOfPartnerIncome(
     partnershipUtr: String,

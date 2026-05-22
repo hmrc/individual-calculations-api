@@ -16,8 +16,8 @@
 
 package api.models.domain
 
-import play.api.libs.json.*
 import common.utils.enums.Enums
+import play.api.libs.json.*
 
 enum Status {
   case valid, invalid, superseded

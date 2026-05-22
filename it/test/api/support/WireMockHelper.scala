@@ -33,7 +33,7 @@ trait WireMockHelper {
 
   self: GuiceOneServerPerSuite =>
 
-  import WireMockHelper._
+  import WireMockHelper.*
 
   lazy val wireMockConf: WireMockConfiguration = wireMockConfig.port(wireMockPort)
   lazy val wireMockServer: WireMockServer      = new WireMockServer(wireMockConf)

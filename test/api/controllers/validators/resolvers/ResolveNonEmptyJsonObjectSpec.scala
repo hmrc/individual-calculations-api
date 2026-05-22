@@ -16,13 +16,13 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.*
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.models.utils.JsonErrorValidators
 import api.utils.EmptinessChecker.field
 import api.utils.{EmptinessChecker, UnitSpec}
+import cats.data.Validated.{Invalid, Valid}
+import play.api.libs.json.*
 
 import scala.compiletime.summonInline
 

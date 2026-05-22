@@ -16,12 +16,6 @@
 
 package api.controllers
 
-import cats.implicits.catsSyntaxValidatedId
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
-import play.api.test.Helpers.stubControllerComponents
-import play.api.test.{FakeRequest, ResultExtractors}
 import api.config.Deprecation.NotDeprecated
 import api.config.{MockAppConfig, RealAppConfig}
 import api.models.audit.{AuditError, AuditEvent, AuditResponse}
@@ -30,6 +24,12 @@ import api.models.errors.{BadRequestError, ErrorWrapper, MtdError}
 import api.routing.{Version, Version9}
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.utils.{MockIdGenerator, UnitSpec}
+import cats.implicits.catsSyntaxValidatedId
+import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{AnyContentAsEmpty, ControllerComponents, Result}
+import play.api.test.Helpers.stubControllerComponents
+import play.api.test.{FakeRequest, ResultExtractors}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future

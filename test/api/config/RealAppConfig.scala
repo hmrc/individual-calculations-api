@@ -16,9 +16,9 @@
 
 package api.config
 
+import api.utils.UnitSpec
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
-import api.utils.UnitSpec
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait RealAppConfig {

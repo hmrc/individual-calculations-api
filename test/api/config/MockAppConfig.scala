@@ -16,12 +16,12 @@
 
 package api.config
 
+import api.routing.Version
 import cats.data.Validated
 import org.scalamock.handlers.{CallHandler, CallHandler0}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
 import play.api.Configuration
-import api.routing.Version
 
 trait MockAppConfig extends TestSuite with MockFactory {
 

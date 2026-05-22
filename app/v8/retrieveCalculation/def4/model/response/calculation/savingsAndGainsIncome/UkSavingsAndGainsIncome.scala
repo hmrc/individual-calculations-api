@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def4.model.response.calculation.savingsAndGainsIn
 
 import play.api.libs.json.{Format, Json}
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType.*
+import v8.common.model.response.IncomeSourceType.*
 
 case class UkSavingsAndGainsIncome(incomeSourceId: Option[String],
                                    incomeSourceType: IncomeSourceType,

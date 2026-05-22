@@ -16,20 +16,14 @@
 
 package v8.listCalculations.schema
 
-import play.api.libs.json.Reads
 import api.controllers.validators.resolvers.ResolveTaxYear
 import api.models.domain.TaxYear
 import api.schema.DownstreamReadable
+import play.api.libs.json.Reads
 import v8.listCalculations.def1.model.response.Def1_Calculation
 import v8.listCalculations.def2.model.response.Def2_Calculation
 import v8.listCalculations.def3.model.response.Def3_Calculation
-import v8.listCalculations.model.response.{
-  Calculation,
-  Def1_ListCalculationsResponse,
-  Def2_ListCalculationsResponse,
-  Def3_ListCalculationsResponse,
-  ListCalculationsResponse
-}
+import v8.listCalculations.model.response.*
 
 import scala.math.Ordered.orderingToOrdered
 

@@ -16,9 +16,9 @@
 
 package v8.submitFinalDeclaration
 
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import api.models.domain.{TaxYear, TaxYearPropertyCheckSupport}
 import api.utils.UnitSpec
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class SubmitFinalDeclarationSchemaSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks with TaxYearPropertyCheckSupport {
 

@@ -16,10 +16,10 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
 import api.models.domain.CalculationId
 import api.models.errors.CalculationIdFormatError
 import api.utils.UnitSpec
+import cats.data.Validated.{Invalid, Valid}
 
 class ResolveCalculationIdSpec extends UnitSpec {
 

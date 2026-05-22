@@ -16,9 +16,9 @@
 
 package api.models.audit
 
+import api.models.auth.UserDetails
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{JsPath, JsValue, OWrites}
-import api.models.auth.UserDetails
 
 import scala.util.Try
 

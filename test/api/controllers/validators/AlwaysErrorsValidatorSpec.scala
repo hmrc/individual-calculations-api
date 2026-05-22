@@ -16,10 +16,10 @@
 
 package api.controllers.validators
 
-import cats.data.Validated.Invalid
-import play.api.http.Status
 import api.models.errors.MtdError
 import api.utils.UnitSpec
+import cats.data.Validated.Invalid
+import play.api.http.Status
 
 class AlwaysErrorsValidatorSpec extends UnitSpec {
 

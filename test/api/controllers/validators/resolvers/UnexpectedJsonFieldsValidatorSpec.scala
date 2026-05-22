@@ -16,12 +16,12 @@
 
 package api.controllers.validators.resolvers
 
-import play.api.libs.json.{JsObject, Json}
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructure.{Arr, Leaf}
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.domain.TaxYear
 import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.utils.UnitSpec
+import play.api.libs.json.{JsObject, Json}
 
 class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 

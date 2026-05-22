@@ -16,11 +16,11 @@
 
 package api.controllers.validators.resolvers
 
+import api.models.errors.MtdError
+import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
 import play.api.http.Status.BAD_REQUEST
 import play.api.libs.json.{JsObject, JsString}
-import api.models.errors.MtdError
-import api.utils.UnitSpec
 
 class ResolveExclusiveJsonPropertySpec extends UnitSpec {
 

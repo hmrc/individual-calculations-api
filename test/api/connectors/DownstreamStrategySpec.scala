@@ -16,10 +16,10 @@
 
 package api.connectors
 
-import org.scalatest.concurrent.ScalaFutures
-import play.api.Configuration
 import api.config.{BasicAuthDownstreamConfig, DownstreamConfig, MockAppConfig}
 import api.utils.UnitSpec
+import org.scalatest.concurrent.ScalaFutures
+import play.api.Configuration
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

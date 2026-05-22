@@ -16,12 +16,12 @@
 
 package api.services
 
-import play.api.http.Status.BAD_REQUEST
-import play.api.libs.json.{Format, Json}
 import api.controllers.EndpointLogContext
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.utils.{Logging, UnitSpec}
+import play.api.http.Status.BAD_REQUEST
+import play.api.libs.json.{Format, Json}
 
 class DownstreamResponseMappingSupportSpec extends UnitSpec {
 

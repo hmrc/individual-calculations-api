@@ -16,8 +16,8 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated
 import api.models.errors.{MtdError, ValueFormatError}
+import cats.data.Validated
 
 case class ResolveInteger(min: Int, max: Int) extends ResolverSupport {
 

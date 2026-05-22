@@ -16,12 +16,12 @@
 
 package api.controllers.validators
 
-import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
-import play.api.http.Status.BAD_REQUEST
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.MtdError
 import api.utils.UnitSpec
+import cats.data.Validated
+import cats.data.Validated.{Invalid, Valid}
+import play.api.http.Status.BAD_REQUEST
 
 class RulesValidatorSpec extends UnitSpec {
 

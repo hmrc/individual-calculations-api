@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def1.model.response.calculation.foreignPropertyIn
 
 import play.api.libs.json.{Format, Json, OFormat}
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType.`foreign-property`
+import v8.common.model.response.IncomeSourceType.`foreign-property`
 
 case class ForeignPropertyIncome(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,
