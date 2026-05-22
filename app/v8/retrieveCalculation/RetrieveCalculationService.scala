@@ -16,10 +16,10 @@
 
 package v8.retrieveCalculation
 
-import shared.controllers.RequestContext
-import shared.models.errors._
-import shared.services.{BaseService, ServiceOutcome}
-import cats.implicits._
+import api.controllers.RequestContext
+import api.models.errors.*
+import api.services.{BaseService, ServiceOutcome}
+import cats.implicits.*
 import v8.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v8.retrieveCalculation.models.response.RetrieveCalculationResponse
 

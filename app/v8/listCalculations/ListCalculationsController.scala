@@ -16,9 +16,9 @@
 
 package v8.listCalculations
 
-import shared.utils.{IdGenerator, Logging}
-import shared.controllers._
-import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
+import api.utils.{IdGenerator, Logging}
+import api.controllers.*
+import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 import javax.inject.{Inject, Singleton}
@@ -30,7 +30,7 @@ class ListCalculationsController @Inject() (val authService: EnrolmentsAuthServi
                                             validatorFactory: ListCalculationsValidatorFactory,
                                             service: ListCalculationsService,
                                             cc: ControllerComponents,
-                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: shared.config.AppConfig)
+                                            val idGenerator: IdGenerator)(implicit val ec: ExecutionContext, appConfig: api.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

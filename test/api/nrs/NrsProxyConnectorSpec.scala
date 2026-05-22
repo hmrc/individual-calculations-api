@@ -16,10 +16,10 @@
 
 package api.nrs
 
-import shared.mocks.MockHttpClient
+import api.connectors.ConnectorSpec
+import api.mocks.MockHttpClient
 import mocks.MockCalculationsConfig
 import play.api.libs.json.{JsValue, Json}
-import shared.connectors.ConnectorSpec
 import uk.gov.hmrc.http.{StringContextOps, UpstreamErrorResponse}
 
 import scala.concurrent.Future

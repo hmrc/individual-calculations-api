@@ -17,9 +17,9 @@
 package api.nrs
 
 import config.CalculationsConfig
-import play.api.libs.json._
-import play.api.libs.ws._
-import uk.gov.hmrc.http.HttpReads.Implicits._
+import play.api.libs.json.*
+import play.api.libs.ws.*
+import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps, UpstreamErrorResponse}
 

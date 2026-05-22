@@ -24,10 +24,10 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsValue, Json}
 import play.api.{Application, Environment, Mode}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.{ErrorWrapper, InternalError}
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, InternalError}
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import v8.common.model.domain.{CalculationType, `final-declaration`}
 import v8.retrieveCalculation.MockRetrieveCalculationService
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture

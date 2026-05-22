@@ -17,8 +17,8 @@
 package v8.retrieveCalculation.def3.model.response.inputs
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.retrieveCalculation.def3.model.response.inputs.AllowancesReliefsAndDeductionsType._
+import api.utils.UnitSpec
+import v8.retrieveCalculation.def3.model.response.inputs.AllowancesReliefsAndDeductionsType.*
 
 class AllowancesReliefsAndDeductionsTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

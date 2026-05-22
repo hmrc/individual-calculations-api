@@ -17,10 +17,10 @@
 package v8.retrieveCalculation
 
 import org.scalamock.handlers.CallHandler
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}

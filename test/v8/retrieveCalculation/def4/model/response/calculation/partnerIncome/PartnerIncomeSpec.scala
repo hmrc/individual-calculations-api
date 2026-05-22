@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def4.model.response.calculation.partnerIncome
 
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 import play.api.libs.json.*
 
 class PartnerIncomeSpec extends UnitSpec {

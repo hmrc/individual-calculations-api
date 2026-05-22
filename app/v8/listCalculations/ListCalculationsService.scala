@@ -16,11 +16,11 @@
 
 package v8.listCalculations
 
-import cats.implicits._
-import shared.controllers.RequestContext
-import shared.models
-import shared.models.errors._
-import shared.services.{BaseService, ServiceOutcome}
+import cats.implicits.*
+import api.controllers.RequestContext
+import api.models
+import api.models.errors.*
+import api.services.{BaseService, ServiceOutcome}
 import v8.listCalculations.model.request.ListCalculationsRequestData
 import v8.listCalculations.model.response.{Calculation, ListCalculationsResponse}
 

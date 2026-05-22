@@ -16,11 +16,24 @@
 
 package v8.triggerCalculation
 
-import api.errors.*
+import api.errors.{
+  FinalDeclarationFormatError,
+  RuleBusinessValidationFailureError,
+  RuleCalculationInProgressError,
+  RuleDeclarationNotReceivedError,
+  RuleFinalDeclarationReceivedError,
+  RuleIncomeSourcesChangedError,
+  RuleIncomeSourcesInvalidError,
+  RuleNoIncomeSubmissionsExistError,
+  RuleOutsideAmendmentWindowError,
+  RulePrematureFinalisationError,
+  RuleRecentSubmissionsExistError,
+  RuleResidencyChangedError
+}
 import cats.implicits.*
-import shared.controllers.RequestContext
-import shared.models.errors.*
-import shared.services.{BaseService, ServiceOutcome}
+import api.controllers.RequestContext
+import api.models.errors.*
+import api.services.{BaseService, ServiceOutcome}
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 import v8.triggerCalculation.model.response.TriggerCalculationResponse
 

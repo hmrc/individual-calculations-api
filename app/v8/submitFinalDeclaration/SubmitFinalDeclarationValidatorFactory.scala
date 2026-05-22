@@ -16,7 +16,7 @@
 
 package v8.submitFinalDeclaration
 
-import shared.controllers.validators.Validator
+import api.controllers.validators.Validator
 import v8.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 import SubmitFinalDeclarationSchema.Def1

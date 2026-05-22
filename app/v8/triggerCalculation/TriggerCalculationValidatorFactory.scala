@@ -16,7 +16,7 @@
 
 package v8.triggerCalculation
 
-import shared.controllers.validators.Validator
+import api.controllers.validators.Validator
 import v8.triggerCalculation.def1.Def1_TriggerCalculationValidator
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 import v8.triggerCalculation.schema.TriggerCalculationSchema

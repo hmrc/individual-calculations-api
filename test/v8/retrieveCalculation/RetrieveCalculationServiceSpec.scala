@@ -16,10 +16,10 @@
 
 package v8.retrieveCalculation
 
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
-import shared.services.ServiceSpec
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
 import uk.gov.hmrc.http.HeaderCarrier
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}

@@ -18,10 +18,10 @@ package v8.triggerCalculation
 
 import play.api.http.Status
 import play.api.libs.json.JsObject
-import shared.config.AppConfig
-import shared.connectors.DownstreamUri.IfsUri
-import shared.connectors.httpparsers.StandardDownstreamHttpParser._
-import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import api.config.AppConfig
+import api.connectors.DownstreamUri.IfsUri
+import api.connectors.httpparsers.StandardDownstreamHttpParser.*
+import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}

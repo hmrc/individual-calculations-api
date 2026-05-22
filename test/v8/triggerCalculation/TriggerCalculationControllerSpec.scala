@@ -17,16 +17,16 @@
 package v8.triggerCalculation
 
 import play.api.Configuration
-import play.api.libs.json._
+import play.api.libs.json.*
 import play.api.mvc.Result
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.GenericAuditDetailFixture.nino
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import shared.models.outcomes.ResponseWrapper
-import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import shared.utils.MockIdGenerator
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.GenericAuditDetailFixture.nino
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import api.models.outcomes.ResponseWrapper
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.utils.MockIdGenerator
 import v8.common.model.domain.{Pre24Downstream, `confirm-amendment`}
 import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}

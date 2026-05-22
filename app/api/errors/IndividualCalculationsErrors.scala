@@ -17,7 +17,7 @@
 package api.errors
 
 import play.api.http.Status.{BAD_REQUEST, UNPROCESSABLE_ENTITY}
-import shared.models.errors.MtdError
+import api.models.errors.MtdError
 
 object RuleFinalDeclarationReceivedError
     extends MtdError(

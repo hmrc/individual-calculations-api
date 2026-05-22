@@ -16,10 +16,10 @@
 
 package v8.triggerCalculation.def1
 
-import api.errors._
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.utils.UnitSpec
+import api.errors.*
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v8.common.model.domain.*
 import v8.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
 

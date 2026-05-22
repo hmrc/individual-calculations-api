@@ -17,19 +17,19 @@
 package v8.retrieveCalculation.def1.model
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import shared.models.domain.TaxYear
+import api.models.domain.TaxYear
 import v8.common.model.response.RetrieveCalculationType.`in-year`
 import v8.common.model.response.IncomeSourceType
 import v8.retrieveCalculation.def1.model.response.calculation.Calculation
-import v8.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome._
-import v8.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate._
-import v8.retrieveCalculation.def1.model.response.calculation.otherIncome._
-import v8.retrieveCalculation.def1.model.response.calculation.reliefs._
-import v8.retrieveCalculation.def1.model.response.calculation.taxCalculation._
-import v8.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource._
-import v8.retrieveCalculation.def1.model.response.inputs._
-import v8.retrieveCalculation.def1.model.response.metadata.CalculationReason._
-import v8.retrieveCalculation.def1.model.response.metadata._
+import v8.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome.*
+import v8.retrieveCalculation.def1.model.response.calculation.endOfYearEstimate.*
+import v8.retrieveCalculation.def1.model.response.calculation.otherIncome.*
+import v8.retrieveCalculation.def1.model.response.calculation.reliefs.*
+import v8.retrieveCalculation.def1.model.response.calculation.taxCalculation.*
+import v8.retrieveCalculation.def1.model.response.calculation.taxDeductedAtSource.*
+import v8.retrieveCalculation.def1.model.response.inputs.*
+import v8.retrieveCalculation.def1.model.response.metadata.CalculationReason.*
+import v8.retrieveCalculation.def1.model.response.metadata.*
 import v8.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 trait Def1_CalculationFixture {

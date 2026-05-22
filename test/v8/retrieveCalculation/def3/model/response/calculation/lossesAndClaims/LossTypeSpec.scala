@@ -17,8 +17,8 @@
 package v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims.LossType._
+import api.utils.UnitSpec
+import v8.retrieveCalculation.def3.model.response.calculation.lossesAndClaims.LossType.*
 
 class LossTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

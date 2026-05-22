@@ -17,8 +17,8 @@
 package v8.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.common.model.response.StudentLoanPlanType._
+import api.utils.UnitSpec
+import v8.common.model.response.StudentLoanPlanType.*
 
 class StudentLoanPlanTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

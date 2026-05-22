@@ -17,7 +17,7 @@
 package v8.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 
 class ChargeableEventGainsIncomeTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

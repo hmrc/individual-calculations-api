@@ -16,7 +16,7 @@
 
 package v8.common.model.domain
 
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 
 class CalculationTypeSpec extends UnitSpec {
 

@@ -17,8 +17,8 @@
 package v8.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome.ShareSchemeDetailType._
+import api.utils.UnitSpec
+import v8.retrieveCalculation.def2.model.response.calculation.shareSchemesIncome.ShareSchemeDetailType.*
 
 class ShareSchemeDetailTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

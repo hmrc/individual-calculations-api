@@ -18,14 +18,14 @@ package v8.retrieveCalculation
 
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
-import shared.config.MockAppConfig
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
-import shared.models.outcomes.ResponseWrapper
-import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import shared.utils.MockIdGenerator
+import api.config.MockAppConfig
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import api.models.outcomes.ResponseWrapper
+import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.utils.MockIdGenerator
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
@@ -77,9 +77,9 @@ class RetrieveCalculationControllerSpec
       "return error when calculationId is invalid" in new Test {
         willUseValidator(
           returning(
-            shared.models.errors.CalculationIdFormatError
+            api.models.errors.CalculationIdFormatError
           ))
-        runErrorTest(shared.models.errors.CalculationIdFormatError)
+        runErrorTest(api.models.errors.CalculationIdFormatError)
       }
 
       "the service returns an error" in new Test {

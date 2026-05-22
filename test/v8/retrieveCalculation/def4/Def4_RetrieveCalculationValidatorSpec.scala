@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def4
 
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors.*
-import shared.utils.UnitSpec
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v8.retrieveCalculation.models.request.Def4_RetrieveCalculationRequestData
 
 class Def4_RetrieveCalculationValidatorSpec extends UnitSpec {

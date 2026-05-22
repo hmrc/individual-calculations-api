@@ -18,13 +18,13 @@ package definition
 
 import cats.implicits.catsSyntaxValidatedId
 import common.definition.CalculationsDefinitionFactory
-import shared.config.Deprecation.NotDeprecated
-import shared.config.MockAppConfig
-import shared.definition.APIStatus.{ALPHA, BETA, RETIRED}
-import shared.definition.{APIDefinition, APIVersion, Definition}
-import shared.mocks.MockHttpClient
-import shared.routing.*
-import shared.utils.UnitSpec
+import api.config.Deprecation.NotDeprecated
+import api.config.MockAppConfig
+import api.definition.APIStatus.{ALPHA, BETA, RETIRED}
+import api.definition.{APIDefinition, APIVersion, Definition}
+import api.mocks.MockHttpClient
+import api.routing.*
+import api.utils.UnitSpec
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 

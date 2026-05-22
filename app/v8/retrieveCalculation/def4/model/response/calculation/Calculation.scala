@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def4.model.response.calculation
 
-import play.api.libs.json._
+import play.api.libs.json.*
 import v8.retrieveCalculation.def4.model.response.calculation.allowancesAndDeductions.AllowancesAndDeductions
 import v8.retrieveCalculation.def4.model.response.calculation.businessProfitAndLoss.BusinessProfitAndLoss
 import v8.retrieveCalculation.def4.model.response.calculation.chargeableEventGainsIncome.ChargeableEventGainsIncome

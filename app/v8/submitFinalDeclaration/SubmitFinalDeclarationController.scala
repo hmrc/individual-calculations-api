@@ -17,10 +17,10 @@
 package v8.submitFinalDeclaration
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import shared.controllers._
-import shared.routing.Version
-import shared.services._
-import shared.utils.{IdGenerator, Logging}
+import api.controllers.*
+import api.routing.Version
+import api.services.*
+import api.utils.{IdGenerator, Logging}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -32,7 +32,7 @@ class SubmitFinalDeclarationController @Inject() (val authService: EnrolmentsAut
                                                   service: SubmitFinalDeclarationService,
                                                   cc: ControllerComponents,
                                                   auditService: AuditService,
-                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: shared.config.AppConfig)
+                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: api.config.AppConfig)
     extends AuthorisedController(cc)
     with Logging {
 

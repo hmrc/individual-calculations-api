@@ -16,7 +16,7 @@
 
 package v8.submitFinalDeclaration.model.request
 
-import shared.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.domain.{CalculationId, Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
 import v8.common.model.domain.CalculationType
 import v8.retrieveCalculation.models.request.{

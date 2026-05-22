@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def1.model.response.inputs
 
-import play.api.libs.functional.syntax._
+import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class Inputs(personalInformation: PersonalInformation,

@@ -17,11 +17,11 @@
 package v8.retrieveCalculation
 
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import shared.config.AppConfig
-import shared.controllers._
-import shared.routing.Version
-import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
-import shared.utils.{IdGenerator, Logging}
+import api.config.AppConfig
+import api.controllers.*
+import api.routing.Version
+import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import api.utils.{IdGenerator, Logging}
 import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
 import javax.inject.Inject

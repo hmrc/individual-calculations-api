@@ -17,7 +17,7 @@
 package v8.triggerCalculation.def1.model.response
 
 import play.api.libs.json.{JsValue, Json}
-import shared.utils.UnitSpec
+import api.utils.UnitSpec
 import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
 class Def1_TriggerCalculationResponseSpec extends UnitSpec {

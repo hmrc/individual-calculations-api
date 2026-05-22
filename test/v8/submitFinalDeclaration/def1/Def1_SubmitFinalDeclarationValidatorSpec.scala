@@ -17,9 +17,9 @@
 package v8.submitFinalDeclaration.def1
 
 import api.errors.{FormatCalculationTypeError, RuleSubmissionFailedError}
-import shared.models.domain.{CalculationId, Nino, TaxYear}
-import shared.models.errors._
-import shared.utils.UnitSpec
+import api.models.domain.{CalculationId, Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import v8.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
 import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 

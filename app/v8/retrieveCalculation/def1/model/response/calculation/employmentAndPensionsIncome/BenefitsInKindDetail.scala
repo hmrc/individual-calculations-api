@@ -16,7 +16,7 @@
 
 package v8.retrieveCalculation.def1.model.response.calculation.employmentAndPensionsIncome
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class BenefitsInKindDetail(apportionedAccommodation: Option[BigDecimal],
                                 apportionedAssets: Option[BigDecimal],

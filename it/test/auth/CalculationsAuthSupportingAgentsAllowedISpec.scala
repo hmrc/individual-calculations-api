@@ -19,8 +19,8 @@ package auth
 import play.api.http.Status.OK
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
-import shared.auth.AuthSupportingAgentsAllowedISpec
-import shared.services.DownstreamStub
+import api.auth.AuthSupportingAgentsAllowedISpec
+import api.services.DownstreamStub
 import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class CalculationsAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsAllowedISpec with Def1_CalculationFixture {

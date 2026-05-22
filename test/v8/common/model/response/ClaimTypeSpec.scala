@@ -17,8 +17,8 @@
 package v8.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import shared.utils.UnitSpec
-import v8.common.model.response.ClaimType._
+import api.utils.UnitSpec
+import v8.common.model.response.ClaimType.*
 
 class ClaimTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 

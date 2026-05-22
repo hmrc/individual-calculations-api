@@ -16,9 +16,9 @@
 
 package v8.submitFinalDeclaration
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
 import v8.common.model.domain.{CalculationType, `final-declaration`}
 import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}

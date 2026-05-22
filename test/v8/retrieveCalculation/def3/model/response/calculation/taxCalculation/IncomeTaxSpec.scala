@@ -17,8 +17,8 @@
 package v8.retrieveCalculation.def3.model.response.calculation.taxCalculation
 
 import play.api.libs.json.*
-import shared.models.utils.JsonErrorValidators
-import shared.utils.UnitSpec
+import api.models.utils.JsonErrorValidators
+import api.utils.UnitSpec
 
 class IncomeTaxSpec extends UnitSpec with JsonErrorValidators with TaxCalculationFixture {
 

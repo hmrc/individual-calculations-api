@@ -16,8 +16,8 @@
 
 package v8.listCalculations
 
-import shared.controllers.validators.Validator
-import shared.utils.UnitSpec
+import api.controllers.validators.Validator
+import api.utils.UnitSpec
 import v8.listCalculations.def1.Def1_ListCalculationsValidator
 import v8.listCalculations.def2.Def2_ListCalculationsValidator
 import v8.listCalculations.def3.Def3_ListCalculationsValidator

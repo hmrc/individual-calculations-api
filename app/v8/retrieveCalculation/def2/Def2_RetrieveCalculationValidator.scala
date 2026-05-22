@@ -16,12 +16,12 @@
 
 package v8.retrieveCalculation.def2
 
-import shared.controllers.validators.Validator
-import shared.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
-import shared.models.domain.TaxYear
-import shared.models.errors.MtdError
+import api.controllers.validators.Validator
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
+import api.models.errors.MtdError
 import cats.data.Validated
-import cats.implicits._
+import cats.implicits.*
 import v8.retrieveCalculation.models.request.{Def2_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def2_RetrieveCalculationValidator {

@@ -17,9 +17,9 @@
 package v8.common.model.response
 
 import common.utils.enums.EnumJsonSpecSupport
-import play.api.libs.json._
-import shared.utils.UnitSpec
-import v8.common.model.response.IncomeSourceType._
+import play.api.libs.json.*
+import api.utils.UnitSpec
+import v8.common.model.response.IncomeSourceType.*
 
 class IncomeSourceTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
