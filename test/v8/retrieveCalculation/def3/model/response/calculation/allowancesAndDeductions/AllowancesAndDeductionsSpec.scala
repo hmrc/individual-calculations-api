@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def3.model.response.calculation.allowancesAndDeductions
 
+import api.utils.UnitSpec
 import common.utils.enums.EnumJsonSpecSupport
 import play.api.libs.json.{JsValue, Json}
-import api.utils.UnitSpec
 
 class AllowancesAndDeductionsSpec extends UnitSpec with EnumJsonSpecSupport {
 

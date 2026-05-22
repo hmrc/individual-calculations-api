@@ -16,11 +16,11 @@
 
 package common.utils.enums
 
+import api.utils.UnitSpec
 import cats.Show
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
 import play.api.libs.json.*
-import api.utils.UnitSpec
 
 enum Enum {
   case `enum-one`, `enum-two`, `enum-three`
@@ -38,7 +38,7 @@ object Foo {
 
 class EnumsSpec extends UnitSpec with Inspectors {
 
-  import Enum._
+  import Enum.*
 
   implicit val arbitraryEnumValue: Arbitrary[Enum] = Arbitrary[Enum](Gen.oneOf(`enum-one`, `enum-two`, `enum-three`))
 
@@ -92,7 +92,7 @@ class EnumsSpec extends UnitSpec with Inspectors {
         given Format[Enum2] = Enums.format(values)
       }
 
-      import Enum2._
+      import Enum2.*
 
       val json: JsValue = Json.parse(
         """

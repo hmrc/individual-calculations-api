@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
 import api.models.errors.BadRequestError
 import api.utils.UnitSpec
+import cats.data.Validated.{Invalid, Valid}
 
 class ResolveBooleanSpec extends UnitSpec {
 

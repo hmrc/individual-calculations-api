@@ -16,13 +16,13 @@
 
 package api.config
 
+import api.config.Deprecation.{Deprecated, NotDeprecated}
+import api.routing.*
+import api.utils.UnitSpec
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import com.typesafe.config.ConfigFactory
 import play.api.Configuration
-import api.config.Deprecation.{Deprecated, NotDeprecated}
-import api.routing.*
-import api.utils.UnitSpec
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate

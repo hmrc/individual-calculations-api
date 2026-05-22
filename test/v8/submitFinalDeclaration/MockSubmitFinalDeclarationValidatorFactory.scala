@@ -16,8 +16,8 @@
 
 package v8.submitFinalDeclaration
 
-import org.scalamock.handlers.CallHandler
 import api.controllers.validators.{MockValidatorFactory, Validator}
+import org.scalamock.handlers.CallHandler
 import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 trait MockSubmitFinalDeclarationValidatorFactory extends MockValidatorFactory[SubmitFinalDeclarationRequestData] {

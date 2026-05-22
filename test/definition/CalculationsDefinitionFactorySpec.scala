@@ -16,8 +16,6 @@
 
 package definition
 
-import cats.implicits.catsSyntaxValidatedId
-import common.definition.CalculationsDefinitionFactory
 import api.config.Deprecation.NotDeprecated
 import api.config.MockAppConfig
 import api.definition.APIStatus.{ALPHA, BETA, RETIRED}
@@ -25,6 +23,8 @@ import api.definition.{APIDefinition, APIVersion, Definition}
 import api.mocks.MockHttpClient
 import api.routing.*
 import api.utils.UnitSpec
+import cats.implicits.catsSyntaxValidatedId
+import common.definition.CalculationsDefinitionFactory
 
 class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient with MockAppConfig {
 

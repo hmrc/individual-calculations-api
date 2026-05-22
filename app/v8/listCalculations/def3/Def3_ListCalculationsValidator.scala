@@ -16,14 +16,14 @@
 
 package v8.listCalculations.def3
 
-import api.errors.RuleCalculationTypeNotAllowed
-import cats.data.Validated
-import cats.implicits.catsSyntaxTuple3Semigroupal
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
-import v8.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`, `in-year`, `intent-to-amend`, `intent-to-finalise`}
+import cats.data.Validated
+import cats.implicits.catsSyntaxTuple3Semigroupal
+import v8.common.model.domain.*
 import v8.common.model.resolver.ResolveListCalculationType
 import v8.common.model.resolver.ResolveListCalculationType.{ResolverOps, resolveValid}
 import v8.listCalculations.model.request.{Def3_ListCalculationsRequestData, ListCalculationsRequestData}
@@ -36,7 +36,7 @@ object Def3_ListCalculationsValidator {
 }
 
 class Def3_ListCalculationsValidator(nino: String, taxYear: String, calculationType: Option[String]) extends Validator[ListCalculationsRequestData] {
-  import Def3_ListCalculationsValidator._
+  import Def3_ListCalculationsValidator.*
 
   def validate: Validated[Seq[MtdError], ListCalculationsRequestData] =
     (

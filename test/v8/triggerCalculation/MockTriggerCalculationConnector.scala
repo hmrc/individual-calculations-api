@@ -16,10 +16,10 @@
 
 package v8.triggerCalculation
 
+import api.connectors.DownstreamOutcome
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import api.connectors.DownstreamOutcome
 import uk.gov.hmrc.http.HeaderCarrier
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 import v8.triggerCalculation.model.response.TriggerCalculationResponse

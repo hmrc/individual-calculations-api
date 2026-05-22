@@ -17,8 +17,8 @@
 package v8.triggerCalculation.model.request
 
 import api.models.domain.{Nino, TaxYear}
-import v8.triggerCalculation.schema.TriggerCalculationSchema
 import v8.common.model.domain.{CalculationType, Post26Downstream, TysDownstream}
+import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 sealed trait TriggerCalculationRequestData {
   val nino: Nino

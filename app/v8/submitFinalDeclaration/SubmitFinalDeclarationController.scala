@@ -16,11 +16,11 @@
 
 package v8.submitFinalDeclaration
 
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import api.controllers.*
 import api.routing.Version
 import api.services.*
 import api.utils.{IdGenerator, Logging}
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

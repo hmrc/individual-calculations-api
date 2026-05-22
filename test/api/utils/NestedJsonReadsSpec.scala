@@ -16,9 +16,9 @@
 
 package api.utils
 
+import api.utils.NestedJsonReads.*
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import api.utils.NestedJsonReads.*
 
 class NestedJsonReadsSpec extends UnitSpec {
 

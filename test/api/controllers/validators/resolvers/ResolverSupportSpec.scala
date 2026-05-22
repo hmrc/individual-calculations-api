@@ -16,10 +16,10 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
-import cats.implicits.catsSyntaxOption
 import api.models.errors.MtdError
 import api.utils.UnitSpec
+import cats.data.Validated.{Invalid, Valid}
+import cats.implicits.catsSyntaxOption
 
 import java.util.concurrent.atomic.AtomicInteger
 

@@ -20,8 +20,8 @@ import api.config.AppConfig
 import api.connectors.DownstreamUri.{HipUri, IfsUri}
 import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v8.listCalculations.model.request.{
   Def1_ListCalculationsRequestData,
   Def2_ListCalculationsRequestData,
@@ -42,8 +42,8 @@ class ListCalculationsConnector @Inject() (val http: HttpClientV2, val appConfig
       correlationId: String
   ): Future[DownstreamOutcome[ListCalculationsResponse[Calculation]]] = {
 
-    import request._
-    import schema._
+    import request.*
+    import schema.*
 
     // API1404
     lazy val downstreamUri1404: DownstreamUri[DownstreamResp] =

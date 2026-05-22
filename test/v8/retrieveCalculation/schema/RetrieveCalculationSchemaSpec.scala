@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.schema
 
-import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import api.models.domain.{TaxYear, TaxYearPropertyCheckSupport}
 import api.utils.UnitSpec
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 
 class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks with TaxYearPropertyCheckSupport {
 

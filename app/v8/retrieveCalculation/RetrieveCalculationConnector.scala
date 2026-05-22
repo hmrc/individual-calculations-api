@@ -16,12 +16,12 @@
 
 package v8.retrieveCalculation
 
+import api.config.AppConfig
 import api.connectors.DownstreamUri.{HipUri, IfsUri}
 import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome, DownstreamUri}
-import api.config.AppConfig
-import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 import v8.retrieveCalculation.models.request.RetrieveCalculationRequestData
 import v8.retrieveCalculation.models.response.RetrieveCalculationResponse
 
@@ -36,8 +36,8 @@ class RetrieveCalculationConnector @Inject() (val http: HttpClientV2, val appCon
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveCalculationResponse]] = {
 
-    import request._
-    import schema._
+    import request.*
+    import schema.*
 
     lazy val downstreamUri1885: DownstreamUri[DownstreamResp] =
       HipUri(

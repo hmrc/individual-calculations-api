@@ -17,16 +17,16 @@
 package v8.submitFinalDeclaration.def1
 
 import api.errors.*
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import play.api.http.Status.*
-import play.api.libs.json.*
-import play.api.libs.ws.*
-import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 import api.models.domain.TaxYear
 import api.models.errors.*
 import api.services.*
 import api.support.IntegrationBaseSpec
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.Status.*
+import play.api.libs.json.*
+import play.api.libs.ws.*
 import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
+import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 
 class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 

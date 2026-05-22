@@ -16,10 +16,11 @@
 
 package api.connectors.httpparsers
 
-import play.api.libs.json.*
 import api.models.errors.*
 import api.utils.Logging
+import play.api.libs.json.*
 import uk.gov.hmrc.http.HttpResponse
+
 import scala.util.Try
 
 trait HttpParser extends Logging {

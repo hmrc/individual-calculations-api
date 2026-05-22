@@ -34,7 +34,7 @@ trait Rewriter {
 @Singleton
 class RewriteableAssets @Inject() (errorHandler: HttpErrorHandler, meta: AssetsMetadata, env: Environment)(implicit ec: ExecutionContext)
     extends Assets(errorHandler, meta, env) {
-  import meta._
+  import meta.*
 
   /** Retrieves the requested asset and runs it through the rewriters if any..
     * @param path

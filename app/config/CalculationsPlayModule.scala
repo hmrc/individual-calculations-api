@@ -16,12 +16,12 @@
 
 package config
 
+import api.definition.ApiDefinitionFactory
+import api.routing.VersionRoutingMap
 import com.google.inject.{AbstractModule, Provides}
 import common.definition.CalculationsDefinitionFactory
 import org.apache.pekko.actor.{ActorSystem, Scheduler}
 import routing.CalculationsVersionRoutingMap
-import api.definition.ApiDefinitionFactory
-import api.routing.VersionRoutingMap
 
 class CalculationsPlayModule extends AbstractModule {
 

@@ -16,7 +16,7 @@
 
 package api.definition
 
-import api.definition.APIStatus.{ALPHA, BETA, DEPRECATED, RETIRED, STABLE}
+import api.definition.APIStatus.*
 import api.utils.UnitSpec
 import common.utils.enums.EnumJsonSpecSupport
 

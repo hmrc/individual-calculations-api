@@ -16,13 +16,13 @@
 
 package api.connectors
 
+import api.config.{BasicAuthDownstreamConfig, DownstreamConfig, MockAppConfig}
+import api.mocks.MockHttpClient
+import api.utils.UnitSpec
 import com.google.common.base.Charsets
 import org.scalamock.handlers.CallHandler
 import play.api.http.{HeaderNames, MimeTypes, Status}
 import play.api.libs.json.{Json, Writes}
-import api.config.{BasicAuthDownstreamConfig, DownstreamConfig, MockAppConfig}
-import api.mocks.MockHttpClient
-import api.utils.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.net.URL

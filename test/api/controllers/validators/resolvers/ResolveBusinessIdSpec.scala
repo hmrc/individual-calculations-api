@@ -16,10 +16,10 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated.{Invalid, Valid}
 import api.models.domain.BusinessId
 import api.models.errors.BusinessIdFormatError
 import api.utils.UnitSpec
+import cats.data.Validated.{Invalid, Valid}
 
 class ResolveBusinessIdSpec extends UnitSpec {
 

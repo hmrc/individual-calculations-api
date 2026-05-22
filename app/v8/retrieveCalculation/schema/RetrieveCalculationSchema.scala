@@ -20,13 +20,7 @@ import api.controllers.validators.resolvers.ResolveTaxYear
 import api.models.domain.TaxYear
 import api.schema.DownstreamReadable
 import play.api.libs.json.Reads
-import v8.retrieveCalculation.models.response.{
-  Def1_RetrieveCalculationResponse,
-  Def2_RetrieveCalculationResponse,
-  Def3_RetrieveCalculationResponse,
-  Def4_RetrieveCalculationResponse,
-  RetrieveCalculationResponse
-}
+import v8.retrieveCalculation.models.response.*
 
 import scala.math.Ordered.orderingToOrdered
 

@@ -16,9 +16,9 @@
 
 package api.controllers.validators
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Invalid
-import api.models.errors.MtdError
 
 case class AlwaysErrorsValidator(errors: Seq[MtdError]) extends Validator[Nothing] {
   override def validate: Validated[Seq[MtdError], Nothing] = Invalid(errors)

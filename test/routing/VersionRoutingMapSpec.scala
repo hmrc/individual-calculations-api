@@ -16,10 +16,10 @@
 
 package routing
 
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.routing.Router
 import api.routing.*
 import api.utils.UnitSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.routing.Router
 
 class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
 

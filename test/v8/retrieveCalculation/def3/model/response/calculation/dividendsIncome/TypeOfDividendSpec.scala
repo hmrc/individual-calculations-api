@@ -16,8 +16,8 @@
 
 package v8.retrieveCalculation.def3.model.response.calculation.dividendsIncome
 
-import common.utils.enums.EnumJsonSpecSupport
 import api.utils.UnitSpec
+import common.utils.enums.EnumJsonSpecSupport
 import v8.retrieveCalculation.def3.model.response.calculation.dividendsIncome.TypeOfDividend.*
 
 class TypeOfDividendSpec extends UnitSpec with EnumJsonSpecSupport {

@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
-import api.models.errors.MtdError
 
 import java.time.LocalDate
 import java.time.format.DateTimeParseException

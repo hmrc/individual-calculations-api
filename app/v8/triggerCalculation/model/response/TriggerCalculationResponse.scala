@@ -16,8 +16,8 @@
 
 package v8.triggerCalculation.model.response
 
-import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.*
+import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 
 sealed trait TriggerCalculationResponse {
   val calculationId: String

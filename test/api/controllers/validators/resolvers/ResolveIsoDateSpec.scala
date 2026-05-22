@@ -16,10 +16,10 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
 import api.models.errors.{DateFormatError, MtdError, RuleDateRangeInvalidError, StartDateFormatError}
 import api.utils.UnitSpec
+import cats.data.Validated
+import cats.data.Validated.{Invalid, Valid}
 
 import java.time.LocalDate
 

@@ -16,8 +16,8 @@
 
 package api.controllers
 
-import uk.gov.hmrc.http.HeaderCarrier
 import api.utils.IdGenerator
+import uk.gov.hmrc.http.HeaderCarrier
 
 case class RequestContext(hc: HeaderCarrier, correlationId: String, endpointLogContext: EndpointLogContext) {
 

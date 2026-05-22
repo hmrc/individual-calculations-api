@@ -16,12 +16,12 @@
 
 package api.controllers.validators
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import api.models.errors.MtdError
 
 trait MockValidatorFactory[Request] extends TestSuite with MockFactory {
 

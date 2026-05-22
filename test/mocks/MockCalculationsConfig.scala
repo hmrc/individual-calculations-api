@@ -16,11 +16,11 @@
 
 package mocks
 
+import api.config.{ConfidenceLevelConfig, MockAppConfig}
 import config.CalculationsConfig
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TestSuite
-import api.config.{ConfidenceLevelConfig, MockAppConfig}
 
 import scala.concurrent.duration.FiniteDuration
 

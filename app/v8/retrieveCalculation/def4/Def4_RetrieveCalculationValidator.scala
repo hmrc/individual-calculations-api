@@ -16,12 +16,12 @@
 
 package v8.retrieveCalculation.def4
 
-import cats.data.Validated
-import cats.implicits.*
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
+import cats.data.Validated
+import cats.implicits.*
 import v8.retrieveCalculation.models.request.{Def4_RetrieveCalculationRequestData, RetrieveCalculationRequestData}
 
 object Def4_RetrieveCalculationValidator {
@@ -30,7 +30,7 @@ object Def4_RetrieveCalculationValidator {
 }
 
 class Def4_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {
-  import Def4_RetrieveCalculationValidator._
+  import Def4_RetrieveCalculationValidator.*
 
   def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
     (

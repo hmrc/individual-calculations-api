@@ -16,12 +16,12 @@
 
 package v8.triggerCalculation
 
-import play.api.http.Status
-import play.api.libs.json.JsObject
 import api.config.AppConfig
 import api.connectors.DownstreamUri.IfsUri
 import api.connectors.httpparsers.StandardDownstreamHttpParser.*
 import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import play.api.http.Status
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}
@@ -40,7 +40,7 @@ class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConf
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[TriggerCalculationResponse]] = {
 
-    import request._
+    import request.*
 
     val crystallisationFlag = request.calculationType == `intent-to-finalise`
 

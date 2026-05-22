@@ -16,10 +16,10 @@
 
 package v8.listCalculations.def1.model.response
 
+import api.models.domain.TaxYear
 import common.TaxYearFormats.*
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import api.models.domain.TaxYear
 import v8.listCalculations.model.response.{Calculation, ListCalculationType}
 
 case class Def1_Calculation(calculationId: String,

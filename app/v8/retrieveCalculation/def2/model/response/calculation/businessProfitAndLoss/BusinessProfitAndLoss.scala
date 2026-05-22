@@ -18,7 +18,7 @@ package v8.retrieveCalculation.def2.model.response.calculation.businessProfitAnd
 
 import play.api.libs.json.*
 import v8.common.model.response.IncomeSourceType
-import IncomeSourceType.*
+import v8.common.model.response.IncomeSourceType.*
 
 case class BusinessProfitAndLoss(incomeSourceId: String,
                                  incomeSourceType: IncomeSourceType,

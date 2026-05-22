@@ -16,14 +16,14 @@
 
 package v8.triggerCalculation.def1
 
-import api.errors.RuleCalculationTypeNotAllowed
-import cats.data.Validated
-import cats.implicits.*
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
+import cats.data.Validated
+import cats.implicits.*
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}
 import v8.common.model.resolver.ResolveTriggerCalculationType
 import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
@@ -36,7 +36,7 @@ object Def1_TriggerCalculationValidator {
 
 class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String) extends Validator[TriggerCalculationRequestData] {
 
-  import Def1_TriggerCalculationValidator._
+  import Def1_TriggerCalculationValidator.*
 
   def validate: Validated[Seq[MtdError], TriggerCalculationRequestData] =
     (

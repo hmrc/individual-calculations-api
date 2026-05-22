@@ -16,9 +16,9 @@
 
 package api.config.rewriters
 
+import api.config.AppConfig
 import com.github.jknack.handlebars.Handlebars
 import com.github.jknack.handlebars.cache.ConcurrentMapTemplateCache
-import api.config.AppConfig
 
 trait HandlebarsRewriter {
   implicit val appConfig: AppConfig

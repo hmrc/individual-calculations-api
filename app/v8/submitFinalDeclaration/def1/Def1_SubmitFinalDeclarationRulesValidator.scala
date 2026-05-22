@@ -16,11 +16,11 @@
 
 package v8.submitFinalDeclaration.def1
 
+import api.controllers.validators.RulesValidator
 import api.errors.RuleSubmissionFailedError
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Invalid
-import api.controllers.validators.RulesValidator
-import api.models.errors.MtdError
 import v8.common.model.domain.`confirm-amendment`
 import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
 

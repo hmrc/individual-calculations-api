@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def1.model.response.calculation.dividendsIncome
 
-import play.api.libs.json.{JsValue, Json}
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
+import play.api.libs.json.{JsValue, Json}
 import v8.common.model.response.IncomeSourceType
 
 class UkDividendsSpec extends UnitSpec with JsonErrorValidators {

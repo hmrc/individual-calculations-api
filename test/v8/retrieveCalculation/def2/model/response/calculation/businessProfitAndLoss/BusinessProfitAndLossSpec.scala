@@ -16,8 +16,8 @@
 
 package v8.retrieveCalculation.def2.model.response.calculation.businessProfitAndLoss
 
-import play.api.libs.json.*
 import api.utils.UnitSpec
+import play.api.libs.json.*
 import v8.common.model.response.IncomeSourceType
 
 class BusinessProfitAndLossSpec extends UnitSpec {

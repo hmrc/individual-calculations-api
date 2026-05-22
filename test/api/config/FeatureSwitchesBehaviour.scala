@@ -16,8 +16,8 @@
 
 package api.config
 
-import play.api.Configuration
 import api.utils.UnitSpec
+import play.api.Configuration
 
 trait FeatureSwitchesBehaviour[FS <: FeatureSwitches] { self: UnitSpec =>
 

@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxOption
-import api.models.errors.MtdError
 
 case class ResolveBoolean(error: MtdError) extends ResolverSupport {
 

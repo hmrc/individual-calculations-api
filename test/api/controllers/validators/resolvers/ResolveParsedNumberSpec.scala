@@ -16,11 +16,11 @@
 
 package api.controllers.validators.resolvers
 
+import api.models.errors.ValueFormatError
+import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
 import org.scalacheck.Arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import api.models.errors.ValueFormatError
-import api.utils.UnitSpec
 
 class ResolveParsedNumberSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks {
 

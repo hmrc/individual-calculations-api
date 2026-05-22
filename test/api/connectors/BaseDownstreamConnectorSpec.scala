@@ -16,13 +16,13 @@
 
 package api.connectors
 
-import org.scalatest.Assertion
-import play.api.http.{HeaderNames, MimeTypes, Status}
-import play.api.libs.json.Json
 import api.config.{AppConfig, MockAppConfig}
 import api.mocks.MockHttpClient
 import api.models.outcomes.ResponseWrapper
 import api.utils.UnitSpec
+import org.scalatest.Assertion
+import play.api.http.{HeaderNames, MimeTypes, Status}
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, StringContextOps}
 

@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import play.api.libs.json.JsValue
-import api.models.errors.MtdError
 
 class ResolveExclusiveJsonProperty(error: => MtdError, fieldNames: String*) extends ResolverSupport {
 

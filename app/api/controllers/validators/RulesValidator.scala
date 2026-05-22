@@ -16,10 +16,10 @@
 
 package api.controllers.validators
 
+import api.models.errors.MtdError
 import cats.data.Validated
 import cats.data.Validated.Valid
 import cats.implicits.*
-import api.models.errors.MtdError
 
 /** For complex additional validating that needs to take place after the initial validation and parsing of the JSON payload.
   *

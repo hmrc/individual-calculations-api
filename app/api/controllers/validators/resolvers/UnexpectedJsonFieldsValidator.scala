@@ -16,11 +16,11 @@
 
 package api.controllers.validators.resolvers
 
-import play.api.libs.json.{JsArray, JsObject, JsValue}
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.domain.TaxYear
 import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.utils.Logging
+import play.api.libs.json.{JsArray, JsObject, JsValue}
 
 import scala.compiletime.{constValue, erasedValue, summonInline}
 import scala.deriving.Mirror

@@ -16,13 +16,13 @@
 
 package api.routing
 
+import api.routing.Version.VersionReads
+import api.utils.UnitSpec
 import org.scalamock.scalatest.MockFactory
 import play.api.http.HeaderNames.ACCEPT
 import play.api.libs.json.*
 import play.api.mvc.{Headers, RequestHeader}
 import play.api.test.FakeRequest
-import api.routing.Version.VersionReads
-import api.utils.UnitSpec
 
 class VersionSpec extends UnitSpec with MockFactory {
 

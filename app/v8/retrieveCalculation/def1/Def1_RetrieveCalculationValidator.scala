@@ -31,7 +31,7 @@ object Def1_RetrieveCalculationValidator {
 
 class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {
 
-  import Def1_RetrieveCalculationValidator._
+  import Def1_RetrieveCalculationValidator.*
 
   def validate: Validated[Seq[MtdError], RetrieveCalculationRequestData] =
     (

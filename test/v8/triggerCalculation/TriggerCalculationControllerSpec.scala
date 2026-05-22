@@ -16,9 +16,6 @@
 
 package v8.triggerCalculation
 
-import play.api.Configuration
-import play.api.libs.json.*
-import play.api.mvc.Result
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.GenericAuditDetailFixture.nino
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
@@ -27,6 +24,9 @@ import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupported
 import api.models.outcomes.ResponseWrapper
 import api.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
 import api.utils.MockIdGenerator
+import play.api.Configuration
+import play.api.libs.json.*
+import play.api.mvc.Result
 import v8.common.model.domain.{Pre24Downstream, `confirm-amendment`}
 import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
 import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}

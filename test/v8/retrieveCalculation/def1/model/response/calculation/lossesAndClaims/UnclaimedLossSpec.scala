@@ -16,9 +16,9 @@
 
 package v8.retrieveCalculation.def1.model.response.calculation.lossesAndClaims
 
-import play.api.libs.json.*
 import api.models.domain.TaxYear
 import api.utils.UnitSpec
+import play.api.libs.json.*
 import v8.common.model.response.IncomeSourceType
 
 class UnclaimedLossSpec extends UnitSpec {

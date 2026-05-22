@@ -16,9 +16,9 @@
 
 package api.controllers.validators.resolvers
 
-import cats.data.Validated
 import api.models.domain.CalculationId
 import api.models.errors.{CalculationIdFormatError, MtdError}
+import cats.data.Validated
 
 object ResolveCalculationId extends ResolverSupport {
 
