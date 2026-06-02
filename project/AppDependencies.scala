@@ -24,19 +24,19 @@ object AppDependencies {
     "uk.gov.hmrc"                   %% "bootstrap-backend-play-30" % bootstrapPlayVersion,
     "org.typelevel"                 %% "cats-core"                 % "2.13.0",
     "com.neovisionaries"            % "nv-i18n"                    % "1.29",
-    "com.github.jknack"             % "handlebars"                 % "4.3.1"
+    "com.github.jknack"             % "handlebars"                 % "4.5.1"
   )
 
   val test: Seq[sbt.ModuleID] = Seq(
     "uk.gov.hmrc"         %% "bootstrap-test-play-30" % bootstrapPlayVersion,
     "org.scalamock"       %% "scalamock"              % "7.5.5",
-    "org.scalatestplus"   %% "scalacheck-1-19"        % "3.2.19.0",
+    "org.scalatestplus"   %% "scalacheck-1-19"        % "3.2.20.0",
     "com.github.pjfanning" %% "pekko-mock-scheduler"   % "0.6.0"
   ).map(_ % Test)
 
   val itDependencies: Seq[ModuleID] = Seq(
-    "io.swagger.parser.v3" % "swagger-parser-v3"      % "2.1.39",
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.21.1"
+    "io.swagger.parser.v3" % "swagger-parser-v3"      % "2.1.43",
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.21.4"
   ).map(_ % Test)
 
 }
