@@ -31,8 +31,6 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class AuditService @Inject() (auditConnector: AuditConnector, appNameConfiguration: Configuration) {
 
-  val logger: Logger = Logger(this.getClass)
-
   def auditEvent[T](event: AuditEvent[T])(implicit hc: HeaderCarrier, ec: ExecutionContext, writer: Writes[T]): Future[AuditResult] = {
 
     val eventTags = AuditExtensions.auditHeaderCarrier(hc).toAuditTags() +
@@ -44,9 +42,6 @@ class AuditService @Inject() (auditConnector: AuditConnector, appNameConfigurati
       detail = Json.toJson(event.detail),
       tags = eventTags
     )
-    logger.info(
-      s"Audit event :- dataEvent.tags :: ${dataEvent.tags} --  auditSource:: ${dataEvent.auditSource}" +
-        s" --- detail :: ${dataEvent.detail}")
     auditConnector.sendExtendedEvent(dataEvent)
   }
 
