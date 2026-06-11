@@ -37,7 +37,7 @@ object StandardDownstreamHttpParser extends HttpParser {
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[DownstreamOutcome[A]] =
     (_: String, url: String, response: HttpResponse) =>
       doRead(url, response) { correlationId =>
-        response.validateJson[A] match {
+        response.validateJsonWithLogging[A] match {
           case Some(ref) => Right(ResponseWrapper(correlationId, ref))
           case None      => Left(ResponseWrapper(correlationId, OutboundError(InternalError)))
         }
