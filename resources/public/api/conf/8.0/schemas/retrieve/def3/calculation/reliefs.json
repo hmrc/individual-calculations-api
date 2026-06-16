@@ -401,7 +401,7 @@
                 "multipleOf": 0.01
               },
               "foreignTax": {
-                "description": "The amount of foreign tax. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+                "description": "The amount of foreign tax credit relief. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
                 "type": "number",
                 "example": 2017.58,
                 "minimum": 0,
