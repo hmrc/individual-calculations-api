@@ -57,9 +57,6 @@ trait MockAppConfig extends TestSuite with MockFactory {
     def endpointAllowsSupportingAgents(endpointName: String): CallHandler[Boolean] =
       (mockAppConfig.endpointAllowsSupportingAgents(_: String)).expects(endpointName)
 
-    def allowRequestCannotBeFulfilledHeader(version: Version): CallHandler[Boolean] =
-      (mockAppConfig.allowRequestCannotBeFulfilledHeader: Version => Boolean).expects(version)
-
   }
 
 }

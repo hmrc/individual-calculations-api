@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package api.controllers
 import api.config.AppConfig
 import api.config.Deprecation.Deprecated
 import api.controllers.validators.Validator
-import api.models.errors.{ErrorWrapper, InternalError, RuleRequestCannotBeFulfilledError}
+import api.models.errors.{ErrorWrapper, InternalError}
 import api.models.outcomes.ResponseWrapper
 import api.routing.Version
 import api.services.ServiceOutcome
@@ -131,15 +131,11 @@ object RequestHandler {
             s"with correlationId : ${ctx.correlationId}")
 
         val result =
-          if (simulateRequestCannotBeFulfilled) {
-            EitherT[Future, ErrorWrapper, Result](Future.successful(Left(ErrorWrapper(ctx.correlationId, RuleRequestCannotBeFulfilledError))))
-          } else {
-            for {
-              parsedRequest   <- EitherT.fromEither[Future](validator.validateAndWrapResult())
-              serviceResponse <- EitherT(service(parsedRequest))
-            } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
-              handleSuccess(parsedRequest, serviceResponse)
-            }
+          for {
+            parsedRequest   <- EitherT.fromEither[Future](validator.validateAndWrapResult())
+            serviceResponse <- EitherT(service(parsedRequest))
+          } yield doWithContext(ctx.withCorrelationId(serviceResponse.correlationId)) { implicit ctx: RequestContext =>
+            handleSuccess(parsedRequest, serviceResponse)
           }
 
         result.leftMap { errorWrapper =>
@@ -148,10 +144,6 @@ object RequestHandler {
           }
         }.merge
       }
-
-      private def simulateRequestCannotBeFulfilled(implicit request: UserRequest[?], appConfig: AppConfig): Boolean =
-        request.headers.get("Gov-Test-Scenario").contains("REQUEST_CANNOT_BE_FULFILLED") &&
-          appConfig.allowRequestCannotBeFulfilledHeader(Version(request))
 
       private def doWithContext[A](ctx: RequestContext)(f: RequestContext => A): A = f(ctx)
 

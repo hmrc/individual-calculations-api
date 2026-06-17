@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package api.controllers
 
-import api.config.Deprecation.{Deprecated, NotDeprecated}
+import api.config.Deprecation.NotDeprecated
 import api.config.{AppConfig, Deprecation, MockAppConfig}
 import api.controllers.validators.Validator
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
@@ -37,7 +37,6 @@ import play.api.test.{FakeRequest, ResultExtractors}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 
-import java.time.LocalDateTime
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
 class RequestHandlerSpec
@@ -139,114 +138,6 @@ class RequestHandlerSpec
         status(result) shouldBe NO_CONTENT
       }
 
-    }
-
-    "given a request with a RequestCannotBeFulfilled gov-test-scenario header" when {
-      val gtsHeaders = List(
-        "gov-test-scenario" -> "REQUEST_CANNOT_BE_FULFILLED",
-        "Gov-Test-Scenario" -> "REQUEST_CANNOT_BE_FULFILLED",
-        "GOV-TEST-SCENARIO" -> "REQUEST_CANNOT_BE_FULFILLED"
-      )
-
-      "allowed in config" should {
-        "return RuleRequestCannotBeFulfilled error" in {
-          val requestHandler = successRequestHandler.withNoContentResult()
-
-          MockedAppConfig.allowRequestCannotBeFulfilledHeader(Version3).returns(true).anyNumberOfTimes()
-          mockDeprecation(NotDeprecated)
-
-          val expectedContent = Json.parse(
-            """
-              |{
-              |  "code":"RULE_REQUEST_CANNOT_BE_FULFILLED",
-              |  "message":"Custom (will vary in production depending on the actual error)"
-              |}
-              |""".stripMargin
-          )
-
-          for (gtsHeader <- gtsHeaders) {
-
-            val userRequest2 = UserRequest[AnyContent](userDetails, FakeRequest().withHeaders(versionHeader, gtsHeader))
-            val result       = requestHandler.handleRequest()(ctx, userRequest2, implicitly[ExecutionContext], mockAppConfig)
-
-            status(result) shouldBe 422
-            header("X-CorrelationId", result) shouldBe Some(generatedCorrelationId)
-            contentAsJson(result) shouldBe expectedContent
-          }
-        }
-      }
-
-      "not allowed in config" should {
-        "return success response, as the Gov-Test-Scenario should be ignored" in {
-          val requestHandler = successRequestHandler.withPlainJsonResult(successCode)
-
-          service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-          MockedAppConfig.allowRequestCannotBeFulfilledHeader(Version3).returns(false).anyNumberOfTimes()
-          mockDeprecation(NotDeprecated)
-
-          val ctx2: RequestContext = ctx.copy(hc = hc.copy(otherHeaders = List("gov-test-scenario" -> "REQUEST_CANNOT_BE_FULFILLED")))
-
-          val result = requestHandler.handleRequest()(ctx2, userRequest, ec, mockAppConfig)
-
-          contentAsJson(result) shouldBe successResponseJson
-          header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
-          status(result) shouldBe successCode
-        }
-      }
-
-      "a request is made to a deprecated version" must {
-        "return the correct response" when {
-          "deprecatedOn and sunsetDate exists" in {
-
-            val requestHandler = successRequestHandler.withPlainJsonResult(successCode)
-
-            service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-            mockDeprecation(
-              Deprecated(
-                deprecatedOn = LocalDateTime.of(2023, 1, 17, 12, 0),
-                sunsetDate = Some(LocalDateTime.of(2024, 1, 17, 12, 0))
-              )
-            )
-
-            MockedAppConfig.apiDocumentationUrl().returns("http://someUrl").anyNumberOfTimes()
-
-            val result = requestHandler.handleRequest()
-
-            contentAsJson(result) shouldBe successResponseJson
-            header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
-            header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
-            header("Sunset", result) shouldBe Some("Wed, 17 Jan 2024 12:00:00 GMT")
-            header("Link", result) shouldBe Some("http://someUrl")
-
-            status(result) shouldBe successCode
-          }
-
-          "only deprecatedOn exists" in {
-            val requestHandler = successRequestHandler.withPlainJsonResult(successCode)
-
-            service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
-
-            mockDeprecation(
-              Deprecated(
-                deprecatedOn = LocalDateTime.of(2023, 1, 17, 12, 0),
-                None
-              )
-            )
-            MockedAppConfig.apiDocumentationUrl().returns("http://someUrl").anyNumberOfTimes()
-
-            val result = requestHandler.handleRequest()
-
-            contentAsJson(result) shouldBe successResponseJson
-            header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
-            header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
-            header("Sunset", result) shouldBe None
-            header("Link", result) shouldBe Some("http://someUrl")
-            status(result) shouldBe successCode
-          }
-        }
-      }
     }
 
     "a request fails with validation errors" must {
