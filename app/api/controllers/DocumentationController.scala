@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,28 +19,37 @@ package api.controllers
 import api.config.rewriters.DocumentationRewriters
 import api.definition.ApiDefinitionFactory
 import controllers.RewriteableAssets
+import org.apache.pekko.stream.Materializer
+import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.filters.cors.CORSActionBuilder
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class DocumentationController @Inject() (
     selfAssessmentApiDefinition: ApiDefinitionFactory,
     docRewriters: DocumentationRewriters,
+    configuration: Configuration,
     assets: RewriteableAssets,
     cc: ControllerComponents
-) extends BackendController(cc) {
+)(implicit ec: ExecutionContext, materializer: Materializer)
+    extends BackendController(cc) {
 
   def definition(): Action[AnyContent] = Action {
     Ok(Json.toJson(selfAssessmentApiDefinition.definition))
   }
 
-  def asset(version: String, filename: String): Action[AnyContent] = {
-    val path      = s"/public/api/conf/$version"
-    val rewriters = docRewriters.rewriteables.flatMap { _.maybeRewriter(version, filename) }
-    assets.rewriteableAt(path, filename, rewriters)
-  }
+  def asset(version: String, filename: String): Action[AnyContent] =
+    CORSActionBuilder(configuration).async { implicit request =>
+      val path = s"/public/api/conf/$version"
+      val rewriters = docRewriters.rewriteables.flatMap {
+        _.maybeRewriter(version, filename)
+      }
+      assets.rewriteableAt(path, filename, rewriters)(request)
+    }
 
 }
