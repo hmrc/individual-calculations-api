@@ -523,41 +523,22 @@
         "class4Nics": {
           "$ref": "#/definitions/class4Nics"
         },
-        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
-          "nic2Amount": {
-            "description": "{{#unless (releasedInProduction '1885_r20_losses_claims_partner_income_docs')}}[Test only] {{/unless}}Class 2 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/monetaryPos"
-              }
-            ]
-          },
-          "nic4Amount": {
-            "description": "{{#unless (releasedInProduction '1885_r20_losses_claims_partner_income_docs')}}[Test only] {{/unless}}Class 4 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/monetaryPos"
-              }
-            ]
-          },
-        {{else}}
-          "nic2NetOfDeductions": {
-            "description": "NIC2 net of deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/monetary"
-              }
-            ]
-          },
-          "nic4NetOfDeductions": {
-            "description": "NIC4 net of deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/monetary"
-              }
-            ]
-          },
-        {{/if}}
+        "nic2Amount": {
+          "description": "Class 2 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
+        "nic4Amount": {
+          "description": "Class 4 NICs amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
         "totalNic": {
           "description": "Total NIC deductions. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
           "allOf": [
@@ -644,32 +625,6 @@
             }
           ]
         },
-        {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
-          "totalClass4LossesAvailable": {
-            "description": "Total class 4 losses available. This value must be between 0 and 99999999999. No decimals.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/intPos"
-              }
-            ]
-          },
-          "totalClass4LossesUsed": {
-            "description": "Total class 4 losses used. This value must be between 0 and 99999999999. No decimals.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/intPos"
-              }
-            ]
-          },
-          "totalClass4LossesCarriedForward": {
-            "description": "Total class 4 losses carried forward. This value must be between 0 and 99999999999. No decimals.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/intPos"
-              }
-            ]
-          },
-        {{/unless}}
         "totalIncomeChargeableToClass4": {
           "description": "Total income chargeable to class 4. This value must be between 0 and 99999999999. No decimals.",
           "allOf": [
@@ -686,16 +641,14 @@
             }
           ]
         },
-        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
-          "adjustmentToProfitsForClass4": {
-            "description": "{{#unless (releasedInProduction '1885_r20_losses_claims_partner_income_docs')}}[Test only] {{/unless}}The adjustment to the individual's profits specifically used to calculate Class 4 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
-            "allOf": [
-              {
-                "$ref": "#/definitions/monetaryPos"
-              }
-            ]
-          },
-        {{/if}}
+        "adjustmentToProfitsForClass4": {
+          "description": "The adjustment to the individual's profits specifically used to calculate Class 4 NICs. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/monetaryPos"
+            }
+          ]
+        },
         "nic4Bands": {
           "$ref": "#/definitions/nic4Bands"
         }

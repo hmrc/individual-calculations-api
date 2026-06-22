@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "{{#unless (releasedInProduction '1885_r20_losses_claims_partner_income_docs')}}[Test only] {{/unless}}An object containing details of the individual's share of income from partnerships in the retrieved tax calculation.",
+  "description": "An object containing details of the individual's share of income from partnerships in the retrieved tax calculation.",
   "type": "object",
   "properties": {
     "totalPartnerIncome": {
