@@ -17,14 +17,6 @@
     "annualAdjustments": {
       "$ref": "#/definitions/annualAdjustments"
     },
-    {{#unless (enabled '1885_r20_losses_claims_partner_income_docs')}}
-      "lossesBroughtForward": {
-        "$ref": "#/definitions/lossesBroughtForward"
-      },
-      "claims": {
-        "$ref": "#/definitions/claims"
-      },
-    {{/unless}}
     "constructionIndustryScheme": {
       "$ref": "#/definitions/constructionIndustryScheme"
     },
@@ -796,9 +788,7 @@
         "uk-dividends",
         "state-benefits",
         "gains-on-life-policies",
-        {{#if (enabled '1885_r20_losses_claims_partner_income_docs')}}
-          "partner-income",
-        {{/if}}
+        "partner-income",
         "foreign-savings-and-gains",
         "other-dividends",
         "uk-securities",
