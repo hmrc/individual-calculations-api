@@ -1,0 +1,107 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v9.listCalculations
+
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.GenericAuditDetailFixture.nino
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.{ErrorWrapper, NinoFormatError, RuleTaxYearNotSupportedError}
+import api.models.outcomes.ResponseWrapper
+import api.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
+import api.utils.MockIdGenerator
+import play.api.Configuration
+import play.api.mvc.Result
+import v9.listCalculations.def1.model.Def1_ListCalculationsFixture
+import v9.listCalculations.model.request.{Def1_ListCalculationsRequestData, ListCalculationsRequestData}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+class ListCalculationsControllerSpec
+    extends ControllerBaseSpec
+    with ControllerTestRunner
+    with MockEnrolmentsAuthService
+    with MockMtdIdLookupService
+    with MockListCalculationsValidatorFactory
+    with MockListCalculationsService
+    with MockIdGenerator
+    with Def1_ListCalculationsFixture {
+
+  val taxYear: String = "2020-21"
+  val calculationType = Some("in-year")
+
+  private val requestData: ListCalculationsRequestData = Def1_ListCalculationsRequestData(
+    nino = Nino(nino),
+    taxYear = TaxYear.fromMtd(taxYear),
+    calculationType = None
+  )
+
+  "ListCalculationsController" when {
+    "a valid request is supplied" should {
+      "return the expected result for a successful service response" in new Test {
+        willUseValidator(returningSuccess(requestData))
+
+        MockListCalculationsService
+          .list(requestData)
+          .returns(
+            Future.successful(Right(ResponseWrapper(correlationId, listCalculationsResponseModel)))
+          )
+
+        runOkTest(OK, Some(listCalculationsMtdJson))
+      }
+    }
+
+    "return the error as per spec" when {
+      "the parser validation fails" in new Test {
+        willUseValidator(returning(NinoFormatError))
+
+        runErrorTest(NinoFormatError)
+      }
+
+      "the service returns an error" in new Test {
+        willUseValidator(returningSuccess(requestData))
+
+        MockListCalculationsService
+          .list(requestData)
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
+
+        runErrorTest(RuleTaxYearNotSupportedError)
+      }
+    }
+  }
+
+  private trait Test extends ControllerTest {
+
+    val controller: ListCalculationsController = new ListCalculationsController(
+      mockEnrolmentsAuthService,
+      mockMtdIdLookupService,
+      mockListCalculationsFactory,
+      mockListCalculationsService,
+      cc,
+      mockIdGenerator
+    )
+
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+      "supporting-agents-access-control.enabled" -> true
+    )
+
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+
+    override protected def callController(): Future[Result] = controller.list(validNino, taxYear, calculationType)(fakeRequest)
+  }
+
+}

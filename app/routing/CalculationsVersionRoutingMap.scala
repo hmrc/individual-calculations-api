@@ -23,10 +23,11 @@ import javax.inject.{Inject, Singleton}
 
 // Add routes corresponding to available versions...
 @Singleton
-case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v8Router: v8.Routes) extends VersionRoutingMap {
+case class CalculationsVersionRoutingMap @Inject() (defaultRouter: Router, v8Router: v8.Routes, v9Router: v9.Routes) extends VersionRoutingMap {
 
   val map: Map[Version, Router] = Map(
-    Version8 -> v8Router
+    Version8 -> v8Router,
+    Version9 -> v9Router
   )
 
 }

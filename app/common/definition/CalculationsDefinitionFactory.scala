@@ -35,14 +35,14 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(
-            version = Version7,
-            status = RETIRED,
-            endpointsEnabled = false
-          ),
-          APIVersion(
             version = Version8,
             status = buildAPIStatus(Version8),
             endpointsEnabled = appConfig.endpointsEnabled(Version8)
+          ),
+          APIVersion(
+            version = Version9,
+            status = RETIRED,
+            endpointsEnabled = false
           )
         ),
         requiresTrust = None
