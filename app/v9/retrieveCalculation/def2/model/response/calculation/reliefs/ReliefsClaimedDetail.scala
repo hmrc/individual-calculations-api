@@ -17,7 +17,7 @@
 package v9.retrieveCalculation.def2.model.response.calculation.reliefs
 
 import play.api.libs.json.{Json, OFormat}
-import v8.common.model.response.ChargeableEventGainsIncomeType
+import v9.common.model.response.ChargeableEventGainsIncomeType
 
 case class ReliefsClaimedDetail(amountClaimed: Option[BigDecimal],
                                 uniqueInvestmentRef: Option[String],

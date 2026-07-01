@@ -17,7 +17,7 @@
 package v9.retrieveCalculation.def2.model.response.calculation.chargeableEventGainsIncome
 
 import play.api.libs.json.{Format, Json}
-import v8.common.model.response.ChargeableEventGainsIncomeType
+import v9.common.model.response.ChargeableEventGainsIncomeType
 
 case class GainsWithTaxPaidDetail(`type`: ChargeableEventGainsIncomeType,
                                   customerReference: Option[String],

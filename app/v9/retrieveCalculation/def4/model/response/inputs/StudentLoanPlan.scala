@@ -17,7 +17,7 @@
 package v9.retrieveCalculation.def4.model.response.inputs
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v8.common.model.response.StudentLoanPlanType
+import v9.common.model.response.StudentLoanPlanType
 
 case class StudentLoanPlan(planType: StudentLoanPlanType)
 

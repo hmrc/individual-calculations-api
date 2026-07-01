@@ -17,8 +17,8 @@
 package v9.retrieveCalculation.def1.model.response.calculation.reliefs
 
 import play.api.libs.json.{Format, Json, OFormat}
-import v8.common.model.response.IncomeSourceType
-import v8.common.model.response.IncomeSourceType.*
+import v9.common.model.response.IncomeSourceType
+import v9.common.model.response.IncomeSourceType.*
 
 case class ForeignTaxCreditReliefDetail(incomeSourceType: Option[IncomeSourceType],
                                         incomeSourceId: Option[String],

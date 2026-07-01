@@ -21,11 +21,11 @@ import api.services.DownstreamStub
 import play.api.http.Status.OK
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
-import v8.retrieveCalculation.def1.model.Def1_CalculationFixture
+import v9.retrieveCalculation.def1.model.Def1_CalculationFixture
 
 class CalculationsAuthSupportingAgentsAllowedISpec extends AuthSupportingAgentsAllowedISpec with Def1_CalculationFixture {
 
-  val callingApiVersion = "8.0"
+  val callingApiVersion = "9.0"
 
   val supportingAgentsAllowedEndpoint = "retrieve-calculation"
   val calculationId: String           = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
