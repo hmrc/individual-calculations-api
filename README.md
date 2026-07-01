@@ -1,4 +1,4 @@
-individual-calculations-api
+Individual Calculations API
 ========================
 
 [![Apache-2.0 license](http://img.shields.io/badge/license-Apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -11,8 +11,8 @@ The Individual Calculations API allows a developer to:
 
 ## Requirements
 
-- Scala 3.5.2
-- Java 11
+- Scala 3.5.x
+- Java 21
 - sbt 1.10.x
 - [Service Manager V2](https://github.com/hmrc/sm2)
 
@@ -20,7 +20,10 @@ The Individual Calculations API allows a developer to:
 
 Run the microservice from the console using: `sbt run` (starts on port 9767 by default)
 
-Start the service manager profile: `sm2 --start MTDFB_CALC`
+Start the service manager profile: 
+```bash
+sm2 --start MTDFB_CALC
+```
 
 ## Run Tests
 
@@ -28,17 +31,23 @@ Run unit tests: `sbt test`
 
 Run integration tests: `sbt it/test`
 
-## Viewing OAS
+## View OpenAPI Specification (OAS) documentation
 
-To view documentation locally ensure the Individual Calculations API is running, and run api-documentation-frontend:
+To view the OpenAPI documentation locally, ensure the API is running.
 
+Start the `api-documentation-frontend` and `api-definition` services using the Service Manager profile:
+
+```bash
+sm2 -start DEVHUB_PREVIEW_OPENAPI
 ```
-./run_local_with_dependencies.sh
-```
+Then navigate to the preview page:
 
-Then go to http://localhost:9680/api-documentation/docs/openapi/preview and use the appropriate port and version:
-
+```text
+http://localhost:9680/api-documentation/docs/openapi/preview
 ```
+Enter the specification URL using the appropriate port and API version:
+
+```text
 http://localhost:9767/api/conf/8.0/application.yaml
 ```
 
@@ -58,4 +67,4 @@ the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation
 ## License
 
 This code is open source software licensed under
-the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")
+the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html)
