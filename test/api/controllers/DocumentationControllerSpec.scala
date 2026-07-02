@@ -22,13 +22,13 @@ import api.config.{AppConfig, MockAppConfig, RealAppConfig}
 import api.definition.*
 import api.routing.{Version, Versions}
 import com.typesafe.config.ConfigFactory
+import controllers.{AssetsConfiguration, DefaultAssetsMetadata, RewriteableAssets}
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.testkit.NoMaterializer
 import play.api.http.{DefaultFileMimeTypes, DefaultHttpErrorHandler, FileMimeTypesConfiguration, HttpConfiguration}
 import play.api.mvc.Result
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.http.HeaderCarrier
-import controllers.{AssetsConfiguration, DefaultAssetsMetadata, RewriteableAssets}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
