@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Object containing information about income summary totals in the retrieved tax calculation.",
+  "type": "object",
+  "properties": {
+    "totalSelfEmploymentProfit": {
+      "description": "Total self employment profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": 5000,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
+    },
+    "totalPropertyProfit": {
+      "description": "Total property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": 5001,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
+    },
+    "totalUKOtherPropertyProfit": {
+      "description": "Total UK other property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": 5003,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
+    },
+    "totalForeignPropertyProfit": {
+      "description": "Total foreign property profit. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": 5004,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
+    },
+    "totalEmploymentIncome": {
+      "description": "Total employment income. This value must be between 0 and 99999999999. No decimals.",
+      "type": "integer",
+      "example": 5007,
+      "minimum": 0,
+      "maximum": 99999999999,
+      "multipleOf": 1
+    }
+  },
+  "additionalProperties": false
+}

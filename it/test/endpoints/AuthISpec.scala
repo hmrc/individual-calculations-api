@@ -25,7 +25,7 @@ import play.api.http.Status
 import play.api.http.Status.*
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import v8.retrieveCalculation.def4.model.Def4_CalculationFixture
+import v9.retrieveCalculation.def4.model.Def4_CalculationFixture
 
 class AuthISpec extends IntegrationBaseSpec with Def4_CalculationFixture {
 
@@ -44,7 +44,7 @@ class AuthISpec extends IntegrationBaseSpec with Def4_CalculationFixture {
       setupStubs()
       buildRequest(uri)
         .withHttpHeaders(
-          (ACCEPT, "application/vnd.hmrc.8.0+json"),
+          (ACCEPT, "application/vnd.hmrc.9.0+json"),
           (AUTHORIZATION, "Bearer 123")
         )
     }
