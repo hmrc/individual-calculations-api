@@ -47,6 +47,11 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
             categories = Seq("INCOME_TAX_MTD"),
             versions = Seq(
               APIVersion(
+                version = Version7,
+                status = RETIRED,
+                endpointsEnabled = false
+              ),
+              APIVersion(
                 version = Version8,
                 status = BETA,
                 endpointsEnabled = true
