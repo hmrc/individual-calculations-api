@@ -70,14 +70,12 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
       }
 
       "default to ALPHA status when an invalid apiStatus is configured" in {
-        val faultyVersion = Version8
+        val versions = List(Version8, Version9)
 
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
-        List(
-          Version8 -> "ALPHO",
-          Version9 -> "BETA"
-        ).foreach { case (version, status) =>
-          MockedAppConfig.apiStatus(version) returns status
+
+        versions.foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "ALPHO"
           MockedAppConfig.endpointsEnabled(version) returns true
           MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
         }
@@ -86,7 +84,9 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
 
         val resultVersions = factory.definition.api.versions
 
-        resultVersions.find(_.version == faultyVersion).get.status shouldBe ALPHA
+        versions.foreach { version =>
+          resultVersions.find(_.version == version).get.status shouldBe ALPHA
+        }
       }
     }
   }
