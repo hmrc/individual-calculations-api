@@ -46,8 +46,8 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
           ),
           APIVersion(
             version = Version9,
-            status = RETIRED,
-            endpointsEnabled = false
+            status = buildAPIStatus(Version9),
+            endpointsEnabled = appConfig.endpointsEnabled(Version9)
           )
         ),
         requiresTrust = None

@@ -33,9 +33,11 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
     "definition is called" should {
       "return a valid Definition case class when all versions are configured correctly" in {
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
-        MockedAppConfig.apiStatus(Version8) returns "BETA"
-        MockedAppConfig.endpointsEnabled(Version8) returns true
-        MockedAppConfig.deprecationFor(Version8).returns(NotDeprecated.valid).anyNumberOfTimes()
+        List(Version8, Version9).foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "BETA"
+          MockedAppConfig.endpointsEnabled(version) returns true
+          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
+        }
 
         val factory = CalculationsDefinitionFactory(mockAppConfig)
 
@@ -58,8 +60,8 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
               ),
               APIVersion(
                 version = Version9,
-                status = RETIRED,
-                endpointsEnabled = false
+                status = BETA,
+                endpointsEnabled = true
               )
             ),
             requiresTrust = None
@@ -68,18 +70,23 @@ class CalculationsDefinitionFactorySpec extends UnitSpec with MockHttpClient wit
       }
 
       "default to ALPHA status when an invalid apiStatus is configured" in {
-        val faultyVersion = Version8
+        val versions = List(Version8, Version9)
 
         MockedAppConfig.apiGatewayContext returns "api.gateway.context"
-        MockedAppConfig.apiStatus(Version8) returns "ALPHO"
-        MockedAppConfig.endpointsEnabled(Version8) returns true
-        MockedAppConfig.deprecationFor(Version8).returns(NotDeprecated.valid).anyNumberOfTimes()
+
+        versions.foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "ALPHO"
+          MockedAppConfig.endpointsEnabled(version) returns true
+          MockedAppConfig.deprecationFor(version).returns(NotDeprecated.valid).anyNumberOfTimes()
+        }
 
         val factory = CalculationsDefinitionFactory(mockAppConfig)
 
         val resultVersions = factory.definition.api.versions
 
-        resultVersions.find(_.version == faultyVersion).get.status shouldBe ALPHA
+        versions.foreach { version =>
+          resultVersions.find(_.version == version).get.status shouldBe ALPHA
+        }
       }
     }
   }
