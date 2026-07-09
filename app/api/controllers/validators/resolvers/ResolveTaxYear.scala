@@ -121,10 +121,6 @@ case class ResolveTaxYearMinMax(minMax: (TaxYear, TaxYear), minError: MtdError, 
 
 object ResolveTaxYearMinMax {
 
-  def apply(minMax: (TaxYear, TaxYear), error: MtdError): ResolveTaxYearMinMax = {
-    ResolveTaxYearMinMax(minMax, error, error)
-  }
-
   def apply(minMax: (TaxYear, TaxYear)): ResolveTaxYearMinMax = {
     ResolveTaxYearMinMax(minMax, RuleTaxYearNotSupportedError, RuleTaxYearNotSupportedError)
   }

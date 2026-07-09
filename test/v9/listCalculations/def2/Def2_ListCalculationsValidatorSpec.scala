@@ -16,6 +16,7 @@
 
 package v9.listCalculations.def2
 
+import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
@@ -79,6 +80,13 @@ class Def2_ListCalculationsValidatorSpec extends UnitSpec {
           Left(
             ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError)
           ))
+      }
+    }
+
+    "return RuleCalculationTypeNotAllowed error" when {
+      "a recognised-but-not-allowed calculation type is supplied" in {
+        val result = validator(validNino, validTaxYear, Some("intent-to-amend")).validateAndWrapResult()
+        result.shouldBe(Left(ErrorWrapper(correlationId, RuleCalculationTypeNotAllowed)))
       }
     }
 

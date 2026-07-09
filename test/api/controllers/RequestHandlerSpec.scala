@@ -16,7 +16,7 @@
 
 package api.controllers
 
-import api.config.Deprecation.NotDeprecated
+import api.config.Deprecation.{NotDeprecated, Deprecated}
 import api.config.{AppConfig, Deprecation, MockAppConfig}
 import api.controllers.validators.Validator
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}
@@ -37,6 +37,7 @@ import play.api.test.{FakeRequest, ResultExtractors}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
 
+import java.time.LocalDateTime
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
 class RequestHandlerSpec
@@ -74,6 +75,7 @@ class RequestHandlerSpec
   }
 
   implicit val appConfig: AppConfig = mockAppConfig
+  implicit val apiVersion: Version  = Version(userRequest)
   private val mockService           = mock[DummyService]
 
   private def service =
@@ -91,7 +93,7 @@ class RequestHandlerSpec
 
   def mockDeprecation(deprecationStatus: Deprecation): CallHandler[Validated[String, Deprecation]] =
     MockedAppConfig
-      .deprecationFor(Version(userRequest))
+      .deprecationFor(apiVersion)
       .returns(deprecationStatus.valid)
       .anyNumberOfTimes()
 
@@ -138,6 +140,65 @@ class RequestHandlerSpec
         status(result) shouldBe NO_CONTENT
       }
 
+    }
+
+    "a request is made to a deprecated version" must {
+      "return the correct response" when {
+        "deprecatedOn and sunsetDate exists" in {
+
+          val requestHandler = RequestHandler
+            .withValidator(successValidatorForRequest)
+            .withService(mockService.service)
+            .withPlainJsonResult(successCode)
+
+          service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
+
+          mockDeprecation(
+            Deprecated(
+              deprecatedOn = LocalDateTime.of(2023, 1, 17, 12, 0),
+              sunsetDate = Some(LocalDateTime.of(2024, 1, 17, 12, 0))
+            )
+          )
+
+          MockedAppConfig.apiDocumentationUrl().returns("http://someUrl").anyNumberOfTimes()
+
+          val result = requestHandler.handleRequest()
+
+          contentAsJson(result) shouldBe successResponseJson
+          header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
+          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
+          header("Sunset", result) shouldBe Some("Wed, 17 Jan 2024 12:00:00 GMT")
+          header("Link", result) shouldBe Some("http://someUrl")
+
+          status(result) shouldBe successCode
+        }
+
+        "only deprecatedOn exists" in {
+          val requestHandler = RequestHandler
+            .withValidator(successValidatorForRequest)
+            .withService(mockService.service)
+            .withPlainJsonResult(successCode)
+
+          service returns Future.successful(Right(ResponseWrapper(serviceCorrelationId, Output)))
+
+          mockDeprecation(
+            Deprecated(
+              deprecatedOn = LocalDateTime.of(2023, 1, 17, 12, 0),
+              None
+            )
+          )
+          MockedAppConfig.apiDocumentationUrl().returns("http://someUrl").anyNumberOfTimes()
+
+          val result = requestHandler.handleRequest()
+
+          contentAsJson(result) shouldBe successResponseJson
+          header("X-CorrelationId", result) shouldBe Some(serviceCorrelationId)
+          header("Deprecation", result) shouldBe Some("Tue, 17 Jan 2023 12:00:00 GMT")
+          header("Sunset", result) shouldBe None
+          header("Link", result) shouldBe Some("http://someUrl")
+          status(result) shouldBe successCode
+        }
+      }
     }
 
     "a request fails with validation errors" must {

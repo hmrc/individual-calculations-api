@@ -107,16 +107,11 @@ object EmptinessChecker {
 
   def primitive[A]: EmptinessChecker[A] = EmptinessChecker.instance(_ => Structure.Primitive)
 
-  given EmptinessChecker[String] = instance(_ => Structure.Primitive)
-
-  given EmptinessChecker[Int] = instance(_ => Structure.Primitive)
-
-  given EmptinessChecker[Double] = instance(_ => Structure.Primitive)
-
-  given EmptinessChecker[Boolean] = instance(_ => Structure.Primitive)
-
-  given EmptinessChecker[BigInt] = instance(_ => Structure.Primitive)
-
+  given EmptinessChecker[String]     = instance(_ => Structure.Primitive)
+  given EmptinessChecker[Int]        = instance(_ => Structure.Primitive)
+  given EmptinessChecker[Double]     = instance(_ => Structure.Primitive)
+  given EmptinessChecker[Boolean]    = instance(_ => Structure.Primitive)
+  given EmptinessChecker[BigInt]     = instance(_ => Structure.Primitive)
   given EmptinessChecker[BigDecimal] = instance(_ => Structure.Primitive)
 
   given [A](using aInstance: EmptinessChecker[A]): EmptinessChecker[Option[A]] =

@@ -20,11 +20,6 @@ import play.api.libs.json.{Json, OWrites, Reads}
 import v8.retrieveCalculation.*
 
 sealed trait RetrieveCalculationResponse {
-
-  def intentToSubmitFinalDeclaration: Boolean
-
-  def finalDeclaration: Boolean
-
   def hasErrors: Boolean
 }
 
@@ -45,10 +40,6 @@ case class Def1_RetrieveCalculationResponse(
     calculation: Option[def1.model.response.calculation.Calculation],
     messages: Option[def1.model.response.messages.Messages]
 ) extends RetrieveCalculationResponse {
-
-  override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
-
-  override def finalDeclaration: Boolean = metadata.finalDeclaration
 
   override def hasErrors: Boolean = {
     for {
@@ -86,10 +77,6 @@ case class Def2_RetrieveCalculationResponse(
     messages: Option[def2.model.response.messages.Messages]
 ) extends RetrieveCalculationResponse {
 
-  override def intentToSubmitFinalDeclaration: Boolean = metadata.intentToSubmitFinalDeclaration
-
-  override def finalDeclaration: Boolean = metadata.finalDeclaration
-
   override def hasErrors: Boolean = {
     for {
       messages <- messages
@@ -114,10 +101,6 @@ case class Def3_RetrieveCalculationResponse(
     messages: Option[def3.model.response.messages.Messages]
 ) extends RetrieveCalculationResponse {
 
-  override def intentToSubmitFinalDeclaration: Boolean = false
-
-  override def finalDeclaration: Boolean = false
-
   override def hasErrors: Boolean = {
     for {
       messages <- messages
@@ -141,10 +124,6 @@ case class Def4_RetrieveCalculationResponse(
     calculation: Option[def4.model.response.calculation.Calculation],
     messages: Option[def4.model.response.messages.Messages]
 ) extends RetrieveCalculationResponse {
-
-  override def intentToSubmitFinalDeclaration: Boolean = false
-
-  override def finalDeclaration: Boolean = false
 
   override def hasErrors: Boolean = {
     for {
