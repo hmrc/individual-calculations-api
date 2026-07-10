@@ -19,9 +19,7 @@ package v8.retrieveCalculation.models.response
 import play.api.libs.json.{Json, OWrites, Reads}
 import v8.retrieveCalculation.*
 
-sealed trait RetrieveCalculationResponse {
-  def hasErrors: Boolean
-}
+sealed trait RetrieveCalculationResponse
 
 object RetrieveCalculationResponse {
 
@@ -39,16 +37,7 @@ case class Def1_RetrieveCalculationResponse(
     inputs: def1.model.response.inputs.Inputs,
     calculation: Option[def1.model.response.calculation.Calculation],
     messages: Option[def1.model.response.messages.Messages]
-) extends RetrieveCalculationResponse {
-
-  override def hasErrors: Boolean = {
-    for {
-      messages <- messages
-      errors   <- messages.errors
-    } yield errors.nonEmpty
-  }.getOrElse(false)
-
-}
+) extends RetrieveCalculationResponse
 
 object Def1_RetrieveCalculationResponse {
 
@@ -75,16 +64,7 @@ case class Def2_RetrieveCalculationResponse(
     inputs: def2.model.response.inputs.Inputs,
     calculation: Option[def2.model.response.calculation.Calculation],
     messages: Option[def2.model.response.messages.Messages]
-) extends RetrieveCalculationResponse {
-
-  override def hasErrors: Boolean = {
-    for {
-      messages <- messages
-      errors   <- messages.errors
-    } yield errors.nonEmpty
-  }.getOrElse(false)
-
-}
+) extends RetrieveCalculationResponse
 
 object Def2_RetrieveCalculationResponse {
 
@@ -99,16 +79,7 @@ case class Def3_RetrieveCalculationResponse(
     inputs: def3.model.response.inputs.Inputs,
     calculation: Option[def3.model.response.calculation.Calculation],
     messages: Option[def3.model.response.messages.Messages]
-) extends RetrieveCalculationResponse {
-
-  override def hasErrors: Boolean = {
-    for {
-      messages <- messages
-      errors   <- messages.errors
-    } yield errors.nonEmpty
-  }.getOrElse(false)
-
-}
+) extends RetrieveCalculationResponse
 
 object Def3_RetrieveCalculationResponse {
 
@@ -123,16 +94,7 @@ case class Def4_RetrieveCalculationResponse(
     inputs: def4.model.response.inputs.Inputs,
     calculation: Option[def4.model.response.calculation.Calculation],
     messages: Option[def4.model.response.messages.Messages]
-) extends RetrieveCalculationResponse {
-
-  override def hasErrors: Boolean = {
-    for {
-      messages <- messages
-      errors   <- messages.errors
-    } yield errors.nonEmpty
-  }.getOrElse(false)
-
-}
+) extends RetrieveCalculationResponse
 
 object Def4_RetrieveCalculationResponse {
 
