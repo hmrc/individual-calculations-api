@@ -18,14 +18,12 @@ package v9.listCalculations.def3
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
-import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import v9.common.model.domain.*
 import v9.common.model.resolver.ResolveListCalculationType
-import v9.common.model.resolver.ResolveListCalculationType.{ResolverOps, resolveValid}
 import v9.listCalculations.model.request.{Def3_ListCalculationsRequestData, ListCalculationsRequestData}
 
 object Def3_ListCalculationsValidator {
@@ -44,21 +42,5 @@ class Def3_ListCalculationsValidator(nino: String, taxYear: String, calculationT
       resolveTaxYear(taxYear),
       ResolveListCalculationType(calculationType)
     ).mapN(Def3_ListCalculationsRequestData.apply)
-      .andThen(validateRules)
-
-  private val validateRules = {
-    def isValidCalcTypeForDef3(calcType: CalculationType): Boolean =
-      Seq(`in-year`, `final-declaration`, `intent-to-finalise`, `intent-to-amend`, `confirm-amendment`)
-        .contains(calcType)
-
-    val validateCalcTypeForTaxYear = (request: ListCalculationsRequestData) =>
-      request.calculationType.flatMap {
-        case ct if isValidCalcTypeForDef3(ct) => None
-        case _                                => Some(List(RuleCalculationTypeNotAllowed))
-      }
-
-    resolveValid[ListCalculationsRequestData]
-      .thenValidate(validateCalcTypeForTaxYear)
-  }
 
 }

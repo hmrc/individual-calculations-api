@@ -162,6 +162,21 @@ class VersionRoutingRequestHandlerSpec extends UnitSpec with Inside with MockApp
     }
   }
 
+  "Routing request with unrecognized version number (matching regex format)" should {
+    "return 404 with UnsupportedVersionError" in new Test {
+      val maybeAcceptHeader: Option[String] = Some("application/vnd.hmrc.0.0+json")
+
+      private val request = buildRequest("/api/endpoint")
+
+      inside(requestHandler.routeRequest(request)) { case Some(action: EssentialAction) =>
+        val result = action.apply(request)
+
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe UnsupportedVersionError.asJson
+      }
+    }
+  }
+
   private abstract class Test {
 
     protected def maybeAcceptHeader: Option[String]
