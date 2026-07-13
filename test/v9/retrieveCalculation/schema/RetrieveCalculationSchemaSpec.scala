@@ -53,8 +53,8 @@ class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenProper
     }
 
     "the tax year is not valid" must {
-      "use a default of Def3 (where tax year validation will fail)" in {
-        RetrieveCalculationSchema.schemaFor("NotATaxYear").shouldBe(RetrieveCalculationSchema.Def3)
+      "use a default of Def4 (where tax year validation will fail)" in {
+        RetrieveCalculationSchema.schemaFor("NotATaxYear").shouldBe(RetrieveCalculationSchema.Def4)
       }
     }
   }

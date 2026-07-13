@@ -36,26 +36,12 @@ class Def1_RetrieveCalculationResponseSpec extends UnitSpec with Def1_Calculatio
       testAllOptionalJsonFieldsExcept[Def1_RetrieveCalculationResponse](calculationDownstreamJson)("metadata", "inputs")
     }
 
-    "return hasErrors is false when messages.errors is empty" in {
-      val model = calculationDownstreamJson
-        .deepMerge(
-          Json.obj(
-            "messages" -> Json.obj(
-              "errors" -> Json.arr()
-            )
-          ))
-        .as[Def1_RetrieveCalculationResponse]
-
-      model.hasErrors shouldBe false
-    }
-
     "allow messages to be missing" in {
       val jsonWithoutMessages =
         calculationDownstreamJson - "messages"
 
       val model = jsonWithoutMessages.as[Def1_RetrieveCalculationResponse]
       model.messages shouldBe None
-      model.hasErrors shouldBe false
     }
 
   }

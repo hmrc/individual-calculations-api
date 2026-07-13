@@ -115,4 +115,19 @@ class EmptinessCheckerSpec extends UnitSpec {
     }
   }
 
+  "EmptinessChecker.use" must {
+    "create a checker from a custom field function" in {
+      case class Simple(name: String, value: Int)
+
+      val checker = EmptinessChecker.use[Simple] { s =>
+        List(
+          EmptinessChecker.field("name", s.name),
+          EmptinessChecker.field("value", s.value)
+        )
+      }
+
+      checker.findEmptyPaths(Simple("test", 123)).shouldBe(NoEmptyPaths)
+    }
+  }
+
 }
