@@ -18,20 +18,20 @@ package v9.retrieveCalculation.def4.model.response.calculation.taxCalculation
 
 import play.api.libs.json.{Format, Json}
 
-case class TaxCalculation(
-    incomeTax: Option[IncomeTax],
-    nics: Option[Nics],
-    totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
-    saUnderpaymentsCodedOut: Option[BigDecimal],
-    totalIncomeTaxNicsCharged: Option[BigDecimal],
-    totalStudentLoansRepaymentAmount: Option[BigDecimal],
-    totalAnnuityPaymentsTaxCharged: Option[BigDecimal],
-    totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
-    totalTaxDeducted: Option[BigDecimal],
-    totalIncomeTaxAndNicsDue: Option[BigDecimal],
-    capitalGainsTax: Option[CapitalGainsTax],
-    totalIncomeTaxAndNicsAndCgt: Option[BigDecimal]
-)
+case class TaxCalculation(incomeTax: Option[IncomeTax],
+                          nics: Option[Nics],
+                          totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
+                          saUnderpaymentsCodedOut: Option[BigDecimal],
+                          totalIncomeTaxNicsCharged: Option[BigDecimal],
+                          totalStudentLoansRepaymentAmount: Option[BigDecimal],
+                          totalAnnuityPaymentsTaxCharged: Option[BigDecimal],
+                          totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
+                          totalTaxDeducted: Option[BigDecimal],
+                          totalIncomeTaxAndNicsDue: Option[BigDecimal],
+                          capitalGainsTax: Option[CapitalGainsTax],
+                          totalIncomeTaxAndNicsAndCgt: Option[BigDecimal],
+                          taxRefundedOrSetOff: Option[BigDecimal],
+                          totalTaxAndNicsDue: Option[BigDecimal])
 
 object TaxCalculation {
   implicit val format: Format[TaxCalculation] = Json.format
