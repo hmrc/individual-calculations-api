@@ -199,5 +199,5 @@
   },
   "totalIncomeTaxAndNicsAndCgt": 5000.99,
   "taxRefundedOrSetOff": 5000.99,
-  "totalTaxAndNicsDue": 5000.99
+  "totalTaxAndNicsDue": -99999999999.99
 }
