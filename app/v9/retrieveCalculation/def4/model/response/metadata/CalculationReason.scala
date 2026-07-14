@@ -30,6 +30,12 @@ object CalculationReason {
   case object `enquiry-amendment`                  extends CalculationReason
   case object `auto-correction`                    extends CalculationReason
   case object `manual-correction`                  extends CalculationReason
+
+  case object `marriage-allowance` extends CalculationReason
+
+  case object `class2-national-insurance` extends CalculationReason
+
+  case object `devolved-residency` extends CalculationReason
   case object `customer-rejection-of-a-correction` extends CalculationReason
 
   implicit val writes: Writes[CalculationReason] = Enums.writes[CalculationReason]
@@ -43,6 +49,9 @@ object CalculationReason {
     case "HMRCrevenueAmendment"           => `enquiry-amendment`
     case "HMRCautoCorrection"             => `auto-correction`
     case "HMRCmanualCorrection"           => `manual-correction`
+    case "marriageAllowance"              => `marriage-allowance`
+    case "nationalInsurance"              => `class2-national-insurance`
+    case "devolvedResidency"              => `devolved-residency`
     case "customerRejectionOfaCorrection" => `customer-rejection-of-a-correction`
   }
 
