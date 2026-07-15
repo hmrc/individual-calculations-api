@@ -23,33 +23,21 @@ import v9.retrieveCalculation.def4.model.response.metadata.CalculationReason.*
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[CalculationReason](
-    "customerRequest"                -> `customer-request`,
-    "class2NICEvent"                 -> `class2-nic-event`,
-    "newAnnualAdjustmentEvent"       -> `new-annual-adjustment-event`,
-    "updatedAnnualAdjustmentEvent"   -> `updated-annual-adjustment-event`,
-    "unattendedCalculation"          -> `unattended-calculation`,
-    "HMRCrevenueAmendment"           -> `enquiry-amendment`,
-    "HMRCautoCorrection"             -> `auto-correction`,
-    "HMRCmanualCorrection"           -> `manual-correction`,
-    "marriageAllowance"              -> `marriage-allowance`,
-    "nationalInsurance"              -> `class2-national-insurance`,
-    "devolvedResidency"              -> `devolved-residency`,
-    "customerRejectionOfaCorrection" -> `customer-rejection-of-a-correction`
+    "customerRequest"              -> `customer-request`,
+    "class2NICEvent"               -> `class2-nic-event`,
+    "newAnnualAdjustmentEvent"     -> `new-annual-adjustment-event`,
+    "updatedAnnualAdjustmentEvent" -> `updated-annual-adjustment-event`,
+    "unattendedCalculation"        -> `unattended-calculation`,
+    "HMRCrevenueAmendment"         -> `enquiry-amendment`
   )
 
   testWrites[CalculationReason](
-    `customer-request`                   -> "customer-request",
-    `class2-nic-event`                   -> "class2-nic-event",
-    `new-annual-adjustment-event`        -> "new-annual-adjustment-event",
-    `updated-annual-adjustment-event`    -> "updated-annual-adjustment-event",
-    `unattended-calculation`             -> "unattended-calculation",
-    `enquiry-amendment`                  -> "enquiry-amendment",
-    `auto-correction`                    -> "auto-correction",
-    `manual-correction`                  -> "manual-correction",
-    `marriage-allowance`                 -> "marriage-allowance",
-    `class2-national-insurance`          -> "class2-national-insurance",
-    `devolved-residency`                 -> "devolved-residency",
-    `customer-rejection-of-a-correction` -> "customer-rejection-of-a-correction"
+    `customer-request`                -> "customer-request",
+    `class2-nic-event`                -> "class2-nic-event",
+    `new-annual-adjustment-event`     -> "new-annual-adjustment-event",
+    `updated-annual-adjustment-event` -> "updated-annual-adjustment-event",
+    `unattended-calculation`          -> "unattended-calculation",
+    `enquiry-amendment`               -> "enquiry-amendment"
   )
 
 }

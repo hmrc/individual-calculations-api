@@ -22,34 +22,22 @@ import play.api.libs.json.{Reads, Writes}
 sealed trait CalculationReason
 
 object CalculationReason {
-  case object `customer-request`                   extends CalculationReason
-  case object `class2-nic-event`                   extends CalculationReason
-  case object `new-annual-adjustment-event`        extends CalculationReason
-  case object `updated-annual-adjustment-event`    extends CalculationReason
-  case object `unattended-calculation`             extends CalculationReason
-  case object `enquiry-amendment`                  extends CalculationReason
-  case object `auto-correction`                    extends CalculationReason
-  case object `manual-correction`                  extends CalculationReason
-  case object `marriage-allowance`                 extends CalculationReason
-  case object `class2-national-insurance`          extends CalculationReason
-  case object `devolved-residency`                 extends CalculationReason
-  case object `customer-rejection-of-a-correction` extends CalculationReason
+  case object `customer-request`                extends CalculationReason
+  case object `class2-nic-event`                extends CalculationReason
+  case object `new-annual-adjustment-event`     extends CalculationReason
+  case object `updated-annual-adjustment-event` extends CalculationReason
+  case object `unattended-calculation`          extends CalculationReason
+  case object `enquiry-amendment`               extends CalculationReason
 
   implicit val writes: Writes[CalculationReason] = Enums.writes[CalculationReason]
 
   implicit val reads: Reads[CalculationReason] = Enums.readsUsing {
-    case "customerRequest"                => `customer-request`
-    case "class2NICEvent"                 => `class2-nic-event`
-    case "newAnnualAdjustmentEvent"       => `new-annual-adjustment-event`
-    case "updatedAnnualAdjustmentEvent"   => `updated-annual-adjustment-event`
-    case "unattendedCalculation"          => `unattended-calculation`
-    case "HMRCrevenueAmendment"           => `enquiry-amendment`
-    case "HMRCautoCorrection"             => `auto-correction`
-    case "HMRCmanualCorrection"           => `manual-correction`
-    case "marriageAllowance"              => `marriage-allowance`
-    case "nationalInsurance"              => `class2-national-insurance`
-    case "devolvedResidency"              => `devolved-residency`
-    case "customerRejectionOfaCorrection" => `customer-rejection-of-a-correction`
+    case "customerRequest"              => `customer-request`
+    case "class2NICEvent"               => `class2-nic-event`
+    case "newAnnualAdjustmentEvent"     => `new-annual-adjustment-event`
+    case "updatedAnnualAdjustmentEvent" => `updated-annual-adjustment-event`
+    case "unattendedCalculation"        => `unattended-calculation`
+    case "HMRCrevenueAmendment"         => `enquiry-amendment`
   }
 
 }
