@@ -1005,7 +1005,9 @@
         "capitalGainsTaxDue": 5000.99,
         "capitalGainsOverpaid": 5000.99
       },
-      "totalIncomeTaxAndNicsAndCgt": 5000.99
+      "totalIncomeTaxAndNicsAndCgt": 5000.99,
+      "taxRefundedOrSetOff": 5000.99,
+      "totalTaxAndNicsDue": -99999999999.99
     },
     "previousCalculation": {
       "calculationTimestamp": "2021-12-02T15:25:48Z",

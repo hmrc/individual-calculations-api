@@ -28,6 +28,7 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     "newAnnualAdjustmentEvent"       -> `new-annual-adjustment-event`,
     "updatedAnnualAdjustmentEvent"   -> `updated-annual-adjustment-event`,
     "unattendedCalculation"          -> `unattended-calculation`,
+    "HMRCrevenueAmendment"           -> `enquiry-amendment`,
     "HMRCautoCorrection"             -> `auto-correction`,
     "HMRCmanualCorrection"           -> `manual-correction`,
     "customerRejectionOfaCorrection" -> `customer-rejection-of-a-correction`
@@ -39,6 +40,7 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     `new-annual-adjustment-event`        -> "new-annual-adjustment-event",
     `updated-annual-adjustment-event`    -> "updated-annual-adjustment-event",
     `unattended-calculation`             -> "unattended-calculation",
+    `enquiry-amendment`                  -> "enquiry-amendment",
     `auto-correction`                    -> "auto-correction",
     `manual-correction`                  -> "manual-correction",
     `customer-rejection-of-a-correction` -> "customer-rejection-of-a-correction"

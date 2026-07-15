@@ -27,6 +27,7 @@ object CalculationReason {
   case object `new-annual-adjustment-event`        extends CalculationReason
   case object `updated-annual-adjustment-event`    extends CalculationReason
   case object `unattended-calculation`             extends CalculationReason
+  case object `enquiry-amendment`                  extends CalculationReason
   case object `auto-correction`                    extends CalculationReason
   case object `manual-correction`                  extends CalculationReason
   case object `customer-rejection-of-a-correction` extends CalculationReason
@@ -39,6 +40,7 @@ object CalculationReason {
     case "newAnnualAdjustmentEvent"       => `new-annual-adjustment-event`
     case "updatedAnnualAdjustmentEvent"   => `updated-annual-adjustment-event`
     case "unattendedCalculation"          => `unattended-calculation`
+    case "HMRCrevenueAmendment"           => `enquiry-amendment`
     case "HMRCautoCorrection"             => `auto-correction`
     case "HMRCmanualCorrection"           => `manual-correction`
     case "customerRejectionOfaCorrection" => `customer-rejection-of-a-correction`
