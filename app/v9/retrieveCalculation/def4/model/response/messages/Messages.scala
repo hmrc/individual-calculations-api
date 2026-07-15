@@ -20,9 +20,15 @@ import play.api.libs.json.{Json, OFormat}
 
 case class Message(id: String, text: String)
 
-case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]])
+case class CustomerServiceMessage(text: String)
+
+case class Messages(info: Option[Seq[Message]],
+                    warnings: Option[Seq[Message]],
+                    errors: Option[Seq[Message]],
+                    customerServiceMessages: Option[Seq[CustomerServiceMessage]])
 
 object Messages {
-  implicit val messageFormat: OFormat[Message]   = Json.format[Message]
-  implicit val messagesFormat: OFormat[Messages] = Json.format[Messages]
+  implicit val messageFormat: OFormat[Message]                               = Json.format[Message]
+  implicit val messagesFormat: OFormat[Messages]                             = Json.format[Messages]
+  implicit val customerServiceMessageFormat: OFormat[CustomerServiceMessage] = Json.format[CustomerServiceMessage]
 }

@@ -1106,6 +1106,11 @@
         "id": "string",
         "text": "string"
       }
+    ],
+    "customerServiceMessages": [
+      {
+        "text": "string"
+      }
     ]
   }
 }

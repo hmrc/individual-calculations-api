@@ -69,6 +69,23 @@
         ],
         "additionalProperties": false
       }
+    },
+    "customerServiceMessages": {
+      "type": "array",
+      "description": "A list of customer service messages relating to corrections associated with the Calculation ID.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "description": "The customer service message text.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false
