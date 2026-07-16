@@ -23,21 +23,27 @@ import v9.retrieveCalculation.def4.model.response.metadata.CalculationReason.*
 class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
   testReads[CalculationReason](
-    "customerRequest"              -> `customer-request`,
-    "class2NICEvent"               -> `class2-nic-event`,
-    "newAnnualAdjustmentEvent"     -> `new-annual-adjustment-event`,
-    "updatedAnnualAdjustmentEvent" -> `updated-annual-adjustment-event`,
-    "unattendedCalculation"        -> `unattended-calculation`,
-    "HMRCrevenueAmendment"         -> `enquiry-amendment`
+    "customerRequest"                -> `customer-request`,
+    "class2NICEvent"                 -> `class2-nic-event`,
+    "newAnnualAdjustmentEvent"       -> `new-annual-adjustment-event`,
+    "updatedAnnualAdjustmentEvent"   -> `updated-annual-adjustment-event`,
+    "unattendedCalculation"          -> `unattended-calculation`,
+    "HMRCrevenueAmendment"           -> `enquiry-amendment`,
+    "HMRCautoCorrection"             -> `auto-correction`,
+    "HMRCmanualCorrection"           -> `manual-correction`,
+    "customerRejectionOfaCorrection" -> `customer-rejection-of-a-correction`
   )
 
   testWrites[CalculationReason](
-    `customer-request`                -> "customer-request",
-    `class2-nic-event`                -> "class2-nic-event",
-    `new-annual-adjustment-event`     -> "new-annual-adjustment-event",
-    `updated-annual-adjustment-event` -> "updated-annual-adjustment-event",
-    `unattended-calculation`          -> "unattended-calculation",
-    `enquiry-amendment`               -> "enquiry-amendment"
+    `customer-request`                   -> "customer-request",
+    `class2-nic-event`                   -> "class2-nic-event",
+    `new-annual-adjustment-event`        -> "new-annual-adjustment-event",
+    `updated-annual-adjustment-event`    -> "updated-annual-adjustment-event",
+    `unattended-calculation`             -> "unattended-calculation",
+    `enquiry-amendment`                  -> "enquiry-amendment",
+    `auto-correction`                    -> "auto-correction",
+    `manual-correction`                  -> "manual-correction",
+    `customer-rejection-of-a-correction` -> "customer-rejection-of-a-correction"
   )
 
 }
