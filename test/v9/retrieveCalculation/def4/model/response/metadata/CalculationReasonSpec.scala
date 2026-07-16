@@ -31,6 +31,9 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     "HMRCrevenueAmendment"           -> `enquiry-amendment`,
     "HMRCautoCorrection"             -> `auto-correction`,
     "HMRCmanualCorrection"           -> `manual-correction`,
+    "marriageAllowance"              -> `marriage-allowance`,
+    "nationalInsurance"              -> `class2-national-insurance`,
+    "devolvedResidency"              -> `devolved-residency`,
     "customerRejectionOfaCorrection" -> `customer-rejection-of-a-correction`
   )
 
@@ -43,6 +46,9 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     `enquiry-amendment`                  -> "enquiry-amendment",
     `auto-correction`                    -> "auto-correction",
     `manual-correction`                  -> "manual-correction",
+    `marriage-allowance`                 -> "marriage-allowance",
+    `class2-national-insurance`          -> "class2-national-insurance",
+    `devolved-residency`                 -> "devolved-residency",
     `customer-rejection-of-a-correction` -> "customer-rejection-of-a-correction"
   )
 
