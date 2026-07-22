@@ -78,7 +78,9 @@
         "properties": {
           "text": {
             "description": "The customer service message text.",
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000
           }
         },
         "required": [
