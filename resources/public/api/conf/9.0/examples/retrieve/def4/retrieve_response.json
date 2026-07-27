@@ -256,7 +256,8 @@
       "specialWithholdingTaxOrUkTaxPaid": 5000.99,
       "inYearAdjustmentCodedInLaterTaxYear": 5000.99,
       "taxTakenOffTradingIncome": 5000.99,
-      "taxTakenOffPartnerIncome": 5000.99
+      "taxTakenOffPartnerIncome": 5000.99,
+      "taxTakenOffOtherIncome": 5000.99
     },
     "giftAid": {
       "grossGiftAidPayments": 12500,
@@ -777,11 +778,73 @@
     "otherIncome": {
       "totalOtherIncome": 5000.99,
       "postCessationIncome": {
-        "totalPostCessationReceipts": 5000.00,
+        "totalPostCessationReceipts": 5000.99,
         "postCessationReceipts": [
           {
             "amount": 5000.99,
             "taxYearIncomeToBeTaxed": "2023-24"
+          }
+        ]
+      },
+      "additionalIncome": {
+        "totalAdditionalIncome": 5000.99,
+        "additionalIncomeDetail": {
+          "propertyIncomeDistributions": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "personalInsuranceBenefits": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "incomeFromUnauthorisedUnitTrust": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "profitsFromCertificateOfDeposit": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "nonCashBenefitsFromFormerEmployer": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "authorisedPaymentsFromOverseasPensionScheme": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "taxableAnnualPayments": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          },
+          "miscellaneousIncome": {
+            "amountBeforeTax": 5000.99,
+            "allowableExpenses": 5000.99,
+            "lossesBroughtForward": 5000.99,
+            "taxableIncome": 5000.99
+          }
+        }
+      },
+      "benefitFromPreOwnedAssets": {
+        "totalBenefitFromPreOwnedAssets": 5000.99,
+        "benefitFromPreOwnedAssetsDetail": [
+          {
+            "typeOfAsset": "Residential property",
+            "amountOfBenefit": 5000.99
           }
         ]
       }
