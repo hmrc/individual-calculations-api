@@ -18,11 +18,8 @@ package v9.retrieveCalculation.def4.model.response.calculation.otherIncome
 
 import play.api.libs.json.{Json, OFormat}
 
-case class OtherIncome(totalOtherIncome: BigDecimal,
-                       postCessationIncome: Option[PostCessationIncome],
-                       additionalIncome: Option[AdditionalIncome],
-                       benefitFromPreOwnedAssets: Option[BenefitFromPreOwnedAssets])
+case class BenefitFromPreOwnedAssetsDetail(typeOfAsset: String, amountOfBenefit: BigDecimal)
 
-object OtherIncome {
-  implicit val format: OFormat[OtherIncome] = Json.format[OtherIncome]
+object BenefitFromPreOwnedAssetsDetail {
+  implicit val format: OFormat[BenefitFromPreOwnedAssetsDetail] = Json.format[BenefitFromPreOwnedAssetsDetail]
 }
