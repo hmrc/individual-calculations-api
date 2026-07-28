@@ -78,35 +78,67 @@
           "properties": {
             "propertyIncomeDistributions": {
               "description": "A breakdown of Property Income Distributions (PIDs) from Real Estate Investment Trusts (REITs) and Property Authorised Investment Funds (PAIFs).",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "personalInsuranceBenefits": {
               "description": "A breakdown of personal insurance benefits.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "incomeFromUnauthorisedUnitTrust": {
               "description": "A breakdown of income from unauthorised unit trusts.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "profitsFromCertificateOfDeposit": {
               "description": "A breakdown of profits from certificates of deposit.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "nonCashBenefitsFromFormerEmployer": {
               "description": "A breakdown of non-cash benefits received from a former employer.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "authorisedPaymentsFromOverseasPensionScheme": {
               "description": "A breakdown of authorised payments from overseas pension schemes.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "taxableAnnualPayments": {
               "description": "A breakdown of taxable annual payments.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             },
             "miscellaneousIncome": {
               "description": "A breakdown of miscellaneous income.",
-              "$ref": "#/definitions/additionalIncomeBreakdown"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/additionalIncomeBreakdown"
+                }
+              ]
             }
           },
           "additionalProperties": false
@@ -150,10 +182,12 @@
                 "maximum": 99999999999.99,
                 "multipleOf": 0.01
               }
-            }
+            },
+            "additionalProperties": false
           }
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,
