@@ -47,6 +47,7 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
 
       responseBody should include(""""api":{"name":""")
       responseBody should include(""""categories":["INCOME_TAX_MTD"]""")
+      responseBody should include(""""access":"PUBLIC"""")
 
       noException should be thrownBy Json.parse(responseBody)
     }

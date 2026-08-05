@@ -18,7 +18,7 @@ package common.definition
 
 import api.config.AppConfig
 import api.definition.*
-import api.definition.APIStatus.RETIRED
+import api.definition.APIAccessType.{CONTROLLED, PUBLIC}
 import api.routing.*
 
 import javax.inject.{Inject, Singleton}
@@ -35,18 +35,15 @@ class CalculationsDefinitionFactory @Inject() (protected val appConfig: AppConfi
         categories = Seq("INCOME_TAX_MTD"),
         versions = Seq(
           APIVersion(
-            version = Version7,
-            status = RETIRED,
-            endpointsEnabled = false
-          ),
-          APIVersion(
             version = Version8,
             status = buildAPIStatus(Version8),
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
             endpointsEnabled = appConfig.endpointsEnabled(Version8)
           ),
           APIVersion(
             version = Version9,
             status = buildAPIStatus(Version9),
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
             endpointsEnabled = appConfig.endpointsEnabled(Version9)
           )
         ),

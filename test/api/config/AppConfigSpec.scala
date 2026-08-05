@@ -374,6 +374,7 @@ class AppConfigSpec extends UnitSpec {
         |  appUrl = "http://localhost:9999"
         |  
         |  api {
+        |    controlled-access.enabled = false
         |""".stripMargin ++
 
         versionConf ++
