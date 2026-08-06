@@ -75,6 +75,8 @@ class AppConfig @Inject() (config: ServicesConfig, protected[config] val configu
 
   def apiStatus(version: Version): String = config.getString(s"api.$version.status")
 
+  def controlledAccessEnabled: Boolean = config.getBoolean("api.controlled-access.enabled")
+
   def featureSwitchConfig: Configuration = configuration.getOptional[Configuration](s"feature-switch").getOrElse(Configuration.empty)
 
   def endpointsEnabled(version: String): Boolean = config.getBoolean(s"api.$version.endpoints.enabled")

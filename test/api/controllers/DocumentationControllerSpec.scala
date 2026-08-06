@@ -188,8 +188,9 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
           "description",
           "context",
           List("category"),
-          List(APIVersion(apiVersion, APIStatus.BETA, endpointsEnabled = true)),
-          None)
+          List(APIVersion(apiVersion, APIStatus.BETA, APIAccessType.PUBLIC, endpointsEnabled = true)),
+          None
+        )
       )
 
     }
