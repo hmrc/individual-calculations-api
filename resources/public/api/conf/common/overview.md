@@ -1,3 +1,5 @@
+> HMRC is no longer accepting production credential access requests for new 2026–27 quarterly update products, as the market window for these products has now closed.
+
 Use the Individual Calculations API to generate and retrieve information about a customer's Self Assessment tax calculation, and submit their final declaration for the year.
 
 This API is related to the following customer journeys:
