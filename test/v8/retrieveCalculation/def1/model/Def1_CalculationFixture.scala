@@ -34,9 +34,9 @@ import v8.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
 
 trait Def1_CalculationFixture {
 
-  val totalBasicRateExtension      = 2000
+  val totalBasicRateExtension = 2000
   val totalAllowancesAndDeductions = 100
-  val incomeTaxValue               = 50
+  val incomeTaxValue = 50
 
   val calculationMtdJson: JsValue =
     Json.parse(getClass.getResourceAsStream("/v8/retrieveCalculation/def1/model/response/calculation_mtd.json"))
@@ -228,7 +228,20 @@ trait Def1_CalculationFixture {
 
   val metadata: Metadata = Metadata(
     calculationId = "",
-    taxYear = TaxYear.fromDownstream("2018"),
+    )
+  periodTo = ""
+    , periodFrom = ""
+    , finalDeclarationTimestamp = None
+    , finalDeclaration = false
+    , intentToSubmitFinalDeclaration = false
+    , calculationType = `in-year`
+    , calculationTimestamp = None
+    , calculationReason = `customer-request`
+    , requestedTimestamp = None
+    , requestedBy = ""
+    , taxYear
+    /** EndMarker */
+    = TaxYear.fromDownstream("2018") = TaxYear.fromDownstream("2018"),
     requestedBy = "",
     requestedTimestamp = None,
     calculationReason = `customer-request`,

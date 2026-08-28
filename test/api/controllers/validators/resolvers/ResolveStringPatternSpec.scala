@@ -19,6 +19,7 @@ package api.controllers.validators.resolvers
 import api.models.errors.TaxYearFormatError
 import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
+
 import scala.util.matching.Regex
 
 class ResolveStringPatternSpec extends UnitSpec {
