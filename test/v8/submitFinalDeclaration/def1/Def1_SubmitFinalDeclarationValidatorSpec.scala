@@ -95,6 +95,17 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
           ))
       }
     }
+
+    "return RuleTaxYearNotSupported error" when {
+      "a tax year older than the minimum allowed is supplied" in {
+        val result = validator(validNino, "2016-17", validCalculationId, validFinalDeclaration).validateAndWrapResult()
+        result.shouldBe(
+          Left(
+            ErrorWrapper(correlationId, RuleTaxYearNotSupportedError)
+          ))
+      }
+    }
+
     "return FormatCalculationTypeError error" when {
       "an invalid tax year is supplied" in {
         val result = validator(validNino, validTaxYear, validCalculationId, "notValid").validateAndWrapResult()
