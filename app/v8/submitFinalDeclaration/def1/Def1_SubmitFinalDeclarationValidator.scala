@@ -17,20 +17,28 @@
 package v8.submitFinalDeclaration.def1
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYear}
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
+import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.*
 import v8.common.model.resolver.ResolveFinalDeclarationCalculationType
 import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
 
+object Def1_SubmitFinalDeclarationValidator {
+  private val submitFinalDeclarationMinimumTaxYear = TaxYear.fromMtd("2017-18")
+  private val resolveTaxYear                       = ResolveTaxYearMinimum(submitFinalDeclarationMinimumTaxYear)
+}
+
 class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
     extends Validator[SubmitFinalDeclarationRequestData] {
+
+  import Def1_SubmitFinalDeclarationValidator.*
 
   def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
     (
       ResolveNino(nino),
-      ResolveTaxYear(taxYear),
+      resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId),
       ResolveFinalDeclarationCalculationType(calculationType)
     ).mapN(Def1_SubmitFinalDeclarationRequestData.apply) andThen Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules

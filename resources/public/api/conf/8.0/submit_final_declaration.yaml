@@ -23,7 +23,6 @@ post:
     | RECENT_SUBMISSIONS_EXIST           | Simulates the scenario where more recent submissions exist.                        |
     | RESIDENCY_CHANGED                  | Simulates the scenario where residency has changed.                                 |
     | SUBMISSION_FAILED                  | Simulates the scenario where a submission has failed.                               |
-    | TAX_YEAR_NOT_SUPPORTED             | Simulates the scenario where the specified tax year is not supported.              |
     | NOT_FOUND                          | Simulates the scenario where the supplied income source could not be found.        |
 
 

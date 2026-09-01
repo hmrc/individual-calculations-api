@@ -106,6 +106,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
         ("AA1123A", "2018-19", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, NinoFormatError),
         ("ZG903729C", "201number77", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, TaxYearFormatError),
         ("ZG903729C", "2020-22", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, RuleTaxYearRangeInvalidError),
+        ("ZG903729C", "2016-17", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "final-declaration", BAD_REQUEST, RuleTaxYearNotSupportedError),
         ("ZG903729C", "2017-18", "bad id", "final-declaration", BAD_REQUEST, CalculationIdFormatError),
         ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "invalid-calculation-type", BAD_REQUEST, FormatCalculationTypeError),
         ("ZG903729C", "2017-18", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", "confirm-amendment", BAD_REQUEST, RuleSubmissionFailedError)
