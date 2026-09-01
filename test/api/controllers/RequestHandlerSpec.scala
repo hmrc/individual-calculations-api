@@ -16,7 +16,7 @@
 
 package api.controllers
 
-import api.config.Deprecation.{NotDeprecated, Deprecated}
+import api.config.Deprecation.{Deprecated, NotDeprecated}
 import api.config.{AppConfig, Deprecation, MockAppConfig}
 import api.controllers.validators.Validator
 import api.models.audit.{AuditError, AuditEvent, AuditResponse, GenericAuditDetail}

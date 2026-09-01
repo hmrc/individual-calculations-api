@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,21 +28,96 @@ class ResolveStringPatternSpec extends UnitSpec {
   private val resolveTaxYearPattern = ResolveStringPattern(taxYearRegex, TaxYearFormatError)
 
   "ResolveStringPattern" should {
-    "return the input value" when {
+    "return no errors" when {
       "given a matching string" in {
         val result = resolveTaxYearPattern("2024-25")
         result shouldBe Valid("2024-25")
+      }
+
+      "given a matching string in an Option" in {
+        val result = resolveTaxYearPattern(Some("2024-25"))
+        result shouldBe Valid(Some("2024-25"))
+      }
+
+      "given an empty Option" in {
+        val result = resolveTaxYearPattern(None)
+        result shouldBe Valid(None)
       }
 
       "given a matching string via the legacy apply() function" in {
         val result = ResolveStringPattern("2024-25", taxYearRegex, TaxYearFormatError)
         result shouldBe Valid("2024-25")
       }
+
+      "given a matching string in an Option via the legacy apply() function" in {
+        val result = ResolveStringPattern(Some("2024-25"), taxYearRegex, TaxYearFormatError)
+        result shouldBe Valid(Some("2024-25"))
+      }
+
+      "given an empty Option via the legacy apply() function" in {
+        val result = ResolveStringPattern(None, taxYearRegex, TaxYearFormatError)
+        result shouldBe Valid(None)
+      }
     }
 
     "return the expected error" when {
       "given a non-matching string and no override error" in {
         val result = resolveTaxYearPattern("does-not-match-regex")
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a non-matching string in an Option and no override error" in {
+        val result = resolveTaxYearPattern(Some("does-not-match-regex"))
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a non-matching string via the legacy apply() function and no override error" in {
+        val result = ResolveStringPattern("does-not-match-regex", taxYearRegex, TaxYearFormatError)
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a non-matching string in an Option via the legacy apply() function and no override error" in {
+        val result = ResolveStringPattern(Some("does-not-match-regex"), taxYearRegex, TaxYearFormatError)
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given an empty string" in {
+        val result = resolveTaxYearPattern("")
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given an empty string in an Option" in {
+        val result = resolveTaxYearPattern(Some(""))
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given an empty string via the legacy apply() function" in {
+        val result = ResolveStringPattern("", taxYearRegex, TaxYearFormatError)
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given an empty string in an Option via the legacy apply() function" in {
+        val result = ResolveStringPattern(Some(""), taxYearRegex, TaxYearFormatError)
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a string with only spaces" in {
+        val result = resolveTaxYearPattern("   ")
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a string with only spaces in an Option" in {
+        val result = resolveTaxYearPattern(Some("   "))
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a string with only spaces via the legacy apply() function" in {
+        val result = ResolveStringPattern("   ", taxYearRegex, TaxYearFormatError)
+        result shouldBe Invalid(List(TaxYearFormatError))
+      }
+
+      "given a string with only spaces in an Option via the legacy apply() function" in {
+        val result = ResolveStringPattern(Some("   "), taxYearRegex, TaxYearFormatError)
         result shouldBe Invalid(List(TaxYearFormatError))
       }
     }
