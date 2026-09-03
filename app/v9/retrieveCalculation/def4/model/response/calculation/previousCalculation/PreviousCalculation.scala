@@ -26,7 +26,10 @@ case class PreviousCalculation(
     totalIncomeTaxAndNicsAndCgtDue: Option[BigDecimal],
     incomeTaxNicDueThisPeriod: Option[BigDecimal],
     cgtDueThisPeriod: Option[BigDecimal],
-    totalIncomeTaxAndNicsAndCgtDueThisPeriod: Option[BigDecimal]
+    totalIncomeTaxAndNicsAndCgtDueThisPeriod: Option[BigDecimal],
+    taxRefundedOrSetOffAmount: Option[BigDecimal],
+    totalTaxAndNicsDue: Option[BigDecimal],
+    totalTaxAndNicsDueThisPeriod: Option[BigDecimal]
 )
 
 object PreviousCalculation {

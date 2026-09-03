@@ -1082,7 +1082,10 @@
       "totalIncomeTaxAndNicsAndCgtDue": 5000.99,
       "incomeTaxNicDueThisPeriod": -99999999999.99,
       "cgtDueThisPeriod": -99999999999.99,
-      "totalIncomeTaxAndNicsAndCgtDueThisPeriod": 5000.99
+      "totalIncomeTaxAndNicsAndCgtDueThisPeriod": 5000.99,
+      "taxRefundedOrSetOffAmount": 5000.99,
+      "totalTaxAndNicsDue": -99999999999.99,
+      "totalTaxAndNicsDueThisPeriod": -99999999999.99
     },
     "endOfYearEstimate": {
       "incomeSource": [
@@ -1108,7 +1111,9 @@
       "totalTaxDeducted": -99999999999.99,
       "incomeTaxNicAmount": -99999999999.99,
       "cgtAmount": 5000.99,
-      "incomeTaxNicAndCgtAmount": 5000.99
+      "incomeTaxNicAndCgtAmount": 5000.99,
+      "taxRefundedOrSetOffAmount": 5000.99,
+      "totalTaxAndNicsAmount": -99999999999.99
     },
     "transitionProfit": {
       "totalTaxableTransitionProfit": 5000,
