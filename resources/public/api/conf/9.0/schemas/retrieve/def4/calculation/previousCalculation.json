@@ -39,6 +39,22 @@
       "maximum": 99999999999.99,
       "example": 2000.58
     },
+    "taxRefundedOrSetOffAmount": {
+      "description": "Total refunded or set off amount. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": 0,
+      "maximum": 99999999999.99,
+      "example": 5000.99
+    },
+    "totalTaxAndNicsDue": {
+      "description": "Total tax and NICs due. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": 5000.99
+    },
     "incomeTaxNicDueThisPeriod": {
       "description": "The Income Tax and NICs due. The difference between this calculation and the previous calculation. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
@@ -55,13 +71,29 @@
       "maximum": 99999999999.99,
       "example": 2000.58
     },
+    "totalTaxAndNicsDue": {
+      "description": "The difference between the amount of tax refunded or set off in the current calculation and the previous calculation. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": 5000.99
+    },
     "totalIncomeTaxAndNicsAndCgtDueThisPeriod": {
       "description": "Total Income Tax, NICS, and CGT due this period. This is the sum of cgtDueThisPeriod and incomeTaxNicDueThisPeriod. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
       "type": "number",
       "multipleOf": 0.01,
       "minimum": -99999999999.99,
       "maximum": 99999999999.99,
-      "example": 2000.58
+      "example": 5000.99
+    },
+    "totalTaxAndNicsDueThisPeriod": {
+      "description": "Total tax and NICs due this period. This is the sum of incomeTaxNicDueThisPeriod, cgtDueThisPeriod and taxNicsDueThisPeriod. This value must be between -99999999999.99 and 99999999999.99 up to 2 decimal places.",
+      "type": "number",
+      "multipleOf": 0.01,
+      "minimum": -99999999999.99,
+      "maximum": 99999999999.99,
+      "example": 5000.99
     }
   },
   "additionalProperties": false
