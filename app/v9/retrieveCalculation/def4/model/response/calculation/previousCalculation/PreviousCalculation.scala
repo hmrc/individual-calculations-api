@@ -19,17 +19,18 @@ package v9.retrieveCalculation.def4.model.response.calculation.previousCalculati
 import play.api.libs.json.{Json, OFormat}
 
 case class PreviousCalculation(
-    calculationTimestamp: Option[String],
-    calculationId: Option[String],
-    totalIncomeTaxAndNicsDue: Option[BigDecimal],
-    cgtTaxDue: Option[BigDecimal],
-    totalIncomeTaxAndNicsAndCgtDue: Option[BigDecimal],
-    incomeTaxNicDueThisPeriod: Option[BigDecimal],
-    cgtDueThisPeriod: Option[BigDecimal],
-    totalIncomeTaxAndNicsAndCgtDueThisPeriod: Option[BigDecimal],
-    taxRefundedOrSetOffAmount: Option[BigDecimal],
-    totalTaxAndNicsDue: Option[BigDecimal],
-    totalTaxAndNicsDueThisPeriod: Option[BigDecimal]
+                                calculationTimestamp: Option[String],
+                                calculationId: Option[String],
+                                totalIncomeTaxAndNicsDue: Option[BigDecimal],
+                                cgtTaxDue: Option[BigDecimal],
+                                totalIncomeTaxAndNicsAndCgtDue: Option[BigDecimal],
+                                taxRefundedOrSetOffAmount: Option[BigDecimal],
+                                totalTaxAndNicsDue: Option[BigDecimal],
+                                incomeTaxNicDueThisPeriod: Option[BigDecimal],
+                                cgtDueThisPeriod: Option[BigDecimal],
+                                taxNicsDueThisPeriod: Option[BigDecimal],
+                                totalIncomeTaxAndNicsAndCgtDueThisPeriod: Option[BigDecimal],
+                                totalTaxAndNicsDueThisPeriod: Option[BigDecimal]
 )
 
 object PreviousCalculation {
