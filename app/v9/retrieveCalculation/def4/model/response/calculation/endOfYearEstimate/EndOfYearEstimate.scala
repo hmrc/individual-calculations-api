@@ -35,7 +35,9 @@ case class EndOfYearEstimate(
     totalTaxDeducted: Option[BigDecimal],
     incomeTaxNicAmount: Option[BigDecimal],
     cgtAmount: Option[BigDecimal],
-    incomeTaxNicAndCgtAmount: Option[BigDecimal]
+    incomeTaxNicAndCgtAmount: Option[BigDecimal],
+    taxRefundedOrSetOffAmount: Option[BigDecimal],
+    totalTaxAndNicsAmount: Option[BigDecimal]
 )
 
 object EndOfYearEstimate {
