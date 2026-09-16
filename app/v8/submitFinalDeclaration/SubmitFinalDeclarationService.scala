@@ -45,7 +45,7 @@ class SubmitFinalDeclarationService @Inject() (connector: SubmitFinalDeclaration
     "INVALID_CALCULATION_TYPE"                -> InternalError,
     "INVALID_CALCULATION_ID"                  -> CalculationIdFormatError,
     "INVALID_CORRELATION_ID"                  -> InternalError,
-    "NOT_FOUND"                               -> NotFoundError,
+    "NOT_FOUND"                               -> NotFoundFinalDeclarationError,
     "OUTSIDE_AMENDMENT_WINDOW"                -> RuleOutsideAmendmentWindowError,
     "INCOME_SOURCES_CHANGED"                  -> RuleIncomeSourcesChangedError,
     "RECENT_SUBMISSIONS_EXIST"                -> RuleRecentSubmissionsExistError,

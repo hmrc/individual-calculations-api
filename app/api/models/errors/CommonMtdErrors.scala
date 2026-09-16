@@ -30,6 +30,12 @@ object CalculationIdFormatError extends MtdError("FORMAT_CALCULATION_ID", "The p
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found", NOT_FOUND)
 
+object NotFoundFinalDeclarationError
+    extends MtdError(
+      "MATCHING_RESOURCE_NOT_FOUND",
+      "The calculation ID was not found or does not correspond to the most recent calculation",
+      NOT_FOUND)
+
 object InternalError extends MtdError("INTERNAL_SERVER_ERROR", "An internal server error occurred", INTERNAL_SERVER_ERROR)
 
 object BadRequestError extends MtdError("INVALID_REQUEST", "Invalid request", BAD_REQUEST)

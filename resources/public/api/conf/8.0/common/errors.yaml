@@ -242,3 +242,9 @@ components:
         code: MATCHING_RESOURCE_NOT_FOUND
         message: Matching resource not found
 
+    notFoundFinalDeclaration:
+      description: |
+        The calculation ID was not found or does not correspond to the most recent calculation.
+      value:
+        code: MATCHING_RESOURCE_NOT_FOUND
+        message: The calculation ID was not found or does not correspond to the most recent calculation

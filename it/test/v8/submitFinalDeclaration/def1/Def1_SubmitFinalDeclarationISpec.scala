@@ -147,7 +147,7 @@ class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
           (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
           (BAD_REQUEST, "INVALID_CALCULATION_TYPE", INTERNAL_SERVER_ERROR, InternalError),
           (BAD_REQUEST, "INVALID_CORRELATION_ID", INTERNAL_SERVER_ERROR, InternalError),
-          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (NOT_FOUND, "NOT_FOUND", NOT_FOUND, NotFoundFinalDeclarationError),
           (CONFLICT, "INCOME_SOURCES_CHANGED", BAD_REQUEST, RuleIncomeSourcesChangedError),
           (CONFLICT, "RECENT_SUBMISSIONS_EXIST", BAD_REQUEST, RuleRecentSubmissionsExistError),
           (CONFLICT, "RESIDENCY_CHANGED", BAD_REQUEST, RuleResidencyChangedError),

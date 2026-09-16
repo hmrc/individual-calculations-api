@@ -91,7 +91,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
         ("INVALID_CALCULATION_ID", CalculationIdFormatError),
         ("INVALID_CALCULATION_TYPE", InternalError),
         ("INVALID_CORRELATION_ID", InternalError),
-        ("NOT_FOUND", NotFoundError),
+        ("NOT_FOUND", NotFoundFinalDeclarationError),
         ("INCOME_SOURCES_CHANGED", RuleIncomeSourcesChangedError),
         ("RECENT_SUBMISSIONS_EXIST", RuleRecentSubmissionsExistError),
         ("RESIDENCY_CHANGED", RuleResidencyChangedError),
