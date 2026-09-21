@@ -67,7 +67,18 @@ abstract class AuthorisedController(
 
     override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
 
-      implicit val headerCarrier: HeaderCarrier = hc(request)
+      // Temporary workaround: prevent incorrect Content-Type values from being propagated downstream for requests
+      // without a body until auth-client is updated to override them with application/json via setHeader.
+      val initialHc: HeaderCarrier = hc(request)
+
+      implicit val headerCarrier: HeaderCarrier =
+        if (request.hasBody) {
+          initialHc
+        } else {
+          initialHc.copy(
+            otherHeaders = initialHc.otherHeaders.filterNot(_._1.equalsIgnoreCase("Content-Type"))
+          )
+        }
 
       lookupService.lookup(nino).flatMap[Result] {
         case Right(mtdId) =>

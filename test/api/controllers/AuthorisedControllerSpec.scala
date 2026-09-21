@@ -21,14 +21,15 @@ import api.models.auth.UserDetails
 import api.models.errors.*
 import api.services.{EnrolmentsAuthService, MockEnrolmentsAuthService, MockMtdIdLookupService, MtdIdLookupService}
 import play.api.Configuration
-import play.api.libs.json.JsObject
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.libs.json.{JsObject, Json}
+import play.api.mvc.{Action, AnyContent, AnyContentAsJson, Result}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.auth.core.Enrolment
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Future, Promise}
 
 class AuthorisedControllerSpec extends ControllerBaseSpec with MockAppConfig {
 
@@ -158,6 +159,61 @@ class AuthorisedControllerSpec extends ControllerBaseSpec with MockAppConfig {
 
       val result: Future[Result] = controller.action(nino)(fakeGetRequest)
       status(result) shouldBe INTERNAL_SERVER_ERROR
+    }
+  }
+
+  "constructing the HeaderCarrier" should {
+    "remove Content-Type header when request has no body" in new Test {
+      val capturedHeaders: Promise[HeaderCarrier] = Promise[HeaderCarrier]()
+
+      MockedMtdIdLookupService
+        .lookup(nino)
+        .onCall { case (_, hc: HeaderCarrier, _) =>
+          capturedHeaders.success(hc)
+          Future.successful(Right(mtdId))
+        }
+
+      MockedEnrolmentsAuthService.authoriseUser()
+
+      val fakeRequestWithoutBody: FakeRequest[AnyContent] =
+        fakeGetRequest
+          .withMethod("POST")
+          .withHeaders("Content-Type" -> "application/x-www-form-urlencoded")
+
+      val result: Future[Result] = controller.action(nino)(fakeRequestWithoutBody)
+      status(result) shouldBe OK
+
+      val capturedHc: HeaderCarrier = await(capturedHeaders.future)
+
+      capturedHc.otherHeaders.map(_._1.toLowerCase) should not contain "content-type"
+      capturedHc.otherHeaders.find(_._1.equalsIgnoreCase("Content-Type")).map(_._2) shouldBe None
+    }
+
+    "keep Content-Type header when request has a body" in new Test {
+      val capturedHeaders: Promise[HeaderCarrier] = Promise[HeaderCarrier]()
+
+      MockedMtdIdLookupService
+        .lookup(nino)
+        .onCall { case (_, hc: HeaderCarrier, _) =>
+          capturedHeaders.success(hc)
+          Future.successful(Right(mtdId))
+        }
+
+      MockedEnrolmentsAuthService.authoriseUser()
+
+      val fakeRequestWithBody: FakeRequest[AnyContentAsJson] =
+        fakeGetRequest
+          .withMethod("POST")
+          .withHeaders("Content-Type" -> "application/json")
+          .withJsonBody(Json.obj("key" -> "value"))
+
+      val result: Future[Result] = controller.action(nino)(fakeRequestWithBody)
+      status(result) shouldBe OK
+
+      val capturedHc: HeaderCarrier = await(capturedHeaders.future)
+
+      capturedHc.otherHeaders.map(_._1.toLowerCase) should contain("content-type")
+      capturedHc.otherHeaders.find(_._1.equalsIgnoreCase("Content-Type")).map(_._2) shouldBe Some("application/json")
     }
   }
 
