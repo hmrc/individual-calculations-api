@@ -53,7 +53,7 @@ get:
       content:
         application/json:
           schema:
-            oneOf:
+            anyOf:
               - $ref: ./schemas/retrieve/def1/retrieve_response.json
               - $ref: ./schemas/retrieve/def2/retrieve_response.json
               - $ref: ./schemas/retrieve/def3/retrieve_response.json

@@ -44,7 +44,7 @@ get:
       content:
         application/json:
           schema:
-            oneOf:
+            anyOf:
               - $ref: ./schemas/list/def1/list_response.json
               - $ref: ./schemas/list/def2/list_response.json
               - $ref: ./schemas/list/def3/list_response.json
