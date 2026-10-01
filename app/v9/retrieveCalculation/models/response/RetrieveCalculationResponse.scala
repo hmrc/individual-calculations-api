@@ -28,6 +28,7 @@ object RetrieveCalculationResponse {
     case def2: Def2_RetrieveCalculationResponse => Json.toJsObject(def2)
     case def3: Def3_RetrieveCalculationResponse => Json.toJsObject(def3)
     case def4: Def4_RetrieveCalculationResponse => Json.toJsObject(def4)
+    case def5: Def5_RetrieveCalculationResponse => Json.toJsObject(def5)
   }
 
 }
@@ -101,5 +102,20 @@ object Def4_RetrieveCalculationResponse {
   implicit val reads: Reads[Def4_RetrieveCalculationResponse] = Json.reads[Def4_RetrieveCalculationResponse]
 
   implicit val writes: OWrites[Def4_RetrieveCalculationResponse] = Json.writes[Def4_RetrieveCalculationResponse]
+
+}
+
+case class Def5_RetrieveCalculationResponse(
+    metadata: def5.model.response.metadata.Metadata,
+    inputs: def5.model.response.inputs.Inputs,
+    calculation: Option[def5.model.response.calculation.Calculation],
+    messages: Option[def5.model.response.messages.Messages]
+) extends RetrieveCalculationResponse
+
+object Def5_RetrieveCalculationResponse {
+
+  implicit val reads: Reads[Def5_RetrieveCalculationResponse] = Json.reads[Def5_RetrieveCalculationResponse]
+
+  implicit val writes: OWrites[Def5_RetrieveCalculationResponse] = Json.writes[Def5_RetrieveCalculationResponse]
 
 }
