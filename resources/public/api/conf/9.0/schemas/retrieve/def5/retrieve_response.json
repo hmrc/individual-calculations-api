@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": {{#if (enabled 'r23_1885_docs')}} "TY 2026-27" {{else}} "TY 2026-27 onwards" {{/if}},
+  "title": "{{#unless (releasedInProduction "r23_1885_docs")}}[Test only] {{/unless}}TY 2027-28 onwards",
   "description": "Retrieve a Self Assessment Tax Calculation",
   "type": "object",
   "properties": {

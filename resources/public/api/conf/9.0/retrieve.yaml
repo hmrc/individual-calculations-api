@@ -58,6 +58,9 @@ get:
               - $ref: ./schemas/retrieve/def2/retrieve_response.json
               - $ref: ./schemas/retrieve/def3/retrieve_response.json
               - $ref: ./schemas/retrieve/def4/retrieve_response.json
+              {{#if (enabled 'r23_1885_docs')}}
+              - $ref: ./schemas/retrieve/def5/retrieve_response.json
+              {{/if}}
           examples:
             "Example response for TY 2023-24 and before":
               value:
@@ -68,9 +71,18 @@ get:
             "Example response for TY 2025-26":
               value:
                 $ref: ./examples/retrieve/def3/retrieve_response.json
+            {{#if (enabled 'r23_1885_docs')}}
+            "Example response for TY 2026-27":
+            {{else}}
             "Example response for TY 2026-27 onwards":
+            {{/if}}
               value:
                 $ref: ./examples/retrieve/def4/retrieve_response.json
+            {{#if (enabled 'r23_1885_docs')}}
+            "Example response for TY 2027-28 onwards":
+              value:
+                $ref: ./examples/retrieve/def5/retrieve_response.json
+            {{/if}}
 
     400:
       description: Bad request
