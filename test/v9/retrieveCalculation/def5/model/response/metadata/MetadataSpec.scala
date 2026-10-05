@@ -28,7 +28,7 @@ class MetadataSpec extends UnitSpec {
         Json
           .parse("""{
                   |    "calculationId": "calcId",
-                  |    "taxYear": 2018,
+                  |    "taxYear": 2028,
                   |    "requestedBy": "customer",
                   |    "requestedTimestamp": "requested timestamp",
                   |    "calculationReason": "customerRequest",
@@ -43,12 +43,12 @@ class MetadataSpec extends UnitSpec {
           .as[Metadata] shouldBe
           Metadata(
             calculationId = "calcId",
-            taxYear = TaxYear.fromDownstream("2018"),
+            taxYear = TaxYear.fromDownstream("2028"),
             requestedBy = "customer",
             requestedTimestamp = Some("requested timestamp"),
             calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = Some("calc timestamp"),
-            calculationType = Def5_CalculationType.`in-year`,
+            calculationType = CalculationType.`in-year`,
             finalisationTimestamp = Some("final timestamp"),
             confirmationTimestamp = Some("conf timestamp"),
             periodFrom = "from",
@@ -62,7 +62,7 @@ class MetadataSpec extends UnitSpec {
         Json
           .parse("""{
                    |    "calculationId": "calcId",
-                   |    "taxYear": 2018,
+                   |    "taxYear": 2028,
                    |    "requestedBy": "customer",                  
                    |    "calculationReason": "customerRequest",
                    |    "calculationType": "IY",
@@ -73,12 +73,12 @@ class MetadataSpec extends UnitSpec {
           .as[Metadata] shouldBe
           Metadata(
             calculationId = "calcId",
-            taxYear = TaxYear.fromDownstream("2018"),
+            taxYear = TaxYear.fromDownstream("2028"),
             requestedBy = "customer",
             requestedTimestamp = None,
             calculationReason = CalculationReason.`customer-request`,
             calculationTimestamp = None,
-            calculationType = Def5_CalculationType.`in-year`,
+            calculationType = CalculationType.`in-year`,
             finalisationTimestamp = None,
             confirmationTimestamp = None,
             periodFrom = "from",
@@ -93,19 +93,19 @@ class MetadataSpec extends UnitSpec {
       Json.toJson(
         Metadata(
           calculationId = "calcId",
-          taxYear = TaxYear.fromDownstream("2018"),
+          taxYear = TaxYear.fromDownstream("2028"),
           requestedBy = "customer",
           requestedTimestamp = Some("requested timestamp"),
           calculationReason = CalculationReason.`customer-request`,
           calculationTimestamp = Some("calc timestamp"),
-          calculationType = Def5_CalculationType.`confirm-amendment`,
+          calculationType = CalculationType.`confirm-amendment`,
           finalisationTimestamp = Some("final timestamp"),
           confirmationTimestamp = Some("conf timestamp"),
           periodFrom = "from",
           periodTo = "to"
         )) shouldBe Json.parse("""{
                  |    "calculationId": "calcId",
-                 |    "taxYear": "2017-18",
+                 |    "taxYear": "2027-28",
                  |    "requestedBy": "customer",
                  |    "requestedTimestamp": "requested timestamp",
                  |    "calculationReason": "customer-request",
