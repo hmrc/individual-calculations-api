@@ -3,14 +3,14 @@
     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     "taxYear": "2026-27",
     "requestedBy": "customer",
-    "requestedTimestamp": "2025-04-15T09:35:15.094Z",
+    "requestedTimestamp": "2026-04-15T09:35:15.094Z",
     "calculationReason": "customerRequest",
-    "calculationTimestamp": "2025-04-15T09:35:15.094Z",
+    "calculationTimestamp": "2026-04-15T09:35:15.094Z",
     "calculationType": "in-year",
-    "finalisationTimestamp": "2025-04-15T09:35:15.094Z",
-    "confirmationTimestamp": "2025-10-15T09:35:15.094Z",
-    "periodFrom": "2025-04-06",
-    "periodTo": "2026-04-05"
+    "finalisationTimestamp": "2026-04-15T09:35:15.094Z",
+    "confirmationTimestamp": "2026-10-15T09:35:15.094Z",
+    "periodFrom": "2026-04-06",
+    "periodTo": "2026-09-05"
   },
   "inputs": {
     "personalInformation": {
