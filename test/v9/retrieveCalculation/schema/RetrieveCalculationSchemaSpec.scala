@@ -39,9 +39,14 @@ class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenProper
         RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def3)
       }
 
-      "use Def4 for tax years from 2026-27" in {
-        forTaxYearsFrom(TaxYear.fromMtd("2026-27")) { taxYear =>
-          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def4)
+      "use Def4 for tax year 2026-27" in {
+        val taxYear = TaxYear.fromMtd("2026-27")
+        RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def4)
+      }
+
+      "use Def5 for tax years from 2027-28" in {
+        forTaxYearsFrom(TaxYear.fromMtd("2027-28")) { taxYear =>
+          RetrieveCalculationSchema.schemaFor(taxYear.asMtd).shouldBe(RetrieveCalculationSchema.Def5)
         }
       }
 
@@ -53,8 +58,8 @@ class RetrieveCalculationSchemaSpec extends UnitSpec with ScalaCheckDrivenProper
     }
 
     "the tax year is not valid" must {
-      "use a default of Def4 (where tax year validation will fail)" in {
-        RetrieveCalculationSchema.schemaFor("NotATaxYear").shouldBe(RetrieveCalculationSchema.Def4)
+      "use a default of Def5 (where tax year validation will fail)" in {
+        RetrieveCalculationSchema.schemaFor("NotATaxYear").shouldBe(RetrieveCalculationSchema.Def5)
       }
     }
   }

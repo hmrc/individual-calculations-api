@@ -35,6 +35,7 @@ sealed trait SubmitFinalDeclarationRequestData {
       case RetrieveCalculationSchema.Def2 => Def2_RetrieveCalculationRequestData(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def3 => Def3_RetrieveCalculationRequestData(nino, taxYear, calculationId)
       case RetrieveCalculationSchema.Def4 => Def4_RetrieveCalculationRequestData(nino, taxYear, calculationId)
+      case RetrieveCalculationSchema.Def5 => Def5_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     }
 
 }

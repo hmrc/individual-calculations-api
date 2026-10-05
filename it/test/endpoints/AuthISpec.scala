@@ -25,15 +25,15 @@ import play.api.http.Status
 import play.api.http.Status.*
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
-import v9.retrieveCalculation.def4.model.Def4_CalculationFixture
+import v9.retrieveCalculation.def5.model.Def5_CalculationFixture
 
-class AuthISpec extends IntegrationBaseSpec with Def4_CalculationFixture {
+class AuthISpec extends IntegrationBaseSpec with Def5_CalculationFixture {
 
   private trait Test {
     val nino: String  = "ZG903729C"
     val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
 
-    def taxYear            = "2026-27"
+    def taxYear            = "2027-28"
     def downstreamTaxYear  = TaxYear.fromMtd(taxYear).asTysDownstream
     def uri: String        = s"/$nino/self-assessment/$taxYear/$calculationId"
     def backendUrl: String = s"/itsa/income-tax/v1/$downstreamTaxYear/view/calculations/liability/$nino/$calculationId"
