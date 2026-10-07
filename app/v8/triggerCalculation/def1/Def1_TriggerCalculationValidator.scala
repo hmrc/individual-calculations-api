@@ -18,7 +18,7 @@ package v8.triggerCalculation.def1
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
 import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
@@ -31,7 +31,7 @@ import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, 
 object Def1_TriggerCalculationValidator {
 
   private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                   = ResolveTaxYearMinimum(triggerCalculationMinimumTaxYear)
+  private val resolveTaxYear                   = ResolveDetailedTaxYear(triggerCalculationMinimumTaxYear)
 }
 
 class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String) extends Validator[TriggerCalculationRequestData] {
