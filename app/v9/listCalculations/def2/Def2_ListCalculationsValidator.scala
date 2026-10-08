@@ -17,7 +17,7 @@
 package v9.listCalculations.def2
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
 import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
@@ -31,7 +31,7 @@ import v9.listCalculations.model.request.{Def2_ListCalculationsRequestData, List
 object Def2_ListCalculationsValidator {
   private val listCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(listCalculationsMinimumTaxYear).resolver
+  private val resolveTaxYear = ResolveDetailedTaxYear(listCalculationsMinimumTaxYear)
 
 }
 

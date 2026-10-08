@@ -17,7 +17,7 @@
 package v8.retrieveCalculation.def1
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveDetailedTaxYear, ResolveNino}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -26,7 +26,7 @@ import v8.retrieveCalculation.models.request.{Def1_RetrieveCalculationRequestDat
 
 object Def1_RetrieveCalculationValidator {
   private val retrieveCalculationsMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                     = ResolveTaxYearMinimum(retrieveCalculationsMinimumTaxYear)
+  private val resolveTaxYear                     = ResolveDetailedTaxYear(retrieveCalculationsMinimumTaxYear)
 }
 
 class Def1_RetrieveCalculationValidator(nino: String, taxYear: String, calculationId: String) extends Validator[RetrieveCalculationRequestData] {

@@ -17,7 +17,7 @@
 package v8.submitFinalDeclaration.def1
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveDetailedTaxYear, ResolveNino}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -27,7 +27,7 @@ import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationReque
 
 object Def1_SubmitFinalDeclarationValidator {
   private val submitFinalDeclarationMinimumTaxYear = TaxYear.fromMtd("2017-18")
-  private val resolveTaxYear                       = ResolveTaxYearMinimum(submitFinalDeclarationMinimumTaxYear)
+  private val resolveTaxYear                       = ResolveDetailedTaxYear(submitFinalDeclarationMinimumTaxYear)
 }
 
 class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
