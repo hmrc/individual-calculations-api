@@ -24,7 +24,7 @@ import cats.data.Validated.{Invalid, Valid}
 
 import java.time.{Clock, Instant, ZoneOffset}
 
-class ResolveTaxYearSpec extends UnitSpec with ResolverSupport {
+class ResolveTaxYearSpec extends UnitSpec {
 
   "ResolveTaxYear" should {
     "return no errors" when {
