@@ -21,13 +21,13 @@ import play.api.libs.json.{JsArray, JsError, JsValue, Json}
 
 class AnnuityPaymentsSpec extends UnitSpec {
 
-  val model: AnnuityPayments = AnnuityPayments(Some(5000.99), Some(5000.99))
+  val model: AnnuityPayments = AnnuityPayments(Some(5000.99), Some(99.99))
 
   val json: JsValue = Json.parse(
     """
       |{
       |  "reliefClaimed": 5000.99,
-      |  "rate": 5000.99
+      |  "rate": 99.99
       |}
       |""".stripMargin
   )

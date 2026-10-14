@@ -30,7 +30,7 @@ class StudentLoansSpec extends UnitSpec {
     studentLoanDeductionsFromEmployment = Some(123.45),
     studentLoanRepaymentAmountNetOfDeductions = 123.45,
     studentLoanApportionedIncomeThreshold = 123,
-    studentLoanRate = 123.45,
+    studentLoanRate = 99.99,
     payeIncomeForStudentLoan = Some(123.45),
     nonPayeIncomeForStudentLoan = Some(123.45)
   )
@@ -45,7 +45,7 @@ class StudentLoansSpec extends UnitSpec {
       |  "studentLoanDeductionsFromEmployment": 123.45,
       |  "studentLoanRepaymentAmountNetOfDeductions": 123.45,
       |  "studentLoanApportionedIncomeThreshold": 123,
-      |  "studentLoanRate": 123.45,
+      |  "studentLoanRate": 99.99,
       |  "payeIncomeForStudentLoan": 123.45,
       |  "nonPayeIncomeForStudentLoan": 123.45
       |}
@@ -62,7 +62,7 @@ class StudentLoansSpec extends UnitSpec {
       |  "studentLoanDeductionsFromEmployment": 123.45,
       |  "studentLoanRepaymentAmountNetOfDeductions": 123.45,
       |  "studentLoanApportionedIncomeThreshold": 123,
-      |  "studentLoanRate": 123.45,
+      |  "studentLoanRate": 99.99,
       |  "payeIncomeForStudentLoan": 123.45,
       |  "nonPayeIncomeForStudentLoan": 123.45
       |}
@@ -79,7 +79,7 @@ class StudentLoansSpec extends UnitSpec {
       |  "studentLoanDeductionsFromEmployment": 123.45,
       |  "studentLoanRepaymentAmountNetOfDeductions": 123.45,
       |  "studentLoanApportionedIncomeThreshold": 123,
-      |  "studentLoanRate": 123.45,
+      |  "studentLoanRate": 99.99,
       |  "payeIncomeForStudentLoan": 123.45,
       |  "nonPayeIncomeForStudentLoan": 123.45
       |}
