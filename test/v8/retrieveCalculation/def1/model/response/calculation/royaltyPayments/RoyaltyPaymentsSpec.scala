@@ -64,4 +64,3 @@ class RoyaltyPaymentsSpec extends UnitSpec {
   }
 
 }
-

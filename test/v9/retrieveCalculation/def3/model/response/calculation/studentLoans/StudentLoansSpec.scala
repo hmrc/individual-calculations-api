@@ -72,7 +72,7 @@ class StudentLoansSpec extends UnitSpec {
   val badJson: JsValue = Json.parse(
     """
       |{
-      |  "planType": "plan1",
+      |  "planType": "01",
       |  "studentLoanTotalIncomeAmount": "FIFTY",
       |  "studentLoanChargeableIncomeAmount": 123.45,
       |  "studentLoanRepaymentAmount": 123.45,
