@@ -908,6 +908,22 @@
             }
           ]
         },
+        "property": {
+          "incomeReceived": 12500,
+          "allowancesAllocated": 12500,
+          "taxableIncome": 12500,
+          "incomeTaxAmount": 5000.99,
+          "taxBands": [
+            {
+              "name": "savings-starter-rate",
+              "rate": 20,
+              "bandLimit": 12500,
+              "apportionedBandLimit": 12500,
+              "income": 12500,
+              "taxAmount": 5000.99
+            }
+          ]
+        },
         "savingsAndGains": {
           "incomeReceived": 12500,
           "allowancesAllocated": 12500,
