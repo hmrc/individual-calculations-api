@@ -80,7 +80,7 @@
             "description": "The customer service message text.",
             "type": "string",
             "minLength": 1,
-            "maxLength": 5000
+            "maxLength": {{#if (enabled 'r23_1885_docs')}} 500 {{else}} 5000 {{/if}}
           }
         },
         "required": [
