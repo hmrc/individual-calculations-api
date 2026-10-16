@@ -23,6 +23,7 @@ case class IncomeTax(
     totalAllowancesAndDeductions: BigInt,
     totalTaxableIncome: BigInt,
     payPensionsProfit: Option[IncomeTaxItem],
+    property: Option[IncomeTaxItem],
     savingsAndGains: Option[IncomeTaxItem],
     dividends: Option[IncomeTaxItem],
     lumpSums: Option[IncomeTaxItem],
@@ -52,6 +53,7 @@ object IncomeTax {
     totalAllowancesAndDeductions           <- (JsPath \ "totalAllowancesAndDeductions").read[BigInt]
     totalTaxableIncome                     <- (JsPath \ "totalTaxableIncome").read[BigInt]
     payPensionsProfit                      <- (JsPath \ "payPensionsProfit").readNullable[IncomeTaxItem]
+    property                               <- (JsPath \ "property").readNullable[IncomeTaxItem]
     savingsAndGains                        <- (JsPath \ "savingsAndGains").readNullable[IncomeTaxItem]
     dividends                              <- (JsPath \ "dividends").readNullable[IncomeTaxItem]
     lumpSums                               <- (JsPath \ "lumpSums").readNullable[IncomeTaxItem]
@@ -77,6 +79,7 @@ object IncomeTax {
     totalAllowancesAndDeductions = totalAllowancesAndDeductions,
     totalTaxableIncome = totalTaxableIncome,
     payPensionsProfit = payPensionsProfit,
+    property = property,
     savingsAndGains = savingsAndGains,
     dividends = dividends,
     lumpSums = lumpSums,
