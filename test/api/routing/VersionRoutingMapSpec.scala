@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package routing
+package api.routing
 
-import api.routing.*
 import api.utils.UnitSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.routing.Router
@@ -30,7 +29,7 @@ class VersionRoutingMapSpec extends UnitSpec with GuiceOneAppPerSuite {
   "map" when {
     "routing to v8" should {
 
-      val versionRoutingMap: CalculationsVersionRoutingMap = CalculationsVersionRoutingMap(
+      val versionRoutingMap: VersionRoutingMapImpl = VersionRoutingMapImpl(
         defaultRouter = defaultRouter,
         v8Router = v8Routes,
         v9Router = v9Routes

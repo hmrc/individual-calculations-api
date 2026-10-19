@@ -17,7 +17,6 @@
 package v9.submitFinalDeclaration
 
 import api.controllers.RequestContext
-import api.errors.*
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData

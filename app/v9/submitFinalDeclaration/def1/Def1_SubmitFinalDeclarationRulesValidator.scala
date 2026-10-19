@@ -17,8 +17,7 @@
 package v9.submitFinalDeclaration.def1
 
 import api.controllers.validators.RulesValidator
-import api.errors.RuleSubmissionFailedError
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, RuleSubmissionFailedError}
 import cats.data.Validated
 import cats.data.Validated.Invalid
 import v9.common.model.domain.`confirm-amendment`

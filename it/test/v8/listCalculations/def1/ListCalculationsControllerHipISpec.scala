@@ -16,7 +16,6 @@
 
 package v8.listCalculations.def1
 
-import api.errors.{FormatCalculationTypeError, RuleCalculationTypeNotAllowed}
 import api.models.errors.*
 import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import api.support.IntegrationBaseSpec

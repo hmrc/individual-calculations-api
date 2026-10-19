@@ -17,21 +17,50 @@
 package api.definition
 
 import api.config.AppConfig
-import api.routing.Version
+import api.definition.APIAccessType.{CONTROLLED, PUBLIC}
+import api.definition.APIStatus.RETIRED
+import api.routing.{Version, Version7, Version8, Version9}
 import api.utils.Logging
 import cats.data.Validated.Invalid
 
-trait ApiDefinitionFactory extends Logging {
+import javax.inject.{Inject, Singleton}
 
-  protected val mtdCategory = "INCOME_TAX_MTD"
+@Singleton
+class ApiDefinitionFactory @Inject() (appConfig: AppConfig) extends Logging {
 
-  protected val appConfig: AppConfig
+  lazy val definition: Definition =
+    Definition(
+      api = APIDefinition(
+        name = "Individual Calculations (MTD)",
+        description = "An API for providing individual calculations data",
+        context = appConfig.apiGatewayContext,
+        categories = List("INCOME_TAX_MTD"),
+        versions = List(
+          APIVersion(
+            version = Version7,
+            status = RETIRED,
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
+            endpointsEnabled = false
+          ),
+          APIVersion(
+            version = Version8,
+            status = buildAPIStatus(Version8),
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
+            endpointsEnabled = appConfig.endpointsEnabled(Version8)
+          ),
+          APIVersion(
+            version = Version9,
+            status = buildAPIStatus(Version9),
+            access = if (appConfig.controlledAccessEnabled) CONTROLLED else PUBLIC,
+            endpointsEnabled = appConfig.endpointsEnabled(Version9)
+          )
+        ),
+        requiresTrust = None
+      )
+    )
 
-  val definition: Definition
-
-  def buildAPIStatus(version: Version): APIStatus = {
+  protected[definition] def buildAPIStatus(version: Version): APIStatus = {
     checkDeprecationConfigFor(version)
-
     APIStatus.parser
       .lift(appConfig.apiStatus(version))
       .getOrElse {

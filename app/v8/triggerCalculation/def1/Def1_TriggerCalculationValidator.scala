@@ -19,9 +19,8 @@ package v8.triggerCalculation.def1
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
-import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, RuleCalculationTypeNotAllowed}
 import cats.data.Validated
 import cats.implicits.*
 import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}

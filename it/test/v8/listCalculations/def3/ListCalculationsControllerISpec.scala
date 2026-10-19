@@ -16,7 +16,6 @@
 
 package v8.listCalculations.def3
 
-import api.errors.FormatCalculationTypeError
 import api.models.domain.TaxYear
 import api.models.errors.*
 import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}

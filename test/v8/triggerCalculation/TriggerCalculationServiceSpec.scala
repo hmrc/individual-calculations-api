@@ -16,7 +16,6 @@
 
 package v8.triggerCalculation
 
-import api.errors.*
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
