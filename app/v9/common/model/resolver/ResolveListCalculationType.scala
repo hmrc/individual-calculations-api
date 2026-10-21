@@ -17,8 +17,7 @@
 package v9.common.model.resolver
 
 import api.controllers.validators.resolvers.ResolverSupport
-import api.errors.FormatCalculationTypeError
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, FormatCalculationTypeError}
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import v9.common.model.domain.*

@@ -16,7 +16,6 @@
 
 package v9.submitFinalDeclaration.def1
 
-import api.errors.{FormatCalculationTypeError, RuleSubmissionFailedError}
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec

@@ -16,7 +16,6 @@
 
 package v9.listCalculations.def2
 
-import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec

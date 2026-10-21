@@ -16,7 +16,6 @@
 
 package v8.submitFinalDeclaration
 
-import api.errors.*
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper

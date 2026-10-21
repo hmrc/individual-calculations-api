@@ -16,7 +16,6 @@
 
 package v8.submitFinalDeclaration.def1
 
-import api.errors.*
 import api.models.domain.TaxYear
 import api.models.errors.*
 import api.services.*

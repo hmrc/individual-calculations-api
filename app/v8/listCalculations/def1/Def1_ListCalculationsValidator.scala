@@ -19,9 +19,8 @@ package v8.listCalculations.def1
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
-import api.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, RuleCalculationTypeNotAllowed}
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import v8.common.model.resolver.ResolveListCalculationType

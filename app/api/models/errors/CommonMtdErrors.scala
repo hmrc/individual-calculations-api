@@ -27,6 +27,10 @@ object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The provided tax 
 
 object CalculationIdFormatError extends MtdError("FORMAT_CALCULATION_ID", "The provided calculation ID is invalid", BAD_REQUEST)
 
+object FormatCalculationTypeError extends MtdError("FORMAT_CALCULATION_TYPE", "The provided calculation type is not valid", BAD_REQUEST)
+
+object FinalDeclarationFormatError extends MtdError("FORMAT_FINAL_DECLARATION", "The provided finalDeclaration is invalid", BAD_REQUEST)
+
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found", NOT_FOUND)
 
@@ -70,6 +74,48 @@ object RuleTaxYearNotSupportedError
 object RuleTaxYearRangeInvalidError extends MtdError("RULE_TAX_YEAR_RANGE_INVALID", "A tax year range of one year is required", BAD_REQUEST)
 
 object RuleTaxYearNotEndedError extends MtdError("RULE_TAX_YEAR_NOT_ENDED", "The specified tax year has not yet ended", BAD_REQUEST)
+
+object RuleFinalDeclarationReceivedError
+    extends MtdError("RULE_FINAL_DECLARATION_RECEIVED", "Final declaration has already been received", BAD_REQUEST)
+
+object RuleIncomeSourcesChangedError
+    extends MtdError("RULE_INCOME_SOURCES_CHANGED", "Income sources data has changed. Trigger a new calculation", BAD_REQUEST)
+
+object RulePrematureFinalisationError
+    extends MtdError("RULE_PREMATURE_FINALISATION", "Finalisation cannot occur until after the end of the tax year", BAD_REQUEST)
+
+object RuleDeclarationNotReceivedError extends MtdError("RULE_DECLARATION_NOT_RECEIVED", "The final declaration has not been received", BAD_REQUEST)
+
+object RuleCalculationTypeNotAllowed
+    extends MtdError("RULE_CALCULATION_TYPE_NOT_ALLOWED", "The provided calculation type is not applicable for this tax year", BAD_REQUEST)
+
+object RuleIncomeSourcesInvalidError extends MtdError("RULE_INCOME_SOURCES_INVALID", "No valid income sources could be found", BAD_REQUEST) {
+  def withStatus422: MtdError = copy(httpStatus = UNPROCESSABLE_ENTITY)
+}
+
+object RuleNoIncomeSubmissionsExistError
+    extends MtdError("RULE_NO_INCOME_SUBMISSIONS_EXIST", "No income submissions exist for the tax year", BAD_REQUEST)
+
+object RuleSubmissionFailedError
+    extends MtdError("RULE_SUBMISSION_FAILED", "The submission cannot be completed due to validation failures", BAD_REQUEST)
+
+object RuleRecentSubmissionsExistError
+    extends MtdError("RULE_RECENT_SUBMISSIONS_EXIST", "More recent submissions exist. Trigger a new calculation", BAD_REQUEST)
+
+object RuleResidencyChangedError extends MtdError("RULE_RESIDENCY_CHANGED", "Residency has changed. Trigger a new calculation", BAD_REQUEST)
+
+object RuleCalculationInProgressError
+    extends MtdError("RULE_CALCULATION_IN_PROGRESS", "A calculation is in progress. Please wait before triggering a new calculation", BAD_REQUEST)
+
+object RuleBusinessValidationFailureError extends MtdError("RULE_BUSINESS_VALIDATION_FAILURE", "Business validation rule failures", BAD_REQUEST)
+
+object RuleFinalDeclarationTaxYearError
+    extends MtdError("RULE_FINAL_DECLARATION_TAX_YEAR", "Final declaration cannot be submitted until after the end of the tax year", BAD_REQUEST)
+
+object RuleFinalDeclarationInProgressError
+    extends MtdError("RULE_FINAL_DECLARATION_IN_PROGRESS", "There is a calculation in progress for the tax year", BAD_REQUEST)
+
+object RuleOutsideAmendmentWindowError extends MtdError("RULE_OUTSIDE_AMENDMENT_WINDOW", "You are outside the amendment window", BAD_REQUEST)
 
 //Stub Errors
 object RuleIncorrectGovTestScenarioError

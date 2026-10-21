@@ -19,7 +19,7 @@ package v9.triggerCalculation.def1
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
-import api.errors.RuleCalculationTypeNotAllowed
+import api.models.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated

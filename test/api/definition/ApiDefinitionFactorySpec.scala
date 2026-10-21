@@ -17,8 +17,9 @@
 package api.definition
 
 import api.config.Deprecation.NotDeprecated
-import api.config.{AppConfig, MockAppConfig}
-import api.definition.APIStatus.{ALPHA, BETA}
+import api.config.MockAppConfig
+import api.definition.APIAccessType.{CONTROLLED, PUBLIC}
+import api.definition.APIStatus.{ALPHA, BETA, RETIRED}
 import api.mocks.MockHttpClient
 import api.routing.*
 import api.utils.UnitSpec
@@ -43,8 +44,8 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'apiStatus' parameter is present but invalid" should {
       s"default to alpha" in new Test {
-        setupMockConfig(Version9)
         MockedAppConfig.apiStatus(Version9) returns "not-a-status"
+        MockedAppConfig.deprecationFor(Version9).returns(NotDeprecated.valid).anyNumberOfTimes()
 
         checkBuildApiStatus(Version9) shouldBe ALPHA
       }
@@ -69,32 +70,140 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
   }
 
-  trait Test extends UnitSpec with MockHttpClient with MockAppConfig {
-    MockedAppConfig.apiGatewayContext returns "individuals/self-assessment/adjustable-summary"
+  "definition" when {
+    "called" should {
+      "return a valid Definition case class when all versions are configured correctly" in new Test {
+        setupMockConfig(Version7)
+        setupMockConfig(Version8)
+        setupMockConfig(Version9)
 
-    protected val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory {
-      protected val appConfig: AppConfig = mockAppConfig
+        val factory = new ApiDefinitionFactory(mockAppConfig)
 
-      val definition: Definition = Definition(
-        APIDefinition(
-          "test API definition",
-          "description",
-          "context",
-          List("category"),
-          List(APIVersion(Version1, APIStatus.BETA, APIAccessType.PUBLIC, endpointsEnabled = true)),
-          None
+        factory.definition shouldBe Definition(
+          api = APIDefinition(
+            name = "Individual Calculations (MTD)",
+            description = "An API for providing individual calculations data",
+            context = "api.gateway.context",
+            categories = List("INCOME_TAX_MTD"),
+            versions = List(
+              APIVersion(
+                version = Version7,
+                status = RETIRED,
+                access = CONTROLLED,
+                endpointsEnabled = false
+              ),
+              APIVersion(
+                version = Version8,
+                status = BETA,
+                access = PUBLIC,
+                endpointsEnabled = true
+              ),
+              APIVersion(
+                version = Version9,
+                status = BETA,
+                access = PUBLIC,
+                endpointsEnabled = true
+              )
+            ),
+            requiresTrust = None
+          )
         )
-      )
+      }
 
+      "default to ALPHA status when an invalid apiStatus is configured" in new Test {
+        setupMockConfig(Version7)
+        val versions = List(Version8, Version9)
+
+        MockedAppConfig.apiGatewayContext returns "api.gateway.context"
+
+        versions.foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "ALPHO"
+          MockedAppConfig.endpointsEnabled(version) returns true
+          MockedAppConfig.controlledAccessEnabled returns false
+          MockedAppConfig.deprecationFor(version) returns NotDeprecated.valid
+        }
+
+        val factory = new ApiDefinitionFactory(mockAppConfig)
+
+        val resultVersions: Seq[APIVersion] = factory.definition.api.versions
+
+        versions.foreach { version =>
+          resultVersions.find(_.version == version).get.status shouldBe ALPHA
+        }
+      }
+    }
+  }
+
+  "set the access level" when {
+    "the controlled access flag is enabled" should {
+      "to be CONTROLLED" in new Test {
+        setupMockConfig(Version7)
+        val versions = List(Version8, Version9)
+
+        MockedAppConfig.apiGatewayContext returns "api.gateway.context"
+
+        versions.foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "BETA"
+          MockedAppConfig.endpointsEnabled(version) returns true
+          MockedAppConfig.controlledAccessEnabled returns true
+          MockedAppConfig.deprecationFor(version) returns NotDeprecated.valid
+        }
+
+        val factory = new ApiDefinitionFactory(mockAppConfig)
+
+        val resultVersions: Seq[APIVersion] = factory.definition.api.versions
+
+        versions.foreach { version =>
+          resultVersions.find(_.version == version).get.access shouldBe CONTROLLED
+        }
+      }
     }
 
-    def checkBuildApiStatus(version: Version): APIStatus = apiDefinitionFactory.buildAPIStatus(version)
+    "the controlled access flag is disabled" should {
+      "return PUBLIC" in new Test {
+        setupMockConfig(Version7)
+        val versions = List(Version8, Version9)
+
+        MockedAppConfig.apiGatewayContext returns "api.gateway.context"
+
+        versions.foreach { version =>
+          MockedAppConfig.apiStatus(version) returns "BETA"
+          MockedAppConfig.endpointsEnabled(version) returns true
+          MockedAppConfig.controlledAccessEnabled returns false
+          MockedAppConfig.deprecationFor(version) returns NotDeprecated.valid
+        }
+
+        val factory = new ApiDefinitionFactory(mockAppConfig)
+
+        val resultVersions: Seq[APIVersion] = factory.definition.api.versions
+
+        versions.foreach { version =>
+          resultVersions.find(_.version == version).get.access shouldBe PUBLIC
+        }
+      }
+    }
+  }
+
+  trait Test extends UnitSpec with MockHttpClient with MockAppConfig {
+    protected val apiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
+
+    protected def checkBuildApiStatus(version: Version): APIStatus =
+      apiDefinitionFactory.buildAPIStatus(version)
 
     protected def setupMockConfig(version: Version): Unit = {
-      MockedAppConfig
-        .deprecationFor(version)
-        .returns(NotDeprecated.valid)
-        .anyNumberOfTimes()
+      MockedAppConfig.apiGatewayContext returns "api.gateway.context"
+
+      if (version == Version7) {
+        MockedAppConfig.apiStatus(version) returns "RETIRED"
+        MockedAppConfig.endpointsEnabled(version) returns true
+        MockedAppConfig.controlledAccessEnabled returns true
+        MockedAppConfig.deprecationFor(version) returns NotDeprecated.valid
+      } else {
+        MockedAppConfig.apiStatus(version) returns "BETA"
+        MockedAppConfig.endpointsEnabled(version) returns true
+        MockedAppConfig.controlledAccessEnabled returns false
+        MockedAppConfig.deprecationFor(version) returns NotDeprecated.valid
+      }
     }
 
   }

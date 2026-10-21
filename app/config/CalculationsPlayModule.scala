@@ -16,19 +16,10 @@
 
 package config
 
-import api.definition.ApiDefinitionFactory
-import api.routing.VersionRoutingMap
 import com.google.inject.{AbstractModule, Provides}
-import common.definition.CalculationsDefinitionFactory
 import org.apache.pekko.actor.{ActorSystem, Scheduler}
-import routing.CalculationsVersionRoutingMap
 
 class CalculationsPlayModule extends AbstractModule {
-
-  override def configure(): Unit = {
-    bind(classOf[ApiDefinitionFactory]).to(classOf[CalculationsDefinitionFactory]).asEagerSingleton()
-    bind(classOf[VersionRoutingMap]).to(classOf[CalculationsVersionRoutingMap]).asEagerSingleton()
-  }
 
   @Provides
   def pekkoScheduler(actorSystem: ActorSystem): Scheduler =
