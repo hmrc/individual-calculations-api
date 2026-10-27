@@ -16,10 +16,10 @@
 
 package api.config
 
-import api.config.Deprecation.{Deprecated, NotDeprecated}
+import api.config.Deprecation.*
 import api.routing.Version
 import cats.data.Validated
-import cats.implicits.catsSyntaxValidatedId
+import cats.implicits.*
 import com.typesafe.config.Config
 import play.api.{ConfigLoader, Configuration}
 import uk.gov.hmrc.auth.core.ConfidenceLevel
@@ -124,34 +124,34 @@ class AppConfig @Inject() (config: ServicesConfig, protected[config] val configu
     .toFormatter()
 
   def deprecationFor(version: Version): Validated[String, Deprecation] = {
-    val isApiDeprecated: Boolean = apiStatus(version) == "DEPRECATED"
+    lazy val isApiDeprecated: Boolean = apiStatus(version) == "DEPRECATED"
 
-    val deprecatedOn: Option[LocalDateTime] =
-      configuration
-        .getOptional[String](s"api.$version.deprecatedOn")
-        .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
+    val deprecatedOn: Option[LocalDateTime] = configuration
+      .getOptional[String](s"api.$version.deprecatedOn")
+      .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
 
-    val sunsetDate: Option[LocalDateTime] =
-      configuration
-        .getOptional[String](s"api.$version.sunsetDate")
-        .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
+    deprecatedOn match {
+      case Some(dO) =>
+        val sunsetDate: Option[LocalDateTime] = configuration
+          .getOptional[String](s"api.$version.sunsetDate")
+          .map(value => LocalDateTime.parse(value, DATE_FORMATTER))
 
-    val isSunsetEnabled: Boolean =
-      configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
+        val isSunsetEnabled: Boolean = configuration.getOptional[Boolean](s"api.$version.sunsetEnabled").getOrElse(true)
 
-    if (isApiDeprecated) {
-      (deprecatedOn, sunsetDate, isSunsetEnabled) match {
-        case (Some(dO), Some(sD), true) =>
-          if (sD.isAfter(dO))
-            Deprecated(dO, Some(sD)).valid
-          else
-            s"sunsetDate must be later than deprecatedOn date for a deprecated version $version".invalid
-        case (Some(dO), None, true) => Deprecated(dO, Some(dO.plusMonths(6))).valid
-        case (Some(dO), _, false)   => Deprecated(dO, None).valid
-        case _                      => s"deprecatedOn date is required for a deprecated version $version".invalid
-      }
+        val validatedSunsetDate: Validated[String, Option[LocalDateTime]] = (sunsetDate, isSunsetEnabled) match {
+          case (Some(sD), true) if sD.isAfter(dO) => Some(sD).valid
+          case (Some(_), true)                    => s"sunsetDate must be later than deprecatedOn date for version $version".invalid
+          case (None, true)                       => Some(dO.plusMonths(6)).valid
+          case (_, false)                         => None.valid
+        }
 
-    } else NotDeprecated.valid
+        validatedSunsetDate.map { sunsetDate =>
+          if (isApiDeprecated) Deprecated(dO, sunsetDate) else ScheduledDeprecation(dO, sunsetDate)
+        }
+
+      case None =>
+        if (isApiDeprecated) s"deprecatedOn date is required for a deprecated version $version".invalid else NotDeprecated.valid
+    }
 
   }
 
