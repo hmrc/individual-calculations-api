@@ -17,10 +17,11 @@
 package v9.retrieveCalculation.def3.model.response.calculation.codedOutUnderpayments
 
 import play.api.libs.json.{Json, OFormat}
+import v9.common.model.domain.Source
 
 case class SelfAssessmentUnderpaymentsDetail(amount: BigDecimal,
                                              relatedTaxYear: String,
-                                             source: Option[String],
+                                             source: Option[Source],
                                              collectedAmount: Option[BigDecimal],
                                              uncollectedAmount: Option[BigDecimal])
 

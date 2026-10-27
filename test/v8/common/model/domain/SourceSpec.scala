@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package v8.retrieveCalculation.def2.model.response.calculation.employmentAndPensionsIncome
+package v8.common.model.domain
 
-import common.utils.enums.Enums
-import play.api.libs.json.{Reads, Writes}
+import api.utils.UnitSpec
+import common.utils.enums.EnumJsonSpecSupport
+import v8.common.model.domain.Source.*
 
-sealed trait Source
+class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
 
-object Source {
+  testReads[Source](
+    "customer"  -> `customer`,
+    "HMRC HELD" -> `hmrc-held`
+  )
 
-  case object `customer`  extends Source
-  case object `hmrc-held` extends Source
-
-  implicit val writes: Writes[Source] = Enums.writes[Source]
-
-  implicit val reads: Reads[Source] = Enums.readsUsing[Source] {
-    case "customer"  => `customer`
-    case "HMRC HELD" => `hmrc-held`
-  }
+  testWrites[Source](
+    `customer`  -> "customer",
+    `hmrc-held` -> "hmrc-held"
+  )
 
 }

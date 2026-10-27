@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 package v8.retrieveCalculation.def1.model.response.calculation.stateBenefitsIncome
 
 import play.api.libs.json.{Json, OFormat}
+import v8.common.model.domain.Source
 
-case class CommonBenefit(incomeSourceId: String, amount: BigDecimal, source: Option[String])
+case class CommonBenefit(incomeSourceId: String, amount: BigDecimal, source: Option[Source])
 
 object CommonBenefit {
   implicit val format: OFormat[CommonBenefit] = Json.format[CommonBenefit]
