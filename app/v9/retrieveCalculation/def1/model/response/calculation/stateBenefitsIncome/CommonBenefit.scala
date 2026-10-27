@@ -17,8 +17,9 @@
 package v9.retrieveCalculation.def1.model.response.calculation.stateBenefitsIncome
 
 import play.api.libs.json.{Json, OFormat}
+import v9.common.model.domain.Source
 
-case class CommonBenefit(incomeSourceId: String, amount: BigDecimal, source: Option[String])
+case class CommonBenefit(incomeSourceId: String, amount: BigDecimal, source: Option[Source])
 
 object CommonBenefit {
   implicit val format: OFormat[CommonBenefit] = Json.format[CommonBenefit]

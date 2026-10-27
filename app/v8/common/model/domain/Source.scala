@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v9.retrieveCalculation.def3.model.response.calculation.employmentAndPensionsIncome
+package v8.common.model.domain
 
 import common.utils.enums.Enums
 import play.api.libs.json.{Reads, Writes}

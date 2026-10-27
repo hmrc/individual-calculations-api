@@ -17,8 +17,9 @@
 package v9.retrieveCalculation.def1.model.response.calculation.codedOutUnderpayments
 
 import play.api.libs.json.{Json, OFormat}
+import v9.common.model.domain.Source
 
-case class PayeUnderpaymentsDetail(amount: BigDecimal, relatedTaxYear: String, source: Option[String])
+case class PayeUnderpaymentsDetail(amount: BigDecimal, relatedTaxYear: String, source: Option[Source])
 
 object PayeUnderpaymentsDetail {
   implicit val format: OFormat[PayeUnderpaymentsDetail] = Json.format[PayeUnderpaymentsDetail]

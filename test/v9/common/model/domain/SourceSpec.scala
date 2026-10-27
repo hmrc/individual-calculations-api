@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v9.retrieveCalculation.def4.model.response.calculation.employmentAndPensionsIncome
+package v9.common.model.domain
 
 import api.utils.UnitSpec
 import common.utils.enums.EnumJsonSpecSupport
-import v9.retrieveCalculation.def4.model.response.calculation.employmentAndPensionsIncome.Source.*
+import v9.common.model.domain.Source.*
 
 class SourceSpec extends UnitSpec with EnumJsonSpecSupport {
 
