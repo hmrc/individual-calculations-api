@@ -23,6 +23,13 @@ sealed trait Deprecation
 object Deprecation {
   case object NotDeprecated extends Deprecation
 
-  case class Deprecated(deprecatedOn: LocalDateTime, sunsetDate: Option[LocalDateTime]) extends Deprecation
+  sealed trait HasDeprecationDates extends Deprecation {
+    def deprecatedOn: LocalDateTime
+    def sunsetDate: Option[LocalDateTime]
+  }
+
+  case class ScheduledDeprecation(deprecatedOn: LocalDateTime, sunsetDate: Option[LocalDateTime]) extends HasDeprecationDates
+
+  case class Deprecated(deprecatedOn: LocalDateTime, sunsetDate: Option[LocalDateTime]) extends HasDeprecationDates
 
 }
