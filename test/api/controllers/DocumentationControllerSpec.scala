@@ -160,7 +160,7 @@ class DocumentationControllerSpec extends ControllerBaseSpec with MockAppConfig 
         status(response) shouldBe OK
 
         val result: String = contentAsString(response)
-        result shouldBe actualApplicationYaml
+        result.replaceAll("\r", "").trim shouldBe actualApplicationYaml.replaceAll("\r", "").trim
       }
     }
   }

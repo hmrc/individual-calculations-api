@@ -69,6 +69,14 @@ tags:
       
       Here, the developer can:      
         - submit final declaration for a tax year
+  {{#if (enabled "r23_1885_docs")}}
+  - name: Provisional Figures Information
+    description: |
+      Here a developer can:
+        - create or amend provisional figures information for a tax return
+        - retrieve provisional figures information for a tax return
+        - delete provisional figures information for a tax return
+  {{/if}}
 
 paths:
 
@@ -80,3 +88,7 @@ paths:
     $ref: "./retrieve.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/{calculationType}:
     $ref: "./submit_final_declaration.yaml"
+  {{#if (enabled "r23_1885_docs")}}
+  /individuals/calculations/{nino}/provisional-figures/{taxYear}:
+    $ref: "./provisional_figures_information.yaml"
+  {{/if}}

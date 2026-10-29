@@ -22,6 +22,18 @@ components:
         example: "2021-22"
       required: true
 
+    taxYearMinimum2027:
+      name: taxYear
+      in: path
+      description: |
+        The tax year the data applies to, for example, 2026-27. 
+        The start year and end year must not span two tax years. 
+        The minimum tax year is 2026-27. No gaps are allowed, for example, 2026-28 is not valid.
+      schema:
+        type: string
+        example: "2026-27"
+      required: true
+
     calculationId:
       name: calculationId
       in: path
