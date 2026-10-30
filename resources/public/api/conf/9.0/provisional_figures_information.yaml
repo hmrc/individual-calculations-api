@@ -1,0 +1,5 @@
+delete:
+  $ref: "./provisional_figures_information_delete.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment

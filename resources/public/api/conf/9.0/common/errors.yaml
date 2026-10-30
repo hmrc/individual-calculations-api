@@ -223,7 +223,7 @@ components:
     # 404
     notFound:
       description: |
-        Either the calculation ID was not found or the calculation was in year.
+        The supplied income source could not be found.
       value:
         code: MATCHING_RESOURCE_NOT_FOUND
         message: Matching resource not found
