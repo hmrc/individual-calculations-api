@@ -81,9 +81,9 @@ class RetrieveProvisionalFiguresInformationControllerSpec
 
         MockRetrieveProvisionalFiguresInformationService
           .retrieveProvisionalFiguresInformation(requestData)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleOutsideAmendmentWindowError))))
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, TaxYearFormatError))))
 
-        runErrorTestWithAudit(RuleOutsideAmendmentWindowError)
+        runErrorTestWithAudit(TaxYearFormatError)
       }
     }
   }
