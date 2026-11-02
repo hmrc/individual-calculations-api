@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Retrieve Provisional Figures Information",
+  "description": "This endpoint is used to retrieve the provisional figures information recorded for a tax return. A National Insurance number and tax year are required.",
+  "type": "object",
+  "properties": {
+    "submittedOn": {
+      "description": "The date and time the supplementary information was submitted, in the format YYYY-MM-DDThh:mm:ss.SSSZ",
+      "type": "string",
+      "example": "2027-08-24T14:15:22.544Z"
+    },
+    "provisionalFiguresIndicator": {
+      "description": "A boolean indicating whether provisional figures were used.",
+      "type": "boolean",
+      "example": true
+    },
+    "expectedDate": {
+      "description": "The expected date when the final figures will be available. This date must be in the future. Must conform to the format: YYYY-MM-DD",
+      "type": "string",
+      "example": "2027-10-05"
+    },
+    "supplementaryInformation": {
+      "description": "Additional information describing the use of provisional figures. Must not be empty or contain only whitespace.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9 &'\"()*,\\-./@£]{1,4000}$",
+      "example": "Provisional figures used pending final confirmation."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "submittedOn",
+    "provisionalFiguresIndicator"
+  ]
+}

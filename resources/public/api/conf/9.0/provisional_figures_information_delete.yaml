@@ -104,4 +104,4 @@ responses:
           $ref: ./schemas/error-response.yaml
         examples:
           MATCHING_RESOURCE_NOT_FOUND:
-            $ref: ./common/errors.yaml#/components/examples/notFound
+            $ref: ./common/errors.yaml#/components/examples/notFoundResource
