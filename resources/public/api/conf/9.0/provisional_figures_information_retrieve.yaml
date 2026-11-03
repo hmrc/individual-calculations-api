@@ -18,7 +18,7 @@ parameters:
   - $ref: ./common/pathParameters.yaml#/components/parameters/nino
   - $ref: ./common/pathParameters.yaml#/components/parameters/taxYearMinimum2027
   - $ref: ./common/headers.yaml#/components/parameters/acceptJson
-  - $ref: ./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader
+  - $ref: ./common/headers.yaml#/components/parameters/authorizationReadScopeHeader
   - $ref: ./common/headers.yaml#/components/parameters/testScenarioHeader
 
 security:
@@ -109,4 +109,4 @@ responses:
           $ref: ./schemas/error-response.yaml
         examples:
           MATCHING_RESOURCE_NOT_FOUND:
-            $ref: ./common/errors.yaml#/components/examples/notFoundResource
+            $ref: ./common/errors.yaml#/components/examples/notFound

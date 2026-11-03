@@ -10,7 +10,7 @@
       "example": "2027-08-24T14:15:22.544Z"
     },
     "provisionalFiguresIndicator": {
-      "description": "A boolean indicating whether provisional figures were used.",
+      "description": "Indicates whether provisional figures are included in the tax return. The value must be true.",
       "type": "boolean",
       "example": true
     },
