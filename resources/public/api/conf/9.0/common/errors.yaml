@@ -210,6 +210,41 @@ components:
       value:
         code: RULE_PREMATURE_FINALISATION
         message: Finalisation cannot occur until after the end of the tax year
+
+    formatExpectedDate:
+      description: |
+        The format of the supplied expectedDate value is not valid.
+      value:
+        code: FORMAT_EXPECTED_DATE
+        message: The provided expectedDate is invalid
+
+    formatSupplementaryInformation:
+      description: |
+        The format of the supplied supplementaryInformation is not valid.
+      value:
+        code: FORMAT_SUPPLEMENTARY_INFORMATION
+        message: The provided supplementaryInformation is invalid
+
+    ruleIncorrectOrEmptyBodySubmitted:
+      description: |
+        An empty or non-matching body was submitted.
+      value:
+        code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
+        message: An empty or non-matching body was submitted.
+
+    ruleProvisionalFiguresIndicatorInvalid:
+      description: |
+        The provisionalFiguresIndicator must be set to true.
+      value:
+        code: RULE_PROVISIONAL_FIGURES_INDICATOR_INVALID
+        message: The provisionalFiguresIndicator must be set to true.
+
+    ruleExpectedDateNotInFuture:
+      description: |
+        The expectedDate must be in the future.
+      value:
+        code: RULE_EXPECTED_DATE_NOT_IN_FUTURE
+        message: The expectedDate must be in the future.
     # 403
     clientOrAgentNotAuthorised:
       description: |
