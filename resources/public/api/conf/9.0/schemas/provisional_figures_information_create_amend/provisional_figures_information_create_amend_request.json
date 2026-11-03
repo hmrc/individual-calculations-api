@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Create or Amend Provisional Figures Information",
+  "description":  "This endpoint is used to create or amend provisional figures information to confirm whether provisional figures are included in a tax return and, where applicable, to provide the reason for using them and the expected date when final figures will be available. A National Insurance number and tax year are required. This endpoint can only be used after the tax year has ended.",
+  "type": "object",
+  "properties": {
+    "provisionalFiguresIndicator": {
+      "description": "Indicates whether provisional figures are included in the tax return. The value must be true.",
+      "type": "boolean",
+      "example": true
+    },
+    "expectedDate": {
+      "description": "The expected date when the final figures will be available. This date must be in the future.\n\nMust conform to the format: YYYY-MM-DD",
+      "type": "string",
+      "example": "2027-10-05"
+    },
+    "supplementaryInformation": {
+      "description": "Additional information describing the use of provisional figures. Must not be empty or contain only whitespace.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9 &'\"()*,\\-./@£]{1,4000}$",
+      "example": "Provisional figures used pending final confirmation."
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "provisionalFiguresIndicator"
+  ]
+}

@@ -1,3 +1,8 @@
+put:
+  $ref: "./provisional_figures_information_create_amend.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
 delete:
   $ref: "./provisional_figures_information_delete.yaml"
   security:
