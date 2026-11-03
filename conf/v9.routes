@@ -4,5 +4,6 @@ POST        /:nino/self-assessment/:taxYear/:calculationId/:calculationType     
 
 GET         /:nino/self-assessment/:taxYear/:calculationId                          v9.retrieveCalculation.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 GET         /:nino/self-assessment/:taxYear                                         v9.listCalculations.ListCalculationsController.list(nino: String, taxYear: String, calculationType: Option[String])
+GET         /:nino/provisional-figures/:taxYear                                     v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationController.retrieveProvisionalFiguresInformation(nino: String, taxYear: String)
 
 DELETE      /:nino/provisional-figures/:taxYear                                     v9.deleteProvisionalFiguresInformation.DeleteProvisionalFiguresInformationController.deleteProvisionalFiguresInformation(nino: String, taxYear: String)
