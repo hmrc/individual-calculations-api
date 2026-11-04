@@ -21,7 +21,8 @@ import play.api.libs.json.{Json, OFormat}
 case class UkPropertyIncome(
     shareOfProfitOrLoss: Option[BigDecimal],
     profitOrLossAdjustment: Option[BigDecimal],
-    currentYearLossAppliedToGeneralIncome: Option[BigDecimal]
+    currentYearLossAppliedToGeneralIncome: Option[BigDecimal],
+    shareOfTaxableProfit: Option[BigDecimal]
 )
 
 object UkPropertyIncome {

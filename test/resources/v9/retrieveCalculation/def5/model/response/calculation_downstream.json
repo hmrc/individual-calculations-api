@@ -857,7 +857,8 @@
           "ukPropertyIncome": {
             "shareOfProfitOrLoss": -99999999999.99,
             "profitOrLossAdjustment": -99999999999.99,
-            "currentYearLossAppliedToGeneralIncome": 5000.99
+            "currentYearLossAppliedToGeneralIncome": 5000.99,
+            "shareOfTaxableProfit": 5000.99
           },
           "taxedAndUntaxedIncome": 5000.99
         }

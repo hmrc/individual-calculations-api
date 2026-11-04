@@ -47,12 +47,12 @@ class PartnerIncomeSpec extends UnitSpec {
           untaxedSavings = Some(5000.99),
           taxedSavings = Some(5000.99),
           dividendIncome = Some(5000.99),
-          ukPropertyIncome = Some(
-            UkPropertyIncome(
-              shareOfProfitOrLoss = Some(-99999999999.99),
-              profitOrLossAdjustment = Some(-99999999999.99),
-              currentYearLossAppliedToGeneralIncome = Some(5000.99)
-            )),
+          ukPropertyIncome = Some(UkPropertyIncome(
+            shareOfProfitOrLoss = Some(-99999999999.99),
+            profitOrLossAdjustment = Some(-99999999999.99),
+            currentYearLossAppliedToGeneralIncome = Some(5000.99),
+            shareOfTaxableProfit = Some(5000.99)
+          )),
           taxedAndUntaxedIncome = Some(5000.99)
         )
       ))
@@ -86,7 +86,8 @@ class PartnerIncomeSpec extends UnitSpec {
       |          "ukPropertyIncome": {
       |            "shareOfProfitOrLoss": -99999999999.99,
       |            "profitOrLossAdjustment": -99999999999.99,
-      |            "currentYearLossAppliedToGeneralIncome": 5000.99
+      |            "currentYearLossAppliedToGeneralIncome": 5000.99,
+      |            "shareOfTaxableProfit": 5000.99
       |          },
       |          "taxedAndUntaxedIncome": 5000.99
       |        }
@@ -123,7 +124,8 @@ class PartnerIncomeSpec extends UnitSpec {
       |          "ukPropertyIncome": {
       |            "shareOfProfitOrLoss": -99999999999.99,
       |            "profitOrLossAdjustment": -99999999999.99,
-      |            "currentYearLossAppliedToGeneralIncome": 5000.99
+      |            "currentYearLossAppliedToGeneralIncome": 5000.99,
+      |            "shareOfTaxableProfit": 5000.99
       |          },
       |          "taxedAndUntaxedIncome": 5000.99
       |        }
