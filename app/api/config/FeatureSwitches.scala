@@ -16,7 +16,9 @@
 
 package api.config
 
+import org.apache.commons.lang3.BooleanUtils
 import play.api.Configuration
+import play.api.mvc.Request
 
 trait FeatureSwitches {
 
@@ -29,6 +31,14 @@ trait FeatureSwitches {
   private def isConfigTrue(key: String): Boolean = featureSwitchConfig.getOptional[Boolean](key).getOrElse(true)
 
   def supportingAgentsAccessControlEnabled: Boolean = isEnabled("supporting-agents-access-control")
+
+  def isTemporalValidationEnabled(implicit request: Request[?]): Boolean = {
+    if (isEnabled("allowTemporalValidationSuspension")) {
+      request.headers.get("suspend-temporal-validations").forall(!BooleanUtils.toBoolean(_))
+    } else {
+      true
+    }
+  }
 
 }
 

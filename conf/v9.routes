@@ -2,6 +2,8 @@
 POST        /:nino/self-assessment/:taxYear/trigger/:calculationType                v9.triggerCalculation.TriggerCalculationController.triggerCalculation(nino: String, taxYear: String, calculationType: String)
 POST        /:nino/self-assessment/:taxYear/:calculationId/:calculationType         v9.submitFinalDeclaration.SubmitFinalDeclarationController.submitFinalDeclaration(nino: String, taxYear: String, calculationId: String, calculationType: String)
 
+PUT         /:nino/provisional-figures/:taxYear                                     v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationController.createAmendProvisionalFiguresInformation(nino: String, taxYear: String)
+
 GET         /:nino/self-assessment/:taxYear/:calculationId                          v9.retrieveCalculation.RetrieveCalculationController.retrieveCalculation(nino: String, taxYear: String, calculationId: String)
 GET         /:nino/self-assessment/:taxYear                                         v9.listCalculations.ListCalculationsController.list(nino: String, taxYear: String, calculationType: Option[String])
 GET         /:nino/provisional-figures/:taxYear                                     v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationController.retrieveProvisionalFiguresInformation(nino: String, taxYear: String)
