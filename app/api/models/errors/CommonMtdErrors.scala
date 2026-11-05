@@ -117,6 +117,8 @@ object RuleFinalDeclarationInProgressError
 
 object RuleOutsideAmendmentWindowError extends MtdError("RULE_OUTSIDE_AMENDMENT_WINDOW", "You are outside the amendment window", BAD_REQUEST)
 
+object ruleExpectedDateNotInFutureError extends MtdError("RULE_EXPECTED_DATE_NOT_IN_FUTURE", "The expected date must be in the future", BAD_REQUEST)
+
 //Stub Errors
 object RuleIncorrectGovTestScenarioError
     extends MtdError("RULE_INCORRECT_GOV_TEST_SCENARIO", "The supplied Gov-Test-Scenario is not valid", BAD_REQUEST)
