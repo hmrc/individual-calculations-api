@@ -31,7 +31,8 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     "updatedClaimEvent"            -> `updated-claim-event`,
     "newAnnualAdjustmentEvent"     -> `new-annual-adjustment-event`,
     "updatedAnnualAdjustmentEvent" -> `updated-annual-adjustment-event`,
-    "unattendedCalculation"        -> `unattended-calculation`
+    "unattendedCalculation"        -> `unattended-calculation`,
+    "HMRCrevenueAmendment"         -> `enquiry-amendment`
   )
 
   testWrites[CalculationReason](
@@ -43,7 +44,8 @@ class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
     `updated-claim-event`             -> "updated-claim-event",
     `new-annual-adjustment-event`     -> "new-annual-adjustment-event",
     `updated-annual-adjustment-event` -> "updated-annual-adjustment-event",
-    `unattended-calculation`          -> "unattended-calculation"
+    `unattended-calculation`          -> "unattended-calculation",
+    `enquiry-amendment`               -> "enquiry-amendment"
   )
 
 }
