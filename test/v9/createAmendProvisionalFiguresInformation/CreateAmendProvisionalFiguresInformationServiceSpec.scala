@@ -65,7 +65,7 @@ class CreateAmendProvisionalFiguresInformationServiceSpec extends ServiceSpec {
         "1117" -> TaxYearFormatError,
         "1216" -> InternalError,
         "1000" -> InternalError,
-        "1285" -> ruleExpectedDateNotInFutureError,
+        "1285" -> RuleExpectedDateNotInFutureError,
         "4200" -> RuleOutsideAmendmentWindowError
       )
 

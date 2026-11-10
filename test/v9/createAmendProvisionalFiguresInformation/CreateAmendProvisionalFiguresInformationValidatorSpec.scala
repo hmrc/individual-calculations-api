@@ -17,9 +17,20 @@
 package v9.createAmendProvisionalFiguresInformation
 
 import api.models.domain.{Nino, TaxYear}
-import api.models.errors.{BadRequestError, ErrorWrapper, RuleTaxYearNotEndedError}
+import api.models.errors.{
+  ErrorWrapper,
+  FormatExpectedDateError,
+  FormatSupplementaryInformationError,
+  RuleExpectedDateNotInFutureError,
+  RuleIncorrectOrEmptyBodySubmittedError,
+  RuleProvisionalFiguresIndicatorInvalidError,
+  RuleTaxYearNotEndedError
+}
 import api.utils.UnitSpec
+
+import java.time.{Clock, Instant, LocalDate, ZoneOffset}
 import play.api.libs.json.{JsValue, Json}
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.validMtdRequestJson
 import v9.createAmendProvisionalFiguresInformation.model.request.{
   CreateAmendProvisionalFiguresInformationRequestBody,
   CreateAmendProvisionalFiguresInformationRequestData
@@ -30,39 +41,56 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
   private implicit val correlationId: String = "1234"
 
   private val validNino    = "ZG903729C"
-  private val validTaxYear = "2026-27"
+  private val validTaxYear = "2027-28"
 
-  private val validBody: JsValue = Json.obj(
-    "provisionalFiguresIndicator" -> true,
-    "expectedDate"                -> "2027-10-05",
-    "supplementaryInformation"    -> "Provisional figures are being confirmed."
-  )
+  private implicit val clock: Clock = Clock.fixed(Instant.parse("2026-11-09T00:00:00Z"), ZoneOffset.UTC)
 
-  private def validator(body: Option[JsValue], temporalValidationEnabled: Boolean = false) =
-    new CreateAmendProvisionalFiguresInformationValidator(validNino, validTaxYear, body, temporalValidationEnabled)
+  private val expectedDateValue: String = LocalDate.now(ZoneOffset.UTC).plusYears(1).toString
+
+  private def validator(body: JsValue, temporalValidationEnabled: Boolean = false) =
+    new CreateAmendProvisionalFiguresInformationValidator(validNino, validTaxYear, body, temporalValidationEnabled, clock)
 
   "CreateAmendProvisionalFiguresInformationValidator" should {
     "parse the body and path parameters when the request is valid" in {
-      validator(Some(validBody)).validateAndWrapResult() shouldBe Right(
+      validator(validMtdRequestJson).validateAndWrapResult() shouldBe Right(
         CreateAmendProvisionalFiguresInformationRequestData(
           Nino(validNino),
           TaxYear.fromMtd(validTaxYear),
           CreateAmendProvisionalFiguresInformationRequestBody(
             provisionalFiguresIndicator = true,
-            expectedDate = Some("2027-10-05"),
-            supplementaryInformation = Some("Provisional figures are being confirmed.")
+            expectedDate = Some(expectedDateValue),
+            supplementaryInformation = Some("Provisional figures used pending final confirmation.")
           )
         )
       )
     }
 
-    "return an invalid request error when the body is absent or invalid" in {
-      validator(None).validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, BadRequestError))
-      validator(Some(Json.obj())).validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, BadRequestError))
+    "return an incorrect or empty body error with the missing mandatory field path" in {
+      validator(Json.obj()).validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodySubmittedError))
+      validator(Json.obj("expectedDate" -> "2027-10-05")).validateAndWrapResult() shouldBe
+        Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodySubmittedError.withPath("/provisionalFiguresIndicator")))
+    }
+
+    "require the provisional figures indicator to be true" in {
+      validator(Json.obj("provisionalFiguresIndicator" -> false)).validateAndWrapResult() shouldBe
+        Left(ErrorWrapper(correlationId, RuleProvisionalFiguresIndicatorInvalidError.withPath("/provisionalFiguresIndicator")))
+    }
+
+    "validate the expected date format and that it is in the future" in {
+      validator(Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2027-02-30")).validateAndWrapResult() shouldBe
+        Left(ErrorWrapper(correlationId, FormatExpectedDateError.withPath("/expectedDate")))
+
+      validator(Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2026-10-31")).validateAndWrapResult() shouldBe
+        Left(ErrorWrapper(correlationId, RuleExpectedDateNotInFutureError.withPath("/expectedDate")))
+    }
+
+    "reject invalid supplementary information" in {
+      validator(Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> "   ")).validateAndWrapResult() shouldBe
+        Left(ErrorWrapper(correlationId, FormatSupplementaryInformationError.withPath("/supplementaryInformation")))
     }
 
     "return a tax year not ended error when temporal validation is enabled" in {
-      validator(Some(validBody), temporalValidationEnabled = true).validateAndWrapResult() shouldBe
+      validator(validMtdRequestJson, temporalValidationEnabled = true).validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, RuleTaxYearNotEndedError))
     }
   }

@@ -27,7 +27,7 @@ class CreateAmendProvisionalFiguresInformationValidatorFactory {
 
   def validator(nino: String,
                 taxYear: String,
-                body: Option[JsValue],
+                body: JsValue,
                 temporalValidationEnabled: Boolean): Validator[CreateAmendProvisionalFiguresInformationRequestData] =
     new CreateAmendProvisionalFiguresInformationValidator(nino, taxYear, body, temporalValidationEnabled)
 

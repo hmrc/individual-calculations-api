@@ -21,7 +21,8 @@ import api.controllers.*
 import api.routing.Version
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.IdGenerator
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json.JsValue
+import play.api.mvc.{Action, ControllerComponents}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -41,16 +42,12 @@ class CreateAmendProvisionalFiguresInformationController @Inject() (val authServ
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "CreateAmendProvisionalFiguresInformationController", endpointName = endpointName)
 
-  def createAmendProvisionalFiguresInformation(nino: String, taxYear: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
+  def createAmendProvisionalFiguresInformation(nino: String, taxYear: String): Action[JsValue] =
+    authorisedAction(nino).async(parse.json) { implicit request =>
+
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val validator = validatorFactory.validator(
-        nino,
-        taxYear,
-        request.body.asJson,
-        temporalValidationEnabled = ConfigFeatureSwitches().isTemporalValidationEnabled
-      )
+      val validator = validatorFactory.validator(nino, taxYear, request.body, ConfigFeatureSwitches().isTemporalValidationEnabled)
 
       val requestHandler =
         RequestHandler
@@ -61,7 +58,8 @@ class CreateAmendProvisionalFiguresInformationController @Inject() (val authServ
             auditType = "CreateAmendProvisionalFiguresInformation",
             transactionName = "create-amend-provisional-figures-information",
             apiVersion = Version(request),
-            params = Map("nino" -> nino, "taxYear" -> taxYear)
+            params = Map("nino" -> nino, "taxYear" -> taxYear),
+            requestBody = Some(request.body)
           ))
 
       requestHandler.handleRequest()

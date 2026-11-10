@@ -17,33 +17,40 @@
 package v9.createAmendProvisionalFiguresInformation
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
+import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino, ResolveNonEmptyJsonObject}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.catsSyntaxTuple3Semigroupal
 import play.api.libs.json.JsValue
-import v9.common.model.resolver.ResolveCreateAmendProvisionalFiguresInformationBody
 import v9.createAmendProvisionalFiguresInformation.model.request.{
   CreateAmendProvisionalFiguresInformationRequestBody,
   CreateAmendProvisionalFiguresInformationRequestData
 }
 
-import scala.language.postfixOps
+import java.time.Clock
 
-class CreateAmendProvisionalFiguresInformationValidator(nino: String, taxYear: String, body: Option[JsValue], temporalValidationEnabled: Boolean)
+class CreateAmendProvisionalFiguresInformationValidator(nino: String,
+                                                        taxYear: String,
+                                                        body: JsValue,
+                                                        temporalValidationEnabled: Boolean,
+                                                        clock: Clock = Clock.systemUTC)
     extends Validator[CreateAmendProvisionalFiguresInformationRequestData] {
 
   private val minimumTaxYear: TaxYear = TaxYear.fromMtd("2026-27")
 
+  private val resolveJson: ResolveNonEmptyJsonObject[CreateAmendProvisionalFiguresInformationRequestBody] =
+    new ResolveNonEmptyJsonObject[CreateAmendProvisionalFiguresInformationRequestBody]()
+
   private val resolveTaxYear =
-    ResolveDetailedTaxYear(minimumTaxYear = minimumTaxYear, allowIncompleteTaxYear = !temporalValidationEnabled)
+    ResolveDetailedTaxYear(minimumTaxYear = minimumTaxYear, allowIncompleteTaxYear = !temporalValidationEnabled)(clock)
 
   def validate: Validated[Seq[MtdError], CreateAmendProvisionalFiguresInformationRequestData] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
-      ResolveCreateAmendProvisionalFiguresInformationBody.apply(body)
+      resolveJson(body)
     ).mapN(CreateAmendProvisionalFiguresInformationRequestData.apply)
+      .andThen(CreateAmendProvisionalFiguresInformationRulesValidator.validateBusinessRules(_, clock))
 
 }

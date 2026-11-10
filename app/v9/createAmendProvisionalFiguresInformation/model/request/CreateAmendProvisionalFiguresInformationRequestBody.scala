@@ -16,6 +16,9 @@
 
 package v9.createAmendProvisionalFiguresInformation.model.request
 
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.{JsPath, OWrites, Reads}
+
 case class CreateAmendProvisionalFiguresInformationRequestBody(
     provisionalFiguresIndicator: Boolean,
     expectedDate: Option[String],
@@ -23,20 +26,17 @@ case class CreateAmendProvisionalFiguresInformationRequestBody(
 )
 
 object CreateAmendProvisionalFiguresInformationRequestBody {
-  import play.api.libs.json.{Json, OWrites, Reads}
 
-  implicit val reads: Reads[CreateAmendProvisionalFiguresInformationRequestBody] = Json.reads[CreateAmendProvisionalFiguresInformationRequestBody]
+  implicit val writes: OWrites[CreateAmendProvisionalFiguresInformationRequestBody] = (
+    (JsPath \ "pfIndicator").write[Boolean] and
+      (JsPath \ "dateExpected").writeNullable[String] and
+      (JsPath \ "whiteSpace").writeNullable[String]
+  ).tupled.contramap(body => (body.provisionalFiguresIndicator, body.expectedDate, body.supplementaryInformation))
 
-  implicit val writes: OWrites[CreateAmendProvisionalFiguresInformationRequestBody] = { body =>
-    if (body.provisionalFiguresIndicator) {
-      Json.obj(
-        "provisionalFiguresIndicator" -> true,
-        "expectedDate"                -> body.expectedDate,
-        "supplementaryInformation"    -> body.supplementaryInformation
-      )
-    } else {
-      Json.obj("provisionalFiguresIndicator" -> false)
-    }
-  }
+  implicit val reads: Reads[CreateAmendProvisionalFiguresInformationRequestBody] = (
+    (JsPath \ "provisionalFiguresIndicator").read[Boolean] and
+      (JsPath \ "expectedDate").readNullable[String] and
+      (JsPath \ "supplementaryInformation").readNullable[String]
+  )(CreateAmendProvisionalFiguresInformationRequestBody.apply)
 
 }

@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-package v9.common.model.resolver
+package v9.createAmendProvisionalFiguresInformation.model
 
-import api.models.errors.{BadRequestError, MtdError}
-import cats.data.Validated
-import cats.data.Validated.{Invalid, Valid}
-import play.api.libs.json.JsValue
+import api.utils.UnitSpec
+import play.api.libs.json.Json
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{
+  validDownstreamRequestJson,
+  validMtdRequestJson,
+  validRequestBody
+}
 import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestBody
 
-object ResolveCreateAmendProvisionalFiguresInformationBody {
+class CreateAmendProvisionalFiguresInformationRequestBodySpec extends UnitSpec {
 
-  def apply(body: Option[JsValue]): Validated[Seq[MtdError], CreateAmendProvisionalFiguresInformationRequestBody] =
-    body.flatMap(_.asOpt[CreateAmendProvisionalFiguresInformationRequestBody]) match {
-      case Some(parsedBody) => Valid(parsedBody)
-      case None             => Invalid(List(BadRequestError))
+  "reads" should {
+    "read from json" in {
+      validMtdRequestJson.as[CreateAmendProvisionalFiguresInformationRequestBody] shouldBe validRequestBody
     }
+  }
+
+  "writes" should {
+    "write to json" in {
+      Json.toJson(validRequestBody) shouldBe validDownstreamRequestJson
+    }
+  }
 
 }

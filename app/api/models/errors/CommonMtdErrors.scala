@@ -31,6 +31,11 @@ object FormatCalculationTypeError extends MtdError("FORMAT_CALCULATION_TYPE", "T
 
 object FinalDeclarationFormatError extends MtdError("FORMAT_FINAL_DECLARATION", "The provided finalDeclaration is invalid", BAD_REQUEST)
 
+object FormatExpectedDateError extends MtdError("FORMAT_EXPECTED_DATE", "The provided expectedDate is invalid", BAD_REQUEST)
+
+object FormatSupplementaryInformationError
+    extends MtdError("FORMAT_SUPPLEMENTARY_INFORMATION", "The provided supplementaryInformation is invalid", BAD_REQUEST)
+
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found", NOT_FOUND)
 
@@ -117,7 +122,13 @@ object RuleFinalDeclarationInProgressError
 
 object RuleOutsideAmendmentWindowError extends MtdError("RULE_OUTSIDE_AMENDMENT_WINDOW", "You are outside the amendment window", BAD_REQUEST)
 
-object ruleExpectedDateNotInFutureError extends MtdError("RULE_EXPECTED_DATE_NOT_IN_FUTURE", "The expected date must be in the future", BAD_REQUEST)
+object RuleExpectedDateNotInFutureError extends MtdError("RULE_EXPECTED_DATE_NOT_IN_FUTURE", "The expectedDate must be in the future", BAD_REQUEST)
+
+object RuleIncorrectOrEmptyBodySubmittedError
+    extends MtdError("RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", "An empty or non-matching body was submitted", BAD_REQUEST)
+
+object RuleProvisionalFiguresIndicatorInvalidError
+    extends MtdError("RULE_PROVISIONAL_FIGURES_INDICATOR_INVALID", "The provisionalFiguresIndicator must be set to true", BAD_REQUEST)
 
 //Stub Errors
 object RuleIncorrectGovTestScenarioError

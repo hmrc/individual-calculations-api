@@ -21,10 +21,8 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v9.createAmendProvisionalFiguresInformation.model.request.{
-  CreateAmendProvisionalFiguresInformationRequestBody,
-  CreateAmendProvisionalFiguresInformationRequestData
-}
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{validDownstreamRequestJson, validRequestBody}
+import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
 
 import scala.concurrent.Future
 
@@ -33,22 +31,15 @@ class CreateAmendProvisionalFiguresInformationConnectorSpec extends ConnectorSpe
   private val nino: String    = "AA123456A"
   private val taxYear: String = "2026-27"
 
-  private val body: CreateAmendProvisionalFiguresInformationRequestBody =
-    CreateAmendProvisionalFiguresInformationRequestBody(
-      provisionalFiguresIndicator = true,
-      expectedDate = Some("2027-10-05"),
-      supplementaryInformation = Some("Provisional figures are being confirmed.")
-    )
-
   private val request: CreateAmendProvisionalFiguresInformationRequestData =
-    CreateAmendProvisionalFiguresInformationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), body)
+    CreateAmendProvisionalFiguresInformationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), validRequestBody)
 
   "CreateAmendProvisionalFiguresInformationConnector" should {
     "return a success response" when {
       "the downstream call is successful" in new HipTest with Test {
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
-        willPut(url"$baseUrl/itsd/provisional-figures/$nino?taxYear=26-27", body)
+        willPut(url"$baseUrl/itsd/provisional-figures/$nino?taxYear=26-27", validDownstreamRequestJson)
           .returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.createAmendProvisionalFiguresInformation(request))
@@ -61,7 +52,7 @@ class CreateAmendProvisionalFiguresInformationConnectorSpec extends ConnectorSpe
         val outcome: Left[ResponseWrapper[DownstreamErrors], Nothing] =
           Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode("SOME_ERROR"))))
 
-        willPut(url"$baseUrl/itsd/provisional-figures/$nino?taxYear=26-27", body)
+        willPut(url"$baseUrl/itsd/provisional-figures/$nino?taxYear=26-27", validDownstreamRequestJson)
           .returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.createAmendProvisionalFiguresInformation(request))

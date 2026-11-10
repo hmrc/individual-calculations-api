@@ -28,7 +28,7 @@ trait MockCreateAmendProvisionalFiguresInformationValidatorFactory extends MockV
 
   def validator(): CallHandler[Validator[CreateAmendProvisionalFiguresInformationRequestData]] =
     (mockCreateAmendProvisionalFiguresInformationValidatorFactory
-      .validator(_: String, _: String, _: Option[JsValue], _: Boolean))
+      .validator(_: String, _: String, _: JsValue, _: Boolean))
       .expects(*, *, *, *)
 
 }

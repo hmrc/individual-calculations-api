@@ -24,10 +24,8 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v9.createAmendProvisionalFiguresInformation.model.request.{
-  CreateAmendProvisionalFiguresInformationRequestBody,
-  CreateAmendProvisionalFiguresInformationRequestData
-}
+import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
+import CreateAmendProvisionalFiguresInformationFixtures.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,15 +38,8 @@ class CreateAmendProvisionalFiguresInformationControllerSpec
 
   private val taxYear = "2026-27"
 
-  private val body: CreateAmendProvisionalFiguresInformationRequestBody =
-    CreateAmendProvisionalFiguresInformationRequestBody(
-      provisionalFiguresIndicator = true,
-      expectedDate = Some("2027-10-05"),
-      supplementaryInformation = Some("Provisional figures are being confirmed.")
-    )
-
   private val requestData: CreateAmendProvisionalFiguresInformationRequestData =
-    CreateAmendProvisionalFiguresInformationRequestData(parsedNino, TaxYear.fromMtd(taxYear), body)
+    CreateAmendProvisionalFiguresInformationRequestData(parsedNino, TaxYear.fromMtd(taxYear), validRequestBody)
 
   "CreateAmendProvisionalFiguresInformationController" should {
     "return 204 (NO_CONTENT) status" when {
@@ -59,7 +50,7 @@ class CreateAmendProvisionalFiguresInformationControllerSpec
           .createAmendProvisionalFiguresInformation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
 
-        runOkTestWithAudit(expectedStatus = NO_CONTENT)
+        runOkTestWithAudit(expectedStatus = NO_CONTENT, maybeAuditRequestBody = Some(validMtdRequestJson))
       }
     }
 
@@ -67,7 +58,7 @@ class CreateAmendProvisionalFiguresInformationControllerSpec
       "the parser validation fails" in new Test {
         willUseValidator(returning(NinoFormatError))
 
-        runErrorTestWithAudit(NinoFormatError)
+        runErrorTestWithAudit(NinoFormatError, maybeAuditRequestBody = Some(validMtdRequestJson))
       }
 
       "the service returns an error" in new Test {
@@ -77,7 +68,7 @@ class CreateAmendProvisionalFiguresInformationControllerSpec
           .createAmendProvisionalFiguresInformation(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleOutsideAmendmentWindowError))))
 
-        runErrorTestWithAudit(RuleOutsideAmendmentWindowError)
+        runErrorTestWithAudit(RuleOutsideAmendmentWindowError, maybeAuditRequestBody = Some(validMtdRequestJson))
       }
     }
   }
@@ -100,7 +91,8 @@ class CreateAmendProvisionalFiguresInformationControllerSpec
 
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
-    protected def callController(): Future[Result] = controller.createAmendProvisionalFiguresInformation(validNino, taxYear)(fakeRequest)
+    protected def callController(): Future[Result] =
+      controller.createAmendProvisionalFiguresInformation(validNino, taxYear)(fakePostRequest(validMtdRequestJson))
 
     protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
       AuditEvent(
