@@ -24,6 +24,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse, writeableOf_JsValue}
 import play.api.test.Helpers.*
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{
   expectedDate,
   nino as fixtureNino,
@@ -37,6 +38,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
 
   private val parsedTaxYear: TaxYear   = fixtureTaxYear
   private val notEndedTaxYear: TaxYear = parsedTaxYear.max(TaxYear.currentTaxYear)
+  val mtdJson: JsValue                 = validMtdRequestJson
 
   private val invalidIndicatorJson: JsValue = Json.parse(s"""
       |{
@@ -217,8 +219,6 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
          |  }
          |]
            """.stripMargin
-
-    val mtdJson: JsValue = validMtdRequestJson
 
   }
 
