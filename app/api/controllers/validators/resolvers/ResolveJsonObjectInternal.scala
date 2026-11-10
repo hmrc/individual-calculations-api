@@ -16,7 +16,7 @@
 
 package api.controllers.validators.resolvers
 
-import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodySubmittedError}
+import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
 import api.utils.Logging
 import cats.data.Validated.{Invalid, Valid}
 import play.api.libs.json.*
@@ -26,7 +26,7 @@ class ResolveJsonObjectInternal[A](implicit val reads: Reads[A]) extends Resolve
   val resolver: Resolver[JsValue, (JsObject, A)] = {
     case jsObj: JsObject =>
       if (jsObj.fields.isEmpty) {
-        Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+        Invalid(List(RuleIncorrectOrEmptyBodyError))
       } else {
         jsObj.validate[A] match {
           case JsSuccess(parsed, _) => Valid((jsObj, parsed))
@@ -37,7 +37,7 @@ class ResolveJsonObjectInternal[A](implicit val reads: Reads[A]) extends Resolve
       }
 
     case _ =>
-      Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      Invalid(List(RuleIncorrectOrEmptyBodyError))
   }
 
   private def toMtdError(errors: Seq[(JsPath, Seq[JsonValidationError])]): Seq[MtdError] = {
@@ -48,7 +48,7 @@ class ResolveJsonObjectInternal[A](implicit val reads: Reads[A]) extends Resolve
     }
 
     log(failures)
-    List(RuleIncorrectOrEmptyBodySubmittedError.withPaths(failures.map(_.errorPath).sorted))
+    List(RuleIncorrectOrEmptyBodyError.withPaths(failures.map(_.errorPath).sorted))
   }
 
   private def log(failures: Seq[JsonFormatValidationFailure]): Unit = {

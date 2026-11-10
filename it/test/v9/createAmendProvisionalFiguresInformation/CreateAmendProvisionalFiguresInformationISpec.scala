@@ -128,7 +128,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
           ("AA123456A", "2025-27", mtdJson, BAD_REQUEST, RuleTaxYearRangeInvalidError),
           ("AA123456A", "2025-26", mtdJson, BAD_REQUEST, RuleTaxYearNotSupportedError),
           ("AA123456A", notEndedTaxYear.asMtd, mtdJson, BAD_REQUEST, RuleTaxYearNotEndedError),
-          ("AA123456A", "2026-27", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodySubmittedError),
+          ("AA123456A", "2026-27", JsObject.empty, BAD_REQUEST, RuleIncorrectOrEmptyBodyError),
           (
             "AA123456A",
             "2026-27",
@@ -136,13 +136,13 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
             BAD_REQUEST,
             RuleProvisionalFiguresIndicatorInvalidError.withPath("/provisionalFiguresIndicator")
           ),
-          ("AA123456A", "2026-27", invalidExpectedDateFormatJson, BAD_REQUEST, FormatExpectedDateError.withPath("/expectedDate")),
+          ("AA123456A", "2026-27", invalidExpectedDateFormatJson, BAD_REQUEST, ExpectedDateFormatError.withPath("/expectedDate")),
           (
             "AA123456A",
             "2026-27",
             invalidSupplementaryInformationJson,
             BAD_REQUEST,
-            FormatSupplementaryInformationError.withPath("/supplementaryInformation")
+            SupplementaryInformationFormatError.withPath("/supplementaryInformation")
           ),
           ("AA123456A", "2026-27", expectedDateNotInFutureJson, BAD_REQUEST, RuleExpectedDateNotInFutureError.withPath("/expectedDate"))
         )
@@ -189,7 +189,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
 
   private trait Test {
     val nino: String                       = fixtureNino.nino
-    val taxYear: String                    = parsedTaxYear.asMtd
+    val taxYear: String                    = notEndedTaxYear.asMtd
     val suspendTemporalValidations: String = "true"
 
     def setupStubs(): StubMapping

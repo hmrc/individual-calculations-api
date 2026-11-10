@@ -16,7 +16,7 @@
 
 package api.controllers.validators.resolvers
 
-import api.models.errors.RuleIncorrectOrEmptyBodySubmittedError
+import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.models.utils.JsonErrorValidators
 import api.utils.EmptinessChecker.field
 import api.utils.{EmptinessChecker, UnitSpec}
@@ -57,7 +57,7 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
       "a required field is missing" in {
         val json = Json.parse("""{ "bar": {"field1" : "field one" } }""")
 
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar/field2")))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/field2")))
       }
     }
   }
@@ -65,19 +65,19 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
   private def jsonObjectResolverWithEmptinessChecking(resolver: Resolver[JsValue, Foo]): Unit = {
 
     "given an empty JSON object at the top level" in {
-      resolver(JsObject.empty) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      resolver(JsObject.empty) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
     }
 
     "detect empty objects" in {
       val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "baz": {} }""")
 
-      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/baz")))
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/baz")))
     }
 
     "detect empty arrays" in {
       val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "bars": [] }""")
 
-      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bars")))
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bars")))
     }
 
     "allow custom emptiness checker requiring at least one of a number of optional fields" when {
@@ -93,7 +93,7 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
         "detect this" in {
           val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "qux": { "mandatory": "m" } }""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/qux")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/qux")))
         }
       }
     }
@@ -134,13 +134,13 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
       "detect extra fields in the input" in {
         val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two", "extra": "x" }}""")
 
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar/extra")))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/extra")))
       }
 
       "detect extra fields first (when object would otherwise be detected as empty)" in {
         val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "baz": { "extra": "x" } }""")
 
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/baz/extra")))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/baz/extra")))
       }
     }
   }

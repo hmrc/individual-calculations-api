@@ -30,11 +30,8 @@ import v9.createAmendProvisionalFiguresInformation.model.request.{
 
 import java.time.Clock
 
-class CreateAmendProvisionalFiguresInformationValidator(nino: String,
-                                                        taxYear: String,
-                                                        body: JsValue,
-                                                        temporalValidationEnabled: Boolean,
-                                                        clock: Clock = Clock.systemUTC)
+class CreateAmendProvisionalFiguresInformationValidator(nino: String, taxYear: String, body: JsValue, temporalValidationEnabled: Boolean)(implicit
+    clock: Clock = Clock.systemUTC)
     extends Validator[CreateAmendProvisionalFiguresInformationRequestData] {
 
   private val minimumTaxYear: TaxYear = TaxYear.fromMtd("2026-27")
@@ -45,12 +42,14 @@ class CreateAmendProvisionalFiguresInformationValidator(nino: String,
   private val resolveTaxYear =
     ResolveDetailedTaxYear(minimumTaxYear = minimumTaxYear, allowIncompleteTaxYear = !temporalValidationEnabled)(clock)
 
+  private val rulesValidator = new CreateAmendProvisionalFiguresInformationRulesValidator()
+
   def validate: Validated[Seq[MtdError], CreateAmendProvisionalFiguresInformationRequestData] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       resolveJson(body)
     ).mapN(CreateAmendProvisionalFiguresInformationRequestData.apply)
-      .andThen(CreateAmendProvisionalFiguresInformationRulesValidator.validateBusinessRules(_, clock))
+      .andThen(rulesValidator.validateBusinessRules)
 
 }

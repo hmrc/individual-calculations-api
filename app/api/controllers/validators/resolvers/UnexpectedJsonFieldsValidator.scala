@@ -18,7 +18,7 @@ package api.controllers.validators.resolvers
 
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.domain.TaxYear
-import api.models.errors.RuleIncorrectOrEmptyBodySubmittedError
+import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.utils.Logging
 import play.api.libs.json.{JsArray, JsObject, JsValue}
 
@@ -35,7 +35,7 @@ class UnexpectedJsonFieldsValidator[A](using extraPathChecker: SchemaStructureSo
       case Nil => None
       case paths =>
         logger.warn(s"Request body failed validation with errors - Unexpected fields: $paths")
-        Some(Seq(RuleIncorrectOrEmptyBodySubmittedError.withPaths(paths)))
+        Some(Seq(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
     }
   }
 

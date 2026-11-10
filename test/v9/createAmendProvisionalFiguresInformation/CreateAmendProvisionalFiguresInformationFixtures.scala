@@ -50,10 +50,20 @@ object CreateAmendProvisionalFiguresInformationFixtures {
     """.stripMargin
   )
 
+  val validMinimumDownstreamRequestJson: JsValue = Json.obj(
+    "pfIndicator" -> true
+  )
+
   val validRequestBody: CreateAmendProvisionalFiguresInformationRequestBody = CreateAmendProvisionalFiguresInformationRequestBody(
     provisionalFiguresIndicator = true,
     expectedDate = Some(expectedDate),
     supplementaryInformation = Some("Provisional figures used pending final confirmation.")
+  )
+
+  val validMinimumRequestBody: CreateAmendProvisionalFiguresInformationRequestBody = CreateAmendProvisionalFiguresInformationRequestBody(
+    provisionalFiguresIndicator = true,
+    expectedDate = None,
+    supplementaryInformation = None
   )
 
   val nino: Nino       = Nino("AA123456A")
@@ -63,6 +73,12 @@ object CreateAmendProvisionalFiguresInformationFixtures {
     nino,
     taxYear,
     validRequestBody
+  )
+
+  val validMinimumRequestData: CreateAmendProvisionalFiguresInformationRequestData = CreateAmendProvisionalFiguresInformationRequestData(
+    nino,
+    taxYear,
+    validMinimumRequestBody
   )
 
 }

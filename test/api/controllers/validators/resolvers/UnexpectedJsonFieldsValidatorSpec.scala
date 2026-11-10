@@ -19,7 +19,7 @@ package api.controllers.validators.resolvers
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructure.{Arr, Leaf}
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.domain.TaxYear
-import api.models.errors.RuleIncorrectOrEmptyBodySubmittedError
+import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.utils.UnitSpec
 import play.api.libs.json.{JsObject, Json}
 
@@ -40,7 +40,7 @@ class UnexpectedJsonFieldsValidatorSpec extends UnitSpec {
 
   val validator = new UnexpectedJsonFieldsValidator[Foo]
 
-  private def errorWithPaths(paths: String*) = Some(Seq(RuleIncorrectOrEmptyBodySubmittedError.withPaths(paths)))
+  private def errorWithPaths(paths: String*) = Some(Seq(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
 
   "UnexpectedJsonFieldsValidator" when {
     "there are no extra fields" must {

@@ -21,7 +21,10 @@ import play.api.libs.json.Json
 import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{
   validDownstreamRequestJson,
   validMtdRequestJson,
-  validRequestBody
+  validMinimumMtdRequestJson,
+  validMinimumDownstreamRequestJson,
+  validRequestBody,
+  validMinimumRequestBody
 }
 import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestBody
 
@@ -36,6 +39,28 @@ class CreateAmendProvisionalFiguresInformationRequestBodySpec extends UnitSpec {
   "writes" should {
     "write to json" in {
       Json.toJson(validRequestBody) shouldBe validDownstreamRequestJson
+    }
+  }
+
+  "minimum request body (provisionalFiguresIndicator only)" should {
+    "read from json" in {
+      validMinimumMtdRequestJson.as[CreateAmendProvisionalFiguresInformationRequestBody] shouldBe validMinimumRequestBody
+    }
+
+    "write to json" in {
+      Json.toJson(validMinimumRequestBody) shouldBe validMinimumDownstreamRequestJson
+    }
+  }
+
+  "JsError" should {
+    "return error when mandatory field provisionalFiguresIndicator is missing" in {
+      val provisionalFiguresIndicatorIsMissing = Json.obj(
+        "expectedDate"             -> "2027-10-05",
+        "supplementaryInformation" -> "Provisional figures used pending final confirmation."
+      )
+
+      val result = provisionalFiguresIndicatorIsMissing.validate[CreateAmendProvisionalFiguresInformationRequestBody]
+      result.isError shouldBe true
     }
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package api.controllers.validators.resolvers
 
-import api.models.errors.RuleIncorrectOrEmptyBodySubmittedError
+import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
@@ -43,32 +43,32 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
     }
 
     "an empty object is passed" must {
-      "return an RuleIncorrectOrEmptyBodySubmittedError" in {
-        resolver(JsObject.empty) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      "return an RuleIncorrectOrEmptyBodyError" in {
+        resolver(JsObject.empty) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
       }
     }
 
     "a string is passed" must {
-      "return an RuleIncorrectOrEmptyBodySubmittedErrorr" in {
-        resolver(JsString("someString")) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      "return an RuleIncorrectOrEmptyBodyErrorr" in {
+        resolver(JsString("someString")) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
       }
     }
 
     "a boolean is passed" must {
-      "return an RuleIncorrectOrEmptyBodySubmittedError" in {
-        resolver(JsBoolean(true)) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      "return an RuleIncorrectOrEmptyBodyError" in {
+        resolver(JsBoolean(true)) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
       }
     }
 
     "an array is passed" must {
-      "return an RuleIncorrectOrEmptyBodySubmittedError" in {
-        resolver(JsArray(Seq.empty)) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      "return an RuleIncorrectOrEmptyBodyError" in {
+        resolver(JsArray(Seq.empty)) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
       }
     }
 
     "an Null is passed" must {
-      "return an RuleIncorrectOrEmptyBodySubmittedError" in {
-        resolver(JsNull) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError))
+      "return an RuleIncorrectOrEmptyBodyError" in {
+        resolver(JsNull) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError))
       }
     }
 
@@ -77,7 +77,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with path to the missing field" in {
           val json = Json.parse("""{ "bars": []}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar")))
         }
       }
 
@@ -85,7 +85,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with path to the missing field" in {
           val json = Json.parse("""{ "bar": {"field1" : "field one" }, "bars": []}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar/field2")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/field2")))
         }
       }
 
@@ -93,7 +93,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with path to the missing field" in {
           val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "bars": [{"field1" : "field one" }]}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bars/0/field2")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bars/0/field2")))
         }
       }
 
@@ -101,7 +101,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with paths to the missing fields" in {
           val json = Json.parse("""{ "bar": {}, "bars": []}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPaths(Seq("/bar/field1", "/bar/field2"))))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPaths(Seq("/bar/field1", "/bar/field2"))))
         }
       }
     }
@@ -111,7 +111,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with path to the bad field" in {
           val json = Json.parse("""{ "bar": true, "bars": []}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar")))
         }
       }
 
@@ -119,7 +119,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with path to the bad field" in {
           val json = Json.parse("""{ "bar": {"field1" : "field one", "field2": 2 }, "bars": []}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bar/field2")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/field2")))
         }
       }
 
@@ -128,7 +128,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
           val json =
             Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "bars": [{"field1" : "field one", "field2": 2 }]}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/bars/0/field2")))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bars/0/field2")))
         }
       }
 
@@ -136,7 +136,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with paths to the bad fields" in {
           val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "bars": [{"field1" : 2, "field2": 2 }]}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPaths(Seq("/bars/0/field1", "/bars/0/field2"))))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPaths(Seq("/bars/0/field1", "/bars/0/field2"))))
         }
       }
     }
@@ -146,7 +146,7 @@ class ResolveJsonObjectInternalSpec extends UnitSpec with JsonErrorValidators {
         "return an error with paths to all problematic fields" in {
           val json = Json.parse("""{  "bars": [{"field1" : "field one", "field2": 2 }]}""")
 
-          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPaths(Seq("/bar", "/bars/0/field2"))))
+          resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPaths(Seq("/bar", "/bars/0/field2"))))
         }
       }
     }

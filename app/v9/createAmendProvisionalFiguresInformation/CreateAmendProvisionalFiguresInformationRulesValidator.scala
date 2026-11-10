@@ -17,12 +17,13 @@
 package v9.createAmendProvisionalFiguresInformation
 
 import api.controllers.validators.RulesValidator
+import api.controllers.validators.resolvers.ResolveStringPattern
 import api.models.errors.{
-  FormatExpectedDateError,
-  FormatSupplementaryInformationError,
+  ExpectedDateFormatError,
   MtdError,
   RuleExpectedDateNotInFutureError,
-  RuleProvisionalFiguresIndicatorInvalidError
+  RuleProvisionalFiguresIndicatorInvalidError,
+  SupplementaryInformationFormatError
 }
 import cats.data.Validated
 import cats.data.Validated.Invalid
@@ -31,28 +32,23 @@ import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProv
 import java.time.format.DateTimeParseException
 import java.time.{Clock, LocalDate}
 
-object CreateAmendProvisionalFiguresInformationRulesValidator extends RulesValidator[CreateAmendProvisionalFiguresInformationRequestData] {
+class CreateAmendProvisionalFiguresInformationRulesValidator(implicit clock: Clock = Clock.systemUTC)
+    extends RulesValidator[CreateAmendProvisionalFiguresInformationRequestData] {
 
-  private val expectedDatePath                = "/expectedDate"
-  private val supplementaryInformationPath    = "/supplementaryInformation"
-  private val provisionalFiguresIndicatorPath = "/provisionalFiguresIndicator"
-  private val expectedDateFormat              = """[0-9]{4}-[0-9]{2}-[0-9]{2}""".r
-  private val supplementaryInformationFormat  = """[A-Za-z0-9 &'"()*,./@£-]{1,4000}""".r
+  private val expectedDatePath                    = "/expectedDate"
+  private val supplementaryInformationPath        = "/supplementaryInformation"
+  private val provisionalFiguresIndicatorPath     = "/provisionalFiguresIndicator"
+  private val expectedDateFormat                  = """[0-9]{4}-[0-9]{2}-[0-9]{2}""".r
+  private val supplementaryInformationRegexFormat = """[A-Za-z0-9 &'"()*,./@£-]{1,4000}""".r
 
   override def validateBusinessRules(
       parsed: CreateAmendProvisionalFiguresInformationRequestData
-  ): Validated[Seq[MtdError], CreateAmendProvisionalFiguresInformationRequestData] =
-    validateBusinessRules(parsed, Clock.systemUTC)
-
-  def validateBusinessRules(
-      parsed: CreateAmendProvisionalFiguresInformationRequestData,
-      clock: Clock
   ): Validated[Seq[MtdError], CreateAmendProvisionalFiguresInformationRequestData] = {
     val body = parsed.body
 
     combine(
       validateProvisionalFiguresIndicator(body.provisionalFiguresIndicator),
-      validateExpectedDate(body.expectedDate, clock),
+      validateExpectedDate(body.expectedDate),
       validateSupplementaryInformation(body.supplementaryInformation)
     ).onSuccess(parsed)
   }
@@ -61,12 +57,12 @@ object CreateAmendProvisionalFiguresInformationRulesValidator extends RulesValid
     if (indicator) valid
     else Invalid(Seq(RuleProvisionalFiguresIndicatorInvalidError.withPath(provisionalFiguresIndicatorPath)))
 
-  private def validateExpectedDate(expectedDate: Option[String], clock: Clock): Validated[Seq[MtdError], Unit] =
+  private def validateExpectedDate(expectedDate: Option[String]): Validated[Seq[MtdError], Unit] =
     expectedDate match {
       case None => valid
       case Some(value) =>
         parseExpectedDate(value) match {
-          case None => Invalid(Seq(FormatExpectedDateError.withPath(expectedDatePath)))
+          case None => Invalid(Seq(ExpectedDateFormatError.withPath(expectedDatePath)))
           case Some(date) if !date.isAfter(LocalDate.now(clock)) =>
             Invalid(Seq(RuleExpectedDateNotInFutureError.withPath(expectedDatePath)))
           case Some(_) => valid
@@ -83,11 +79,10 @@ object CreateAmendProvisionalFiguresInformationRulesValidator extends RulesValid
       }
     }
 
-  private def validateSupplementaryInformation(information: Option[String]): Validated[Seq[MtdError], Unit] =
-    information match {
-      case None                                                                                => valid
-      case Some(value) if value.trim.nonEmpty && supplementaryInformationFormat.matches(value) => valid
-      case Some(_) => Invalid(Seq(FormatSupplementaryInformationError.withPath(supplementaryInformationPath)))
-    }
+  private def validateSupplementaryInformation(supplementaryInformation: Option[String]): Validated[Seq[MtdError], Unit] =
+    ResolveStringPattern(
+      supplementaryInformation,
+      supplementaryInformationRegexFormat,
+      SupplementaryInformationFormatError.withPath(supplementaryInformationPath)).map(_ => ())
 
 }

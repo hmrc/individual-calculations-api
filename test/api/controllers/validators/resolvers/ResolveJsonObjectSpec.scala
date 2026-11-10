@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package api.controllers.validators.resolvers
 
-import api.models.errors.RuleIncorrectOrEmptyBodySubmittedError
+import api.models.errors.RuleIncorrectOrEmptyBodyError
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
 import cats.data.Validated.{Invalid, Valid}
@@ -41,7 +41,7 @@ class ResolveJsonObjectSpec extends UnitSpec with ResolverSupport with JsonError
       "a required field is missing" in {
         val json = Json.parse("""{ "field1" : "field one" }""")
 
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/field2")))
+        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/field2")))
       }
     }
   }
@@ -68,7 +68,7 @@ class ResolveJsonObjectSpec extends UnitSpec with ResolverSupport with JsonError
     "detect extra fields in the input" in {
       val json = Json.parse("""{ "extra":123 , "field1" : "field one", "field2" : "field two" }""")
 
-      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodySubmittedError.withPath("/extra")))
+      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/extra")))
     }
   }
 

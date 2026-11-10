@@ -31,9 +31,9 @@ object FormatCalculationTypeError extends MtdError("FORMAT_CALCULATION_TYPE", "T
 
 object FinalDeclarationFormatError extends MtdError("FORMAT_FINAL_DECLARATION", "The provided finalDeclaration is invalid", BAD_REQUEST)
 
-object FormatExpectedDateError extends MtdError("FORMAT_EXPECTED_DATE", "The provided expectedDate is invalid", BAD_REQUEST)
+object ExpectedDateFormatError extends MtdError("FORMAT_EXPECTED_DATE", "The provided expectedDate is invalid", BAD_REQUEST)
 
-object FormatSupplementaryInformationError
+object SupplementaryInformationFormatError
     extends MtdError("FORMAT_SUPPLEMENTARY_INFORMATION", "The provided supplementaryInformation is invalid", BAD_REQUEST)
 
 //Standard Errors
@@ -124,7 +124,7 @@ object RuleOutsideAmendmentWindowError extends MtdError("RULE_OUTSIDE_AMENDMENT_
 
 object RuleExpectedDateNotInFutureError extends MtdError("RULE_EXPECTED_DATE_NOT_IN_FUTURE", "The expectedDate must be in the future", BAD_REQUEST)
 
-object RuleIncorrectOrEmptyBodySubmittedError
+object RuleIncorrectOrEmptyBodyError
     extends MtdError("RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED", "An empty or non-matching body was submitted", BAD_REQUEST)
 
 object RuleProvisionalFiguresIndicatorInvalidError

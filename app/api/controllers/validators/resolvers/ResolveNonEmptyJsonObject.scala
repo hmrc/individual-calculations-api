@@ -17,7 +17,7 @@
 package api.controllers.validators.resolvers
 
 import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
-import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodySubmittedError}
+import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
 import api.utils.EmptyPathsResult.*
 import api.utils.{EmptinessChecker, Logging}
 import cats.data.Validated
@@ -35,10 +35,10 @@ private object ResolveNonEmptyJsonObject extends ResolverSupport with Logging {
 
   private def nonEmptyValidator[A: EmptinessChecker]: Validator[A] = { data =>
     EmptinessChecker.findEmptyPaths(data) match {
-      case CompletelyEmpty => Some(List(RuleIncorrectOrEmptyBodySubmittedError))
+      case CompletelyEmpty => Some(List(RuleIncorrectOrEmptyBodyError))
       case EmptyPaths(paths) =>
         logger.warn(s"Request body failed validation with errors - Empty object or array: $paths")
-        Some(List(RuleIncorrectOrEmptyBodySubmittedError.withPaths(paths)))
+        Some(List(RuleIncorrectOrEmptyBodyError.withPaths(paths)))
       case NoEmptyPaths => None
     }
   }
