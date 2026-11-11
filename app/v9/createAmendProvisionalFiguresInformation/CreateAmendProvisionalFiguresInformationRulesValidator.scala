@@ -79,10 +79,10 @@ class CreateAmendProvisionalFiguresInformationRulesValidator(implicit clock: Clo
       }
     }
 
-  private def validateSupplementaryInformation(supplementaryInformation: Option[String]): Validated[Seq[MtdError], Unit] =
+  private def validateSupplementaryInformation(supplementaryInformation: Option[String]): Validated[Seq[MtdError], Option[String]] =
     ResolveStringPattern(
       supplementaryInformation,
       supplementaryInformationRegexFormat,
-      SupplementaryInformationFormatError.withPath(supplementaryInformationPath)).map(_ => ())
+      SupplementaryInformationFormatError.withPath(supplementaryInformationPath))
 
 }

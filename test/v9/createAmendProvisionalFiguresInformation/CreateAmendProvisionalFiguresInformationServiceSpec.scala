@@ -20,24 +20,15 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v9.createAmendProvisionalFiguresInformation.model.request.{
-  CreateAmendProvisionalFiguresInformationRequestBody,
-  CreateAmendProvisionalFiguresInformationRequestData
-}
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.validRequestBody
+import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
 
 import scala.concurrent.Future
 
 class CreateAmendProvisionalFiguresInformationServiceSpec extends ServiceSpec {
 
-  private val body: CreateAmendProvisionalFiguresInformationRequestBody =
-    CreateAmendProvisionalFiguresInformationRequestBody(
-      provisionalFiguresIndicator = true,
-      expectedDate = Some("2027-10-05"),
-      supplementaryInformation = Some("Provisional figures are being confirmed.")
-    )
-
   private val request: CreateAmendProvisionalFiguresInformationRequestData =
-    CreateAmendProvisionalFiguresInformationRequestData(Nino("AA123456A"), TaxYear.fromMtd("2026-27"), body)
+    CreateAmendProvisionalFiguresInformationRequestData(Nino("AA123456A"), TaxYear.fromMtd("2026-27"), validRequestBody)
 
   "CreateAmendProvisionalFiguresInformationService" should {
     "return a success response" when {
