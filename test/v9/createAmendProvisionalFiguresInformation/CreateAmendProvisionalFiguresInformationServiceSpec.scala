@@ -1,0 +1,71 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v9.createAmendProvisionalFiguresInformation
+
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
+import api.services.ServiceSpec
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.validRequestBody
+import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
+
+import scala.concurrent.Future
+
+class CreateAmendProvisionalFiguresInformationServiceSpec extends ServiceSpec {
+
+  private val request: CreateAmendProvisionalFiguresInformationRequestData =
+    CreateAmendProvisionalFiguresInformationRequestData(Nino("AA123456A"), TaxYear.fromMtd("2026-27"), validRequestBody)
+
+  "CreateAmendProvisionalFiguresInformationService" should {
+    "return a success response" when {
+      "the connector call is successful" in new Test {
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
+
+        MockCreateAmendProvisionalFiguresInformationConnector.createAmendProvisionalFiguresInformation(request).returns(Future.successful(outcome))
+
+        await(service.createAmendProvisionalFiguresInformation(request)) shouldBe outcome
+      }
+    }
+
+    "map errors according to spec" when {
+      def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
+        s"a $downstreamErrorCode error is returned from the service" in new Test {
+          MockCreateAmendProvisionalFiguresInformationConnector
+            .createAmendProvisionalFiguresInformation(request)
+            .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
+
+          await(service.createAmendProvisionalFiguresInformation(request)) shouldBe Left(ErrorWrapper(correlationId, error))
+        }
+
+      val errors = List(
+        "1215" -> NinoFormatError,
+        "1117" -> TaxYearFormatError,
+        "1216" -> InternalError,
+        "1000" -> InternalError,
+        "1285" -> RuleExpectedDateNotInFutureError,
+        "4200" -> RuleOutsideAmendmentWindowError
+      )
+
+      errors.foreach(args => serviceError.tupled(args))
+    }
+  }
+
+  private trait Test extends MockCreateAmendProvisionalFiguresInformationConnector {
+    val service: CreateAmendProvisionalFiguresInformationService = new CreateAmendProvisionalFiguresInformationService(mockConnector)
+  }
+
+}
