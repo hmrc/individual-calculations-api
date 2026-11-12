@@ -27,7 +27,12 @@
       "$ref": "#/definitions/pensionContributionAndCharges"
     },
     "other": {
-      "$ref": "#/definitions/other"
+      "$ref": "#/definitions/other",
+    {{#if (enabled 'r23_upload_docs')}},
+    },
+    "attachments": {
+      "$ref": "#/definitions/attachments"
+    {{/if}}
     }
   },
   "additionalProperties": false,
@@ -562,6 +567,33 @@
         "additionalProperties": false,
         "required": [
           "type"
+        ]
+      }
+    },
+    "attachments": {
+      "description": "{{#unless (releasedInProduction \"r23_upload_docs\")}}[Test only] {{/unless}}Array of attachments associated with the calculation submission.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "documentName": {
+            "description": "The name of the uploaded document.",
+            "type": "string",
+            "example": "name.pdf"
+          },
+          "uploadTimestamp": {
+            "description": "The date and time when the information was received, in ISO 8601 UTC format: YYYY-MM-DDThh:mm:ss.SSSZ.",
+            "allOf": [
+              {
+                "$ref": "#/definitions/timestamp"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "documentName",
+          "uploadTimestamp"
         ]
       }
     },
