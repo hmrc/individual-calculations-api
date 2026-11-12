@@ -28,7 +28,7 @@
     },
     "other": {
       "$ref": "#/definitions/other"
-    {{#if (enabled 'r23_upload_docs')}},
+    {{#if (enabled 'r23_upload_docs')}}
     },
     "attachments": {
       "$ref": "#/definitions/attachments"
@@ -571,7 +571,7 @@
       }
     },
     "attachments": {
-      "description": "{{#unless (releasedInProduction \"r23_upload_docs\")}}[Test only] {{/unless}}Array of attachments associated with the calculation submission.",
+      "description": "{{#unless (releasedInProduction "r23_upload_docs")}}[Test only] {{/unless}}Array of attachments associated with the calculation submission.",
       "type": "array",
       "items": {
         "type": "object",
