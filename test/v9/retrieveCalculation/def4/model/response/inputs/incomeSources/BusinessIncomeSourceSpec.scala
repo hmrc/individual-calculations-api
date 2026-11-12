@@ -37,12 +37,11 @@ class BusinessIncomeSourceSpec extends UnitSpec {
        |  "cessationDate": "2019-04-05",
        |  "latestPeriodEndDate": "2019-04-05",
        |  "latestReceivedDateTime": "2019-04-05T09:30:00Z",
-       |  "submissionPeriod":
-       |  {
-       |  "submissionId": "001",
-       |  "startDate": "2018-04-06",
-       |  "endDate": "2019-04-05",
-       |  "receivedDateTime": "2019-04-05T09:30:00Z"
+       |  "submissionPeriod": {
+       |    "submissionId": "001",
+       |    "startDate": "2018-04-06",
+       |    "endDate": "2019-04-05",
+       |    "receivedDateTime": "2019-04-05T09:30:00Z"
        |  }
        |}
     """.stripMargin
