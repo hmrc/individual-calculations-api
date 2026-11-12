@@ -93,4 +93,17 @@ components:
         example: "-"
       required: false
 
+    suspendTemporalValidationsHeader:
+      name: "suspend-temporal-validations"
+      in: header
+      description: |
+        Only in the sandbox environment. When supplied and set to `true`, this header relaxes tax year validation rule to 
+        allow in-year submissions for endpoints configured for end-of-year submissions. Not supplying the header or setting 
+        it to `false` results in a `RULE_TAX_YEAR_NOT_ENDED` error for in-year submissions. In Production, the header is
+        ignored and normal validations apply.
+      schema:
+        type: boolean
+        example: true
+      required: false
+
 
