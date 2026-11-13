@@ -1,0 +1,5 @@
+get:
+  $ref: "./tax_liability_summary_retrieve.yaml"
+  security:
+    - User-Restricted:
+        - read:self-assessment

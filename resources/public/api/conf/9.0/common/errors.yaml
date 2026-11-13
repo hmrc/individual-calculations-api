@@ -16,14 +16,14 @@ components:
         The format of the supplied NINO field is not valid.
       value:
         code: FORMAT_NINO
-        message: The provided NINO is invalid
+        message: The NINO format is invalid
 
     formatTaxYear:
       description: |
         The format of the supplied taxYear value is not valid.
       value:
         code: FORMAT_TAX_YEAR
-        message: The provided tax year is invalid
+        message: The provided tax year format is invalid
 
     formatCalculationType:
       description: |
@@ -48,8 +48,7 @@ components:
 
     ruleTaxYearNotSupported:
       description: |
-        The specified tax year is not supported. 
-        Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+        The specified tax year is not supported. The tax year specified is before the minimum tax year value.
       value:
         code: RULE_TAX_YEAR_NOT_SUPPORTED
         message: The tax year specified does not lie within the supported range
@@ -58,14 +57,14 @@ components:
       description: Tax year range invalid. A tax year range of one year is required.
       value:
         code: RULE_TAX_YEAR_RANGE_INVALID
-        message: Tax year range invalid. A tax year range of one year is required
+        message: A tax year range of one year is required
 
     formatCalculationId:
       description: |
-        Invalid Calculation ID.
+        The format of the supplied calculation ID is not valid.
       value:
         code: FORMAT_CALCULATION_ID
-        message: The provided calculationId is invalid
+        message: The provided calculation ID is invalid
 
     ruleNoIncomeSubmissionExists:
       description: A calculation could not be performed because no income data has been submitted against the tax year.
@@ -197,6 +196,13 @@ components:
         code: RULE_CALCULATION_TYPE_NOT_ALLOWED
         message: The provided calculation type is not applicable for this tax year
 
+    ruleCalculationTypeNotSupported:
+      description: |
+        A tax liability summary is not available for the type of calculation supplied. It is only available for intent-to-finalise, declare-finalisation, intent-to-amend and confirm-amendment calculations.
+      value:
+        code: RULE_CALCULATION_TYPE_NOT_SUPPORTED
+        message: The calculation type is not supported for this endpoint
+
     triggerRuleDeclarationNotReceived:
       description: |
         The remote endpoint has indicated that this action cannot be completed as the final declaration has not been received.
@@ -248,12 +254,11 @@ components:
     # 403
     clientOrAgentNotAuthorised:
       description: |
-        The client and/or agent is not authorised. 
-        This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, 
-        or the client has not authorised the agent to act on their behalf.
+        The client or agent is not authorised. This is because: the client is not subscribed to MTD,
+        the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
       value:
         code: CLIENT_OR_AGENT_NOT_AUTHORISED
-        message: The client and/or agent is not authorised
+        message: The client or agent is not authorised
 
     # 404
     notFound:
