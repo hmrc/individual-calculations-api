@@ -109,6 +109,14 @@
         "type": "codingOut",
         "submittedOn": "2025-04-06T09:35:15.094Z"
       }
+    {{#if (enabled 'r23_upload_docs')}},
+    ],
+    "attachments": [
+      {
+        "documentName": "name.pdf",
+        "uploadTimestamp": "2026-11-12T09:14:29.418Z"
+      }
+    {{/if}}
     ]
   },
   "calculation": {

@@ -106,6 +106,13 @@
         "type": "codingOut",
         "submittedOn": "2021-12-02T15:25:48Z"
       }
+    ],
+    "attachments": [
+      {
+        "fileName": "name.pdf",
+        "storeId": "abcdef123456",
+        "uploadTimestamp": "2026-11-12T09:14:29.418Z"
+      }
     ]
   },
   "calculation": {
