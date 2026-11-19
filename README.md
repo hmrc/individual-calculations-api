@@ -31,6 +31,12 @@ Run unit tests: `sbt test`
 
 Run integration tests: `sbt it/test`
 
+## Schema definitions
+
+V8 and V9 use a single schema for triggering a calculation and submitting a final declaration.
+Tax-year-based downstream routing and validation still apply. Multiple schema definitions are
+retained only where downstream requires different schema behaviour between tax years.
+
 ## View OpenAPI Specification (OAS) documentation
 
 To view the OpenAPI documentation locally, ensure the API is running.

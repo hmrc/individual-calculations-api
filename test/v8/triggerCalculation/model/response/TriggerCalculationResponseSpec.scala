@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package v8.triggerCalculation.def1.model.response
+package v8.triggerCalculation.model.response
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsValue, Json}
-import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
 
-class Def1_TriggerCalculationResponseSpec extends UnitSpec {
+class TriggerCalculationResponseSpec extends UnitSpec {
   private val calculationId                                       = "testId"
-  val triggerCalculationResponseModel: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
+  val triggerCalculationResponseModel: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
 
   val downstreamResponseJson: JsValue = Json.parse(
     s"""
@@ -43,13 +42,23 @@ class Def1_TriggerCalculationResponseSpec extends UnitSpec {
   "TriggerCalculationResponse" when {
     "read from valid JSON from the downstream response" should {
       "produce the expected TriggerCalculationResponse object" in {
-        downstreamResponseJson.as[Def1_TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
+        downstreamResponseJson.as[TriggerCalculationResponse] shouldBe triggerCalculationResponseModel
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
         Json.toJson(triggerCalculationResponseModel) shouldBe vendorResponseJson
+      }
+    }
+
+    "read from invalid downstream JSON" should {
+      "reject a missing calculation ID" in {
+        Json.obj().validate[TriggerCalculationResponse].isError shouldBe true
+      }
+
+      "reject a calculation ID that is not a string" in {
+        Json.obj("id" -> 123).validate[TriggerCalculationResponse].isError shouldBe true
       }
     }
   }

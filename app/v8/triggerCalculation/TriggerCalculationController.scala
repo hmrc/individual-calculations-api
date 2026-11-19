@@ -23,7 +23,6 @@ import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.{IdGenerator, Logging}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents}
-import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -54,8 +53,7 @@ class TriggerCalculationController @Inject() (val authService: EnrolmentsAuthSer
       val validator = validatorFactory.validator(
         nino,
         taxYear,
-        calculationType,
-        TriggerCalculationSchema.schemaFor(taxYear)
+        calculationType
       )
 
       val requestHandler =

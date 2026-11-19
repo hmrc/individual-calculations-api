@@ -17,25 +17,12 @@
 package v9.triggerCalculation.model.response
 
 import play.api.libs.json.*
-import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 
-sealed trait TriggerCalculationResponse {
-  val calculationId: String
-}
+case class TriggerCalculationResponse(calculationId: String)
 
 object TriggerCalculationResponse {
 
-  implicit val vendorWrites: OWrites[TriggerCalculationResponse] = { case def1: Def1_TriggerCalculationResponse =>
-    Json.toJsObject(def1)
-  }
-
-}
-
-case class Def1_TriggerCalculationResponse(calculationId: String) extends TriggerCalculationResponse
-
-object Def1_TriggerCalculationResponse {
-
-  implicit val reads: Reads[Def1_TriggerCalculationResponse]    = (JsPath \ "id").read[String].map(Def1_TriggerCalculationResponse.apply)
-  implicit val writes: OWrites[Def1_TriggerCalculationResponse] = Json.writes[Def1_TriggerCalculationResponse]
+  implicit val reads: Reads[TriggerCalculationResponse]    = (JsPath \ "id").read[String].map(TriggerCalculationResponse.apply)
+  implicit val writes: OWrites[TriggerCalculationResponse] = Json.writes[TriggerCalculationResponse]
 
 }

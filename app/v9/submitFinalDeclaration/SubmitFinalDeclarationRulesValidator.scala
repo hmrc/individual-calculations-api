@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v8.submitFinalDeclaration.def1
+package v9.submitFinalDeclaration
 
 import api.controllers.validators.RulesValidator
 import api.models.errors.{MtdError, RuleSubmissionFailedError}
 import cats.data.Validated
 import cats.data.Validated.Invalid
-import v8.common.model.domain.`confirm-amendment`
-import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
+import v9.common.model.domain.`confirm-amendment`
+import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
-object Def1_SubmitFinalDeclarationRulesValidator extends RulesValidator[Def1_SubmitFinalDeclarationRequestData] {
+object SubmitFinalDeclarationRulesValidator extends RulesValidator[SubmitFinalDeclarationRequestData] {
 
-  def validateBusinessRules(parsed: Def1_SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Def1_SubmitFinalDeclarationRequestData] = {
+  def validateBusinessRules(parsed: SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] = {
 
-    def validatedCalculationType(request: Def1_SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Unit] = {
+    def validatedCalculationType(request: SubmitFinalDeclarationRequestData): Validated[Seq[MtdError], Unit] = {
       request.calculationType match {
         case `confirm-amendment` if request.taxYear.year < 2026 => Invalid(Seq(RuleSubmissionFailedError))
         case _                                                  => valid

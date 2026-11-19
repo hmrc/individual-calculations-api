@@ -17,18 +17,14 @@
 package v8.triggerCalculation
 
 import api.controllers.validators.Validator
-import v8.triggerCalculation.def1.Def1_TriggerCalculationValidator
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
-import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 import javax.inject.Singleton
 
 @Singleton
 class TriggerCalculationValidatorFactory {
 
-  def validator(nino: String, taxYear: String, calculationType: String, schema: TriggerCalculationSchema): Validator[TriggerCalculationRequestData] =
-    schema match {
-      case TriggerCalculationSchema.Def1 => new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
-    }
+  def validator(nino: String, taxYear: String, calculationType: String): Validator[TriggerCalculationRequestData] =
+    new TriggerCalculationValidator(nino, taxYear, calculationType)
 
 }

@@ -22,12 +22,9 @@ import v8.common.model.domain.CalculationType
 import v8.retrieveCalculation.models.request.*
 import v8.retrieveCalculation.schema.RetrieveCalculationSchema
 
-sealed trait SubmitFinalDeclarationRequestData {
-  val nino: Nino
-  val taxYear: TaxYear
-  val calculationId: CalculationId
-  val calculationType: CalculationType
-  def toNrsJson: JsValue
+case class SubmitFinalDeclarationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId, calculationType: CalculationType) {
+
+  def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 
   def toRetrieveRequestData: RetrieveCalculationRequestData =
     RetrieveCalculationSchema.schemaFor(taxYear) match {
@@ -37,9 +34,4 @@ sealed trait SubmitFinalDeclarationRequestData {
       case RetrieveCalculationSchema.Def4 => Def4_RetrieveCalculationRequestData(nino, taxYear, calculationId)
     }
 
-}
-
-case class Def1_SubmitFinalDeclarationRequestData(nino: Nino, taxYear: TaxYear, calculationId: CalculationId, calculationType: CalculationType)
-    extends SubmitFinalDeclarationRequestData {
-  def toNrsJson: JsValue = Json.obj("calculationId" -> calculationId.calculationId)
 }

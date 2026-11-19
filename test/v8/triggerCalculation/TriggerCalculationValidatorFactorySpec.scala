@@ -18,25 +18,24 @@ package v8.triggerCalculation
 
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
-import v8.triggerCalculation.def1.Def1_TriggerCalculationValidator
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
-import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 class TriggerCalculationValidatorFactorySpec extends UnitSpec {
 
-  private val validNino    = "ZG903729C"
-  private val validTaxYear = "2017-18"
+  private val validNino = "ZG903729C"
 
   val validatorFactory = new TriggerCalculationValidatorFactory
 
   "validator()" when {
 
     "given any request regardless of tax year" should {
-      "return the Validator for schema definition 1" in {
-        val result: Validator[TriggerCalculationRequestData] =
-          validatorFactory.validator(validNino, validTaxYear, "IY", TriggerCalculationSchema.Def1)
+      Seq("2017-18", "2023-24", "2025-26", "2026-27", "invalid").foreach { taxYear =>
+        s"return the validator for tax year $taxYear" in {
+          val result: Validator[TriggerCalculationRequestData] =
+            validatorFactory.validator(validNino, taxYear, "in-year")
 
-        result.shouldBe(a[Def1_TriggerCalculationValidator])
+          result.shouldBe(a[TriggerCalculationValidator])
+        }
       }
     }
 

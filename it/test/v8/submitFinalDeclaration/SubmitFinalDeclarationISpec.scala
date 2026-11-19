@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v8.submitFinalDeclaration.def1
+package v8.submitFinalDeclaration
 
 import api.models.domain.TaxYear
 import api.models.errors.*
@@ -27,7 +27,7 @@ import play.api.libs.ws.*
 import play.api.libs.ws.WSBodyWritables.writeableOf_WsBody
 import play.api.test.Helpers.{ACCEPT, AUTHORIZATION}
 
-class Def1_SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
+class SubmitFinalDeclarationISpec extends IntegrationBaseSpec {
 
   "Calling the submit final declaration endpoint" should {
     "return a 204 status code" when {

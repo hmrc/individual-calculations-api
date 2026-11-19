@@ -33,7 +33,7 @@ import v9.retrieveCalculation.MockRetrieveCalculationService
 import v9.retrieveCalculation.def1.model.Def1_CalculationFixture
 import v9.retrieveCalculation.models.request.Def1_RetrieveCalculationRequestData
 import v9.retrieveCalculation.models.response.Def1_RetrieveCalculationResponse
-import v9.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
+import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -53,7 +53,7 @@ class NrsProxyServiceSpec extends ServiceSpec with NrsFixture with Def1_Calculat
   private val retrieveDetailsRequestData       = Def1_RetrieveCalculationRequestData(Nino(nino), taxYear, calculationId)
   private val retrieveDetailsResponseData      = minimalCalculationR8bResponse
 
-  val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
+  val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
     Nino(nino),
     taxYear,
     calculationId,

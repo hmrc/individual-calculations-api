@@ -18,14 +18,11 @@ package v9.submitFinalDeclaration
 
 import api.controllers.validators.Validator
 import api.utils.UnitSpec
-import v9.submitFinalDeclaration.def1.Def1_SubmitFinalDeclarationValidator
 import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
 
   private val validNino          = "ZG903729C"
-  private val taxYear            = "2017-18"
-  private val taxYear2526        = "2025-126"
   private val validCalculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val calculationTypeDf  = "final-declaration"
   private val calculationTypeCa  = "confirm-amendment"
@@ -35,17 +32,16 @@ class SubmitFinalDeclarationValidatorFactorySpec extends UnitSpec {
   "validator()" when {
 
     "given any request regardless of tax year" should {
-      "return the Validator for schema definition 1 when calculationType is final-declaration" in {
-        val result: Validator[SubmitFinalDeclarationRequestData] =
-          validatorFactory.validator(validNino, taxYear, validCalculationId, calculationTypeDf, SubmitFinalDeclarationSchema.Def1)
+      for {
+        taxYear         <- Seq("2017-18", "2023-24", "2025-26", "2026-27", "invalid")
+        calculationType <- Seq(calculationTypeDf, calculationTypeCa)
+      } {
+        s"return the validator for tax year $taxYear and calculation type $calculationType" in {
+          val result: Validator[SubmitFinalDeclarationRequestData] =
+            validatorFactory.validator(validNino, taxYear, validCalculationId, calculationType)
 
-        result.shouldBe(a[Def1_SubmitFinalDeclarationValidator])
-      }
-      "return the Validator for schema definition 1 when calculationType is confirm-amendment" in {
-        val result: Validator[SubmitFinalDeclarationRequestData] =
-          validatorFactory.validator(validNino, taxYear2526, validCalculationId, calculationTypeCa, SubmitFinalDeclarationSchema.Def1)
-
-        result.shouldBe(a[Def1_SubmitFinalDeclarationValidator])
+          result.shouldBe(a[SubmitFinalDeclarationValidator])
+        }
       }
     }
   }
