@@ -21,7 +21,7 @@ import api.models.domain.{CalculationId, EmptyJsonBody, Nino, TaxYear}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
 import v9.common.model.domain.{CalculationType, `final-declaration`}
-import v9.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
+import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future
 
@@ -32,7 +32,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
   val calculationId: CalculationId       = CalculationId("4557ecb5-fd32-48cc-81f5-e6acd1099f3c")
   val calculationTypeDf: CalculationType = `final-declaration`
 
-  val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
+  val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
     nino,
     taxYear,
     calculationId,
@@ -66,7 +66,7 @@ class SubmitFinalDeclarationConnectorSpec extends ConnectorSpec {
 
     "return a success response when request is made to IFS downstream API for tax year 2026 or later" in new IfsTest with Test {
       val post2026TaxYear: TaxYear                   = TaxYear.fromMtd("2026-27")
-      val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(nino, post2026TaxYear, calculationId, calculationTypeDf)
+      val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(nino, post2026TaxYear, calculationId, calculationTypeDf)
 
       val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, {}))
 

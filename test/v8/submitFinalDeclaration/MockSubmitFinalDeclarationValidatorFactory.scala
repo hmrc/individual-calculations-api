@@ -26,7 +26,7 @@ trait MockSubmitFinalDeclarationValidatorFactory extends MockValidatorFactory[Su
 
   def validator(): CallHandler[Validator[SubmitFinalDeclarationRequestData]] =
     (mockSubmitFinalDeclarationValidatorFactory
-      .validator(_: String, _: String, _: String, _: String, _: SubmitFinalDeclarationSchema))
-      .expects(*, *, *, *, *)
+      .validator(_: String, _: String, _: String, _: String))
+      .expects(*, *, *, *)
 
 }

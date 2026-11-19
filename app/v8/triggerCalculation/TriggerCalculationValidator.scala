@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,35 @@
  * limitations under the License.
  */
 
-package v9.triggerCalculation.def1
+package v8.triggerCalculation
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.ResolverSupport.*
 import api.controllers.validators.resolvers.{ResolveDetailedTaxYear, ResolveNino}
-import api.models.errors.RuleCalculationTypeNotAllowed
 import api.models.domain.TaxYear
-import api.models.errors.MtdError
+import api.models.errors.{MtdError, RuleCalculationTypeNotAllowed}
 import cats.data.Validated
 import cats.implicits.*
-import v9.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}
-import v9.common.model.resolver.ResolveTriggerCalculationType
-import v9.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
+import v8.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-amend`}
+import v8.common.model.resolver.ResolveTriggerCalculationType
+import v8.triggerCalculation.model.request.TriggerCalculationRequestData
 
-object Def1_TriggerCalculationValidator {
+object TriggerCalculationValidator {
 
   private val triggerCalculationMinimumTaxYear = TaxYear.fromMtd("2017-18")
   private val resolveTaxYear                   = ResolveDetailedTaxYear(triggerCalculationMinimumTaxYear)
 }
 
-class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String) extends Validator[TriggerCalculationRequestData] {
+class TriggerCalculationValidator(nino: String, taxYear: String, calculationType: String) extends Validator[TriggerCalculationRequestData] {
 
-  import Def1_TriggerCalculationValidator.*
+  import TriggerCalculationValidator.*
 
   def validate: Validated[Seq[MtdError], TriggerCalculationRequestData] =
     (
       ResolveNino(nino),
       resolveTaxYear(taxYear),
       ResolveTriggerCalculationType(calculationType)
-    ).mapN(Def1_TriggerCalculationRequestData.apply)
+    ).mapN((nino, taxYear, calculationType) => TriggerCalculationRequestData(nino, taxYear, calculationType))
       .andThen(validateRules)
       .map(provideTysDownstream)
 
@@ -61,7 +60,7 @@ class Def1_TriggerCalculationValidator(nino: String, taxYear: String, calculatio
       }
     }
 
-    Def1_TriggerCalculationRequestData(request.nino, request.taxYear, request.calculationType, tysDownstream)
+    TriggerCalculationRequestData(request.nino, request.taxYear, request.calculationType, tysDownstream)
   }
 
   private val validateRules = {

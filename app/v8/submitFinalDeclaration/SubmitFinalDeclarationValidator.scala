@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v9.submitFinalDeclaration.def1
+package v8.submitFinalDeclaration
 
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveCalculationId, ResolveDetailedTaxYear, ResolveNino}
@@ -22,18 +22,18 @@ import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
 import cats.implicits.*
-import v9.common.model.resolver.ResolveFinalDeclarationCalculationType
-import v9.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
+import v8.common.model.resolver.ResolveFinalDeclarationCalculationType
+import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
-object Def1_SubmitFinalDeclarationValidator {
+object SubmitFinalDeclarationValidator {
   private val submitFinalDeclarationMinimumTaxYear = TaxYear.fromMtd("2017-18")
   private val resolveTaxYear                       = ResolveDetailedTaxYear(submitFinalDeclarationMinimumTaxYear)
 }
 
-class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
+class SubmitFinalDeclarationValidator(nino: String, taxYear: String, calculationId: String, calculationType: String)
     extends Validator[SubmitFinalDeclarationRequestData] {
 
-  import Def1_SubmitFinalDeclarationValidator.*
+  import SubmitFinalDeclarationValidator.*
 
   def validate: Validated[Seq[MtdError], SubmitFinalDeclarationRequestData] =
     (
@@ -41,6 +41,6 @@ class Def1_SubmitFinalDeclarationValidator(nino: String, taxYear: String, calcul
       resolveTaxYear(taxYear),
       ResolveCalculationId(calculationId),
       ResolveFinalDeclarationCalculationType(calculationType)
-    ).mapN(Def1_SubmitFinalDeclarationRequestData.apply) andThen Def1_SubmitFinalDeclarationRulesValidator.validateBusinessRules
+    ).mapN(SubmitFinalDeclarationRequestData.apply) andThen SubmitFinalDeclarationRulesValidator.validateBusinessRules
 
 }

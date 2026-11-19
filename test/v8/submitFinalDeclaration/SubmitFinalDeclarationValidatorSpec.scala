@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v8.submitFinalDeclaration.def1
+package v8.submitFinalDeclaration
 
 import api.models.domain.{CalculationId, Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
 import v8.common.model.domain.{CalculationType, `confirm-amendment`, `final-declaration`}
-import v8.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
+import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
-class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
+class SubmitFinalDeclarationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
@@ -39,19 +39,18 @@ class Def1_SubmitFinalDeclarationValidatorSpec extends UnitSpec {
   private val parsedConfirmAmendment: CalculationType        = `confirm-amendment`
 
   private def validator(nino: String, taxYear: String, calculationId: String, calculationType: String) =
-    new Def1_SubmitFinalDeclarationValidator(nino, taxYear, calculationId, calculationType)
+    new SubmitFinalDeclarationValidator(nino, taxYear, calculationId, calculationType)
 
   "running a validation" should {
     "return the parsed domain object" when {
       "a valid request is supplied with final-declaration CalculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationId, validFinalDeclaration).validateAndWrapResult()
-        result.shouldBe(Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear(), parsedCalculationId, parsedFinalDeclaration)))
+        result.shouldBe(Right(SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear(), parsedCalculationId, parsedFinalDeclaration)))
       }
 
       "a valid request is supplied with confirm-amendment CalculationType" in {
         val result = validator(validNino, "2025-26", validCalculationId, validConfirmAmendment).validateAndWrapResult()
-        result.shouldBe(
-          Right(Def1_SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear("2025-26"), parsedCalculationId, parsedConfirmAmendment)))
+        result.shouldBe(Right(SubmitFinalDeclarationRequestData(parsedNino, parsedTaxYear("2025-26"), parsedCalculationId, parsedConfirmAmendment)))
       }
     }
 

@@ -19,13 +19,12 @@ package v8.triggerCalculation
 import api.controllers.validators.{MockValidatorFactory, Validator}
 import org.scalamock.handlers.CallHandler
 import v8.triggerCalculation.model.request.TriggerCalculationRequestData
-import v8.triggerCalculation.schema.TriggerCalculationSchema
 
 trait MockTriggerCalculationValidatorFactory extends MockValidatorFactory[TriggerCalculationRequestData] {
 
   val mockTriggerCalculationValidatorFactory: TriggerCalculationValidatorFactory = mock[TriggerCalculationValidatorFactory]
 
   def validator(): CallHandler[Validator[TriggerCalculationRequestData]] =
-    (mockTriggerCalculationValidatorFactory.validator(_: String, _: String, _: String, _: TriggerCalculationSchema)).expects(*, *, *, *)
+    (mockTriggerCalculationValidatorFactory.validator(_: String, _: String, _: String)).expects(*, *, *)
 
 }

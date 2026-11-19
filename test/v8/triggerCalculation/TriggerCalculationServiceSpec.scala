@@ -21,8 +21,8 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import v8.common.model.domain.{Pre24Downstream, `intent-to-amend`}
-import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v8.triggerCalculation.model.request.TriggerCalculationRequestData
+import v8.triggerCalculation.model.response.TriggerCalculationResponse
 
 import scala.concurrent.Future
 
@@ -32,9 +32,9 @@ class TriggerCalculationServiceSpec extends ServiceSpec {
 
   val taxYear: TaxYear = TaxYear.fromDownstream("2020")
 
-  val request: TriggerCalculationRequestData = Def1_TriggerCalculationRequestData(nino, taxYear, `intent-to-amend`, Pre24Downstream)
+  val request: TriggerCalculationRequestData = TriggerCalculationRequestData(nino, taxYear, `intent-to-amend`, Pre24Downstream)
 
-  val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
+  val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 
   trait Test extends MockTriggerCalculationConnector {
     val service = new TriggerCalculationService(mockConnector)

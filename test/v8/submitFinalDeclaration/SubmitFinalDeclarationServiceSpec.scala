@@ -21,7 +21,7 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
 import v8.common.model.domain.{CalculationType, `final-declaration`}
-import v8.submitFinalDeclaration.model.request.{Def1_SubmitFinalDeclarationRequestData, SubmitFinalDeclarationRequestData}
+import v8.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.Future
 
@@ -42,7 +42,7 @@ class SubmitFinalDeclarationServiceSpec extends ServiceSpec {
     val calculationId: CalculationId     = CalculationId("a1e8057e-fbbc-47a8-a8b4-78d9f015c253")
     val calculationType: CalculationType = `final-declaration`
 
-    val request: SubmitFinalDeclarationRequestData = Def1_SubmitFinalDeclarationRequestData(
+    val request: SubmitFinalDeclarationRequestData = SubmitFinalDeclarationRequestData(
       nino,
       taxYear,
       calculationId,

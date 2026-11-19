@@ -27,7 +27,6 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import v9.common.model.domain.{Either24or25Downstream, Post26Downstream, Pre24Downstream, `intent-to-finalise`}
 import v9.triggerCalculation.model.request.TriggerCalculationRequestData
 import v9.triggerCalculation.model.response.TriggerCalculationResponse
-import v9.triggerCalculation.schema.TriggerCalculationSchema.Def1.DownstreamResp
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -49,17 +48,17 @@ class TriggerCalculationConnector @Inject() (val http: HttpClientV2, val appConf
         implicit val successCode: SuccessCode = SuccessCode(Status.OK)
         val path = s"income-tax/nino/$nino/taxYear/${taxYear.asDownstream}/tax-calculation?crystallise=$crystallisationFlag"
         val downstreamUrl =
-          IfsUri[DownstreamResp](path)
+          IfsUri[TriggerCalculationResponse](path)
         post(JsObject.empty, downstreamUrl)
       case Either24or25Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
         val downstreamUrl =
-          IfsUri[DownstreamResp](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
+          IfsUri[TriggerCalculationResponse](s"income-tax/calculation/${taxYear.asTysDownstream}/$nino?crystallise=$crystallisationFlag")
         post(JsObject.empty, downstreamUrl)
       case Post26Downstream =>
         implicit val successCode: SuccessCode = SuccessCode(Status.ACCEPTED)
         val downstreamUrl =
-          IfsUri[DownstreamResp](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
+          IfsUri[TriggerCalculationResponse](s"income-tax/${taxYear.asTysDownstream}/calculation/$nino/${calculationType.toDownstream}")
         post(JsObject.empty, downstreamUrl)
     }
   }

@@ -22,8 +22,8 @@ import api.models.outcomes.ResponseWrapper
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.StringContextOps
 import v8.common.model.domain.*
-import v8.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v8.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v8.triggerCalculation.model.request.TriggerCalculationRequestData
+import v8.triggerCalculation.model.response.TriggerCalculationResponse
 
 import java.net.URL
 import scala.concurrent.Future
@@ -32,7 +32,7 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
 
   val ninoString: String                   = "ZG903729C"
   val nino: Nino                           = Nino(ninoString)
-  val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse("someCalcId")
+  val response: TriggerCalculationResponse = TriggerCalculationResponse("someCalcId")
 
   def api1426Url(intentToFinalise: String): URL =
     url"$baseUrl/income-tax/nino/$ninoString/taxYear/2019/tax-calculation?crystallise=$intentToFinalise"
@@ -51,34 +51,34 @@ class TriggerCalculationConnectorSpec extends ConnectorSpec {
   "connector" when {
     "triggering an in-year calculation in a 2024 or 2025 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `in-year`, Either24or25Downstream)
+        TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `in-year`, Either24or25Downstream)
       makeRequestWithIFSEnabled(request, api1897Url("false"))
     }
     "triggering an intent-to-finalise calculation in a 2024 or 2025 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `intent-to-finalise`, Either24or25Downstream)
+        TriggerCalculationRequestData(nino, TaxYear.fromMtd("2023-24"), `intent-to-finalise`, Either24or25Downstream)
       makeRequestWithIFSEnabled(request, api1897Url("true"))
     }
     "triggering an in-year calculation in a post 2026 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `in-year`, Post26Downstream)
+        TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `in-year`, Post26Downstream)
       makeRequestWithIFSEnabled(request, api2081Url("IY"))
     }
     "triggering an intent-to-finalise calculation in a post 2026 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-finalise`, Post26Downstream)
+        TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-finalise`, Post26Downstream)
       makeRequestWithIFSEnabled(request, api2081Url("IF"))
     }
     "triggering an intent-to-amend calculation in a post 2026 tax year" must {
       val request: TriggerCalculationRequestData =
-        Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-amend`, Post26Downstream)
+        TriggerCalculationRequestData(nino, TaxYear.fromMtd("2025-26"), `intent-to-amend`, Post26Downstream)
       makeRequestWithIFSEnabled(request, api2081Url("IA"))
     }
 
     "triggering a calculation for Pre24Downstream when migration is enabled" must {
       "use IfsUri" in new IfsTest with Test {
-        val request: Def1_TriggerCalculationRequestData =
-          Def1_TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
+        val request: TriggerCalculationRequestData =
+          TriggerCalculationRequestData(nino, TaxYear.fromMtd("2018-19"), `in-year`, Pre24Downstream)
 
         val expectedUrl: URL                                                             = api1426Url("false")
         val expectedOutcome: Right[Nothing, ResponseWrapper[TriggerCalculationResponse]] = Right(ResponseWrapper(correlationId, response))

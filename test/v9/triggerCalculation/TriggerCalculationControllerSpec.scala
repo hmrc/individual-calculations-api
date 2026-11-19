@@ -28,8 +28,8 @@ import play.api.Configuration
 import play.api.libs.json.*
 import play.api.mvc.Result
 import v9.common.model.domain.{Pre24Downstream, `confirm-amendment`}
-import v9.triggerCalculation.model.request.{Def1_TriggerCalculationRequestData, TriggerCalculationRequestData}
-import v9.triggerCalculation.model.response.{Def1_TriggerCalculationResponse, TriggerCalculationResponse}
+import v9.triggerCalculation.model.request.TriggerCalculationRequestData
+import v9.triggerCalculation.model.response.TriggerCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,13 +48,13 @@ class TriggerCalculationControllerSpec
   private val rawTaxYear = taxYear.asMtd
 
   val requestDataWithFinalDeclaration: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
+    TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
 
   val requestDataWithFinalDeclarationFalse: TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
+    TriggerCalculationRequestData(Nino(nino), taxYear, `confirm-amendment`, Pre24Downstream)
 
   private val calculationId                        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val response: TriggerCalculationResponse = Def1_TriggerCalculationResponse(calculationId)
+  private val response: TriggerCalculationResponse = TriggerCalculationResponse(calculationId)
 
   private val responseJson: JsValue = Json
     .parse(

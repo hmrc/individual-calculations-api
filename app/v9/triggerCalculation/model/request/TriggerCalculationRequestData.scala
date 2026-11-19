@@ -18,25 +18,8 @@ package v9.triggerCalculation.model.request
 
 import api.models.domain.{Nino, TaxYear}
 import v9.common.model.domain.{CalculationType, Post26Downstream, TysDownstream}
-import v9.triggerCalculation.schema.TriggerCalculationSchema
 
-sealed trait TriggerCalculationRequestData {
-  val nino: Nino
-  val taxYear: TaxYear
-  val calculationType: CalculationType
-  val tysDownstream: TysDownstream
-
-  val schema: TriggerCalculationSchema
-}
-
-case class Def1_TriggerCalculationRequestData(nino: Nino, taxYear: TaxYear, calculationType: CalculationType, tysDownstream: TysDownstream)
-    extends TriggerCalculationRequestData {
-  override val schema: TriggerCalculationSchema = TriggerCalculationSchema.Def1
-}
-
-object Def1_TriggerCalculationRequestData {
-
-  def apply(nino: Nino, taxYear: TaxYear, calculationType: CalculationType): TriggerCalculationRequestData =
-    Def1_TriggerCalculationRequestData(nino, taxYear, calculationType, Post26Downstream)
-
-}
+case class TriggerCalculationRequestData(nino: Nino,
+                                         taxYear: TaxYear,
+                                         calculationType: CalculationType,
+                                         tysDownstream: TysDownstream = Post26Downstream)

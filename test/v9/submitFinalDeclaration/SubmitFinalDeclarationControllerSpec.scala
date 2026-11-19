@@ -34,7 +34,7 @@ import play.api.mvc.Result
 import v9.common.model.domain.{CalculationType, `final-declaration`}
 import v9.retrieveCalculation.MockRetrieveCalculationService
 import v9.retrieveCalculation.def1.model.Def1_CalculationFixture
-import v9.submitFinalDeclaration.model.request.Def1_SubmitFinalDeclarationRequestData
+import v9.submitFinalDeclaration.model.request.SubmitFinalDeclarationRequestData
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -64,7 +64,7 @@ class SubmitFinalDeclarationControllerSpec
     PatienceConfig(timeout = scaled(5.seconds), interval = scaled(25.milliseconds))
 
   private val requestData =
-    Def1_SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId), calculationType)
+    SubmitFinalDeclarationRequestData(Nino(nino), TaxYear.fromMtd(taxYear), CalculationId(calculationId), calculationType)
 
   "SubmitFinalDeclarationController" should {
     "return a successful response" when {

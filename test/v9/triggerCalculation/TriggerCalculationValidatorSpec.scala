@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package v9.triggerCalculation.def1
+package v9.triggerCalculation
 
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
 import v9.common.model.domain.*
-import v9.triggerCalculation.model.request.Def1_TriggerCalculationRequestData
+import v9.triggerCalculation.model.request.TriggerCalculationRequestData
 
-class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
+class TriggerCalculationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
 
@@ -40,13 +40,13 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
   )
 
   private def validator(nino: String, taxYear: String, calculationType: String) =
-    new Def1_TriggerCalculationValidator(nino, taxYear, calculationType)
+    new TriggerCalculationValidator(nino, taxYear, calculationType)
 
   "validator" should {
     "return the parsed domain object" when {
       "a valid request is supplied with calculationType" in {
         val result = validator(validNino, validTaxYear, validCalculationType).validateAndWrapResult()
-        result.shouldBe(Right(Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Pre24Downstream)))
+        result.shouldBe(Right(TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Pre24Downstream)))
       }
     }
 
@@ -56,7 +56,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
       val result        = validator(validNino, taxYearStr, validCalculationType).validateAndWrapResult()
       result.shouldBe(
         Right(
-          Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Either24or25Downstream)
+          TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Either24or25Downstream)
         ))
     }
 
@@ -66,7 +66,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
       val result        = validator(validNino, taxYearStr, validCalculationType).validateAndWrapResult()
       result.shouldBe(
         Right(
-          Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Post26Downstream)
+          TriggerCalculationRequestData(parsedNino, parsedTaxYear, `in-year`, Post26Downstream)
         ))
     }
 
@@ -77,7 +77,7 @@ class Def1_TriggerCalculationValidatorSpec extends UnitSpec {
         val result        = validator(validNino, taxYearStr, calcTypeStr).validateAndWrapResult()
         result.shouldBe(
           Right(
-            Def1_TriggerCalculationRequestData(parsedNino, parsedTaxYear, calcType, Post26Downstream)
+            TriggerCalculationRequestData(parsedNino, parsedTaxYear, calcType, Post26Downstream)
           ))
       }
     }
