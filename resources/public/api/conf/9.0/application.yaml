@@ -57,6 +57,9 @@ tags:
         - list self-assessment tax calculations for a given National Insurance number (NINO) and tax year
         - trigger a self-assessment tax calculation for a given tax year
         - retrieve all the tax calculation data for a given NINO and Calculation ID
+        {{#if (enabled "r23_tax_liability_summary_docs")}}
+        - retrieve a summary of the tax liability for a given NINO, tax year and Calculation ID
+        {{/if}}
   - name: Final Declaration
     description: |
       **Final declaration was previously called crystallisation.**
@@ -86,6 +89,10 @@ paths:
     $ref: "./list.yaml"
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}:
     $ref: "./retrieve.yaml"
+  {{#if (enabled "r23_tax_liability_summary_docs")}}
+  /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/tax-liability-summary:
+    $ref: "./tax_liability_summary.yaml"
+  {{/if}}
   /individuals/calculations/{nino}/self-assessment/{taxYear}/{calculationId}/{calculationType}:
     $ref: "./submit_final_declaration.yaml"
   {{#if (enabled "r23_1885_docs")}}

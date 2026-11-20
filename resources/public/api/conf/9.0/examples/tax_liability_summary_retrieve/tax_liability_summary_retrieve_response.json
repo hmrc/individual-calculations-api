@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+    "taxYear": "2026-27",
+    "calculationReason": "customer-request",
+    "calculationTimestamp": "2027-05-14T09:35:15.094Z",
+    "calculationType": "intent-to-finalise",
+    "taxRegime": "uk",
+    "uniqueTaxpayerReference": "1234567890"
+  },
+  "taxCalculation": {
+    "incomeReceived": {
+      "employments": {
+        "payFromAllEmployments": 5000.99,
+        "benefitsAndExpensesReceived": 5000.99,
+        "allowableExpenses": 5000.99,
+        "totalFromAllEmployments": 12500
+      },
+      "shareSchemes": 5000.99,
+      "profitFromSelfEmployment": 12500,
+      "profitFromPartnerships": 5000.99,
+      "interestFromPartnerships": 5000.99,
+      "dividendsFromPartnerships": 5000.99,
+      "profitFromUkLandAndProperty": 12500,
+      "foreignProperty": 12500,
+      "foreignIncome": 5000.99,
+      "dividendsFromForeignCompanies": 12500,
+      "foreignSavings": 12500,
+      "foreignGainsOnLifeInsurancePoliciesWithTaxPaid": 12500,
+      "interestFromUkBanksBuildingSocietiesAndSecurities": 12500,
+      "dividendsFromUkCompanies": 12500,
+      "ukPensionsAndStateBenefits": 5000.99,
+      "gainsOnLifeInsurancePolicies": 12500,
+      "gainsOnLifeInsurancePoliciesWithTaxPaid": 12500,
+      "otherIncome": 5000.99,
+      "redundancyLumpSumsAndCompensation": 5000.99,
+      "totalIncomeReceived": 12500
+    },
+    "allowancesAndDeductions": {
+      "paymentsIntoRetirementAnnuityContract": 5000.99,
+      "incomeTaxRelief": 12500,
+      "capitalGainsLosses": 12500,
+      "tradeUnionDeathBenefitsPayments": 5000.99,
+      "postCessationTradeReceipts": 5000.99,
+      "qualifyingLoanInterestPayments": 5000.99,
+      "annuities": 5000.99,
+      "giftOfInvestmentsAndPropertyToCharity": 12500,
+      "personalAllowance": 12500,
+      "reducedPersonalAllowance": 12500,
+      "marriageAllowanceTransfer": 5000.99,
+      "totalAllowancesAndDeductions": 12500
+    },
+    "totalTaxableIncomeDue": 12500,
+    "incomeTax": {
+      "basicRateLimitExtension": {
+        "extendedBasicRateLimit": 5000.99,
+        "pensionPayments": 5000.99,
+        "giftAidPayments": 12500
+      },
+      "payPensionsAndProfit": {
+        "taxBands": [
+          {
+            "name": "basic-rate",
+            "rate": 20.0,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "savingsInterestFromBanksBuildingSocietiesAndSecurities": {
+        "taxBands": [
+          {
+            "name": "basic-rate",
+            "rate": 20.0,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "dividendsFromCompanies": {
+        "taxBands": [
+          {
+            "name": "basic-rate",
+            "rate": 20.0,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "redundancyLumpSumsAndCompensation": {
+        "taxBands": [
+          {
+            "name": "basic-rate",
+            "rate": 20.0,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "gainsOnLifeInsurancePoliciesWithTaxPaid": {
+        "taxBands": [
+          {
+            "name": "basic-rate",
+            "rate": 20.0,
+            "income": 12500,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "totalChargedTaxableIncome": 12500,
+      "incomeTaxDueAfterAllowancesAndReliefs": 5000.99,
+      "taxDueOnTransitionProfit": 5000.99,
+      "totalIncomeTaxDueAfterAllowancesAndReliefs": 5000.99,
+      "taxReductions": {
+        "deficiencyRelief": 5000.99,
+        "topSlicingRelief": 5000.99,
+        "ventureCapitalTrustRelief": 5000.99,
+        "enterpriseInvestmentSchemeRelief": 5000.99,
+        "seedEnterpriseInvestmentSchemeRelief": 5000.99,
+        "communityInvestmentTaxRelief": 5000.99,
+        "maintenanceAndAlimonyPaid": 5000.99,
+        "marriageAllowanceTransferDetails": {
+          "amount": 5000.99,
+          "rate": 20.0,
+          "marriageAllowanceRelief": 5000.99
+        },
+        "reliefForFinanceCosts": {
+          "amount": 5000.99,
+          "rate": 20.0,
+          "totalResidentialFinanceCostsRelief": 5000.99
+        },
+        "reliefForLoanInterestFromInvestments": 5000.99,
+        "basicRateDifferenceTaxReduction": 5000.99,
+        "foreignTaxCreditRelief": 5000.99,
+        "reliefClaimedOnQualifyingDistribution": 5000.99,
+        "notionalTaxFromGainsOnLifePolicies": 5000.99,
+        "incomeTaxDueAfterTaxReductions": 5000.99
+      },
+      "taxChargesAndAdjustments": {
+        "giftAid": {
+          "incomeTaxDueOnGiftAidPayments": 5000.99,
+          "rate": 20.0,
+          "grossGiftAidPayments": 12500
+        },
+        "basicRateDifferenceTaxCharge": 5000.99,
+        "pensionSavingsTaxCharges": {
+          "totalPensionSavingsCharges": 5000.99,
+          "totalTaxPaid": 5000.99,
+          "grossPensionCharges": 5000.99
+        },
+        "statePensionLumpSum": {
+          "amount": 5000.99,
+          "rate": 20.0,
+          "statePensionLumpSumCharges": 5000.99
+        },
+        "highIncomeChildBenefitCharge": 5000.99,
+        "underpaidTaxForEarlierYears": 5000.99
+      },
+      "incomeTaxLiability": 5000.99,
+      "incomeTaxDue": 5000.99
+    },
+    "nics": {
+      "totalClass2AndClass4NicsDue": 5000.99,
+      "class4Nics": {
+        "totalClass4NicsDue": 5000.99,
+        "nic4Bands": [
+          {
+            "rate": 20.0,
+            "income": 12500,
+            "amount": 5000.99
+          }
+        ]
+      },
+      "class2Nics": {
+        "totalClass2NicsDue": 5000.99
+      }
+    },
+    "studentLoanRepayments": [
+      {
+        "planType": "plan1",
+        "amount": 5000.99
+      }
+    ],
+    "taxDueOnAnnuityAndRoyaltyPayments": 5000.99,
+    "taxDeducted": {
+      "payeTax": {
+        "fromAllEmploymentsUkPensionsAndStateBenefits": 5000.99,
+        "saUnderpaymentsCodedOut": 5000.99,
+        "balanceOfPayeTax": 5000.99
+      },
+      "stateBenefits": 5000.99,
+      "cisAndTradingIncome": 5000.99,
+      "partnerships": 5000.99,
+      "ukLandAndProperty": 5000.99,
+      "foreignIncome": 5000.99,
+      "interestReceivedFromUkBanksAndBuildingSocieties": 5000.99,
+      "voidIsas": 5000.99,
+      "underpaidTaxIncludedInLaterTaxCode": 5000.99,
+      "totalTaxDeducted": 5000.99
+    },
+    "incomeTaxOverpaid": 5000.99,
+    "incomeTaxAndClass2NicsDue": 5000.99,
+    "incomeTaxAndClass4NicsDue": 5000.99,
+    "incomeTaxClass2AndClass4NicsDue": 5000.99,
+    "totalIncomeTaxDue": 5000.99,
+    "capitalGainsTax": {
+      "businessAssetDisposalAndInvestorsRelief": {
+        "taxableGains": 5000.99,
+        "rate": 20.0,
+        "taxAmount": 5000.99
+      },
+      "residentialProperty": {
+        "cgtTaxBands": [
+          {
+            "name": "lower-rate",
+            "rate": 20.0,
+            "income": 5000.99,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "otherGains": {
+        "cgtTaxBands": [
+          {
+            "name": "lower-rate",
+            "rate": 20.0,
+            "income": 5000.99,
+            "taxAmount": 5000.99
+          }
+        ]
+      },
+      "taxableCapitalGains": 5000.99,
+      "cgtAmount": 5000.99,
+      "cgtAdjustment": 5000.99,
+      "cgtDue": 5000.99,
+      "foreignTaxCreditReliefOnCapitalGains": 5000.99,
+      "cgtLiability": 5000.99,
+      "taxOnCapitalGainsAlreadyPaid": 5000.99,
+      "totalCgtDue": 5000.99,
+      "cgtOverpaid": 5000.99
+    },
+    "incomeTaxCgtAndClass2NicsDue": 5000.99,
+    "incomeTaxCgtAndClass4NicsDue": 5000.99,
+    "incomeTaxCgtClass2AndClass4NicsDue": 5000.99,
+    "incomeTaxAndCgtDue": 5000.99,
+    "totalTaxOverpaid": 5000.99,
+    "totalTaxAndNicsDue": 5000.99,
+    "totalTaxDue": 5000.99
+  },
+  "messages": {
+    "info": [
+      {
+        "id": "C22201",
+        "text": "Your Basic Rate limit has been increased by £1,250.00 to £38,950.00 for Gift Aid payments."
+      }
+    ]
+  }
+}
