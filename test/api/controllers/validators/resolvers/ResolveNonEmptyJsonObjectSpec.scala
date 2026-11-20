@@ -124,25 +124,6 @@ class ResolveNonEmptyJsonObjectSpec extends UnitSpec with ResolverSupport with J
         instance(json) shouldBe Valid(Foo(bar = Bar("field one", "field two")))
       }
     }
-
-    "the strict resolver is used" must {
-      val resolver = ResolveNonEmptyJsonObject.strictResolver[Foo]
-
-      behave like jsonObjectResolver(resolver)
-      behave like jsonObjectResolverWithEmptinessChecking(resolver)
-
-      "detect extra fields in the input" in {
-        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two", "extra": "x" }}""")
-
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/bar/extra")))
-      }
-
-      "detect extra fields first (when object would otherwise be detected as empty)" in {
-        val json = Json.parse("""{ "bar": {"field1" : "field one", "field2" : "field two" }, "baz": { "extra": "x" } }""")
-
-        resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/baz/extra")))
-      }
-    }
   }
 
 }

@@ -16,7 +16,6 @@
 
 package api.controllers.validators.resolvers
 
-import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.errors.MtdError
 import api.utils.Logging
 import cats.data.Validated
@@ -32,10 +31,5 @@ class ResolveJsonObject[T](implicit val reads: Reads[T]) extends ResolverSupport
 object ResolveJsonObject extends ResolverSupport {
 
   def resolver[A: Reads]: Resolver[JsValue, A] = ResolveJsonObjectInternal.resolver.map(_._2)
-
-  /** Gets a resolver that also validates for unexpected JSON fields
-    */
-  def strictResolver[A: Reads: SchemaStructureSource]: Resolver[JsValue, A] =
-    ResolveJsonObjectInternal.resolver.thenValidate(UnexpectedJsonFieldsValidator.validator).map(_._2)
 
 }

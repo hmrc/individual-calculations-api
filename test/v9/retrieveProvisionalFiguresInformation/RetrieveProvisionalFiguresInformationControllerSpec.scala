@@ -17,15 +17,13 @@
 package v9.retrieveProvisionalFiguresInformation
 
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{TaxYear, Timestamp}
+import api.models.domain.TaxYear
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
-import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.mvc.Result
+import v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationFixtures.{responseModel, responseMtdJson}
 import v9.retrieveProvisionalFiguresInformation.model.request.RetrieveProvisionalFiguresInformationRequestData
-import v9.retrieveProvisionalFiguresInformation.model.response.RetrieveProvisionalFiguresInformationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -48,24 +46,9 @@ class RetrieveProvisionalFiguresInformationControllerSpec
 
         MockRetrieveProvisionalFiguresInformationService
           .retrieveProvisionalFiguresInformation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(
-            correlationId,
-            RetrieveProvisionalFiguresInformationResponse(
-              submittedOn = Timestamp("2027-08-24T14:15:22.544Z"),
-              provisionalFiguresIndicator = true,
-              expectedDate = Some("2027-10-05"),
-              supplementaryInformation = Some("Provisional figures used pending final confirmation.")
-            )
-          ))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, responseModel))))
 
-        val expectedResponseBody: JsObject = Json.obj(
-          "submittedOn"                 -> "2027-08-24T14:15:22.544Z",
-          "provisionalFiguresIndicator" -> true,
-          "expectedDate"                -> "2027-10-05",
-          "supplementaryInformation"    -> "Provisional figures used pending final confirmation."
-        )
-
-        runOkTestWithAudit(expectedStatus = OK, maybeExpectedResponseBody = Some(expectedResponseBody))
+        runOkTest(expectedStatus = OK, maybeExpectedResponseBody = Some(responseMtdJson))
       }
     }
 
@@ -73,7 +56,7 @@ class RetrieveProvisionalFiguresInformationControllerSpec
       "the parser validation fails" in new Test {
         willUseValidator(returning(NinoFormatError))
 
-        runErrorTestWithAudit(NinoFormatError)
+        runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
@@ -83,19 +66,18 @@ class RetrieveProvisionalFiguresInformationControllerSpec
           .retrieveProvisionalFiguresInformation(requestData)
           .returns(Future.successful(Left(ErrorWrapper(correlationId, TaxYearFormatError))))
 
-        runErrorTestWithAudit(TaxYearFormatError)
+        runErrorTest(TaxYearFormatError)
       }
     }
   }
 
-  private trait Test extends ControllerTest with AuditEventChecking[GenericAuditDetail] {
+  private trait Test extends ControllerTest {
 
     val controller: RetrieveProvisionalFiguresInformationController = new RetrieveProvisionalFiguresInformationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       service = mockRetrieveProvisionalFiguresInformationService,
       validatorFactory = mockRetrieveProvisionalFiguresInformationValidatorFactory,
-      auditService = mockAuditService,
       cc = cc,
       idGenerator = mockIdGenerator
     )
@@ -107,21 +89,6 @@ class RetrieveProvisionalFiguresInformationControllerSpec
     MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] = controller.retrieveProvisionalFiguresInformation(validNino, taxYear)(fakeRequest)
-
-    protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[GenericAuditDetail] =
-      AuditEvent(
-        auditType = "RetrieveProvisionalFiguresInformation",
-        transactionName = "retrieve-provisional-figures-information",
-        detail = GenericAuditDetail(
-          userType = "Individual",
-          agentReferenceNumber = None,
-          versionNumber = apiVersion.name,
-          params = Map("nino" -> validNino, "taxYear" -> taxYear),
-          requestBody = maybeRequestBody,
-          `X-CorrelationId` = correlationId,
-          auditResponse = auditResponse
-        )
-      )
 
   }
 

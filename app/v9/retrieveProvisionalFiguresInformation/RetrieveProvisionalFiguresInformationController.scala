@@ -18,8 +18,7 @@ package v9.retrieveProvisionalFiguresInformation
 
 import api.config.AppConfig
 import api.controllers.*
-import api.routing.Version
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.IdGenerator
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 
@@ -31,7 +30,6 @@ class RetrieveProvisionalFiguresInformationController @Inject() (val authService
                                                                  val lookupService: MtdIdLookupService,
                                                                  service: RetrieveProvisionalFiguresInformationService,
                                                                  validatorFactory: RetrieveProvisionalFiguresInformationValidatorFactory,
-                                                                 auditService: AuditService,
                                                                  cc: ControllerComponents,
                                                                  idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
@@ -52,13 +50,6 @@ class RetrieveProvisionalFiguresInformationController @Inject() (val authService
           .withValidator(validator)
           .withService(service.retrieveProvisionalFiguresInformation)
           .withPlainJsonResult()
-          .withAuditing(AuditHandler(
-            auditService = auditService,
-            auditType = "RetrieveProvisionalFiguresInformation",
-            transactionName = "retrieve-provisional-figures-information",
-            apiVersion = Version(request),
-            params = Map("nino" -> nino, "taxYear" -> taxYear)
-          ))
 
       requestHandler.handleRequest()
     }

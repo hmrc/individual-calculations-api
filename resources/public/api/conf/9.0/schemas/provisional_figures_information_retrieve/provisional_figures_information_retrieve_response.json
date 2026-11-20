@@ -5,7 +5,7 @@
   "type": "object",
   "properties": {
     "submittedOn": {
-      "description": "The date and time the supplementary information was submitted, in the format YYYY-MM-DDThh:mm:ss.SSSZ",
+      "description": "The date and time the supplementary information was submitted, in the format `YYYY-MM-DDThh:mm:ss.SSSZ`",
       "type": "string",
       "example": "2027-08-24T14:15:22.544Z"
     },
@@ -15,7 +15,7 @@
       "example": true
     },
     "expectedDate": {
-      "description": "The expected date when the final figures will be available. This date must be in the future. Must conform to the format: YYYY-MM-DD",
+      "description": "The expected date when the final figures will be available. This date must be in the future.\n\nMust conform to the format: `YYYY-MM-DD`",
       "type": "string",
       "example": "2027-10-05"
     },

@@ -16,10 +16,11 @@
 
 package v9.retrieveProvisionalFiguresInformation
 
-import api.models.domain.{Nino, TaxYear, Timestamp}
+import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
+import v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationFixtures.responseModel
 import v9.retrieveProvisionalFiguresInformation.model.request.RetrieveProvisionalFiguresInformationRequestData
 import v9.retrieveProvisionalFiguresInformation.model.response.RetrieveProvisionalFiguresInformationResponse
 
@@ -34,16 +35,7 @@ class RetrieveProvisionalFiguresInformationServiceSpec extends ServiceSpec {
     "return a success response" when {
       "the connector call is successful" in new Test {
         val outcome: Right[Nothing, ResponseWrapper[RetrieveProvisionalFiguresInformationResponse]] =
-          Right(
-            ResponseWrapper(
-              correlationId,
-              RetrieveProvisionalFiguresInformationResponse(
-                submittedOn = Timestamp("2027-08-24T14:15:22.544Z"),
-                provisionalFiguresIndicator = true,
-                expectedDate = Some("2027-10-05"),
-                supplementaryInformation = Some("Provisional figures used pending final confirmation.")
-              )
-            ))
+          Right(ResponseWrapper(correlationId, responseModel))
 
         MockRetrieveProvisionalFiguresInformationConnector.retrieveProvisionalFiguresInformation(request).returns(Future.successful(outcome))
 

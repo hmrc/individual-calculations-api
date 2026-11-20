@@ -21,6 +21,7 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
+import v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationFixtures.responseModel
 import v9.retrieveProvisionalFiguresInformation.model.request.RetrieveProvisionalFiguresInformationRequestData
 import v9.retrieveProvisionalFiguresInformation.model.response.RetrieveProvisionalFiguresInformationResponse
 
@@ -38,16 +39,7 @@ class RetrieveProvisionalFiguresInformationConnectorSpec extends ConnectorSpec {
     "return a success response" when {
       "the downstream call is successful" in new HipTest with Test {
         val outcome: Right[Nothing, ResponseWrapper[RetrieveProvisionalFiguresInformationResponse]] =
-          Right(
-            ResponseWrapper(
-              correlationId,
-              RetrieveProvisionalFiguresInformationResponse(
-                submittedOn = api.models.domain.Timestamp("2027-08-24T14:15:22.544Z"),
-                provisionalFiguresIndicator = true,
-                expectedDate = Some("2027-10-05"),
-                supplementaryInformation = Some("Provisional figures used pending final confirmation.")
-              )
-            ))
+          Right(ResponseWrapper(correlationId, responseModel))
 
         willGet(url"$baseUrl/itsd/provisional-figures/$nino?taxYear=26-27")
           .returns(Future.successful(outcome))

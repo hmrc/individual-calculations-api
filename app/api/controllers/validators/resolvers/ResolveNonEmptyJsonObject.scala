@@ -16,7 +16,6 @@
 
 package api.controllers.validators.resolvers
 
-import api.controllers.validators.resolvers.UnexpectedJsonFieldsValidator.SchemaStructureSource
 import api.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
 import api.utils.EmptyPathsResult.*
 import api.utils.{EmptinessChecker, Logging}
@@ -44,10 +43,5 @@ private object ResolveNonEmptyJsonObject extends ResolverSupport with Logging {
   }
 
   def resolver[A: Reads: EmptinessChecker]: Resolver[JsValue, A] = ResolveJsonObject.resolver.thenValidate(nonEmptyValidator)
-
-  /** Gets a resolver that also validates for unexpected JSON fields
-    */
-  def strictResolver[A: Reads: EmptinessChecker: SchemaStructureSource]: Resolver[JsValue, A] =
-    ResolveJsonObject.strictResolver.thenValidate(nonEmptyValidator)
 
 }

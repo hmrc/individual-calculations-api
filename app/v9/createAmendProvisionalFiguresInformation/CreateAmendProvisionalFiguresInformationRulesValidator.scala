@@ -18,13 +18,7 @@ package v9.createAmendProvisionalFiguresInformation
 
 import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.ResolveStringPattern
-import api.models.errors.{
-  ExpectedDateFormatError,
-  MtdError,
-  RuleExpectedDateNotInFutureError,
-  RuleProvisionalFiguresIndicatorInvalidError,
-  SupplementaryInformationFormatError
-}
+import api.models.errors.*
 import cats.data.Validated
 import cats.data.Validated.Invalid
 import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
@@ -32,7 +26,7 @@ import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProv
 import java.time.format.DateTimeParseException
 import java.time.{Clock, LocalDate}
 
-class CreateAmendProvisionalFiguresInformationRulesValidator(implicit clock: Clock = Clock.systemUTC)
+class CreateAmendProvisionalFiguresInformationRulesValidator(implicit clock: Clock)
     extends RulesValidator[CreateAmendProvisionalFiguresInformationRequestData] {
 
   private val expectedDatePath                    = "/expectedDate"
