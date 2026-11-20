@@ -22,21 +22,16 @@ import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.{WSRequest, WSResponse, writeableOf_JsValue}
 import play.api.test.Helpers.*
-import play.api.libs.ws.DefaultBodyReadables.readableAsString
-import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{
-  expectedDate,
-  nino as fixtureNino,
-  taxYear as fixtureTaxYear,
-  validMtdRequestJson
-}
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{expectedDate, validMtdRequestJson}
 
 import scala.math.Ordering.Implicits.infixOrderingOps
 
 class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec {
 
-  private val parsedTaxYear: TaxYear   = fixtureTaxYear
+  private val parsedTaxYear: TaxYear   = TaxYear.fromMtd("2026-27")
   private val notEndedTaxYear: TaxYear = parsedTaxYear.max(TaxYear.currentTaxYear)
   val mtdJson: JsValue                 = validMtdRequestJson
 
@@ -119,6 +114,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
             val response: WSResponse = await(request().put(requestBody))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -170,6 +166,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
             val response: WSResponse = await(request().put(mtdJson))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -188,7 +185,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
   }
 
   private trait Test {
-    val nino: String                       = fixtureNino.nino
+    val nino: String                       = "AA123456A"
     val taxYear: String                    = notEndedTaxYear.asMtd
     val suspendTemporalValidations: String = "true"
 
@@ -206,7 +203,7 @@ class CreateAmendProvisionalFiguresInformationISpec extends IntegrationBaseSpec 
         .withHttpHeaders(
           (ACCEPT, "application/vnd.hmrc.9.0+json"),
           ("suspend-temporal-validations", suspendTemporalValidations),
-          (AUTHORIZATION, "******")
+          (AUTHORIZATION, "Bearer 123")
         )
     }
 

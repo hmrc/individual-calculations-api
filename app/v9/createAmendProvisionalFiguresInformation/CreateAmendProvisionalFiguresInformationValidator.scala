@@ -40,7 +40,7 @@ class CreateAmendProvisionalFiguresInformationValidator(nino: String, taxYear: S
     new ResolveNonEmptyJsonObject[CreateAmendProvisionalFiguresInformationRequestBody]()
 
   private val resolveTaxYear =
-    ResolveDetailedTaxYear(minimumTaxYear = minimumTaxYear, allowIncompleteTaxYear = !temporalValidationEnabled)(clock)
+    ResolveDetailedTaxYear(minimumTaxYear = minimumTaxYear, allowIncompleteTaxYear = !temporalValidationEnabled)
 
   private val rulesValidator = new CreateAmendProvisionalFiguresInformationRulesValidator()
 

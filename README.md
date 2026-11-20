@@ -8,6 +8,7 @@ The Individual Calculations API allows a developer to:
 - trigger a self-assessment tax calculation
 - list all their self-assessment tax calculations for a tax year
 - retrieve their self-assessment tax calculation result using multiple endpoints
+- create or amend, retrieve and delete provisional figures information for a tax return
 
 ## Requirements
 

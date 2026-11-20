@@ -17,15 +17,16 @@
 package v9.retrieveProvisionalFiguresInformation
 
 import api.models.errors.*
-import api.services.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import api.services.{AuthStub, DownstreamStub, MtdIdLookupStub}
 import api.support.IntegrationBaseSpec
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status.*
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.AUTHORIZATION
+import v9.retrieveProvisionalFiguresInformation.RetrieveProvisionalFiguresInformationFixtures.{responseDownstreamJson, responseMtdJson}
 
 class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBaseSpec {
 
@@ -33,7 +34,6 @@ class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBa
     "return a 200 status code" when {
       "a valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
-          AuditStub.audit()
           MtdIdLookupStub.ninoFound(nino)
           AuthStub.authorised()
 
@@ -42,13 +42,13 @@ class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBa
             uri = downstreamUri,
             queryParams = downstreamQueryParams,
             status = OK,
-            body = downstreamJson
+            body = responseDownstreamJson
           )
         }
 
         val response: WSResponse = await(request().get())
         response.status shouldBe OK
-        response.body shouldBe mtdJson.toString()
+        response.body shouldBe responseMtdJson.toString()
         response.header("Content-Type") shouldBe Some("application/json")
         response.header("X-CorrelationId").nonEmpty shouldBe true
       }
@@ -62,7 +62,6 @@ class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBa
             override val taxYear: String = requestTaxYear
 
             override def setupStubs(): StubMapping = {
-              AuditStub.audit()
               MtdIdLookupStub.ninoFound(nino)
               AuthStub.authorised()
             }
@@ -87,7 +86,6 @@ class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBa
         def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit =
           s"downstream returns a code $downstreamCode error and status $downstreamStatus" in new Test {
             override def setupStubs(): StubMapping = {
-              AuditStub.audit()
               MtdIdLookupStub.ninoFound(nino)
               AuthStub.authorised()
 
@@ -148,24 +146,6 @@ class RetrieveProvisionalFiguresInformationControllerISpec extends IntegrationBa
          |  }
          |]
        """.stripMargin
-
-    val downstreamJson: JsValue = Json.parse("""
-        |{
-        |  "submittedOn": "2027-08-24T14:15:22.544Z",
-        |  "pfIndicator": true,
-        |  "dateExpected": "2027-10-05",
-        |  "whiteSpace": "Provisional figures used pending final confirmation."
-        |}
-      """.stripMargin)
-
-    val mtdJson: JsValue = Json.parse("""
-        |{
-        |  "submittedOn": "2027-08-24T14:15:22.544Z",
-        |  "provisionalFiguresIndicator": true,
-        |  "expectedDate": "2027-10-05",
-        |  "supplementaryInformation": "Provisional figures used pending final confirmation."
-        |}
-      """.stripMargin)
 
   }
 

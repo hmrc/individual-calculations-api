@@ -18,6 +18,8 @@ package api.config
 
 import api.utils.UnitSpec
 import play.api.Configuration
+import play.api.mvc.Headers
+import play.api.test.FakeRequest
 
 class FeatureSwitchesSpec extends UnitSpec with FeatureSwitchesBehaviour[FeatureSwitches] {
 
@@ -31,6 +33,50 @@ class FeatureSwitchesSpec extends UnitSpec with FeatureSwitchesBehaviour[Feature
 
   "isReleasedInProduction" should {
     behave like aFeatureSwitchWithKey("some-feature.released-in-production", _.isReleasedInProduction("some-feature"))
+  }
+
+  "isTemporalValidationEnabled" when {
+
+    def configuration(enable: Boolean): Configuration =
+      Configuration("allowTemporalValidationSuspension.enabled" -> enable)
+
+    def requestWith(headers: Headers): FakeRequest[None.type] =
+      FakeRequest("GET", "someUrl", headers, None)
+
+    def headers(suspend: String): Headers = Headers("suspend-temporal-validations" -> suspend)
+
+    "the suspension enabling feature switch is false" should {
+      val fs: FeatureSwitches = featureSwitches(configuration(false))
+
+      "return true even if the suspend header is present and true" in {
+        fs.isTemporalValidationEnabled(requestWith(headers(suspend = "true"))) shouldBe true
+      }
+
+      "return true if the suspend header is not present" in {
+        fs.isTemporalValidationEnabled(requestWith(Headers())) shouldBe true
+      }
+    }
+
+    "the suspension enabling feature switch is true" should {
+      val fs: FeatureSwitches = featureSwitches(configuration(true))
+
+      "return false if the suspend header is present and true" in {
+        fs.isTemporalValidationEnabled(requestWith(headers(suspend = "true"))) shouldBe false
+      }
+
+      "return true if the suspend header is present and false" in {
+        fs.isTemporalValidationEnabled(requestWith(headers(suspend = "false"))) shouldBe true
+      }
+
+      "return true if the suspend header is not present" in {
+        fs.isTemporalValidationEnabled(requestWith(Headers())) shouldBe true
+      }
+
+      "return true if the suspend header is not a valid boolean" in {
+        fs.isTemporalValidationEnabled(requestWith(headers(suspend = "not a boolean"))) shouldBe true
+      }
+    }
+
   }
 
 }

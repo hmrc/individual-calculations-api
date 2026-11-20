@@ -3,11 +3,11 @@ description: |
   This endpoint is used to create or amend provisional figures information to confirm whether provisional figures are included in a tax return and, where applicable, to provide the reason for using them and the expected date when final figures will be available. A National Insurance number and tax year are required. This endpoint can only be used after the tax year has ended.
   
   ### Test data
-  Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+  Scenario simulations using Gov-Test-Scenario headers is only available in the sandbox environment.
+
   | Header Value (Gov-Test-Scenario)      | Scenario                                                                                        |
   |---------------------------------------|-------------------------------------------------------------------------------------------------|
   | N/A - DEFAULT                         | Simulates success response.                                                                     |
-  | NOT_FOUND                             | Simulates the scenario where no data is found.                                                  |
   | OUTSIDE_AMENDMENT_WINDOW              | Simulates the scenario where request cannot be completed as it is outside the amendment window.	|
   | STATEFUL                              | Performs a stateful create or update.                                                           |
   
@@ -19,6 +19,7 @@ parameters:
   - $ref: "./common/pathParameters.yaml#/components/parameters/nino"
   - $ref: "./common/pathParameters.yaml#/components/parameters/taxYearMinimum2027"
   - $ref: "./common/headers.yaml#/components/parameters/acceptJson"
+  - $ref: "./common/headers.yaml#/components/parameters/contentTypeJson"
   - $ref: "./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader"
   - $ref: "./common/headers.yaml#/components/parameters/testScenarioHeader"
   - $ref: "./common/headers.yaml#/components/parameters/suspendTemporalValidationsHeader"

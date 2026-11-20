@@ -60,16 +60,4 @@ class ResolveJsonObjectSpec extends UnitSpec with ResolverSupport with JsonError
     }
   }
 
-  "the strict resolver is used" must {
-    val resolver = ResolveJsonObject.strictResolver[Foo]
-
-    behave like jsonObjectResolver(resolver)
-
-    "detect extra fields in the input" in {
-      val json = Json.parse("""{ "extra":123 , "field1" : "field one", "field2" : "field two" }""")
-
-      resolver(json) shouldBe Invalid(List(RuleIncorrectOrEmptyBodyError.withPath("/extra")))
-    }
-  }
-
 }

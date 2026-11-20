@@ -16,19 +16,14 @@
 
 package v9.createAmendProvisionalFiguresInformation
 
-import api.models.domain.{Nino, TaxYear}
 import play.api.libs.json.{JsValue, Json}
-import v9.createAmendProvisionalFiguresInformation.model.request.{
-  CreateAmendProvisionalFiguresInformationRequestBody,
-  CreateAmendProvisionalFiguresInformationRequestData
-}
+import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestBody
 
 import java.time.{LocalDate, ZoneOffset}
 
 object CreateAmendProvisionalFiguresInformationFixtures {
 
   val expectedDate: String = LocalDate.now(ZoneOffset.UTC).plusYears(1).toString
-  private val dateExpected = expectedDate
 
   val validMtdRequestJson: JsValue = Json.obj(
     "provisionalFiguresIndicator" -> true,
@@ -38,7 +33,7 @@ object CreateAmendProvisionalFiguresInformationFixtures {
 
   val validDownstreamRequestJson: JsValue = Json.obj(
     "pfIndicator"  -> true,
-    "dateExpected" -> dateExpected,
+    "dateExpected" -> expectedDate,
     "whiteSpace"   -> "Provisional figures used pending final confirmation."
   )
 
@@ -64,21 +59,6 @@ object CreateAmendProvisionalFiguresInformationFixtures {
     provisionalFiguresIndicator = true,
     expectedDate = None,
     supplementaryInformation = None
-  )
-
-  val nino: Nino       = Nino("AA123456A")
-  val taxYear: TaxYear = TaxYear.fromMtd("2026-27")
-
-  val validRequestData: CreateAmendProvisionalFiguresInformationRequestData = CreateAmendProvisionalFiguresInformationRequestData(
-    nino,
-    taxYear,
-    validRequestBody
-  )
-
-  val validMinimumRequestData: CreateAmendProvisionalFiguresInformationRequestData = CreateAmendProvisionalFiguresInformationRequestData(
-    nino,
-    taxYear,
-    validMinimumRequestBody
   )
 
 }

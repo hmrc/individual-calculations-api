@@ -16,14 +16,14 @@ components:
         The format of the supplied NINO field is not valid.
       value:
         code: FORMAT_NINO
-        message: The provided NINO is invalid
+        message: The NINO format is invalid
 
     formatTaxYear:
       description: |
         The format of the supplied taxYear value is not valid.
       value:
         code: FORMAT_TAX_YEAR
-        message: The provided tax year is invalid
+        message: The provided tax year format is invalid
 
     formatCalculationType:
       description: |
@@ -34,7 +34,7 @@ components:
 
     ruleOutsideAmendmentWindow:
       description: |
-        The client and/or agent is outside the amendment window.
+        The request cannot be completed as you are outside the amendment window.
       value:
         code: RULE_OUTSIDE_AMENDMENT_WINDOW
         message: You are outside the amendment window
@@ -48,8 +48,7 @@ components:
 
     ruleTaxYearNotSupported:
       description: |
-        The specified tax year is not supported. 
-        Either the tax year specified is before the minimum tax year value, or it is after the maximum tax year value.
+        The specified tax year is not supported. The tax year specified is before the minimum tax year value.
       value:
         code: RULE_TAX_YEAR_NOT_SUPPORTED
         message: The tax year specified does not lie within the supported range
@@ -58,14 +57,14 @@ components:
       description: Tax year range invalid. A tax year range of one year is required.
       value:
         code: RULE_TAX_YEAR_RANGE_INVALID
-        message: Tax year range invalid. A tax year range of one year is required
+        message: A tax year range of one year is required
 
     formatCalculationId:
       description: |
-        Invalid Calculation ID.
+        The format of the supplied calculation ID is not valid.
       value:
         code: FORMAT_CALCULATION_ID
-        message: The provided calculationId is invalid
+        message: The provided calculation ID is invalid
 
     ruleNoIncomeSubmissionExists:
       description: A calculation could not be performed because no income data has been submitted against the tax year.
@@ -211,9 +210,16 @@ components:
         code: RULE_PREMATURE_FINALISATION
         message: Finalisation cannot occur until after the end of the tax year
 
+    ruleTaxYearNotEnded:
+      description: |
+        The submission has been made before the taxYear it relates to has ended.
+      value:
+        code: RULE_TAX_YEAR_NOT_ENDED
+        message: The specified tax year has not yet ended
+
     formatExpectedDate:
       description: |
-        The format of the supplied expectedDate value is not valid.
+        The format of the supplied expectedDate is not valid.
       value:
         code: FORMAT_EXPECTED_DATE
         message: The provided expectedDate is invalid
@@ -230,30 +236,29 @@ components:
         An empty or non-matching body was submitted.
       value:
         code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
-        message: An empty or non-matching body was submitted.
+        message: An empty or non-matching body was submitted
 
     ruleProvisionalFiguresIndicatorInvalid:
       description: |
         The provisionalFiguresIndicator must be set to true.
       value:
         code: RULE_PROVISIONAL_FIGURES_INDICATOR_INVALID
-        message: The provisionalFiguresIndicator must be set to true.
+        message: The provisionalFiguresIndicator must be set to true
 
     ruleExpectedDateNotInFuture:
       description: |
         The expectedDate must be in the future.
       value:
         code: RULE_EXPECTED_DATE_NOT_IN_FUTURE
-        message: The expectedDate must be in the future.
+        message: The expectedDate must be in the future
     # 403
     clientOrAgentNotAuthorised:
       description: |
-        The client and/or agent is not authorised. 
-        This is normally because: the client is not subscribed to MTD, the agent is not subscribed to Agent Services, 
-        or the client has not authorised the agent to act on their behalf.
+        The client or agent is not authorised. This is because: the client is not subscribed to MTD,
+        the agent is not subscribed to Agent Services, or the client has not authorised the agent to act on their behalf.
       value:
         code: CLIENT_OR_AGENT_NOT_AUTHORISED
-        message: The client and/or agent is not authorised
+        message: The client or agent is not authorised
 
     # 404
     notFound:

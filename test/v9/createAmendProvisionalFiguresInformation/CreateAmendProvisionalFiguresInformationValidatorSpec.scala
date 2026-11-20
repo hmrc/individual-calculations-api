@@ -16,37 +16,27 @@
 
 package v9.createAmendProvisionalFiguresInformation
 
-import api.models.errors.{
-  BadRequestError,
-  ErrorWrapper,
-  ExpectedDateFormatError,
-  NinoFormatError,
-  RuleExpectedDateNotInFutureError,
-  RuleIncorrectOrEmptyBodyError,
-  RuleProvisionalFiguresIndicatorInvalidError,
-  RuleTaxYearNotEndedError,
-  RuleTaxYearRangeInvalidError,
-  SupplementaryInformationFormatError,
-  TaxYearFormatError,
-  RuleTaxYearNotSupportedError
-}
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
 import api.utils.UnitSpec
-
-import java.time.{Clock, Instant, ZoneOffset}
 import play.api.libs.json.{JsValue, Json}
-import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.{
-  nino,
-  taxYear,
-  validMinimumMtdRequestJson,
-  validMinimumRequestData,
-  validMtdRequestJson,
-  validRequestData
+import v9.createAmendProvisionalFiguresInformation.CreateAmendProvisionalFiguresInformationFixtures.*
+import v9.createAmendProvisionalFiguresInformation.model.request.{
+  CreateAmendProvisionalFiguresInformationRequestBody,
+  CreateAmendProvisionalFiguresInformationRequestData
 }
-import v9.createAmendProvisionalFiguresInformation.model.request.CreateAmendProvisionalFiguresInformationRequestData
+
+import java.time.{Clock, Instant, LocalDate, ZoneOffset}
 
 class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
 
   private implicit val correlationId: String = "1234"
+
+  private val validNino: String    = "AA123456A"
+  private val validTaxYear: String = "2026-27"
+
+  private val parsedNino: Nino       = Nino(validNino)
+  private val parsedTaxYear: TaxYear = TaxYear.fromMtd(validTaxYear)
 
   private implicit val clock: Clock = Clock.fixed(Instant.parse("2026-11-09T00:00:00Z"), ZoneOffset.UTC)
 
@@ -54,16 +44,16 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "return no errors" when {
       "parse the body and path parameters when the request is valid" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, taxYear.asMtd, validMtdRequestJson).validateAndWrapResult()
+          validator(validNino, validTaxYear, validMtdRequestJson).validateAndWrapResult()
 
-        result shouldBe Right(validRequestData)
+        result shouldBe Right(CreateAmendProvisionalFiguresInformationRequestData(parsedNino, parsedTaxYear, validRequestBody))
       }
 
       "a minimum valid request is provided" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, taxYear.asMtd, validMinimumMtdRequestJson).validateAndWrapResult()
+          validator(validNino, validTaxYear, validMinimumMtdRequestJson).validateAndWrapResult()
 
-        result shouldBe Right(validMinimumRequestData)
+        result shouldBe Right(CreateAmendProvisionalFiguresInformationRequestData(parsedNino, parsedTaxYear, validMinimumRequestBody))
       }
     }
 
@@ -71,7 +61,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
       "an invalid Nino is supplied" in new Test {
         val invalidNino = "A12344A"
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(invalidNino, taxYear.asMtd, validMtdRequestJson).validateAndWrapResult()
+          validator(invalidNino, validTaxYear, validMtdRequestJson).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, NinoFormatError))
       }
@@ -80,7 +70,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "return a TaxYearFormatError" when {
       "an invalid tax year format is supplied" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, "201718", validMtdRequestJson).validateAndWrapResult()
+          validator(validNino, "201718", validMtdRequestJson).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, TaxYearFormatError))
       }
@@ -89,7 +79,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "return a RuleTaxYearNotSupportedError" when {
       "an out of range tax year is supplied" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, "2016-17", validMtdRequestJson).validateAndWrapResult()
+          validator(validNino, "2016-17", validMtdRequestJson).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))
       }
@@ -98,30 +88,29 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "return a RuleTaxYearRangeInvalidError" when {
       "an invalid tax year range is supplied" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, "2017-19", validMtdRequestJson).validateAndWrapResult()
+          validator(validNino, "2017-19", validMtdRequestJson).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleTaxYearRangeInvalidError))
       }
     }
 
     "return an incorrect or empty body error with the missing mandatory field path" in new Test {
-      validator(nino.nino, taxYear.asMtd, Json.obj()).validateAndWrapResult() shouldBe Left(
-        ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError))
-      validator(nino.nino, taxYear.asMtd, Json.obj("expectedDate" -> "2027-10-05")).validateAndWrapResult() shouldBe
+      validator(validNino, validTaxYear, Json.obj()).validateAndWrapResult() shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError))
+      validator(validNino, validTaxYear, Json.obj("expectedDate" -> "2027-10-05")).validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/provisionalFiguresIndicator")))
     }
 
     "return an incorrect body error for wrong type fields" when {
       "provisionalFiguresIndicator is not a boolean" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> "true")).validateAndWrapResult()
+          validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> "true")).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/provisionalFiguresIndicator")))
       }
 
       "expectedDate is not a string" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> 12345)).validateAndWrapResult()
+          validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> 12345)).validateAndWrapResult()
 
         result shouldBe Left(ErrorWrapper(correlationId, RuleIncorrectOrEmptyBodyError.withPath("/expectedDate")))
       }
@@ -129,8 +118,8 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
       "supplementaryInformation is not a string" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
           validator(
-            nino.nino,
-            taxYear.asMtd,
+            validNino,
+            validTaxYear,
             Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> Json.obj("nested" -> "value"))
           ).validateAndWrapResult()
 
@@ -139,29 +128,58 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     }
 
     "require the provisional figures indicator to be true" in new Test {
-      validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> false)).validateAndWrapResult() shouldBe
+      validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> false)).validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, RuleProvisionalFiguresIndicatorInvalidError.withPath("/provisionalFiguresIndicator")))
     }
 
     "validate the expected date format and that it is in the future" in new Test {
-      validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2027-02-30"))
+      validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2027-02-30"))
         .validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, ExpectedDateFormatError.withPath("/expectedDate")))
 
-      validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2026-10-31"))
+      validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> "2026-10-31"))
         .validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, RuleExpectedDateNotInFutureError.withPath("/expectedDate")))
     }
 
+    "return a RuleExpectedDateNotInFutureError when the expectedDate is today" in new Test {
+      val today: String = LocalDate.now(clock).toString
+
+      val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
+        validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> today))
+          .validateAndWrapResult()
+
+      result shouldBe Left(ErrorWrapper(correlationId, RuleExpectedDateNotInFutureError.withPath("/expectedDate")))
+    }
+
+    "return no errors when the expectedDate is tomorrow" in new Test {
+      val tomorrow: String = LocalDate.now(clock).plusDays(1).toString
+
+      val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
+        validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "expectedDate" -> tomorrow))
+          .validateAndWrapResult()
+
+      result shouldBe Right(
+        CreateAmendProvisionalFiguresInformationRequestData(
+          parsedNino,
+          parsedTaxYear,
+          CreateAmendProvisionalFiguresInformationRequestBody(
+            provisionalFiguresIndicator = true,
+            expectedDate = Some(tomorrow),
+            supplementaryInformation = None
+          )
+        ))
+    }
+
     "reject invalid supplementary information" in new Test {
-      validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> "   "))
+      validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> "   "))
         .validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, SupplementaryInformationFormatError.withPath("/supplementaryInformation")))
     }
 
     "reject supplementary information with invalid characters" in new Test {
       val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-        validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> "Invalid™Char"))
+        validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> "Invalid™Char"))
           .validateAndWrapResult()
 
       result shouldBe Left(ErrorWrapper(correlationId, SupplementaryInformationFormatError.withPath("/supplementaryInformation")))
@@ -170,7 +188,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "reject supplementary information exceeding 4000 characters" in new Test {
       val longString: String = "A" * 4001
       val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-        validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> longString))
+        validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> true, "supplementaryInformation" -> longString))
           .validateAndWrapResult()
 
       result shouldBe Left(ErrorWrapper(correlationId, SupplementaryInformationFormatError.withPath("/supplementaryInformation")))
@@ -179,7 +197,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     "return multiple errors" when {
       "request supplied has multiple body errors" in new Test {
         val result: Either[ErrorWrapper, CreateAmendProvisionalFiguresInformationRequestData] =
-          validator(nino.nino, taxYear.asMtd, Json.obj("provisionalFiguresIndicator" -> false, "expectedDate" -> "2026-10-31"))
+          validator(validNino, validTaxYear, Json.obj("provisionalFiguresIndicator" -> false, "expectedDate" -> "2026-10-31"))
             .validateAndWrapResult()
 
         result shouldBe Left(
@@ -211,7 +229,7 @@ class CreateAmendProvisionalFiguresInformationValidatorSpec extends UnitSpec {
     }
 
     "return a tax year not ended error when temporal validation is enabled" in new Test {
-      validator(nino.nino, taxYear.asMtd, validMtdRequestJson, temporalValidationEnabled = true).validateAndWrapResult() shouldBe
+      validator(validNino, validTaxYear, validMtdRequestJson, temporalValidationEnabled = true).validateAndWrapResult() shouldBe
         Left(ErrorWrapper(correlationId, RuleTaxYearNotEndedError))
     }
   }
