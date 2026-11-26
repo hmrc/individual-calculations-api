@@ -21,6 +21,7 @@ import play.api.libs.json.{Format, Json}
 case class TaxCalculation(incomeTax: Option[IncomeTax],
                           nics: Option[Nics],
                           totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
+                          debtCodedOut: Option[BigDecimal],
                           saUnderpaymentsCodedOut: Option[BigDecimal],
                           totalIncomeTaxNicsCharged: Option[BigDecimal],
                           totalStudentLoansRepaymentAmount: Option[BigDecimal],
