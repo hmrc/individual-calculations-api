@@ -387,7 +387,13 @@
           "collectedAmount": 5001.99,
           "uncollectedAmount": 5002.99
         }
-      ]
+      ],
+      "debt": {
+        "amount": 5000.99,
+        "collectedAmount": 5000.99,
+        "uncollectedAmount": 5000.99,
+        "source": "customer"
+      }
     },
     "foreignPropertyIncome": [
       {
@@ -1011,6 +1017,7 @@
         "totalNic": -99999999999.99
       },
       "totalTaxDeductedBeforeCodingOut": 5000.99,
+      "debtCodedOut": 5000.99,
       "saUnderpaymentsCodedOut": 5000.99,
       "totalAnnuityPaymentsTaxCharged": 12500,
       "totalRoyaltyPaymentsTaxCharged": 5000.99,

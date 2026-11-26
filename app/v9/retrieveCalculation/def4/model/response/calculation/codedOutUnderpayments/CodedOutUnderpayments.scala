@@ -23,7 +23,8 @@ case class CodedOutUnderpayments(totalPayeUnderpayments: Option[BigDecimal],
                                  totalSelfAssessmentUnderpayments: Option[BigDecimal],
                                  totalCollectedSelfAssessmentUnderpayments: Option[BigDecimal],
                                  totalUncollectedSelfAssessmentUnderpayments: Option[BigDecimal],
-                                 selfAssessmentUnderpaymentsDetail: Option[Seq[SelfAssessmentUnderpaymentsDetail]])
+                                 selfAssessmentUnderpaymentsDetail: Option[Seq[SelfAssessmentUnderpaymentsDetail]],
+                                 debt: Option[Debt])
 
 object CodedOutUnderpayments {
   implicit val format: OFormat[CodedOutUnderpayments] = Json.format[CodedOutUnderpayments]
