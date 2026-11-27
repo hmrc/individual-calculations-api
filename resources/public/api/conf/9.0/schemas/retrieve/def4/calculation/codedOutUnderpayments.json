@@ -41,6 +41,12 @@
     "selfAssessmentUnderpaymentsDetail": {
       "$ref": "#/definitions/selfAssessmentUnderpaymentsDetail"
     }
+   {{#if (enabled "r23_1885_docs")}}
+   ,
+    "debt": {
+      "$ref": "#/definitions/debt"
+    }
+   {{/if}}
   },
   "additionalProperties": false,
   "definitions": {
@@ -121,6 +127,45 @@
           "relatedTaxYear"
         ]
       }
+    },
+    "debt": {
+      "description": "{{#unless (releasedInProduction 'r23_1885_docs')}}[Test only] {{/unless}}Object containing details of coded out debt in the retrieved tax calculation.",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "description": "The amount of debt coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 5000.99
+        },
+        "collectedAmount": {
+          "description": "The amount of coded out debt you have already repaid. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 5000.99
+        },
+        "uncollectedAmount": {
+          "description": "The outstanding amount of coded out debt. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+          "type": "number",
+          "multipleOf": 0.01,
+          "minimum": 0,
+          "maximum": 99999999999.99,
+          "example": 5000.99
+        },
+        "source": {
+          "$ref": "../common_defs.json#/definitions/dataSource"
+        }
+      },
+      "required": [
+        "amount",
+        "collectedAmount",
+        "uncollectedAmount"
+      ],
+      "additionalProperties": false
     }
   }
 }

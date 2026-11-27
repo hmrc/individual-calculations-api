@@ -406,6 +406,15 @@
           "uncollectedAmount": 5000.99
         }
       ]
+  {{#if (enabled 'r23_1885_docs')}}
+      ,
+      "debt": {
+        "amount": 5000.99,
+        "collectedAmount": 5000.99,
+        "uncollectedAmount": 5000.99,
+        "source": "customer"
+      }
+  {{/if}}
     },
     "foreignPropertyIncome": [
       {
@@ -1029,6 +1038,9 @@
         "totalNic": -99999999999.99
       },
       "totalTaxDeductedBeforeCodingOut": 99999999999.99,
+    {{#if (enabled 'r23_1885_docs')}}
+      "debtCodedOut": 5000.99,
+    {{/if}}
       "saUnderpaymentsCodedOut": 12500,
       "totalIncomeTaxNicsCharged": -99999999999.99,
       "totalStudentLoansRepaymentAmount": 5000.99,
