@@ -129,7 +129,7 @@
       }
     },
     "debt": {
-      "description": "{{#unless (releasedInProduction 'r23_1885_docs')}}[ Test Only ] {{/unless}}Object containing details of coded out debt in the retrieved tax calculation.",
+      "description": "{{#unless (releasedInProduction 'r23_1885_docs')}}[Test only] {{/unless}}Object containing details of coded out debt in the retrieved tax calculation.",
       "type": "object",
       "properties": {
         "amount": {

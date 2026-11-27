@@ -19,7 +19,7 @@
     },
   {{#if (enabled "r23_1885_docs")}}
     "debtCodedOut": {
-      "description": "{{#unless (releasedInProduction 'r23_1885_docs')}}[ Test Only ] {{/unless}}The amount of debt coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
+      "description": "{{#unless (releasedInProduction 'r23_1885_docs')}}[Test only] {{/unless}}The amount of debt coded out. This value must be between 0 and 99999999999.99 up to 2 decimal places.",
       "allOf": [
         {
           "$ref": "#/definitions/monetaryPos"
